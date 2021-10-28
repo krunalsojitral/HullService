@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ReactQuill from 'react-quill'
 import {  
   CCard,
@@ -36,9 +36,20 @@ const AddEditForm = ({ match }) => {
   const [isEditMode, setisEditMode] = React.useState(0);
   const [roleList, setRoleList] = React.useState([]);
 
-  const initialText = ``;
-  
+  const [setectimage, setSetectimage] = React.useState(0);
+  const [selectedFile, setSelectedFile] = useState();
+  const changeFileHandler = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      var reader = new FileReader();
+      reader.onload = (event) => {
+        setSetectimage(event.target.result);
+      };
+      reader.readAsDataURL(event.target.files[0]);
+      setSelectedFile(event.target.files[0]);
+    }
+  };
 
+  const initialText = ``;
 
   const modules = {
     toolbar: [
@@ -74,12 +85,16 @@ const AddEditForm = ({ match }) => {
 
     if (match.params.id) {
       setisEditMode(1);
-      axios.post(api_url + "/blog/getBlogDataById", { id: match.params.id }, {})
+      axios.post(api_url + "/blog/getBlogDataById", { blog_id: match.params.id }, {})
         .then((result) => {
           if (result.data.status) {
             var usersdata = result.data.response.data;
+            console.log(usersdata);
             setValue("title", usersdata.title);
             setValue("description", usersdata.description);
+            setValue("purchase_type", usersdata.purchase_type);
+            setValue("user_role", usersdata.role);            
+            setSetectimage(usersdata.image);
             setText(usersdata.description);
           } else {
             Swal.fire("Oops...", result.data.response.msg, "error");
@@ -91,7 +106,13 @@ const AddEditForm = ({ match }) => {
 
   const updateInformationAct = (data) => {
     data.blog_id = match.params.id;
-    axios.post(api_url + "/blog/updateBlogByadmin", data, {})
+    data.description = text;
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(data));
+    if (selectedFile) {
+      formData.append("image", selectedFile, selectedFile.name);
+    }
+    axios.post(api_url + "/blog/updateBlogByadmin", formData, {})
       .then((result) => {
         if (result.data.status) {
           Swal.fire("Success!", result.data.response.msg, "success");
@@ -104,19 +125,22 @@ const AddEditForm = ({ match }) => {
   };
 
 
-  const addInformationAct = (data) => {
-    console.log(data);
+  const addInformationAct = (data) => {    
     data.description = text;
-    axios.post(api_url + "/blog/addBlogByadmin", data, {})
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(data));
+    if (selectedFile) {
+      formData.append("image", selectedFile, selectedFile.name);
+    }
+    axios.post(api_url + "/blog/addBlogByadmin", formData, {})
       .then((result) => {
         if (result.data.status) {
-          Swal.fire("Oops...", result.data.response.msg, "error");
+          Swal.fire("Success!", result.data.response.msg, "success");
           history.push("/blog");
         } else {
           Swal.fire("Oops...", result.data.response.msg, "error");
         }
       }).catch((err) => { console.log(err); });
-
   };
 
   const [text, setText] = React.useState(initialText)
@@ -136,6 +160,62 @@ const AddEditForm = ({ match }) => {
 
 
             <form onSubmit={handleSubmit((isEditMode === 1) ? updateInformationAct : addInformationAct)}>
+
+              <CRow>
+                <CCol xs="12">
+                  <CFormGroup>
+                    <CLabel htmlFor="title">Title</CLabel>
+                    <Controller
+                      name={"title"}
+                      control={control}
+                      rules={{ required: true }}
+                      render={({ field: { onChange, value } }) => (
+                        <CInput
+                          type="title"
+                          onChange={onChange}
+                          value={value}
+                          placeholder={`Enter your title`}
+                        />
+                      )}
+                    ></Controller>
+                  </CFormGroup>
+                  {errors.title && errors.title.type === "required" && (
+                    <p style={{ color: "red", fontSize: "12px" }}>Title is required.</p>
+                  )}
+                </CCol>
+              </CRow>
+
+              <CRow>
+                <CCol xs="12">
+                  <CFormGroup>
+                    <CLabel htmlFor="ccnumber">Upload Image</CLabel>
+                    <br/>
+                    <input
+                      type="file"
+                      accept=".png,.PNG,.JPG,.jpg,.jpeg"
+                      name="myfile"
+                      onChange={changeFileHandler}
+                    />
+                    {(isEditMode === 1) &&
+                      <span>
+                        {!setectimage && <img style={{ width: "100px" }} alt="avatar" src="company-logo.png" />}
+                        {setectimage && <img style={{ width: "100px" }} src={setectimage} alt="user-image" />}
+                      </span>
+                    }
+                    {(isEditMode !== 1 && setectimage != '') && <img style={{ width: "100px" }} src={setectimage} alt="user-image" />}
+                  </CFormGroup>
+                </CCol>
+              </CRow>
+
+              <CRow>
+                <CCol xs="12">
+                  <CFormGroup>
+                    <CLabel htmlFor="password">Description</CLabel>
+                    <ReactQuill value={text} modules={modules} onChange={setText} />
+                  </CFormGroup>
+                </CCol>
+              </CRow>
+
               <CRow>
                 <CCol xs="12">
                   <CFormGroup>
@@ -160,7 +240,7 @@ const AddEditForm = ({ match }) => {
                     ></Controller>
                   </CFormGroup>
                   {errors.user_role && errors.user_role.type === "required" && (
-                    <p style={{ color: "red", fontSize: "12px" }}>Please enter user role.</p>
+                    <p style={{ color: "red", fontSize: "12px" }}>User role is required.</p>
                   )}
                 </CCol>
               </CRow>
@@ -183,47 +263,15 @@ const AddEditForm = ({ match }) => {
                     ></Controller>
                   </CFormGroup>
                   {errors.purchase_type && errors.purchase_type.type === "required" && (
-                    <p style={{ color: "red", fontSize: "12px" }}>Please enter type.</p>
+                    <p style={{ color: "red", fontSize: "12px" }}>Type is required.</p>
                   )}
                 </CCol>
               </CRow>
 
-              <CRow>
-                <CCol xs="12">
-                  <CFormGroup>
-                    <CLabel htmlFor="title">Title</CLabel>
-                    <Controller
-                      name={"title"}
-                      control={control}
-                      rules={{ required: true }}
-                      render={({ field: { onChange, value } }) => (
-                        <CInput
-                          type="title"
-                          disabled={(isEditMode === 1) ? true : false}
-                          onChange={onChange}
-                          value={value}
-                          placeholder={`Enter your title`}
-                        />
-                      )}
-                    ></Controller>
-                  </CFormGroup>
-                  {errors.title && errors.title.type === "required" && (
-                    <p style={{ color: "red", fontSize: "12px" }}>Please enter title.</p>
-                  )}
-                </CCol>
-              </CRow>
-
-              <CRow>
-                <CCol xs="12">
-                  <CFormGroup>
-                    <CLabel htmlFor="password">Description</CLabel>
-                    <ReactQuill value={text} modules={modules} onChange={setText} />
-                  </CFormGroup>                  
-                </CCol>
-              </CRow>
+              
 
 
-              <button type="submit" class="btn-submit"> {(isEditMode === 1) ? 'Update' : 'Add'}</button>
+              <button type="submit" class="btn btn-outline-primary btn-sm btn-square"> {(isEditMode === 1) ? 'Update' : 'Add'}</button>
 
             </form> 
 

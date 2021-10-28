@@ -8,6 +8,8 @@ var jwt = require('jsonwebtoken');
 var passport = require('passport');
 var env = require('../config/env');
 var Blog = require('../models/blog');
+var User = require('../models/user');
+var bcrypt = require('bcryptjs');
 
 var fs = require('fs');
 var asyn = require('async');
@@ -23,6 +25,59 @@ function loggerData(req) {
     }
 }
 
+router.post('/login', [
+    check('email', 'Please enter valid email').isEmail(),
+    check('email', 'Please enter email').notEmpty(),
+    check('password', 'Please enter password').notEmpty()
+], (req, res) => {
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        var password = req.body.password;
+        User.checkUser(req, function (err, data) {
+            if (err) {
+                res.json({ 'status': 0, 'response': { 'msg': err } });
+            } else {
+                let totalrecord = data.length;
+                if (totalrecord) {
+                    console.log(data);
+                    let dbPassword = (data[0].password).trim();
+                    password = req.body.password;
+                    var jsonUser = JSON.stringify(data[0]);
+                    var token = jwt.sign(jsonUser, env.SECRET, {});
+                    bcrypt.compare(password, dbPassword, function (err, doesMatch) {
+                        if (err) {
+                            res.json({ 'status': 0, 'response': { 'msg': 'Error Occured.' } });
+                        } else {
+                            if (doesMatch) {
+                                let userList = {};
+
+                                userList = {
+                                    'id': data[0].id,
+                                    // 'fullName': data[0].full_name,
+                                    // 'userName': data[0].user_name,
+                                    // 'phone': data[0].phone,
+                                    // 'usertype': data[0].usertype,
+                                    // 'country': data[0].country,
+                                    'email': data[0].email,
+                                    'userRole': (data[0].userrole) ? data[0].userrole : '',
+                                };
+                                res.json({ 'status': 1, 'response': { 'msg': 'Login successfully.', 'token': 'JWT ' + token, 'data': userList } });
+                            } else {
+                                res.json({ 'status': 0, 'response': { 'msg': 'Incorrect password.' } });
+                            }
+                        }
+                    });
+                } else {
+                    return res.json({ 'status': 0, 'response': { 'msg': data } });
+                }
+            }
+        });
+    }
+});
 
 // blog list
 router.get('/blogList', passport.authenticate('jwt', { session: false }), function (req, res) {

@@ -9,3 +9,11 @@
 
 // If you want to add something do it here
 @import "custom";
+
+.custom-table-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+}

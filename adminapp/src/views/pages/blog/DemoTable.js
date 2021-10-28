@@ -19,37 +19,9 @@ const DemoTable = () => {
   const [items, setItems] = useState([])
 
   React.useEffect(() => {
-  
-   
-    axios.get(api_url + '/blog/blogList', {}).then((result) => {
-      if (result.data.status) {
-        var usersdatas = result.data.response.data;
-        console.log(usersdatas);
-        setItems(usersdatas);
-
-      } else {
-        Swal.fire('Oops...', result.data.response.msg, 'error')
-      }
-    }).catch((err) => {
-      console.log(err);
-      //Swal.fire('Oops...', err, 'error')
-    })
-
-
-
+    getNewList();
+    getNewListWrap();
   }, [])
-
-  // const toggleDetails = (index) => {
-  //   const position = details.indexOf(index)
-  //   let newDetails = details.slice()
-  //   if (position !== -1) {
-  //     newDetails.splice(position, 1)
-  //   } else {
-  //     newDetails = [...details, index]
-  //   } 
-  //   setDetails(newDetails)
-  // }
-
 
   const fields = [
     { key: 'title', _style: { width: '20%'} },
@@ -64,32 +36,43 @@ const DemoTable = () => {
   ]
   
 
-  const updateItemStatus = (status) => {
+  const updateItemStatus = (item, status) => {
    
-    // var obj = {
-    //   id: item.id,
-    //   status: newStatus,
-    // };
-
-    // axios
-    //   .post(api_url + "/common/blogstatusupdate" + obj, )
-    //   .then((result) => {
-    //     if (result.data.status) {
-    //       getNewListWrap();
-    //       // Swal.fire("Success!", "Certificate updated successfully.", "success");
-    //       // setModal(!modal);
-    //     } else {
-    //       Swal.fire("Oops...", result.data.response.msg, "error");
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     //Swal.fire('Oops...', err, 'error')
-    //   });
+    var obj = {
+      blog_id: item.blog_id,
+      status: status,
+    };
+    axios.post(api_url + "/blog/changeBlogStatus", obj)
+      .then((result) => {
+        if (result.data.status) {
+          getNewListWrap();
+        } else {
+          Swal.fire("Oops...", result.data.response.msg, "error");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        //Swal.fire('Oops...', err, 'error')
+      });
   }
+
   
+  const getNewList = () => { 
+    axios.get(api_url + '/blog/blogList', {}).then((result) => {
+      if (result.data.status) {
+        var usersdatas = result.data.response.data;
+        setItems(usersdatas);
+      } else {
+        Swal.fire('Oops...', result.data.response.msg, 'error')
+      }
+    }).catch((err) => {
+      console.log(err);
+    })
+  }
 
-
+  const getNewListWrap = () => {
+    getNewList(setItems);
+  };
 
   const getBadge = (status)=>{
     switch (status) {
@@ -133,7 +116,8 @@ const DemoTable = () => {
                   onClick={() => {
                     updateItemStatus(
                       item,
-                      0
+                      0,
+                      getNewListWrap
                     );
                   }}
                 >
@@ -146,7 +130,8 @@ const DemoTable = () => {
                   onClick={() => {
                     updateItemStatus(
                       item,
-                      1
+                      1,
+                      getNewListWrap
                     );
                   }}
                 >
@@ -160,7 +145,7 @@ const DemoTable = () => {
             item => {
               return (
                 <td className="py-2">
-                  <CButton
+                  {/* <CButton
                     color="primary"
                     variant="outline"
                     shape="square"
@@ -168,7 +153,7 @@ const DemoTable = () => {
                     onClick={() => history.push(`/blogdetail/${item.id}`)}
                   >
                     Show
-                  </CButton>
+                  </CButton> */}
 
                   <CButton
                     color="primary"

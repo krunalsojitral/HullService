@@ -6,7 +6,7 @@ const _nav = [
     icon: 'cil-speedometer',
     badge: {
       color: 'info',
-      text: 'NEW',
+      text: '',
     }
   },
   {
