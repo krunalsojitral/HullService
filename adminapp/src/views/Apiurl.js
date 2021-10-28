@@ -1,0 +1,1 @@
+export default "http://localhost:6262/api";
