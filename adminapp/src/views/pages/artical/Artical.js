@@ -10,7 +10,7 @@ import CIcon from '@coreui/icons-react'
 import DemoTable from './DemoTable'
 import { useHistory } from 'react-router-dom'
 
-const Artical = () => {
+const Blog = () => {
   const history = useHistory()
   return (
     <CRow>
@@ -18,14 +18,14 @@ const Artical = () => {
         <CCard>
           <CCardHeader className="custom-table-header">
             <div>
-              <CIcon name="cil-grid" /> User
+              <CIcon name="cil-grid" /> Artical
             </div>
             <CButton
               color="primary"
               variant="outline"
               shape="square"
               size="sm"
-              onClick={() => history.push(`/user/useradd`)}
+              onClick={() => history.push(`/articaladd`)}
             >
               Add
             </CButton>
@@ -37,4 +37,4 @@ const Artical = () => {
   )
 }
 
-export default Artical
+export default Blog

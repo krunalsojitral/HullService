@@ -7,7 +7,7 @@ var router = express.Router();
 var jwt = require('jsonwebtoken');
 var passport = require('passport');
 var env = require('../config/env');
-var Blog = require('../models/blog');
+var Artical = require('../models/artical');
 var path = require('path');
 var fs = require('fs');
 var asyn = require('async');
@@ -24,17 +24,17 @@ function loggerData(req) {
 }
 
 
-// blog list
+// artical list
 //passport.authenticate('jwt', { session: false }), 
-router.get('/blogList', function (req, res) {
+router.get('/articalList', function (req, res) {
     loggerData(req);
-    Blog.getAllAdminBlog(function (err, result) {
+    Artical.getAllAdminArtical(function (err, result) {
         if (err) {
             return res.json({ status: 0, 'response': { msg: err } });
         } else {
-            var blogList = result.map(data => {
+            var articalList = result.map(data => {
                 let retObj = {};
-                retObj['blog_id'] = data.blog_id;
+                retObj['artical_id'] = data.artical_id;
                 retObj['title'] = data.title;
                 retObj['description'] = data.description;
                 retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
@@ -42,20 +42,20 @@ router.get('/blogList', function (req, res) {
                 retObj['status'] = data.status;
                 return retObj;
             });
-            return res.json({ status: 1, 'response': { data: blogList } });
+            return res.json({ status: 1, 'response': { data: articalList } });
         }
     });
 });
 
-//get blog data - adminside
-router.post('/getBlogDataById', [check('blog_id', 'Blog is required').notEmpty()], (req, res, next) => {
+//get artical data - adminside
+router.post('/getarticalDataById', [check('artical_id', 'artical is required').notEmpty()], (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         var error = errors.array();
         res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
     } else {
-        let blog_id = req.body.blog_id;
-        Blog.getBlogDataById(blog_id, function (err, result) {
+        let artical_id = req.body.artical_id;
+        Artical.getarticalDataById(artical_id, function (err, result) {
             if (err) {
                 return res.json({ 'status': 0, 'response': { 'msg': err } });
             } else {
@@ -65,24 +65,24 @@ router.post('/getBlogDataById', [check('blog_id', 'Blog is required').notEmpty()
                 } else {
                     imageLink = env.ADMIN_LIVE_URL;
                 }
-                let blog = {};
-                blog['blog_id'] = result[0].blog_id;
-                blog['title'] = result[0].title;
-                blog['description'] = result[0].description;
-                blog['created_at'] = result[0].created_at;
-                blog['purchase_type'] = result[0].purchase_type;
-                blog['image'] = (result[0].image) ? imageLink + env.BLOG_VIEW_PATH + result[0].image : '';
-                blog['role'] = result[0].role;
-                blog['status'] = result[0].status;
-                return res.json({ 'status': 1, 'response': { 'data': blog, 'msg': 'data found' } });
+                let artical = {};
+                artical['artical_id'] = result[0].artical_id;
+                artical['title'] = result[0].title;
+                artical['description'] = result[0].description;
+                artical['created_at'] = result[0].created_at;
+                artical['purchase_type'] = result[0].purchase_type;
+                artical['image'] = (result[0].image) ? imageLink + env.ARTICAL_VIEW_PATH + result[0].image : '';
+                artical['role'] = result[0].role;
+                artical['status'] = result[0].status;
+                return res.json({ 'status': 1, 'response': { 'data': artical, 'msg': 'data found' } });
             }
         });
     }
 });
 
 
-router.post('/changeBlogStatus', [
-    check('blog_id', 'Blog id is required').notEmpty(),
+router.post('/changearticalStatus', [
+    check('artical_id', 'artical id is required').notEmpty(),
     check('status', 'Please enter status').notEmpty(),
 ], (req, res) => {
     const errors = validationResult(req);
@@ -90,11 +90,11 @@ router.post('/changeBlogStatus', [
         var error = errors.array();
         res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
     } else {
-        let blog_id = req.body.blog_id;
+        let artical_id = req.body.artical_id;
         let record = {
             status: req.body.status
         }
-        Blog.changeBlogStatus(record, blog_id, function (err, result) {
+        Artical.changearticalStatus(record, artical_id, function (err, result) {
             if (err) {
                 return res.json({ 'status': 0, 'response': { 'msg': 'Error Occured.' } });
             } else {
@@ -109,7 +109,7 @@ router.post('/changeBlogStatus', [
 
 });
 
-router.post('/addBlogByadmin', function (req, res) {
+router.post('/addarticalByadmin', function (req, res) {
     var form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
         if (err) return res.json({ status: 1, 'response': { msg: err } });
@@ -128,13 +128,12 @@ router.post('/addBlogByadmin', function (req, res) {
             asyn.waterfall([
                 function (done) {
                     let overview = {};
-                    
                     if (typeof files.image !== 'undefined') {
                         let file_ext = files.image.name.split('.').pop();
                         let ProfileImage = Date.now() + '-' + files.image.name.split(" ").join("");
                         let tmp_path = files.image.path;
                         if (file_ext == 'png' || file_ext == 'PNG' || file_ext == 'jpg' || file_ext == 'JPG' || file_ext == 'jpeg' || file_ext == 'JPEG') {
-                            fs.rename(tmp_path, path.join(__dirname, env.BLOG_PATH + ProfileImage), function (err) {
+                            fs.rename(tmp_path, path.join(__dirname, env.ARTICAL_PATH + ProfileImage), function (err) {
                                 overview['image'] = ProfileImage;
                                 done(err, overview)
                                 fs.unlink(tmp_path, function () {
@@ -153,8 +152,7 @@ router.post('/addBlogByadmin', function (req, res) {
                 },
                 function (overview, done1) {
                     if (overview.image != '') { record.image = overview.image; }
-                    
-                    Blog.addBlogByadmin(record, function (err, data) {
+                    Artical.addarticalByadmin(record, function (err, data) {
                         if (err) {
                             done1(err, overview)
                         } else {
@@ -174,7 +172,7 @@ router.post('/addBlogByadmin', function (req, res) {
     });
 });
 
-router.post('/updateBlogByadmin', function (req, res) {
+router.post('/updatearticalByadmin', function (req, res) {
     var form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
         if (err) return res.json({ status: 1, 'response': { msg: err } });
@@ -191,7 +189,7 @@ router.post('/updateBlogByadmin', function (req, res) {
                 role: obj.user_role,
                 purchase_type: obj.purchase_type
             };
-            let blog_id = obj.blog_id;
+            let artical_id = obj.artical_id;
             asyn.waterfall([
                 function (done) {
                     let overview = {};
@@ -201,7 +199,8 @@ router.post('/updateBlogByadmin', function (req, res) {
                         let ProfileImage = Date.now() + '-' + files.image.name.split(" ").join("");
                         let tmp_path = files.image.path;
                         if (file_ext == 'png' || file_ext == 'PNG' || file_ext == 'jpg' || file_ext == 'JPG' || file_ext == 'jpeg' || file_ext == 'JPEG') {
-                            fs.rename(tmp_path, path.join(__dirname, env.BLOG_PATH + ProfileImage), function (err) {
+                            
+                            fs.rename(tmp_path, path.join(__dirname, env.ARTICAL_PATH + ProfileImage), function (err) {
                                 overview['image'] = ProfileImage;
                                 done(err, overview)
                                 fs.unlink(tmp_path, function () {
@@ -223,7 +222,7 @@ router.post('/updateBlogByadmin', function (req, res) {
                         record.image = overview.image;
                         update_value.push(overview.image);
                     }
-                    Blog.updateBlogByadmin(record, blog_id, update_value, function (err, data) {
+                    Artical.updatearticalByadmin(record, artical_id, update_value, function (err, data) {
                         if (err) {
                             done1(err, overview)
                         } else {

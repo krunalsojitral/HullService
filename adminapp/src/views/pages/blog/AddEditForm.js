@@ -267,15 +267,9 @@ const AddEditForm = ({ match }) => {
                   )}
                 </CCol>
               </CRow>
-
-              
-
-
               <button type="submit" class="btn btn-outline-primary btn-sm btn-square"> {(isEditMode === 1) ? 'Update' : 'Add'}</button>
 
             </form> 
-
-
           </CCardBody>
         </CCard>
       </CCol>

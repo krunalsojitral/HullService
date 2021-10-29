@@ -19,43 +19,12 @@ const DemoTable = () => {
   const [items, setItems] = useState([])
 
   React.useEffect(() => {
-  
-   
-    axios.get(api_url + '/user/userAllList', {}).then((result) => {
-      if (result.data.status) {
-        var usersdatas = result.data.response.data;
-        console.log(usersdatas);
-        setItems(usersdatas);
-
-      } else {
-        Swal.fire('Oops...', result.data.response.msg, 'error')
-      }
-    }).catch((err) => {
-      console.log(err);
-      //Swal.fire('Oops...', err, 'error')
-    })
-
-
-
+    getNewList();
+    getNewListWrap();
   }, [])
 
-  // const toggleDetails = (index) => {
-  //   const position = details.indexOf(index)
-  //   let newDetails = details.slice()
-  //   if (position !== -1) {
-  //     newDetails.splice(position, 1)
-  //   } else {
-  //     newDetails = [...details, index]
-  //   } 
-  //   setDetails(newDetails)
-  // }
-
-
   const fields = [
-    { key: 'firstname', _style: { width: '20%'} },
-    { key: 'lastname', _style: { width: '20%' } },
-    { key: 'email', _style: { width: '20%' } },
-    { key: 'phone', _style: { width: '20%' } },
+    { key: 'title', _style: { width: '20%'} },
     { key: 'created_at', _style: { width: '20%' } },
     { key: 'status', _style: { width: '20%'} },
     {
@@ -65,6 +34,45 @@ const DemoTable = () => {
       filter: false
     }
   ]
+  
+
+  const updateItemStatus = (item, status) => {
+   
+    var obj = {
+      video_id: item.video_id,
+      status: status,
+    };
+    axios.post(api_url + "/video/changevideoStatus", obj)
+      .then((result) => {
+        if (result.data.status) {
+          getNewListWrap();
+        } else {
+          Swal.fire("Oops...", result.data.response.msg, "error");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        //Swal.fire('Oops...', err, 'error')
+      });
+  }
+
+  
+  const getNewList = () => { 
+    axios.get(api_url + '/video/videoList', {}).then((result) => {
+      if (result.data.status) {
+        var usersdatas = result.data.response.data;
+        setItems(usersdatas);
+      } else {
+        Swal.fire('Oops...', result.data.response.msg, 'error')
+      }
+    }).catch((err) => {
+      console.log(err);
+    })
+  }
+
+  const getNewListWrap = () => {
+    getNewList(setItems);
+  };
 
   const getBadge = (status)=>{
     switch (status) {
@@ -85,7 +93,7 @@ const DemoTable = () => {
         tableFilter
         cleaner
         itemsPerPageSelect
-        itemsPerPage={5}
+        itemsPerPage={10}
         hover
         sorter
         pagination
@@ -99,34 +107,60 @@ const DemoTable = () => {
         // onTableFilterChange={(val) => console.log('new table filter:', val)}
         // onColumnFilterChange={(val) => console.log('new column filter:', val)}
         scopedSlots = {{
-          'status':
-            (item)=>(
-              <td>
-                <CBadge color={getBadge(item.status)}>
-                  {item.status}
-                </CBadge>
-              </td>
-            ),
+          status: (item) => (
+            <td>
+              {item.status === 1 ? (
+                <a
+                  href
+                  style={{ cursor: "pointer", textDecoration: "underline" }}
+                  onClick={() => {
+                    updateItemStatus(
+                      item,
+                      0,
+                      getNewListWrap
+                    );
+                  }}
+                >
+                  Active{" "}
+                </a>
+              ) : (
+                <a
+                  href
+                  style={{ cursor: "pointer", textDecoration: "underline" }}
+                  onClick={() => {
+                    updateItemStatus(
+                      item,
+                      1,
+                      getNewListWrap
+                    );
+                  }}
+                >
+                  Inactive
+                </a>
+              )}
+              {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}
+            </td>
+          ),
           'show_details':
             item => {
               return (
                 <td className="py-2">
-                  <CButton
+                  {/* <CButton
                     color="primary"
                     variant="outline"
                     shape="square"
                     size="sm"
-                    onClick={() => history.push(`/user/usersdetail/${item.id}`)}
+                    onClick={() => history.push(`/videodetail/${item.id}`)}
                   >
-                    { details.includes(item.id) ? 'Hide' : 'Show' }
-                  </CButton>
+                    Show
+                  </CButton> */}
 
                   <CButton
                     color="primary"
                     variant="outline"
                     shape="square"
                     size="sm"
-                    onClick={() => history.push(`/user/useredit/${item.id}`)}
+                    onClick={() => history.push(`/videoedit/${item.video_id}`)}
                     className="mr-1"
                   > Edit
                   </CButton>

@@ -38,6 +38,16 @@ const _nav = [
       color: "info",
       text: "",
     },
+  },
+  {
+    _tag: "CSidebarNavItem",
+    name: "Tag",
+    to: "/tag",
+    icon: "cil-calculator",
+    badge: {
+      color: "info",
+      text: "",
+    },
   }
 ]
 

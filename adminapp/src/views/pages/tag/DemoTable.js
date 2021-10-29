@@ -24,8 +24,7 @@ const DemoTable = () => {
   }, [])
 
   const fields = [
-    { key: 'title', _style: { width: '20%'} },
-    { key: 'created_at', _style: { width: '20%' } },
+    { key: 'tag_name', _style: { width: '20%'} },
     { key: 'status', _style: { width: '20%'} },
     {
       key: 'show_details',
@@ -39,10 +38,10 @@ const DemoTable = () => {
   const updateItemStatus = (item, status) => {
    
     var obj = {
-      artical_id: item.artical_id,
+      tag_id: item.tag_id,
       status: status,
     };
-    axios.post(api_url + "/artical/changearticalStatus", obj)
+    axios.post(api_url + "/tag/changetagStatus", obj)
       .then((result) => {
         if (result.data.status) {
           getNewListWrap();
@@ -58,7 +57,7 @@ const DemoTable = () => {
 
   
   const getNewList = () => { 
-    axios.get(api_url + '/artical/articalList', {}).then((result) => {
+    axios.get(api_url + '/tag/tagList', {}).then((result) => {
       if (result.data.status) {
         var usersdatas = result.data.response.data;
         setItems(usersdatas);
@@ -150,7 +149,7 @@ const DemoTable = () => {
                     variant="outline"
                     shape="square"
                     size="sm"
-                    onClick={() => history.push(`/articaldetail/${item.id}`)}
+                    onClick={() => history.push(`/tagdetail/${item.id}`)}
                   >
                     Show
                   </CButton> */}
@@ -160,7 +159,7 @@ const DemoTable = () => {
                     variant="outline"
                     shape="square"
                     size="sm"
-                    onClick={() => history.push(`/articaledit/${item.artical_id}`)}
+                    onClick={() => history.push(`/tagedit/${item.tag_id}`)}
                     className="mr-1"
                   > Edit
                   </CButton>

@@ -93,7 +93,7 @@ const DemoTable = () => {
         tableFilter
         cleaner
         itemsPerPageSelect
-        itemsPerPage={5}
+        itemsPerPage={10}
         hover
         sorter
         pagination

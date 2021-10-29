@@ -5,7 +5,7 @@ var { check, validationResult } = require("express-validator");
 
 var router = express.Router();
 var jwt = require('jsonwebtoken');
-var passport = require('passport');
+
 var env = require('../config/env');
 var Common = require('../models/common');
 
