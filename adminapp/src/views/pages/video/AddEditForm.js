@@ -34,6 +34,7 @@ const AddEditForm = ({ match }) => {
 
 
   const [isEditMode, setisEditMode] = React.useState(0);
+  const [videoSizeError, setVideoSizeError] = React.useState('');
   const [roleList, setRoleList] = React.useState([]);
   const [tagList, setTagList] = React.useState([]);
 
@@ -41,14 +42,22 @@ const AddEditForm = ({ match }) => {
   const [selectedTag, setSelectedTag] = React.useState([])
   const [selectedFile, setSelectedFile] = useState();
   const changeFileHandler = (event) => {
-    if (event.target.files && event.target.files[0]) {
-      var reader = new FileReader();
-      reader.onload = (event) => {
-        setSetectvideo(event.target.result);
-      };
-      reader.readAsDataURL(event.target.files[0]);
-      setSelectedFile(event.target.files[0]);
+
+    if (event.target.files[0].size > (1024 * 1024 * 25)) {
+      setVideoSizeError("Audio file size should not be grater than 25 MB");
+    }else{
+      setVideoSizeError("");
+      if (event.target.files && event.target.files[0]) {
+        var reader = new FileReader();
+        reader.onload = (event) => {
+          setSetectvideo(event.target.result);
+        };
+        reader.readAsDataURL(event.target.files[0]);
+        setSelectedFile(event.target.files[0]);
+      }
     }
+
+   
   };
 
 
@@ -108,18 +117,18 @@ const AddEditForm = ({ match }) => {
       axios.post(api_url + "/video/getvideoDataById", { video_id: match.params.id }, {})
         .then((result) => {
           if (result.data.status) {
-            var usersdata = result.data.response.data;
-            console.log(usersdata);
-            setValue("title", usersdata.title);
-            setValue("description", usersdata.description);
-            setValue("purchase_type", usersdata.purchase_type);
-            setValue("user_role", usersdata.role);
-            setSetectvideo(usersdata.video);
-            setText(usersdata.description);
-            setQna(usersdata.qna);
-            setNotes(usersdata.notes);
-            setOverview(usersdata.overview);
-            setInformation(usersdata.information);
+            var videodata = result.data.response.data;
+            setValue("title", videodata.title);
+            setValue("description", videodata.description);
+            setValue("purchase_type", videodata.purchase_type);
+            setValue("user_role", videodata.role);
+            setSelectedTag(videodata.tag);
+            setSetectvideo(videodata.video);
+            setText(videodata.description);
+            setQna(videodata.qna);
+            setNotes(videodata.notes);
+            setOverview(videodata.overview);
+            setInformation(videodata.information);
           } else {
             Swal.fire("Oops...", result.data.response.msg, "error");
           }
@@ -129,6 +138,7 @@ const AddEditForm = ({ match }) => {
   }, []);
 
   const updateInformationAct = (data) => {
+    if (!videoSizeError) {
     data.video_id = match.params.id;
     data.tag = selectedTag;
     data.description = text;
@@ -136,7 +146,6 @@ const AddEditForm = ({ match }) => {
     data.notes = notes;
     data.overview = overview;
     data.information = information;
-    data.tag = selectedTag;
     const formData = new FormData();
     formData.append("data", JSON.stringify(data));
     if (selectedFile) {
@@ -151,31 +160,35 @@ const AddEditForm = ({ match }) => {
           Swal.fire("Oops...", result.data.response.msg, "error");
         }
       }).catch((err) => { console.log(err); });
-
+    }
   };
 
 
   const addInformationAct = (data) => {
-    data.description = text;
-    data.qna = qna;
-    data.notes = notes;
-    data.overview = overview;
-    data.information = information;
-    data.tag = selectedTag;
-    const formData = new FormData();
-    formData.append("data", JSON.stringify(data));
-    if (selectedFile) {
-      formData.append("video", selectedFile, selectedFile.name);
+
+    if (!videoSizeError){
+      data.description = text;
+      data.qna = qna;
+      data.notes = notes;
+      data.overview = overview;
+      data.information = information;
+      data.tag = selectedTag;
+      const formData = new FormData();
+      formData.append("data", JSON.stringify(data));
+      if (selectedFile) {
+        formData.append("video", selectedFile, selectedFile.name);
+      }
+      axios.post(api_url + "/video/addVideoByadmin", formData, {})
+        .then((result) => {
+          if (result.data.status) {
+            Swal.fire("Success!", result.data.response.msg, "success");
+            history.push("/video");
+          } else {
+            Swal.fire("Oops...", result.data.response.msg, "error");
+          }
+        }).catch((err) => { console.log(err); });
     }
-    axios.post(api_url + "/video/addVideoByadmin", formData, {})
-      .then((result) => {
-        if (result.data.status) {
-          Swal.fire("Success!", result.data.response.msg, "success");
-          history.push("/video");
-        } else {
-          Swal.fire("Oops...", result.data.response.msg, "error");
-        }
-      }).catch((err) => { console.log(err); });
+    
   };
 
   const [qna, setQna] = React.useState('')
@@ -236,13 +249,23 @@ const AddEditForm = ({ match }) => {
                       name="myfile"
                       onChange={changeFileHandler}
                     />
+                    {videoSizeError && (
+                      <p style={{ color: "red", fontSize: "12px" }}>{videoSizeError}</p>
+                    )}
+                    
+                   
                     {(isEditMode === 1) &&
                       <span>
-                        {!setectvideo && <img style={{ width: "100px" }} alt="avatar" src="company-logo.png" />}
-                        {setectvideo && <img style={{ width: "100px" }} src={setectvideo} alt="user-video" />}
+                        {setectvideo && 
+                        <video width="320" height="240" controls>
+                            <source src={setectvideo} type="video/mp4"/>
+                            <source src={setectvideo} type="video/ogg"/>
+                              Your browser does not support the video tag.
+                        </video>
+                        }
                       </span>
                     }
-                    {(isEditMode !== 1 && setectvideo != '') && <img style={{ width: "100px" }} src={setectvideo} alt="user-video" />}
+                   
                   </CFormGroup>
                 </CCol>
               </CRow>

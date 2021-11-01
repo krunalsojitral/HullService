@@ -89,7 +89,6 @@ const AddEditForm = ({ match }) => {
         .then((result) => {
           if (result.data.status) {
             var usersdata = result.data.response.data;
-            console.log(usersdata);
             setValue("title", usersdata.title);
             setValue("description", usersdata.description);
             setValue("purchase_type", usersdata.purchase_type);

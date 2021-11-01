@@ -77,9 +77,9 @@ function User() {
 
     this.updatearticalByadmin = function (record, artical_id, update_value, callback) {
         connection.acquire(function (err, con) {
-
             var query = updateProductByID(artical_id, record);
             con.query(query, update_value, function (err, result) {
+                con.release()
                 if (err) {
                     if (env.DEBUG) {
                         console.log(err);
@@ -106,6 +106,7 @@ function User() {
     this.changearticalStatus = function (record, artical_id, callback) {
         connection.acquire(function (err, con) {
             con.query("UPDATE artical SET status =$1 WHERE artical_id = $2", [record.status, artical_id], function (err, result) {
+                con.release()
                 if (err) {
                     if (env.DEBUG) {
                         console.log(err);

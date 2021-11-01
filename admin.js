@@ -30,6 +30,7 @@ var tagRouter = require('./routes/tag');
 var blogRouter = require('./routes/blog');
 var videoRouter = require('./routes/video');
 var articalRouter = require('./routes/artical');
+var courseRouter = require('./routes/course');
 var commonRouter = require('./routes/common');
 
 //app.use(express.static('uploads'));
@@ -41,6 +42,7 @@ app.use('/api/blog', blogRouter);
 app.use('/api/tag', tagRouter);
 app.use('/api/video', videoRouter);
 app.use('/api/artical', articalRouter);
+app.use('/api/course', courseRouter);
 app.use('/api/common', commonRouter);
 
 

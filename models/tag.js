@@ -88,6 +88,7 @@ function Tag() {
 
             var query = updateProductByID(tag_id, record);
             con.query(query, update_value, function (err, result) {
+                con.release()
                 if (err) {
                     if (env.DEBUG) {
                         console.log(err);
@@ -114,6 +115,7 @@ function Tag() {
     this.changetagStatus = function (record, tag_id, callback) {
         connection.acquire(function (err, con) {
             con.query("UPDATE tag SET status =$1 WHERE tag_id = $2", [record.status, tag_id], function (err, result) {
+                con.release()
                 if (err) {
                     if (env.DEBUG) {
                         console.log(err);

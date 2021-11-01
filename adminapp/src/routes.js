@@ -9,6 +9,8 @@ const Video = React.lazy(() => import('./views/pages/video/Video'))
 const VideoAddEditForm = React.lazy(() => import('./views/pages/video/AddEditForm'))
 const Tag = React.lazy(() => import('./views/pages/tag/Tag'))
 const TagAddEditForm = React.lazy(() => import('./views/pages/tag/AddEditForm'))
+const Course = React.lazy(() => import('./views/pages/course/Course'))
+const CourseAddEditForm = React.lazy(() => import('./views/pages/course/AddEditForm'))
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -26,6 +28,9 @@ const routes = [
   { path: '/tag', name: 'Tag', component: Tag },
   { path: '/tagadd', name: 'Tag Add', component: TagAddEditForm },
   { path: '/tagedit/:id', name: 'Tag Edit', component: TagAddEditForm },
+  { path: '/course', name: 'Course', component: Course },
+  { path: '/courseadd', name: 'Course Add', component: CourseAddEditForm },
+  { path: '/courseedit/:id', name: 'Course Edit', component: CourseAddEditForm },
 ]
 
 export default routes

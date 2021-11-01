@@ -13,8 +13,8 @@ function PostgresConnect() {
         this.pool = new Pool({
           user: 'postgres',
           host: 'localhost',
-          database: 'hullservice',
-          password: 'newpassword',
+          database: 'hull_db',
+          password: 'hull_db@123',
         // port: { port },
         })
       };

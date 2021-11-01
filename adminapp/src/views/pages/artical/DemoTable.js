@@ -25,6 +25,7 @@ const DemoTable = () => {
 
   const fields = [
     { key: 'title', _style: { width: '20%'} },
+    { key: 'role', _style: { width: '20%' } },
     { key: 'created_at', _style: { width: '20%' } },
     { key: 'status', _style: { width: '20%'} },
     {
@@ -74,13 +75,13 @@ const DemoTable = () => {
     getNewList(setItems);
   };
 
-  const getBadge = (status)=>{
+  const getBadge = (status) => {
     switch (status) {
-      case 'Active': return 'success'
-      case 'Inactive': return 'secondary'
-      case 'Pending': return 'warning'
-      case 'Banned': return 'danger'
-      default: return 'primary'
+      case '2': return 'Service Provider'
+      case '3': return 'Researchers'
+      case '4': return 'General Public'
+      case 'all': return 'All'
+      default: return 'Service Provider'
     }
   }
 
@@ -140,7 +141,13 @@ const DemoTable = () => {
               )}
               {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}
             </td>
-          ),
+          ),    
+          'role':
+            (item) => (
+              <td>
+                {getBadge(item.role)}
+              </td>
+            ),
           'show_details':
             item => {
               return (

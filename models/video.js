@@ -1,19 +1,17 @@
 //methods for fetching mysql data
 var connection = require('../config/database');
 var env = require('../config/env');
-var asyn = require('async');
 
-function User() {
+function Video() {
+
     connection.init();
 
-    
-    this.getUserById = function (id, callback) {
+    this.getTagByVideoId = function (id, callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM users where id = $1', [id], function (err, result) {
+            con.query('SELECT * FROM video_tag inner join tag on video_tag.tag_id = tag.tag_id where video_tag.video_id = $1', [id], function (err, result) {
                 con.release();
                 if (result.rows.length === 0) {
-                    msg = 'User does not exist.';
-                    callback(msg, null);
+                    callback('Tag does not exist.', null);
                 }else{
                     callback(null, result.rows);
                 }                
@@ -66,7 +64,7 @@ function User() {
         });
     };
 
-    function updateProductByID(video_id, cols) {
+    function updateByID(video_id, cols) {
         // Setup static beginning of query
         var query = ['UPDATE video'];
         query.push('SET');
@@ -87,17 +85,31 @@ function User() {
         return query.join(' ');
     }
 
-    this.updatevideoByadmin = function (record, video_id, update_value, callback) {
+    this.updatevideoByadmin = function (record, video_id, update_value, tag, callback) {
         connection.acquire(function (err, con) {
-
-            var query = updateProductByID(video_id, record);
+            var query = updateByID(video_id, record);
             con.query(query, update_value, function (err, result) {
                 if (err) {
-                    if (env.DEBUG) {
-                        console.log(err);
-                    }
+                    if (env.DEBUG) { console.log(err); }
+                    con.release()
                     callback(err, null);
                 } else {
+                    if (tag.length > 0) {
+                        const sql = 'DELETE FROM video_tag where video_id = $1'
+                        const values = [video_id]
+                        con.query(sql, values, function (err, results) {
+                            tag.map(data => {
+                                var records = {
+                                    tag_id: data.value,
+                                    video_id: video_id
+                                }
+                                const sql = 'INSERT INTO video_tag(video_id,tag_id) VALUES($1,$2) RETURNING *'
+                                const values = [records.video_id, records.tag_id]
+                                con.query(sql, values, function (err, result) { });
+                            });
+                        });
+                    }
+                    con.release()
                     callback(null, record);
                 }
             });
@@ -147,4 +159,4 @@ function User() {
     
 
 }
-module.exports = new User();
+module.exports = new Video();

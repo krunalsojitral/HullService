@@ -8,14 +8,16 @@ import {
   CHeaderNavLink,
   CSubheader,
   CToggler,
+  CLink,
   CBreadcrumbRouter,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-
+import { useHistory } from "react-router-dom";
 // routes config
 import routes from '../routes'
 
 const TheHeader = () => {
+  let history = useHistory();
   const dispatch = useDispatch()
   const asideShow = useSelector(state => state.asideShow)
   const darkMode = useSelector(state => state.darkMode)
@@ -30,6 +32,11 @@ const TheHeader = () => {
     const val = [false, 'responsive'].includes(sidebarShow) ? true : 'responsive'
     dispatch({type: 'set', sidebarShow: val})
   }
+
+  const logout = () => {
+    localStorage.clear();
+    history.push("/login");
+  };
 
   return (
     <CHeader withSubheader>
@@ -74,6 +81,12 @@ const TheHeader = () => {
 
       <CSubheader className="px-3 justify-content-between">
         <CBreadcrumbRouter className="border-0 c-subheader-nav m-0 px-0 px-md-3" routes={routes} />
+        <div className="d-md-down-none mfe-2 c-subheader-nav">
+          <CLink onClick={(e) => logout()} className="c-subheader-nav-link" >
+            <CIcon alt="Settings" />&nbsp;Logout
+        </CLink>
+        </div>
+        
       </CSubheader>
     </CHeader>
   )

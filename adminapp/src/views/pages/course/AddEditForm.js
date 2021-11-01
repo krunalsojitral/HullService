@@ -85,7 +85,7 @@ const AddEditForm = ({ match }) => {
 
     if (match.params.id) {
       setisEditMode(1);
-      axios.post(api_url + "/artical/getarticalDataById", { artical_id: match.params.id }, {})
+      axios.post(api_url + "/course/getcourseDataById", { course_id: match.params.id }, {})
         .then((result) => {
           if (result.data.status) {
             var usersdata = result.data.response.data;
@@ -104,18 +104,18 @@ const AddEditForm = ({ match }) => {
   }, []);
 
   const updateInformationAct = (data) => {
-    data.artical_id = match.params.id;
+    data.course_id = match.params.id;
     data.description = text;
     const formData = new FormData();
     formData.append("data", JSON.stringify(data));
     if (selectedFile) {
       formData.append("image", selectedFile, selectedFile.name);
     }
-    axios.post(api_url + "/artical/updatearticalByadmin", formData, {})
+    axios.post(api_url + "/course/updatecourseByadmin", formData, {})
       .then((result) => {
         if (result.data.status) {
           Swal.fire("Success!", result.data.response.msg, "success");
-          history.push("/artical");
+          history.push("/course");
         } else {
           Swal.fire("Oops...", result.data.response.msg, "error");
         }
@@ -131,11 +131,11 @@ const AddEditForm = ({ match }) => {
     if (selectedFile) {
       formData.append("image", selectedFile, selectedFile.name);
     }
-    axios.post(api_url + "/artical/addarticalByadmin", formData, {})
+    axios.post(api_url + "/course/addcourseByadmin", formData, {})
       .then((result) => {
         if (result.data.status) {
           Swal.fire("Success!", result.data.response.msg, "success");
-          history.push("/artical");
+          history.push("/course");
         } else {
           Swal.fire("Oops...", result.data.response.msg, "error");
         }
@@ -265,7 +265,6 @@ const AddEditForm = ({ match }) => {
                 </CCol>
               </CRow>
               <button type="submit" class="btn btn-outline-primary btn-sm btn-square"> {(isEditMode === 1) ? 'Update' : 'Add'}</button>
-
             </form> 
           </CCardBody>
         </CCard>

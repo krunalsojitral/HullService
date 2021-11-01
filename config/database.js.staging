@@ -35,9 +35,6 @@ function PostgresConnect() {
   // acquire connection and execute query on callbacks
   this.acquire = function (callback) {
     this.pool.connect(function (err, connection) { 
-      console.log(err);
-      console.log(connection);
-      console.log("DB connection");
       callback(err, connection);
     });
   };

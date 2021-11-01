@@ -60,7 +60,7 @@ export default function Login() {
                     <div className="container">
                       <div className="row">
                         <div className="col-md-12">
-                          <h2>Login</h2>
+                          <center><h2>Login</h2></center>
                           <form onSubmit={handleSubmit(onSubmit)}>
                             <div className="login-sighup-card">
                               <div className="form-group">

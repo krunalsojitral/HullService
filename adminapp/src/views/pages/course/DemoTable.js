@@ -25,7 +25,6 @@ const DemoTable = () => {
 
   const fields = [
     { key: 'title', _style: { width: '20%'} },
-    { key: 'role', _style: { width: '20%' } },
     { key: 'created_at', _style: { width: '20%' } },
     { key: 'status', _style: { width: '20%'} },
     {
@@ -40,10 +39,10 @@ const DemoTable = () => {
   const updateItemStatus = (item, status) => {
    
     var obj = {
-      blog_id: item.blog_id,
+      course_id: item.course_id,
       status: status,
     };
-    axios.post(api_url + "/blog/changeBlogStatus", obj)
+    axios.post(api_url + "/course/changecourseStatus", obj)
       .then((result) => {
         if (result.data.status) {
           getNewListWrap();
@@ -59,7 +58,7 @@ const DemoTable = () => {
 
   
   const getNewList = () => { 
-    axios.get(api_url + '/blog/blogList', {}).then((result) => {
+    axios.get(api_url + '/course/courseList', {}).then((result) => {
       if (result.data.status) {
         var usersdatas = result.data.response.data;
         setItems(usersdatas);
@@ -77,11 +76,11 @@ const DemoTable = () => {
 
   const getBadge = (status)=>{
     switch (status) {
-      case '2': return 'Service Provider'
-      case '3': return 'Researchers'
-      case '4': return 'General Public'
-      case 'all': return 'All'
-      default: return 'Service Provider'
+      case 'Active': return 'success'
+      case 'Inactive': return 'secondary'
+      case 'Pending': return 'warning'
+      case 'Banned': return 'danger'
+      default: return 'primary'
     }
   }
 
@@ -142,12 +141,6 @@ const DemoTable = () => {
               {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}
             </td>
           ),
-          'role':
-            (item) => (
-              <td>
-                {getBadge(item.role)}
-              </td>
-            ),
           'show_details':
             item => {
               return (
@@ -157,7 +150,7 @@ const DemoTable = () => {
                     variant="outline"
                     shape="square"
                     size="sm"
-                    onClick={() => history.push(`/blogdetail/${item.id}`)}
+                    onClick={() => history.push(`/coursedetail/${item.id}`)}
                   >
                     Show
                   </CButton> */}
@@ -167,7 +160,7 @@ const DemoTable = () => {
                     variant="outline"
                     shape="square"
                     size="sm"
-                    onClick={() => history.push(`/blogedit/${item.blog_id}`)}
+                    onClick={() => history.push(`/courseedit/${item.course_id}`)}
                     className="mr-1"
                   > Edit
                   </CButton>
