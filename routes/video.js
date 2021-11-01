@@ -70,6 +70,10 @@ router.post('/getvideoDataById', [check('video_id', 'video is required').notEmpt
                 video['title'] = result[0].title;
                 video['description'] = result[0].description;
                 video['created_at'] = result[0].created_at;
+                video['overview'] = result[0].overview;
+                video['qna'] = result[0].qna;
+                video['notes'] = result[0].notes;
+                video['information'] = result[0].information;
                 video['purchase_type'] = result[0].purchase_type;
                 video['video'] = (result[0].video) ? videoLink + env.video_VIEW_PATH + result[0].video : '';
                 video['role'] = result[0].role;
@@ -127,17 +131,17 @@ router.post('/addVideoByadmin', function (req, res) {
                 information: obj.information,
                 created_at: moment().format('YYYY-MM-DD'),
                 role: obj.user_role,
+                tag: obj.tag,
                 purchase_type: obj.purchase_type
             };
             asyn.waterfall([
                 function (done) {
                     let overview = {};
-                    
                     if (typeof files.video !== 'undefined') {
                         let file_ext = files.video.name.split('.').pop();
                         let ProfileVideo = Date.now() + '-' + files.video.name.split(" ").join("");
                         let tmp_path = files.video.path;
-                        if (file_ext == 'png' || file_ext == 'PNG' || file_ext == 'jpg' || file_ext == 'JPG' || file_ext == 'jpeg' || file_ext == 'JPEG') {
+                        if (file_ext == 'mp3' || file_ext == 'MP3' || file_ext == 'mp4' || file_ext == 'MP4') {
                             fs.rename(tmp_path, path.join(__dirname, env.VIDEO_PATH + ProfileVideo), function (err) {
                                 overview['video'] = ProfileVideo;
                                 done(err, overview)
@@ -157,7 +161,6 @@ router.post('/addVideoByadmin', function (req, res) {
                 },
                 function (overview, done1) {
                     if (overview.video != '') { record.video = overview.video; }
-                    console.log(record);
                     Video.addVideoByadmin(record, function (err, data) {
                         if (err) {
                             done1(err, overview)

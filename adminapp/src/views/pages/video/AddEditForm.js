@@ -11,7 +11,7 @@ import {
   CLabel,
   CRow,
 } from '@coreui/react'
-
+import { MultiSelect } from "react-multi-select-component";
 import './TextEditors.scss'
 import { useForm, Controller } from "react-hook-form";
 import { useHistory } from "react-router-dom";
@@ -35,8 +35,10 @@ const AddEditForm = ({ match }) => {
 
   const [isEditMode, setisEditMode] = React.useState(0);
   const [roleList, setRoleList] = React.useState([]);
+  const [tagList, setTagList] = React.useState([]);
 
   const [setectvideo, setSetectvideo] = React.useState(0);
+  const [selectedTag, setSelectedTag] = React.useState([])
   const [selectedFile, setSelectedFile] = useState();
   const changeFileHandler = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -70,6 +72,24 @@ const AddEditForm = ({ match }) => {
   }
 
   React.useEffect(() => {
+
+    axios.get(api_url + "/common/tagList", {})
+      .then((result) => {
+        if (result.data.status) {
+          var roledata = result.data.response.data;
+          var obj = roledata.map((data, index) => {
+            let retObj = {};
+            retObj['id'] = (index + 1);
+            retObj['label'] = data.tag_name;
+            retObj['value'] = data.tag_id;
+            return retObj;
+          });
+          setTagList(obj);
+        } else {
+          Swal.fire("Oops...", result.data.response.msg, "error");
+        }
+      })
+      .catch((err) => { console.log(err); });
 
 
     axios.get(api_url + "/common/roleList", {})
@@ -110,7 +130,13 @@ const AddEditForm = ({ match }) => {
 
   const updateInformationAct = (data) => {
     data.video_id = match.params.id;
+    data.tag = selectedTag;
     data.description = text;
+    data.qna = qna;
+    data.notes = notes;
+    data.overview = overview;
+    data.information = information;
+    data.tag = selectedTag;
     const formData = new FormData();
     formData.append("data", JSON.stringify(data));
     if (selectedFile) {
@@ -135,6 +161,7 @@ const AddEditForm = ({ match }) => {
     data.notes = notes;
     data.overview = overview;
     data.information = information;
+    data.tag = selectedTag;
     const formData = new FormData();
     formData.append("data", JSON.stringify(data));
     if (selectedFile) {
@@ -157,6 +184,11 @@ const AddEditForm = ({ match }) => {
   const [information, setInformation] = React.useState('')
   const [text, setText] = React.useState('')
 
+  const removeSkill = (value) => {
+    var removeskill = selectedTag.filter(function (place) { return place.value !== value })
+    setSelectedTag(removeskill);
+  };
+
   return (
     <CRow>
       <CCol lg={12}>
@@ -172,7 +204,7 @@ const AddEditForm = ({ match }) => {
               <CRow>
                 <CCol xs="12">
                   <CFormGroup>
-                    <CLabel htmlFor="title">Title</CLabel>
+                    <CLabel htmlFor="title">Title <span className="label-validation">*</span></CLabel>
                     <Controller
                       name={"title"}
                       control={control}
@@ -200,7 +232,7 @@ const AddEditForm = ({ match }) => {
                     <br />
                     <input
                       type="file"
-                      accept=".png,.PNG,.JPG,.jpg,.jpeg"
+                      accept=".mp4,.MP4,.mp3,.MP3"
                       name="myfile"
                       onChange={changeFileHandler}
                     />
@@ -228,7 +260,7 @@ const AddEditForm = ({ match }) => {
                 <CCol xs="12">
                   <CFormGroup>
                     <CLabel htmlFor="QnA">QnA</CLabel>
-                    <ReactQuill value={text} modules={modules} onChange={setQna} />
+                    <ReactQuill value={qna} modules={modules} onChange={setQna} />
                   </CFormGroup>
                 </CCol>
               </CRow>
@@ -237,7 +269,7 @@ const AddEditForm = ({ match }) => {
                 <CCol xs="12">
                   <CFormGroup>
                     <CLabel htmlFor="Notes">Notes</CLabel>
-                    <ReactQuill value={text} modules={modules} onChange={setNotes} />
+                    <ReactQuill value={notes} modules={modules} onChange={setNotes} />
                   </CFormGroup>
                 </CCol>
               </CRow>
@@ -246,7 +278,7 @@ const AddEditForm = ({ match }) => {
                 <CCol xs="12">
                   <CFormGroup>
                     <CLabel htmlFor="overview">Overview</CLabel>
-                    <ReactQuill value={text} modules={modules} onChange={setOverview} />
+                    <ReactQuill value={overview} modules={modules} onChange={setOverview} />
                   </CFormGroup>
                 </CCol>
               </CRow>
@@ -255,7 +287,7 @@ const AddEditForm = ({ match }) => {
                 <CCol xs="12">
                   <CFormGroup>
                     <CLabel htmlFor="Information">Information</CLabel>
-                    <ReactQuill value={text} modules={modules} onChange={setInformation} />
+                    <ReactQuill value={information} modules={modules} onChange={setInformation} />
                   </CFormGroup>
                 </CCol>
               </CRow>
@@ -263,8 +295,29 @@ const AddEditForm = ({ match }) => {
               <CRow>
                 <CCol xs="12">
                   <CFormGroup>
+                    <CLabel htmlFor="city">Tag</CLabel>
+                    <MultiSelect
+                      options={tagList}
+                      value={selectedTag}
+                      selectionLimit="2"
+                      hasSelectAll={false}
+                      onChange={setSelectedTag}
+                      labelledBy="Select"
+                    />
+                  </CFormGroup>
+                  {selectedTag.map(item => (
+                    <span className="skill-name">{item.label} &nbsp;<i onClick={(e) => removeSkill(item.value)} className="fa fa-times">X</i></span>
+                  ))}
+                </CCol>
+              </CRow>
+  
+              <br />
+
+              <CRow>
+                <CCol xs="12">
+                  <CFormGroup>
                     <CLabel htmlFor="role">
-                      User Role
+                      User Role <span className="label-validation">*</span>
                     </CLabel>
                     <Controller
                       name="user_role"
@@ -292,7 +345,7 @@ const AddEditForm = ({ match }) => {
               <CRow>
                 <CCol xs="12">
                   <CFormGroup>
-                    <CLabel htmlFor="role">Paid / Unpaid</CLabel>
+                    <CLabel htmlFor="role">Paid / Unpaid <span className="label-validation">*</span></CLabel>
                     <Controller
                       name="purchase_type"
                       control={control}

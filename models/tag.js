@@ -38,19 +38,27 @@ function Tag() {
     
     this.addtagByadmin = function (record, callback) {
         connection.acquire(function (err, con) {
-            const sql = 'INSERT INTO tag(tag_name,status) VALUES($1,$2) RETURNING *'
-            const values = [record.tag_name,1]
-            con.query(sql, values, function (err, result) {
-                con.release()
-                if (err) {
-                    if (env.DEBUG) {
-                        console.log(err);
-                    }
-                    callback(err, null);
-                } else {
-                    callback(null, result.rows[0]);
+            con.query('SELECT * FROM tag where tag_name=$1', [record.tag_name], function (err, result) {
+                if (result.rows.length === 0) { 
+                    const sql = 'INSERT INTO tag(tag_name,status) VALUES($1,$2) RETURNING *'
+                    const values = [record.tag_name, 1]
+                    con.query(sql, values, function (err, result) {
+                        con.release()
+                        if (err) {
+                            if (env.DEBUG) {
+                                console.log(err);
+                            }
+                            callback(err, null);
+                        } else {
+                            callback(null, result.rows[0]);
+                        }
+                    });
+                }else{
+                    con.release()
+                    callback('Tag name is already exist.', null);
                 }
             });
+            
         });
     };
 

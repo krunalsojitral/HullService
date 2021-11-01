@@ -20,5 +20,21 @@ function Common() {
         });
     };
 
+    this.getTagList = function (callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM tag where status = $1', [1], function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
+    
+
 }
 module.exports = new Common();

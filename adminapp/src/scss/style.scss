@@ -20,3 +20,33 @@
 .ql-editor{
     min-height:200px;
 }
+.skill-name{
+    background: #E9EDF2;
+    border: 1px solid #CFD3D9;
+    border-radius: 18px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 10px;
+    color: #000000;
+    padding: 7px 9px;
+    margin: 10px 4px 0 0;
+}
+.suggestion {
+    position: inherit;
+    margin: 0px;
+    padding: 6px;
+    line-height: 30px;
+    max-height: 60%;
+    border-right: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
+    border-left: 1px solid #CCCCCC;
+    border-image: initial;
+    border-top: none;
+    list-style-type: none;
+    text-align: left;
+    overflow-y: auto;
+}
+.label-validation{
+    color: red;
+}

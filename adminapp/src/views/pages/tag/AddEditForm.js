@@ -135,7 +135,7 @@ const AddEditForm = ({ match }) => {
               <CRow>
                 <CCol xs="12">
                   <CFormGroup>
-                    <CLabel htmlFor="title">Title</CLabel>
+                    <CLabel htmlFor="title">Title <span className="label-validation">*</span></CLabel>
                     <Controller
                       name={"tag_name"}
                       control={control}

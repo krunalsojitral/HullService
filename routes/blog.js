@@ -167,7 +167,7 @@ router.post('/addBlogByadmin', function (req, res) {
                 if (error) {
                     return res.json({ 'status': 0, 'response': { 'msg': error } });
                 } else {
-                    return res.json({ 'status': 1, 'response': { 'msg': 'Profile successfully updated', data: userList } });
+                    return res.json({ 'status': 1, 'response': { 'msg': 'Blog added successfully.', data: userList } });
                 }
             });
         }
@@ -236,7 +236,7 @@ router.post('/updateBlogByadmin', function (req, res) {
                 if (error) {
                     return res.json({ 'status': 0, 'response': { 'msg': error } });
                 } else {
-                    return res.json({ 'status': 1, 'response': { 'msg': 'Profile successfully updated', data: userList } });
+                    return res.json({ 'status': 1, 'response': { 'msg': 'Blog updated successfully.', data: userList } });
                 }
             });
         }

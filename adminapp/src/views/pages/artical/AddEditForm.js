@@ -164,7 +164,7 @@ const AddEditForm = ({ match }) => {
               <CRow>
                 <CCol xs="12">
                   <CFormGroup>
-                    <CLabel htmlFor="title">Title</CLabel>
+                    <CLabel htmlFor="title">Title <span className="label-validation">*</span></CLabel>
                     <Controller
                       name={"title"}
                       control={control}
@@ -219,9 +219,7 @@ const AddEditForm = ({ match }) => {
               <CRow>
                 <CCol xs="12">
                   <CFormGroup>
-                    <CLabel htmlFor="role">
-                      User Role
-                         </CLabel>
+                    <CLabel htmlFor="role">User Role <span className="label-validation">*</span></CLabel>
                     <Controller
                       name="user_role"
                       control={control}
@@ -248,7 +246,7 @@ const AddEditForm = ({ match }) => {
               <CRow>
                 <CCol xs="12">
                   <CFormGroup>
-                    <CLabel htmlFor="role">Paid / Unpaid</CLabel>
+                    <CLabel htmlFor="role">Paid / Unpaid <span className="label-validation">*</span></CLabel>
                     <Controller
                       name="purchase_type"
                       control={control}

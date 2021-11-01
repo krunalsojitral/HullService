@@ -116,7 +116,7 @@ router.post('/addtagByadmin', [
             if (err) {
                 return res.json({ 'status': 0, 'response': { 'msg': err } });
             } else {
-                return res.json({ 'status': 1, 'response': { 'msg': 'Profile successfully updated', data: data } });
+                return res.json({ 'status': 1, 'response': { 'msg': 'Tag added successfully.', data: data } });
             }
         });
     }
@@ -140,7 +140,7 @@ router.post('/updatetagByadmin', [
             if (err) {
                 return res.json({ 'status': 0, 'response': { 'msg': err } });
             } else {
-                return res.json({ 'status': 1, 'response': { 'msg': 'Profile successfully updated', data: data } });
+                return res.json({ 'status': 1, 'response': { 'msg': 'Tag updated successfully.', data: data } });
             }
         });
     }

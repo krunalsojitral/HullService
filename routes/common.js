@@ -21,20 +21,37 @@ router.get('/roleList', function (req, res) {
     Common.getRoleList(function (err, result) {
         if (err) {
             return res.json({ status: 0, 'response': { msg: err } });
-        } else {
-            
+        } else {            
             var roleList = result.map(data => {
                 let retObj = {};
                 retObj['role_id'] = data.role_id;
                 retObj['name'] = data.role;
                 return retObj;
             });
-
-            
             return res.json({ status: 1, 'response': { data: roleList } });
         }
     });
 });
+
+router.get('/tagList', function (req, res) {
+    loggerData(req);
+    Common.getTagList(function (err, result) {
+        if (err) {
+            return res.json({ status: 0, 'response': { msg: err } });
+        } else {
+            var tagList = result.map(data => {
+                let retObj = {};
+                retObj['tag_id'] = data.tag_id;
+                retObj['tag_name'] = data.tag_name;
+                return retObj;
+            });
+            return res.json({ status: 1, 'response': { data: tagList } });
+        }
+    });
+});
+
+
+
 
 module.exports = router;
 

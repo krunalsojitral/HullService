@@ -165,7 +165,7 @@ router.post('/addarticalByadmin', function (req, res) {
                 if (error) {
                     return res.json({ 'status': 0, 'response': { 'msg': error } });
                 } else {
-                    return res.json({ 'status': 1, 'response': { 'msg': 'Profile successfully updated', data: userList } });
+                    return res.json({ 'status': 1, 'response': { 'msg': 'Artical added successfully.', data: userList } });
                 }
             });
         }
@@ -235,7 +235,7 @@ router.post('/updatearticalByadmin', function (req, res) {
                 if (error) {
                     return res.json({ 'status': 0, 'response': { 'msg': error } });
                 } else {
-                    return res.json({ 'status': 1, 'response': { 'msg': 'Profile successfully updated', data: userList } });
+                    return res.json({ 'status': 1, 'response': { 'msg': 'Artical updated successfully.', data: userList } });
                 }
             });
         }
