@@ -39,16 +39,16 @@ const _nav = [
       text: "",
     },
   },
-  {
-    _tag: "CSidebarNavItem",
-    name: "Course",
-    to: "/course",
-    icon: "cil-calculator",
-    badge: {
-      color: "info",
-      text: "",
-    },
-  },
+  // {
+  //   _tag: "CSidebarNavItem",
+  //   name: "Course",
+  //   to: "/course",
+  //   icon: "cil-calculator",
+  //   badge: {
+  //     color: "info",
+  //     text: "",
+  //   },
+  // },
   {
     _tag: "CSidebarNavItem",
     name: "Tag",

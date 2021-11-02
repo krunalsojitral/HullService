@@ -8,10 +8,12 @@ function PostgresConnect() {
  // let DB_CREDENTIALS;
   this.pool = null;
   // Init postgres Connection Pool
-  if (ip.address() == '172.31.18.120') {
+  console.log(ip.address());
+  if (ip.address() == '172.31.15.131') {
+    
       this.init = function () {
         this.pool = new Pool({
-          user: 'postgres',
+          user: 'hull',
           host: 'localhost',
           database: 'hull_db',
           password: 'hull_db@123',

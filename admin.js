@@ -35,7 +35,7 @@ var commonRouter = require('./routes/common');
 
 //app.use(express.static('uploads'));
 app.use(express.static('routes/uploads'));
-app.use(express.static(path.join(__dirname, 'adminapp/dist/adminapp')));
+app.use(express.static(path.join(__dirname, 'adminapp/build')));
 
 app.use('/api/user', usersRouter);
 app.use('/api/blog', blogRouter);
@@ -47,7 +47,7 @@ app.use('/api/common', commonRouter);
 
 
 app.get('/', (req, res) => {
-    res.json({ msg: 'Server started running on ' +  port })
+    res.json({ msg: 'Server started running on ' + port })
 });
 
 app.get('*', (req, res) => {

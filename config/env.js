@@ -1,22 +1,22 @@
 "use strict";
 var ip = require('ip');
 console.log('ip:' + ip.address());
-if (ip.address() == '172.31.18.120') {
+if (ip.address() == '172.31.15.131') {
     module.exports = {
         PROJECT_NAME: 'HullService',
-        APP_URL: 'http://52.14.255.158:6161/',
-        ADMIN_APP_URL: 'http://52.14.255.158:6262/',
-        LIVE_HOST_NAME: 'http://52.14.255.158:6262',
-        LIVE_HOST_USER_APP: 'http://52.14.255.158:6262',
-        HASH_APP_URL: 'http://52.14.255.158:6161/',
-        LOCAL_HOST_NAME: '52.14.255.158:6262',
-        LOCAL_HOST_USER_APP: '52.14.255.158:6161',
-        LIVE_URL: 'https://52.14.255.158:6262',
-        LOCAL_URL: 'https://52.14.255.158:6262',
-        USER_LIVE_URL: 'http://52.14.255.158:6161/',
-        USER_LOCAL_URL: 'http://52.14.255.158:6161/',
-        ADMIN_LIVE_URL: 'http://52.14.255.158:6262/',
-        ADMIN_LOCAL_URL: 'http://52.14.255.158:6262/',
+        APP_URL: 'http://3.99.13.94:6161/',
+        ADMIN_APP_URL: 'http://3.99.13.94:6262/',
+        LIVE_HOST_NAME: 'http://3.99.13.94:6262',
+        LIVE_HOST_USER_APP: 'http://3.99.13.94:6262',
+        HASH_APP_URL: 'http://3.99.13.94:6161/',
+        LOCAL_HOST_NAME: 'http://3.99.13.94:6262',
+        LOCAL_HOST_USER_APP: 'http://3.99.13.94:6161',
+        LIVE_URL: 'https://http://3.99.13.94:6262',
+        LOCAL_URL: 'https://http://3.99.13.94:6262',
+        USER_LIVE_URL: 'http://3.99.13.94:6161/',
+        USER_LOCAL_URL: 'http://3.99.13.94:6161/',
+        ADMIN_LIVE_URL: 'http://3.99.13.94:6262/',
+        ADMIN_LOCAL_URL: 'http://3.99.13.94:6262/',
         BLOG_PATH: '/uploads/blog/',
         BLOG_VIEW_PATH: '/blog/',
         ARTICAL_PATH: '/uploads/artical/',

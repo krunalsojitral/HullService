@@ -268,6 +268,28 @@ const AddEditForm = ({ match }) => {
                    
                   </CFormGroup>
                 </CCol>
+
+                {/* <CRow>
+                  <CCol xs="12">OR</CCol>
+                </CRow>
+                
+                <CCol xs="12">
+                  <CFormGroup>
+                    <CLabel htmlFor="video url">Youtube Video URL</CLabel>
+                    <Controller
+                      name={"video_url"}
+                      control={control}
+                      render={({ field: { onChange, value } }) => (
+                        <CInput
+                          type="video_url"
+                          onChange={onChange}
+                          value={value}
+                          placeholder={`Enter Youtube Video URL`}
+                        />
+                      )}
+                    ></Controller>
+                  </CFormGroup>
+                </CCol> */}
               </CRow>
 
               <CRow>

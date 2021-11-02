@@ -215,7 +215,7 @@ router.post('/addVideoByadmin', function (req, res) {
                 if (error) {
                     return res.json({ 'status': 0, 'response': { 'msg': error } });
                 } else {
-                    return res.json({ 'status': 1, 'response': { 'msg': 'Profile successfully updated', data: userList } });
+                    return res.json({ 'status': 1, 'response': { 'msg': 'Added video successfully.', data: userList } });
                 }
             });
         }
