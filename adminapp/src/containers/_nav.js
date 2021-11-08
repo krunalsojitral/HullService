@@ -21,8 +21,8 @@ const _nav = [
   },
   {
     _tag: "CSidebarNavItem",
-    name: "Artical",
-    to: "/artical",
+    name: "Article",
+    to: "/article",
     icon: "cil-calculator",
     badge: {
       color: "info",
@@ -53,6 +53,16 @@ const _nav = [
     _tag: "CSidebarNavItem",
     name: "Tag",
     to: "/tag",
+    icon: "cil-calculator",
+    badge: {
+      color: "info",
+      text: "",
+    },
+  },
+  {
+    _tag: "CSidebarNavItem",
+    name: "Course",
+    to: "/course",
     icon: "cil-calculator",
     badge: {
       color: "info",

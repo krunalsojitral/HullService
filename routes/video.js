@@ -72,12 +72,13 @@ router.post('/getvideoDataById', [check('video_id', 'video is required').notEmpt
                             let video = {};
                             video['video_id'] = result[0].video_id;
                             video['title'] = result[0].title;
-                            video['description'] = result[0].description;
+                            // video['description'] = result[0].description;
                             video['created_at'] = result[0].created_at;
-                            video['overview'] = result[0].overview;
-                            video['qna'] = result[0].qna;
-                            video['notes'] = result[0].notes;
-                            video['information'] = result[0].information;
+                            video['video_url'] = result[0].video_url;
+                            // video['overview'] = result[0].overview;
+                            // video['qna'] = result[0].qna;
+                            // video['notes'] = result[0].notes;
+                            // video['information'] = result[0].information;
                             video['purchase_type'] = result[0].purchase_type;
                             video['video'] = (result[0].video) ? videoLink + env.VIDEO_VIEW_PATH + result[0].video : '';
                             video['role'] = result[0].role;
@@ -163,61 +164,72 @@ router.post('/addVideoByadmin', function (req, res) {
             var json = fields.data;
             let obj = JSON.parse(json);
             let record = {
-                title: obj.title,
-                description: obj.description,
-                qna: obj.qna,
-                notes: obj.notes,
-                overview: obj.overview,
-                information: obj.information,
+                title: obj.title,                
+                video_url: obj.video_url,
+                // description: obj.description,
+                // qna: obj.qna,
+                // notes: obj.notes,
+                // overview: obj.overview,
+                // information: obj.information,
                 created_at: moment().format('YYYY-MM-DD'),
                 role: obj.user_role,
                 tag: obj.tag,
-                purchase_type: obj.purchase_type
+                purchase_type: obj.purchase_type,
+                cost: obj.cost
             };
-            asyn.waterfall([
-                function (done) {
-                    let overview = {};
-                    if (typeof files.video !== 'undefined') {
-                        let file_ext = files.video.name.split('.').pop();
-                        let ProfileVideo = Date.now() + '-' + files.video.name.split(" ").join("");
-                        let tmp_path = files.video.path;
-                        
-                        if (file_ext == 'WMV' || file_ext == 'wmv' || file_ext == 'FLV' || file_ext == 'flv' || file_ext == 'AVI' || file_ext == 'avi' || file_ext == '3G2' || file_ext == '3g2' || file_ext == '3GP' || file_ext == '3gp' || file_ext == 'MPG' || file_ext == 'mpg' || file_ext == 'MOV' || file_ext == 'mov' || file_ext == 'mp3' || file_ext == 'MP3' || file_ext == 'mp4' || file_ext == 'MP4') {
-                            fs.rename(tmp_path, path.join(__dirname, env.VIDEO_PATH + ProfileVideo), function (err) {
-                                overview['video'] = ProfileVideo;
-                                done(err, overview)
-                                fs.unlink(tmp_path, function () {
-                                    if (err) {
-                                        return res.json({ status: 1, 'response': { msg: err } });
-                                    }
-                                });
-                            });
-                        } else {
-                            return res.json({ status: 0, response: { msg: 'Only video with jpg, jpeg and png format are allowed', } });
-                        }
-                    } else {
-                        overview['video'] = '';
-                        done(err, overview);
-                    }
-                },
-                function (overview, done1) {
-                    if (overview.video != '') { record.video = overview.video; }
-                    Video.addVideoByadmin(record, function (err, data) {
-                        if (err) {
-                            done1(err, overview)
-                        } else {
-                            done1(err, data);
-                        }
-                    });
-                }
-            ],
-            function (error, userList) {
-                if (error) {
-                    return res.json({ 'status': 0, 'response': { 'msg': error } });
+
+            Video.addVideoByadmin(record, function (err, data) {
+                if (err) {
+                    return res.json({ 'status': 0, 'response': { 'msg': err } });
                 } else {
-                    return res.json({ 'status': 1, 'response': { 'msg': 'Added video successfully.', data: userList } });
+                    return res.json({ 'status': 1, 'response': { 'msg': 'Added video successfully.', data: data } });
                 }
             });
+
+            // asyn.waterfall([
+            //     function (done) {
+            //         let overview = {};
+            //         if (typeof files.video !== 'undefined') {
+            //             let file_ext = files.video.name.split('.').pop();
+            //             let ProfileVideo = Date.now() + '-' + files.video.name.split(" ").join("");
+            //             let tmp_path = files.video.path;
+                        
+            //             if (file_ext == 'WMV' || file_ext == 'wmv' || file_ext == 'FLV' || file_ext == 'flv' || file_ext == 'AVI' || file_ext == 'avi' || file_ext == '3G2' || file_ext == '3g2' || file_ext == '3GP' || file_ext == '3gp' || file_ext == 'MPG' || file_ext == 'mpg' || file_ext == 'MOV' || file_ext == 'mov' || file_ext == 'mp3' || file_ext == 'MP3' || file_ext == 'mp4' || file_ext == 'MP4') {
+            //                 fs.rename(tmp_path, path.join(__dirname, env.VIDEO_PATH + ProfileVideo), function (err) {
+            //                     overview['video'] = ProfileVideo;
+            //                     done(err, overview)
+            //                     fs.unlink(tmp_path, function () {
+            //                         if (err) {
+            //                             return res.json({ status: 1, 'response': { msg: err } });
+            //                         }
+            //                     });
+            //                 });
+            //             } else {
+            //                 return res.json({ status: 0, response: { msg: 'Only video with jpg, jpeg and png format are allowed', } });
+            //             }
+            //         } else {
+            //             overview['video'] = '';
+            //             done(err, overview);
+            //         }
+            //     },
+            //     function (overview, done1) {
+            //         if (overview.video != '') { record.video = overview.video; }
+            //         Video.addVideoByadmin(record, function (err, data) {
+            //             if (err) {
+            //                 done1(err, overview)
+            //             } else {
+            //                 done1(err, data);
+            //             }
+            //         });
+            //     }
+            // ],
+            // function (error, userList) {
+            //     if (error) {
+            //         return res.json({ 'status': 0, 'response': { 'msg': error } });
+            //     } else {
+            //         return res.json({ 'status': 1, 'response': { 'msg': 'Added video successfully.', data: userList } });
+            //     }
+            // });
         }
     });
 });
@@ -231,68 +243,80 @@ router.post('/updatevideoByadmin', function (req, res) {
 
             var json = fields.data;
             let obj = JSON.parse(json);
-            let update_value = [obj.title, obj.description, obj.qna, obj.notes, obj.overview, obj.information, moment().format('YYYY-MM-DD'), obj.user_role, obj.purchase_type]
+            //let update_value = [obj.title, obj.description, obj.qna, obj.notes, obj.overview, obj.information, moment().format('YYYY-MM-DD'), obj.user_role, obj.purchase_type]
+            let update_value = [obj.title, obj.video_url, moment().format('YYYY-MM-DD'), obj.user_role, obj.purchase_type, obj.cost]
             let record = {
                 title: obj.title,
-                description: obj.description,
-                qna: obj.qna,
-                notes: obj.notes,
-                overview: obj.overview,
-                information: obj.information,
+                video_url: obj.video_url,
+                // description: obj.description,
+                // qna: obj.qna,
+                // notes: obj.notes,
+                // overview: obj.overview,
+                // information: obj.information,
                 created_at: moment().format('YYYY-MM-DD'),
                 role: obj.user_role,
-                purchase_type: obj.purchase_type
+                purchase_type: obj.purchase_type,
+                cost: obj.cost
             };
+            
             let video_id = obj.video_id;
             let tag = (obj.tag) ? obj.tag:[];
-            
-            asyn.waterfall([
-                function (done) {
-                    let overview = {};
-                    
-                    if (typeof files.video !== 'undefined') {
-                        let file_ext = files.video.name.split('.').pop();
-                        let ProfileVideo = Date.now() + '-' + files.video.name.split(" ").join("");
-                        let tmp_path = files.video.path;
-                        if (file_ext == 'WMV' || file_ext == 'wmv' || file_ext == 'FLV' || file_ext == 'flv' || file_ext == 'AVI' || file_ext == 'avi' || file_ext == '3G2' || file_ext == '3g2' || file_ext == '3GP' || file_ext == '3gp' || file_ext == 'MPG' || file_ext == 'mpg' || file_ext == 'MOV' || file_ext == 'mov' || file_ext == 'mp3' || file_ext == 'MP3' || file_ext == 'mp4' || file_ext == 'MP4') {
-                            fs.rename(tmp_path, path.join(__dirname, env.VIDEO_PATH + ProfileVideo), function (err) {
-                                overview['video'] = ProfileVideo;
-                                done(err, overview)
-                                fs.unlink(tmp_path, function () {
-                                    if (err) {
-                                        return res.json({ status: 1, 'response': { msg: err } });
-                                    }
-                                });
-                            });
-                        } else {
-                            return res.json({ status: 0, response: { msg: 'Only video with jpg, jpeg and png format are allowed', } });
-                        }
-                    } else {
-                        overview['video'] = '';
-                        done(err, overview);
-                    }
-                },
-                function (overview, done1) {
-                    if (overview.video != '') { 
-                        record.video = overview.video;
-                        update_value.push(overview.video);
-                    }
-                    Video.updatevideoByadmin(record, video_id, update_value, tag, function (err, data) {
-                        if (err) {
-                            done1(err, overview)
-                        } else {
-                            done1(err, data);
-                        }
-                    });
-                }
-            ],
-            function (error, userList) {
-                if (error) {
-                    return res.json({ 'status': 0, 'response': { 'msg': error } });
+
+            Video.updatevideoByadmin(record, video_id, update_value, tag, function (err, data) {
+                if (err) {
+                    return res.json({ 'status': 0, 'response': { 'msg': err } });
                 } else {
-                    return res.json({ 'status': 1, 'response': { 'msg': 'Video updated successfully.', data: userList } });
+                    return res.json({ 'status': 1, 'response': { 'msg': 'Video updated successfully.', data: data } });
                 }
             });
+            
+            // asyn.waterfall([
+            //     function (done) {
+            //         let overview = {};
+                    
+            //         if (typeof files.video !== 'undefined') {
+            //             let file_ext = files.video.name.split('.').pop();
+            //             let ProfileVideo = Date.now() + '-' + files.video.name.split(" ").join("");
+            //             let tmp_path = files.video.path;
+            //             if (file_ext == 'WMV' || file_ext == 'wmv' || file_ext == 'FLV' || file_ext == 'flv' || file_ext == 'AVI' || file_ext == 'avi' || file_ext == '3G2' || file_ext == '3g2' || file_ext == '3GP' || file_ext == '3gp' || file_ext == 'MPG' || file_ext == 'mpg' || file_ext == 'MOV' || file_ext == 'mov' || file_ext == 'mp3' || file_ext == 'MP3' || file_ext == 'mp4' || file_ext == 'MP4') {
+            //                 fs.rename(tmp_path, path.join(__dirname, env.VIDEO_PATH + ProfileVideo), function (err) {
+            //                     overview['video'] = ProfileVideo;
+            //                     done(err, overview)
+            //                     fs.unlink(tmp_path, function () {
+            //                         if (err) {
+            //                             return res.json({ status: 1, 'response': { msg: err } });
+            //                         }
+            //                     });
+            //                 });
+            //             } else {
+            //                 return res.json({ status: 0, response: { msg: 'Only video with jpg, jpeg and png format are allowed', } });
+            //             }
+            //         } else {
+            //             overview['video'] = '';
+            //             done(err, overview);
+            //         }
+            //     },
+            //     function (overview, done1) {
+            //         if (overview.video != '') { 
+            //             record.video = overview.video;
+            //             update_value.push(overview.video);
+            //         }
+            //         Video.updatevideoByadmin(record, video_id, update_value, tag, function (err, data) {
+            //             if (err) {
+            //                 done1(err, overview)
+            //             } else {
+            //                 done1(err, data);
+            //             }
+            //         });
+            //     }
+            // ],
+            // function (error, userList) {
+            //     if (error) {
+            //         return res.json({ 'status': 0, 'response': { 'msg': error } });
+            //     } else {
+            //         return res.json({ 'status': 1, 'response': { 'msg': 'Video updated successfully.', data: userList } });
+            //     }
+            // });
         }
     });
 });

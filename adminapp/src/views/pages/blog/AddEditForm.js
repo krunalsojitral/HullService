@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import ReactQuill from 'react-quill'
+import { Editor } from "@tinymce/tinymce-react";
+
 import {  
   CCard,
   CCardHeader,
@@ -11,7 +13,7 @@ import {
   CLabel,
   CRow,
 } from '@coreui/react'
-
+import { MultiSelect } from "react-multi-select-component";
 import './TextEditors.scss'
 import { useForm, Controller } from "react-hook-form";
 import { useHistory } from "react-router-dom";
@@ -32,12 +34,20 @@ const AddEditForm = ({ match }) => {
     formState: { errors },
   } = useForm();
   
-  
+  const purchase_type_selected = watch("purchase_type");
   const [isEditMode, setisEditMode] = React.useState(0);
   const [roleList, setRoleList] = React.useState([]);
-
+  const [tagList, setTagList] = React.useState([]);
   const [setectimage, setSetectimage] = React.useState(0);
   const [selectedFile, setSelectedFile] = useState();
+  const [selectedTag, setSelectedTag] = React.useState([])
+
+  const [contentEditor, setContentEditor] = useState();
+  const handleEditorChange = (content, editor) => {
+    console.log('Content was updated:', content);
+    setContentEditor(content);
+  }
+
   const changeFileHandler = (event) => {
     if (event.target.files && event.target.files[0]) {
       var reader = new FileReader();
@@ -71,6 +81,23 @@ const AddEditForm = ({ match }) => {
 
   React.useEffect(() => {   
 
+    axios.get(api_url + "/common/tagList", {})
+      .then((result) => {
+        if (result.data.status) {
+          var roledata = result.data.response.data;
+          var obj = roledata.map((data, index) => {
+            let retObj = {};
+            retObj['id'] = (index + 1);
+            retObj['label'] = data.tag_name;
+            retObj['value'] = data.tag_id;
+            return retObj;
+          });
+          setTagList(obj);
+        } else {
+          Swal.fire("Oops...", result.data.response.msg, "error");
+        }
+      })
+      .catch((err) => { console.log(err); });
     
     axios.get(api_url + "/common/roleList", {})
       .then((result) => {
@@ -93,8 +120,10 @@ const AddEditForm = ({ match }) => {
             setValue("description", usersdata.description);
             setValue("purchase_type", usersdata.purchase_type);
             setValue("user_role", usersdata.role);            
+            setValue("cost", usersdata.cost);
+            setSelectedTag(usersdata.tag);
             setSetectimage(usersdata.image);
-            setText(usersdata.description);
+            setContentEditor(usersdata.description);
           } else {
             Swal.fire("Oops...", result.data.response.msg, "error");
           }
@@ -105,7 +134,8 @@ const AddEditForm = ({ match }) => {
 
   const updateInformationAct = (data) => {
     data.blog_id = match.params.id;
-    data.description = text;
+    data.description = contentEditor;
+    data.tag = selectedTag;
     const formData = new FormData();
     formData.append("data", JSON.stringify(data));
     if (selectedFile) {
@@ -125,7 +155,8 @@ const AddEditForm = ({ match }) => {
 
 
   const addInformationAct = (data) => {    
-    data.description = text;
+    data.description = contentEditor;
+    data.tag = selectedTag;
     const formData = new FormData();
     formData.append("data", JSON.stringify(data));
     if (selectedFile) {
@@ -144,7 +175,10 @@ const AddEditForm = ({ match }) => {
 
   const [text, setText] = React.useState(initialText)
 
-    
+  const removeSkill = (value) => {
+    var removeskill = selectedTag.filter(function (place) { return place.value !== value })
+    setSelectedTag(removeskill);
+  };
 
  
 
@@ -159,7 +193,7 @@ const AddEditForm = ({ match }) => {
 
 
             <form onSubmit={handleSubmit((isEditMode === 1) ? updateInformationAct : addInformationAct)}>
-
+              
               <CRow>
                 <CCol xs="12">
                   <CFormGroup>
@@ -210,11 +244,42 @@ const AddEditForm = ({ match }) => {
                 <CCol xs="12">
                   <CFormGroup>
                     <CLabel htmlFor="password">Description</CLabel>
-                    <ReactQuill value={text} modules={modules} onChange={setText} />
+                    {/* <ReactQuill value={text} modules={modules} onChange={setText} /> */}
+
+                    <Editor
+                      apiKey="z2fvgb12fid20qablvolrzqahufdng4v0sjz28p7hxhp9w9u"
+                      cloudChannel="dev"
+                      init={{
+                        selector: "textarea",
+                        plugins: "link image textpattern lists "
+                      }}
+                      value={contentEditor}
+                      onEditorChange={handleEditorChange}
+
+                    />
                   </CFormGroup>
                 </CCol>
               </CRow>
 
+              <CRow>
+                <CCol xs="12">
+                  <CFormGroup>
+                    <CLabel htmlFor="city">Tag</CLabel>
+                    <MultiSelect
+                      options={tagList}
+                      value={selectedTag}
+                      selectionLimit="2"
+                      hasSelectAll={false}
+                      onChange={setSelectedTag}
+                      labelledBy="Select"
+                    />
+                  </CFormGroup>
+                  {selectedTag.map(item => (
+                    <span className="skill-name">{item.label} &nbsp;<i onClick={(e) => removeSkill(item.value)} className="fa fa-times">X</i></span>
+                  ))}
+                </CCol>
+              </CRow>
+              <br/>
               <CRow>
                 <CCol xs="12">
                   <CFormGroup>
@@ -264,6 +329,32 @@ const AddEditForm = ({ match }) => {
                   )}
                 </CCol>
               </CRow>
+
+              {purchase_type_selected === 'paid' &&
+                <CRow>
+                  <CCol xs="12">
+                    <CFormGroup>
+                      <CLabel htmlFor="cost">Cost <span className="label-validation">*</span></CLabel>
+                      <Controller
+                        name={"cost"}
+                        control={control}
+                        rules={{ required: true }}
+                        render={({ field: { onChange, value } }) => (
+                          <CInput
+                            type="cost"
+                            onChange={onChange}
+                            value={value}
+                            placeholder={`Enter your cost`}
+                          />
+                        )}
+                      ></Controller>
+                    </CFormGroup>
+                    {errors.cost && errors.cost.type === "required" && (
+                      <p style={{ color: "red", fontSize: "12px" }}>Cost is required.</p>
+                    )}
+                  </CCol>
+                </CRow>}
+
               <button type="submit" class="btn btn-outline-primary btn-sm btn-square"> {(isEditMode === 1) ? 'Update' : 'Add'}</button>
 
             </form> 

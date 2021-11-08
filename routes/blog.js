@@ -55,28 +55,68 @@ router.post('/getBlogDataById', [check('blog_id', 'Blog is required').notEmpty()
         res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
     } else {
         let blog_id = req.body.blog_id;
-        Blog.getBlogDataById(blog_id, function (err, result) {
-            if (err) {
-                return res.json({ 'status': 0, 'response': { 'msg': err } });
-            } else {
-                var imageLink;
-                if (req.headers.host == env.ADMIN_LIVE_URL) {
-                    imageLink = env.ADMIN_LIVE_URL;
+
+        asyn.waterfall([
+            function (done) {
+
+                Blog.getBlogDataById(blog_id, function (err, result) {
+                    if (err) {
+                        done({ 'status': 0, 'response': { 'msg': 'Something went wrong.' } });
+                    } else {
+                        var imageLink;
+                        if (req.headers.host == env.ADMIN_LIVE_URL) {
+                            imageLink = env.ADMIN_LIVE_URL;
+                        } else {
+                            imageLink = env.ADMIN_LIVE_URL;
+                        }
+                        let blog = {};
+                        blog['blog_id'] = result[0].blog_id;
+                        blog['title'] = result[0].title;
+                        blog['description'] = result[0].description;
+                        blog['created_at'] = result[0].created_at;
+                        blog['cost'] = result[0].cost;
+                        blog['purchase_type'] = result[0].purchase_type;
+                        blog['image'] = (result[0].image) ? imageLink + env.BLOG_VIEW_PATH + result[0].image : '';
+                        blog['role'] = result[0].role;
+                        blog['status'] = result[0].status;
+                        blog['tag'] = [];
+                        done(err, blog)
+                    }
+                });
+
+           
+            },
+            function (blog, done) {
+                if (blog['blog_id'] != '') {
+                    Blog.getTagByBlogId(blog['blog_id'], function (err, result) {
+
+                        if (result && result.length > 0) {
+                            var obj = result.map((data, index) => {
+                                let retObj = {};
+                                retObj['id'] = (index + 1);
+                                retObj['label'] = data.tag_name;
+                                retObj['value'] = data.tag_id;
+                                return retObj;
+                            });
+                            blog['tag'] = obj;
+                            done(null, blog)
+                        } else {
+                            done(null, blog)
+                        }
+                    });
                 } else {
-                    imageLink = env.ADMIN_LIVE_URL;
+                    done(null, blog)
                 }
-                let blog = {};
-                blog['blog_id'] = result[0].blog_id;
-                blog['title'] = result[0].title;
-                blog['description'] = result[0].description;
-                blog['created_at'] = result[0].created_at;
-                blog['purchase_type'] = result[0].purchase_type;
-                blog['image'] = (result[0].image) ? imageLink + env.BLOG_VIEW_PATH + result[0].image : '';
-                blog['role'] = result[0].role;
-                blog['status'] = result[0].status;
-                return res.json({ 'status': 1, 'response': { 'data': blog, 'msg': 'data found' } });
             }
+        ],
+            function (error, blog) {
+                if (error) {
+                    return res.json({ 'status': 0, 'response': { 'msg': err } });
+                } else {
+                    return res.json({ 'status': 1, 'response': { 'data': blog, 'msg': 'data found' } });
+                }
         });
+
     }
 });
 
@@ -120,10 +160,12 @@ router.post('/addBlogByadmin', function (req, res) {
             let obj = JSON.parse(json);
             let record = {
                 title: obj.title,
+                tag: obj.tag,
                 description: obj.description,
                 created_at: moment().format('YYYY-MM-DD'),
                 role: obj.user_role,
-                purchase_type: obj.purchase_type
+                purchase_type: obj.purchase_type,
+                cost: obj.cost
             };
             asyn.waterfall([
                 function (done) {
@@ -183,13 +225,14 @@ router.post('/updateBlogByadmin', function (req, res) {
 
             var json = fields.data;
             let obj = JSON.parse(json);
-            let update_value = [obj.title, obj.description, moment().format('YYYY-MM-DD'), obj.user_role, obj.purchase_type]
+            let update_value = [obj.title, obj.description, moment().format('YYYY-MM-DD'), obj.user_role, obj.purchase_type, obj.cost]
             let record = {
                 title: obj.title,
                 description: obj.description,
                 created_at: moment().format('YYYY-MM-DD'),
                 role: obj.user_role,
-                purchase_type: obj.purchase_type
+                purchase_type: obj.purchase_type,
+                cost: obj.cost
             };
             let blog_id = obj.blog_id;
             asyn.waterfall([
@@ -223,7 +266,8 @@ router.post('/updateBlogByadmin', function (req, res) {
                         record.image = overview.image;
                         update_value.push(overview.image);
                     }
-                    Blog.updateBlogByadmin(record, blog_id, update_value, function (err, data) {
+                    let tag = (obj.tag) ? obj.tag : [];
+                    Blog.updateBlogByadmin(record, blog_id, update_value, tag, function (err, data) {
                         if (err) {
                             done1(err, overview)
                         } else {

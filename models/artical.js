@@ -38,8 +38,8 @@ function User() {
     
     this.addarticalByadmin = function (record, callback) {
         connection.acquire(function (err, con) {
-            const sql = 'INSERT INTO artical(title,description,created_at,role,purchase_type,image,status) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING *'
-            const values = [record.title, record.description, record.created_at, record.role, record.purchase_type, record.image, 1]
+            const sql = 'INSERT INTO artical(title,description,created_at,role,purchase_type,image,cost,status) VALUES($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *'
+            const values = [record.title, record.description, record.created_at, record.role, record.purchase_type, record.image, record.cost, 1]
             con.query(sql, values, function (err, result) {
                 con.release()
                 if (err) {
@@ -48,11 +48,36 @@ function User() {
                     }
                     callback(err, null);
                 } else {
+                    if (record.tag.length > 0) {
+                        record.tag.map(data => {
+                            var records = {
+                                tag_id: data.value,
+                                article_id: result.rows[0].article_id
+                            }
+                            const sql = 'INSERT INTO article_tag(article_id,tag_id) VALUES($1,$2) RETURNING *'
+                            const values = [records.article_id, records.tag_id]
+                            con.query(sql, values, function (err, result) { });
+                        });
+                    }
                     callback(null, result.rows[0]);
                 }
             });
         });
     };
+
+    
+    this.getTagByArticalId = function (id, callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM article_tag inner join tag on article_tag.tag_id = tag.tag_id where article_tag.article_id = $1', [id], function (err, result) {
+                con.release();
+                if (result.rows.length === 0) {
+                    callback('Tag does not exist.', null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    }
 
     function updateProductByID(artical_id, cols) {
         // Setup static beginning of query
@@ -75,17 +100,33 @@ function User() {
         return query.join(' ');
     }
 
-    this.updatearticalByadmin = function (record, artical_id, update_value, callback) {
+    this.updatearticalByadmin = function (record, artical_id, update_value,tag, callback) {
         connection.acquire(function (err, con) {
             var query = updateProductByID(artical_id, record);
-            con.query(query, update_value, function (err, result) {
-                con.release()
+            con.query(query, update_value, function (err, result) {                
                 if (err) {
                     if (env.DEBUG) {
                         console.log(err);
                     }
+                    con.release()
                     callback(err, null);
                 } else {
+                    if (tag.length > 0) {
+                        const sql = 'DELETE FROM article_tag where article_id = $1'
+                        const values = [artical_id]
+                        con.query(sql, values, function (err, results) {
+                            tag.map(data => {
+                                var records = {
+                                    tag_id: data.value,
+                                    article_id: artical_id
+                                }
+                                const sql = 'INSERT INTO article_tag(article_id,tag_id) VALUES($1,$2) RETURNING *'
+                                const values = [artical_id, records.tag_id]
+                                con.query(sql, values, function (err, result) { });
+                            });
+                        });
+                    }
+                    con.release()
                     callback(null, record);
                 }
             });

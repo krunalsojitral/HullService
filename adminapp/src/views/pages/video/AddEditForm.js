@@ -119,22 +119,25 @@ const AddEditForm = ({ match }) => {
           if (result.data.status) {
             var videodata = result.data.response.data;
             setValue("title", videodata.title);
-            setValue("description", videodata.description);
+            setValue("video_url", videodata.video_url);
+            //setValue("description", videodata.description);
             setValue("purchase_type", videodata.purchase_type);
             setValue("user_role", videodata.role);
             setSelectedTag(videodata.tag);
-            setSetectvideo(videodata.video);
-            setText(videodata.description);
-            setQna(videodata.qna);
-            setNotes(videodata.notes);
-            setOverview(videodata.overview);
-            setInformation(videodata.information);
+           // setSetectvideo(videodata.video);
+            // setText(videodata.description);
+            // setQna(videodata.qna);
+            // setNotes(videodata.notes);
+            // setOverview(videodata.overview);
+            //setInformation(videodata.information);
           } else {
             Swal.fire("Oops...", result.data.response.msg, "error");
           }
         })
         .catch((err) => { console.log(err); });
     }
+
+    console.log(getValues());
   }, []);
 
   const updateInformationAct = (data) => {
@@ -191,6 +194,9 @@ const AddEditForm = ({ match }) => {
     
   };
 
+  const purchase_type_selected = watch("purchase_type");
+  
+
   const [qna, setQna] = React.useState('')
   const [notes, setNotes] = React.useState('')
   const [overview, setOverview] = React.useState('')
@@ -239,7 +245,7 @@ const AddEditForm = ({ match }) => {
               </CRow>
 
               <CRow>
-                <CCol xs="12">
+                {/* <CCol xs="12">
                   <CFormGroup>
                     <CLabel htmlFor="ccnumber">Upload Video</CLabel>
                     <br />
@@ -267,41 +273,40 @@ const AddEditForm = ({ match }) => {
                     }
                    
                   </CFormGroup>
-                </CCol>
-
-                {/* <CRow>
-                  <CCol xs="12">OR</CCol>
-                </CRow>
-                
+                </CCol> */}
                 <CCol xs="12">
                   <CFormGroup>
-                    <CLabel htmlFor="video url">Youtube Video URL</CLabel>
+                    <CLabel htmlFor="title">Youtube video url <span className="label-validation">*</span></CLabel>
                     <Controller
                       name={"video_url"}
                       control={control}
+                      rules={{ required: true }}
                       render={({ field: { onChange, value } }) => (
                         <CInput
                           type="video_url"
                           onChange={onChange}
                           value={value}
-                          placeholder={`Enter Youtube Video URL`}
+                          placeholder={`Enter your youtube video url`}
                         />
                       )}
                     ></Controller>
                   </CFormGroup>
-                </CCol> */}
+                  {errors.video_url && errors.video_url.type === "required" && (
+                    <p style={{ color: "red", fontSize: "12px" }}>Youtube video url is required.</p>
+                  )}
+                </CCol>
               </CRow>
 
-              <CRow>
+              {/* <CRow>
                 <CCol xs="12">
                   <CFormGroup>
                     <CLabel htmlFor="Description">Description</CLabel>
                     <ReactQuill value={text} modules={modules} onChange={setText} />
                   </CFormGroup>
                 </CCol>
-              </CRow>
+              </CRow> */}
 
-              <CRow>
+              {/* <CRow>
                 <CCol xs="12">
                   <CFormGroup>
                     <CLabel htmlFor="QnA">QnA</CLabel>
@@ -335,7 +340,7 @@ const AddEditForm = ({ match }) => {
                     <ReactQuill value={information} modules={modules} onChange={setInformation} />
                   </CFormGroup>
                 </CCol>
-              </CRow>
+              </CRow> */}
 
               <CRow>
                 <CCol xs="12">
@@ -409,6 +414,34 @@ const AddEditForm = ({ match }) => {
                   )}
                 </CCol>
               </CRow>
+
+              
+              
+              {purchase_type_selected === 'paid' &&
+                <CRow>
+                  <CCol xs="12">
+                    <CFormGroup>
+                      <CLabel htmlFor="cost">Cost <span className="label-validation">*</span></CLabel>
+                      <Controller
+                        name={"cost"}
+                        control={control}
+                        rules={{ required: true }}
+                        render={({ field: { onChange, value } }) => (
+                          <CInput
+                            type="cost"
+                            onChange={onChange}
+                            value={value}
+                            placeholder={`Enter your cost`}
+                          />
+                        )}
+                      ></Controller>
+                    </CFormGroup>
+                    {errors.cost && errors.cost.type === "required" && (
+                      <p style={{ color: "red", fontSize: "12px" }}>Cost is required.</p>
+                    )}
+                  </CCol>
+              </CRow>}
+
               <button type="submit" class="btn btn-outline-primary btn-sm btn-square"> {(isEditMode === 1) ? 'Update' : 'Add'}</button>
 
             </form>

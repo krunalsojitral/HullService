@@ -6,7 +6,19 @@ var asyn = require('async');
 function User() {
     connection.init();
 
-    
+    this.getTagByBlogId = function (id, callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM blog_tag inner join tag on blog_tag.tag_id = tag.tag_id where blog_tag.blog_id = $1', [id], function (err, result) {
+                con.release();
+                if (result.rows.length === 0) {
+                    callback('Tag does not exist.', null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    }
+
     this.getUserById = function (id, callback) {
         connection.acquire(function (err, con) {
             con.query('SELECT * FROM users where id = $1', [id], function (err, result) {
@@ -38,16 +50,28 @@ function User() {
     
     this.addBlogByadmin = function (record, callback) {
         connection.acquire(function (err, con) {
-            const sql = 'INSERT INTO blog(title,description,created_at,role,purchase_type,image,status) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING *'
-            const values = [record.title, record.description, record.created_at, record.role, record.purchase_type, record.image, 1]
-            con.query(sql, values, function (err, result) {
-                con.release()
+            const sql = 'INSERT INTO blog(title,description,created_at,role,purchase_type,image,cost,status) VALUES($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *'
+            const values = [record.title, record.description, record.created_at, record.role, record.purchase_type, record.image, record.cost, 1]
+            con.query(sql, values, function (err, result) {                
                 if (err) {
                     if (env.DEBUG) {
                         console.log(err);
                     }
+                    con.release()
                     callback(err, null);
                 } else {
+                    if (record.tag.length > 0) {
+                        record.tag.map(data => {
+                            var records = {
+                                tag_id: data.value,
+                                blog_id: result.rows[0].blog_id
+                            }
+                            const sql = 'INSERT INTO blog_tag(blog_id,tag_id) VALUES($1,$2) RETURNING *'
+                            const values = [records.blog_id, records.tag_id]
+                            con.query(sql, values, function (err, result) { });
+                        });
+                    }
+                    con.release()
                     callback(null, result.rows[0]);
                 }
             });
@@ -75,18 +99,34 @@ function User() {
         return query.join(' ');
     }
 
-    this.updateBlogByadmin = function (record, blog_id, update_value, callback) {
+    this.updateBlogByadmin = function (record, blog_id, update_value, tag, callback) {
         connection.acquire(function (err, con) {
 
             var query = updateProductByID(blog_id, record);
-            con.query(query, update_value, function (err, result) {
-                con.release()
+            con.query(query, update_value, function (err, result) {                
                 if (err) {
                     if (env.DEBUG) {
                         console.log(err);
                     }
+                    con.release()
                     callback(err, null);
                 } else {
+                    if (tag.length > 0) {
+                        const sql = 'DELETE FROM blog_tag where blog_id = $1'
+                        const values = [blog_id]
+                        con.query(sql, values, function (err, results) {
+                            tag.map(data => {
+                                var records = {
+                                    tag_id: data.value,
+                                    blog_id: blog_id
+                                }
+                                const sql = 'INSERT INTO blog_tag(blog_id,tag_id) VALUES($1,$2) RETURNING *'
+                                const values = [records.blog_id, records.tag_id]
+                                con.query(sql, values, function (err, result) { });
+                            });
+                        });
+                    }
+                    con.release()
                     callback(null, record);
                 }
             });

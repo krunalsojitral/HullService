@@ -167,7 +167,7 @@ const DemoTable = () => {
                     variant="outline"
                     shape="square"
                     size="sm"
-                    onClick={() => history.push(`/articaledit/${item.artical_id}`)}
+                    onClick={() => history.push(`/articleedit/${item.artical_id}`)}
                     className="mr-1"
                   > Edit
                   </CButton>
