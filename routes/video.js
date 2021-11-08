@@ -72,7 +72,7 @@ router.post('/getvideoDataById', [check('video_id', 'video is required').notEmpt
                             let video = {};
                             video['video_id'] = result[0].video_id;
                             video['title'] = result[0].title;
-                            // video['description'] = result[0].description;
+                            video['description'] = result[0].description;
                             video['created_at'] = result[0].created_at;
                             video['video_url'] = result[0].video_url;
                             // video['overview'] = result[0].overview;
@@ -82,6 +82,7 @@ router.post('/getvideoDataById', [check('video_id', 'video is required').notEmpt
                             video['purchase_type'] = result[0].purchase_type;
                             video['video'] = (result[0].video) ? videoLink + env.VIDEO_VIEW_PATH + result[0].video : '';
                             video['role'] = result[0].role;
+                            video['cost'] = result[0].cost;
                             video['status'] = result[0].status;
                             video['tag'] = [];
                             done(err, video)
@@ -166,7 +167,7 @@ router.post('/addVideoByadmin', function (req, res) {
             let record = {
                 title: obj.title,                
                 video_url: obj.video_url,
-                // description: obj.description,
+                description: obj.description,
                 // qna: obj.qna,
                 // notes: obj.notes,
                 // overview: obj.overview,
@@ -244,11 +245,11 @@ router.post('/updatevideoByadmin', function (req, res) {
             var json = fields.data;
             let obj = JSON.parse(json);
             //let update_value = [obj.title, obj.description, obj.qna, obj.notes, obj.overview, obj.information, moment().format('YYYY-MM-DD'), obj.user_role, obj.purchase_type]
-            let update_value = [obj.title, obj.video_url, moment().format('YYYY-MM-DD'), obj.user_role, obj.purchase_type, obj.cost]
+            let update_value = [obj.title, obj.video_url, obj.description, moment().format('YYYY-MM-DD'), obj.user_role, obj.purchase_type, obj.cost]
             let record = {
                 title: obj.title,
                 video_url: obj.video_url,
-                // description: obj.description,
+                description: obj.description,
                 // qna: obj.qna,
                 // notes: obj.notes,
                 // overview: obj.overview,

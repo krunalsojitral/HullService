@@ -125,7 +125,7 @@ const AddEditForm = ({ match }) => {
             setValue("user_role", videodata.role);
             setSelectedTag(videodata.tag);
            // setSetectvideo(videodata.video);
-            // setText(videodata.description);
+             setText(videodata.description);
             // setQna(videodata.qna);
             // setNotes(videodata.notes);
             // setOverview(videodata.overview);
@@ -297,14 +297,14 @@ const AddEditForm = ({ match }) => {
                 </CCol>
               </CRow>
 
-              {/* <CRow>
+              <CRow>
                 <CCol xs="12">
                   <CFormGroup>
                     <CLabel htmlFor="Description">Description</CLabel>
                     <ReactQuill value={text} modules={modules} onChange={setText} />
                   </CFormGroup>
                 </CCol>
-              </CRow> */}
+              </CRow> 
 
               {/* <CRow>
                 <CCol xs="12">
