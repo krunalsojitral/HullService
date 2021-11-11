@@ -89,7 +89,6 @@ router.post('/getBlogDataById', [check('blog_id', 'Blog is required').notEmpty()
             function (blog, done) {
                 if (blog['blog_id'] != '') {
                     Blog.getTagByBlogId(blog['blog_id'], function (err, result) {
-
                         if (result && result.length > 0) {
                             var obj = result.map((data, index) => {
                                 let retObj = {};

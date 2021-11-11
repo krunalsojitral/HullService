@@ -1,12 +1,10 @@
-import React, { useState } from 'react'
-import ReactQuill from 'react-quill'
+import React from 'react'
+
 import {  
-  CCard,
-  CCardHeader,
+  CCard,  
   CCardBody,
   CCol,
-  CFormGroup,
-  CTextarea,
+  CFormGroup,  
   CInput,
   CLabel,
   CRow,
@@ -23,51 +21,17 @@ const AddEditForm = ({ match }) => {
 
   let history = useHistory();
   const {
-    handleSubmit,
-    getValues,
+    handleSubmit,    
     setValue,
-    control,
-    register,
-    watch,
+    control, 
     formState: { errors },
   } = useForm();
   
   
   const [isEditMode, setisEditMode] = React.useState(0);
-  const [roleList, setRoleList] = React.useState([]);
+ 
 
-  const [setectimage, setSetectimage] = React.useState(0);
-  const [selectedFile, setSelectedFile] = useState();
-  const changeFileHandler = (event) => {
-    if (event.target.files && event.target.files[0]) {
-      var reader = new FileReader();
-      reader.onload = (event) => {
-        setSetectimage(event.target.result);
-      };
-      reader.readAsDataURL(event.target.files[0]);
-      setSelectedFile(event.target.files[0]);
-    }
-  };
-
-  const initialText = ``;
-
-  const modules = {
-    toolbar: [
-      ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-      ['blockquote', 'code-block'],
-      [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-      [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
-      [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
-      [{ 'direction': 'rtl' }],                         // text direction
-      [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-      [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-      [{ 'font': [] }],
-      [{ 'align': [] }],
-      ['clean']                                         // remove formatting button
-    ]
-  }
+ 
 
   React.useEffect(() => {   
 
@@ -114,7 +78,7 @@ const AddEditForm = ({ match }) => {
       }).catch((err) => { console.log(err); });
   };
 
-  const [text, setText] = React.useState(initialText)
+  
 
     
 
@@ -145,7 +109,7 @@ const AddEditForm = ({ match }) => {
                           type="tag_name"
                           onChange={onChange}
                           value={value}
-                          placeholder={`Enter your tag_name`}
+                          placeholder={`Enter your tag name`}
                         />
                       )}
                     ></Controller>

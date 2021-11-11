@@ -1,12 +1,9 @@
 import React, { useState } from 'react'
-import ReactQuill from 'react-quill'
 import {
-  CCard,
-  CCardHeader,
+  CCard,  
   CCardBody,
   CCol,
   CFormGroup,
-  CTextarea,
   CInput,
   CLabel,
   CRow,
@@ -27,59 +24,38 @@ const AddEditForm = ({ match }) => {
     handleSubmit,
     getValues,
     setValue,
-    control,
-    register,
+    control,    
     watch,
     formState: { errors },
   } = useForm();
 
 
   const [isEditMode, setisEditMode] = React.useState(0);
-  const [videoSizeError, setVideoSizeError] = React.useState('');
+ // const [videoSizeError, setVideoSizeError] = React.useState('');
   const [roleList, setRoleList] = React.useState([]);
   const [tagList, setTagList] = React.useState([]);
 
-  const [setectvideo, setSetectvideo] = React.useState(0);
+  //const [setectvideo, setSetectvideo] = React.useState(0);
   const [selectedTag, setSelectedTag] = React.useState([])
   const [selectedFile, setSelectedFile] = useState();
-  const changeFileHandler = (event) => {
+  // const changeFileHandler = (event) => {
 
-    if (event.target.files[0].size > (1024 * 1024 * 25)) {
-      setVideoSizeError("Audio file size should not be grater than 25 MB");
-    }else{
-      setVideoSizeError("");
-      if (event.target.files && event.target.files[0]) {
-        var reader = new FileReader();
-        reader.onload = (event) => {
-          setSetectvideo(event.target.result);
-        };
-        reader.readAsDataURL(event.target.files[0]);
-        setSelectedFile(event.target.files[0]);
-      }
-    }
+  //   if (event.target.files[0].size > (1024 * 1024 * 25)) {
+  //     setVideoSizeError("Audio file size should not be grater than 25 MB");
+  //   }else{
+  //     setVideoSizeError("");
+  //     if (event.target.files && event.target.files[0]) {
+  //       var reader = new FileReader();
+  //       reader.onload = (event) => {
+  //         setSetectvideo(event.target.result);
+  //       };
+  //       reader.readAsDataURL(event.target.files[0]);
+  //       setSelectedFile(event.target.files[0]);
+  //     }
+  //   }
 
    
-  };
-
-
-
-  const modules = {
-    toolbar: [
-      ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-      ['blockquote', 'code-block'],
-      [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-      [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
-      [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
-      [{ 'direction': 'rtl' }],                         // text direction
-      [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-      [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-      [{ 'font': [] }],
-      [{ 'align': [] }],
-      ['clean']                                         // remove formatting button
-    ]
-  }
+  // };
 
   React.useEffect(() => {
 
@@ -143,14 +119,14 @@ const AddEditForm = ({ match }) => {
   }, []);
 
   const updateInformationAct = (data) => {
-    if (!videoSizeError) {
+   // if (!videoSizeError) {
     data.video_id = match.params.id;
     data.tag = selectedTag;
     data.description = contentEditor;
-    data.qna = qna;
-    data.notes = notes;
-    data.overview = overview;
-    data.information = information;
+    // data.qna = qna;
+    // data.notes = notes;
+    // data.overview = overview;
+    // data.information = information;
     const formData = new FormData();
     formData.append("data", JSON.stringify(data));
     if (selectedFile) {
@@ -165,18 +141,18 @@ const AddEditForm = ({ match }) => {
           Swal.fire("Oops...", result.data.response.msg, "error");
         }
       }).catch((err) => { console.log(err); });
-    }
+  //  }
   };
 
 
   const addInformationAct = (data) => {
 
-    if (!videoSizeError){
+   // if (!videoSizeError){
       data.description = contentEditor;
-      data.qna = qna;
-      data.notes = notes;
-      data.overview = overview;
-      data.information = information;
+      // data.qna = qna;
+      // data.notes = notes;
+      // data.overview = overview;
+      // data.information = information;
       data.tag = selectedTag;
       const formData = new FormData();
       formData.append("data", JSON.stringify(data));
@@ -192,18 +168,18 @@ const AddEditForm = ({ match }) => {
             Swal.fire("Oops...", result.data.response.msg, "error");
           }
         }).catch((err) => { console.log(err); });
-    }
+   // }
     
   };
 
   const purchase_type_selected = watch("purchase_type");
   
 
-  const [qna, setQna] = React.useState('')
-  const [notes, setNotes] = React.useState('')
-  const [overview, setOverview] = React.useState('')
-  const [information, setInformation] = React.useState('')
-  const [text, setText] = React.useState('')
+  // const [qna, setQna] = React.useState('')
+  // const [notes, setNotes] = React.useState('')
+  // const [overview, setOverview] = React.useState('')
+  // const [information, setInformation] = React.useState('')
+  //const [text, setText] = React.useState('')
 
   const removeSkill = (value) => {
     var removeskill = selectedTag.filter(function (place) { return place.value !== value })
@@ -310,7 +286,7 @@ const AddEditForm = ({ match }) => {
                     <CLabel htmlFor="Description">Description</CLabel>
                     
                     <Editor
-                      apiKey="z2fvgb12fid20qablvolrzqahufdng4v0sjz28p7hxhp9w9u"
+                      apiKey="5w0ir8k2b6c9y5k3xrngkoskhxhvw6bm7y5qyfo6z8tlce6c"
                       cloudChannel="dev"
                       init={{
                         selector: "textarea",

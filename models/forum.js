@@ -6,6 +6,19 @@ var asyn = require('async');
 function forum() {
     connection.init();
 
+    this.getTagByForumId = function (id, callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM forum_tag inner join tag on forum_tag.tag_id = tag.tag_id where forum_tag.forum_id = $1', [id], function (err, result) {
+                con.release();
+                if (result.rows.length === 0) {
+                    callback('Tag does not exist.', null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    }
+
     this.getAllAdminforum = function (callback) {
         connection.acquire(function (err, con) {
             con.query('SELECT * FROM forum order by forum_id desc', function (err, result) {
@@ -20,12 +33,26 @@ function forum() {
         });
     };
 
+    this.getAllForumComment = function (id,callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM forum_comment inner join users on users.id= forum_comment.user_id where forum_id = $1', [id], function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
     
-    this.addforumByadmin = function (record, callback) {
+    this.addforumByadmin = function (record, tag, callback) {
         connection.acquire(function (err, con) {
            
-            const sql = 'INSERT INTO forum(title,live_session_url,live_session_date,live_session_time,live_session_minute,image,learn_description,prerequisites_description,description,session_type,video_content_title,video_title_first,video_url_first,video_time_first,video_title_second,video_url_second,video_time_second,video_title_third,video_url_third,video_time_third,video_title_fourth,video_url_fourth,video_time_fourth,video_title_five,video_url_five,video_time_five,video_title_six,video_url_six,video_time_six,video_title_seven,video_url_seven,video_time_seven,video_title_eight,video_url_eight,video_time_eight,video_title_nine,video_url_nine,video_time_nine,video_title_ten,video_url_ten,video_time_ten,content_title_one,content_description_one,content_title_two,content_description_two,content_title_third,content_description_third,content_title_four,content_description_four,content_title_five,content_description_five,trainer,created_at,role,purchase_type,main_cost,sale_cost,status) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30,$31,$32,$33,$34,$35,$36,$37,$38,$39,$40,$41,$42,$43,$44,$45,$46,$47,$48,$49,$50,$51,$52,$53,$54,$55,$56,$57,$58) RETURNING *'
-            const values = [record.title, record.live_session_url, record.live_session_date, record.live_session_time, record.live_session_minute,record.image, record.learn_description, record.prerequisites_description, record.description, record.session_type, record.video_content_title, record.video_title_first, record.video_url_first, record.video_time_first, record.video_title_second, record.video_url_second, record.video_time_second, record.video_title_third, record.video_url_third, record.video_time_third, record.video_title_fourth, record.video_url_fourth, record.video_time_fourth, record.video_title_five, record.video_url_five, record.video_time_five, record.video_title_six, record.video_url_six, record.video_time_six, record.video_title_seven, record.video_url_seven, record.video_time_seven, record.video_title_eight, record.video_url_eight, record.video_time_eight, record.video_title_nine, record.video_url_nine, record.video_time_nine, record.video_title_ten, record.video_url_ten, record.video_time_ten, record.content_title_one, record.content_description_one, record.content_title_two, record.content_description_two, record.content_title_third, record.content_description_third, record.content_title_four, record.content_description_four, record.content_title_five, record.content_description_five, record.trainer, record.created_at, record.role, record.purchase_type, record.main_cost, record.sale_cost,1]
+            const sql = 'INSERT INTO forum(topic,heading,category,status,created_at,total_view) VALUES($1,$2,$3,$4,$5,$6) RETURNING *'
+            const values = [record.topic, record.heading, record.category, 1, record.created_at,0]
             con.query(sql, values, function (err, result) {
                 con.release()
                 if (err) {
@@ -34,6 +61,17 @@ function forum() {
                     }
                     callback(err, null);
                 } else {
+                    if (tag.length > 0) {
+                        tag.map(data => {
+                            var records = {
+                                tag_id: data.value,
+                                forum_id: result.rows[0].forum_id
+                            }
+                            const sql = 'INSERT INTO forum_tag(forum_id,tag_id) VALUES($1,$2) RETURNING *'
+                            const values = [records.forum_id, records.tag_id]
+                            con.query(sql, values, function (err, result) { });
+                        });
+                    }
                     callback(null, result.rows[0]);
                 }
             });
@@ -58,22 +96,42 @@ function forum() {
         query.push('WHERE forum_id = ' + forum_id);
 
         // Return a complete query string
-        console.log(query);
+        
         return query.join(' ');
     }
 
-    this.updateforumByadmin = function (record, forum_id, update_value, callback) {
+    this.updateforumByadmin = function (record, forum_id, update_value, tag, callback) {
         connection.acquire(function (err, con) {
 
             var query = updateProductByID(forum_id, record);
-            con.query(query, update_value, function (err, result) {
-                con.release()
+            con.query(query, update_value, function (err, result) {               
                 if (err) {
                     if (env.DEBUG) {
                         console.log(err);
                     }
+                    con.release()
                     callback(err, null);
                 } else {
+                    if (tag.length > 0) {
+                        const sql = 'DELETE FROM forum_tag where forum_id = $1'
+                        const values = [forum_id]
+                        con.query(sql, values, function (err, results) {
+                            tag.map(data => {
+                                var records = {
+                                    tag_id: data.value,
+                                    forum_id: forum_id
+                                }
+                                const sql = 'INSERT INTO forum_tag(forum_id,tag_id) VALUES($1,$2) RETURNING *'
+                                const values = [records.forum_id, records.tag_id]
+                                con.query(sql, values, function (err, result) { });
+                            });
+                        });
+                    } else {
+                        const sql = 'DELETE FROM forum_tag where forum_id = $1'
+                        const values = [forum_id]
+                        con.query(sql, values, function (err, results) { });
+                    }
+                    con.release()
                     callback(null, record);
                 }
             });
@@ -120,6 +178,24 @@ function forum() {
             });
         });
     }
+
+    this.deleteForum = function (comment_id, callback) {
+        connection.acquire(function (err, con) {
+            const sql = 'DELETE FROM forum_comment where forum_comment_id = $1'
+            const values = [comment_id]
+            con.query(sql, values, function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, result);
+                }
+            });
+        });
+    };
 
     
 

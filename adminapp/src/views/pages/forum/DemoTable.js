@@ -4,8 +4,7 @@ import axios from 'axios';
 import api_url from './../../Apiurl';
 import Swal from "sweetalert2";
 import {
-  CCardBody,
-  CBadge,
+  CCardBody,  
   CButton,
   CCollapse,
   CDataTable
@@ -146,15 +145,15 @@ const DemoTable = () => {
             item => {
               return (
                 <td className="py-2">
-                  {/* <CButton
+                  <CButton
                     color="primary"
                     variant="outline"
                     shape="square"
                     size="sm"
-                    onClick={() => history.push(`/forumdetail/${item.id}`)}
+                    onClick={() => history.push(`/forumcomment/${item.forum_id}`)}
                   >
-                    Show
-                  </CButton> */}
+                    Comment
+                  </CButton>
 
                   <CButton
                     color="primary"

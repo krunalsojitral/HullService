@@ -6,25 +6,24 @@ import {
   CRow,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import DemoTable from './DemoTable'
+import CommentDemoTable from './CommentDemoTable'
 
-
-const Blog = () => {
-  
+const ForumComment = ({ match }) => {
+ 
   return (
     <CRow>
       <CCol sm="12">
         <CCard>
           <CCardHeader className="custom-table-header">
             <div>
-              <CIcon name="cil-grid" /> Media
-            </div>            
+              <CIcon name="cil-grid" /> Forum Comment
+            </div>           
           </CCardHeader>
-          <DemoTable />
+          <CommentDemoTable match={match}/>
         </CCard>
       </CCol>
     </CRow>
   )
 }
 
-export default Blog
+export default ForumComment

@@ -1,12 +1,9 @@
-import React, { useState } from 'react'
-import ReactQuill from 'react-quill'
+import React from 'react'
 import {  
-  CCard,
-  CCardHeader,
+  CCard,  
   CCardBody,
   CCol,
-  CFormGroup,
-  CTextarea,
+  CFormGroup,  
   CInput,
   CLabel,
   CRow,
@@ -23,23 +20,14 @@ const AddEditForm = ({ match }) => {
 
   let history = useHistory();
   const {
-    handleSubmit,
-    getValues,
+    handleSubmit,    
     setValue,
-    control,
-    register,
-    watch,
+    control,  
     formState: { errors },
   } = useForm();
   
   
   const [isEditMode, setisEditMode] = React.useState(0);
-  const [roleList, setRoleList] = React.useState([]);
-
-  
- 
-
-  const initialText = ``;
 
   const modules = {
     toolbar: [

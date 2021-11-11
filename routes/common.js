@@ -67,7 +67,7 @@ router.get('/categoryList', function (req, res) {
     });
 });
 
-router.get('/headingList', function (req, res) {
+router.get('/getHeadingList', function (req, res) {
     loggerData(req);
     Common.getHeadingList(function (err, result) {
         if (err) {

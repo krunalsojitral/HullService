@@ -1,12 +1,9 @@
 import React, { useState } from 'react'
-import ReactQuill from 'react-quill'
 import {  
-  CCard,
-  CCardHeader,
+  CCard,  
   CCardBody,
   CCol,
-  CFormGroup,
-  CTextarea,
+  CFormGroup,  
   CInput,
   CLabel,
   CRow,
@@ -25,11 +22,9 @@ const AddEditForm = ({ match }) => {
 
   let history = useHistory();
   const {
-    handleSubmit,
-    getValues,
+    handleSubmit,    
     setValue,
-    control,
-    register,
+    control,    
     watch,
     formState: { errors },
   } = useForm();
@@ -89,26 +84,6 @@ const AddEditForm = ({ match }) => {
   const [courseContentFiveChange, setCourseContentFiveChange] = useState();
   const handleEditorCourseContentFiveChange = (content, editor) => {
     setCourseContentFiveChange(content);
-  }
-
-  const initialText = ``;
-
-  const modules = {
-    toolbar: [
-      ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-      ['blockquote', 'code-block'],
-      [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-      [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
-      [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
-      [{ 'direction': 'rtl' }],                         // text direction
-      [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-      [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-      [{ 'font': [] }],
-      [{ 'align': [] }],
-      ['clean']                                         // remove formatting button
-    ]
   }
 
   React.useEffect(() => {   
@@ -1046,7 +1021,7 @@ const AddEditForm = ({ match }) => {
                   <CFormGroup>
                     <CLabel htmlFor="password">Course Content Description 1</CLabel>
                     <Editor
-                      apiKey="z2fvgb12fid20qablvolrzqahufdng4v0sjz28p7hxhp9w9u"
+                      apiKey="5w0ir8k2b6c9y5k3xrngkoskhxhvw6bm7y5qyfo6z8tlce6c"
                       cloudChannel="dev"
                       init={{
                         selector: "textarea",
@@ -1085,7 +1060,7 @@ const AddEditForm = ({ match }) => {
                   <CFormGroup>
                     <CLabel htmlFor="password">Course Content Description 2</CLabel>
                     <Editor
-                      apiKey="z2fvgb12fid20qablvolrzqahufdng4v0sjz28p7hxhp9w9u"
+                      apiKey="5w0ir8k2b6c9y5k3xrngkoskhxhvw6bm7y5qyfo6z8tlce6c"
                       cloudChannel="dev"
                       init={{
                         selector: "textarea",
@@ -1124,7 +1099,7 @@ const AddEditForm = ({ match }) => {
                   <CFormGroup>
                     <CLabel htmlFor="password">Course Content Description 3</CLabel>
                     <Editor
-                      apiKey="z2fvgb12fid20qablvolrzqahufdng4v0sjz28p7hxhp9w9u"
+                      apiKey="5w0ir8k2b6c9y5k3xrngkoskhxhvw6bm7y5qyfo6z8tlce6c"
                       cloudChannel="dev"
                       init={{
                         selector: "textarea",
@@ -1163,7 +1138,7 @@ const AddEditForm = ({ match }) => {
                   <CFormGroup>
                     <CLabel htmlFor="password">Course Content Description 4</CLabel>
                     <Editor
-                      apiKey="z2fvgb12fid20qablvolrzqahufdng4v0sjz28p7hxhp9w9u"
+                      apiKey="5w0ir8k2b6c9y5k3xrngkoskhxhvw6bm7y5qyfo6z8tlce6c"
                       cloudChannel="dev"
                       init={{
                         selector: "textarea",
@@ -1202,7 +1177,7 @@ const AddEditForm = ({ match }) => {
                   <CFormGroup>
                     <CLabel htmlFor="password">Course Content Description 5</CLabel>
                     <Editor
-                      apiKey="z2fvgb12fid20qablvolrzqahufdng4v0sjz28p7hxhp9w9u"
+                      apiKey="5w0ir8k2b6c9y5k3xrngkoskhxhvw6bm7y5qyfo6z8tlce6c"
                       cloudChannel="dev"
                       init={{
                         selector: "textarea",
@@ -1296,7 +1271,7 @@ const AddEditForm = ({ match }) => {
                   <CFormGroup>
                     <CLabel htmlFor="password">What you’ll learn</CLabel>
                     <Editor
-                      apiKey="z2fvgb12fid20qablvolrzqahufdng4v0sjz28p7hxhp9w9u"
+                      apiKey="5w0ir8k2b6c9y5k3xrngkoskhxhvw6bm7y5qyfo6z8tlce6c"
                       cloudChannel="dev"
                       init={{
                         selector: "textarea",
@@ -1314,7 +1289,7 @@ const AddEditForm = ({ match }) => {
                   <CFormGroup>
                     <CLabel htmlFor="password">Prerequisites section</CLabel>
                     <Editor
-                      apiKey="z2fvgb12fid20qablvolrzqahufdng4v0sjz28p7hxhp9w9u"
+                      apiKey="5w0ir8k2b6c9y5k3xrngkoskhxhvw6bm7y5qyfo6z8tlce6c"
                       cloudChannel="dev"
                       init={{
                         selector: "textarea",
@@ -1333,7 +1308,7 @@ const AddEditForm = ({ match }) => {
                   <CFormGroup>
                     <CLabel htmlFor="password">Description</CLabel>
                     <Editor
-                      apiKey="z2fvgb12fid20qablvolrzqahufdng4v0sjz28p7hxhp9w9u"
+                      apiKey="5w0ir8k2b6c9y5k3xrngkoskhxhvw6bm7y5qyfo6z8tlce6c"
                       cloudChannel="dev"
                       init={{
                         selector: "textarea",

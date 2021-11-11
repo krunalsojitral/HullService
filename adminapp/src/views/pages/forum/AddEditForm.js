@@ -1,20 +1,15 @@
-import React, { useState } from 'react'
-import ReactQuill from 'react-quill'
-import { Editor } from "@tinymce/tinymce-react";
+import React from 'react'
 
 import {  
-  CCard,
-  CCardHeader,
+  CCard,  
   CCardBody,
   CCol,
-  CFormGroup,
-  CTextarea,
+  CFormGroup,  
   CInput,
   CLabel,
   CRow,
 } from '@coreui/react'
 import { MultiSelect } from "react-multi-select-component";
-import './TextEditors.scss'
 import { useForm, Controller } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import api_url from './../../Apiurl';
@@ -25,12 +20,9 @@ const AddEditForm = ({ match }) => {
 
   let history = useHistory();
   const {
-    handleSubmit,
-    getValues,
+    handleSubmit,    
     setValue,
-    control,
-    register,
-    watch,
+    control,   
     formState: { errors },
   } = useForm();
   
@@ -39,15 +31,9 @@ const AddEditForm = ({ match }) => {
   
   const [tagList, setTagList] = React.useState([]);
   const [selectedTag, setSelectedTag] = React.useState([])
-
   const [headingList, setHeadingList] = React.useState([]);  
-  const [selectedHeading, setSelectedHeading] = React.useState([])
-
   const [categoryList, setCategoryList] = React.useState([]);
-  const [selectedCategory, setSelectedCategory] = React.useState([])
-
-
-  const initialText = ``;
+ 
 
   const modules = {
     toolbar: [
@@ -117,13 +103,10 @@ const AddEditForm = ({ match }) => {
           if (result.data.status) {
             var usersdata = result.data.response.data;
             setValue("title", usersdata.title);
-            setValue("description", usersdata.description);
-            setValue("purchase_type", usersdata.purchase_type);
-            setValue("user_role", usersdata.role);            
-            setValue("cost", usersdata.cost);
+            setValue("heading", usersdata.heading);
+            setValue("category", usersdata.category);
             setSelectedTag(usersdata.tag);
-           
-          
+            
           } else {
             Swal.fire("Oops...", result.data.response.msg, "error");
           }
@@ -133,13 +116,9 @@ const AddEditForm = ({ match }) => {
   }, []);
 
   const updateInformationAct = (data) => {
-    data.forum_id = match.params.id;
-  
+    data.forum_id = match.params.id;  
     data.tag = selectedTag;
-    const formData = new FormData();
-    formData.append("data", JSON.stringify(data));
-    
-    axios.post(api_url + "/forum/updateforumByadmin", formData, {})
+    axios.post(api_url + "/forum/updateforumByadmin", data, {})
       .then((result) => {
         if (result.data.status) {
           Swal.fire("Success!", result.data.response.msg, "success");
@@ -153,12 +132,8 @@ const AddEditForm = ({ match }) => {
 
 
   const addInformationAct = (data) => {    
-    
     data.tag = selectedTag;
-    const formData = new FormData();
-    formData.append("data", JSON.stringify(data));
-   
-    axios.post(api_url + "/forum/addforumByadmin", formData, {})
+    axios.post(api_url + "/forum/addforumByadmin", data, {})
       .then((result) => {
         if (result.data.status) {
           Swal.fire("Success!", result.data.response.msg, "success");
@@ -169,7 +144,7 @@ const AddEditForm = ({ match }) => {
       }).catch((err) => { console.log(err); });
   };
 
-  const [text, setText] = React.useState(initialText)
+ 
 
   const removeSkill = (value) => {
     var removeskill = selectedTag.filter(function (place) { return place.value !== value })
@@ -217,7 +192,7 @@ const AddEditForm = ({ match }) => {
               <CRow>
                 <CCol xs="12">
                   <CFormGroup>
-                    <CLabel htmlFor="city">Heading</CLabel>
+                    <CLabel htmlFor="city">Heading <span className="label-validation">*</span></CLabel>
                     <Controller
                       name="heading"
                       control={control}
@@ -244,7 +219,7 @@ const AddEditForm = ({ match }) => {
               <CRow>
                 <CCol xs="12">
                   <CFormGroup>
-                    <CLabel htmlFor="city">Category</CLabel>
+                    <CLabel htmlFor="city">Category <span className="label-validation">*</span></CLabel>
                     <Controller
                       name="category"
                       control={control}

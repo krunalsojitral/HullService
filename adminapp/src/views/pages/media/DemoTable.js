@@ -1,20 +1,15 @@
 import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
 import axios from 'axios';
 import api_url from './../../Apiurl';
 import Swal from "sweetalert2";
 import {
-  CCardBody,
-  CBadge,
+  CCardBody,  
   CButton,
   CCollapse,
   CDataTable,
-  CCard,
-  CCardHeader,
+  CCard,  
   CCol,
-  CFormGroup,
-  CTextarea,
-  CInput,
+  CFormGroup, 
   CLabel,
   CRow,
 } from '@coreui/react'
@@ -23,7 +18,7 @@ import $ from 'jquery';
 
 const DemoTable = () => {
 
-  const history = useHistory()
+  
   const [details, setDetails] = useState([])
   const [items, setItems] = useState([])
   const [selectedFile, setSelectedFile] = useState('');
@@ -60,10 +55,7 @@ const DemoTable = () => {
 
   
   const {
-    handleSubmit,
-    control,
-    register,
-    watch,
+    handleSubmit,    
     formState: { errors },
   } = useForm();
   

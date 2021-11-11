@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
 import axios from 'axios';
 import api_url from './../../Apiurl';
 import Swal from "sweetalert2";
@@ -11,9 +10,9 @@ import {
 } from '@coreui/react'
 
 
-const DemoTable = () => {
+const CommentDemoTable = ({ match }) => {
 
-  const history = useHistory()
+ 
   const [details, setDetails] = useState([])
   const [items, setItems] = useState([])
 
@@ -23,8 +22,9 @@ const DemoTable = () => {
   }, [])
 
   const fields = [
-    { key: 'tag_name', _style: { width: '20%'} },
-    { key: 'status', _style: { width: '20%'} },
+    { key: 'comment', _style: { width: '20%'} },
+    { key: 'user_name', _style: { width: '20%' } },
+    { key: 'created_at', _style: { width: '20%' } },
     {
       key: 'show_details',
       label: '',
@@ -34,45 +34,54 @@ const DemoTable = () => {
   ]
   
 
-  const updateItemStatus = (item, status) => {
-   
-    var obj = {
-      tag_id: item.tag_id,
-      status: status,
-    };
-    axios.post(api_url + "/tag/changetagStatus", obj)
-      .then((result) => {
-        if (result.data.status) {
-          getNewListWrap();
-        } else {
-          Swal.fire("Oops...", result.data.response.msg, "error");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        //Swal.fire('Oops...', err, 'error')
-      });
-  }
+  const deleteForum = (comment_id) => {
+
+    Swal.fire({
+      title: "Are you sure?",
+      icon: 'warning',
+      text: "You will not be able to recover this comment!",
+      confirmButtonText: `Delete`,
+    }).then((results) => {
+      if (results.isConfirmed) {
+        var obj = { comment_id: comment_id }
+        axios.post(api_url + '/forum/deleteForum', obj).then((result) => {
+          if (result.data.status) {
+            getNewListWrap();
+          } else {
+            Swal.fire('Oops...', result.data.response.msg, 'error')
+          }
+        }).catch((err) => {
+          console.log(err);
+        })
+      } else {
+
+      }
+    })
+  };
 
   
   const getNewList = () => { 
-    axios.get(api_url + '/tag/tagList', {}).then((result) => {
-      if (result.data.status) {
-        var usersdatas = result.data.response.data;
-        setItems(usersdatas);
-      } else {
-        Swal.fire('Oops...', result.data.response.msg, 'error')
-      }
-    }).catch((err) => {
-      console.log(err);
-    })
+    if (match.params.id) { 
+      console.log(match.params.id);
+      axios.post(api_url + '/forum/forumCommentList', { forum_id: match.params.id}).then((result) => {
+        if (result.data.status) {
+          var usersdatas = result.data.response.data;
+          setItems(usersdatas);
+        } else {
+          Swal.fire('Oops...', result.data.response.msg, 'error')
+        }
+      }).catch((err) => {
+        console.log(err);
+      })
+    }
+    
   }
 
   const getNewListWrap = () => {
     getNewList(setItems);
   };
 
-
+ 
 
   return (
     <CCardBody>
@@ -96,63 +105,20 @@ const DemoTable = () => {
         // onSorterValueChange={(val) => console.log('new sorter value:', val)}
         // onTableFilterChange={(val) => console.log('new table filter:', val)}
         // onColumnFilterChange={(val) => console.log('new column filter:', val)}
-        scopedSlots = {{
-          status: (item) => (
-            <td>
-              {item.status === 1 ? (
-                <a
-                  href
-                  style={{ cursor: "pointer", textDecoration: "underline" }}
-                  onClick={() => {
-                    updateItemStatus(
-                      item,
-                      0,
-                      getNewListWrap
-                    );
-                  }}
-                >
-                  Active{" "}
-                </a>
-              ) : (
-                <a
-                  href
-                  style={{ cursor: "pointer", textDecoration: "underline" }}
-                  onClick={() => {
-                    updateItemStatus(
-                      item,
-                      1,
-                      getNewListWrap
-                    );
-                  }}
-                >
-                  Inactive
-                </a>
-              )}
-              {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}
-            </td>
-          ),
+        scopedSlots = {{                 
           'show_details':
             item => {
               return (
-                <td className="py-2">
-                  {/* <CButton
-                    color="primary"
-                    variant="outline"
-                    shape="square"
-                    size="sm"
-                    onClick={() => history.push(`/tagdetail/${item.id}`)}
-                  >
-                    Show
-                  </CButton> */}
+                <td className="py-2">                 
 
                   <CButton
                     color="primary"
                     variant="outline"
                     shape="square"
                     size="sm"
-                    onClick={() => history.push(`/tagedit/${item.tag_id}`)}
+                    onClick={() => deleteForum(item.forum_comment_id)}
                     className="mr-1"
-                  > Edit
+                  > Delete
                   </CButton>
 
                 </td>
@@ -183,4 +149,4 @@ const DemoTable = () => {
   )
 }
 
-export default DemoTable
+export default CommentDemoTable
