@@ -3,14 +3,22 @@ import React from 'react'
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Blog = React.lazy(() => import('./views/pages/blog/Blog'))
 const BlogAddEditForm = React.lazy(() => import('./views/pages/blog/AddEditForm'))
+const Media = React.lazy(() => import('./views/pages/media/Media'))
 const Artical = React.lazy(() => import('./views/pages/artical/Artical'))
 const ArticalAddEditForm = React.lazy(() => import('./views/pages/artical/AddEditForm'))
 const Video = React.lazy(() => import('./views/pages/video/Video'))
 const VideoAddEditForm = React.lazy(() => import('./views/pages/video/AddEditForm'))
 const Tag = React.lazy(() => import('./views/pages/tag/Tag'))
 const TagAddEditForm = React.lazy(() => import('./views/pages/tag/AddEditForm'))
+const Category = React.lazy(() => import('./views/pages/category/Category'))
+const CategoryAddEditForm = React.lazy(() => import('./views/pages/category/AddEditForm'))
 const Course = React.lazy(() => import('./views/pages/course/Course'))
 const CourseAddEditForm = React.lazy(() => import('./views/pages/course/AddEditForm'))
+const Forum = React.lazy(() => import('./views/pages/forum/Forum'))
+const ForumAddEditForm = React.lazy(() => import('./views/pages/forum/AddEditForm'))
+const Forumheading = React.lazy(() => import('./views/pages/forumheading/Forumheading'))
+const ForumheadingAddEditForm = React.lazy(() => import('./views/pages/forumheading/AddEditForm'))
+
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -31,6 +39,16 @@ const routes = [
   { path: '/course', name: 'Course', component: Course },
   { path: '/courseadd', name: 'Course Add', component: CourseAddEditForm },
   { path: '/courseedit/:id', name: 'Course Edit', component: CourseAddEditForm },
+  { path: '/media', name: 'Media', component: Media },
+  { path: '/category', name: 'Category', component: Category },
+  { path: '/categoryadd', name: 'Category Add', component: CategoryAddEditForm },
+  { path: '/categoryedit/:id', name: 'Category Edit', component: CategoryAddEditForm },
+  { path: '/forumheading', name: 'Forum Heading', component: Forumheading },
+  { path: '/forumheadingadd', name: 'Forum Heading Add', component: ForumheadingAddEditForm },
+  { path: '/forumheadingedit/:id', name: 'Forum Heading Edit', component: ForumheadingAddEditForm },
+  { path: '/forum', name: 'Forum', component: Forum },
+  { path: '/forumadd', name: 'Forum Add', component: ForumAddEditForm },
+  { path: '/forumedit/:id', name: 'Forum Edit', component: ForumAddEditForm },
 ]
 
 export default routes

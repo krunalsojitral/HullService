@@ -50,6 +50,40 @@ router.get('/tagList', function (req, res) {
     });
 });
 
+router.get('/categoryList', function (req, res) {
+    loggerData(req);
+    Common.getCategoryList(function (err, result) {
+        if (err) {
+            return res.json({ status: 0, 'response': { msg: err } });
+        } else {
+            var tagList = result.map(data => {
+                let retObj = {};
+                retObj['category_id'] = data.category_id;
+                retObj['category_name'] = data.category_name;
+                return retObj;
+            });
+            return res.json({ status: 1, 'response': { data: tagList } });
+        }
+    });
+});
+
+router.get('/headingList', function (req, res) {
+    loggerData(req);
+    Common.getHeadingList(function (err, result) {
+        if (err) {
+            return res.json({ status: 0, 'response': { msg: err } });
+        } else {
+            var headingList = result.map(data => {
+                let retObj = {};
+                retObj['forumheading_id'] = data.forumheading_id;
+                retObj['forumheading_name'] = data.forumheading_name;
+                return retObj;
+            });
+            return res.json({ status: 1, 'response': { data: headingList } });
+        }
+    });
+});
+
 
 
 

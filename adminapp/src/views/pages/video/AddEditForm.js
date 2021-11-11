@@ -18,6 +18,7 @@ import { useHistory } from "react-router-dom";
 import api_url from './../../Apiurl';
 import axios from "axios";
 import Swal from "sweetalert2";
+import { Editor } from "@tinymce/tinymce-react";
 
 const AddEditForm = ({ match }) => {
 
@@ -120,12 +121,13 @@ const AddEditForm = ({ match }) => {
             var videodata = result.data.response.data;
             setValue("title", videodata.title);
             setValue("video_url", videodata.video_url);
-            //setValue("description", videodata.description);
+            setValue("description", videodata.description);
             setValue("purchase_type", videodata.purchase_type);
             setValue("user_role", videodata.role);
+            setValue("cost", videodata.cost);
             setSelectedTag(videodata.tag);
            // setSetectvideo(videodata.video);
-             setText(videodata.description);
+            setContentEditor(videodata.description);
             // setQna(videodata.qna);
             // setNotes(videodata.notes);
             // setOverview(videodata.overview);
@@ -144,7 +146,7 @@ const AddEditForm = ({ match }) => {
     if (!videoSizeError) {
     data.video_id = match.params.id;
     data.tag = selectedTag;
-    data.description = text;
+    data.description = contentEditor;
     data.qna = qna;
     data.notes = notes;
     data.overview = overview;
@@ -170,7 +172,7 @@ const AddEditForm = ({ match }) => {
   const addInformationAct = (data) => {
 
     if (!videoSizeError){
-      data.description = text;
+      data.description = contentEditor;
       data.qna = qna;
       data.notes = notes;
       data.overview = overview;
@@ -207,6 +209,11 @@ const AddEditForm = ({ match }) => {
     var removeskill = selectedTag.filter(function (place) { return place.value !== value })
     setSelectedTag(removeskill);
   };
+
+  const [contentEditor, setContentEditor] = useState();
+  const handleEditorChange = (content, editor) => {
+    setContentEditor(content);
+  }
 
   return (
     <CRow>
@@ -301,7 +308,18 @@ const AddEditForm = ({ match }) => {
                 <CCol xs="12">
                   <CFormGroup>
                     <CLabel htmlFor="Description">Description</CLabel>
-                    <ReactQuill value={text} modules={modules} onChange={setText} />
+                    
+                    <Editor
+                      apiKey="z2fvgb12fid20qablvolrzqahufdng4v0sjz28p7hxhp9w9u"
+                      cloudChannel="dev"
+                      init={{
+                        selector: "textarea",
+                        plugins: "link image textpattern lists "
+                      }}
+                      value={contentEditor}
+                      onEditorChange={handleEditorChange}
+
+                    />
                   </CFormGroup>
                 </CCol>
               </CRow> 

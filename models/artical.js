@@ -125,6 +125,10 @@ function User() {
                                 con.query(sql, values, function (err, result) { });
                             });
                         });
+                    }else{
+                        const sql = 'DELETE FROM article_tag where article_id = $1'
+                        const values = [artical_id]
+                        con.query(sql, values, function (err, results) {});
                     }
                     con.release()
                     callback(null, record);

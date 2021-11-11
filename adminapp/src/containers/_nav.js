@@ -68,6 +68,46 @@ const _nav = [
       color: "info",
       text: "",
     },
+  },
+  {
+    _tag: "CSidebarNavItem",
+    name: "Media",
+    to: "/media",
+    icon: "cil-calculator",
+    badge: {
+      color: "info",
+      text: "",
+    },
+  },
+  {
+    _tag: "CSidebarNavItem",
+    name: "Category",
+    to: "/category",
+    icon: "cil-calculator",
+    badge: {
+      color: "info",
+      text: "",
+    },
+  },
+  {
+    _tag: "CSidebarNavItem",
+    name: "Forum Heading",
+    to: "/forumheading",
+    icon: "cil-calculator",
+    badge: {
+      color: "info",
+      text: "",
+    },
+  },
+  {
+    _tag: "CSidebarNavItem",
+    name: "Forum",
+    to: "/forum",
+    icon: "cil-calculator",
+    badge: {
+      color: "info",
+      text: "",
+    },
   }
 ]
 

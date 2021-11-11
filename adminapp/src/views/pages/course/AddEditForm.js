@@ -338,76 +338,63 @@ const AddEditForm = ({ match }) => {
                     <CFormGroup>
                       <CLabel htmlFor="password">Time</CLabel>
                       <Controller
-                        name="user_role"
+                        name="live_session_time"
                         control={control}
                         rules={{ required: true }}
                         render={({ field: { onChange, value } }) => (
                           <select className="form-control" onChange={onChange} value={value}>
                             <option key="0" value="">select value</option>
-                            <option value="00:00">12.00 AM</option>
-                            <option value="00:30">12.30 AM</option>
-                            <option value="01:00">01.00 AM</option>
-                            <option value="01:30">01.30 AM</option>
-                            <option value="02:00">02.00 AM</option>
-                            <option value="02:30">02.30 AM</option>
-                            <option value="03:00">03.00 AM</option>
-                            <option value="03:30">03.30 AM</option>
-                            <option value="04:00">04.00 AM</option>
-                            <option value="04:30">04.30 AM</option>
-                            <option value="05:00">05.00 AM</option>
-                            <option value="05:30">05.30 AM</option>
-                            <option value="06:00">06.00 AM</option>
-                            <option value="06:30">06.30 AM</option>
-                            <option value="07:00">07.00 AM</option>
-                            <option value="07:30">07.30 AM</option>
-                            <option value="08:00">08.00 AM</option>
-                            <option value="08:30">08.30 AM</option>
-                            <option value="09:00">09.00 AM</option>
-                            <option value="09:30">09.30 AM</option>
-                            <option value="10:00">10.00 AM</option>
-                            <option value="10:30">10.30 AM</option>
-                            <option value="11:00">11.00 AM</option>
-                            <option value="11:30">11.30 AM</option>
-                            <option value="12:00">12.00 PM</option>
-                            <option value="12:30">12.30 PM</option>
-                            <option value="13:00">01.00 PM</option>
-                            <option value="13:30">01.30 PM</option>
-                            <option value="14:00">02.00 PM</option>
-                            <option value="14:30">02.30 PM</option>
-                            <option value="15:00">03.00 PM</option>
-                            <option value="15:30">03.30 PM</option>
-                            <option value="16:00">04.00 PM</option>
-                            <option value="16:30">04.30 PM</option>
-                            <option value="17:00">05.00 PM</option>
-                            <option value="17:30">05.30 PM</option>
-                            <option value="18:00">06.00 PM</option>
-                            <option value="18:30">06.30 PM</option>
-                            <option value="19:00" selected="">07.00 PM</option>
-                            <option value="19:30">07.30 PM</option>
-                            <option value="20:00">08.00 PM</option>
-                            <option value="20:30">08.30 PM</option>
-                            <option value="21:00">09.00 PM</option>
-                            <option value="21:30">09.30 PM</option>
-                            <option value="22:00">10.00 PM</option>
-                            <option value="22:30">10.30 PM</option>
-                            <option value="23:00">11.00 PM</option>
-                            <option value="23:30">11.30 PM</option>
+                            <option key="1" value="00:00">12.00 AM</option>
+                            <option key="2" value="00:30">12.30 AM</option>
+                            <option key="3" value="01:00">01.00 AM</option>
+                            <option key="4" value="01:30">01.30 AM</option>
+                            <option key="5" value="02:00">02.00 AM</option>
+                            <option key="6" value="02:30">02.30 AM</option>
+                            <option key="7" value="03:00">03.00 AM</option>
+                            <option key="8" value="03:30">03.30 AM</option>
+                            <option key="9" value="04:00">04.00 AM</option>
+                            <option key="10" value="04:30">04.30 AM</option>
+                            <option key="11" value="05:00">05.00 AM</option>
+                            <option key="12" value="05:30">05.30 AM</option>
+                            <option key="13" value="06:00">06.00 AM</option>
+                            <option key="14" value="06:30">06.30 AM</option>
+                            <option key="15" value="07:00">07.00 AM</option>
+                            <option key="16" value="07:30">07.30 AM</option>
+                            <option key="17" value="08:00">08.00 AM</option>
+                            <option key="18" value="08:30">08.30 AM</option>
+                            <option key="19" value="09:00">09.00 AM</option>
+                            <option key="20" value="09:30">09.30 AM</option>
+                            <option key="21" value="10:00">10.00 AM</option>
+                            <option key="22" value="10:30">10.30 AM</option>
+                            <option key="23" value="11:00">11.00 AM</option>
+                            <option key="24" value="11:30">11.30 AM</option>
+                            <option key="25" value="12:00">12.00 PM</option>
+                            <option key="26" value="12:30">12.30 PM</option>
+                            <option key="27" value="13:00">01.00 PM</option>
+                            <option key="28" value="13:30">01.30 PM</option>
+                            <option key="29" value="14:00">02.00 PM</option>
+                            <option key="30" value="14:30">02.30 PM</option>
+                            <option key="31" value="15:00">03.00 PM</option>
+                            <option key="32" value="15:30">03.30 PM</option>
+                            <option key="33" value="16:00">04.00 PM</option>
+                            <option key="34" value="16:30">04.30 PM</option>
+                            <option key="35" value="17:00">05.00 PM</option>
+                            <option key="36" value="17:30">05.30 PM</option>
+                            <option key="37" value="18:00">06.00 PM</option>
+                            <option key="38" value="18:30">06.30 PM</option>
+                            <option key="39" value="19:00">07.00 PM</option>
+                            <option key="40" value="19:30">07.30 PM</option>
+                            <option key="41" value="20:00">08.00 PM</option>
+                            <option key="42" value="20:30">08.30 PM</option>
+                            <option key="43" value="21:00">09.00 PM</option>
+                            <option key="44" value="21:30">09.30 PM</option>
+                            <option key="45" value="22:00">10.00 PM</option>
+                            <option key="46" value="22:30">10.30 PM</option>
+                            <option key="47" value="23:00">11.00 PM</option>
+                            <option key="48" value="23:30">11.30 PM</option>
                           </select>
                         )}
-                      ></Controller>
-                      <Controller
-                        name={"live_session_time"}
-                        control={control}
-                        rules={{ required: true }}
-                        render={({ field: { onChange, value } }) => (
-                          <CInput
-                            type="live_session_time"
-                            onChange={onChange}
-                            value={value}
-                            placeholder={`Enter your time`}
-                          />
-                        )}
-                      ></Controller>
+                      ></Controller>                      
                     </CFormGroup>
                   </CCol>
                   <CCol xs="4">

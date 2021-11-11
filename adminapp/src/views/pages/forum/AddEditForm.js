@@ -34,29 +34,18 @@ const AddEditForm = ({ match }) => {
     formState: { errors },
   } = useForm();
   
-  const purchase_type_selected = watch("purchase_type");
+  
   const [isEditMode, setisEditMode] = React.useState(0);
-  const [roleList, setRoleList] = React.useState([]);
+  
   const [tagList, setTagList] = React.useState([]);
-  const [setectimage, setSetectimage] = React.useState(0);
-  const [selectedFile, setSelectedFile] = useState();
   const [selectedTag, setSelectedTag] = React.useState([])
 
-  const [contentEditor, setContentEditor] = useState();
-  const handleEditorChange = (content, editor) => {
-    setContentEditor(content);
-  }
+  const [headingList, setHeadingList] = React.useState([]);  
+  const [selectedHeading, setSelectedHeading] = React.useState([])
 
-  const changeFileHandler = (event) => {
-    if (event.target.files && event.target.files[0]) {
-      var reader = new FileReader();
-      reader.onload = (event) => {
-        setSetectimage(event.target.result);
-      };
-      reader.readAsDataURL(event.target.files[0]);
-      setSelectedFile(event.target.files[0]);
-    }
-  };
+  const [categoryList, setCategoryList] = React.useState([]);
+  const [selectedCategory, setSelectedCategory] = React.useState([])
+
 
   const initialText = ``;
 
@@ -97,12 +86,24 @@ const AddEditForm = ({ match }) => {
         }
       })
       .catch((err) => { console.log(err); });
+
+    axios.get(api_url + "/common/getHeadingList", {})
+      .then((result) => {
+        if (result.data.status) {
+          var headingdata = result.data.response.data;
+          setHeadingList(headingdata);
+        } else {
+          Swal.fire("Oops...", result.data.response.msg, "error");
+        }
+      })
+      .catch((err) => { console.log(err); });
     
-    axios.get(api_url + "/common/roleList", {})
+    
+    axios.get(api_url + "/common/categoryList", {})
       .then((result) => {
         if (result.data.status) {
           var roledata = result.data.response.data;
-          setRoleList(roledata);
+          setCategoryList(roledata);
         } else {
           Swal.fire("Oops...", result.data.response.msg, "error");
         }
@@ -111,7 +112,7 @@ const AddEditForm = ({ match }) => {
 
     if (match.params.id) {
       setisEditMode(1);
-      axios.post(api_url + "/blog/getBlogDataById", { blog_id: match.params.id }, {})
+      axios.post(api_url + "/forum/getforumDataById", { forum_id: match.params.id }, {})
         .then((result) => {
           if (result.data.status) {
             var usersdata = result.data.response.data;
@@ -121,8 +122,8 @@ const AddEditForm = ({ match }) => {
             setValue("user_role", usersdata.role);            
             setValue("cost", usersdata.cost);
             setSelectedTag(usersdata.tag);
-            setSetectimage(usersdata.image);
-            setContentEditor(usersdata.description);
+           
+          
           } else {
             Swal.fire("Oops...", result.data.response.msg, "error");
           }
@@ -132,19 +133,17 @@ const AddEditForm = ({ match }) => {
   }, []);
 
   const updateInformationAct = (data) => {
-    data.blog_id = match.params.id;
-    data.description = contentEditor;
+    data.forum_id = match.params.id;
+  
     data.tag = selectedTag;
     const formData = new FormData();
     formData.append("data", JSON.stringify(data));
-    if (selectedFile) {
-      formData.append("image", selectedFile, selectedFile.name);
-    }
-    axios.post(api_url + "/blog/updateBlogByadmin", formData, {})
+    
+    axios.post(api_url + "/forum/updateforumByadmin", formData, {})
       .then((result) => {
         if (result.data.status) {
           Swal.fire("Success!", result.data.response.msg, "success");
-          history.push("/blog");
+          history.push("/forum");
         } else {
           Swal.fire("Oops...", result.data.response.msg, "error");
         }
@@ -154,18 +153,16 @@ const AddEditForm = ({ match }) => {
 
 
   const addInformationAct = (data) => {    
-    data.description = contentEditor;
+    
     data.tag = selectedTag;
     const formData = new FormData();
     formData.append("data", JSON.stringify(data));
-    if (selectedFile) {
-      formData.append("image", selectedFile, selectedFile.name);
-    }
-    axios.post(api_url + "/blog/addBlogByadmin", formData, {})
+   
+    axios.post(api_url + "/forum/addforumByadmin", formData, {})
       .then((result) => {
         if (result.data.status) {
           Swal.fire("Success!", result.data.response.msg, "success");
-          history.push("/blog");
+          history.push("/forum");
         } else {
           Swal.fire("Oops...", result.data.response.msg, "error");
         }
@@ -196,7 +193,7 @@ const AddEditForm = ({ match }) => {
               <CRow>
                 <CCol xs="12">
                   <CFormGroup>
-                    <CLabel htmlFor="title">Title <span className="label-validation">*</span></CLabel>
+                    <CLabel htmlFor="title">Topic <span className="label-validation">*</span></CLabel>
                     <Controller
                       name={"title"}
                       control={control}
@@ -220,45 +217,58 @@ const AddEditForm = ({ match }) => {
               <CRow>
                 <CCol xs="12">
                   <CFormGroup>
-                    <CLabel htmlFor="ccnumber">Upload Image</CLabel>
-                    <br/>
-                    <input
-                      type="file"
-                      accept=".png,.PNG,.JPG,.jpg,.jpeg"
-                      name="myfile"
-                      onChange={changeFileHandler}
-                    />
-                    {(isEditMode === 1) &&
-                      <span>
-                        {!setectimage && <img style={{ width: "100px" }} alt="avatar" src="company-logo.png" />}
-                        {setectimage && <img style={{ width: "100px" }} src={setectimage} alt="user-image" />}
-                      </span>
-                    }
-                    {(isEditMode !== 1 && setectimage != '') && <img style={{ width: "100px" }} src={setectimage} alt="user-image" />}
+                    <CLabel htmlFor="city">Heading</CLabel>
+                    <Controller
+                      name="heading"
+                      control={control}
+                      rules={{ required: true }}
+                      render={({ field: { onChange, value } }) => (
+                        <select className="form-control" onChange={onChange} value={value}>
+                          <option key="0" value="">select value</option>
+                          {headingList.map((item) => (
+                            <option key={item.forumheading_id} value={item.forumheading_id}>
+                              {item.forumheading_name}
+                            </option>
+                          ))}
+                        </select>
+                      )}
+                    ></Controller>
                   </CFormGroup>
+                  {errors.heading && errors.heading.type === "required" && (
+                    <p style={{ color: "red", fontSize: "12px" }}>Please enter heading.</p>
+                  )}
                 </CCol>
               </CRow>
+
 
               <CRow>
                 <CCol xs="12">
                   <CFormGroup>
-                    <CLabel htmlFor="password">Description</CLabel>
-                    {/* <ReactQuill value={text} modules={modules} onChange={setText} /> */}
-
-                    <Editor
-                      apiKey="z2fvgb12fid20qablvolrzqahufdng4v0sjz28p7hxhp9w9u"
-                      cloudChannel="dev"
-                      init={{
-                        selector: "textarea",
-                        plugins: "link image textpattern lists "
-                      }}
-                      value={contentEditor}
-                      onEditorChange={handleEditorChange}
-
-                    />
+                    <CLabel htmlFor="city">Category</CLabel>
+                    <Controller
+                      name="category"
+                      control={control}
+                      rules={{ required: true }}
+                      render={({ field: { onChange, value } }) => (
+                        <select className="form-control" onChange={onChange} value={value}>
+                          <option key="0" value="">select value</option>
+                          {categoryList.map((item) => (
+                            <option key={item.category_id} value={item.category_id}>
+                              {item.category_name}
+                            </option>
+                          ))}
+                        </select>
+                      )}
+                    ></Controller>
                   </CFormGroup>
+                  {errors.category && errors.category.type === "required" && (
+                    <p style={{ color: "red", fontSize: "12px" }}>Please enter category.</p>
+                  )}
                 </CCol>
               </CRow>
+
+             
+              
 
               <CRow>
                 <CCol xs="12">
@@ -279,81 +289,9 @@ const AddEditForm = ({ match }) => {
                 </CCol>
               </CRow>
               <br/>
-              <CRow>
-                <CCol xs="12">
-                  <CFormGroup>
-                    <CLabel htmlFor="role">User Role <span className="label-validation">*</span></CLabel>
-                    <Controller
-                      name="user_role"
-                      control={control}
-                      rules={{ required: true }}
-                      render={({ field: { onChange, value } }) => (
-                        <select className="form-control" onChange={onChange} value={value}>
-                          <option key="0" value="">select value</option>
-                          {roleList.map((item) => (
-                            <option key={item.role_id} value={item.role_id}>
-                              {item.name}
-                            </option>
-                          ))}
-                          <option key="5" value="all">All</option>
-                        </select>
-                      )}
-                    ></Controller>
-                  </CFormGroup>
-                  {errors.user_role && errors.user_role.type === "required" && (
-                    <p style={{ color: "red", fontSize: "12px" }}>User role is required.</p>
-                  )}
-                </CCol>
-              </CRow>
+             
 
-              <CRow>
-                <CCol xs="12">
-                  <CFormGroup>
-                    <CLabel htmlFor="role">Paid / Unpaid <span className="label-validation">*</span></CLabel>
-                    <Controller
-                      name="purchase_type"
-                      control={control}
-                      rules={{ required: true }}
-                      render={({ field: { onChange, value } }) => (
-                        <select className="form-control" onChange={onChange} value={value}>
-                          <option key="0" value="">select value</option>
-                          <option key="1" value="paid">Paid</option>
-                          <option key="2" value="unpaid">Unpaid</option>
-                        </select>
-                      )}
-                    ></Controller>
-                  </CFormGroup>
-                  {errors.purchase_type && errors.purchase_type.type === "required" && (
-                    <p style={{ color: "red", fontSize: "12px" }}>Type is required.</p>
-                  )}
-                </CCol>
-              </CRow>
-
-              {purchase_type_selected === 'paid' &&
-                <CRow>
-                  <CCol xs="12">
-                    <CFormGroup>
-                      <CLabel htmlFor="cost">Cost <span className="label-validation">*</span></CLabel>
-                      <Controller
-                        name={"cost"}
-                        control={control}
-                        rules={{ required: true }}
-                        render={({ field: { onChange, value } }) => (
-                          <CInput
-                            type="cost"
-                            onChange={onChange}
-                            value={value}
-                            placeholder={`Enter your cost`}
-                          />
-                        )}
-                      ></Controller>
-                    </CFormGroup>
-                    {errors.cost && errors.cost.type === "required" && (
-                      <p style={{ color: "red", fontSize: "12px" }}>Cost is required.</p>
-                    )}
-                  </CCol>
-                </CRow>}
-
+             
               <button type="submit" class="btn btn-outline-primary btn-sm btn-square"> {(isEditMode === 1) ? 'Update' : 'Add'}</button>
 
             </form> 

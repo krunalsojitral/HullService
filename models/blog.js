@@ -17,21 +17,7 @@ function User() {
                 }
             });
         });
-    }
-
-    this.getUserById = function (id, callback) {
-        connection.acquire(function (err, con) {
-            con.query('SELECT * FROM users where id = $1', [id], function (err, result) {
-                con.release();
-                if (result.rows.length === 0) {
-                    msg = 'User does not exist.';
-                    callback(msg, null);
-                }else{
-                    callback(null, result.rows);
-                }                
-            });
-        });
-    }
+    }   
 
     this.getAllAdminBlog = function (callback) {
         connection.acquire(function (err, con) {
@@ -125,6 +111,10 @@ function User() {
                                 con.query(sql, values, function (err, result) { });
                             });
                         });
+                    }else{
+                        const sql = 'DELETE FROM blog_tag where blog_id = $1'
+                        const values = [blog_id]
+                        con.query(sql, values, function (err, results) {});
                     }
                     con.release()
                     callback(null, record);

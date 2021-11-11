@@ -27,11 +27,16 @@ app.use(passport.session());
 require('./config/passport')(passport);
 var usersRouter = require('./routes/user');
 var tagRouter = require('./routes/tag');
+var categoryRouter = require('./routes/category');
 var blogRouter = require('./routes/blog');
 var videoRouter = require('./routes/video');
 var articalRouter = require('./routes/artical');
 var courseRouter = require('./routes/course');
 var commonRouter = require('./routes/common');
+var mediaRouter = require('./routes/media');
+var forumheadingRouter = require('./routes/forumheading');
+var forumRouter = require('./routes/forum');
+
 
 //app.use(express.static('uploads'));
 app.use(express.static('routes/uploads'));
@@ -40,10 +45,14 @@ app.use(express.static(path.join(__dirname, 'adminapp/build')));
 app.use('/api/user', usersRouter);
 app.use('/api/blog', blogRouter);
 app.use('/api/tag', tagRouter);
+app.use('/api/category', categoryRouter);
 app.use('/api/video', videoRouter);
 app.use('/api/artical', articalRouter);
 app.use('/api/course', courseRouter);
 app.use('/api/common', commonRouter);
+app.use('/api/media', mediaRouter);
+app.use('/api/forumheading', forumheadingRouter);
+app.use('/api/forum', forumRouter);
 
 
 app.get('/', (req, res) => {
