@@ -7,7 +7,6 @@ var router = express.Router();
 var jwt = require('jsonwebtoken');
 var passport = require('passport');
 var env = require('../config/env');
-var Blog = require('../models/blog');
 var User = require('../models/user');
 var bcrypt = require('bcryptjs');
 
@@ -79,30 +78,54 @@ router.post('/login', [
     }
 });
 
-// blog list
-router.get('/blogList', passport.authenticate('jwt', { session: false }), function (req, res) {
+// user list
+router.post('/userList', function (req, res) {
     loggerData(req);
-    Blog.getAllAdminBlog(function (err, result) {
+    var role = req.body.role;
+    User.getAllAdminUsers(role,function (err, result) {
         if (err) {
             return res.json({ status: 0, 'response': { msg: err } });
         } else {
-            var blogList = result.map(data => {
+            var userList = result.map(data => {
                 let retObj = {};
-                retObj['blog_id'] = data.blog_id;
-                retObj['title'] = data.title;
-                retObj['description'] = data.description;
-                retObj['created_at'] = data.created_at;
+                retObj['id'] = data.id;
+                retObj['name'] = data.name;
+                retObj['phone'] = data.phone;
+                retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
                 retObj['role'] = data.role;
-                retObj['status'] = data.status;                
+                retObj['email'] = data.email;                
+                retObj['status'] = data.status;
                 return retObj;
             });
-            return res.json({ status: 1, 'response': { data: blogList } });
+            return res.json({ status: 1, 'response': { data: userList } });
         }
     });
 });
 
+router.post('/csvuserList', function (req, res) {
+    loggerData(req);
+    var role = req.body.role;
+    User.getAllAdminUsers(role, function (err, result) {
+        if (err) {
+            return res.json({ status: 0, 'response': { msg: err } });
+        } else {
+            var userList = result.map(data => {
+                let retObj = {};
+                retObj['name'] = data.name;
+                retObj['email'] = data.email;
+                retObj['phone'] = data.phone;
+                return retObj;
+            });
+            return res.json({ status: 1, 'response': { data: userList } });
+        }
+    });
+});
+
+
+
+
 //get user data - adminside
-router.post('/getuserData', passport.authenticate('jwt', { session: false }),[
+router.post('/getuserData', [
     check('user_id', 'User is required').notEmpty(),
 ], (req, res, next) => {
     const errors = validationResult(req);
@@ -118,13 +141,10 @@ router.post('/getuserData', passport.authenticate('jwt', { session: false }),[
                 if (result != '') {
                     let userList = {};
                     userList['id'] = result[0].id;
-                    userList['fullName'] = result[0].full_name;
-                    userList['userName'] = result[0].user_name;
-                    userList['email'] = result[0].email;
+                    userList['name'] = result[0].name;
                     userList['phone'] = result[0].phone;
-                    userList['twitteraccount'] = (result[0].twitteraccount) ? result[0].twitteraccount : '';
-                    userList['portfoliourl'] = (result[0].portfoliourl) ? result[0].portfoliourl : '';
-                    userList['usertype'] = (result[0].usertype == 'normal') ? 'Normal User' : 'Guest User';
+                    userList['email'] = result[0].email;
+                    userList['password'] = result[0].password;
                     return res.json({ 'status': 1, 'response': { 'data': userList, 'msg': 'data found' } });
                 } else {
                     return res.json({ 'status': 1, 'response': { 'data': userList, 'msg': 'data found' } });
@@ -134,31 +154,101 @@ router.post('/getuserData', passport.authenticate('jwt', { session: false }),[
     }
 });
 
-router.post('/changeUserStatus', passport.authenticate('jwt', { session: false }), [
-    check('userId', 'Please enter user id').notEmpty(),
+
+router.post('/changeuserStatus', [
+    check('id', 'User id is required').notEmpty(),
     check('status', 'Please enter status').notEmpty(),
-], (req, res, next) => {
+], (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         var error = errors.array();
         res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
     } else {
+        let id = req.body.id;
         let record = {
             status: req.body.status
-        };
-        let user_id = req.body.userId;
-        User.userStatusUpdate(record, user_id, function (err, result) {
+        }
+        User.userStatusUpdate(record, id, function (err, result) {
             if (err) {
-                return res.json({ status: 0, 'response': { msg: err } });
+                return res.json({ 'status': 0, 'response': { 'msg': 'Error Occured.' } });
             } else {
-                if (record.status == 1) {
-                    return res.json({ status: 1, response: { msg: 'Successfully updated record.', } });
+                if (result) {
+                    return res.json({ 'status': 1, 'response': { 'msg': 'Status Changed successfully.' } });
                 } else {
-                    return res.json({ status: 1, 'response': { msg: 'Successfully updated record.' } });
+                    return res.json({ 'status': 0, 'response': { 'msg': 'Data not found.' } });
                 }
             }
         });
     }
+
+});
+
+
+
+router.post('/adduserByadmin', [
+    check('name', 'Name is required').notEmpty(),
+    check('email', 'Email is required').notEmpty(),
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+
+        let overview = {};
+        asyn.waterfall([
+            function (done) {
+                var email = req.body.email;
+                User.checkUserRegistration(email, function (err, data) {
+                    let totalrecord = data.length;
+                    if (totalrecord) {
+                        return res.json({ status: 0, 'response': { msg: 'Sorry, email already exists.' } });
+                    } else {
+                        let password = bcrypt.hashSync(req.body.password, 10);
+                        bcrypt.genSalt(10, (err, salt) => {
+                            bcrypt.hash(req.body.password, salt, (err, hash) => {
+                                let record = {
+                                    name: req.body.name,
+                                    phone: (req.body.phone) ? req.body.phone : '',
+                                    email: (req.body.email) ? req.body.email : '',
+                                    password: hash,
+                                    created_at: moment().format('YYYY-MM-DD'),
+                                    role: req.body.role
+                                };
+                                overview['data'] = record;
+                                done(err, overview);
+                            })
+                        })
+                    }
+                });
+            },
+            function (overview, done1) {
+                User.adduserByadmin(overview.data, function (err, data) {
+                    if (err) {
+                        return res.json({ 'status': 0, 'response': { 'msg': error } });
+                    } else {
+                        return res.json({ 'status': 1, 'response': { 'msg': 'user added successfully.', data: data } });
+                    }
+                });
+            }
+        ]);
+    }
+});
+
+router.post('/updateuserByadmin', function (req, res) {
+    var user_id = req.body.user_id;
+    let update_value = [req.body.name, req.body.phone]
+    let record = {
+        name: req.body.name,
+        phone: (req.body.phone) ? req.body.phone : ''
+    };
+    User.updateuserByadmin(record, user_id, update_value, function (err, data) {
+        if (err) {
+            return res.json({ 'status': 0, 'response': { 'msg': err } });
+        } else {
+            return res.json({ 'status': 1, 'response': { 'msg': 'User updated successfully.', data: data } });
+        }
+    });
 });
 
 

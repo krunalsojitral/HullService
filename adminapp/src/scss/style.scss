@@ -17,6 +17,15 @@
     width: 100%;
     padding: 10px;
 }
+
+.header-left{
+    width: 50%;float: left;
+}
+
+.header-right{
+    width: 50%;float: right;text-align: right;
+}
+
 .ql-editor{
     min-height:200px;
 }

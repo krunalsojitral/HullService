@@ -6,6 +6,99 @@ var asyn = require('async');
 function User() {
     connection.init();
 
+    //check User reset password token
+    this.checkUserRegistration = function (email, callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM users where email = $1', [email], function (err, results) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, results.rows);
+                }
+            });
+        });
+    };
+
+
+    this.adduserByadmin = function (record, callback) {
+        connection.acquire(function (err, con) {
+
+            const sql = 'INSERT INTO users(name,phone,email,password,created_at,role, status) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING *'
+            const values = [record.name, record.phone, record.email, record.password, record.created_at, record.role, 1]
+            con.query(sql, values, function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {                    
+                    callback(null, result.rows[0]);
+                }
+            });
+        });
+    };
+
+    function updateProductByID(user_id, cols) {
+        // Setup static beginning of query
+        var query = ['UPDATE users'];
+        query.push('SET');
+
+        // Create another array storing each set command
+        // and assigning a number value for parameterized query
+        var set = [];
+
+        Object.keys(cols).map(function (key, i) {
+            set.push(key + ' = ($' + (i + 1) + ')');
+        });
+        query.push(set.join(', '));
+
+        // Add the WHERE statement to look up by id
+        query.push('WHERE id = ' + user_id);
+
+        // Return a complete query string
+
+        return query.join(' ');
+    }
+
+    this.updateuserByadmin = function (record, user_id, update_value, callback) {
+        connection.acquire(function (err, con) {
+            var query = updateProductByID(user_id, record);
+            con.query(query, update_value, function (err, result) {
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    con.release()
+                    callback(err, null);
+                } else {                   
+                    con.release()
+                    callback(null, record);
+                }
+            });
+        });
+    }
+
+    this.getAllAdminUsers = function (role,callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM users where users.role = $1', [role], function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
+
+
     //normal login
     this.checkUser = function (req, callback) {
         var email = req.body.email;
@@ -48,22 +141,7 @@ function User() {
         });
     }
 
-    //check User reset password token
-    this.checkUserRegistration = function (email, callback) {
-        connection.acquire(function (err, con) {            
-            con.query('SELECT * FROM users where email = $1', [email], function (err, results) {
-                con.release()
-                if (err) {
-                    if (env.DEBUG) {
-                        console.log(err);
-                    }
-                    callback(err, null);
-                } else {
-                    callback(null, results.rows);
-                }
-            });
-        });
-    };
+    
 
     //user Profile update
     this.userProfileUpdate = function (record, user_id, callback) {
@@ -99,44 +177,6 @@ function User() {
             });
         });
     }
-
-    // add user
-    this.addUser = function (record, callback) {
-        connection.acquire(function (err, con) {
-            const sql = 'INSERT INTO users("full_name","user_name","phone","twitteraccount","usertype","portfoliourl","email","status","password","userrole","emailverification","createdAt") VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNING *'
-            const values = [record.fullName, record.userName, record.phone, record.twitteraccount, record.usertype, record.portfoliourl, record.email, record.status, record.password, record.userRole, record.emailVerificationToken, record.createdAt]
-            con.query(sql, values, function (err, result) {
-                con.release()
-                if (err) {
-                    if (env.DEBUG) {
-                        console.log(err);
-                    }
-                    callback(err, null);
-                } else {
-                    callback(null, result.rows);
-                }
-            });
-        });
-    };
-
-    this.userUpdate = function (record, user_id, callback) {
-        connection.acquire(function (err, con) {
-            var sql = "UPDATE users SET phone=$1,twitteraccount=$2,portfoliourl=$3,full_name=$4,user_name=$5 WHERE id = $6";
-            con.query(sql, [record.phone, record.twitteraccount, record.portfoliourl, record.fullName, record.userName, user_id], function (err, result) {
-                console.log(err);
-                if (err) {
-                    if (env.DEBUG) {
-                        console.log(err);
-                    }
-                    callback(err, null);
-                } else {
-                    console.log(result);
-                    callback(null, record);
-                }
-            });
-        });
-    }
-
     //check email User Token
     this.checkEmailVerifyUser = function (token, callback) {
         connection.acquire(function (err, con) {
@@ -246,19 +286,7 @@ function User() {
         });
     };    
 
-    this.getAllAdminUsers = function (callback) {
-        connection.acquire(function (err, con) {
-            con.query('SELECT * FROM users where users.userRole = $1',[2], function (err, result) {
-                con.release()
-                if (err) {
-                    if (env.DEBUG) { console.log(err); }
-                    callback(err, null);
-                } else {
-                    callback(null, result.rows);
-                }
-            });
-        });
-    };
+   
 
     
 

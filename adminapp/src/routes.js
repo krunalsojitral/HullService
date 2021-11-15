@@ -20,6 +20,14 @@ const ForumAddEditForm = React.lazy(() => import('./views/pages/forum/AddEditFor
 const Forumheading = React.lazy(() => import('./views/pages/forumheading/Forumheading'))
 const ForumheadingAddEditForm = React.lazy(() => import('./views/pages/forumheading/AddEditForm'))
 
+const Generalpublic = React.lazy(() => import('./views/pages/users/generalpublic/Generalpublic'))
+const GeneralpublicAddEditForm = React.lazy(() => import('./views/pages/users/generalpublic/AddEditForm'))
+const Researchers = React.lazy(() => import('./views/pages/users/researchers/Researchers'))
+const ResearchersAddEditForm = React.lazy(() => import('./views/pages/users/researchers/AddEditForm'))
+const Serviceprovider = React.lazy(() => import('./views/pages/users/serviceprovider/Serviceprovider'))
+const ServiceproviderAddEditForm = React.lazy(() => import('./views/pages/users/serviceprovider/AddEditForm'))
+
+
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -51,6 +59,15 @@ const routes = [
   { path: '/forumcomment/:id', name: 'Forum', component: ForumComment },
   { path: '/forumadd', name: 'Forum Add', component: ForumAddEditForm },
   { path: '/forumedit/:id', name: 'Forum Edit', component: ForumAddEditForm },
+  { path: '/generalpublic', name: 'General Public', component: Generalpublic },
+  { path: '/generalpublicadd', name: 'General Public Add', component: GeneralpublicAddEditForm },
+  { path: '/generalpublicedit/:id', name: 'General Public Edit', component: GeneralpublicAddEditForm },
+  { path: '/researchers', name: 'Researchers', component: Researchers },
+  { path: '/researchersadd', name: 'Researchers Add', component: ResearchersAddEditForm },
+  { path: '/researchersedit/:id', name: 'Researchers Edit', component: ResearchersAddEditForm },
+  { path: '/serviceprovider', name: 'Service Provider', component: Serviceprovider },
+  { path: '/serviceprovideradd', name: 'Service Provider Add', component: ServiceproviderAddEditForm },
+  { path: '/serviceprovideredit/:id', name: 'Service Provider Edit', component: ServiceproviderAddEditForm },
 ]
 
 export default routes

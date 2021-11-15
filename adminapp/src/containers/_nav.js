@@ -10,6 +10,29 @@ const _nav = [
     }
   },
   {
+    _tag: "CSidebarNavDropdown",
+    name: "User",
+    route: "/serviceprovider",
+    icon: "cil-list",
+    _children: [
+      {
+        _tag: "CSidebarNavItem",
+        name: "Service Provider",
+        to: "/serviceprovider",
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "General Public",
+        to: "/generalpublic",
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "Researchers",
+        to: "/researchers",
+      },
+    ],
+  },
+  {
     _tag: "CSidebarNavItem",
     name: "Blog",
     to: "/blog",
@@ -80,35 +103,30 @@ const _nav = [
     },
   },
   {
-    _tag: "CSidebarNavItem",
-    name: "Category",
-    to: "/category",
-    icon: "cil-calculator",
-    badge: {
-      color: "info",
-      text: "",
-    },
-  },
-  {
-    _tag: "CSidebarNavItem",
-    name: "Forum Heading",
-    to: "/forumheading",
-    icon: "cil-calculator",
-    badge: {
-      color: "info",
-      text: "",
-    },
-  },
-  {
-    _tag: "CSidebarNavItem",
+    _tag: "CSidebarNavDropdown",
     name: "Forum",
-    to: "/forum",
-    icon: "cil-calculator",
-    badge: {
-      color: "info",
-      text: "",
-    },
+    route: "/forum",
+    icon: "cil-list",
+    _children: [
+      {
+        _tag: "CSidebarNavItem",
+        name: "Forum category",
+        to: "/category",
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "Forum Heading",
+        to: "/forumheading",
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "Forum",
+        to: "/forum",
+      },
+    ],
   }
+
+  
 ]
 
 export default _nav
