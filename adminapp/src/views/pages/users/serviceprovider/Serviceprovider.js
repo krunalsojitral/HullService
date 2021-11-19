@@ -23,7 +23,7 @@ const Serviceprovider = () => {
   }, [])
 
   const getNewList = () => {
-    axios.post(api_url + '/user/csvuserList', { role: 3 }).then((result) => {
+    axios.post(api_url + '/user/csvuserList', { role: 2 }).then((result) => {
       if (result.data.status) {
         var usersdatas = result.data.response.data;
         setCsvData(usersdatas);

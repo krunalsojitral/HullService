@@ -34,6 +34,7 @@ var articalRouter = require('./routes/artical');
 var courseRouter = require('./routes/course');
 var commonRouter = require('./routes/common');
 var mediaRouter = require('./routes/media');
+var cmsRouter = require('./routes/cms');
 var forumheadingRouter = require('./routes/forumheading');
 var forumRouter = require('./routes/forum');
 
@@ -53,6 +54,7 @@ app.use('/api/common', commonRouter);
 app.use('/api/media', mediaRouter);
 app.use('/api/forumheading', forumheadingRouter);
 app.use('/api/forum', forumRouter);
+app.use('/api/cms', cmsRouter);
 
 
 app.get('/', (req, res) => {

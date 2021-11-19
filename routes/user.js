@@ -227,7 +227,7 @@ router.post('/adduserByadmin', [
                     if (err) {
                         return res.json({ 'status': 0, 'response': { 'msg': error } });
                     } else {
-                        return res.json({ 'status': 1, 'response': { 'msg': 'user added successfully.', data: data } });
+                        return res.json({ 'status': 1, 'response': { 'msg': 'User added successfully.', data: data } });
                     }
                 });
             }

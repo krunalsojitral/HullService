@@ -28,6 +28,12 @@ const Serviceprovider = React.lazy(() => import('./views/pages/users/serviceprov
 const ServiceproviderAddEditForm = React.lazy(() => import('./views/pages/users/serviceprovider/AddEditForm'))
 
 
+const HomeContentAddEditForm = React.lazy(() => import('./views/pages/homecontent/AddEditForm'))
+const Partner = React.lazy(() => import('./views/pages/partner/Partner'))
+
+
+
+
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -68,6 +74,9 @@ const routes = [
   { path: '/serviceprovider', name: 'Service Provider', component: Serviceprovider },
   { path: '/serviceprovideradd', name: 'Service Provider Add', component: ServiceproviderAddEditForm },
   { path: '/serviceprovideredit/:id', name: 'Service Provider Edit', component: ServiceproviderAddEditForm },
+  { path: '/homecontenteditform', name: 'Home Content Edit', component: HomeContentAddEditForm },
+  { path: '/partner', name: 'Partners & Sponsors', component: Partner },
+
 ]
 
 export default routes

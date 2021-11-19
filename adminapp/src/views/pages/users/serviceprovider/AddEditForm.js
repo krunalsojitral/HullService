@@ -30,7 +30,7 @@ const AddEditForm = ({ match }) => {
 
     if (match.params.id) {
       setisEditMode(1);
-      axios.post(api_url + "/user/getuserDataById", { user_id: match.params.id }, {})
+      axios.post(api_url + "/user/getuserData", { user_id: match.params.id }, {})
         .then((result) => {
           if (result.data.status) {
             var usersdata = result.data.response.data;
@@ -119,11 +119,17 @@ const AddEditForm = ({ match }) => {
                     <Controller
                       name={"email"}
                       control={control}
-                      rules={{ required: true }}
+                      rules={{
+                        required: true,
+                        pattern: {
+                          value: /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i,
+                        },
+                      }}
                       render={({ field: { onChange, value } }) => (
                         <CInput
                           type="email"
                           onChange={onChange}
+                          disabled={(isEditMode === 1) ? true : false}
                           value={value}
                           placeholder={`Enter your email`}
                         />
@@ -132,9 +138,11 @@ const AddEditForm = ({ match }) => {
                   </CFormGroup>
                   {errors.email && errors.email.type === "required" && (
                     <p style={{ color: "red", fontSize: "12px" }}>Email is required.</p>
-                  )}
+                  ) || (errors.email?.type === "pattern" && <p className="error">Email is invalid</p>)}
+
                 </CCol>
               </CRow>
+
 
 
               <CRow>
@@ -144,22 +152,31 @@ const AddEditForm = ({ match }) => {
                     <Controller
                       name={"password"}
                       control={control}
-                      rules={{ required: true }}
+                      rules={{
+                        required: true,
+                        pattern: { value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/ },
+                        minLength: {
+                          value: 8,
+                          message: "Password must have at least 8 characters",
+                        }
+                      }}
                       render={({ field: { onChange, value } }) => (
                         <CInput
                           type="password"
                           onChange={onChange}
+                          disabled={(isEditMode === 1) ? true : false}
                           value={value}
                           placeholder={`Enter your password`}
                         />
                       )}
                     ></Controller>
                   </CFormGroup>
-                  {errors.password && errors.password.type === "required" && (
-                    <p style={{ color: "red", fontSize: "12px" }}>password is required.</p>
-                  )}
+                  {(errors.password?.type === "required" && <p style={{ color: "red", fontSize: "12px" }}>Password is required</p>)}
+                  {(errors.password?.type === "minLength" && <p style={{ color: "red", fontSize: "12px" }}>Password is at least 8 characters </p>)}
+                  {(errors.password?.type === "pattern" && <p style={{ color: "red", fontSize: "12px" }}>Please enter at least 8 characters, 1 numeric, 1 lowercase letter, 1 uppercase letter and 1 special character.</p>)}
                 </CCol>
               </CRow>
+
 
               <CRow>
                 <CCol xs="12">
@@ -168,7 +185,14 @@ const AddEditForm = ({ match }) => {
                     <Controller
                       name={"phone"}
                       control={control}
-                      rules={{ required: true }}
+                      rules={{
+                        required: true,
+                        pattern: { value: /^[0-9\b]+$/ },
+                        minLength: {
+                          value: 10,
+                          message: "Phone number should be 10 digit.",
+                        }
+                      }}
                       render={({ field: { onChange, value } }) => (
                         <CInput
                           type="phone"
@@ -179,11 +203,13 @@ const AddEditForm = ({ match }) => {
                       )}
                     ></Controller>
                   </CFormGroup>
-                  {errors.phone && errors.phone.type === "required" && (
-                    <p style={{ color: "red", fontSize: "12px" }}>Phone is required.</p>
-                  )}
+                  {errors.phone && errors.phone.type === "required" && (<p style={{ color: "red", fontSize: "12px" }}>Phone is required.</p>)}
+                  {(errors.phone?.type === "minLength" && <p style={{ color: "red", fontSize: "12px" }}>Phone is at least 10 characters. </p>)}
+                  {(errors.phone?.type === "pattern" && <p style={{ color: "red", fontSize: "12px" }}>Phone must be only numeric.</p>)}
                 </CCol>
               </CRow>
+
+
               
 
               <button type="submit" class="btn btn-outline-primary btn-sm btn-square"> {(isEditMode === 1) ? 'Update' : 'Add'}</button>
