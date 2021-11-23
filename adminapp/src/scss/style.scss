@@ -1,0 +1,61 @@
+// If you want to override variables do it here
+@import "variables";
+
+// Import CoreUI styles
+@import "~@coreui/coreui-pro/scss/coreui.scss";
+
+// Some temp fixes
+@import "fixes";
+
+// If you want to add something do it here
+@import "custom";
+
+.custom-table-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+}
+
+.header-left{
+    width: 50%;float: left;
+}
+
+.header-right{
+    width: 50%;float: right;text-align: right;
+}
+
+.ql-editor{
+    min-height:200px;
+}
+.skill-name{
+    background: #E9EDF2;
+    border: 1px solid #CFD3D9;
+    border-radius: 18px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 10px;
+    color: #000000;
+    padding: 7px 9px;
+    margin: 10px 4px 0 0;
+}
+.suggestion {
+    position: inherit;
+    margin: 0px;
+    padding: 6px;
+    line-height: 30px;
+    max-height: 60%;
+    border-right: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
+    border-left: 1px solid #CCCCCC;
+    border-image: initial;
+    border-top: none;
+    list-style-type: none;
+    text-align: left;
+    overflow-y: auto;
+}
+.label-validation{
+    color: red;
+}
