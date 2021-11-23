@@ -149,7 +149,7 @@ const DemoTable = () => {
                         name="myfile"
                         onChange={changeFileHandler}
                       />                      
-                      <button type="submit" class="btn btn-outline-primary btn-sm btn-square"> Add</button> &nbsp;
+                      <button type="submit" className="btn btn-outline-primary btn-sm btn-square"> Add</button> &nbsp;
                       <br/>                      
                       {(isUploaded) && <img id='image_id' style={{ width: "100px" }} src={setectimage} alt="user-image" />}
                     </CFormGroup>

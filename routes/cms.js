@@ -154,7 +154,7 @@ router.post('/addpartnerByadmin', function (req, res) {
                 if (error) {
                     return res.json({ 'status': 0, 'response': { 'msg': error } });
                 } else {
-                    return res.json({ 'status': 1, 'response': { 'msg': 'partner added successfully.', data: userList } });
+                    return res.json({ 'status': 1, 'response': { 'msg': 'Image added successfully.', data: userList } });
                 }
             });
     });
@@ -166,7 +166,7 @@ router.post('/deletepartner', [check('partner_id', 'partner is required').notEmp
         if (err) {
             return res.json({ 'status': 0, 'response': { 'msg': err } });
         } else {
-            return res.json({ 'status': 1, 'response': { 'msg': 'partner deleted successfully.', data: data } });
+            return res.json({ 'status': 1, 'response': { 'msg': 'Image deleted successfully.', data: data } });
         }
     });
 });

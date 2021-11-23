@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { Editor } from "@tinymce/tinymce-react";
 
-import {  
-  CCard,  
+import {
+  CCard,
   CCardBody,
   CCol,
-  CFormGroup,  
+  CFormGroup,
   CInput,
   CLabel,
   CRow,
@@ -22,13 +22,13 @@ const AddEditForm = ({ match }) => {
 
   let history = useHistory();
   const {
-    handleSubmit,    
+    handleSubmit,
     setValue,
-    control,    
+    control,
     watch,
     formState: { errors },
   } = useForm();
-  
+
   const purchase_type_selected = watch("purchase_type");
   const [isEditMode, setisEditMode] = React.useState(0);
   const [roleList, setRoleList] = React.useState([]);
@@ -53,10 +53,10 @@ const AddEditForm = ({ match }) => {
     }
   };
 
- //const initialText = ``;
+  //const initialText = ``;
 
-  
-  React.useEffect(() => {   
+
+  React.useEffect(() => {
 
     axios.get(api_url + "/common/tagList", {})
       .then((result) => {
@@ -75,7 +75,7 @@ const AddEditForm = ({ match }) => {
         }
       })
       .catch((err) => { console.log(err); });
-    
+
     axios.get(api_url + "/common/roleList", {})
       .then((result) => {
         if (result.data.status) {
@@ -96,7 +96,7 @@ const AddEditForm = ({ match }) => {
             setValue("title", usersdata.title);
             setValue("description", usersdata.description);
             setValue("purchase_type", usersdata.purchase_type);
-            setValue("user_role", usersdata.role);            
+            setValue("user_role", usersdata.role);
             setValue("cost", usersdata.cost);
             setSelectedTag(usersdata.tag);
             setSetectimage(usersdata.image);
@@ -131,7 +131,7 @@ const AddEditForm = ({ match }) => {
   };
 
 
-  const addInformationAct = (data) => {    
+  const addInformationAct = (data) => {
     data.description = contentEditor;
     data.tag = selectedTag;
     const formData = new FormData();
@@ -150,14 +150,14 @@ const AddEditForm = ({ match }) => {
       }).catch((err) => { console.log(err); });
   };
 
- // const [text, setText] = React.useState(initialText)
+  // const [text, setText] = React.useState(initialText)
 
   const removeSkill = (value) => {
     var removeskill = selectedTag.filter(function (place) { return place.value !== value })
     setSelectedTag(removeskill);
   };
 
- 
+
 
   return (
     <CRow>
@@ -170,7 +170,7 @@ const AddEditForm = ({ match }) => {
 
 
             <form onSubmit={handleSubmit((isEditMode === 1) ? updateInformationAct : addInformationAct)}>
-              
+
               <CRow>
                 <CCol xs="12">
                   <CFormGroup>
@@ -184,6 +184,7 @@ const AddEditForm = ({ match }) => {
                           type="title"
                           onChange={onChange}
                           value={value}
+                          required
                           placeholder={`Enter your title`}
                         />
                       )}
@@ -199,7 +200,7 @@ const AddEditForm = ({ match }) => {
                 <CCol xs="12">
                   <CFormGroup>
                     <CLabel htmlFor="ccnumber">Upload Image</CLabel>
-                    <br/>
+                    <br />
                     <input
                       type="file"
                       accept=".png,.PNG,.JPG,.jpg,.jpeg"
@@ -256,7 +257,7 @@ const AddEditForm = ({ match }) => {
                   ))}
                 </CCol>
               </CRow>
-              <br/>
+              <br />
               <CRow>
                 <CCol xs="12">
                   <CFormGroup>
@@ -332,9 +333,9 @@ const AddEditForm = ({ match }) => {
                   </CCol>
                 </CRow>}
 
-              <button type="submit" class="btn btn-outline-primary btn-sm btn-square"> {(isEditMode === 1) ? 'Update' : 'Add'}</button>
+              <button type="submit" className="btn btn-outline-primary btn-sm btn-square"> {(isEditMode === 1) ? 'Update' : 'Add'}</button>
 
-            </form> 
+            </form>
           </CCardBody>
         </CCard>
       </CCol>

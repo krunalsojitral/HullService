@@ -331,7 +331,7 @@ const AddEditForm = ({ match }) => {
               </CRow>
 
               
-              <button type="submit" class="btn btn-outline-primary btn-sm btn-square"> {'Update'}</button>
+              <button type="submit" className="btn btn-outline-primary btn-sm btn-square"> {'Update'}</button>
 
             </form> 
           </CCardBody>

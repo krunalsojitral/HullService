@@ -141,38 +141,40 @@ const AddEditForm = ({ match }) => {
                 </CCol>
               </CRow>
 
+              {(isEditMode !== 1) &&
+                <CRow>
+                  <CCol xs="12">
+                    <CFormGroup>
+                      <CLabel htmlFor="title">Password<span className="label-validation">*</span></CLabel>
+                      <Controller
+                        name={"password"}
+                        control={control}
+                        rules={{
+                          required: true,
+                          pattern: { value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/ },
+                          minLength: {
+                            value: 8,
+                            message: "Password must have at least 8 characters",
+                          }
+                        }}
+                        render={({ field: { onChange, value } }) => (
+                          <CInput
+                            type="password"
+                            onChange={onChange}
+                            disabled={(isEditMode === 1) ? true : false}
+                            value={value}
+                            placeholder={`Enter your password`}
+                          />
+                        )}
+                      ></Controller>
+                    </CFormGroup>
+                    {(errors.password?.type === "required" && <p style={{ color: "red", fontSize: "12px" }}>Password is required</p>)}
+                    {(errors.password?.type === "minLength" && <p style={{ color: "red", fontSize: "12px" }}>Password is at least 8 characters </p>)}
+                    {(errors.password?.type === "pattern" && <p style={{ color: "red", fontSize: "12px" }}>Please enter at least 8 characters, 1 numeric, 1 lowercase letter, 1 uppercase letter and 1 special character.</p>)}
+                  </CCol>
+                </CRow>}
 
-              <CRow>
-                <CCol xs="12">
-                  <CFormGroup>
-                    <CLabel htmlFor="title">Password <span className="label-validation">*</span></CLabel>
-                    <Controller
-                      name={"password"}
-                      control={control}
-                      rules={{
-                        required: true,
-                        pattern: { value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/ },
-                        minLength: {
-                          value: 8,
-                          message: "Password must have at least 8 characters",
-                        }
-                      }}
-                      render={({ field: { onChange, value } }) => (
-                        <CInput
-                          type="password"
-                          onChange={onChange}
-                          disabled={(isEditMode === 1) ? true : false}
-                          value={value}
-                          placeholder={`Enter your password`}
-                        />
-                      )}
-                    ></Controller>
-                  </CFormGroup>
-                  {(errors.password?.type === "required" && <p style={{ color: "red", fontSize: "12px" }}>Password is required</p>)}
-                  {(errors.password?.type === "minLength" && <p style={{ color: "red", fontSize: "12px" }}>Password is at least 8 characters </p>)}
-                  {(errors.password?.type === "pattern" && <p style={{ color: "red", fontSize: "12px" }}>Please enter at least 8 characters, 1 numeric, 1 lowercase letter, 1 uppercase letter and 1 special character.</p>)}
-                </CCol>
-              </CRow>
+              
 
               <CRow>
                 <CCol xs="12">
@@ -205,7 +207,7 @@ const AddEditForm = ({ match }) => {
               </CRow>
 
 
-              <button type="submit" class="btn btn-outline-primary btn-sm btn-square"> {(isEditMode === 1) ? 'Update' : 'Add'}</button>
+              <button type="submit" className="btn btn-outline-primary btn-sm btn-square"> {(isEditMode === 1) ? 'Update' : 'Add'}</button>
 
             </form>
           </CCardBody>

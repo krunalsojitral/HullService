@@ -208,7 +208,9 @@ const AddEditForm = ({ match }) => {
   };
 
 
-  const addInformationAct = (data) => {    
+  const addInformationAct = (data) => {   
+    
+    console.log('in');
     data.session_type = session;
     data.live_session_date = $('#date-input').val();
     data.description = contentDescriptionEditor;
@@ -315,7 +317,6 @@ const AddEditForm = ({ match }) => {
                       <Controller
                         name="live_session_time"
                         control={control}
-                        rules={{ required: true }}
                         render={({ field: { onChange, value } }) => (
                           <select className="form-control" onChange={onChange} value={value}>
                             <option key="0" value="">select value</option>
@@ -378,7 +379,6 @@ const AddEditForm = ({ match }) => {
                       <Controller
                         name={"live_session_minute"}
                         control={control}
-                        rules={{ required: true }}
                         render={({ field: { onChange, value } }) => (
                           <CInput
                             type="live_session_minute"
@@ -1002,7 +1002,6 @@ const AddEditForm = ({ match }) => {
                     <Controller
                       name={"content_title_one"}
                       control={control}
-                      rules={{ required: true }}
                       render={({ field: { onChange, value } }) => (
                         <CInput
                           type="content_title_one"
@@ -1041,7 +1040,6 @@ const AddEditForm = ({ match }) => {
                     <Controller
                       name={"content_title_two"}
                       control={control}
-                      rules={{ required: true }}
                       render={({ field: { onChange, value } }) => (
                         <CInput
                           type="content_title_two"
@@ -1079,8 +1077,7 @@ const AddEditForm = ({ match }) => {
                     <CLabel htmlFor="title">Course Content Title 3</CLabel>
                     <Controller
                       name={"content_title_third"}
-                      control={control}
-                      rules={{ required: true }}
+                      control={control}                      
                       render={({ field: { onChange, value } }) => (
                         <CInput
                           type="content_title_third"
@@ -1118,8 +1115,7 @@ const AddEditForm = ({ match }) => {
                     <CLabel htmlFor="title">Course Content Title 4</CLabel>
                     <Controller
                       name={"content_title_four"}
-                      control={control}
-                      rules={{ required: true }}
+                      control={control}                      
                       render={({ field: { onChange, value } }) => (
                         <CInput
                           type="content_title_four"
@@ -1157,8 +1153,7 @@ const AddEditForm = ({ match }) => {
                     <CLabel htmlFor="title">Course Content Title 5</CLabel>
                     <Controller
                       name={"content_title_five"}
-                      control={control}
-                      rules={{ required: true }}
+                      control={control}                      
                       render={({ field: { onChange, value } }) => (
                         <CInput
                           type="content_title_five"
@@ -1333,7 +1328,6 @@ const AddEditForm = ({ match }) => {
                     <Controller
                       name={"trainer"}
                       control={control}
-                      rules={{ required: true }}
                       render={({ field: { onChange, value } }) => (
                         <CInput
                           type="trainer"
@@ -1425,7 +1419,7 @@ const AddEditForm = ({ match }) => {
               </div>
                 }
 
-              <button type="submit" class="btn btn-outline-primary btn-sm btn-square"> {(isEditMode === 1) ? 'Update' : 'Add'}</button>
+              <button type="submit" className="btn btn-outline-primary btn-sm btn-square"> {(isEditMode === 1) ? 'Update' : 'Add'}</button>
             </form> 
           </CCardBody>
         </CCard>
