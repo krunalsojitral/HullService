@@ -8,8 +8,11 @@ var jwt = require('jsonwebtoken');
 var passport = require('passport');
 var env = require('../config/env');
 var User = require('../models/user');
+var mustache = require('mustache');
 var bcrypt = require('bcryptjs');
-
+var nodemailer = require('nodemailer');
+const nodeMailerCredential = require('./../EmailCredential');
+var shortid = require('shortid');
 var fs = require('fs');
 var asyn = require('async');
 var helper = require('../config/helper');
@@ -42,7 +45,6 @@ router.post('/login', [
             } else {
                 let totalrecord = data.length;
                 if (totalrecord) {
-                    console.log(data);
                     let dbPassword = (data[0].password).trim();
                     password = req.body.password;
                     var jsonUser = JSON.stringify(data[0]);
@@ -77,6 +79,115 @@ router.post('/login', [
         });
     }
 });
+
+
+//forgot password send
+router.post('/forgot-password', [
+    check('email', 'Please enter valid email').isEmail(),
+    check('email', 'Please enter email').notEmpty()
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        loggerData(req);
+        var hostname = req.headers.host;
+        var email = req.body.email;
+        User.checkUserRegistration(email, (err, data) => {
+            if (err) throw err;
+            if (data.length) {
+                var token = shortid.generate() + Date.now();
+                var user_id = data[0].id;
+                let record = {
+                    reset_password_token: token
+                }
+                User.userProfileUpdate(record, user_id, function (req, result) {
+                    var resetLink;
+                    var logo;
+                    var home_url;
+                    if (hostname == env.LIVE_HOST_USER_APP) {
+                        home_url = env.APP_URL
+                        logo = env.APP_URL + '/assets/img/gatelogo.png';
+                        resetLink = env.APP_URL + 'reset-password?resetcode=' + token
+                    } else {
+                        home_url = env.APP_URL
+                        logo = env.APP_URL + '/assets/img/gatelogo.png';
+                        resetLink = env.APP_URL + 'reset-password?resetcode=' + token
+                    }
+
+                    var htmlUser = fs.readFileSync(__dirname + '/templates/resetPassword/resetPassword.html', 'utf8');
+                    var dynamicHtml = {
+                        logo: logo,
+                        resetLink: resetLink,
+                        home_url: home_url
+                    }
+                    var view = { data: dynamicHtml };
+                    var finalHtmlUser = mustache.render(htmlUser, view);
+
+                    // send email via nodemailer
+                    let transporter = nodemailer.createTransport(nodeMailerCredential); // node mailer credentials
+                    let mailOptions = {
+                        from: env.MAIL_FROM,
+                        to: data[0].email,
+                        subject: 'Password Reset',
+                        html: finalHtmlUser.replace(/&#x2F;/g, '/')
+                    };
+
+                    // send mail with defined transport object
+                    transporter.sendMail(mailOptions, (error, info) => {
+                        if (error) {
+                            console.log(error);
+                            return res.json({ status: 0, response: { msg: 'There was an email error', } });
+                        } else {
+                            return res.json({ status: 1, response: { msg: 'We have emailed you a link to reset your password.', } });
+                        }
+                    });
+                });
+            } else {
+                return res.json({ status: 0, 'response': { msg: "We can't find a user with this Email" } });
+            }
+        });
+    }
+});
+
+// Reset new Password from reset token
+router.post('/reset-password', [
+    check('reset_password_token', 'Reset password token is required').notEmpty(),
+    check('password', 'New password is required').notEmpty()
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        loggerData(req);
+        let password = req.body.password;
+        let reset_password_token = req.body.reset_password_token;
+        User.checkResetUser(reset_password_token, function (req, result) {
+            if (result.length) {
+                bcrypt.genSalt(10, (err, salt) => {
+                    bcrypt.hash(password, salt, (err, hash) => {
+                        if (err) throw err;
+                        let record1 = {
+                            'password': hash
+                        }
+                        User.passwordUpdate(record1, reset_password_token, function (err, data) {
+                            if (err) {
+                                return res.json({ status: 0, 'response': { msg: err } });
+                            } else {
+                                return res.json({ status: 1, 'response': { msg: 'Password is updated successfully.' } });
+                            }
+                        });
+                    });
+                });
+            } else {
+                return res.json({ status: 0, 'response': { msg: 'Password reset token is invalid or has expired.' } });
+            }
+        });
+    }
+});
+
 
 // user list
 router.post('/userList', function (req, res) {

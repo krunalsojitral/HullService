@@ -155,8 +155,8 @@ function User() {
                     callback(err, null);
                 } else {
                     if (results.rows.length) {
-                        const values = [record.resetPasswordToken, user_id]
-                        con.query("UPDATE users SET resetpasswordtoken =$1 WHERE id = $2", values, function (err, result) {
+                        const values = [record.reset_password_token, user_id]
+                        con.query("UPDATE users SET reset_password_token =$1 WHERE id = $2", values, function (err, result) {
                             if (err) {
                                 if (env.DEBUG) {
                                     console.log(err);
@@ -228,7 +228,7 @@ function User() {
     //check reset User Token
     this.checkResetUser = function (token, callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM users where resetPasswordToken = $1', [token], function (err, results) {
+            con.query('SELECT * FROM users where reset_password_token = $1', [token], function (err, results) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) {
@@ -245,7 +245,7 @@ function User() {
     //user reset password token update
     this.passwordUpdate = function (record, reset_password_token, callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM users where resetPasswordToken = $1', [reset_password_token], function (err, results) {
+            con.query('SELECT * FROM users where reset_password_token = $1', [reset_password_token], function (err, results) {
                 if (err) {
                     con.release();
                     if (env.DEBUG) {
@@ -254,8 +254,8 @@ function User() {
                     callback(err, null);
                 } else {
                     let user_id = results.rows[0].id;
-                    const values = ['', user_id]
-                    con.query("UPDATE users SET resetPasswordToken = $1 WHERE id = $2", values, function (err, result) {
+                    const values = [record.password,'', user_id]
+                    con.query("UPDATE users SET password = $1, reset_password_token = $2 WHERE id = $3", values, function (err, result) {
                         if (err) {
                             if (env.DEBUG) {
                                 console.log(err);

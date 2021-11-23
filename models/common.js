@@ -62,5 +62,53 @@ function Common() {
         });
     };
 
+    this.getAcademicDisciplineList = function (callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM academic_discipline where status = $1 order by name ASC', [1], function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
+    this.getOccupationList = function (callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM occupation where status = $1 order by name ASC', [1], function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
+    this.getSectorList = function (callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM sector where status = $1 order by name ASC', [1], function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
+    
+
+    
+
+    
+
 }
 module.exports = new Common();
