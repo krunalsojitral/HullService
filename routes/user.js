@@ -188,6 +188,102 @@ router.post('/reset-password', [
     }
 });
 
+router.post('/register', (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        console.log(req.body.email);
+        let overview = {};
+        asyn.waterfall([
+            function (done) {
+                var email = req.body.email;
+                User.checkUserRegistration(email, function (err, data) {
+                    let totalrecord = data.length;
+                    if (totalrecord) {
+                        return res.json({ status: 0, 'response': { msg: 'Email already exists.' } });
+                    } else {
+                        bcrypt.genSalt(10, (err, salt) => {
+                            bcrypt.hash(req.body.password, salt, (err, hash) => {
+                                let record = {
+                                    first_name: req.body.first_name,
+                                    last_name: req.body.last_name,
+                                    email: req.body.email,
+                                    city: (req.body.city) ? req.body.city : '',
+                                    lat: (req.body.lat) ? req.body.lat : '',
+                                    long: (req.body.long) ? req.body.long : '',
+                                    level_of_education: (req.body.level_of_education) ? req.body.level_of_education : '',
+                                    occupation: (req.body.occupation) ? req.body.occupation : '',
+                                    sector: (req.body.sector) ? req.body.sector : '',
+                                    password: hash,
+                                    status: 0,
+                                    role: req.body.role,
+                                    email_verification_token: shortid.generate() + Date.now(),
+                                    created_at: moment.utc().format('YYYY-MM-DD')
+                                };
+                                overview['data'] = record;
+                                done(err, overview);
+                            })
+                        })
+                    }
+                });
+            },
+            function (overview, done1) {
+                User.addUser(overview.data, async function (err, data) {
+                    var hostname = req.headers.host;
+                    var user_id = data[0].id;
+
+                    User.getUserById(user_id, function (err, data) {
+
+                        var resetLink;
+                        var home_url;
+                        var admin_app_url;
+
+                        if (hostname == env.LOCAL_HOST_USER_APP) {
+                            home_url = env.APP_URL;
+                            resetLink = env.APP_URL + 'activation-account?activationcode=' + overview.data.emailVerificationToken;
+                            admin_app_url = env.ADMIN_APP_URL
+                        } else {
+                            home_url = env.APP_URL;
+                            resetLink = env.APP_URL + 'activation-account?activationcode=' + overview.data.emailVerificationToken
+                            admin_app_url = env.ADMIN_APP_URL
+                        }
+
+                        var htmlUser = fs.readFileSync(__dirname + '/templates/userRegistration/userRegistration.html', 'utf8');
+
+                        var dynamicHtml = {
+                            home_url: home_url,
+                            fullname: data[0].firstName,
+                            resetLink: resetLink
+                        }
+
+                        var view = { data: dynamicHtml };
+                        var finalHtmlUser = mustache.render(htmlUser, view);
+                        let transporter = nodemailer.createTransport(nodeMailerCredential); // node mailer credentials
+                        let mailOptions1 = {
+                            from: env.MAIL_FROM, // sender address
+                            to: data[0].email,
+                            subject: 'Verify your email address',
+                            html: finalHtmlUser.replace(/&#x2F;/g, '/')
+                        };
+                        transporter.sendMail(mailOptions1, (error, info) => {
+                            if (error) {
+                                console.log(error);
+                                //return res.json({status: 0, response : { msg: 'There was an email error',}  });
+                            } else {
+                            }
+                        });
+                        return res.json({ status: 1, response: { msg: 'Thank you for signing up. We just sent you a confirmation on your email address. Please click on the link provided to verify your account.', } });
+
+                    });
+                });
+            }
+        ]);
+    }
+});
+
+
 
 // user list
 router.post('/userList', function (req, res) {

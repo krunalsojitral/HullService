@@ -70,14 +70,11 @@ form small{
 .top-header .top-header-icon {
     text-align: right;
 }
-
-.top-header .top-header-icon .social-icon {}
 .top-header .top-header-icon .social-icon {
     text-align: right;
     display: inline-block;
 }
 
-.top-header .top-header-icon .social-icon ul {}
 
 .top-header .top-header-icon .social-icon ul li {
     display: inline-block;
@@ -125,10 +122,6 @@ header .header-card .hull-links {
     justify-content: flex-end;
 }
 
-header .header-card .hull-links .hull-menu {}
-
-header .header-card .hull-links .hull-menu ul {}
-
 header .header-card .hull-links .hull-menu ul li {
     display: inline-block;
 }
@@ -142,9 +135,6 @@ header .header-card .hull-links .hull-menu ul li a {
 /* identical to box height */
     color: #036E80;
     padding: 12px;
-}
-
-header .header-card .hull-links .cta-header {
 }
 
 header .header-card .hull-links .cta-header a {
@@ -202,9 +192,6 @@ header .header-card .hull-links a.mob-btn {
     color: #036E80;
     margin-bottom: 20px;
 }
-
-.join-letter .form-group {}
-
 .join-letter .form-group .form-control {
     background: #FFFFFF;
     border: 1px solid #A0A0A0;
@@ -242,7 +229,6 @@ header .header-card .hull-links a.mob-btn {
     padding: 50px 0;
 }
 
-.Upcoming {}
 
 .Upcoming h2 {
     font-family: Open Sans;
@@ -256,8 +242,6 @@ header .header-card .hull-links a.mob-btn {
 /* Blue */
     color: #036E80;
 }
-
-.Upcoming .Upcoming-list {}
 
 .Upcoming .Upcoming-list .Upcoming-card {
     margin-bottom: 20px;
@@ -320,10 +304,6 @@ header .header-card .hull-links a.mob-btn {
     text-align: right;
 }
 
-.Recent {}
-
-.Recent .Recent-list {}
-
 .Recent .Recent-list .Recent-card {margin-bottom: 20px;}
 
 .Recent .Recent-list .Recent-card h3 {
@@ -382,8 +362,6 @@ header .header-card .hull-links a.mob-btn {
     margin: 30px auto;
 }
 
-.video img {}
-
 .video .learn-btn {
     width: 218px;
     height: 38px;
@@ -404,14 +382,14 @@ footer {
     padding: 50px;
 }
 
-.footer-logo {}
+
 
 .footer-logo .logo {
     width: 90px;
     margin: 0 0 10px;
 }
 
-.footer-logo ul {}
+
 
 .footer-logo ul li {
     line-height: 27px;
@@ -427,7 +405,7 @@ footer {
     color: #FFFFFF;
 }
 
-.footer-card {}
+
 
 .footer-card h3 {
     font-family: Open Sans;
@@ -441,7 +419,7 @@ footer {
     margin-bottom: 15px;
 }
 
-.footer-card ul {}
+
 
 .footer-card ul li {
     line-height: 27px;
@@ -461,7 +439,7 @@ footer {
     padding: 50px 0;
 }
 
-.partner .partner-tilte {}
+
 
 .partner .partner-tilte h3 {
     font-family: Open Sans;
@@ -478,7 +456,7 @@ footer {
     text-align: right;
 }
 
-.partner .partner-card {}
+
 
 .partner .partner-card .item {
     background: red;
@@ -523,7 +501,7 @@ footer {
 section.social-section {
     padding: 50px 0;
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
-    background-image: url(../images/social.png);
+    background-image: url('../../images/social.png');
     background-size: cover;
     background-repeat: no-repeat;
 }
@@ -549,7 +527,7 @@ section.social-section .social-post {
 }
 section.innovation {
     padding: 50px 0;
-    background: url('../images/Health.jpg');
+    background: url('../../images/Health.jpg');
     background-size: cover;
     background-repeat: no-repeat;
 }
@@ -650,7 +628,7 @@ section.static-section .static-card h3 {
 
 .Upcoming-section .border-left {border-left: solid 1px #A0A0A0;}
 
-footer .copy-section {}
+
 
 footer p {
     font-family: Open Sans;
@@ -665,7 +643,6 @@ footer .social-icon {
     text-align: right;
 }
 
-footer .social-icon ul {}
 
 footer .social-icon ul li {
     display: inline-block;
@@ -699,7 +676,7 @@ footer .social-icon ul li a {
 
 section.banner-card {
     padding: 100px 0;
-    background: url('../images/banner.png');
+    background: url('../../images/banner.png');
     height: 100vh;
 }
 section.banner-card {
@@ -886,7 +863,7 @@ section.banner-card .banner-text .banner-btn {
     margin: 10px 0;
 }
 
-.login-section .login-box .login-details ul {}
+
 
 .login-section .login-box .login-details ul li {
     display: inline-block;
@@ -908,7 +885,7 @@ section.banner-card .banner-text .banner-btn {
 
 .login-section .login-box .login-details span:before {content: '';position: absolute;left: -70px;top: 10px;background: #a3a3a3;width: 63px;height: 1px;}
 
-.login-section .login-box .login-details span:after {}
+
 
 .login-section .login-box .login-details span:after {
     content: '';
@@ -936,13 +913,13 @@ section.banner-card .banner-text .banner-btn {
 
 .login-section {
     position: relative;
-    background-image: url(../images/login-bg.png);
+    background-image: url('../../images/login-bg.png');
     background-size: cover;
     background-repeat: no-repeat;
 }
 
 
-header .header-card .hull-links .Sign-header {}
+
 
 header .header-card .hull-links .Sign-header a {
     background: #FFFFFF;
@@ -971,9 +948,7 @@ header .header-card .hull-links .Sign-header a {
     min-height: 460px;
 }
 
-.selection-card .selection-img {}
 
-.selection-card .selection-text {}
 
 .selection-card .selection-text h3 {
     font-family: Open Sans;
@@ -1004,17 +979,24 @@ header .header-card .hull-links .Sign-header a {
     width: 240px;
     height: 50px;
     text-align: center;
-    line-height: 50px;
+    line-height: 40px;
     font-family: Open Sans;
     font-style: normal;
     font-weight: 700;
     font-size: 24px;
-    
 /* identical to box height */
     text-align: center;
     color: #FFFFFF;
     margin: 20px auto 0;
     display: block;
+}
+.city_suggestion {
+    display: block !important;
+}
+.city_suggestion p {
+    color: #000;
+    font-size: 14px;
+    font-weight: 300;
 }
 
 .suggestion{
@@ -1032,3 +1014,297 @@ header .header-card .hull-links .Sign-header a {
     text-align: left;
     overflow-y: auto;
 }
+
+
+/*
+ 24 Nov
+*/
+.page-title {
+    padding: 35px 0;
+}
+
+.page-title h1 {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 64px;
+    line-height: 93.1%;
+/* or 60px */
+    text-align: center;
+    color: #038EA6;
+}
+
+.page-title p {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 32px;
+    line-height: 26px;
+    color: #11142D;
+    margin: 20px 0px;
+    text-align: center;
+}
+
+.page-banner {
+    background-image: url('../../images/Member.png');
+    padding: 80px 0;
+    height: 500px;
+    background-size: cover;
+}
+
+
+
+.Become-text h2 {
+    
+/* identical to box height, or 29px */
+    text-decoration-line: none;
+
+/* Blue */
+    margin: 30px 0;
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 36px;
+    line-height: 120%;
+/* or 43px */
+    letter-spacing: 0.005em;
+    color: #036E80;
+}
+
+.Become-text p {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 26px;
+    color: #11142D;
+    margin: 20px 0px;
+}
+
+
+
+.testimonials-card h2 {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 36px;
+    line-height: 120%;
+/* or 43px */
+    text-align: center;
+    letter-spacing: 0.005em;
+    color: #036E80;
+    margin: 30px 0;
+}
+
+
+
+.testimonials-text h3 {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 120%;
+/* identical to box height, or 29px */
+    letter-spacing: 0.005em;
+    color: #000000;
+}
+
+.testimonials-text a {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 20px;
+    line-height: 120%;
+/* identical to box height, or 29px */
+    text-align: center;
+    
+    
+
+/* Blue */
+    color: #036E80;
+}
+
+.testimonials-text p {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 120%;
+/* or 19px */
+    letter-spacing: 0.005em;
+
+/* Light/Text Color/Title */
+    color: #11142D;
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 26px;
+    color: #11142D;
+    margin: 20px 0;
+}
+
+
+
+.Become-card h3 {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 120%;
+/* identical to box height, or 29px */
+    letter-spacing: 0.005em;
+    color: #000000;
+}
+
+.Become-card p {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 26px;
+/* or 19px */
+    
+
+/* Light/Text Color/Title */
+    color: #11142D;
+    margin: 20px 0;
+}
+
+.Become-card .btn-renew {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 24px;
+    line-height: 120%;
+/* identical to box height, or 29px */
+    text-align: center;
+    letter-spacing: 0.005em;
+    text-decoration-line: underline;
+
+/* Blue */
+    color: #036E80;
+    text-align: center;
+    width: 250px;
+    margin: 0 auto 30px;
+    display: block;
+}
+
+.bg-become {
+    background: #7F7F7F;
+    min-height: 320px;
+    margin: 60px 0;
+    vertical-align: top;
+}
+
+.Become-cta {
+    padding: 30px 15px;
+}
+
+.Become-cta h3 {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 36px;
+    line-height: 120%;
+/* or 43px */
+    text-align: center;
+    letter-spacing: 0.005em;
+    color: #FFFFFF;
+    margin-bottom: 30px;
+}
+
+.Become-cta p {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 21px;
+    line-height: 29px;
+/* or 29px */
+    color: #FFFFFF;
+    margin-bottom: 30px;
+}
+
+.Become-cta .join-btn {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 26px;
+    line-height: 36px;
+/* or 43px */
+    text-align: center;
+    color: #FFFFFF;
+    background: #038EA6;
+    display: block;
+    padding: 15px;
+}
+
+.bg-Email {
+    background: #E4EAF0;
+    min-height: 320px;
+    margin: 60px 0;
+    vertical-align: top;
+}
+
+.Email-cta {
+    padding: 30px 15px;
+}
+
+.Email-cta h3 {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 36px;
+    line-height: 120%;
+    text-align: center;
+    letter-spacing: 0.005em;
+    color: #7F7F7F;
+    margin-bottom: 30px;
+}
+
+.Email-cta p {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 21px;
+    line-height: 29px;
+    color: #7F7F7F;
+    margin-bottom: 30px;
+}
+
+.Email-cta .email-btn {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 26px;
+    line-height: 36px;
+    text-align: center;
+    color: #038EA6;
+    border: #038EA6 solid 2px;
+    display: block;
+    padding: 15px;
+}
+header .header-card .hull-links .cta-header a.PARTICIPATE-BTN {background: #75BFCC;}
+header .header-card .hull-links .hull-menu ul li{
+position: relative;
+}
+header .header-card .hull-links .hull-menu ul li ul {
+position: absolute;
+background: #fff;
+min-width: 220px;
+z-index: 999;
+left: 0;
+top: 49px;
+display: none;
+}
+
+header .header-card .hull-links .hull-menu ul li ul li {
+display: block;
+}
+
+header .header-card .hull-links .hull-menu ul li:hover ul {
+display: block;
+}
+/* header .header-card .hull-links .hull-menu ul li a.active {
+    font-weight: 700;
+} */

@@ -41,7 +41,7 @@ export default function Login() {
                                         <h2>Welcome to the Virtual Centre for the Study and Prevention of Developmental Trauma</h2>
                                         <span>Please login to continue</span>
                                         <div class="form-group">
-                                            <input type="text" {...register("email", { required: true, pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i } })} className="form-control" placeholder="Enter Email Id" />
+                                            <input type="text" {...register("email", { required: true, pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i } })} className="form-control" placeholder="Email" />
                                             {errors?.email?.type === "required" && <small className="error">This field is required</small>}
                                             {errors?.email?.type === "pattern" && (<small className="error">Invalid email address</small>)}
                                         </div>
@@ -69,7 +69,7 @@ export default function Login() {
                                                 </Link>                                                
                                             </div>
                                             <div class="col-md-6 text-right">
-                                                <Link className="forgot-btn" to='/register'>
+                                                <Link className="signup-btn" to='/register'>
                                                     Sign Up
                                                 </Link>                                                
                                             </div>

@@ -69,10 +69,8 @@ export default function Register() {
     const { registerUser } = useAuth();
 
     const onSubmit = (data) => {
-        console.log(control);
         console.log(data); 
-
-        //registerUser(data);
+        registerUser(data);
     }
 
     const {
@@ -130,9 +128,8 @@ export default function Register() {
             } = suggestion;
 
             return (
-                <li key={place_id} onClick={handleSelect(suggestion)}>
-                    <p>{main_text +' '+ secondary_text}</p>
-                     {/* <p>{secondary_text}</p> */}
+                <li className="city_suggestion" key={place_id} onClick={handleSelect(suggestion)}>
+                    <p> <strong>{main_text}</strong>  {secondary_text}</p>
                 </li>
             );
         });
@@ -291,7 +288,7 @@ export default function Register() {
                                                 }}
                                                 render={({ field: { onChange, value } }) => (
                                                     <input
-                                                        type="confirmpassword"
+                                                        type="password"
                                                         onChange={onChange}       
                                                         className="form-control"
                                                         value={value}

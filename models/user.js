@@ -43,6 +43,25 @@ function User() {
         });
     };
 
+    this.addUser = function (record, callback) {
+        connection.acquire(function (err, con) {
+            const sql = 'INSERT INTO users("first_name","last_name","email","city","lat","long","level_of_education","occupation","sector","password","status","role","email_verification_token","created_at") VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14) RETURNING *'
+            const values = [record.first_name, record.last_name, record.email, record.city, record.lat, record.long, record.level_of_education, record.occupation, record.sector, record.password, record.status, record.role, record.email_verification_token, record.created_at]
+            con.query(sql, values, function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
+
     function updateProductByID(user_id, cols) {
         // Setup static beginning of query
         var query = ['UPDATE users'];

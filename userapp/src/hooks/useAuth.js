@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { UserContext } from './UserContext';
 import Swal from "sweetalert2";
-import api_url from './Apiurl';
+import api_url from '../components/Apiurl';
 
 
 export default function useAuth() {
@@ -50,29 +50,28 @@ export default function useAuth() {
 
     //register user  
     const registerUser = async (data) => {
-        console.log(data);
-        const { email, password, user_role } = data;
-        return axios.post(api_url +'/user/register', {                  
-                  email,
-                  password,
-                  user_role
-                }).then(async (result) => {
-                    Swal.fire({
-                        title: 'Success!',
-                        icon: 'success',
-                        text: result.data.response.msg,
-                        confirmButtonText: `ok`,
-                    }).then((result) => {
-                        /* Read more about isConfirmed, isDenied below */
-                        if (result.isConfirmed) {
-                            history.push("/login");
-                        } else {
-                            Swal.fire('Changes are not saved', '', 'info')
-                        }
-                    })
-                    //history.push('/login');
+        return axios.post(api_url + '/user/register', data).then(async (result) => {
+            if (result.data.status) { 
+                Swal.fire({
+                    title: 'Success!',
+                    icon: 'success',
+                    text: result.data.response.msg,
+                    confirmButtonText: `ok`,
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        history.push("/login");
+                    } else {
+                        Swal.fire('Changes are not saved', '', 'info')
+                    }
                 })
-                .catch((err) => {
+            }else{
+                Swal.fire('Oops...', result.data.response.msg, 'error')
+            }
+                    
+                    //history.push('/login');
+            })
+            .catch((err) => {
                    return setError(err.response.data);
             })
         };

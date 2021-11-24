@@ -193,9 +193,82 @@ section.banner-card .banner-text .banner-btn {
 .Upcoming .Upcoming-list .book-btn {
     font-size: 14px;
 }
+    section.banner-card .banner-slide{
+    height: auto;
+}
+.page-title {
+    padding: 20px 0;
+}
+
+.page-title h1 {
+    font-size: 18px;
+}
+
+.page-title p {
+    font-size: 17px;
+    margin-bottom: 0;
+}
+
+.page-banner {
+    height: auto;
+}
+
+.Become-text h2,.testimonials-card h2 {
+    font-size: 20px;
+    line-height: 32px;
+    margin-bottom: 0;
+    text-align: left;
+}
+
+.testimonials-text h3 {
+    font-size: 14px;
+    margin-top: 15px;
+}
+
+.testimonials-text a {
+    font-size: 15px;
+}
+
+.Become-card h3 {
+    font-size: 14px;
+    margin-top: 15px;
+}
+
+.Become-card .btn-renew {
+    display: inline-block;
+    width: auto;
+    font-size: 14px;
+    margin-bottom: 0;
+}
+
+
+
+.Become-cta h3,.Email-cta h3 {
+    font-size: 20px;
+    text-align: center;
+    margin: 0;
+}
+
+.Become-cta p,.Email-cta p {
+    font-size: 17px;
+    line-height: 22px;
+    margin: 25px 0;
+}
+
+.Become-cta .join-btn,.Email-cta .email-btn {
+    font-size: 17px;
+    padding: 10px 15px;
+}
+
+.container {
+    width: 750px;
+}
 }
 
 @media(max-width: 767px){
+    .container {
+    width: 100%;
+}
 	.top-header .top-header-icon {
 	    text-align: center;
 	}
@@ -412,5 +485,76 @@ header .header-card .hull-links .Sign-header {
 .login-section .login-box .login-details ul li {
     display: inline-block;
     margin: 0 6px;
+}
+
+
+.page-title {
+    padding: 20px 0;
+}
+
+.page-title h1 {
+    font-size: 18px;
+}
+
+.page-title p {
+    font-size: 17px;
+    margin-bottom: 0;
+}
+
+.page-banner {
+    height: auto;
+}
+
+.Become-text h2,.testimonials-card h2 {
+    font-size: 20px;
+    line-height: 32px;
+    margin-bottom: 0;
+    text-align: left;
+}
+
+.testimonials-text h3 {
+    font-size: 14px;
+    margin-top: 15px;
+}
+
+.testimonials-text a {
+    font-size: 15px;
+}
+
+.Become-card h3 {
+    font-size: 14px;
+    margin-top: 15px;
+}
+
+.Become-card .btn-renew {
+    display: inline-block;
+    width: auto;
+    font-size: 14px;
+    margin-bottom: 0;
+}
+
+.bg-become {
+    margin-bottom: 0;
+}
+
+.Become-cta h3,.Email-cta h3 {
+    font-size: 20px;
+    text-align: center;
+    margin: 0;
+}
+
+.Become-cta p,.Email-cta p {
+    font-size: 17px;
+    line-height: 22px;
+    margin: 25px 0;
+}
+
+.Become-cta .join-btn,.Email-cta .email-btn {
+    font-size: 17px;
+    padding: 10px 15px;
+}
+
+.bg-Email {
+    margin-top: 0;
 }
 }

@@ -12,11 +12,17 @@ import { useHistory } from 'react-router-dom';
 export default function Header() {
     let history = useHistory();
     const [userData, setUserData] = useState(0);
+    const [token, setToken] = React.useState(0);
 
     React.useEffect(() => {
         const userString = localStorage.getItem('userdata');
         var userdata = JSON.parse(userString);
         setUserData(userdata);      
+
+        const tokenString = localStorage.getItem('token');
+        var tokens = JSON.parse(tokenString);
+        setToken(tokens);
+
         window.scrollTo(0, 0)
     }, [])
 
@@ -72,6 +78,28 @@ export default function Header() {
                             <div className="logo" onClick={(e) => handleOpenDirection()}>
                                 <img alt="logo" src="images/logo.png"/>
 							</div>
+
+                            {/* {!token &&<div class="hull-links">
+                                <div class="Sign-header">
+                                    <Link to='/login'>
+                                            Sign in
+                                    </Link>
+                                    <Link to='/userSelection'>
+                                            Sign up
+                                    </Link>                                    
+                                </div>
+                                    <a href="javascript:void(0);" className="mob-btn">
+                                        <i className="fa fa-bars"></i>
+                                    </a>
+                                    <div className="cta-header">
+                                    <Link to='/membership-benefit'>
+                                            BECOME A MEMBER
+                                    </Link>
+                                    </div>
+                            </div> }
+
+
+                            {token &&  
                             <div className="hull-links">
                                 <a href="javascript:void(0);" className="mob-btn">
                                     <i className="fa fa-bars"></i>
@@ -116,11 +144,83 @@ export default function Header() {
                                     </ul>
                                 </div>
                                 <div className="cta-header">
-                                    <Link to='/userSelection'>
+                                    <Link to='/membership-benefit'>
                                         BECOME A MEMBER
                                     </Link>
                                 </div>
-                            </div>
+                            </div>} */}
+
+                                <div className="hull-links">
+                                    <a href="javascript:void(0);" className="mob-btn">
+                                        <i className="fa fa-bars"></i>
+                                    </a>
+                                    <div className="hull-menu">
+                                        <ul>
+                                            <li>
+                                                <NavLink activeClassName="active" to="/">
+                                                    <InlineButton name={"HOME"} />
+                                                </NavLink>
+                                            </li>
+                                            <li>
+                                                <NavLink activeClassName="active" to="/">
+                                                    <InlineButton name={"ABOUT"} />
+                                                </NavLink>
+                                            </li>
+                                            <li>
+                                                <NavLink activeClassName="active" to="/">
+                                                    <InlineButton name={"MEMBERS"} />
+                                                </NavLink>
+                                            </li>
+                                            <li>
+                                                <NavLink activeClassName="active" to="/">
+                                                    <InlineButton name={"PARTNERS"} />
+                                                </NavLink>
+                                            </li>
+                                            <li>
+                                                <NavLink activeClassName="active" to="/">
+                                                    <InlineButton name={"EVENTS"} />
+                                                </NavLink>
+                                            </li>
+                                            <li>
+                                                <NavLink activeClassName="active" to="/">
+                                                    <InlineButton name={"RESOURCES"} />
+                                                </NavLink>
+                                                <ul>
+                                                    <li>
+                                                        <NavLink activeClassName="active" to="/">
+                                                            <InlineButton name={"Articles"} />
+                                                        </NavLink>
+                                                    </li>
+                                                    <li>
+                                                        <NavLink activeClassName="active" to="/">
+                                                            <InlineButton name={"Blog"} />
+                                                        </NavLink>
+                                                    </li>
+                                                    <li>
+                                                        <NavLink activeClassName="active" to="/">
+                                                            <InlineButton name={"Informational Videos"} />
+                                                        </NavLink>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <NavLink activeClassName="active" to="/">
+                                                    <InlineButton name={"BLOG"} />
+                                                </NavLink>
+                                            </li>
+                                            <li>
+                                                <NavLink activeClassName="active" to="/">
+                                                    <InlineButton name={"CONTACT US"} />
+                                                </NavLink>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div className="cta-header">
+                                        <Link to='/membership-benefit'>
+                                            BECOME A MEMBER
+                                    </Link>
+                                    </div>
+                                </div>
                         </div>
                     </div>
                 </div>
