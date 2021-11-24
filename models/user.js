@@ -27,8 +27,8 @@ function User() {
     this.adduserByadmin = function (record, callback) {
         connection.acquire(function (err, con) {
 
-            const sql = 'INSERT INTO users(name,phone,email,password,created_at,role, status) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING *'
-            const values = [record.name, record.phone, record.email, record.password, record.created_at, record.role, 1]
+            const sql = 'INSERT INTO users(first_name,last_name,phone,email,password,created_at,role, status) VALUES($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *'
+            const values = [record.first_name, record.last_name, record.phone, record.email, record.password, record.created_at, record.role, 1]
             con.query(sql, values, function (err, result) {
                 con.release()
                 if (err) {

@@ -91,23 +91,47 @@ const AddEditForm = ({ match }) => {
               <CRow>
                 <CCol xs="12">
                   <CFormGroup>
-                    <CLabel htmlFor="title">Name <span className="label-validation">*</span></CLabel>
+                    <CLabel htmlFor="title">First Name <span className="label-validation">*</span></CLabel>
                     <Controller
-                      name={"name"}
+                      name={"first_name"}
                       control={control}
                       rules={{ required: true }}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="name"
+                          type="text"
                           onChange={onChange}
                           value={value}
-                          placeholder={`Enter your name`}
+                          placeholder={`Enter your first name`}
                         />
                       )}
                     ></Controller>
                   </CFormGroup>
-                  {errors.name && errors.name.type === "required" && (
-                    <p style={{ color: "red", fontSize: "12px" }}>Name is required.</p>
+                  {errors.first_name && errors.first_name.type === "required" && (
+                    <p style={{ color: "red", fontSize: "12px" }}>First name is required.</p>
+                  )}
+                </CCol>
+              </CRow>
+
+              <CRow>
+                <CCol xs="12">
+                  <CFormGroup>
+                    <CLabel htmlFor="title">Last Name <span className="label-validation">*</span></CLabel>
+                    <Controller
+                      name={"last_name"}
+                      control={control}
+                      rules={{ required: true }}
+                      render={({ field: { onChange, value } }) => (
+                        <CInput
+                          type="text"
+                          onChange={onChange}
+                          value={value}
+                          placeholder={`Enter your last name`}
+                        />
+                      )}
+                    ></Controller>
+                  </CFormGroup>
+                  {errors.last_name && errors.last_name.type === "required" && (
+                    <p style={{ color: "red", fontSize: "12px" }}>Last name is required.</p>
                   )}
                 </CCol>
               </CRow>

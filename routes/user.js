@@ -296,7 +296,7 @@ router.post('/userList', function (req, res) {
             var userList = result.map(data => {
                 let retObj = {};
                 retObj['id'] = data.id;
-                retObj['name'] = data.name;
+                retObj['name'] = (data.first_name) ? data.first_name : '' + ' ' + (data.last_name) ? data.last_name:'';
                 retObj['phone'] = data.phone;
                 retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
                 retObj['role'] = data.role;
@@ -393,7 +393,7 @@ router.post('/changeuserStatus', [
 
 
 router.post('/adduserByadmin', [
-    check('name', 'Name is required').notEmpty(),
+    // check('name', 'Name is required').notEmpty(),
     check('email', 'Email is required').notEmpty(),
 ], (req, res) => {
     const errors = validationResult(req);
@@ -415,7 +415,8 @@ router.post('/adduserByadmin', [
                         bcrypt.genSalt(10, (err, salt) => {
                             bcrypt.hash(req.body.password, salt, (err, hash) => {
                                 let record = {
-                                    name: req.body.name,
+                                    first_name: req.body.first_name,
+                                    last_name: req.body.last_name,
                                     phone: (req.body.phone) ? req.body.phone : '',
                                     email: (req.body.email) ? req.body.email : '',
                                     password: hash,
