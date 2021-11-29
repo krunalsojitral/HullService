@@ -104,6 +104,33 @@ function Common() {
         });
     };
 
+    this.getProfessionalInterestAreaList = function (callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM professional_interest_area where status = $1 order by name ASC', [1], function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+    
+    this.getResearcherInterestAreaList = function (callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM researcher_interest_area where status = $1 order by name ASC', [1], function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
     
 
     

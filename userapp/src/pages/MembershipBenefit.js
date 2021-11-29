@@ -12,24 +12,24 @@ export default function MembershipBenefit() {
     return (
         <div>
             <Header/>
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="page-title">
+            <div className="container">
+                <div className="row">
+                    <div className="col-md-12">
+                        <div className="page-title">
                             <h1>Become A Member</h1>
                             <p>Check out Membership benefits and Join or Renew for $<span>XX</span></p>
                         </div>
                     </div>
                 </div>
             </div>
-            <section class="page-banner">
+            <section className="page-banner">
 
             </section>
-            <section class="page-section">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="Become-text">
+            <section className="page-section">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-md-12">
+                            <div className="Become-text">
                                 <h2>Virtual Center Membership Benefits</h2>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit arcu id turpis quis est aliquam. Adipiscing dignissim luctus elit leo placerat. Velit enim facilisis sagittis tincidunt vestibulum. Enim ac, in lorem volutpat tincidunt morbi accumsan nulla amet. Nibh nulla eu nisl, sed. Ultricies at tincidunt orci aenean cras turpis ultrices. Ac phasellus eu, aliquet arcu pretium morbi sed.</p>
 
@@ -41,18 +41,18 @@ export default function MembershipBenefit() {
 
                             </div>
 
-                            <div class="testimonials-card">
+                            <div className="testimonials-card">
                                 <h2>Testimonials</h2>
-                                <div class="row">
-                                    <div class="col-md-6  col-sm-6">
-                                        <div class="testimonials-text">
+                                <div className="row">
+                                    <div className="col-md-6  col-sm-6">
+                                        <div className="testimonials-text">
                                             <h3>Title of Testimonial</h3>
                                             <p>Cursus eu neque, volutpat integer vitae. Erat sit turpis volutpat, gravida vulputate interdum. Tellus in eu purus ultrices nullam vitae sed netus eros. Ac pellentesque scelerisque nunc ac nunc vivamus hac pharetra, mauris. Pulvinar sed enim, sed at consectetur. Accumsan, nunc erat pulvinar velit.</p>
                                             <a href="#">First Lastname - Occupation</a>
                                         </div>
                                     </div>
-                                    <div class="col-md-6  col-sm-6">
-                                        <div class="testimonials-text">
+                                    <div className="col-md-6  col-sm-6">
+                                        <div className="testimonials-text">
                                             <h3>Title of Testimonial</h3>
                                             <p>Cursus eu neque, volutpat integer vitae. Erat sit turpis volutpat, gravida vulputate interdum. Tellus in eu purus ultrices nullam vitae sed netus eros. Ac pellentesque scelerisque nunc ac nunc vivamus hac pharetra, mauris. Pulvinar sed enim, sed at consectetur. Accumsan, nunc erat pulvinar velit.</p>
                                             <a href="#">First Lastname - Occupation</a>
@@ -61,9 +61,9 @@ export default function MembershipBenefit() {
                                 </div>
                             </div>
 
-                            <div class="Become-text">
+                            <div className="Become-text">
                                 <h2>Membership Types</h2>
-                                <div class="Become-card">
+                                <div className="Become-card">
                                     <h3>Professional </h3>
                                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit arcu id turpis quis est aliquam. Adipiscing dignissim luctus elit leo placerat. Velit enim facilisis sagittis tincidunt vestibulum. Enim ac, in lorem volutpat tincidunt morbi accumsan nulla amet. Nibh nulla eu nisl, sed. Ultricies at tincidunt orci aenean cras turpis ultrices. Ac phasellus eu, aliquet arcu pretium morbi sed. </p>
 
@@ -73,7 +73,7 @@ export default function MembershipBenefit() {
                                         JOIN or RENEW NOW!
                                     </Link>
                                 </div>
-                                <div class="Become-card">
+                                <div className="Become-card">
                                     <h3>Public</h3>
                                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit arcu id turpis quis est aliquam. Adipiscing dignissim luctus elit leo placerat. Velit enim facilisis sagittis tincidunt vestibulum. Enim ac, in lorem volutpat tincidunt morbi accumsan nulla amet. Nibh nulla eu nisl, sed. Ultricies at tincidunt orci aenean cras turpis ultrices. Ac phasellus eu, aliquet arcu pretium morbi sed.</p>
 
@@ -83,7 +83,7 @@ export default function MembershipBenefit() {
                                         JOIN or RENEW NOW!
                                     </Link>
                                 </div>
-                                <div class="Become-card">
+                                <div className="Become-card">
                                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit arcu id turpis quis est aliquam. Adipiscing dignissim luctus elit leo placerat. Velit enim facilisis sagittis tincidunt vestibulum. Enim ac, in lorem volutpat tincidunt morbi accumsan nulla amet. Nibh nulla eu nisl, sed. Ultricies at tincidunt orci aenean cras turpis ultrices. Ac phasellus eu, aliquet arcu pretium morbi sed. </p>
 
                                     <p>Cursus eu neque, volutpat integer vitae. Erat sit turpis volutpat, gravida vulputate interdum. Tellus in eu purus ultrices nullam vitae sed netus eros. Ac pellentesque scelerisque nunc ac nunc vivamus hac pharetra, mauris. Pulvinar sed enim, sed at consectetur. Accumsan, nunc erat pulvinar velit. </p>
@@ -93,7 +93,7 @@ export default function MembershipBenefit() {
                                         JOIN or RENEW NOW!
                                     </Link>
                                 </div>
-                                <div class="Become-card">
+                                <div className="Become-card">
                                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit arcu id turpis quis est aliquam. Adipiscing dignissim luctus elit leo placerat. Velit enim facilisis sagittis tincidunt vestibulum. Enim ac, in lorem volutpat tincidunt morbi accumsan nulla amet. Nibh nulla eu nisl, sed. Ultricies at tincidunt orci aenean cras turpis ultrices. Ac phasellus eu, aliquet arcu pretium morbi sed. </p>
 
                                     <p>Cursus eu neque, volutpat integer vitae. Erat sit turpis volutpat, gravida vulputate interdum. Tellus in eu purus ultrices nullam vitae sed netus eros. Ac pellentesque scelerisque nunc ac nunc vivamus hac pharetra, mauris. Pulvinar sed enim, sed at consectetur. Accumsan, nunc erat pulvinar velit. </p>
@@ -101,9 +101,9 @@ export default function MembershipBenefit() {
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6 col-sm-6 bg-become">
-                            <div class="Become-cta">
+                    <div className="row">
+                        <div className="col-md-6 col-sm-6 bg-become">
+                            <div className="Become-cta">
                                 <h3>Become a Member Today!</h3>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit arcu id turpis quis est aliquam. Adipiscing dignissim luctus elit leo.</p>
                                 <Link className="join-btn" to='/userSelection'>
@@ -111,11 +111,11 @@ export default function MembershipBenefit() {
                                 </Link>
                             </div>
                         </div>
-                        <div class="col-md-6  col-sm-6 bg-Email">
-                            <div class="Email-cta">
+                        <div className="col-md-6  col-sm-6 bg-Email">
+                            <div className="Email-cta">
                                 <h3>Email Us</h3>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit arcu id turpis quis est aliquam. Adipiscing dignissim luctus elit leo.</p>
-                                <a href="#" class="email-btn">Send A Message</a>
+                                <a href="#" className="email-btn">Send A Message</a>
                             </div>
                         </div>
                     </div>

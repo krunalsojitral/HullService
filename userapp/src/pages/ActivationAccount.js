@@ -24,12 +24,12 @@ export default function ActivationAccount() {
   return (
     <div>
       <Header />
-      <div class="login-section">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="login-box">
-                <div class="login-img">
+      <div className="login-section">
+        <div className="container">
+          <div className="row">
+            <div className="col-md-12">
+              <div className="login-box">
+                <div className="login-img">
                   <img alt="logo" src="images/logo.png" />
                 </div>
 

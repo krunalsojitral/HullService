@@ -145,7 +145,6 @@ router.post('/changeBlogStatus', [
             }
         });
     }
-
 });
 
 router.post('/addBlogByadmin', function (req, res) {

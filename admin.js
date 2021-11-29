@@ -37,6 +37,9 @@ var mediaRouter = require('./routes/media');
 var cmsRouter = require('./routes/cms');
 var forumheadingRouter = require('./routes/forumheading');
 var forumRouter = require('./routes/forum');
+var occupationRouter = require('./routes/occupation');
+var sectorRouter = require('./routes/sector');
+var academicdisciplineRouter = require('./routes/academicdiscipline');
 
 
 //app.use(express.static('uploads'));
@@ -55,6 +58,9 @@ app.use('/api/media', mediaRouter);
 app.use('/api/forumheading', forumheadingRouter);
 app.use('/api/forum', forumRouter);
 app.use('/api/cms', cmsRouter);
+app.use('/api/occupation', occupationRouter);
+app.use('/api/sector', sectorRouter);
+app.use('/api/academicdiscipline', academicdisciplineRouter);
 
 
 app.get('/', (req, res) => {

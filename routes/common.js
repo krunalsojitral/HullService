@@ -136,6 +136,42 @@ router.get('/getHeadingList', function (req, res) {
     });
 });
 
+router.get('/getProfessionalInterestAreaList', function (req, res) {
+    loggerData(req);
+    Common.getProfessionalInterestAreaList(function (err, result) {
+        if (err) {
+            return res.json({ status: 0, 'response': { msg: err } });
+        } else {
+            var headingList = result.map(data => {
+                let retObj = {};
+                retObj['professional_interest_area_id'] = data.professional_interest_area_id;
+                retObj['name'] = data.name;
+                return retObj;
+            });
+            return res.json({ status: 1, 'response': { data: headingList } });
+        }
+    });
+});
+
+router.get('/getResearcherInterestAreaList', function (req, res) {
+    loggerData(req);
+    Common.getResearcherInterestAreaList(function (err, result) {
+        if (err) {
+            return res.json({ status: 0, 'response': { msg: err } });
+        } else {
+            var headingList = result.map(data => {
+                let retObj = {};
+                retObj['researcher_interest_area_id'] = data.researcher_interest_area_id;
+                retObj['name'] = data.name;
+                return retObj;
+            });
+            return res.json({ status: 1, 'response': { data: headingList } });
+        }
+    });
+});
+
+
+
 
 
 

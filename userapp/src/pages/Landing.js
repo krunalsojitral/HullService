@@ -19,6 +19,16 @@ export default function Landing() {
     const [partnerSlider, setPartnerSlider] = React.useState([]);
     const [content, setContent] = React.useState({});
 
+    const customeSlider = React.createRef();
+
+    var settings = {
+        dots: false,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 3,
+        slidesToScroll: 3
+    };
+
     React.useEffect(() => {
         axios.get(api_url + '/cms/partnerList').then((result) => {
             if (result.data.status) {
@@ -34,6 +44,16 @@ export default function Landing() {
             }
         }).catch((err) => { })
     }, [])
+
+    const next = () => {
+        customeSlider.current.slickNext()
+    }
+
+    const prev = () => {
+        customeSlider.current.slickPrev()
+    }
+
+    
     
     return (
 
@@ -43,18 +63,7 @@ export default function Landing() {
             <section className="banner-card">
                 <div className="container-fluid">
                     <div className="row">
-
-                        <Banner />
-                        
-                        {/* <div className="col-md-6"></div>
-                        <div className="col-md-6">
-                            <div className="banner-text">
-                      
-                                <span>Get Involved</span>
-                                <h1>Volunteer Today</h1>
-                                <a href="javascript:void(0);" className="banner-btn">Sign Up Today</a>
-                            </div>
-                        </div> */}
+                        <Banner />                      
                     </div>
                 </div>
             </section>
@@ -110,7 +119,8 @@ export default function Landing() {
                     <div className="row">
                         <div className="col-md-12">
                             <div className="video">
-                                <img alt="MediaPlayer" src="images/MediaPlayer.png"/>
+                                <iframe title="video" src="https://www.youtube.com/embed/xNH2aIxGVeM?rel=0&modestbranding=1&showinfo=0"></iframe>
+                                {/* allowfullscreen <img alt="MediaPlayer" src="images/MediaPlayer.png"/> */}
                                 <Link to='/' className="learn-btn">
                                     Learn More
                                 </Link>
@@ -297,8 +307,8 @@ export default function Landing() {
                             </div>
                             <div className="col-md-6">
                                 <div className="arrow-btn">
-                                    <button className="customNextBtn"><i className="fa fa-angle-left"></i></button>
-                                    <button className="customPrevBtn"><i className="fa fa-angle-right"></i></button>
+                                <button className="customNextBtn" onClick={(e) => prev()} ><i className="fa fa-angle-left"></i></button>
+                                <button className="customPrevBtn" onClick={(e) => next()}><i className="fa fa-angle-right"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -309,8 +319,6 @@ export default function Landing() {
                         <div className="row">
                             <div className="col-md-12">
                                 <div className="partner-card">
-                                    <div className="owl-carousel owl-theme">
-
                                     <Slider
                                         dots={false}
                                         slidesToShow={4}
@@ -318,13 +326,14 @@ export default function Landing() {
                                         autoplay={true}
                                         infinite={false}
                                         autoplaySpeed={3000}
+                                        ref={customeSlider}
                                     >
                                         {partnerSlider.length > 0 && partnerSlider.map((data, index) => (
-                                            <div key={index} className=""><img alt="avatar" src={data.partner}></img></div>
+                                            <img style={{ "Height": "350px !important" }} alt="avatar" src={data.partner} />
                                         ))}
-                                    </Slider>
+                                    </Slider>  
                                         
-                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>

@@ -66,13 +66,13 @@ const Slider = () => {
                 <div>
                     {state.currentIndex > 0 && (
                         <ControlLeft onClick={() => dispatch({ type: "PREV" })}>
-                            {<i class="fa fa-angle-left" aria-hidden="true"></i>}
+                            {<i className="fa fa-angle-left" aria-hidden="true"></i>}
                         </ControlLeft>
                     )}
 
                     {state.currentIndex < state.items.length - 1 && (
                         <ControlRight onClick={() => dispatch({ type: "NEXT" })}>
-                            {<i class="fa fa-angle-right" aria-hidden="true"></i>}
+                            {<i className="fa fa-angle-right" aria-hidden="true"></i>}
                         </ControlRight>
                     )}
                 </div>
@@ -131,7 +131,7 @@ const Slide = ({ item, width }) => {
 
                             <span>Get Involved </span>
                             <h1>Volunteer Today</h1>
-                            <Link class="banner-btn" to='/userSelection'>
+                        <Link className="banner-btn" to='/userSelection'>
                                 Sign Up Today
                             </Link>                            
                         </div>
@@ -144,7 +144,7 @@ const Slide = ({ item, width }) => {
 
                         <span>Get Involved </span>
                         <h1>Volunteer Today</h1>
-                        <Link class="banner-btn" to='/userSelection'>
+                        <Link className="banner-btn" to='/userSelection'>
                             Sign Up Today
                         </Link>
                     </div>
@@ -157,7 +157,7 @@ const Slide = ({ item, width }) => {
 
                         <span>Get Involved </span>
                         <h1>Volunteer Today</h1>
-                        <Link class="banner-btn" to='/userSelection'>
+                        <Link className="banner-btn" to='/userSelection'>
                             Sign Up Today
                         </Link>
                     </div>

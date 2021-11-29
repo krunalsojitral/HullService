@@ -45,17 +45,66 @@ function User() {
 
     this.addUser = function (record, callback) {
         connection.acquire(function (err, con) {
-            const sql = 'INSERT INTO users("first_name","last_name","email","city","lat","long","level_of_education","occupation","sector","password","status","role","email_verification_token","created_at") VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14) RETURNING *'
-            const values = [record.first_name, record.last_name, record.email, record.city, record.lat, record.long, record.level_of_education, record.occupation, record.sector, record.password, record.status, record.role, record.email_verification_token, record.created_at]
+            if (record.role == 3){
+                var sql = 'INSERT INTO users("first_name","last_name","email","city","lat","long","country","academic_discipline","password","status","role","email_verification_token","created_at") VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING *'
+                var values = [record.first_name, record.last_name, record.email, record.city, record.lat, record.long, record.country, record.academic_discipline, record.password, record.status, record.role, record.email_verification_token, record.created_at]
+            }else{
+                var sql = 'INSERT INTO users("first_name","last_name","email","city","lat","long","country", "level_of_education","occupation","sector","password","status","role","email_verification_token","created_at") VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15) RETURNING *'
+                var values = [record.first_name, record.last_name, record.email, record.city, record.lat, record.long, record.country, record.level_of_education, record.occupation, record.sector, record.password, record.status, record.role, record.email_verification_token, record.created_at]
+            }
+            
+            
             con.query(sql, values, function (err, result) {
-                con.release()
+                
+                if (err) {
+                    if (env.DEBUG) {                        
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+
+                    if (record.role == 2) {                         
+                        if (record.professional_interest_of_area && record.professional_interest_of_area.length > 0) {
+                            record.professional_interest_of_area.map(data => {
+                                var sql = 'INSERT INTO user_professional_interest_area("user_id","professional_interest_area_id") VALUES($1,$2) RETURNING *'
+                                var values = [result.rows[0].id, data.value]
+                                con.query(sql, values, function (err, result) {
+                                    console.log(err);
+                                });
+                            });
+                        } 
+                    }else{                        
+                        if (record.researcher_interest_of_area && record.researcher_interest_of_area.length > 0) {
+                            record.researcher_interest_of_area.map(data => {
+                                var sql = 'INSERT INTO user_researcher_interest_area("user_id","researcher_interest_area_id") VALUES($1,$2) RETURNING *'
+                                var values = [result.rows[0].id, data.value]
+                                con.query(sql, values, function (err, result) {                                
+                                    console.log(err);
+                                });
+                            });
+                        } 
+                    }
+                    con.release()
+
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
+    this.getuserData = function (user_id, callback) {
+        connection.acquire(function (err, con) {
+            let sql = 'SELECT u.* from users as u where u.id = ' + user_id;
+            //let sql = 'SELECT u.*,uc.*,ur.*, (SELECT COUNT(*) FROM post WHERE post.userId=u.id) as post,(SELECT COUNT(*) FROM post_comment WHERE post_comment.userId=u.id) as postComment FROM users u inner join sport_category as uc on uc.cat_id = u.categoryId inner join user_role as ur on ur.role_id = u.userRole where u.id = ' + user_id;
+            con.query(sql, function (err, result) {
+                con.release();
                 if (err) {
                     if (env.DEBUG) {
                         console.log(err);
                     }
                     callback(err, null);
                 } else {
-                    callback(null, result.rows);
+                    callback(null, result);
                 }
             });
         });
@@ -199,7 +248,7 @@ function User() {
     //check email User Token
     this.checkEmailVerifyUser = function (token, callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM users where emailverification = $1', [token], function (err, results) {
+            con.query('SELECT * FROM users where email_verification_token = $1', [token], function (err, results) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) {
@@ -216,7 +265,7 @@ function User() {
     //user email verify token update
     this.emailTokenUpdate = function (record, email_verify_token, callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM users where emailverification = $1', [email_verify_token], function (err, results) {
+            con.query('SELECT * FROM users where email_verification_token = $1', [email_verify_token], function (err, results) {
                 if (err) {
                     con.release();
                     if (env.DEBUG) {
@@ -226,7 +275,7 @@ function User() {
                 } else {
                     let user_id = results.rows[0].id;
                     const values = [1, '', user_id]
-                    con.query("UPDATE users SET status = $1 , emailverification = $2 WHERE id = $3", values, function (err, result) {
+                    con.query("UPDATE users SET status = $1 , email_verification_token = $2 WHERE id = $3", values, function (err, result) {
                         if (err) {
                             if (env.DEBUG) {
                                 console.log(err);

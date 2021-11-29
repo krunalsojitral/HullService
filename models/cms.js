@@ -9,9 +9,7 @@ function CMS() {
     
     this.getHomeContentData = function (callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM home_content where home_content_id = $1', [1], function (err, result) {
-                console.log(err);
-                console.log(result);
+            con.query('SELECT * FROM home_content where home_content_id = $1', [1], function (err, result) {                
                 con.release();
                 if (err) {
                     callback(err, null);

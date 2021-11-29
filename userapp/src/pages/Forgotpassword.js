@@ -23,21 +23,21 @@ export default function Forgotpassword() {
     return (
         <div>
             <Header />
-            <div class="login-section">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="login-box">
-                                <div class="login-img">
+            <div className="login-section">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-md-12">
+                            <div className="login-box">
+                                <div className="login-img">
                                     <img alt="logo" src="images/logo.png" />
                                 </div>
 
                                 <form onSubmit={handleSubmit(onSubmit)}>
-                                    <div class="login-details">
+                                    <div className="login-details">
                                         <h2>Forgot Password</h2>
                                         {/* <span>Please login to continue</span> */}
-                                        <div class="form-group">
-                                            <input type="text" {...register("email", { required: true, pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i } })} className="form-control" placeholder="Email" />
+                                        <div className="form-group">
+                                            <input type="text" {...register("email", { required: true, pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i } })} className="form-control" placeholder="Email *" />
                                             {errors?.email?.type === "required" && <small className="error">Email is required</small>}
                                             {errors?.email?.type === "pattern" && (<small className="error">Invalid email address</small>)}
                                         </div>                                        
@@ -47,16 +47,16 @@ export default function Forgotpassword() {
                                     </div>
                                 </form>
 
-                                <div class="row">
-                                    <div class="col-md-6">
+                                <div className="row">
+                                    <div className="col-md-6">
                                         <Link className="forgot-btn" to='/login'>
                                             Sign In
-                                                </Link>
+                                        </Link>
                                     </div>
-                                    <div class="col-md-6 text-right">
-                                        <Link className="forgot-btn" to='/register'>
+                                    <div className="col-md-6 text-right">
+                                        <Link className="forgot-btn" to='/userSelection'>
                                             Sign Up
-                                                </Link>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>

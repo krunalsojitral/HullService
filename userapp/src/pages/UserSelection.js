@@ -49,7 +49,7 @@ export default function UserSelection() {
 										</div>
                                                 <div className="selection-text">
                                                     <h3>Researcher</h3>
-                                                <p>Select this if you are one of the following: Social Work, Psychology, Medicine, Nursing, Psychiatry, Occupational Therapy, Physical Therapy, Speech & Language Pathology </p>
+                                                <p>Select this if you are one of the following:  </p>
                                                 </div>
                                             </div>
                                         <button onClick={(e) => handleSelectUser('researcher')} className="btn-research">Researcher</button>

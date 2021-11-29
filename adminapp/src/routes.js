@@ -31,6 +31,15 @@ const ServiceproviderAddEditForm = React.lazy(() => import('./views/pages/users/
 const HomeContentAddEditForm = React.lazy(() => import('./views/pages/homecontent/AddEditForm'))
 const Partner = React.lazy(() => import('./views/pages/partner/Partner'))
 
+const Academicdiscipline = React.lazy(() => import('./views/pages/academicdiscipline/Academicdiscipline'))
+const AcademicdisciplineAddEditForm = React.lazy(() => import('./views/pages/academicdiscipline/AddEditForm'))
+
+const Sector = React.lazy(() => import('./views/pages/sector/Sector'))
+const SectorAddEditForm = React.lazy(() => import('./views/pages/sector/AddEditForm'))
+
+const Occupation = React.lazy(() => import('./views/pages/occupation/Occupation'))
+const OccupationAddEditForm = React.lazy(() => import('./views/pages/occupation/AddEditForm'))
+
 
 
 
@@ -76,6 +85,18 @@ const routes = [
   { path: '/serviceprovideredit/:id', name: 'Service Provider Edit', component: ServiceproviderAddEditForm },
   { path: '/homecontenteditform', name: 'Home Content Edit', component: HomeContentAddEditForm },
   { path: '/partner', name: 'Partners & Sponsors', component: Partner },
+
+  { path: '/academic-discipline', name: 'Academic Discipline', component: Academicdiscipline },
+  { path: '/academicdisciplineadd', name: 'Academic Discipline Add', component: AcademicdisciplineAddEditForm },
+  { path: '/academicdisciplineedit/:id', name: 'Academic Discipline Edit', component: AcademicdisciplineAddEditForm },
+
+  { path: '/sector', name: 'Sector', component: Sector },
+  { path: '/sectoradd', name: 'Sector Add', component: SectorAddEditForm },
+  { path: '/sectoredit/:id', name: 'Sector Edit', component: SectorAddEditForm },
+
+  { path: '/occupation', name: 'Occupation', component: Occupation },
+  { path: '/occupationadd', name: 'Occupation Add', component: OccupationAddEditForm },
+  { path: '/occupationedit/:id', name: 'Occupation Edit', component: OccupationAddEditForm },
 
 ]
 

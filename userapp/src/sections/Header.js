@@ -79,8 +79,8 @@ export default function Header() {
                                 <img alt="logo" src="images/logo.png"/>
 							</div>
 
-                            {/* {!token &&<div class="hull-links">
-                                <div class="Sign-header">
+                                {/* {!token && <div className="hull-links">
+                                    <div className="Sign-header">
                                     <Link to='/login'>
                                             Sign in
                                     </Link>
@@ -96,10 +96,10 @@ export default function Header() {
                                             BECOME A MEMBER
                                     </Link>
                                     </div>
-                            </div> }
+                            </div> } */}
 
 
-                            {token &&  
+                            {/* {token &&  
                             <div className="hull-links">
                                 <a href="javascript:void(0);" className="mob-btn">
                                     <i className="fa fa-bars"></i>
@@ -142,13 +142,8 @@ export default function Header() {
                                             </NavLink>
                                         </li>
                                     </ul>
-                                </div>
-                                <div className="cta-header">
-                                    <Link to='/membership-benefit'>
-                                        BECOME A MEMBER
-                                    </Link>
-                                </div>
-                            </div>} */}
+                                </div>                                
+                            </div>}  */}
 
                                 <div className="hull-links">
                                     <a href="javascript:void(0);" className="mob-btn">
@@ -202,15 +197,10 @@ export default function Header() {
                                                         </NavLink>
                                                     </li>
                                                 </ul>
-                                            </li>
+                                            </li>                                           
                                             <li>
                                                 <NavLink activeClassName="active" to="/">
-                                                    <InlineButton name={"BLOG"} />
-                                                </NavLink>
-                                            </li>
-                                            <li>
-                                                <NavLink activeClassName="active" to="/">
-                                                    <InlineButton name={"CONTACT US"} />
+                                                    <InlineButton name={"CONTACT"} />
                                                 </NavLink>
                                             </li>
                                         </ul>
@@ -218,9 +208,9 @@ export default function Header() {
                                     <div className="cta-header">
                                         <Link to='/membership-benefit'>
                                             BECOME A MEMBER
-                                    </Link>
+                                        </Link>
                                     </div>
-                                </div>
+                                </div> 
                         </div>
                     </div>
                 </div>

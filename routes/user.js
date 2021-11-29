@@ -136,8 +136,7 @@ router.post('/forgot-password', [
 
                     // send mail with defined transport object
                     transporter.sendMail(mailOptions, (error, info) => {
-                        if (error) {
-                            console.log(error);
+                        if (error) {                            
                             return res.json({ status: 0, response: { msg: 'There was an email error', } });
                         } else {
                             return res.json({ status: 1, response: { msg: 'We have emailed you a link to reset your password.', } });
@@ -194,7 +193,7 @@ router.post('/register', (req, res) => {
         var error = errors.array();
         res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
     } else {
-        console.log(req.body.email);
+        
         let overview = {};
         asyn.waterfall([
             function (done) {
@@ -211,17 +210,22 @@ router.post('/register', (req, res) => {
                                     last_name: req.body.last_name,
                                     email: req.body.email,
                                     city: (req.body.city) ? req.body.city : '',
-                                    lat: (req.body.lat) ? req.body.lat : '',
-                                    long: (req.body.long) ? req.body.long : '',
+                                    lat: (req.body.latitude) ? req.body.latitude : '',
+                                    long: (req.body.longitude) ? req.body.longitude : '',
+                                    country: (req.body.country) ? req.body.country : '',
                                     level_of_education: (req.body.level_of_education) ? req.body.level_of_education : '',
                                     occupation: (req.body.occupation) ? req.body.occupation : '',
                                     sector: (req.body.sector) ? req.body.sector : '',
-                                    password: hash,
+                                    academic_discipline: (req.body.academic_discipline) ? req.body.academic_discipline : '',
+                                    password: hash,                                    
                                     status: 0,
                                     role: req.body.role,
                                     email_verification_token: shortid.generate() + Date.now(),
-                                    created_at: moment.utc().format('YYYY-MM-DD')
+                                    created_at: moment.utc().format('YYYY-MM-DD'),
+                                    professional_interest_of_area: req.body.professional_interest_of_area,
+                                    researcher_interest_of_area: req.body.researcher_interest_of_area
                                 };
+                                
                                 overview['data'] = record;
                                 done(err, overview);
                             })
@@ -242,11 +246,11 @@ router.post('/register', (req, res) => {
 
                         if (hostname == env.LOCAL_HOST_USER_APP) {
                             home_url = env.APP_URL;
-                            resetLink = env.APP_URL + 'activation-account?activationcode=' + overview.data.emailVerificationToken;
+                            resetLink = env.APP_URL + 'activation-account?activationcode=' + overview.data.email_verification_token;
                             admin_app_url = env.ADMIN_APP_URL
                         } else {
                             home_url = env.APP_URL;
-                            resetLink = env.APP_URL + 'activation-account?activationcode=' + overview.data.emailVerificationToken
+                            resetLink = env.APP_URL + 'activation-account?activationcode=' + overview.data.email_verification_token
                             admin_app_url = env.ADMIN_APP_URL
                         }
 
@@ -274,12 +278,37 @@ router.post('/register', (req, res) => {
                             } else {
                             }
                         });
-                        return res.json({ status: 1, response: { msg: 'Thank you for signing up. We just sent you a confirmation on your email address. Please click on the link provided to verify your account.', } });
+                        return res.json({ status: 1, response: { msg: 'Your payment was successful. We have sent you a confirmation link to your email address. Please click on the link to verify/validate your account. Thank You!.', } });
 
                     });
                 });
             }
         ]);
+    }
+});
+
+router.post('/checkEmail', [
+    check('email', 'Email is required').notEmpty(),
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        var email = req.body.email;
+        User.checkUserRegistration(email, function (err, data) {
+            if (err) {
+                return res.json({ status: 0, 'response': { msg: err } });
+            } else {
+                let totalrecord = data.length;
+                if (totalrecord) {
+                    return res.json({ status: 0, 'response': { msg: 'Sorry, email already exists.' } });
+                } else {
+                    return res.json({ status: 1, response: { msg: 'Email is not exists.' } });
+                }
+            }
+        });
+       
     }
 });
 
@@ -329,6 +358,34 @@ router.post('/csvuserList', function (req, res) {
 });
 
 
+// Email Varification
+router.post('/email-varification', [
+    check('email_verify_token', 'Reset password token is required').notEmpty()
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        loggerData(req);
+        let email_verify_token = req.body.email_verify_token;
+        User.checkEmailVerifyUser(email_verify_token, function (req, result) {
+            if (result.length) {
+                let record1 = { 'status': 1 }
+                User.emailTokenUpdate(record1, email_verify_token, function (err, data) {
+                    if (err) {
+                        return res.json({ status: 0, 'response': { msg: err } });
+                    } else {
+                        return res.json({ status: 1, 'response': { msg: 'Verification Successfully.' } });
+                    }
+                });
+            } else {
+                return res.json({ status: 0, 'response': { msg: 'Reset token is invalid.' } });
+            }
+        });
+
+    }
+});
 
 
 //get user data - adminside
@@ -460,7 +517,29 @@ router.post('/updateuserByadmin', function (req, res) {
 });
 
 
-   
+//get user data - userSide
+router.get('/getuserDetail', passport.authenticate('jwt', { session: false }), function (req, res) {
+    loggerData(req);
+    let user_id = req.user.id;
+    User.getUserById(user_id, function (err, result) {
+        if (err) {
+            return res.json({ 'status': 0, 'response': { 'msg': err } });
+        } else {
+            if (result != '') {
+                let userList = {};
+                userList['id'] = result[0].id;
+                userList['first_name'] = result[0].first_name;
+                userList['last_name'] = result[0].last_name;
+                userList['email'] = result[0].email;
+                userList['password'] = result[0].password;
+                return res.json({ 'status': 1, 'response': { 'data': userList, 'msg': 'data found' } });
+            } else {
+                return res.json({ 'status': 0, 'response': { 'data': {}, 'msg': 'data found' } });
+            }
+        }
+    });
+});
+
 
     
 

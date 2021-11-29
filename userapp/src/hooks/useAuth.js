@@ -18,26 +18,31 @@ export default function useAuth() {
         };
         return await axios.get(api_url + '/user/getuserDetail', config).then(async (result) => {  
             if (result.data.status){
+
+                localStorage.setItem('token', JSON.stringify(data.token));
+                localStorage.setItem('userdata', JSON.stringify(result.data.response.data));
+                setUser(result.data.response.data);
+                history.push('/dashboard');
                 
-                if (result.data.response.data.user_role === 2){
-                    localStorage.setItem('token', JSON.stringify(data.token));
-                    localStorage.setItem('userdata', JSON.stringify(result.data.response.data));
-                    setUser(result.data.response.data);
-                    if (result.data.response.data.firstname){
-                      //  history.push('/jobs');
-                    }else{
-                     //   history.push('/profilecreation');
-                    }
-                }else{
-                    localStorage.setItem('token', JSON.stringify(data.token));
-                    localStorage.setItem('userdata', JSON.stringify(result.data.response.data));
-                    setUser(result.data.response.data);
-                    if (result.data.response.data.firstname) {
-                      //  history.push('/find-talent');
-                    } else {
-                      //  history.push('/company-profile');
-                    }
-                }
+                // if (result.data.response.data.user_role === 2){
+                //     localStorage.setItem('token', JSON.stringify(data.token));
+                //     localStorage.setItem('userdata', JSON.stringify(result.data.response.data));
+                //     setUser(result.data.response.data);
+                //     if (result.data.response.data.firstname){
+                //       //  history.push('/jobs');
+                //     }else{
+                //      //   history.push('/profilecreation');
+                //     }
+                // }else{
+                //     localStorage.setItem('token', JSON.stringify(data.token));
+                //     localStorage.setItem('userdata', JSON.stringify(result.data.response.data));
+                //     setUser(result.data.response.data);
+                //     if (result.data.response.data.firstname) {
+                //       //  history.push('/find-talent');
+                //     } else {
+                //       //  history.push('/company-profile');
+                //     }
+                // }
             }else{
                 
             }
