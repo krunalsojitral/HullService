@@ -164,6 +164,20 @@ function User() {
         });
     }
 
+    this.getUserBlogList = function (callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT *,blog.created_at as blog_date FROM blog inner join users on users.id = blog.user_id inner join user_role on users.role = user_role.role_id where blog.status = $1 order by blog.blog_id desc', [1], function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
     
 
 }

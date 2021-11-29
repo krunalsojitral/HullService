@@ -19,28 +19,24 @@ const ForumComment = React.lazy(() => import('./views/pages/forum/ForumComment')
 const ForumAddEditForm = React.lazy(() => import('./views/pages/forum/AddEditForm'))
 const Forumheading = React.lazy(() => import('./views/pages/forumheading/Forumheading'))
 const ForumheadingAddEditForm = React.lazy(() => import('./views/pages/forumheading/AddEditForm'))
-
 const Generalpublic = React.lazy(() => import('./views/pages/users/generalpublic/Generalpublic'))
 const GeneralpublicAddEditForm = React.lazy(() => import('./views/pages/users/generalpublic/AddEditForm'))
 const Researchers = React.lazy(() => import('./views/pages/users/researchers/Researchers'))
 const ResearchersAddEditForm = React.lazy(() => import('./views/pages/users/researchers/AddEditForm'))
 const Serviceprovider = React.lazy(() => import('./views/pages/users/serviceprovider/Serviceprovider'))
 const ServiceproviderAddEditForm = React.lazy(() => import('./views/pages/users/serviceprovider/AddEditForm'))
-
-
 const HomeContentAddEditForm = React.lazy(() => import('./views/pages/homecontent/AddEditForm'))
 const Partner = React.lazy(() => import('./views/pages/partner/Partner'))
-
 const Academicdiscipline = React.lazy(() => import('./views/pages/academicdiscipline/Academicdiscipline'))
 const AcademicdisciplineAddEditForm = React.lazy(() => import('./views/pages/academicdiscipline/AddEditForm'))
-
 const Sector = React.lazy(() => import('./views/pages/sector/Sector'))
 const SectorAddEditForm = React.lazy(() => import('./views/pages/sector/AddEditForm'))
-
 const Occupation = React.lazy(() => import('./views/pages/occupation/Occupation'))
 const OccupationAddEditForm = React.lazy(() => import('./views/pages/occupation/AddEditForm'))
-
-
+const Professionalinterestarea = React.lazy(() => import('./views/pages/professionalinterestarea/Professionalinterestarea'))
+const ProfessionalinterestareaAddEditForm = React.lazy(() => import('./views/pages/professionalinterestarea/AddEditForm'))
+const Researcherinterestarea = React.lazy(() => import('./views/pages/researcherinterestarea/Researcherinterestarea'))
+const ResearcherinterestareaAddEditForm = React.lazy(() => import('./views/pages/researcherinterestarea/AddEditForm'))
 
 
 
@@ -85,18 +81,23 @@ const routes = [
   { path: '/serviceprovideredit/:id', name: 'Service Provider Edit', component: ServiceproviderAddEditForm },
   { path: '/homecontenteditform', name: 'Home Content Edit', component: HomeContentAddEditForm },
   { path: '/partner', name: 'Partners & Sponsors', component: Partner },
-
   { path: '/academic-discipline', name: 'Academic Discipline', component: Academicdiscipline },
   { path: '/academicdisciplineadd', name: 'Academic Discipline Add', component: AcademicdisciplineAddEditForm },
   { path: '/academicdisciplineedit/:id', name: 'Academic Discipline Edit', component: AcademicdisciplineAddEditForm },
-
   { path: '/sector', name: 'Sector', component: Sector },
   { path: '/sectoradd', name: 'Sector Add', component: SectorAddEditForm },
   { path: '/sectoredit/:id', name: 'Sector Edit', component: SectorAddEditForm },
-
   { path: '/occupation', name: 'Occupation', component: Occupation },
   { path: '/occupationadd', name: 'Occupation Add', component: OccupationAddEditForm },
   { path: '/occupationedit/:id', name: 'Occupation Edit', component: OccupationAddEditForm },
+
+  { path: '/researcher-interest-area', name: 'Researcher Interest Area', component: Researcherinterestarea },
+  { path: '/researcherinterestareaadd', name: 'Researcher Interest Area Add', component: ResearcherinterestareaAddEditForm },
+  { path: '/researcherinterestareaedit/:id', name: 'Researcher Interest Area Edit', component: ResearcherinterestareaAddEditForm },
+
+  { path: '/professional-interest-area', name: 'Professional Interest Area', component: Professionalinterestarea },
+  { path: '/professionalinterestareaadd', name: 'Professional Interest Area Add', component: ProfessionalinterestareaAddEditForm },
+  { path: '/professionalinterestareaedit/:id', name: 'Professional Interest Area Edit', component: ProfessionalinterestareaAddEditForm },
 
 ]
 

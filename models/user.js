@@ -197,7 +197,7 @@ function User() {
 
     this.getUserById = function (id, callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM users where id = $1', [id], function (err, result) {
+            con.query('SELECT *, users.role as userrole FROM users inner join user_role on users.role = user_role.role_id where id = $1', [id], function (err, result) {
                 con.release();
                 if (result.rows.length === 0) {
                     msg = 'User does not exist.';

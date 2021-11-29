@@ -55,12 +55,10 @@ router.post('/login', [
                         } else {
                             if (doesMatch) {
                                 let userList = {};
-
                                 userList = {
                                     'id': data[0].id,
-                                    // 'fullName': data[0].full_name,
-                                    // 'userName': data[0].user_name,
-                                    // 'phone': data[0].phone,
+                                    'first_name': data[0].first_name,
+                                    'last_name': data[0].last_name,                                    
                                     // 'usertype': data[0].usertype,
                                     // 'country': data[0].country,
                                     'email': data[0].email,
@@ -532,6 +530,7 @@ router.get('/getuserDetail', passport.authenticate('jwt', { session: false }), f
                 userList['last_name'] = result[0].last_name;
                 userList['email'] = result[0].email;
                 userList['password'] = result[0].password;
+                userList['role'] = result[0].userrole;
                 return res.json({ 'status': 1, 'response': { 'data': userList, 'msg': 'data found' } });
             } else {
                 return res.json({ 'status': 0, 'response': { 'data': {}, 'msg': 'data found' } });

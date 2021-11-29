@@ -17,6 +17,8 @@ if (ip.address() == '172.31.15.131') {
         USER_LOCAL_URL: 'http://3.99.13.94:6161/',
         ADMIN_LIVE_URL: 'http://3.99.13.94:6262/',
         ADMIN_LOCAL_URL: 'http://3.99.13.94:6262/',
+        USER_PATH: '/uploads/user/',
+        USER_VIEW_PATH: '/user/',
         BLOG_PATH: '/uploads/blog/',
         BLOG_VIEW_PATH: '/blog/',
         ARTICAL_PATH: '/uploads/artical/',

@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import InlineButton from './../components/InlineButton';
 import { useHistory } from 'react-router-dom';
-// import useLogout from './../hooks/useLogout';
+import useLogout from './../hooks/useLogout';
 // import api_url from './../components/Apiurl';
 // import axios from 'axios';
 // import Swal from "sweetalert2";
@@ -13,6 +13,8 @@ export default function Header() {
     let history = useHistory();
     const [userData, setUserData] = useState(0);
     const [token, setToken] = React.useState(0);
+
+    const { logoutUser } = useLogout();
 
     React.useEffect(() => {
         const userString = localStorage.getItem('userdata');
@@ -152,27 +154,22 @@ export default function Header() {
                                     <div className="hull-menu">
                                         <ul>
                                             <li>
-                                                <NavLink activeClassName="active" to="/">
-                                                    <InlineButton name={"HOME"} />
-                                                </NavLink>
-                                            </li>
-                                            <li>
-                                                <NavLink activeClassName="active" to="/">
+                                                <NavLink activeClassName="active" to="/about">
                                                     <InlineButton name={"ABOUT"} />
                                                 </NavLink>
                                             </li>
                                             <li>
-                                                <NavLink activeClassName="active" to="/">
+                                                <NavLink activeClassName="active" to="/members">
                                                     <InlineButton name={"MEMBERS"} />
                                                 </NavLink>
                                             </li>
                                             <li>
-                                                <NavLink activeClassName="active" to="/">
+                                                <NavLink activeClassName="active" to="/partners">
                                                     <InlineButton name={"PARTNERS"} />
                                                 </NavLink>
                                             </li>
                                             <li>
-                                                <NavLink activeClassName="active" to="/">
+                                                <NavLink activeClassName="active" to="/events">
                                                     <InlineButton name={"EVENTS"} />
                                                 </NavLink>
                                             </li>
@@ -182,27 +179,32 @@ export default function Header() {
                                                 </NavLink>
                                                 <ul>
                                                     <li>
-                                                        <NavLink activeClassName="active" to="/">
+                                                        <NavLink activeClassName="active" to="/articles">
                                                             <InlineButton name={"Articles"} />
                                                         </NavLink>
                                                     </li>
                                                     <li>
-                                                        <NavLink activeClassName="active" to="/">
+                                                        <NavLink activeClassName="active" to="/blog">
                                                             <InlineButton name={"Blog"} />
                                                         </NavLink>
                                                     </li>
                                                     <li>
-                                                        <NavLink activeClassName="active" to="/">
+                                                        <NavLink activeClassName="active" to="/video">
                                                             <InlineButton name={"Informational Videos"} />
                                                         </NavLink>
                                                     </li>
                                                 </ul>
                                             </li>                                           
                                             <li>
-                                                <NavLink activeClassName="active" to="/">
+                                                <NavLink activeClassName="active" to="/contact">
                                                     <InlineButton name={"CONTACT"} />
                                                 </NavLink>
                                             </li>
+                                            {token && <li>
+                                                <a className="logout">
+                                                    <InlineButton handleClick={logoutUser} name={"Logout"} />
+                                                </a>
+                                            </li>}
                                         </ul>
                                     </div>
                                     <div className="cta-header">

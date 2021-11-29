@@ -70,22 +70,30 @@ const _nav = [
     name: "Membership Form",
     route: "/#",
     icon: "cil-list",
-    _children: [{_tag: "CSidebarNavDropdown",
-    name: "Professional",
-    route: "/#",
-    icon: "cil-list",
     _children: [
       {
-        _tag: "CSidebarNavItem",
-        name: "Sector",
-        to: "/sector",
+        _tag: "CSidebarNavDropdown",
+        name: "Professional",
+        route: "/#",
+        icon: "cil-list",
+        _children: [
+          {
+            _tag: "CSidebarNavItem",
+            name: "Sector",
+            to: "/sector",
+          },
+          {
+            _tag: "CSidebarNavItem",
+            name: "Occupation",
+            to: "/occupation",
+          },
+          {
+            _tag: "CSidebarNavItem",
+            name: "Interest Area",
+            to: "/professional-interest-area",
+          }
+          ]
       },
-      {
-        _tag: "CSidebarNavItem",
-        name: "Occupation",
-        to: "/occupation",
-      }
-      ]},
       {
         _tag: "CSidebarNavDropdown",
         name: "Researcher",
@@ -100,11 +108,12 @@ const _nav = [
           {
             _tag: "CSidebarNavItem",
             name: "Interest Area",
-            to: "/academic-discipline",
+            to: "/researcher-interest-area",
           }
         ]
       }
-  ]},
+    ]
+  },
   {
     _tag: "CSidebarNavDropdown",
     name: "Forum",

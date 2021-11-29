@@ -40,6 +40,8 @@ var forumRouter = require('./routes/forum');
 var occupationRouter = require('./routes/occupation');
 var sectorRouter = require('./routes/sector');
 var academicdisciplineRouter = require('./routes/academicdiscipline');
+var professionalinterestareaRouter = require('./routes/professionalinterestarea');
+var researcherinterestareaRouter = require('./routes/researcherinterestarea');
 
 
 //app.use(express.static('uploads'));
@@ -61,6 +63,9 @@ app.use('/api/cms', cmsRouter);
 app.use('/api/occupation', occupationRouter);
 app.use('/api/sector', sectorRouter);
 app.use('/api/academicdiscipline', academicdisciplineRouter);
+app.use('/api/professionalinterestarea', professionalinterestareaRouter);
+app.use('/api/researcherinterestarea', researcherinterestareaRouter);
+
 
 
 app.get('/', (req, res) => {

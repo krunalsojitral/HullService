@@ -285,4 +285,34 @@ router.post('/updateBlogByadmin', function (req, res) {
     });
 });
 
+router.get('/getUserBlogList', function (req, res) {
+    loggerData(req);
+    Blog.getUserBlogList(function (err, result) {
+        if (err) {
+            return res.json({ status: 0, 'response': { msg: err } });
+        } else {
+            var imageLink;
+            if (req.headers.host == env.ADMIN_LIVE_URL) {
+                imageLink = env.ADMIN_LIVE_URL;
+            } else {
+                imageLink = env.ADMIN_LIVE_URL;
+            }
+            var blogList = result.map(data => {
+                let retObj = {};
+                retObj['blog_id'] = data.blog_id;
+                retObj['title'] = data.title;
+                retObj['description'] = data.description;
+                retObj['created_at'] = moment(data.blog_date).format('MMMM DD, YYYY');
+                retObj['avatar'] = (data.avatar) ? imageLink + env.USER_VIEW_PATH + data.avatar : '';
+                retObj['role'] = data.role;
+                retObj['name'] = (data.first_name) ? (data.first_name + ' ' + ((data.last_name) ? data.last_name:'')) : 'Hull Services';
+                retObj['image'] = (data.image) ? imageLink + env.BLOG_VIEW_PATH + data.image : '';                
+                retObj['status'] = data.status;
+                return retObj;
+            });
+            return res.json({ status: 1, 'response': { data: blogList } });
+        }
+    });
+});
+
 module.exports = router;
