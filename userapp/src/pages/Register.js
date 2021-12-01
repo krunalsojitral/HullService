@@ -274,7 +274,7 @@ export default function Register() {
                                 <form onSubmit={handleSubmit(onSubmit)}>
                                     <div className="login-details">
                                         <h2>Welcome to the Virtual Centre for the Study and Prevention of Developmental Trauma</h2>
-                                        <div class="sub-title">Please Tell Us About Yourself</div>
+                                        <div className="sub-title">Please Tell Us About Yourself</div>
                                         <div className="form-group">
 
                                             <Controller

@@ -47,7 +47,7 @@ export default function Header() {
     return(
 
         <div>
-            <div className="top-header">
+            {!token && <div className="top-header">
                 <div className="container">
                     <div className="row">
                         <div className="col-md-12">
@@ -69,7 +69,7 @@ export default function Header() {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>}
             
 
             <header>
@@ -174,7 +174,7 @@ export default function Header() {
                                                 </NavLink>
                                             </li>
                                             <li>
-                                                <NavLink activeClassName="active" to="/">
+                                                <NavLink activeClassName="active" to="/" exact={true}>
                                                     <InlineButton name={"RESOURCES"} />
                                                 </NavLink>
                                                 <ul>
@@ -189,7 +189,7 @@ export default function Header() {
                                                         </NavLink>
                                                     </li>
                                                     <li>
-                                                        <NavLink activeClassName="active" to="/video">
+                                                        <NavLink activeClassName="active" to="/informational-video">
                                                             <InlineButton name={"Informational Videos"} />
                                                         </NavLink>
                                                     </li>

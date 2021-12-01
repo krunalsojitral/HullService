@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import Header from './../../sections/Header';
 import Footer from './../../sections/Footer';
@@ -8,6 +8,8 @@ import axios from 'axios';
 import Swal from "sweetalert2";
 import api_url from '../../components/Apiurl';
 import './../dev.css';
+import { UserContext } from './../../hooks/UserContext';
+
 
 export default function Blog() {
 
@@ -17,22 +19,53 @@ export default function Blog() {
     const [data, setData] = useState([]);
     const [currentData, setCurrentData] = useState([]);
 
+    const { user, isLoading } = useContext(UserContext);
+    
+
 
     React.useEffect(() => {
 
-        axios.get(api_url + '/blog/getUserBlogList').then((result) => {
-            if (result.data.status) {
-                var blogdata = result.data.response.data;
-                if (blogdata.length > 0) {
-                    setData(blogdata);
+        const tokenString = localStorage.getItem('token');
+        var token = JSON.parse(tokenString);
+        const config = {
+            headers: { Authorization: `${token}` }
+        };
+
+        if (token){
+            axios.post(api_url + '/blog/getPaidBlogList', {}, config).then((result) => {
+                if (result.data.status) {
+                    var blogdata = result.data.response.data;
+                    if (blogdata.length > 0) {
+                        setData(blogdata);
+                    }
+                } else {
+                    Swal.fire('Oops...', result.data.response.msg, 'error')
                 }
-            } else {
-                Swal.fire('Oops...', result.data.response.msg, 'error')
-            }
-        }).catch((err) => {
-            console.log(err);
-            //Swal.fire('Oops...', err, 'error')
-        })
+            }).catch((err) => {
+                console.log(err);
+                //Swal.fire('Oops...', err, 'error')
+            })
+        }else{
+
+            axios.post(api_url + '/blog/getUnpaidBlogList', {}).then((result) => {
+                if (result.data.status) {
+                    var blogdata = result.data.response.data;
+                    if (blogdata.length > 0) {
+                        setData(blogdata);
+                    }
+                } else {
+                    Swal.fire('Oops...', result.data.response.msg, 'error')
+                }
+            }).catch((err) => {
+                console.log(err);
+                //Swal.fire('Oops...', err, 'error')
+            })
+
+        }
+       
+
+
+
     }, [])
 
     React.useEffect(() => {
@@ -44,64 +77,87 @@ export default function Blog() {
         setCurrentData(data.slice(offset, offset + pageLimit));
     }, [offset, data]);
 
+    const bookmarkClick = (id) => {
+        const tokenString = localStorage.getItem('token');
+        var token = JSON.parse(tokenString);
+        const config = {
+            headers: { Authorization: `${token}` }
+        };
+        axios.post(api_url + '/blog/blogBookmark', { "blog_id": id }, config).then((result) => {
+            if (result.data.status) {
+                var blogdata = result.data.response.data;
+            } else {
+                Swal.fire('Oops...', result.data.response.msg, 'error')
+            }
+        }).catch((err) => {
+            console.log(err);
+        })
+    }
+
     return (
         <div>
             <Header />
-            <section class="inner-header">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h2>Blog</h2>
+            <section className="inner-header">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-md-12">
+                            <h2>Blogs</h2>
                         </div>
                     </div>
                 </div>
             </section>
-            <section class="dashboard-card">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-2 side-col">
+            <section className="dashboard-card">
+                <div className="container-fluid">
+                    <div className="row">
+                        <div className="col-md-2 side-col">
                             <Sidebar />
                         </div>
 
-                        <div class="col-md-8 articlebox">
-                            <div class="row">
-                                {currentData.map(data => (<div class="col-md-4">
-                                    <div class="blog-box">
-                                        <div class="blog-image">
-                                            {data.image && <img src={data.image} alt="blog" />}
-                                            {!data.image && <img src="images/blog.jpg" alt="blog" />}
+                        <div className="col-md-8 articlebox">
+                            <div className="row">
+                                {currentData.map((data, index) => (<div key={index} className="col-md-4">
+
+                                    <div className="blog-box">
+                                        <div className="blog-image">
+                                            <Link to={{ pathname: "/blog-detail", search: "?id=" + data.blog_id }}>
+                                                {data.image && <img src={data.image} alt="blog" />}
+                                                {!data.image && <img src="images/blog.jpg" alt="blog" />}
+                                            </Link>
                                         </div>
-                                        <div class="blog-text">
-                                            <div class="blog-tags">
-                                                <p>Telemedicine</p>
-                                                <a href="javascript:;"><img src="images/bookmark-fill.png" alt="bookmark-fill" /></a>
+                                        <div className="blog-text">
+                                            <div className="blog-tags" onClick={(e) => bookmarkClick(data.blog_id)}>
+                                                {/* <p>Telemedicine</p> */}                                                
+                                                <img className="bookmark-fill" src="images/bookmark-fill.png" alt="bookmark-fill" />
+                                                {/* <img className="bookmark-outline" src="images/bookmark-outline.png" alt="bookmark-fill" /> */}
+
+                                                
                                             </div>
-                                            <h3>{data.title.slice(0, 46)}</h3>
-                                            <div class="blog-post">
-                                                <div class="blog-author">
-                                                    {data.avatar && <img src={data.avatar} alt="author" />}
-                                                    {!data.avatar && <img src="images/hull-icon.png" alt="author" />}
-                                                    <p>{data.name}</p>
+                                            <h3><Link to={{ pathname: "/blog-detail", search: "?id=" + data.blog_id }}> {data.title.slice(0, 46)}</Link></h3>
+                                            <div className="blog-post">
+                                                <div className="blog-author">
+                                                    <img src="images/hull-icon.png" alt="author" />
+                                                    <p>Hull Service</p>
                                                 </div>
-                                                <div class="clap">
+                                                {/* <div className="clap">
                                                     <a href="javascript:;"><img src="images/clap.png" alt="clap" />48</a>
-                                                </div>
-                                                <div class="date">{data.created_at}</div>
+                                                </div> */}
+                                                <div className="date">{data.created_at}</div>
                                             </div>
                                         </div>
                                     </div>
+
                                 </div> 
                                 ))}
                                 {
                                     currentData.length == 0 && 
-                                    <div class="blog-box">
+                                    <div className="blog-box">
                                         <div className="no-data">No blog available.
                                         </div>
                                     </div>
                                 }                               
 
                             </div>
-                            <div class="row">
+                            <div className="row">
                                 {
                                     currentData.length > 0 && <Paginator
                                         totalRecords={data.length}

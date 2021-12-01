@@ -13,7 +13,7 @@ import { MultiSelect } from "react-multi-select-component";
 import './TextEditors.scss'
 import { useForm, Controller } from "react-hook-form";
 import { useHistory } from "react-router-dom";
-import api_url from './../../Apiurl';
+import api_url from '../../Apiurl';
 import axios from "axios";
 import Swal from "sweetalert2";
 
@@ -88,7 +88,7 @@ const AddEditForm = ({ match }) => {
 
     if (match.params.id) {
       setisEditMode(1);
-      axios.post(api_url + "/artical/getarticalDataById", { artical_id: match.params.id }, {})
+      axios.post(api_url + "/article/getarticleDataById", { article_id: match.params.id }, {})
         .then((result) => {
           if (result.data.status) {
             var usersdata = result.data.response.data;
@@ -110,7 +110,7 @@ const AddEditForm = ({ match }) => {
   }, []);
 
   const updateInformationAct = (data) => {
-    data.artical_id = match.params.id;
+    data.article_id = match.params.id;
     //data.description = text;
     data.description = contentEditor;
     data.tag = selectedTag;
@@ -119,7 +119,7 @@ const AddEditForm = ({ match }) => {
     if (selectedFile) {
       formData.append("image", selectedFile, selectedFile.name);
     }
-    axios.post(api_url + "/artical/updatearticalByadmin", formData, {})
+    axios.post(api_url + "/article/updatearticleByadmin", formData, {})
       .then((result) => {
         if (result.data.status) {
           Swal.fire("Success!", result.data.response.msg, "success");
@@ -141,7 +141,7 @@ const AddEditForm = ({ match }) => {
     if (selectedFile) {
       formData.append("image", selectedFile, selectedFile.name);
     }
-    axios.post(api_url + "/artical/addarticalByadmin", formData, {})
+    axios.post(api_url + "/article/addarticleByadmin", formData, {})
       .then((result) => {
         if (result.data.status) {
           Swal.fire("Success!", result.data.response.msg, "success");

@@ -6,33 +6,33 @@ import Footer from './../../sections/Footer';
 //import { useForm } from "react-hook-form";
 import Sidebar from './Sidebar';
 
-export default function Events() {
-   
+export default function GroupSession() {
 
-//     const { loginUser } = useAuth();
 
-//    // const [isFirstRadioLoaded, setIsFirstRadioLoaded] = useState(false);  
+    //     const { loginUser } = useAuth();
 
-//     const { register, handleSubmit, formState: { errors } } = useForm();
-//     const onSubmit = async (data) => {
-//         var obj = {
-//             email: data.email,
-//             password: data.password
-//         }
+    //    // const [isFirstRadioLoaded, setIsFirstRadioLoaded] = useState(false);  
 
-//        // setIsFirstRadioLoaded(currentIsLoaded => !currentIsLoaded)
-//         await loginUser(obj);
+    //     const { register, handleSubmit, formState: { errors } } = useForm();
+    //     const onSubmit = async (data) => {
+    //         var obj = {
+    //             email: data.email,
+    //             password: data.password
+    //         }
 
-//     }
+    //        // setIsFirstRadioLoaded(currentIsLoaded => !currentIsLoaded)
+    //         await loginUser(obj);
 
-    return(
+    //     }
+
+    return (
         <div>
-            <Header/>
+            <Header />
             <section className="inner-header">
                 <div className="container">
                     <div className="row">
                         <div className="col-md-12">
-                            <h2>Events</h2>
+                            <h2>Group Session</h2>
                         </div>
                     </div>
                 </div>
@@ -52,9 +52,9 @@ export default function Events() {
                         </div>
                     </div>
                 </div>
-            </section>           
+            </section>
 
-            <Footer/>
+            <Footer />
         </div>
     )
 }

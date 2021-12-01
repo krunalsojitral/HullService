@@ -3,7 +3,7 @@
 }
 
 .no-data{
-  margin: 299px;
+  margin: 265px;
 }
 
 .blog-image {
@@ -24,4 +24,37 @@
 
 .clap a img {
     vertical-align: sub;
+}
+
+.dashboard-card .side-bar ul li ul {
+    display: none;
+    background: #fff;
+    border-radius: 5px;
+}
+
+.dashboard-card .side-bar ul li ul li a {
+    color: #000;
+    font-size: 12px;
+}
+
+.dashboard-card .side-bar ul li ul li {padding-left: 28px;}
+
+.dashboard-card .side-bar ul li a.active + ul {
+    display: block;
+}
+
+.modelclose {
+    height: 30px;
+    width: 30px;
+    border: none;
+    border-radius: 100px;
+    position: absolute;
+    right: -13px;
+    top: -11px;
+    background: #276E80;
+    color: #fff;
+}
+
+.dashboard-card .side-bar ul li.sub-active ul {
+    display: block;
 }

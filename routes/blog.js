@@ -73,7 +73,7 @@ router.post('/getBlogDataById', [check('blog_id', 'Blog is required').notEmpty()
                         blog['blog_id'] = result[0].blog_id;
                         blog['title'] = result[0].title;
                         blog['description'] = result[0].description;
-                        blog['created_at'] = result[0].created_at;
+                        blog['created_at'] = moment(result[0].created_at).format('MMMM DD, YYYY');
                         blog['cost'] = result[0].cost;
                         blog['purchase_type'] = result[0].purchase_type;
                         blog['image'] = (result[0].image) ? imageLink + env.BLOG_VIEW_PATH + result[0].image : '';
@@ -285,9 +285,10 @@ router.post('/updateBlogByadmin', function (req, res) {
     });
 });
 
-router.get('/getUserBlogList', function (req, res) {
+router.post('/getPaidBlogList', passport.authenticate('jwt', { session: false }),  function (req, res) {
     loggerData(req);
-    Blog.getUserBlogList(function (err, result) {
+    var user_role = req.user.userrole;
+    Blog.getPaidBlogList(user_role, function (err, result) {
         if (err) {
             return res.json({ status: 0, 'response': { msg: err } });
         } else {
@@ -303,9 +304,7 @@ router.get('/getUserBlogList', function (req, res) {
                 retObj['title'] = data.title;
                 retObj['description'] = data.description;
                 retObj['created_at'] = moment(data.blog_date).format('MMMM DD, YYYY');
-                retObj['avatar'] = (data.avatar) ? imageLink + env.USER_VIEW_PATH + data.avatar : '';
                 retObj['role'] = data.role;
-                retObj['name'] = (data.first_name) ? (data.first_name + ' ' + ((data.last_name) ? data.last_name:'')) : 'Hull Services';
                 retObj['image'] = (data.image) ? imageLink + env.BLOG_VIEW_PATH + data.image : '';                
                 retObj['status'] = data.status;
                 return retObj;
@@ -314,5 +313,111 @@ router.get('/getUserBlogList', function (req, res) {
         }
     });
 });
+
+
+router.post('/getUnpaidBlogList', function (req, res) {
+    loggerData(req);
+    Blog.getUnpaidBlogList(function (err, result) {
+        if (err) {
+            return res.json({ status: 0, 'response': { msg: err } });
+        } else {
+            var imageLink;
+            if (req.headers.host == env.ADMIN_LIVE_URL) {
+                imageLink = env.ADMIN_LIVE_URL;
+            } else {
+                imageLink = env.ADMIN_LIVE_URL;
+            }
+            var blogList = result.map(data => {
+                let retObj = {};
+                retObj['blog_id'] = data.blog_id;
+                retObj['title'] = data.title;
+                retObj['description'] = data.description;
+                retObj['created_at'] = moment(data.blog_date).format('MMMM DD, YYYY');
+                retObj['role'] = data.role;
+                retObj['image'] = (data.image) ? imageLink + env.BLOG_VIEW_PATH + data.image : '';
+                retObj['status'] = data.status;
+                return retObj;
+            });
+            return res.json({ status: 1, 'response': { data: blogList } });
+        }
+    });
+});
+
+
+
+router.post('/getRelatedUnpaidBlogList',  function (req, res) {
+    loggerData(req);    
+    let blog_id = req.body.blog_id;
+    Blog.getRelatedUnpaidBlogList(blog_id, function (err, result) {
+        if (err) {
+            return res.json({ status: 0, 'response': { msg: err } });
+        } else {
+            var imageLink;
+            if (req.headers.host == env.ADMIN_LIVE_URL) {
+                imageLink = env.ADMIN_LIVE_URL;
+            } else {
+                imageLink = env.ADMIN_LIVE_URL;
+            }
+            var blogList = result.map(data => {
+                let retObj = {};
+                retObj['blog_id'] = data.blog_id;
+                retObj['title'] = data.title;
+                retObj['description'] = data.description;
+                retObj['created_at'] = moment(data.blog_date).format('MMMM DD, YYYY');
+                retObj['role'] = data.role;
+                retObj['image'] = (data.image) ? imageLink + env.BLOG_VIEW_PATH + data.image : '';
+                retObj['status'] = data.status;
+                return retObj;
+            });
+            return res.json({ status: 1, 'response': { data: blogList } });
+        }
+    });
+});
+
+
+router.post('/getRelatedPaidBlogList', passport.authenticate('jwt', { session: false }), function (req, res) {
+    loggerData(req);
+    var user_role = req.user.userrole;
+    let blog_id = req.body.blog_id;
+    Blog.getRelatedPaidBlogList(user_role, blog_id, function (err, result) {
+        if (err) {
+            return res.json({ status: 0, 'response': { msg: err } });
+        } else {
+            var imageLink;
+            if (req.headers.host == env.ADMIN_LIVE_URL) {
+                imageLink = env.ADMIN_LIVE_URL;
+            } else {
+                imageLink = env.ADMIN_LIVE_URL;
+            }
+            var blogList = result.map(data => {
+                let retObj = {};
+                retObj['blog_id'] = data.blog_id;
+                retObj['title'] = data.title;
+                retObj['description'] = data.description;
+                retObj['created_at'] = moment(data.blog_date).format('MMMM DD, YYYY');
+                retObj['role'] = data.role;
+                retObj['image'] = (data.image) ? imageLink + env.BLOG_VIEW_PATH + data.image : '';
+                retObj['status'] = data.status;
+                return retObj;
+            });
+            return res.json({ status: 1, 'response': { data: blogList } });
+        }
+    });
+});
+
+router.post('/blogBookmark', passport.authenticate('jwt', { session: false }), function (req, res) {
+    loggerData(req);
+    var user_id = req.user.id;
+    let blog_id = req.body.blog_id;
+    Blog.blogBookmark(user_id, blog_id, function (err, result) {
+        if (err) {
+            return res.json({ status: 0, 'response': { msg: err } });
+        } else {
+            return res.json({ status: 1, 'response': { data: result } });
+        }
+    });
+});
+
+
 
 module.exports = router;

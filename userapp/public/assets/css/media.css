@@ -1,3 +1,14 @@
+@media (min-width: 992px) and (max-width: 1900px) {
+    .course-list {
+        grid-template-columns: 1fr;
+        grid-row-gap: 20px;
+    }
+
+    .doctor-detail {
+        padding-left: 0;
+    }
+}
+
 @media (min-width: 1401px) and (max-width: 1650px) {
     .success-text h2 {
         font-size: 30px;
@@ -45,6 +56,35 @@
 }
 
 @media (min-width: 992px) and (max-width: 1199px) {
+    .media-icon {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .media-main {
+        justify-content: start;
+        align-items: flex-start;
+    }
+
+    .media-bdy {
+        width: 100%;
+    }
+
+    .media-bdy p {
+        margin-bottom: 20px;
+    }
+
+    .forum-cal,
+    .forum-cat {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        text-align: center;
+    }
+
     .course-title h2 {
         font-size: 28px;
     }
@@ -101,7 +141,7 @@
         margin-left: 0;
         display: none;
     }
-
+.dashboard-card .side-bar ul li ul li a span{display: block;}
     .dashboard-card .side-bar ul li a {
         justify-content: center;
     }
@@ -112,6 +152,35 @@
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
+    .support-group .media-icon {
+        flex-direction: row;
+    }
+
+    .media-icon {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .media-main {
+        justify-content: start;
+        align-items: flex-start;
+    }
+
+    .media-bdy {
+        width: 100%;
+    }
+
+    .media-bdy p {
+        margin-bottom: 20px;
+    }
+
+    .media-doctor {
+        flex-direction: column;
+    }
+
     .habit-success {
         flex-direction: column-reverse;
     }
@@ -389,6 +458,54 @@
 }
 
 @media(max-width: 767px) {
+    .support-group .media-icon {
+        flex-direction: row;
+    }
+
+    .media-icon {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .media-main {
+        justify-content: start;
+        align-items: flex-start;
+    }
+
+    .media-bdy {
+        width: 100%;
+    }
+
+    .media-bdy p {
+        margin-bottom: 20px;
+    }
+
+    .media-doctor {
+        flex-direction: column;
+    }
+
+    .course-list {
+        grid-template-columns: 1fr;
+        row-gap: 30px;
+    }
+
+    .doctor-detail {
+        padding-left: 0;
+    }
+
+    .forum-post {
+        grid-template-columns: 1fr;
+        column-gap: 0;
+        row-gap: 15px;
+    }
+
+    .category-table~.pagination {
+        margin: 30px auto 40px;
+    }
+
     .text-grid {
         column-gap: 0;
         grid-template-columns: 1fr;
@@ -805,18 +922,55 @@
         font-size: 18px;
         margin-bottom: 10px;
     }
+
     .donate-btn {
-    margin-bottom: 20px;
-    flex-direction: column;
-}
-.donate-btn a {
-     margin: 10px 0;
-  }
+        margin-bottom: 20px;
+        flex-direction: column;
+    }
+
+    .donate-btn a {
+        margin: 10px 0;
+    }
+
+    .table-responsive {
+        border: none;
+    }
 }
 
 @media (max-width: 480px) {
+    .support-group .media-icon {
+        flex-direction: column;
+    }
+
+    .support-group .media-icon div:last-of-type {
+        margin-left: 0;
+    }
+
+    .media-main {
+        justify-content: start;
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .forum-chat {
+        grid-template-columns: 1fr;
+    }
+
+    .forum-title p,
+    .forum-title p label {
+        text-align: left;
+    }
+
+    .forum-comments {
+        flex-direction: column;
+    }
+
     .article-tags .video-list .video-list-card .video-list-view {
         flex-direction: row;
+    }
+
+    .reply-forum a:last-of-type {
+        margin-left: 0;
     }
 
     .video-list .video-list-card .video-list-view {
@@ -853,9 +1007,11 @@
         margin: 0;
         justify-content: flex-end;
     }
-header .header-card .hull-links .cta-header a:first-of-type {
-    margin-right: 0;
-}
+
+    header .header-card .hull-links .cta-header a:first-of-type {
+        margin-right: 0;
+    }
+
     header .header-card .hull-links .cta-header a {
         margin: 4px 0;
 
@@ -863,7 +1019,8 @@ header .header-card .hull-links .cta-header a:first-of-type {
         width: 100%;
     }
 }
-@media (max-width: 360px){
+
+@media (max-width: 360px) {
     header .header-card .hull-links .cta-header a {
         margin: 10px 0;
         padding: 5px 5px;

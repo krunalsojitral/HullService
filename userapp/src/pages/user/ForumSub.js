@@ -6,28 +6,11 @@ import Footer from './../../sections/Footer';
 //import { useForm } from "react-hook-form";
 import Sidebar from './Sidebar';
 
-export default function Forum() {
-   
+export default function ForumSub() {
 
-//     const { loginUser } = useAuth();
-
-//    // const [isFirstRadioLoaded, setIsFirstRadioLoaded] = useState(false);  
-
-//     const { register, handleSubmit, formState: { errors } } = useForm();
-//     const onSubmit = async (data) => {
-//         var obj = {
-//             email: data.email,
-//             password: data.password
-//         }
-
-//        // setIsFirstRadioLoaded(currentIsLoaded => !currentIsLoaded)
-//         await loginUser(obj);
-
-//     }
-
-    return(
+    return (
         <div>
-            <Header/>
+            <Header />
             <section className="inner-header">
                 <div className="container">
                     <div className="row">
@@ -46,49 +29,8 @@ export default function Forum() {
                         <div class="col-md-7">
                             <div class="category-table">
                                 <h2 class="mb-0">Welcoming Forums</h2>
-                                <br/>
-                                <div class="forum-table table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>Topic Title</th>
-                                                <th>Category</th>
-                                                <th>Replies</th>
-                                                <th>Views</th>
-                                                <th>Last Post</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>How do I find an appropriate therapist for me?</td>
-                                                <td>Need Advice</td>
-                                                <td>47</td>
-                                                <td>456</td>
-                                                <td>HappyDude <span>10 minutes ago</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td>How do I find an appropriate therapist for me?</td>
-                                                <td>Need Advice</td>
-                                                <td>47</td>
-                                                <td>456</td>
-                                                <td>HappyDude <span>10 minutes ago</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td>How do I find an appropriate therapist for me?</td>
-                                                <td>Need Advice</td>
-                                                <td>47</td>
-                                                <td>456</td>
-                                                <td>HappyDude <span>10 minutes ago</span></td>
-                                            </tr>                                           
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="pagination"></div>
-                            </div>
-
-                            <div class="category-table">
-                                <h2 class="mb-0">Welcoming Forums</h2>
-                                <br />
+                                <p>This is <b>not</b> a moderated forum. Please be polite to your peers. Be kind and remember the human on the other end.</p>
+                                <a href="javascript:;">Back to Forum Categories</a>
                                 <div class="forum-table table-responsive">
                                     <table class="table">
                                         <thead>
@@ -122,27 +64,69 @@ export default function Forum() {
                                                 <td>456</td>
                                                 <td>HappyDude <span>10 minutes ago</span></td>
                                             </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="pagination"></div>
-                            </div>
-
-                            <div class="category-table">
-                                <h2 class="mb-0">Welcoming Forums</h2>
-                               <br/>
-                                <div class="forum-table table-responsive">
-                                    <table class="table">
-                                        <thead>
                                             <tr>
-                                                <th>Topic Title</th>
-                                                <th>Category</th>
-                                                <th>Replies</th>
-                                                <th>Views</th>
-                                                <th>Last Post</th>
+                                                <td>How do I find an appropriate therapist for me?</td>
+                                                <td>Need Advice</td>
+                                                <td>47</td>
+                                                <td>456</td>
+                                                <td>HappyDude <span>10 minutes ago</span></td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
+                                            <tr>
+                                                <td>How do I find an appropriate therapist for me?</td>
+                                                <td>Need Advice</td>
+                                                <td>47</td>
+                                                <td>456</td>
+                                                <td>HappyDude <span>10 minutes ago</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>How do I find an appropriate therapist for me?</td>
+                                                <td>Need Advice</td>
+                                                <td>47</td>
+                                                <td>456</td>
+                                                <td>HappyDude <span>10 minutes ago</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>How do I find an appropriate therapist for me?</td>
+                                                <td>Need Advice</td>
+                                                <td>47</td>
+                                                <td>456</td>
+                                                <td>HappyDude <span>10 minutes ago</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>How do I find an appropriate therapist for me?</td>
+                                                <td>Need Advice</td>
+                                                <td>47</td>
+                                                <td>456</td>
+                                                <td>HappyDude <span>10 minutes ago</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>How do I find an appropriate therapist for me?</td>
+                                                <td>Need Advice</td>
+                                                <td>47</td>
+                                                <td>456</td>
+                                                <td>HappyDude <span>10 minutes ago</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>How do I find an appropriate therapist for me?</td>
+                                                <td>Need Advice</td>
+                                                <td>47</td>
+                                                <td>456</td>
+                                                <td>HappyDude <span>10 minutes ago</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>How do I find an appropriate therapist for me?</td>
+                                                <td>Need Advice</td>
+                                                <td>47</td>
+                                                <td>456</td>
+                                                <td>HappyDude <span>10 minutes ago</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>How do I find an appropriate therapist for me?</td>
+                                                <td>Need Advice</td>
+                                                <td>47</td>
+                                                <td>456</td>
+                                                <td>HappyDude <span>10 minutes ago</span></td>
+                                            </tr>
                                             <tr>
                                                 <td>How do I find an appropriate therapist for me?</td>
                                                 <td>Need Advice</td>
@@ -169,8 +153,6 @@ export default function Forum() {
                                 </div>
                                 <div class="pagination"></div>
                             </div>
-
-
                         </div>
                         <div class="col-md-3 article-tags">
                             <div class="video-tag">
@@ -184,14 +166,14 @@ export default function Forum() {
                                 </ul>
                             </div>
                             <div class="banner-ads">
-                                <a href="javascript:;"><img src="images/course-ad.png" alt="course-ad"/></a>
-                                <a href="javascript:;"><img src="images/Banner-ad.png" alt="Banner-ad"/></a>
+                                <a href="javascript:;"><img src="images/course-ad.png" alt="course-ad" /></a>
+                                <a href="javascript:;"><img src="images/Banner-ad.png" alt="Banner-ad" /></a>
                             </div>
                         </div>
                     </div>
                 </div>
-            </section>                    
-            <Footer/>
+            </section>
+            <Footer />
         </div>
     )
 }

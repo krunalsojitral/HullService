@@ -7,7 +7,7 @@ var router = express.Router();
 var jwt = require('jsonwebtoken');
 var passport = require('passport');
 var env = require('../config/env');
-var Artical = require('../models/artical');
+var Article = require('../models/article');
 var path = require('path');
 var fs = require('fs');
 var asyn = require('async');
@@ -24,17 +24,17 @@ function loggerData(req) {
 }
 
 
-// artical list
+// article list
 //passport.authenticate('jwt', { session: false }), 
-router.get('/articalList', function (req, res) {
+router.get('/articleList', function (req, res) {
     loggerData(req);
-    Artical.getAllAdminArtical(function (err, result) {
+    Article.getAllAdminArticle(function (err, result) {
         if (err) {
             return res.json({ status: 0, 'response': { msg: err } });
         } else {
-            var articalList = result.map(data => {
+            var articleList = result.map(data => {
                 let retObj = {};
-                retObj['artical_id'] = data.artical_id;
+                retObj['article_id'] = data.article_id;
                 retObj['title'] = data.title;
                 retObj['description'] = data.description;
                 retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
@@ -42,24 +42,24 @@ router.get('/articalList', function (req, res) {
                 retObj['status'] = data.status;
                 return retObj;
             });
-            return res.json({ status: 1, 'response': { data: articalList } });
+            return res.json({ status: 1, 'response': { data: articleList } });
         }
     });
 });
 
-//get artical data - adminside
-router.post('/getarticalDataById', [check('artical_id', 'artical is required').notEmpty()], (req, res, next) => {
+//get article data - adminside
+router.post('/getarticleDataById', [check('article_id', 'article is required').notEmpty()], (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         var error = errors.array();
         res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
     } else {
-        let artical_id = req.body.artical_id;
+        let article_id = req.body.article_id;
 
         asyn.waterfall([
             function (done) {
 
-                Artical.getarticalDataById(artical_id, function (err, result) {
+                Article.getarticleDataById(article_id, function (err, result) {
                     if (err) {
                         done({ 'status': 0, 'response': { 'msg': 'Something went wrong.' } });
                     } else {
@@ -69,25 +69,25 @@ router.post('/getarticalDataById', [check('artical_id', 'artical is required').n
                         } else {
                             imageLink = env.ADMIN_LIVE_URL;
                         }
-                        let artical = {};
-                        artical['artical_id'] = result[0].artical_id;
-                        artical['title'] = result[0].title;
-                        artical['description'] = result[0].description;
-                        artical['created_at'] = result[0].created_at;
-                        artical['purchase_type'] = result[0].purchase_type;
-                        artical['image'] = (result[0].image) ? imageLink + env.ARTICAL_VIEW_PATH + result[0].image : '';
-                        artical['role'] = result[0].role;
-                        artical['cost'] = result[0].cost;
-                        artical['status'] = result[0].status;
-                        artical['tag'] = [];
-                        done(err, artical)
+                        let article = {};
+                        article['article_id'] = result[0].article_id;
+                        article['title'] = result[0].title;
+                        article['description'] = result[0].description;
+                        article['created_at'] = moment(result[0].created_at).format('MMMM DD, YYYY');
+                        article['purchase_type'] = result[0].purchase_type;
+                        article['image'] = (result[0].image) ? imageLink + env.ARTICLE_VIEW_PATH + result[0].image : '';
+                        article['role'] = result[0].role;
+                        article['cost'] = result[0].cost;
+                        article['status'] = result[0].status;
+                        article['tag'] = [];
+                        done(err, article)
                     }
                 });
 
             },
-            function (artical, done) {
-                if (artical['artical_id'] != '') {
-                    Artical.getTagByArticalId(artical['artical_id'], function (err, result) {
+            function (article, done) {
+                if (article['article_id'] != '') {
+                    Article.getTagByArticleId(article['article_id'], function (err, result) {
 
                         if (result && result.length > 0) {
                             var obj = result.map((data, index) => {
@@ -97,22 +97,22 @@ router.post('/getarticalDataById', [check('artical_id', 'artical is required').n
                                 retObj['value'] = data.tag_id;
                                 return retObj;
                             });
-                            artical['tag'] = obj;
-                            done(null, artical)
+                            article['tag'] = obj;
+                            done(null, article)
                         } else {
-                            done(null, artical)
+                            done(null, article)
                         }
                     });
                 } else {
-                    done(null, artical)
+                    done(null, article)
                 }
             }
         ],
-            function (error, blog) {
+            function (error, article) {
                 if (error) {
                     return res.json({ 'status': 0, 'response': { 'msg': err } });
                 } else {
-                    return res.json({ 'status': 1, 'response': { 'data': blog, 'msg': 'data found' } });
+                    return res.json({ 'status': 1, 'response': { 'data': article, 'msg': 'data found' } });
                 }
             });
 
@@ -121,8 +121,8 @@ router.post('/getarticalDataById', [check('artical_id', 'artical is required').n
 });
 
 
-router.post('/changearticalStatus', [
-    check('artical_id', 'artical id is required').notEmpty(),
+router.post('/changearticleStatus', [
+    check('article_id', 'article id is required').notEmpty(),
     check('status', 'Please enter status').notEmpty(),
 ], (req, res) => {
     const errors = validationResult(req);
@@ -130,11 +130,11 @@ router.post('/changearticalStatus', [
         var error = errors.array();
         res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
     } else {
-        let artical_id = req.body.artical_id;
+        let article_id = req.body.article_id;
         let record = {
             status: req.body.status
         }
-        Artical.changearticalStatus(record, artical_id, function (err, result) {
+        Article.changearticleStatus(record, article_id, function (err, result) {
             if (err) {
                 return res.json({ 'status': 0, 'response': { 'msg': 'Error Occured.' } });
             } else {
@@ -149,7 +149,7 @@ router.post('/changearticalStatus', [
 
 });
 
-router.post('/addarticalByadmin', function (req, res) {
+router.post('/addarticleByadmin', function (req, res) {
     var form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
         if (err) return res.json({ status: 1, 'response': { msg: err } });
@@ -176,7 +176,7 @@ router.post('/addarticalByadmin', function (req, res) {
                         let ProfileImage = Date.now() + '-' + files.image.name.split(" ").join("");
                         let tmp_path = files.image.path;
                         if (file_ext == 'png' || file_ext == 'PNG' || file_ext == 'jpg' || file_ext == 'JPG' || file_ext == 'jpeg' || file_ext == 'JPEG') {
-                            fs.rename(tmp_path, path.join(__dirname, env.ARTICAL_PATH + ProfileImage), function (err) {
+                            fs.rename(tmp_path, path.join(__dirname, env.ARTICLE_PATH + ProfileImage), function (err) {
                                 overview['image'] = ProfileImage;
                                 done(err, overview)
                                 fs.unlink(tmp_path, function () {
@@ -195,7 +195,7 @@ router.post('/addarticalByadmin', function (req, res) {
                 },
                 function (overview, done1) {
                     if (overview.image != '') { record.image = overview.image; }
-                    Artical.addarticalByadmin(record, function (err, data) {
+                    Article.addarticleByadmin(record, function (err, data) {
                         if (err) {
                             done1(err, overview)
                         } else {
@@ -215,7 +215,7 @@ router.post('/addarticalByadmin', function (req, res) {
     });
 });
 
-router.post('/updatearticalByadmin', function (req, res) {
+router.post('/updatearticleByadmin', function (req, res) {
     var form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
         if (err) return res.json({ status: 1, 'response': { msg: err } });
@@ -233,7 +233,7 @@ router.post('/updatearticalByadmin', function (req, res) {
                 purchase_type: obj.purchase_type,
                 cost: obj.cost
             };
-            let artical_id = obj.artical_id;
+            let article_id = obj.article_id;
             asyn.waterfall([
                 function (done) {
                     let overview = {};
@@ -244,12 +244,14 @@ router.post('/updatearticalByadmin', function (req, res) {
                         let tmp_path = files.image.path;
                         if (file_ext == 'png' || file_ext == 'PNG' || file_ext == 'jpg' || file_ext == 'JPG' || file_ext == 'jpeg' || file_ext == 'JPEG') {
                             
-                            fs.rename(tmp_path, path.join(__dirname, env.ARTICAL_PATH + ProfileImage), function (err) {
-                                overview['image'] = ProfileImage;
-                                done(err, overview)
+                            fs.rename(tmp_path, path.join(__dirname, env.ARTICLE_PATH + ProfileImage), function (err) {
+                                overview['image'] = ProfileImage;                                
                                 fs.unlink(tmp_path, function () {
                                     if (err) {
-                                        return res.json({ status: 1, 'response': { msg: err } });
+                                        done(err, overview)
+                                        //return res.json({ status: 1, 'response': { msg: err } });
+                                    }else{
+                                        done(err, overview)
                                     }
                                 });
                             });
@@ -267,7 +269,7 @@ router.post('/updatearticalByadmin', function (req, res) {
                         update_value.push(overview.image);
                     }
                     let tag = (obj.tag) ? obj.tag : [];
-                    Artical.updatearticalByadmin(record, artical_id, update_value, tag, function (err, data) {
+                    Article.updatearticleByadmin(record, article_id, update_value, tag, function (err, data) {
                         if (err) {
                             done1(err, overview)
                         } else {
@@ -286,5 +288,141 @@ router.post('/updatearticalByadmin', function (req, res) {
         }
     });
 });
+
+router.post('/getPaidArticleList', passport.authenticate('jwt', { session: false }), function (req, res) {
+    loggerData(req);
+    var user_role = req.user.userrole;
+    Article.getPaidArticleList(user_role, function (err, result) {
+        if (err) {
+            return res.json({ status: 0, 'response': { msg: err } });
+        } else {
+            var imageLink;
+            if (req.headers.host == env.ADMIN_LIVE_URL) {
+                imageLink = env.ADMIN_LIVE_URL;
+            } else {
+                imageLink = env.ADMIN_LIVE_URL;
+            }
+            var articleList = result.map(data => {
+                let retObj = {};
+                retObj['article_id'] = data.article_id;
+                retObj['title'] = data.title;
+                retObj['description'] = data.description;
+                retObj['created_at'] = moment(data.article_date).format('MMMM DD, YYYY');
+                retObj['role'] = data.role;
+                retObj['image'] = (data.image) ? imageLink + env.ARTICLE_VIEW_PATH + data.image : '';
+                retObj['status'] = data.status;
+                return retObj;
+            });
+            return res.json({ status: 1, 'response': { data: articleList } });
+        }
+    });
+});
+
+
+router.post('/getUnpaidArticleList', function (req, res) {
+    loggerData(req);
+    Article.getUnpaidArticleList(function (err, result) {
+        if (err) {
+            return res.json({ status: 0, 'response': { msg: err } });
+        } else {
+            var imageLink;
+            if (req.headers.host == env.ADMIN_LIVE_URL) {
+                imageLink = env.ADMIN_LIVE_URL;
+            } else {
+                imageLink = env.ADMIN_LIVE_URL;
+            }
+            var articleList = result.map(data => {
+                let retObj = {};
+                retObj['article_id'] = data.article_id;
+                retObj['title'] = data.title;
+                retObj['description'] = data.description;
+                retObj['created_at'] = moment(data.article_date).format('MMMM DD, YYYY');
+                retObj['role'] = data.role;
+                retObj['image'] = (data.image) ? imageLink + env.ARTICLE_VIEW_PATH + data.image : '';
+                retObj['status'] = data.status;
+                return retObj;
+            });
+            return res.json({ status: 1, 'response': { data: articleList } });
+        }
+    });
+});
+
+
+router.post('/getRelatedUnpaidArticleList', function (req, res) {
+    loggerData(req);
+    let article_id = req.body.article_id;
+    Article.getRelatedUnpaidArticleList(article_id, function (err, result) {
+        if (err) {
+            return res.json({ status: 0, 'response': { msg: err } });
+        } else {
+            var imageLink;
+            if (req.headers.host == env.ADMIN_LIVE_URL) {
+                imageLink = env.ADMIN_LIVE_URL;
+            } else {
+                imageLink = env.ADMIN_LIVE_URL;
+            }
+            var articleList = result.map(data => {
+                let retObj = {};
+                retObj['article_id'] = data.article_id;
+                retObj['title'] = data.title;
+                retObj['description'] = data.description;
+                retObj['created_at'] = moment(data.article_date).format('MMMM DD, YYYY');
+                retObj['role'] = data.role;
+                retObj['image'] = (data.image) ? imageLink + env.ARTICLE_VIEW_PATH + data.image : '';
+                retObj['status'] = data.status;
+                return retObj;
+            });
+            return res.json({ status: 1, 'response': { data: articleList } });
+        }
+    });
+});
+
+
+router.post('/getRelatedPaidArticleList', passport.authenticate('jwt', { session: false }), function (req, res) {
+    loggerData(req);
+    var user_role = req.user.userrole;
+    let article_id = req.body.article_id;
+    Article.getRelatedPaidArticleList(user_role, article_id, function (err, result) {
+        if (err) {
+            return res.json({ status: 0, 'response': { msg: err } });
+        } else {
+            var imageLink;
+            if (req.headers.host == env.ADMIN_LIVE_URL) {
+                imageLink = env.ADMIN_LIVE_URL;
+            } else {
+                imageLink = env.ADMIN_LIVE_URL;
+            }
+            var articleList = result.map(data => {
+                let retObj = {};
+                retObj['article_id'] = data.article_id;
+                retObj['title'] = data.title;
+                retObj['description'] = data.description;
+                retObj['created_at'] = moment(data.article_date).format('MMMM DD, YYYY');
+                retObj['role'] = data.role;
+                retObj['image'] = (data.image) ? imageLink + env.ARTICLE_VIEW_PATH + data.image : '';
+                retObj['status'] = data.status;
+                return retObj;
+            });
+            return res.json({ status: 1, 'response': { data: articleList } });
+        }
+    });
+});
+
+router.post('/articleBookmark', passport.authenticate('jwt', { session: false }), function (req, res) {
+    loggerData(req);
+    var user_id = req.user.id;
+    let article_id = req.body.article_id;    
+    Article.articleBookmark(user_id, article_id, function (err, result) {
+        if (err) {
+            return res.json({ status: 0, 'response': { msg: err } });
+        } else {            
+            return res.json({ status: 1, 'response': { data: result } });
+        }
+    });
+});
+
+
+
+
 
 module.exports = router;

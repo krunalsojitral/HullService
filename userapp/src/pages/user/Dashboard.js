@@ -28,70 +28,70 @@ export default function Dashboard() {
     return(
         <div>
             <Header/>
-            <section class="inner-header">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
+            <section className="inner-header">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-md-12">
                             <h2>Your Dashboard</h2>
                         </div>
                     </div>
                 </div>
             </section>
-            <section class="dashboard-card">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-2 side-col">
+            <section className="dashboard-card">
+                <div className="container-fluid">
+                    <div className="row">
+                        <div className="col-md-2 side-col">
                             <Sidebar />
                         </div>
-                        <div class="col-md-8">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="dashboard-content">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <Link to='/dashboard' className="Support-card">
-                                                    <h3>Support Groups & Resources</h3>
-                                                    <div class="support-img">
+                        <div className="col-md-8">
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <div className="dashboard-content">
+                                        <div className="row">
+                                            <div className="col-md-4">
+                                                <Link to='/group-session' className="Support-card">
+                                                    <h3>Group Sessions</h3>
+                                                    <div className="support-img">
                                                         <img alt="support" src="images/support01.png"/>
                                                     </div>
                                                 </Link>
-                                                </div>
-                                            <div class="col-md-4">
-                                                    <Link to='/video' className="Support-card">
-                                                        <h3>Informational Videos</h3>
-                                                        <div class="support-img">
+                                            </div>
+                                            <div className="col-md-4">
+                                                <Link to='/informational-video' className="Support-card">
+                                                    <h3>Informational Videos</h3>
+                                                    <div className="support-img">
                                                         <img alt="support" src="images/support02.png"/>
-												        </div>
-                                                    </Link>
-                                                    </div>
-                                            <div class="col-md-4">
-                                                    <Link to='/dashboard' className="Support-card">
-                                                        <h3>Personal Development</h3>
-                                                        <div class="support-img">
-                                                                <img alt="support" src="images/support03.png"/>
-                                                        </div>
-                                                    </Link>
-                                                    </div>
-                                            <div class="col-md-4">
-                                                        <Link to='/events' className="Support-card">
-                                                            <h3>Virtual Events</h3>
-                                                            <div class="support-img">
-                                                                    <img alt="support" src="images/support04.png"/>
-                                                            </div>
-                                                        </Link>
-                                                    </div>
-                                            <div class="col-md-4">
-                                                <Link to='/forum' className="Support-card">
-                                                    <h3>Forums</h3>
-                                                    <div class="support-img">
-                                                            <img alt="support" src="images/support05.png"/>
                                                     </div>
                                                 </Link>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div className="col-md-4">
+                                                <Link to='/professional-development' className="Support-card">
+                                                    <h3>Personal Development</h3>
+                                                    <div className="support-img">
+                                                         <img alt="support" src="images/support03.png"/>
+                                                    </div>
+                                                </Link>
+                                            </div>
+                                            <div className="col-md-4">
+                                                <Link to='/events' className="Support-card">
+                                                    <h3>Virtual Events</h3>
+                                                    <div className="support-img">
+                                                            <img alt="support" src="images/support04.png"/>
+                                                    </div>
+                                                </Link>
+                                            </div>
+                                            <div className="col-md-4">
+                                                <Link to='/forum' className="Support-card">
+                                                    <h3>Forums</h3>
+                                                    <div className="support-img">
+                                                        <img alt="support" src="images/support05.png"/>
+                                                    </div>
+                                                </Link>
+                                            </div>
+                                            <div className="col-md-4">
                                                 <Link to='/blog' className="Support-card">                                                                    
                                                     <h3>Blogs & Articles</h3>
-                                                    <div class="support-img">                                                                            
+                                                    <div className="support-img">                                                                            
                                                             <img alt="support" src="images/support06.png" />                                                                            
                                                     </div>                                                                    
                                                 </Link>

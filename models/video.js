@@ -163,6 +163,106 @@ function Video() {
         });
     }
 
+
+    this.getPaidVideoList = function (role, search, sortby, callback) {
+        connection.acquire(function (err, con) {
+            if (search) {
+
+                if (sortby == "ascending"){
+                    var sql = 'SELECT *,video.created_at as video_date FROM video where video.status = $1 and (role = $2 or role = $3) and ( title LIKE $4) order by video.video_id asc';
+                }else{
+                    var sql = 'SELECT *,video.created_at as video_date FROM video where video.status = $1 and (role = $2 or role = $3) and ( title LIKE $4) order by video.video_id desc';
+                }
+                var values = [1, role, "all", '%' + search + '%'];
+
+            }else{   
+                
+                if (sortby == "ascending") {
+                    var sql = 'SELECT *,video.created_at as video_date FROM video where video.status = $1 and (role = $2 or role = $3) order by video.video_id asc';
+                } else {
+                    var sql = 'SELECT *,video.created_at as video_date FROM video where video.status = $1 and (role = $2 or role = $3) order by video.video_id desc';
+                }
+                var values = [1, role, "all"];
+            }
+            con.query(sql, values, function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
+    this.getUnpaidVideoList = function (search, sortby, callback) {
+        connection.acquire(function (err, con) {
+            if (search) {
+
+                if (sortby == "ascending") {
+                    var sql = 'SELECT *,video.created_at as video_date FROM video where video.status = $1 and (role = $2 or role = $3) and ( title LIKE $4) order by video.video_id asc';
+                }else{
+                    var sql = 'SELECT *,video.created_at as video_date FROM video where video.status = $1 and (role = $2 or role = $3) and ( title LIKE $4) order by video.video_id desc';
+                }
+                var values = [1, 4, "all", '%' + search + '%'];
+
+            } else {
+
+                if (sortby == "ascending") { 
+                    var sql = 'SELECT *,video.created_at as video_date FROM video where video.status = $1 and (role = $2 or role = $3) order by video.video_id asc';
+                }else{
+                    var sql = 'SELECT *,video.created_at as video_date FROM video where video.status = $1 and (role = $2 or role = $3) order by video.video_id desc';
+                }
+                var values = [1, 4, "all"];
+            }
+            con.query(sql, values, function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
+    this.getRelatedUnpaidVideoList = function (video_id, callback) {
+        connection.acquire(function (err, con) {
+            var sql = 'SELECT *,video.created_at as video_date FROM video where video.status = $1 and (role = $2 or role = $3) and video.video_id != $4 order by video.video_id asc limit 5';
+            var values = [1, 4, "all", video_id];
+            con.query(sql, values, function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
+    this.getRelatedPaidVideoList = function (role, video_id, callback) {
+        connection.acquire(function (err, con) {
+            var sql = 'SELECT *,video.created_at as video_date FROM video where video.status = $1 and (role = $2 or role = $3) and video.video_id != $4 order by video.video_id asc limit 5';
+            var values = [1, role, "all", video_id];
+            con.query(sql, values, function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
+    
+
+
     
 
 }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import axios from 'axios';
-import api_url from './../../Apiurl';
+import api_url from '../../Apiurl';
 import Swal from "sweetalert2";
 import {
   CCardBody,
@@ -40,10 +40,10 @@ const DemoTable = () => {
   const updateItemStatus = (item, status) => {
    
     var obj = {
-      artical_id: item.artical_id,
+      article_id: item.article_id,
       status: status,
     };
-    axios.post(api_url + "/artical/changearticalStatus", obj)
+    axios.post(api_url + "/article/changearticleStatus", obj)
       .then((result) => {
         if (result.data.status) {
           getNewListWrap();
@@ -59,7 +59,7 @@ const DemoTable = () => {
 
   
   const getNewList = () => { 
-    axios.get(api_url + '/artical/articalList', {}).then((result) => {
+    axios.get(api_url + '/article/articleList', {}).then((result) => {
       if (result.data.status) {
         var usersdatas = result.data.response.data;
         setItems(usersdatas);
@@ -157,7 +157,7 @@ const DemoTable = () => {
                     variant="outline"
                     shape="square"
                     size="sm"
-                    onClick={() => history.push(`/articaldetail/${item.id}`)}
+                    onClick={() => history.push(`/articledetail/${item.id}`)}
                   >
                     Show
                   </CButton> */}
@@ -167,7 +167,7 @@ const DemoTable = () => {
                     variant="outline"
                     shape="square"
                     size="sm"
-                    onClick={() => history.push(`/articleedit/${item.artical_id}`)}
+                    onClick={() => history.push(`/articleedit/${item.article_id}`)}
                     className="mr-1"
                   > Edit
                   </CButton>

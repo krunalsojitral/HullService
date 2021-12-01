@@ -28,10 +28,10 @@ export default function Members() {
     return(
         <div>
             <Header/>
-            <section class="inner-header">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
+            <section className="inner-header">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-md-12">
                             <h2>Members</h2>
                         </div>
                     </div>

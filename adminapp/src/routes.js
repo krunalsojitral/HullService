@@ -4,8 +4,8 @@ const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Blog = React.lazy(() => import('./views/pages/blog/Blog'))
 const BlogAddEditForm = React.lazy(() => import('./views/pages/blog/AddEditForm'))
 const Media = React.lazy(() => import('./views/pages/media/Media'))
-const Artical = React.lazy(() => import('./views/pages/artical/Artical'))
-const ArticalAddEditForm = React.lazy(() => import('./views/pages/artical/AddEditForm'))
+const Article = React.lazy(() => import('./views/pages/article/Article'))
+const ArticleAddEditForm = React.lazy(() => import('./views/pages/article/AddEditForm'))
 const Video = React.lazy(() => import('./views/pages/video/Video'))
 const VideoAddEditForm = React.lazy(() => import('./views/pages/video/AddEditForm'))
 const Tag = React.lazy(() => import('./views/pages/tag/Tag'))
@@ -47,9 +47,9 @@ const routes = [
   { path: '/blog', name: 'Blog', component: Blog },
   { path: '/blogadd', name: 'Blog Add', component: BlogAddEditForm },
   { path: '/blogedit/:id', name: 'Blog Edit', component: BlogAddEditForm },
-  { path: '/article', name: 'Article', component: Artical },
-  { path: '/articleadd', name: 'Article Add', component: ArticalAddEditForm },
-  { path: '/articleedit/:id', name: 'Article Edit', component: ArticalAddEditForm },
+  { path: '/article', name: 'Article', component: Article },
+  { path: '/articleadd', name: 'Article Add', component: ArticleAddEditForm },
+  { path: '/articleedit/:id', name: 'Article Edit', component: ArticleAddEditForm },
   { path: '/video', name: 'Video', component: Video },
   { path: '/videoadd', name: 'Video Add', component: VideoAddEditForm },
   { path: '/videoedit/:id', name: 'Video Edit', component: VideoAddEditForm },

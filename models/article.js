@@ -6,22 +6,24 @@ var asyn = require('async');
 function User() {
     connection.init();
 
-    this.getTagByBlogId = function (id, callback) {
+    
+    this.getUserById = function (id, callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM blog_tag inner join tag on blog_tag.tag_id = tag.tag_id where blog_tag.blog_id = $1', [id], function (err, result) {
+            con.query('SELECT * FROM users where id = $1', [id], function (err, result) {
                 con.release();
                 if (result.rows.length === 0) {
-                    callback('Tag does not exist.', null);
-                } else {
+                    msg = 'User does not exist.';
+                    callback(msg, null);
+                }else{
                     callback(null, result.rows);
-                }
+                }                
             });
         });
-    }   
+    }
 
-    this.getAllAdminBlog = function (callback) {
+    this.getAllAdminArticle = function (callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM blog order by blog_id desc', function (err, result) {
+            con.query('SELECT * FROM article order by article_id desc', function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }
@@ -34,39 +36,52 @@ function User() {
     };
 
     
-    this.addBlogByadmin = function (record, callback) {
+    this.addarticleByadmin = function (record, callback) {
         connection.acquire(function (err, con) {
-            const sql = 'INSERT INTO blog(title,description,created_at,role,purchase_type,image,cost,status) VALUES($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *'
+            const sql = 'INSERT INTO article(title,description,created_at,role,purchase_type,image,cost,status) VALUES($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *'
             const values = [record.title, record.description, record.created_at, record.role, record.purchase_type, record.image, record.cost, 1]
-            con.query(sql, values, function (err, result) {                
+            con.query(sql, values, function (err, result) {
+                con.release()
                 if (err) {
                     if (env.DEBUG) {
                         console.log(err);
                     }
-                    con.release()
                     callback(err, null);
                 } else {
                     if (record.tag.length > 0) {
                         record.tag.map(data => {
                             var records = {
                                 tag_id: data.value,
-                                blog_id: result.rows[0].blog_id
+                                article_id: result.rows[0].article_id
                             }
-                            const sql = 'INSERT INTO blog_tag(blog_id,tag_id) VALUES($1,$2) RETURNING *'
-                            const values = [records.blog_id, records.tag_id]
+                            const sql = 'INSERT INTO article_tag(article_id,tag_id) VALUES($1,$2) RETURNING *'
+                            const values = [records.article_id, records.tag_id]
                             con.query(sql, values, function (err, result) { });
                         });
                     }
-                    con.release()
                     callback(null, result.rows[0]);
                 }
             });
         });
     };
 
-    function updateProductByID(blog_id, cols) {
+    
+    this.getTagByArticleId = function (id, callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM article_tag inner join tag on article_tag.tag_id = tag.tag_id where article_tag.article_id = $1', [id], function (err, result) {
+                con.release();
+                if (result.rows.length === 0) {
+                    callback('Tag does not exist.', null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    }
+
+    function updateProductByID(article_id, cols) {
         // Setup static beginning of query
-        var query = ['UPDATE blog'];
+        var query = ['UPDATE article'];
         query.push('SET');
 
         // Create another array storing each set command
@@ -79,16 +94,15 @@ function User() {
         query.push(set.join(', '));
         
         // Add the WHERE statement to look up by id
-        query.push('WHERE blog_id = ' + blog_id);
+        query.push('WHERE article_id = ' + article_id);
 
         // Return a complete query string
         return query.join(' ');
     }
 
-    this.updateBlogByadmin = function (record, blog_id, update_value, tag, callback) {
+    this.updatearticleByadmin = function (record, article_id, update_value,tag, callback) {
         connection.acquire(function (err, con) {
-
-            var query = updateProductByID(blog_id, record);
+            var query = updateProductByID(article_id, record);
             con.query(query, update_value, function (err, result) {                
                 if (err) {
                     if (env.DEBUG) {
@@ -98,22 +112,22 @@ function User() {
                     callback(err, null);
                 } else {
                     if (tag.length > 0) {
-                        const sql = 'DELETE FROM blog_tag where blog_id = $1'
-                        const values = [blog_id]
+                        const sql = 'DELETE FROM article_tag where article_id = $1'
+                        const values = [article_id]
                         con.query(sql, values, function (err, results) {
                             tag.map(data => {
                                 var records = {
                                     tag_id: data.value,
-                                    blog_id: blog_id
+                                    article_id: article_id
                                 }
-                                const sql = 'INSERT INTO blog_tag(blog_id,tag_id) VALUES($1,$2) RETURNING *'
-                                const values = [records.blog_id, records.tag_id]
+                                const sql = 'INSERT INTO article_tag(article_id,tag_id) VALUES($1,$2) RETURNING *'
+                                const values = [article_id, records.tag_id]
                                 con.query(sql, values, function (err, result) { });
                             });
                         });
                     }else{
-                        const sql = 'DELETE FROM blog_tag where blog_id = $1'
-                        const values = [blog_id]
+                        const sql = 'DELETE FROM article_tag where article_id = $1'
+                        const values = [article_id]
                         con.query(sql, values, function (err, results) {});
                     }
                     con.release()
@@ -121,7 +135,7 @@ function User() {
                 }
             });
 
-            // con.query("UPDATE blog SET title =$1,description =$2,role =$3,purchase_type =$4,image =$5 WHERE blog_id = $6", [record.title, record.description, record.role, record.purchase_type, record.image, blog_id], function (err, result) {
+            // con.query("UPDATE article SET title =$1,description =$2,role =$3,purchase_type =$4,image =$5 WHERE article_id = $6", [record.title, record.description, record.role, record.purchase_type, record.image, article_id], function (err, result) {
             //     if (err) {
             //         if (env.DEBUG) {
             //             console.log(err);
@@ -134,9 +148,9 @@ function User() {
         });
     }
 
-    this.changeBlogStatus = function (record, blog_id, callback) {
+    this.changearticleStatus = function (record, article_id, callback) {
         connection.acquire(function (err, con) {
-            con.query("UPDATE blog SET status =$1 WHERE blog_id = $2", [record.status, blog_id], function (err, result) {
+            con.query("UPDATE article SET status =$1 WHERE article_id = $2", [record.status, article_id], function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) {
@@ -150,9 +164,9 @@ function User() {
         });
     }
 
-    this.getBlogDataById = function (id, callback) {
+    this.getarticleDataById = function (id, callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM blog where blog_id = $1', [id], function (err, result) {
+            con.query('SELECT * FROM article where article_id = $1', [id], function (err, result) {
                 con.release();
                 if (result.rows.length === 0) {
                     msg = 'User does not exist.';
@@ -162,12 +176,12 @@ function User() {
                 }
             });
         });
-    }
+    }    
 
-    this.getPaidBlogList = function (role, callback) {
+    this.getPaidArticleList = function (role, callback) {
         connection.acquire(function (err, con) {
             console.log(role);
-            con.query('SELECT *,blog.created_at as blog_date FROM blog where blog.status = $1 and (role = $2 or role = $3) order by blog.blog_id desc', [1, role, "all"], function (err, result) {
+            con.query('SELECT *,article.created_at as article_date FROM article where article.status = $1 and (role = $2 or role = $3) order by article.article_id desc', [1, role, "all"], function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }
@@ -179,9 +193,9 @@ function User() {
         });
     };
 
-    this.getUnpaidBlogList = function (callback) {
+    this.getUnpaidArticleList = function (callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT *,blog.created_at as blog_date FROM blog where blog.status = $1 and (role = $2 or role = $3) order by blog.blog_id desc', [1, 4, "all"], function (err, result) {
+            con.query('SELECT *,article.created_at as article_date FROM article where article.status = $1 and (role = $2 or role = $3) order by article.article_id desc', [1,4,'all'], function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }
@@ -193,10 +207,11 @@ function User() {
         });
     };
 
-    this.getRelatedUnpaidBlogList = function (blog_id, callback) {
-        connection.acquire(function (err, con) {            
-            var sql = 'SELECT *,blog.created_at as blog_date FROM blog where blog.status = $1 and (role = $2 or role = $3) and blog.blog_id != $4 order by blog.blog_id desc limit 5';
-            var values = [1, 4, "all", blog_id];
+
+    this.getRelatedUnpaidArticleList = function (article_id, callback) {
+        connection.acquire(function (err, con) {
+            var sql = 'SELECT *,article.created_at as article_date FROM article where article.status = $1 and (role = $2 or role = $3) and article.article_id != $4 order by article.article_id desc limit 5';
+            var values = [1, 4, "all", article_id];
             con.query(sql, values, function (err, result) {
                 con.release()
                 if (err) {
@@ -209,9 +224,9 @@ function User() {
         });
     };
 
-    this.getRelatedPaidBlogList = function (role, blog_id, callback) {
-        connection.acquire(function (err, con) {            
-            var sql = 'SELECT *,blog.created_at as blog_date FROM blog where blog.status = $1 and (role = $2 or role = $3) and blog.blog_id != $4 order by blog.blog_id desc limit 5';
+    this.getRelatedPaidArticleList = function (role, blog_id, callback) {
+        connection.acquire(function (err, con) {
+            var sql = 'SELECT *,article.created_at as article_date FROM article where article.status = $1 and (role = $2 or role = $3) and article.article_id != $4 order by article.article_id desc limit 5';
             var values = [1, role, "all", blog_id];
             con.query(sql, values, function (err, result) {
                 con.release()
@@ -225,13 +240,14 @@ function User() {
         });
     };
 
-    this.blogBookmark = function (user_id, blog_id, callback) {
+
+    this.articleBookmark = function (user_id, article_id, callback) {
         connection.acquire(function (err, con) {
-            var sql = 'SELECT * FROM bookmark_blog where user_id=$1 and blog_id = $2';
-            var values = [user_id, blog_id];
-            con.query(sql, values, function (err, result) {
-                if (result && result.rows && result.rows.length > 0) {
-                    const sql = 'DELETE FROM bookmark_blog where user_id=$1 and blog_id = $2'
+            var sql = 'SELECT * FROM bookmark_article where user_id=$1 and article_id = $2';
+            var values = [user_id, article_id];
+            con.query(sql, values, function (err, result) { 
+                if (result && result.rows && result.rows.length > 0){
+                    const sql = 'DELETE FROM bookmark_article where user_id=$1 and article_id = $2'
                     con.query(sql, values, function (err, results) {
                         con.release()
                         if (err) {
@@ -243,8 +259,8 @@ function User() {
                             callback(null, result.rows[0]);
                         }
                     });
-                } else {
-                    const sql = 'INSERT INTO bookmark_blog(user_id,blog_id) VALUES($1,$2) RETURNING *'
+                }else{
+                    const sql = 'INSERT INTO bookmark_article(user_id,article_id) VALUES($1,$2) RETURNING *'
                     con.query(sql, values, function (err, result) {
                         con.release()
                         if (err) {
@@ -260,6 +276,8 @@ function User() {
             });
         });
     };
+
+    
 
     
 

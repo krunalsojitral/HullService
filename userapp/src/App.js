@@ -18,12 +18,23 @@ const About = lazy(() => import("./pages/About"));
 const Events = lazy(() => import("./pages/user/Events"));
 const Members = lazy(() => import("./pages/user/Members"));
 const Partners = lazy(() => import("./pages/user/Partners"));
-const Video = lazy(() => import("./pages/user/Video"));
+// const Video = lazy(() => import("./pages/user/Video"));
+const VideoDetail = lazy(() => import("./pages/user/VideoDetail"));
 const Blog = lazy(() => import("./pages/user/Blog"));
+const BlogDetail = lazy(() => import("./pages/user/BlogDetail"));
+const ArticlesDetail = lazy(() => import("./pages/user/ArticlesDetail"));
 const Forum = lazy(() => import("./pages/user/Forum"));
+const ForumDetail = lazy(() => import("./pages/user/ForumDetail"));
+const ForumSub = lazy(() => import("./pages/user/ForumSub"));
 const Articles = lazy(() => import("./pages/user/Articles"));
 const Dashboard = lazy(() => import("./pages/user/Dashboard"));
 const Landing = lazy(() => import("./pages/Landing"));
+const Contact = lazy(() => import("./pages/Contact"));
+const InformationalVideo = lazy(() => import("./pages/user/InformationalVideo"));
+const GroupSession = lazy(() => import("./pages/user/GroupSession"));
+const ProfessionalDevelopment = lazy(() => import("./pages/user/ProfessionalDevelopment"));
+const ParticipantsInMyStudies = lazy(() => import("./pages/user/ParticipantsInMyStudies"));
+const MyStudies = lazy(() => import("./pages/user/MyStudies"));
 
 function App() {
 
@@ -59,12 +70,23 @@ function App() {
           <Route path="/events" component={Events} />
           <Route path="/members" component={Members} />
           <Route path="/partners" component={Partners} />
-          <Route path="/video" component={Video} />
+          {/* <Route path="/video" component={Video} /> */}
+          <Route path="/video-detail" component={VideoDetail} forceRefresh={true}/>
           <Route path="/blog" component={Blog} />
+          <Route path="/blog-detail" component={BlogDetail} />
           <Route path="/articles" component={Articles} />
+          <Route path="/article-detail" component={ArticlesDetail} />
           <Route path="/forum" component={Forum} />          
-          <PrivateRoute path="/dashboard" component={Dashboard} />
+          <Route path="/forum-sub" component={ForumSub} />
+          <Route path="/forum-detail" component={ForumDetail} />
+          <Route path="/dashboard" component={Dashboard} />
           <Route exact path="/" component={Landing} />
+          <Route exact path="/contact" component={Contact} />
+          <Route exact path="/group-session" component={GroupSession} />
+          <Route exact path="/informational-video" component={InformationalVideo} />
+          <Route exact path="/professional-development" component={ProfessionalDevelopment} />
+          <Route exact path="/participants-in-my-studies" component={ParticipantsInMyStudies} />
+          <Route exact path="/my-studies" component={MyStudies} />
         </Switch>
         </Suspense>
       </UserContext.Provider>
