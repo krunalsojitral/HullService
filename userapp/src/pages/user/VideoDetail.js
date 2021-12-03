@@ -124,7 +124,7 @@ export default function VideoDetail() {
                         </div>
                         <div className="col-md-3">
                             <div className="video-list">
-                                <h3>Up Next</h3>
+                                <h3>Other Videos</h3>
                                 <div className="video-list-card">
 
                                     {relatedVideoDetail.map((data, index) => (

@@ -222,4 +222,62 @@ router.post('/deleteForum', [check('comment_id', 'comment id is required').notEm
     });
 });
 
+
+router.get('/getForumHeadingList', function (req, res) {
+    loggerData(req);
+    Forum.getForumHeadingList(function (err, results) {
+        if (err) {
+            return res.json({ 'status': 0, 'response': { 'data': [], 'msg': 'data not found' } });
+        } else {
+            if (results.length > 0) {
+                let temparray = new Promise(async (resolve, reject) => {
+                    var forumHeading = [];
+                    for (let heading of results) {
+                        await Forum.getForumListByForumHeading(heading.forumheading_id, function (err, data) {
+                            if (data.length > 0){
+                                heading.forum = data;
+                                forumHeading.push(heading);
+                            }
+                        });
+                    }
+
+                    setTimeout(() => resolve(forumHeading), 50)
+                });
+                temparray.then(data => {
+                    return res.json({ 'status': 1, 'response': data, 'msg': 'data found' });
+                })
+            } else {
+                return res.json({ 'status': 0, 'response': [], 'msg': 'data found' });
+            }
+        }
+    });
+});
+
+
+router.post('/getForumSubHeadingList', [
+    check('forum_heading_id', 'Heading is required').notEmpty(),
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else { 
+        var forum_heading_id = req.body.forum_heading_id;
+        Forum.getForumListByForumHeading(forum_heading_id, function (err, results) {
+            if (err) {
+                return res.json({ 'status': 0, 'response': { 'data': [], 'msg': 'data not found' } });
+            } else {
+                if (results.length > 0) {
+                    return res.json({ 'status': 1, 'response': results, 'msg': 'data found' });
+                } else {
+                    return res.json({ 'status': 0, 'response': [], 'msg': 'data found' });
+                }
+            }
+        });
+    }
+});
+
+
+
+
 module.exports = router;

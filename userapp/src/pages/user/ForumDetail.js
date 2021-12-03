@@ -30,8 +30,8 @@ export default function ForumDetail() {
                         <div class="col-md-7">
                             <div class="category-table">
                                 <h2 class="mb-0 text-center">How Do I Find An Appropriate Therapist For Me? </h2>
-                                <a href="javascript:;">
-                                    Back to Forum Categories</a> <div class="forum-post">
+                                {/* <a href="javascript:;"> Back to Forum Categories</a> */}
+                                     <div class="forum-post">
                                     <div class="forum-cal">
                                         <div class="forum-inner">
                                             <p><label>Started</label> <i>1 day ago </i></p>

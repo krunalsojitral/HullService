@@ -123,7 +123,7 @@ export default function BlogDetail() {
                                             </ul>
                                         </div>}
                                         <div className="video-list">
-                                            <h3>Posts </h3>
+                                            <h3>Other Blogs </h3>
                                             <div className="video-list-card">
                                                 {relatedBlogDetail.map(data => (
                                                     <div className="video-list-view">

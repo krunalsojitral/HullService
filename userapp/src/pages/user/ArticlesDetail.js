@@ -157,7 +157,7 @@ export default function ArticlesDetail() {
                                     </ul>
                                 </div>}
                             <div className="video-list">
-                                <h3>Article </h3>
+                                <h3>Other Articles </h3>
                                 <div className="video-list-card">
                                     {relatedArticleDetail.map(data => (
                                         <div className="video-list-view">

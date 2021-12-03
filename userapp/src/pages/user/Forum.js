@@ -1,29 +1,31 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-// import useAuth from './../../hooks/useAuth';
 import Header from './../../sections/Header';
 import Footer from './../../sections/Footer';
-//import { useForm } from "react-hook-form";
 import Sidebar from './Sidebar';
+import axios from 'axios';
+import Swal from "sweetalert2";
+import api_url from '../../components/Apiurl';
+import './../dev.css';
+import { useModal } from 'react-hooks-use-modal';
+import DirectionModel from "./../DirectionModel";
+import { useHistory } from "react-router-dom";
 
 export default function Forum() {
    
+    const [forumList, setForumList] = useState([]);
 
-//     const { loginUser } = useAuth();
-
-//    // const [isFirstRadioLoaded, setIsFirstRadioLoaded] = useState(false);  
-
-//     const { register, handleSubmit, formState: { errors } } = useForm();
-//     const onSubmit = async (data) => {
-//         var obj = {
-//             email: data.email,
-//             password: data.password
-//         }
-
-//        // setIsFirstRadioLoaded(currentIsLoaded => !currentIsLoaded)
-//         await loginUser(obj);
-
-//     }
+    React.useEffect(() => { 
+        axios.get(api_url + '/forum/getForumHeadingList').then((result) => {
+            if (result.data.status) {
+                var forumdata = result.data.response;
+                setForumList(forumdata);
+            } else {
+                Swal.fire('Oops...', result.data.response.msg, 'error')
+            }
+        }).catch((err) => { console.log(err); })
+    }, [])
+   
 
     return(
         <div>
@@ -43,147 +45,58 @@ export default function Forum() {
                         <div className="col-md-2 side-col">
                             <Sidebar />
                         </div>
-                        <div class="col-md-7">
-                            <div class="category-table">
-                                <h2 class="mb-0">Welcoming Forums</h2>
-                                <br/>
-                                <div class="forum-table table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>Topic Title</th>
-                                                <th>Category</th>
-                                                <th>Replies</th>
-                                                <th>Views</th>
-                                                <th>Last Post</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>How do I find an appropriate therapist for me?</td>
-                                                <td>Need Advice</td>
-                                                <td>47</td>
-                                                <td>456</td>
-                                                <td>HappyDude <span>10 minutes ago</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td>How do I find an appropriate therapist for me?</td>
-                                                <td>Need Advice</td>
-                                                <td>47</td>
-                                                <td>456</td>
-                                                <td>HappyDude <span>10 minutes ago</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td>How do I find an appropriate therapist for me?</td>
-                                                <td>Need Advice</td>
-                                                <td>47</td>
-                                                <td>456</td>
-                                                <td>HappyDude <span>10 minutes ago</span></td>
-                                            </tr>                                           
-                                        </tbody>
-                                    </table>
+                        <div className="col-md-7">
+                            
+                            {forumList.map((data, index) => (
+                                 <div className="category-table">
+                                    <h2 className="mb-0">{data.forumheading_name}</h2>
+
+                                    <Link to={{ pathname: "/forum-sub", search: "?id=" + data.forumheading_id }}>
+                                        View More >>
+                                    </Link>
+
+                                    <br />
+                                    <div className="forum-table table-responsive">
+                                        <table className="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Topic Title</th>
+                                                    <th>Category</th>
+                                                    <th>Replies</th>
+                                                    <th>Views</th>
+                                                    <th>Last Post</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {data.forum.map((forumdata, index) => (
+                                                    <tr>
+                                                        <td>{forumdata.topic}</td>
+                                                        <td>{forumdata.category_name}</td>
+                                                        <td>{forumdata.total_view}</td>
+                                                        <td>456</td>
+                                                        <td>HappyDude <span>10 minutes ago</span></td>
+                                                    </tr>
+                                                ))}                                             
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div className="pagination"></div>
                                 </div>
-                                <div class="pagination"></div>
-                            </div>
-
-                            <div class="category-table">
-                                <h2 class="mb-0">Welcoming Forums</h2>
-                                <br />
-                                <div class="forum-table table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>Topic Title</th>
-                                                <th>Category</th>
-                                                <th>Replies</th>
-                                                <th>Views</th>
-                                                <th>Last Post</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>How do I find an appropriate therapist for me?</td>
-                                                <td>Need Advice</td>
-                                                <td>47</td>
-                                                <td>456</td>
-                                                <td>HappyDude <span>10 minutes ago</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td>How do I find an appropriate therapist for me?</td>
-                                                <td>Need Advice</td>
-                                                <td>47</td>
-                                                <td>456</td>
-                                                <td>HappyDude <span>10 minutes ago</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td>How do I find an appropriate therapist for me?</td>
-                                                <td>Need Advice</td>
-                                                <td>47</td>
-                                                <td>456</td>
-                                                <td>HappyDude <span>10 minutes ago</span></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="pagination"></div>
-                            </div>
-
-                            <div class="category-table">
-                                <h2 class="mb-0">Welcoming Forums</h2>
-                               <br/>
-                                <div class="forum-table table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>Topic Title</th>
-                                                <th>Category</th>
-                                                <th>Replies</th>
-                                                <th>Views</th>
-                                                <th>Last Post</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>How do I find an appropriate therapist for me?</td>
-                                                <td>Need Advice</td>
-                                                <td>47</td>
-                                                <td>456</td>
-                                                <td>HappyDude <span>10 minutes ago</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td>How do I find an appropriate therapist for me?</td>
-                                                <td>Need Advice</td>
-                                                <td>47</td>
-                                                <td>456</td>
-                                                <td>HappyDude <span>10 minutes ago</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td>How do I find an appropriate therapist for me?</td>
-                                                <td>Need Advice</td>
-                                                <td>47</td>
-                                                <td>456</td>
-                                                <td>HappyDude <span>10 minutes ago</span></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="pagination"></div>
-                            </div>
-
-
+                             ))} 
+                           
                         </div>
-                        <div class="col-md-3 article-tags">
-                            <div class="video-tag">
+                        <div className="col-md-3 article-tags">
+                            <div className="video-tag">
                                 <h3>Sort By Tags</h3>
                                 <ul>
-                                    <li><a class="active" href="#">Telemedicine</a></li>
+                                    <li><a className="active" href="#">Telemedicine</a></li>
                                     <li><a href="#">Mavisamankwah</a></li>
                                     <li><a href="#">Medilives</a></li>
                                     <li><a href="#">Blockchain</a></li>
                                     <li><a href="#">Mliv</a></li>
                                 </ul>
                             </div>
-                            <div class="banner-ads">
+                            <div className="banner-ads">
                                 <a href="javascript:;"><img src="images/course-ad.png" alt="course-ad"/></a>
                                 <a href="javascript:;"><img src="images/Banner-ad.png" alt="Banner-ad"/></a>
                             </div>

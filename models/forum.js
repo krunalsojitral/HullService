@@ -197,6 +197,71 @@ function forum() {
         });
     };
 
+
+    this.getForumHeadingList = function (callback) {
+        connection.acquire(function (err, con) {
+            const sql = 'SELECT * FROM forumheading where forumheading.status = $1'
+            const values = [1]
+            con.query(sql, values, function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
+    this.getForumListByForumHeading = function (heading, callback) {
+        connection.acquire(function (err, con) {
+            const sql = 'SELECT * FROM forum inner join category on category.category_id = forum.category where forum.heading = $1'
+            const values = [heading]
+            con.query(sql, values, function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
+
+    
+
+
+    this.getForumComment = function (forum_id, callback) {
+        connection.acquire(function (err, con) {
+            console.log(forum_id);
+            console.log('------------');
+            const sql = 'SELECT count(*) as cont FROM forum_comment where forum_id = $1'
+            const values = [forum_id]
+            con.query(sql, values, function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
+    
+
+    
+
     
 
 }
