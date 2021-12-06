@@ -216,10 +216,63 @@ function forum() {
         });
     };
 
-    this.getForumListByForumHeading = function (heading, callback) {
+    this.getForumListByForumHeading = function (heading, search, forum_id, callback) {
         connection.acquire(function (err, con) {
-            const sql = 'SELECT * FROM forum inner join category on category.category_id = forum.category where forum.heading = $1'
-            const values = [heading]
+
+            if (search) {
+                if (forum_id && forum_id.length > 0) {
+
+                    var sql = 'SELECT * FROM forum inner join category on category.category_id = forum.category where forum.heading = $1 and ((forum.forum_id = ANY($2::int[])) OR (forum.topic LIKE $3 OR category.category_name LIKE $4)) order by forum.forum_id desc';
+                    var values = [heading, forum_id, '%' + search + '%', '%' + search + '%'];
+
+                } else {
+                    var sql = 'SELECT * FROM forum inner join category on category.category_id = forum.category where forum.heading = $1 and ( forum.topic LIKE $2 or category.category_name LIKE $3) order by forum.forum_id desc';
+                    var values = [heading, '%' + search + '%', '%' + search + '%'];
+                }                    
+            } else {
+                var sql = 'SELECT * FROM forum inner join category on category.category_id = forum.category where forum.heading = $1 order by forum.forum_id desc';
+                var values = [heading];
+            }            
+
+            con.query(sql, values, function (err, result) {
+                con.release();
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
+  
+
+    this.getLastComment = function (forum_id, callback) {
+        connection.acquire(function (err, con) {
+            const sql = 'SELECT *, (select count(*) from forum_comment where forum_id = $1) as forum_comment_count FROM forum_comment where forum_id = $2 order by forum_comment_id DESC limit 1'
+            const values = [forum_id, forum_id]
+            con.query(sql, values, function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {                    
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
+
+    this.getForumTagList = function (callback) {
+        connection.acquire(function (err, con) {
+            const sql = 'SELECT * FROM forum_tag inner join tag on tag.tag_id = forum_tag.tag_id where tag.status = $1'
+            const values = [1]
             con.query(sql, values, function (err, result) {
                 con.release()
                 if (err) {
@@ -235,15 +288,10 @@ function forum() {
     };
 
 
-    
-
-
-    this.getForumComment = function (forum_id, callback) {
+    this.getTagSearchList = function (search,callback) {
         connection.acquire(function (err, con) {
-            console.log(forum_id);
-            console.log('------------');
-            const sql = 'SELECT count(*) as cont FROM forum_comment where forum_id = $1'
-            const values = [forum_id]
+            const sql = 'SELECT * FROM forum_tag inner join tag on tag.tag_id = forum_tag.tag_id where tag.tag_name LIKE $1 and tag.status = $2'
+            const values = ['%' + search + '%',1]
             con.query(sql, values, function (err, result) {
                 con.release()
                 if (err) {
@@ -258,7 +306,43 @@ function forum() {
         });
     };
 
+
+    this.getSubForumTagList = function (heading, callback) {
+        connection.acquire(function (err, con) {
+            const sql = 'SELECT * FROM forum_tag inner join forum on forum.forum_id = forum_tag.forum_id inner join tag on tag.tag_id = forum_tag.tag_id where forum.heading = $1 and tag.status = $2'
+            const values = [heading, 1]
+            con.query(sql, values, function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
     
+
+    this.getSubForumTagSearchList = function (heading, search, callback) {
+        connection.acquire(function (err, con) {
+            const sql = 'SELECT * FROM forum_tag inner join tag on tag.tag_id = forum_tag.tag_id inner join forum on forum.forum_id = forum_tag.forum_id where forum.heading = $1 and tag.tag_name LIKE $2 and tag.status = $3'
+            const values = [heading,'%' + search + '%', 1]
+            con.query(sql, values, function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
 
     
 

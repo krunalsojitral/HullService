@@ -30,9 +30,11 @@ const Articles = lazy(() => import("./pages/user/Articles"));
 const Dashboard = lazy(() => import("./pages/user/Dashboard"));
 const Landing = lazy(() => import("./pages/Landing"));
 const Contact = lazy(() => import("./pages/Contact"));
+const ParticipateInResearch = lazy(() => import("./pages/ParticipateInResearch"));
 const InformationalVideo = lazy(() => import("./pages/user/InformationalVideo"));
 const GroupSession = lazy(() => import("./pages/user/GroupSession"));
 const ProfessionalDevelopment = lazy(() => import("./pages/user/ProfessionalDevelopment"));
+const ProfessionalDevelopmentDetail = lazy(() => import("./pages/user/ProfessionalDevelopmentDetail"));
 const ParticipantsInMyStudies = lazy(() => import("./pages/user/ParticipantsInMyStudies"));
 const MyStudies = lazy(() => import("./pages/user/MyStudies"));
 
@@ -85,7 +87,9 @@ function App() {
           <Route exact path="/group-session" component={GroupSession} />
           <Route exact path="/informational-video" component={InformationalVideo} />
           <Route exact path="/professional-development" component={ProfessionalDevelopment} />
+          <Route exact path="/professional-development-detail" component={ProfessionalDevelopmentDetail} />
           <Route exact path="/participants-in-my-studies" component={ParticipantsInMyStudies} />
+          <Route exact path="/participate-in-research" component={ParticipateInResearch} />
           <Route exact path="/my-studies" component={MyStudies} />
         </Switch>
         </Suspense>

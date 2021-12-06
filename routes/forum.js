@@ -223,32 +223,83 @@ router.post('/deleteForum', [check('comment_id', 'comment id is required').notEm
 });
 
 
-router.get('/getForumHeadingList', function (req, res) {
+router.post('/getForumHeadingList', function (req, res) {
     loggerData(req);
     Forum.getForumHeadingList(function (err, results) {
         if (err) {
             return res.json({ 'status': 0, 'response': { 'data': [], 'msg': 'data not found' } });
         } else {
-            if (results.length > 0) {
-                let temparray = new Promise(async (resolve, reject) => {
-                    var forumHeading = [];
-                    for (let heading of results) {
-                        await Forum.getForumListByForumHeading(heading.forumheading_id, function (err, data) {
-                            if (data.length > 0){
-                                heading.forum = data;
-                                forumHeading.push(heading);
+
+            let search = (req.body.search) ? req.body.search : '';            
+            var forum_id = [];
+            var forumHeading = [];
+
+            asyn.waterfall([
+                function (done) {
+                    if (req.body.search){
+                        Forum.getTagSearchList(search, function (err, data) {
+                            if (err) {
+                                done(null, data)
+                            } else {
+                                data.forEach(function (d) {
+                                    forum_id.push(d.forum_id);
+                                });
+                                done(null, forum_id)
                             }
                         });
+                    }else{
+                        done(null, null)
                     }
-
-                    setTimeout(() => resolve(forumHeading), 50)
-                });
-                temparray.then(data => {
-                    return res.json({ 'status': 1, 'response': data, 'msg': 'data found' });
-                })
-            } else {
-                return res.json({ 'status': 0, 'response': [], 'msg': 'data found' });
-            }
+                },
+                function (forum_id, done1) {
+                    if (results.length > 0) {
+                        let temparray = new Promise(async (resolve, reject) => {                            
+                            for (let heading of results) {
+                                await Forum.getForumListByForumHeading(heading.forumheading_id, search, forum_id, function (err, data) {
+                                    if (data && data.length > 0) {
+                                        heading.forum = data;
+                                        forumHeading.push(heading);
+                                    }                                    
+                                });
+                            }
+                            setTimeout(() => resolve(forumHeading), 50)
+                        });
+                        temparray.then(data => {
+                            done1(null, data)                        
+                        })
+                    } else {
+                        done1('Data Not Found', null)                        
+                    }
+                },
+                function (forum, done2) {
+                    if (forum.length > 0) {                        
+                        let temparray = new Promise(async (resolve, reject) => {                           
+                            for (let datas of forum) {
+                                for (let dataf of datas.forum) {
+                                    await Forum.getLastComment(dataf.forum_id, function (err, data) {
+                                        if (data.length > 0) {
+                                            dataf.comment = data;
+                                        }
+                                    });
+                                }
+                            }
+                            setTimeout(() => resolve(forum), 50)
+                        });
+                        temparray.then(data => {
+                            done2(null, data)
+                        })
+                    } else {
+                        done2(null, forum)
+                    }
+                }
+            ],
+            function (error, finalData) {
+                if (error) {
+                    return res.json({ 'status': 0, 'response': { 'msg': error } });
+                } else {
+                    return res.json({ 'status': 1, 'response': { 'data': finalData, 'forum_id': forum_id, 'msg': 'data found' } });
+                }
+            });            
         }
     });
 });
@@ -262,20 +313,102 @@ router.post('/getForumSubHeadingList', [
         var error = errors.array();
         res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
     } else { 
+        var forum = [];
+        var forum_id = [];
         var forum_heading_id = req.body.forum_heading_id;
-        Forum.getForumListByForumHeading(forum_heading_id, function (err, results) {
-            if (err) {
-                return res.json({ 'status': 0, 'response': { 'data': [], 'msg': 'data not found' } });
-            } else {
-                if (results.length > 0) {
-                    return res.json({ 'status': 1, 'response': results, 'msg': 'data found' });
+
+        let search = (req.body.search) ? req.body.search : '';
+
+        asyn.waterfall([
+            function (done) {
+                if (req.body.search) {
+                    Forum.getSubForumTagSearchList(forum_heading_id, search, function (err, data) {
+                        if (err) {
+                            done(null, data)
+                        } else {                           
+                            data.forEach(function (d) {
+                                forum_id.push(d.forum_id);
+                            });
+                            done(null, forum_id)
+                        }
+                    });
                 } else {
-                    return res.json({ 'status': 0, 'response': [], 'msg': 'data found' });
+                    done(null, null)
                 }
+            },
+            function (forum_id, done1) {
+
+                console.log(forum_id);
+                Forum.getForumListByForumHeading(forum_heading_id, search, forum_id, function (err, results) {
+                    if (err) {
+                        return res.json({ 'status': 0, 'response': { 'data': [], 'msg': 'data not found' } });
+                    } else {
+                        if (results.length > 0) {
+                            forum.push(results)
+                            let temparray = new Promise(async (resolve, reject) => {
+                                for (let datas of results) {
+                                    await Forum.getLastComment(datas.forum_id, function (err, data) {
+                                        if (data.length > 0) {
+                                            datas.comment = data;
+                                        }
+                                    });
+                                }
+                                setTimeout(() => resolve(forum), 50)
+                            });
+                            temparray.then(data => {
+                                done1(null, data)
+                            })
+                        } else {
+                            done1(null, forum)
+                        }
+                    }
+                });
+            }
+        ],
+        function (error, finalData) {
+            if (error) {
+                return res.json({ 'status': 0, 'response': { 'msg': error } });
+            } else {
+                return res.json({ 'status': 1, 'response': { 'data': finalData[0], 'forum_id': forum_id, 'msg': 'data found' } });
+            }
+        });        
+    }
+});
+
+router.get('/getForumTagList', function (req, res) {
+    loggerData(req);
+    Forum.getForumTagList(function (err, results) {
+        if (err){
+            return res.json({ 'status': 0, 'response': [], 'msg': err });
+        }else{
+            var newarray = [...new Map(results.map(v => [v.tag_id, v])).values()]
+            return res.json({ 'status': 1, 'response': { 'msg': 'Tag list successfully.', data: newarray }  });
+        }        
+    });
+});
+
+router.post('/getSubForumTagList', [
+    check('forum_heading_id', 'Heading is required').notEmpty(),
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        var forum_heading_id = req.body.forum_heading_id;
+        Forum.getSubForumTagList(forum_heading_id, function (err, results) {
+            if (err) {
+                return res.json({ 'status': 0, 'response': [], 'msg': err });
+            } else {
+                var newarray = [...new Map(results.map(v => [v.tag_id, v])).values()]
+                return res.json({ 'status': 1, 'response': { 'msg': 'Tag list successfully.', data: newarray } });
             }
         });
     }
 });
+
+
+
 
 
 

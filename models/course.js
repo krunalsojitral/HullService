@@ -122,19 +122,118 @@ function Course() {
         });
     }
 
-    this.getcourseDataById = function (id, callback) {
+    this.getPaidCourseList = function (role, search, sortby, callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM course where course_id = $1', [id], function (err, result) {
-                con.release();
-                if (result.rows.length === 0) {
-                    msg = 'Course does not exist.';
-                    callback(msg, null);
+            if (search) {
+
+                if (sortby == "ascending") {
+                    var sql = 'SELECT *,course.created_at as course_date FROM course where course.status = $1 and (role = $2 or role = $3) and ( title LIKE $4) order by course.course_id asc';
+                } else {
+                    var sql = 'SELECT *,course.created_at as course_date FROM course where course.status = $1 and (role = $2 or role = $3) and ( title LIKE $4) order by course.course_id desc';
+                }
+                var values = [1, role, "all", '%' + search + '%'];
+
+            } else {
+
+                if (sortby == "ascending") {
+                    var sql = 'SELECT *,course.created_at as course_date FROM course where course.status = $1 and (role = $2 or role = $3) order by course.course_id asc';
+                } else {
+                    var sql = 'SELECT *,course.created_at as course_date FROM course where course.status = $1 and (role = $2 or role = $3) order by course.course_id desc';
+                }
+                var values = [1, role, "all"];
+            }
+            con.query(sql, values, function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
                 } else {
                     callback(null, result.rows);
                 }
             });
         });
-    }
+    };
+
+    this.getUnpaidCourseList = function (search, sortby, callback) {
+        connection.acquire(function (err, con) {
+            if (search) {
+
+                console.log('inghgjghj');
+                console.log(sortby);
+
+                var order_by = '';
+
+                if (sortby == "low") {
+                    order_by += 'order by course.main_cost ASC';
+                } else if (sortby == "high") {
+                    order_by += 'order by course.main_cost DESC';
+                } else {
+                    order_by += 'order by course.course_id desc';
+                }
+
+                if (sortby == "paid") {
+
+                    console.log('unpaid');
+                    console.log(order_by);
+
+                    var sql = 'SELECT *,course.created_at as course_date FROM course where course.status = $1 and course.purchase_type = $2 and (role = $3 or role = $4) and ( title LIKE $5) ' + order_by;
+                    var values = [1,'paid', 4, "all", '%' + search + '%'];
+                } else if (sortby == "unpaid") {
+
+                    console.log('unpaid');
+
+                    var sql = 'SELECT *,course.created_at as course_date FROM course where course.status = $1 and course.purchase_type = $2 and (role = $3 or role = $4) and ( title LIKE $5) ' + order_by;
+                    var values = [1, 'unpaid', 4, "all", '%' + search + '%'];
+                } else {
+
+                    console.log('else');
+                    var sql = 'SELECT *,course.created_at as course_date FROM course where course.status = $1 and (role = $2 or role = $3) and ( title LIKE $4) ' + order_by;
+                    console.log(sql);
+                    var values = [1, 4, "all", '%' + search + '%'];
+                }
+                
+
+            } else {
+
+                var order_by = '';
+
+                
+
+                if (sortby == "low") {  
+                    order_by += 'order by course.main_cost ASC';
+                } else if (sortby == "high") {
+                    order_by += 'order by course.main_cost DESC';
+                } else {
+                    order_by += 'order by course.course_id DESC';
+                }
+
+                if (sortby == "paid") {
+                    var sql = 'SELECT *,course.created_at as course_date FROM course where course.status = $1 and course.purchase_type = $2 and (role = $3 or role = $4) ' + order_by;
+                    var values = [1,'paid', 4, "all"];
+                } else if (sortby == "unpaid") {
+                    var sql = 'SELECT *,course.created_at as course_date FROM course where course.status = $1 and course.purchase_type = $2 and (role = $3 or role = $4) ' + order_by;
+                    var values = [1, 'unpaid', 4, "all"];
+                } else {
+                    var sql = 'SELECT *,course.created_at as course_date FROM course where course.status = $1 and (role = $2 or role = $3) ' + order_by;
+                    var values = [1, 4, "all"];
+                }
+
+                
+                
+            }
+
+            console.log(sql);
+            con.query(sql, values, function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
 
     
 

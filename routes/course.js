@@ -47,6 +47,7 @@ router.get('/courseList', function (req, res) {
     });
 });
 
+
 //get video data - adminside
 router.post('/getcourseDataById', [check('course_id', 'Course is required').notEmpty()], (req, res, next) => {
     const errors = validationResult(req);
@@ -431,5 +432,71 @@ router.post('/updatecourseByadmin', function (req, res) {
         }
     });
 });
+
+router.post('/getPaidCourseList', passport.authenticate('jwt', { session: false }), function (req, res) {
+    loggerData(req);
+    var user_role = req.user.userrole;
+    let search = (req.body.search) ? req.body.search : '';
+    let sortby = (req.body.sortby) ? req.body.sortby : '';
+    Course.getPaidCourseList(user_role, search, sortby, function (err, result) {
+        if (err) {
+            return res.json({ status: 0, 'response': { msg: err } });
+        } else {
+            var imageLink;
+            if (req.headers.host == env.ADMIN_LIVE_URL) {
+                imageLink = env.ADMIN_LIVE_URL;
+            } else {
+                imageLink = env.ADMIN_LIVE_URL;
+            }
+            var courseList = result.map(data => {
+                let retObj = {};
+                retObj['course_id'] = data.course_id;
+                retObj['title'] = data.title;
+                retObj['created_at'] = moment(data.course_date).format('MMMM DD, YYYY');
+                retObj['role'] = data.role;
+                retObj['image'] = (data.image) ? imageLink + env.COURSE_VIEW_PATH + data.image : '';
+                retObj['status'] = data.status;
+                retObj['main_cost'] = data.main_cost;
+                retObj['sale_cost'] = data.sale_cost;
+                return retObj;
+            });
+            return res.json({ status: 1, 'response': { data: courseList } });
+        }
+    });
+});
+
+
+router.post('/getUnpaidCourseList', function (req, res) {
+    loggerData(req);
+    let search = (req.body.search) ? req.body.search : '';
+    let sortby = (req.body.sortby) ? req.body.sortby : '';
+    Course.getUnpaidCourseList(search, sortby, function (err, result) {
+        if (err) {
+            return res.json({ status: 0, 'response': { msg: err } });
+        } else {
+            var imageLink;
+            if (req.headers.host == env.ADMIN_LIVE_URL) {
+                imageLink = env.ADMIN_LIVE_URL;
+            } else {
+                imageLink = env.ADMIN_LIVE_URL;
+            }
+            var courseList = result.map(data => {
+                let retObj = {};
+                retObj['course_id'] = data.course_id;
+                retObj['title'] = data.title;
+                retObj['image'] = (data.image) ? imageLink + env.COURSE_VIEW_PATH + data.image : '';
+                retObj['created_at'] = moment(data.course_date).format('MMMM DD, YYYY');
+                retObj['role'] = data.role;
+                retObj['status'] = data.status;
+                retObj['main_cost'] = data.main_cost;
+                retObj['sale_cost'] = data.sale_cost;
+                return retObj;
+            });
+            return res.json({ status: 1, 'response': { data: courseList } });
+        }
+    });
+});
+
+
 
 module.exports = router;

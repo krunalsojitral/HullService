@@ -1065,6 +1065,7 @@ section.banner-card .banner-text .banner-btn {
     text-transform: uppercase;
     display: block;
     margin: 0 auto;
+    border: none;
 }
 
 .login-section .login-box .login-details ul {}
@@ -1206,7 +1207,7 @@ header .header-card .hull-links .Sign-header a {
     font-style: normal;
     font-weight: 700;
     font-size: 24px;
-
+    border: none;
     /* identical to box height */
     text-align: center;
     color: #FFFFFF;
@@ -2471,6 +2472,10 @@ section.inner-header h2 {
     letter-spacing: 0.005em;
 }
 
+.personal-courses .search-box {
+    margin-top: 0px;
+}
+
 .search-box {
     margin-top: 48px;
     background: #fff;
@@ -2501,6 +2506,10 @@ section.inner-header h2 {
 
 .video-card .video-img {
     position: relative;
+    width: 100%;
+    height: 195px;
+    overflow: hidden;
+    border-radius: 6px;
 }
 
 .video-card h3 a{

@@ -174,9 +174,9 @@ export default function Header() {
                                                 </NavLink>
                                             </li>
                                             <li>
-                                                <NavLink activeClassName="active" to="/" exact={true}>
+                                                <a href="javascript:;">
                                                     <InlineButton name={"RESOURCES"} />
-                                                </NavLink>
+                                                </a>
                                                 <ul>
                                                     <li>
                                                         <NavLink activeClassName="active" to="/articles">
@@ -208,6 +208,9 @@ export default function Header() {
                                         </ul>
                                     </div>
                                     <div className="cta-header">
+                                        <Link to='/participate-in-research'>
+                                            PARTICIPATE IN RESEARCH
+                                        </Link>
                                         <Link to='/membership-benefit'>
                                             BECOME A MEMBER
                                         </Link>

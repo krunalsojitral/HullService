@@ -35,10 +35,10 @@ const DemoTable = () => {
       filter: false
     }
   ]
-  
+
 
   const updateItemStatus = (item, status) => {
-   
+
     var obj = {
       blog_id: item.blog_id,
       status: status,
@@ -57,8 +57,8 @@ const DemoTable = () => {
       });
   }
 
-  
-  const getNewList = () => { 
+
+  const getNewList = () => {
     axios.get(api_url + '/blog/blogList', {}).then((result) => {
       if (result.data.status) {
         var usersdatas = result.data.response.data;

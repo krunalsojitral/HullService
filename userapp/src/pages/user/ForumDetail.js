@@ -8,7 +8,7 @@ import Sidebar from './Sidebar';
 
 export default function ForumDetail() { 
 
-
+   
     return(
         <div>
             <Header/>

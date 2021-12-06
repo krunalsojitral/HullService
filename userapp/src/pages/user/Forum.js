@@ -7,24 +7,54 @@ import axios from 'axios';
 import Swal from "sweetalert2";
 import api_url from '../../components/Apiurl';
 import './../dev.css';
-import { useModal } from 'react-hooks-use-modal';
-import DirectionModel from "./../DirectionModel";
-import { useHistory } from "react-router-dom";
+import { useForm } from "react-hook-form";
+
 
 export default function Forum() {
    
     const [forumList, setForumList] = useState([]);
+    const [forumTagList, setForumTagList] = useState([]);
+
+    const [searchtext, setSearchtext] = React.useState('')
+    const { handleSubmit, formState } = useForm();
+    const [selectedForumTag, setSelectedForumTag] = useState([]);
+
+    const onChangeSearch = (e) => { setSearchtext(e.currentTarget.value); }
 
     React.useEffect(() => { 
-        axios.get(api_url + '/forum/getForumHeadingList').then((result) => {
+        axios.post(api_url + '/forum/getForumHeadingList',{}).then((result) => {
             if (result.data.status) {
-                var forumdata = result.data.response;
+                var forumdata = result.data.response.data;
                 setForumList(forumdata);
             } else {
-                Swal.fire('Oops...', result.data.response.msg, 'error')
+               // Swal.fire('Oops...', result.data.response.msg, 'error')
+            }
+        }).catch((err) => { console.log(err); })
+
+        axios.get(api_url + '/forum/getForumTagList',{}).then((result) => {
+            if (result.data.status) {
+                var tagdata = result.data.response.data;                
+                setForumTagList(tagdata);
+            } else {
+               // Swal.fire('Oops...', result.data.response.msg, 'error')
             }
         }).catch((err) => { console.log(err); })
     }, [])
+
+    const search = () => {        
+        var obj = {
+            "search": searchtext,            
+        }
+        axios.post(api_url + '/forum/getForumHeadingList', obj).then((result) => {
+            if (result.data.status) {
+                var tagdata = result.data.response.data;                
+                setForumList(tagdata);
+                setSelectedForumTag(result.data.response.forum_id)
+            } else {
+                // Swal.fire('Oops...', result.data.response.msg, 'error')
+            }
+        }).catch((err) => { console.log(err); })
+    }
    
 
     return(
@@ -73,8 +103,8 @@ export default function Forum() {
                                                         <td>{forumdata.topic}</td>
                                                         <td>{forumdata.category_name}</td>
                                                         <td>{forumdata.total_view}</td>
-                                                        <td>456</td>
-                                                        <td>HappyDude <span>10 minutes ago</span></td>
+                                                        <td>{(forumdata.comment && forumdata.comment.length > 0) ? forumdata.comment[0].forum_comment_count :'0' }</td>
+                                                        <td>{(forumdata.comment && forumdata.comment.length > 0) ? forumdata.comment[0].comment : '-'} <span>10 minutes ago</span></td>
                                                     </tr>
                                                 ))}                                             
                                             </tbody>
@@ -86,14 +116,25 @@ export default function Forum() {
                            
                         </div>
                         <div className="col-md-3 article-tags">
+
+                            <div class="search-box">
+                                <form onSubmit={handleSubmit(search)}>
+                                    <div class="form-group">
+                                        <button type="button"><img src="images/search.png" alt="search"/></button>
+                                        <input type="text" onChange={onChangeSearch} className="form-control" name="search_name" placeholder="Search…" />
+                                    </div>
+                                </form>
+                            </div>                                  
+
+
                             <div className="video-tag">
                                 <h3>Sort By Tags</h3>
                                 <ul>
-                                    <li><a className="active" href="#">Telemedicine</a></li>
-                                    <li><a href="#">Mavisamankwah</a></li>
-                                    <li><a href="#">Medilives</a></li>
-                                    <li><a href="#">Blockchain</a></li>
-                                    <li><a href="#">Mliv</a></li>
+                                    {forumTagList.length > 0 && forumTagList.map((data, index) => (
+                                        <li>
+                                            {selectedForumTag.length > 0 && selectedForumTag.some(cred => cred === data.forum_id) ? <a href="javascript:;" className="active" >{data.tag_name}</a> : <a href="javascript:;" >{data.tag_name}</a>}
+                                        </li>
+                                    ))}
                                 </ul>
                             </div>
                             <div className="banner-ads">

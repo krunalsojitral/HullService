@@ -46,7 +46,7 @@ export default function GroupSession() {
                         <div className="col-md-8">
                             <div className="row">
                                 <div className="col-md-12">
-
+                            
                                 </div>
                             </div>
                         </div>
