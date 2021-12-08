@@ -60,11 +60,22 @@ export default function Header() {
                                         <li><a href="https://www.youtube.com"><i className="fa fa-youtube-play"></i></a></li>
                                     </ul>
                                 </div>
+
                                 <div className="Member-login">
                                     <Link to='/login'>
                                         Member Sign In
                                     </Link>                                    
                                 </div>
+
+                                <div className="cta-header">
+                                    <NavLink activeClassName="active" to='/participate-in-research'>
+                                        PARTICIPATE IN RESEARCH
+                                    </NavLink>
+                                    <NavLink activeClassName="active" to='/membership-benefit'>
+                                        BECOME A MEMBER
+                                    </NavLink>                                    
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -154,6 +165,11 @@ export default function Header() {
                                     <div className="hull-menu">
                                         <ul>
                                             <li>
+                                                <NavLink exact={true} activeClassName="active" to="/">
+                                                    <InlineButton name={"HOME"} />
+                                                </NavLink>
+                                            </li>
+                                            <li>
                                                 <NavLink activeClassName="active" to="/about">
                                                     <InlineButton name={"ABOUT"} />
                                                 </NavLink>
@@ -202,19 +218,12 @@ export default function Header() {
                                             </li>
                                             {token && <li>
                                                 <a className="logout">
-                                                    <InlineButton handleClick={logoutUser} name={"Logout"} />
+                                                    <InlineButton handleClick={logoutUser} name={"LOGOUT"} />
                                                 </a>
                                             </li>}
                                         </ul>
                                     </div>
-                                    <div className="cta-header">
-                                        <Link to='/participate-in-research'>
-                                            PARTICIPATE IN RESEARCH
-                                        </Link>
-                                        <Link to='/membership-benefit'>
-                                            BECOME A MEMBER
-                                        </Link>
-                                    </div>
+                                    
                                 </div> 
                         </div>
                     </div>

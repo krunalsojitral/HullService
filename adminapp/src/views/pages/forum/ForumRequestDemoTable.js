@@ -14,7 +14,7 @@ import {
 } from '@coreui/react'
 
 
-const DemoTable = ({ moduleConfigUrls }) => {
+const ForumRequestDemoTable = ({ moduleConfigUrls }) => {
 
   const history = useHistory()
   const [details, setDetails] = useState([])
@@ -28,11 +28,9 @@ const DemoTable = ({ moduleConfigUrls }) => {
   }, [])
 
   const fields = [
-    { key: 'topic', _style: { width: '20%'} },
-    { key: 'total_view', _style: { width: '20%' } },
+    { key: 'topic', _style: { width: '20%'} },    
     { key: 'created_at', _style: { width: '20%' } },
-    { key: 'created_by', _style: { width: '20%' } },
-    { key: 'status', _style: { width: '20%'} },
+    { key: 'created_by', _style: { width: '20%' } },    
     { key: 'user_status', _style: { width: '20%' } },    
     {
       key: 'show_details',
@@ -65,7 +63,7 @@ const DemoTable = ({ moduleConfigUrls }) => {
 
   
   const getNewList = () => { 
-    axios.get(api_url + '/forum/forumList', {}).then((result) => {
+    axios.get(api_url + '/forum/forumRequestList', {}).then((result) => {
       if (result.data.status) {
         var usersdatas = result.data.response.data;
         setItems(usersdatas);
@@ -92,7 +90,7 @@ const DemoTable = ({ moduleConfigUrls }) => {
   }
 
   return (
-    <div>
+    <div className="card">
     <CCardBody>
       <CDataTable
         items={items}
@@ -114,42 +112,7 @@ const DemoTable = ({ moduleConfigUrls }) => {
         // onSorterValueChange={(val) => console.log('new sorter value:', val)}
         // onTableFilterChange={(val) => console.log('new table filter:', val)}
         // onColumnFilterChange={(val) => console.log('new column filter:', val)}
-        scopedSlots = {{
-          status: (item) => (
-            <td>
-              {item.status === 1 ? (
-                <a
-                  href
-                  style={{ cursor: "pointer", textDecoration: "underline" }}
-                  onClick={() => {
-                    updateItemStatus(
-                      item,
-                      0,
-                      getNewListWrap
-                    );
-                  }}
-                >
-                  Active
-                </a>
-              ) : (
-                <a
-                  href
-                  style={{ cursor: "pointer", textDecoration: "underline" }}
-                  onClick={() => {
-                    updateItemStatus(
-                      item,
-                      1,
-                      getNewListWrap
-                    );
-                  }}
-                >
-                  Inactive
-                </a>
-              )
-              }
-              {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}
-            </td>
-          ),          
+        scopedSlots = {{                    
           user_status: (item) => (
             <td>
               {item.user_status === 1 && <CBadge color={getBadge(item.user_status)}>Approved</CBadge> }
@@ -175,25 +138,16 @@ const DemoTable = ({ moduleConfigUrls }) => {
           'show_details':
             item => {
               return (
-                <td className="py-2">
-                  <CButton
-                    color="primary"
-                    variant="outline"
-                    shape="square"
-                    size="sm"
-                    onClick={() => history.push(`/forumcomment/${item.forum_id}`)}
-                  >
-                    Comment
-                  </CButton>
+                <td className="py-2">                  
 
                   <CButton
                     color="primary"
                     variant="outline"
                     shape="square"
                     size="sm"
-                    onClick={() => history.push(`/forumedit/${item.forum_id}`)}
+                    onClick={() => history.push(`/forum-view/${item.forum_id}`)}
                     className="mr-1"
-                  > Edit
+                  > View
                   </CButton>
 
                 </td>
@@ -232,4 +186,4 @@ const DemoTable = ({ moduleConfigUrls }) => {
   )
 }
 
-export default DemoTable
+export default ForumRequestDemoTable

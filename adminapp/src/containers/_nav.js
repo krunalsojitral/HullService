@@ -116,7 +116,7 @@ const _nav = [
   },
   {
     _tag: "CSidebarNavDropdown",
-    name: "Forum",
+    name: "Forums",
     route: "/forum",
     icon: "cil-list",
     _children: [
@@ -134,6 +134,11 @@ const _nav = [
         _tag: "CSidebarNavItem",
         name: "Forum",
         to: "/forum",
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "New Thread Request",
+        to: "/forum-request",
       },
     ],
   },

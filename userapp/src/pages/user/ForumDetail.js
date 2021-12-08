@@ -5,9 +5,30 @@ import Header from './../../sections/Header';
 import Footer from './../../sections/Footer';
 //import { useForm } from "react-hook-form";
 import Sidebar from './Sidebar';
+import axios from 'axios';
+import api_url from '../../components/Apiurl';
 
 export default function ForumDetail() { 
 
+    const [forumCommentList, setForumCommentList] = useState([]);
+
+    React.useEffect(() => {
+
+        const params = new URLSearchParams(window.location.search) // id=123
+        let forum_id = params.get('id')
+
+        axios.post(api_url + '/forum/getForumCommentList', { 'forum_id': forum_id }).then((result) => {
+            if (result.data.status) {
+                var forumdata = result.data.response.data;
+                setForumCommentList(forumdata);
+            } else {
+                // Swal.fire('Oops...', result.data.response.msg, 'error')
+            }
+        }).catch((err) => { console.log(err); })
+
+    },[]);
+
+   
    
     return(
         <div>
@@ -29,9 +50,10 @@ export default function ForumDetail() {
                         </div>
                         <div className="col-md-7">
                             <div className="category-table">
-                                <h2 className="mb-0 text-center">How Do I Find An Appropriate Therapist For Me? </h2>
+                                <h2 className="mb-0 text-center">How Do I Find An Appropriate Therapist For Me?</h2>
                                 {/* <a href="javascript:;"> Back to Forum Categories</a> */}
-                                     <div className="forum-post">
+                                <br />
+                                <div className="forum-post">
                                     <div className="forum-cal">
                                         <div className="forum-inner">
                                             <p><label>Started</label> <i>1 day ago </i></p>
@@ -61,27 +83,33 @@ export default function ForumDetail() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="forum-topic">
-                                    <h4>NOV 3rd, 2021 11:00 am</h4>
-                                    <div className="forum-chat">
-                                        <div className="forum-title">
-                                            <p><label>DocSmiles (OP)</label> researcher</p>
-                                            <a href="javascript:;"><img src="images/briefcase.png" alt="briefcase" /><span>Oct 2021</span></a>
-                                            <a href="javascript:;"><img src="images/edit.png" alt="briefcase" /><span>222 Posts</span></a>
-                                        </div>
-                                        <div className="forum-text">
-                                            <p>Hey Everyone, <br /><br />
-                                    Ive been having difficulty finding a therapist that works for me. have any of you experienced this? Got any tips on overcoming it?</p>
-                                            <div className="forum-comments">
-                                                <a href="javascript:;"><img src="images/like.png" alt="like" /> <span>+3</span></a>
-                                                <div className="reply-forum">
-                                                    <a href="javascript:;"><img src="images/reply.png" alt="reply" /> <span>Reply</span></a>
-                                                    <a href="javascript:;"><img src="images/quote.png" alt="quote" /> <span>Quote</span></a>
+                                <br/>
+
+
+
+                                {forumCommentList.map((data, index) => (
+                                    <div className="forum-topic">
+                                        <h4>NOV 3rd, 2021 11:00 am</h4>
+                                        <div className="forum-chat">
+                                            <div className="forum-title">
+                                                <p><label>{data.first_name} {data.last_name} </label> researcher</p>
+                                            </div>
+                                            <div className="forum-text">
+                                                <p>{data.comment}</p>
+                                                <div className="forum-comments">
+                                                    <a href="javascript:;"><img src="images/like.png" alt="like" /> <span>+3</span></a>
+                                                    <div className="reply-forum">
+                                                        <a href="javascript:;"><img src="images/reply.png" alt="reply" /> <span>Reply</span></a>
+                                                        <a href="javascript:;"><img src="images/quote.png" alt="quote" /> <span>Quote</span></a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                ))}
+
+
+
                                 <div className="forum-topic">
                                     <h4>NOV 3rd, 2021 11:00 am</h4>
                                     <div className="forum-chat">

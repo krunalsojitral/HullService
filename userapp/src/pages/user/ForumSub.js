@@ -23,7 +23,6 @@ export default function ForumSub() {
     const [forumTagList, setForumTagList] = useState([]);
 
     const [selectedForumTag, setSelectedForumTag] = useState([]);
-
     const [searchtext, setSearchtext] = React.useState('')
     const { handleSubmit, formState } = useForm();
 
@@ -114,14 +113,14 @@ export default function ForumSub() {
                         </div>
                         <div className="col-md-7">
                             <div className="category-table">
-                                <h2 className="mb-0">Welcoming Forums</h2>
+                                <h2 className="mb-0"> {data && data[0] && data[0].forumheading_name && data[0].forumheading_name} </h2>
                                 <p>This is <b>not</b> a moderated forum. Please be polite to your peers. Be kind and remember the human on the other end.</p>
                                 
 
                                 {token && <div className="add-forum">                                    
-                                    <Link className="book-apoint" to={{ pathname: "/add-forum" }}>
+                                    {data && data[0] && data[0].forumheading_id &&  <Link className="book-apoint" to={{ pathname: "/add-forum", search: "?id=" + data[0].forumheading_id }}>
                                         Add Forum
-                                    </Link>                                    
+                                    </Link>}                                    
                                 </div>}
 
                                 

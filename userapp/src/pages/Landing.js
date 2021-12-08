@@ -119,7 +119,8 @@ export default function Landing() {
                     <div className="row">
                         <div className="col-md-12">
                             <div className="video">
-                                <iframe title="video" src="https://www.youtube.com/embed/xNH2aIxGVeM?rel=0&modestbranding=1&showinfo=0"></iframe>
+                                {content.video_embeded_id && 
+                                    <iframe title="video" src={`https://www.youtube.com/embed/${content.video_embeded_id}?rel=0&modestbranding=1&showinfo=0`}></iframe>}
                                 {/* allowfullscreen <img alt="MediaPlayer" src="images/MediaPlayer.png"/> */}
                                 <Link to='/' className="learn-btn">
                                     Learn More

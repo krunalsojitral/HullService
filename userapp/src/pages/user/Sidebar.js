@@ -118,6 +118,14 @@ export default function Sidebar() {
                     </NavLink>
                 </li>
                 <li>
+                    <NavLink activeClassName="active" to="/group-session">
+                        <svg className="icon icon-tag">
+                            <use xlinkHref="#icon-group"></use>
+                        </svg>
+                        <InlineButton name={"Group Sessions"} />
+                    </NavLink>
+                </li>
+                <li>
                     <NavLink activeClassName="active" to="/professional-development">
                         <svg className="icon icon-tag">
                             <use xlinkHref="#icon-book"></use>
@@ -125,14 +133,7 @@ export default function Sidebar() {
                         <InlineButton name={"Professional Development"} />
                     </NavLink>
                 </li>
-                <li>
-                    <NavLink activeClassName="active" to="/group-session">
-                        <svg className="icon icon-tag">
-                            <use xlinkHref="#icon-group"></use>
-                        </svg>
-                        <InlineButton name={"Group Sessions"} />
-                    </NavLink>                    
-                </li>               
+                           
                              
                 {users && users.role == 3 &&                
                     <li className="dropdown sub-menu">
@@ -140,7 +141,7 @@ export default function Sidebar() {
                         <svg className="icon icon-tag">
                                 <use xlinkHref="#icon-research"></use>
                             </svg>
-                            <span>Studies Research</span>
+                            <span>Studies/Research</span>
                         </a>
                         <ul>
                             <li>

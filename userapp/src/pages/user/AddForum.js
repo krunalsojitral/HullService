@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from './../../sections/Header';
 import Footer from './../../sections/Footer';
 import Sidebar from './Sidebar';
@@ -26,12 +26,17 @@ export default function AddForum() {
     const [selectedTag, setSelectedTag] = React.useState([])
     const [headingList, setHeadingList] = React.useState([]);
     const [categoryList, setCategoryList] = React.useState([]);
+    const [headingId, setHeadingId] = useState(0);
 
     React.useEffect(() => { 
 
         setTimeout(() => {
             $(".dropdown-heading-value .gray").text("Tag");
         }, 50);
+
+        const params = new URLSearchParams(window.location.search) // id=123
+        let forum_heading_id = params.get('id')
+        setHeadingId(forum_heading_id);
 
         axios.get(api_url + "/common/tagList", {})
             .then((result) => {
@@ -84,6 +89,7 @@ export default function AddForum() {
         };
 
         data.tag = selectedTag;
+        data.heading = headingId;
 
         axios.post(api_url + "/forum/addforumByuser", data, config)
             .then((result) => {
@@ -144,30 +150,10 @@ export default function AddForum() {
                                             <form onSubmit={handleSubmit(addInformationAct)}>
                                                 <div className="forum-details">
 
-                                                    <div className="form-group">
-
-                                                        <Controller
-                                                            name={"topic"}
-                                                            control={control}
-                                                            rules={{ required: true }}
-                                                            render={({ field: { onChange, value } }) => (
-                                                                <input
-                                                                    type="text"
-                                                                    onChange={onChange}
-                                                                    value={value}
-                                                                    className="form-control"
-                                                                    placeholder={`Topic  *`}
-                                                                />
-                                                            )}
-                                                        ></Controller>
-                                                        {errors.topic && errors.topic.type === "required" && (
-                                                            <small className="error">Topic is required.<br /><br /></small>
-                                                        )}
-                                                        
-                                                    </div>
+                                                   
 
 
-                                                    <div className="form-group">
+                                                    {/* <div className="form-group">
                                                         <Controller
                                                             name="heading"
                                                             control={control}
@@ -187,7 +173,7 @@ export default function AddForum() {
                                                             <small className="error">Heading is required.<div><br /></div></small>
                                                         )}
 
-                                                    </div>
+                                                    </div> */}
 
 
                                                     <div className="form-group">
@@ -197,7 +183,7 @@ export default function AddForum() {
                                                             rules={{ required: true }}
                                                             render={({ field: { onChange, value } }) => (
                                                                 <select className="form-control" onChange={onChange} value={value}>
-                                                                    <option key="0" value="">select value</option>
+                                                                    <option key="0" value="">Forum Category</option>
                                                                     {categoryList.map((item) => (
                                                                         <option key={item.category_id} value={item.category_id}>
                                                                             {item.category_name}
@@ -209,26 +195,69 @@ export default function AddForum() {
                                                         {errors.category && errors.category.type === "required" && (
                                                             <small className="error">Category is required.</small>
                                                         )}
-                                                        {errors.category && errors.category.type === "required" && <br />}
+                                                       
                                                     </div>
 
                                                     <div className="form-group">
 
-                                                        
-                                                    <MultiSelect
-                                                            options={tagList}
-                                                            value={selectedTag}
-                                                            selectionLimit="2"
-                                                            hasSelectAll={false}
-                                                            onChange={setSelectedTag}
-                                                            labelledBy="Select"
-                                                        />
+                                                        <Controller
+                                                            name={"topic"}
+                                                            control={control}
+                                                            rules={{ required: true }}
+                                                            render={({ field: { onChange, value } }) => (
+                                                                <input
+                                                                    type="text"
+                                                                    onChange={onChange}
+                                                                    value={value}
+                                                                    className="form-control"
+                                                                    placeholder={`Thread title  *`}
+                                                                />
+                                                            )}
+                                                        ></Controller>
+                                                        {errors.topic && errors.topic.type === "required" && (
+                                                            <small className="error">Thread title is required.<br /><br /></small>
+                                                        )}
 
+                                                    </div>
+
+
+                                                    <div className="form-group">
+
+                                                        <Controller
+                                                            name={"description"}
+                                                            control={control}
+                                                            rules={{ required: true }}
+                                                            render={({ field: { onChange, value } }) => (
+                                                                <textarea
+                                                                    rows="6" cols="50"
+                                                                    type="text"
+                                                                    onChange={onChange}
+                                                                    value={value}
+                                                                    className="form-control"
+                                                                    placeholder={`Thread description  *`}
+                                                                />
+                                                            )}
+                                                        ></Controller>
+                                                        {errors.topic && errors.topic.type === "required" && (
+                                                            <small className="error">Thread description is required.</small>
+                                                        )}
+                                                    </div>
+
+                                                    {errors.topic && errors.topic.type === "required" && (<div><br /></div>)}
+
+                                                    <div className="form-group">
+                                                        <MultiSelect
+                                                                options={tagList}
+                                                                value={selectedTag}
+                                                                selectionLimit="2"
+                                                                hasSelectAll={false}
+                                                                onChange={setSelectedTag}
+                                                                labelledBy="Select"
+                                                            />
                                                         {selectedTag.map(item => (
                                                             <span className="interest-area">{item.label}&nbsp;<i onClick={(e) => removeSkill(item.value)} className="fa fa-times"></i></span>
                                                             
-                                                        ))}                                                       
-
+                                                        ))}        
                                                     </div>
 
 

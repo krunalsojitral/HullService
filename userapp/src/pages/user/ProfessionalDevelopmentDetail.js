@@ -71,10 +71,7 @@ export default function ProfessionalDevelopmentDetail() {
 
     const [Modal, open, close] = useModal('root', {});
 
-    const linkTarget = (id) => {
-        history.replace("/course-detail?id=" + id);
-        window.location.reload();
-    };
+   
 
     return (
         <div>
@@ -375,8 +372,11 @@ export default function ProfessionalDevelopmentDetail() {
                                             <li><img src="images/check.png" alt="check" /> Full lifetime access</li>
                                             <li><img src="images/check.png" alt="check" /> Access on mobile and tv</li>
                                         </ul>
-                                        <label>30 days money back guarantee</label> */}
-                                        <a href="javascript:;">Purchase Course</a>
+                                        <label>30 days money back guarantee</label> */}                                        
+                                        <Link to={{ pathname: "/course-payment", search: "?id=" + courseDetail.course_id }}>
+                                            Purchase Course
+                                        </Link>                                       
+                                        
                                         {/* <a href="javascript:;" className="outline-btn">Buy Now</a> */}
                                     </div>
                                 </div>

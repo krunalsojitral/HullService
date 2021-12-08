@@ -488,6 +488,63 @@ router.post('/getUnpaidCourseList', function (req, res) {
     });
 });
 
+router.post('/getCoursePaymentDataById', [check('course_id', 'Course is required').notEmpty()], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        let course_id = req.body.course_id;
+
+        Course.getcourseDataById(course_id, function (err, result) {
+            if (err) {
+                return res.json({ 'status': 0, 'response': { 'msg': err } });
+            } else {
+                if (result != '') {                    
+                    let course = {};
+                    course['course_id'] = result[0].course_id;
+                    course['title'] = result[0].title;                   
+                    course['sale_cost'] = result[0].sale_cost;                    
+                    return res.json({ 'status': 1, 'response': { 'data': course, 'msg': 'Data found' } });
+                } else {
+                    return res.json({ 'status': 0, 'response': { 'data': [], 'msg': 'Data not found' } });
+                }
+            }
+        });
+    }
+});
+
+router.post('/purchase_course', [
+    check('user_id', 'User is required').notEmpty(),
+    check('order_id', 'Order id is required').notEmpty(),
+    check('course_id', 'Course is required').notEmpty()
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        var obj = {
+            user_id: req.body.user_id,
+            order_id: req.body.order_id,
+            course_id: req.body.course_id
+        }
+
+        Course.purchase_course(obj, function (err, result) {
+            if (err) {
+                return res.json({ 'status': 0, 'response': { 'msg': err } });
+            } else {
+                if (result) {                   
+                    return res.json({ 'status': 1, 'response': { 'data': result, 'msg': 'Data found' } });
+                } else {
+                    return res.json({ 'status': 0, 'response': { 'data': [], 'msg': 'Data not found' } });
+                }
+            }
+        });
+    }
+});
+
+
 
 
 module.exports = router;

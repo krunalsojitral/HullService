@@ -151,22 +151,36 @@ p {
 }
 
 .top-header {
-    background: #F7F7F7;
+    background: #f2f2f2;
     padding: 12px 0;
+    border-bottom: solid 1px #f1f1f1;
 }
 
 .top-header .top-header-icon {
-    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 }
 
-.top-header .top-header-icon .social-icon {}
+.top-header .top-header-icon .cta-header a {
+    background: #038EA6;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 25px;
+    text-align: center;
+    color: #FFFFFF;
+    padding: 4px 12px;
+    display: inline-block;
+    border-radius: 4px;
+    margin-left: 10px;
+}
+
 
 .top-header .top-header-icon .social-icon {
     text-align: right;
     display: inline-block;
 }
-
-.top-header .top-header-icon .social-icon ul {}
 
 .top-header .top-header-icon .social-icon ul li {
     display: inline-block;
@@ -234,25 +248,42 @@ header .header-card .hull-links .hull-menu ul li a {
     font-size: 14px;
     line-height: 25px;
     color: #036E80;
-    padding: 12px 12px;
+    padding: 3px 12px;
 
 }
 
 header .header-card .hull-links .hull-menu ul li a.active {
     font-style: normal;
     font-weight: normal;
-    font-size: 20px;
     line-height: 25px;
-    color: #036E80;
-    padding: 12px 12px;
+    color: #fff;
+    padding: 3px 12px;
+    background: #f6b92c;
+    border-radius: 4px;
 
 }
 
+header .header-card .hull-links .hull-menu ul li a:hover{
+    font-style: normal;
+    font-weight: normal;
+    line-height: 25px;
+    color: #fff;
+    padding: 3px 12px;
+    background: #f6b92c;
+    border-radius: 4px;
+}
+
 header .header-card .hull-links .hull-menu ul li ul li a {
-    border: 1px solid #038EA6;
+    /* border: 1px solid #038EA6; */
     display: block;
     padding: 5px 12px;
     width: 100%;
+}
+header .header-card .hull-links .hull-menu ul li 
+ ul li a:hover {
+    background: #f6b92c;
+    border-radius: 0;
+    padding: 5px 12px;
 }
 
 header .header-card .hull-links .cta-header {
@@ -934,9 +965,13 @@ section.banner-card .banner-text .banner-btn {
     position: absolute;
 }
 
-.login-box div {
-    text-align: center;
+.video-box iframe {
+    border: none;
 }
+
+/* .login-box div {
+    text-align: center;
+} */
 
 .login-section .login-box {
     width: 600px;
@@ -1126,18 +1161,29 @@ section.banner-card .banner-text .banner-btn {
 } */
 
 .login-section .login-box .forgot-btn {
-    font-family: Avenir;
+    font-family: 'Avenir Next LT Pro';
     font-size: 18px;
     line-height: 21px;
     color: #8183B2;
 }
 
+.top-header .top-header-icon .cta-header a.active{        
+    line-height: 25px;
+    color: #fff;
+    padding: 3px 12px;
+    background: #f6b92c;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
 .login-section .login-box .signup-btn {
-    font-family: Avenir;
+    font-family: 'Avenir Next LT Pro';
     font-size: 20px;
     line-height: 23px;
     text-align: right;
     color: #036E80;
+    font-style: italic;
+    font-weight: bold;
 }
 
 .login-section {
@@ -1534,12 +1580,15 @@ header .header-card .hull-links .hull-menu ul li ul {
     min-width: 220px;
     z-index: 999;
     left: 0;
-    top: 39px;
+    top: 30px;
     display: none;
+    border: 1px solid #ddd;
 }
 
 header .header-card .hull-links .hull-menu ul li ul li {
     display: block;
+    border-bottom: 1px solid #ddd;
+    position: relative;
 }
 
 header .header-card .hull-links .hull-menu ul li:hover ul {
@@ -1772,15 +1821,11 @@ section.inner-header h2 {
 .video-card .video-img img {}
 
 .video-card h3 {
-
     font-style: normal;
     font-weight: bold;
     font-size: 20px;
     line-height: 26px;
-    /* or 29px */
-
-
-    /* Light/Text Color/Title */
+    min-height: 52px;
     color: #11142D;
     margin: 15px 0;
 }
@@ -2522,7 +2567,9 @@ section.inner-header h2 {
 }
 
 .video-card h3 a{
-    color: #000;
+    color: #000;    
+    display: block;
+    position: relative;
 }
 
 
@@ -3049,10 +3096,21 @@ section.inner-header h2 {
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.151033);
     border-radius: 4px;
     margin: 15px 0;
+    background: #fff;
+    overflow: hidden;
+}
+
+.blog-image a {
+    display: block;
+    height: 100%;
 }
 
 .blog-section {
     margin-top: 35px;
+}
+.video-card .video-img 
+ iframe {
+    border: none;
 }
 
 .Become-text h3 {
@@ -3645,5 +3703,30 @@ color: #11142D;
     margin-bottom: 0;
 }
 .sub-menu.open>.dropdown-menu {
+    display: block;
+}
+.tooltip-box a{
+    display: block;
+    position: relative;
+}
+
+.tooltip-box a .tooltip-title {
+    display: none;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: auto;
+    z-index: 1;
+    background: #060606;
+    font-size: 11px;
+    line-height: 15px;
+    padding: 5px 5px;
+    color: #FFF;
+    border-radius: 5px;
+    font-weight: 400;
+    right: 0;
+}
+
+.tooltip-box a:hover .tooltip-title {
     display: block;
 }

@@ -169,9 +169,9 @@ function Video() {
             if (search) {
 
                 if (sortby == "ascending"){
-                    var sql = 'SELECT *,video.created_at as video_date FROM video where video.status = $1 and (role = $2 or role = $3) and ( title LIKE $4) order by video.video_id asc';
+                    var sql = 'SELECT *,video.created_at as video_date FROM video where video.status = $1 and (role = $2 or role = $3) and ( title ILIKE $4) order by video.video_id asc';
                 }else{
-                    var sql = 'SELECT *,video.created_at as video_date FROM video where video.status = $1 and (role = $2 or role = $3) and ( title LIKE $4) order by video.video_id desc';
+                    var sql = 'SELECT *,video.created_at as video_date FROM video where video.status = $1 and (role = $2 or role = $3) and ( title ILIKE $4) order by video.video_id desc';
                 }
                 var values = [1, role, "all", '%' + search + '%'];
 
@@ -201,9 +201,9 @@ function Video() {
             if (search) {
 
                 if (sortby == "ascending") {
-                    var sql = 'SELECT *,video.created_at as video_date FROM video where video.status = $1 and (role = $2 or role = $3) and ( title LIKE $4) order by video.video_id asc';
+                    var sql = 'SELECT *,video.created_at as video_date FROM video where video.status = $1 and (role = $2 or role = $3) and ( title ILIKE $4) order by video.video_id asc';
                 }else{
-                    var sql = 'SELECT *,video.created_at as video_date FROM video where video.status = $1 and (role = $2 or role = $3) and ( title LIKE $4) order by video.video_id desc';
+                    var sql = 'SELECT *,video.created_at as video_date FROM video where video.status = $1 and (role = $2 or role = $3) and ( title ILIKE $4) order by video.video_id desc';
                 }
                 var values = [1, 4, "all", '%' + search + '%'];
 

@@ -64,3 +64,6 @@
 .label-validation{
     color: red;
 }
+.c-sidebar-nav-dropdown-toggle:after{
+    transform: rotate(-180deg);
+}

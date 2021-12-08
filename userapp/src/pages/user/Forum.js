@@ -11,7 +11,8 @@ import { useForm } from "react-hook-form";
 
 
 export default function Forum() {
-   
+
+    
     const [forumList, setForumList] = useState([]);
     const [forumTagList, setForumTagList] = useState([]);
     const [token, setToken] = useState('');
@@ -94,20 +95,13 @@ export default function Forum() {
                                         </Link>
                                         </div>
 
-                                        {token && <div className="add-forum">                                            
-                                            <Link className="book-apoint" to={{ pathname: "/add-forum" }}>
+                                        {token && <div className="add-forum">    
+                                            <Link className="book-apoint" to={{ pathname: "/add-forum", search: "?id=" + data.forumheading_id }}>
                                                 Add Forum
                                             </Link>
                                         </div>}
 
                                      </div>
-
-                                    
-                                    
-
-
-                                   
-
                                     
                                     <div className="forum-table table-responsive">
                                         <table className="table">
@@ -116,18 +110,18 @@ export default function Forum() {
                                                     <th>Topic Title</th>
                                                     <th>Category</th>
                                                     <th>Replies</th>
-                                                    <th>Views</th>
+                                                    {/* <th>Views</th> */}
                                                     <th>Last Post</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 {data.forum.map((forumdata, index) => (
                                                     <tr>
-                                                        <td>{forumdata.topic}</td>
+                                                        <td><Link to={{ pathname: "/forum-detail", search: "?id=" + forumdata.forum_id }}>{forumdata.topic}</Link></td>
                                                         <td>{forumdata.category_name}</td>
                                                         <td>{forumdata.total_view}</td>
-                                                        <td>{(forumdata.comment && forumdata.comment.length > 0) ? forumdata.comment[0].forum_comment_count :'0' }</td>
-                                                        <td>{(forumdata.comment && forumdata.comment.length > 0) ? forumdata.comment[0].comment : '-'} <span>10 minutes ago</span></td>
+                                                        {/* <td>{(forumdata.comment && forumdata.comment.length > 0) ? forumdata.comment[0].forum_comment_count :'0' }</td> */}
+                                                        <td><span>10 minutes ago</span></td>
                                                     </tr>
                                                 ))}                                             
                                             </tbody>

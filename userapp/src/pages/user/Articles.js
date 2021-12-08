@@ -125,7 +125,12 @@ export default function Articles() {
                                                     <img src="images/bookmark-fill.png" alt="bookmark-fill" />
                                                 </a>
                                             </div>
-                                            <h3><Link to={{ pathname: "/article-detail", search: "?id=" + data.article_id }}> {data.title.slice(0, 41)}</Link></h3>
+                                            <h3 class="tooltip-box">
+                                                <Link data-toggle="tooltip" title={data.title} data-placement="bottom" to={{ pathname: "/article-detail", search: "?id=" + data.article_id }}> 
+                                                {data.title.slice(0, 30)}
+                                                <span className="tooltip-title">{data.title}</span>
+                                                </Link>
+                                            </h3>
                                             <div className="blog-post">
                                                 <div className="blog-author">
                                                     <img src="images/hull-icon.png" alt="author" />

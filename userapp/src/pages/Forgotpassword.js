@@ -54,7 +54,7 @@ export default function Forgotpassword() {
                                         </Link>
                                     </div>
                                     <div className="col-md-6 text-right">
-                                        <Link className="forgot-btn" to='/userSelection'>
+                                        <Link className="signup-btn" to='/userSelection'>
                                             Sign Up
                                         </Link>
                                     </div>

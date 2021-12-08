@@ -100,6 +100,7 @@ router.post('/getforumDataById', [check('forum_id', 'forum is required').notEmpt
                             let forum = {};
                             forum['forum_id'] = result[0].forum_id;
                             forum['title'] = result[0].topic;
+                            forum['description'] = result[0].description;
                             forum['heading'] = result[0].heading;
                             forum['category'] = result[0].category;
                             forum['tag'] = [];
@@ -140,6 +141,74 @@ router.post('/getforumDataById', [check('forum_id', 'forum is required').notEmpt
             }
         });
         
+    }
+});
+
+router.post('/getforumViewDataById', [check('forum_id', 'forum is required').notEmpty()], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        let forum_id = req.body.forum_id;
+
+        asyn.waterfall([
+            function (done) {
+                Forum.getforumViewDataById(forum_id, function (err, result) {
+                    if (err) {
+                        done({ 'status': 0, 'response': { 'msg': 'Something went wrong.' } });
+                    } else {
+                        if (result != '') {
+                            var forumLink;
+                            if (req.headers.host == env.ADMIN_LIVE_URL) {
+                                forumLink = env.ADMIN_LIVE_URL;
+                            } else {
+                                forumLink = env.ADMIN_LIVE_URL;
+                            }
+                            let forum = {};
+                            forum['forum_id'] = result[0].forum_id;
+                            forum['title'] = result[0].topic;
+                            forum['description'] = result[0].description;
+                            forum['heading'] = result[0].forumheading_name;
+                            forum['category'] = result[0].category_name;
+                            forum['tag'] = [];
+                            done(err, forum)
+                        } else {
+                            done('data not found', null);
+                        }
+                    }
+                });
+            },
+            function (forum, done) {
+                if (forum['forum_id'] != '') {
+                    Forum.getTagByForumId(forum['forum_id'], function (err, result) {
+                        if (result && result.length > 0) {
+                            var obj = result.map((data, index) => {
+                                let retObj = {};
+                                retObj['id'] = (index + 1);
+                                retObj['label'] = data.tag_name;
+                                retObj['value'] = data.tag_id;
+                                return retObj;
+                            });
+                            forum['tag'] = obj;
+                            done(null, forum)
+                        } else {
+                            done(null, forum)
+                        }
+                    });
+                } else {
+                    done(null, forum)
+                }
+            }
+        ],
+            function (error, video) {
+                if (error) {
+                    return res.json({ 'status': 0, 'response': { 'msg': err } });
+                } else {
+                    return res.json({ 'status': 1, 'response': { 'data': video, 'msg': 'data found' } });
+                }
+            });
+
     }
 });
 
@@ -426,6 +495,7 @@ router.post('/addforumByuser', passport.authenticate('jwt', { session: false }),
         let record = {
             topic: req.body.topic,
             heading: (req.body.heading) ? req.body.heading : '',
+            description: (req.body.description) ? req.body.description : '',
             category: (req.body.category) ? req.body.category : '',
             created_at: moment().format('YYYY-MM-DD'),
             created_by: req.user.id
@@ -569,6 +639,42 @@ router.post('/approveRejectedRequest', [
 
 
 
+
+router.post('/getForumCommentList', [
+    check('forum_id', 'Please enter valid id').notEmpty()
+], (req, res) => {
+    var forum_id = req.body.forum_id;
+    Forum.getForumCommentList(forum_id, function (err, result) {
+        if (err) {
+            return res.json({ status: 0, 'response': { msg: err } });
+        } else {            
+            return res.json({ 'status': 1, 'response': { 'msg': 'Forum added successfully.', data: result } });
+        }
+    });
+});
+
+
+router.get('/forumRequestList', function (req, res) {
+    loggerData(req);
+    Forum.forumRequestList(function (err, result) {
+        if (err) {
+            return res.json({ status: 0, 'response': { msg: err } });
+        } else {
+            var forumList = result.map(data => {
+                let retObj = {};
+                retObj['forum_id'] = data.forum_id;
+                retObj['topic'] = data.topic;
+                retObj['total_view'] = data.total_view;
+                retObj['created_at'] = (data.forum_date) ? moment(data.forum_date).format('YYYY-MM-DD') : '';
+                retObj['status'] = data.forum_status;
+                retObj['user_status'] = data.user_status;
+                retObj['created_by'] = (data.first_name) ? data.first_name + ' ' + data.last_name : 'Admin';
+                return retObj;
+            });
+            return res.json({ status: 1, 'response': { data: forumList } });
+        }
+    });
+});
 
 
 

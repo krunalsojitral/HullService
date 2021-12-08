@@ -38,6 +38,7 @@ const ProfessionalDevelopment = lazy(() => import("./pages/user/ProfessionalDeve
 const ProfessionalDevelopmentDetail = lazy(() => import("./pages/user/ProfessionalDevelopmentDetail"));
 const ParticipantsInMyStudies = lazy(() => import("./pages/user/ParticipantsInMyStudies"));
 const MyStudies = lazy(() => import("./pages/user/MyStudies"));
+const CoursePayment = lazy(() => import("./pages/user/CoursePayment"));
 
 function App() {
 
@@ -93,6 +94,7 @@ function App() {
           <Route exact path="/participants-in-my-studies" component={ParticipantsInMyStudies} />
           <Route exact path="/participate-in-research" component={ParticipateInResearch} />
           <Route exact path="/my-studies" component={MyStudies} />
+          <Route exact path="/course-payment" component={CoursePayment} />         
         </Switch>
         </Suspense>
       </UserContext.Provider>

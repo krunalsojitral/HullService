@@ -15,9 +15,11 @@ const CategoryAddEditForm = React.lazy(() => import('./views/pages/category/AddE
 const Course = React.lazy(() => import('./views/pages/course/Course'))
 const CourseAddEditForm = React.lazy(() => import('./views/pages/course/AddEditForm'))
 const Forum = React.lazy(() => import('./views/pages/forum/Forum'))
+const ForumView = React.lazy(() => import('./views/pages/forum/ForumView'))
 const ForumComment = React.lazy(() => import('./views/pages/forum/ForumComment'))
 const ForumAddEditForm = React.lazy(() => import('./views/pages/forum/AddEditForm'))
 const Forumheading = React.lazy(() => import('./views/pages/forumheading/Forumheading'))
+const ForumRequestDemoTable = React.lazy(() => import('./views/pages/forum/ForumRequestDemoTable'))
 const ForumheadingAddEditForm = React.lazy(() => import('./views/pages/forumheading/AddEditForm'))
 const Generalpublic = React.lazy(() => import('./views/pages/users/generalpublic/Generalpublic'))
 const GeneralpublicAddEditForm = React.lazy(() => import('./views/pages/users/generalpublic/AddEditForm'))
@@ -67,6 +69,8 @@ const routes = [
   { path: '/forumheadingadd', name: 'Forum Heading Add', component: ForumheadingAddEditForm },
   { path: '/forumheadingedit/:id', name: 'Forum Heading Edit', component: ForumheadingAddEditForm },
   { path: '/forum', name: 'Forum', component: Forum },
+  { path: '/forum-view/:id', name: 'Forum View', component: ForumView },
+  { path: '/forum-request', name: 'Forum Request', component: ForumRequestDemoTable },
   { path: '/forumcomment/:id', name: 'Forum', component: ForumComment },
   { path: '/forumadd', name: 'Forum Add', component: ForumAddEditForm },
   { path: '/forumedit/:id', name: 'Forum Edit', component: ForumAddEditForm },

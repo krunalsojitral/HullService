@@ -173,10 +173,14 @@ export default function ProfessionalDevelopment() {
                                                             <Link to={{ pathname: "/professional-development-detail", search: "?id=" + data.course_id }}>
                                                                 {data.image && <img src={data.image} alt="blog" />}
                                                                 {!data.image && <img src="images/blog.jpg" alt="blog" />}
-                                                            </Link>                                                            
-                                                           
+                                                            </Link>                                                                                                                       
                                                         </div>
-                                                        <h3> <Link to={{ pathname: "/professional-development-detail", search: "?id=" + data.course_id }}> {data.title} </Link> </h3>
+                                                        <h3 class="tooltip-box"> 
+                                                            <Link to={{ pathname: "/professional-development-detail", search: "?id=" + data.course_id }}> 
+                                                                {data.title.slice(0, 30)}
+                                                                <span className="tooltip-title">{data.title}</span>
+                                                            </Link> 
+                                                        </h3>
                                                         <div className="video-bottom">
                                                             <p><img src="images/hull-icon.png" alt="author" />Hull Service</p>
                                                         </div>

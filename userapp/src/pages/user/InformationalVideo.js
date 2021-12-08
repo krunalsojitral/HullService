@@ -175,7 +175,10 @@ export default function Video() {
                                                         <div className="video-img">
                                                             <iframe width="100%" height="195px" src={data.video + "?rel=0"} title="YouTube video player" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>
                                                         </div>
-                                                        <h3><Link to={{ pathname: "/video-detail", search: "?id=" + data.video_id }}> {data.title.slice(0, 46)}</Link></h3>
+                                                        <h3 class="tooltip-box"><Link to={{ pathname: "/video-detail", search: "?id=" + data.video_id }}>
+                                                             {data.title.slice(0, 30)}
+                                                            <span className="tooltip-title">{data.title}</span>
+                                                        </Link></h3>
                                                         <div className="video-bottom">
                                                             <p><img src="images/hull-icon.png" alt="author" />Hull Service</p>
                                                             <Link to={{ pathname: "/video-detail", search: "?id=" + data.video_id }}><img src="images/video.png" alt="video" /></Link>

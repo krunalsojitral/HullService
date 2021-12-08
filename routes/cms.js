@@ -38,6 +38,7 @@ router.get('/getHomeContentData', (req, res, next) => {
                 contentList['third_section_sub_title'] = result[0].third_section_sub_title;
                 contentList['third_section_upper_paragraph'] = result[0].third_section_upper_paragraph;
                 contentList['third_section_lower_paragraph'] = result[0].third_section_lower_paragraph;
+                contentList['video_embeded_id'] = result[0].video_embeded_id;
                 return res.json({ 'status': 1, 'response': { 'data': contentList, 'msg': 'data found' } });
             } else {
                 return res.json({ 'status': 1, 'response': { 'data': '', 'msg': 'data found' } });
@@ -46,11 +47,29 @@ router.get('/getHomeContentData', (req, res, next) => {
     });
 });
 
+function getId(url) {
+    var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    var match = url.match(regExp);
+
+    if (match && match[2].length == 11) {
+        return match[2];
+    } else {
+        return 'error';
+    }
+}
+
 router.post('/updatecontentByadmin', function (req, res) {
+    
+    if (req.body.video_url){
+        var videoId = getId(req.body.video_url)
+    }else{
+        var videoId = '';
+    }
+    
     
     let update_value = [req.body.first_section_title, req.body.first_section_sub_title, req.body.first_section_upper_paragraph, req.body.first_section_lower_paragraph,
         req.body.second_section_title, req.body.second_section_sub_title,req.body.video_url, req.body.third_section_title,
-        req.body.third_section_sub_title, req.body.third_section_upper_paragraph, req.body.third_section_lower_paragraph]
+        req.body.third_section_sub_title, req.body.third_section_upper_paragraph, req.body.third_section_lower_paragraph, videoId]
     let record = {        
         first_section_title: (req.body.first_section_title) ? req.body.first_section_title : '',
         first_section_sub_title: (req.body.first_section_sub_title) ? req.body.first_section_sub_title : '',
@@ -62,7 +81,8 @@ router.post('/updatecontentByadmin', function (req, res) {
         third_section_title: (req.body.third_section_title) ? req.body.third_section_title : '',
         third_section_sub_title: (req.body.third_section_sub_title) ? req.body.third_section_sub_title : '',
         third_section_upper_paragraph: (req.body.third_section_upper_paragraph) ? req.body.third_section_upper_paragraph : '',
-        third_section_lower_paragraph: (req.body.third_section_lower_paragraph) ? req.body.third_section_lower_paragraph : ''
+        third_section_lower_paragraph: (req.body.third_section_lower_paragraph) ? req.body.third_section_lower_paragraph : '',
+        video_embeded_id: (req.body.video_url) ? videoId : ''
     };
     CMS.updatecontentByadmin(record, 1, update_value, function (err, data) {
         if (err) {

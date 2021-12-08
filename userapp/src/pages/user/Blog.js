@@ -31,6 +31,8 @@ export default function Blog() {
             headers: { Authorization: `${token}` }
         };
 
+        
+
         if (token){
             axios.post(api_url + '/blog/getPaidBlogList', {}, config).then((result) => {
                 if (result.data.status) {
@@ -97,6 +99,9 @@ export default function Blog() {
     return (
         <div>
             <Header />
+
+         
+
             <section className="inner-header">
                 <div className="container">
                     <div className="row">
@@ -129,10 +134,14 @@ export default function Blog() {
                                                 {/* <p>Telemedicine</p> */}                                                
                                                 <img className="bookmark-fill" src="images/bookmark-fill.png" alt="bookmark-fill" />
                                                 {/* <img className="bookmark-outline" src="images/bookmark-outline.png" alt="bookmark-fill" /> */}
-
                                                 
                                             </div>
-                                            <h3><Link to={{ pathname: "/blog-detail", search: "?id=" + data.blog_id }}> {data.title.slice(0, 46)}</Link></h3>
+                                            <h3 class="tooltip-box">
+                                                <Link to={{ pathname: "/blog-detail", search: "?id=" + data.blog_id }}> 
+                                                {data.title.slice(0, 30)}
+                                                <span className="tooltip-title">{data.title}</span>
+                                                </Link>
+                                            </h3>
                                             <div className="blog-post">
                                                 <div className="blog-author">
                                                     <img src="images/hull-icon.png" alt="author" />

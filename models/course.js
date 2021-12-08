@@ -138,15 +138,15 @@ function Course() {
 
                 if (sortby == "paid") {
 
-                    var sql = 'SELECT *,course.created_at as course_date FROM course where course.status = $1 and course.purchase_type = $2 and (role = $3 or role = $4) and ( title LIKE $5) ' + order_by;
+                    var sql = 'SELECT *,course.created_at as course_date FROM course where course.status = $1 and course.purchase_type = $2 and (role = $3 or role = $4) and ( title ILIKE $5) ' + order_by;
                     var values = [1, 'paid', role, "all", '%' + search + '%'];
                 } else if (sortby == "unpaid") {
 
-                    var sql = 'SELECT *,course.created_at as course_date FROM course where course.status = $1 and course.purchase_type = $2 and (role = $3 or role = $4) and ( title LIKE $5) ' + order_by;
+                    var sql = 'SELECT *,course.created_at as course_date FROM course where course.status = $1 and course.purchase_type = $2 and (role = $3 or role = $4) and ( title ILIKE $5) ' + order_by;
                     var values = [1, 'unpaid', role, "all", '%' + search + '%'];
                 } else {
 
-                    var sql = 'SELECT *,course.created_at as course_date FROM course where course.status = $1 and (role = $2 or role = $3) and ( title LIKE $4) ' + order_by;
+                    var sql = 'SELECT *,course.created_at as course_date FROM course where course.status = $1 and (role = $2 or role = $3) and ( title ILIKE $4) ' + order_by;
                     var values = [1, role, "all", '%' + search + '%'];
                 }
 
@@ -213,18 +213,18 @@ function Course() {
                     console.log('unpaid');
                     console.log(order_by);
 
-                    var sql = 'SELECT *,course.created_at as course_date FROM course where course.status = $1 and course.purchase_type = $2 and (role = $3 or role = $4) and ( title LIKE $5) ' + order_by;
+                    var sql = 'SELECT *,course.created_at as course_date FROM course where course.status = $1 and course.purchase_type = $2 and (role = $3 or role = $4) and ( title ILIKE $5) ' + order_by;
                     var values = [1,'paid', 4, "all", '%' + search + '%'];
                 } else if (sortby == "unpaid") {
 
                     console.log('unpaid');
 
-                    var sql = 'SELECT *,course.created_at as course_date FROM course where course.status = $1 and course.purchase_type = $2 and (role = $3 or role = $4) and ( title LIKE $5) ' + order_by;
+                    var sql = 'SELECT *,course.created_at as course_date FROM course where course.status = $1 and course.purchase_type = $2 and (role = $3 or role = $4) and ( title ILIKE $5) ' + order_by;
                     var values = [1, 'unpaid', 4, "all", '%' + search + '%'];
                 } else {
 
                     console.log('else');
-                    var sql = 'SELECT *,course.created_at as course_date FROM course where course.status = $1 and (role = $2 or role = $3) and ( title LIKE $4) ' + order_by;
+                    var sql = 'SELECT *,course.created_at as course_date FROM course where course.status = $1 and (role = $2 or role = $3) and ( title ILIKE $4) ' + order_by;
                     console.log(sql);
                     var values = [1, 4, "all", '%' + search + '%'];
                 }
@@ -272,7 +272,25 @@ function Course() {
         });
     };
 
-    
+     
+
+    this.purchase_course = function (record, callback) {
+        connection.acquire(function (err, con) {            
+            const sql = 'INSERT INTO course_order(user_id,order_id,course_id,created_at) VALUES($1,$2,$3,$4) RETURNING *'
+            const values = [record.user_id, record.order_id, record.course_id, record.created_at]
+            con.query(sql, values, function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
 
 }
 module.exports = new Course();
