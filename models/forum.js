@@ -21,7 +21,7 @@ function forum() {
 
     this.getAllAdminforum = function (callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM forum order by forum_id desc', function (err, result) {
+            con.query('SELECT *, forum.status as forum_status, forum.created_at as forum_date FROM forum left join users on users.id = forum.created_by order by forum_id desc', function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }
@@ -77,6 +77,38 @@ function forum() {
             });
         });
     };
+
+    this.addforumByuser = function (record, tag, callback) {
+        connection.acquire(function (err, con) {
+
+            const sql = 'INSERT INTO forum(topic,heading,category,status,created_at,total_view, created_by,user_status) VALUES($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *'
+            const values = [record.topic, record.heading, record.category, 0, record.created_at, 0, record.created_by,0]
+            con.query(sql, values, function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    if (tag.length > 0) {
+                        tag.map(data => {
+                            var records = {
+                                tag_id: data.value,
+                                forum_id: result.rows[0].forum_id
+                            }
+                            const sql = 'INSERT INTO forum_tag(forum_id,tag_id) VALUES($1,$2) RETURNING *'
+                            const values = [records.forum_id, records.tag_id]
+                            con.query(sql, values, function (err, result) { });
+                        });
+                    }
+                    callback(null, result.rows[0]);
+                }
+            });
+        });
+    };
+
+    
 
     function updateProductByID(forum_id, cols) {
         // Setup static beginning of query
@@ -222,15 +254,15 @@ function forum() {
             if (search) {
                 if (forum_id && forum_id.length > 0) {
 
-                    var sql = 'SELECT * FROM forum inner join category on category.category_id = forum.category where forum.heading = $1 and ((forum.forum_id = ANY($2::int[])) OR (forum.topic LIKE $3 OR category.category_name LIKE $4)) order by forum.forum_id desc';
+                    var sql = 'SELECT * FROM forum inner join category on category.category_id = forum.category where forum.status = 1 and forum.heading = $1 and ((forum.forum_id = ANY($2::int[])) OR (forum.topic LIKE $3 OR category.category_name LIKE $4)) order by forum.forum_id desc limit 5';
                     var values = [heading, forum_id, '%' + search + '%', '%' + search + '%'];
 
                 } else {
-                    var sql = 'SELECT * FROM forum inner join category on category.category_id = forum.category where forum.heading = $1 and ( forum.topic LIKE $2 or category.category_name LIKE $3) order by forum.forum_id desc';
+                    var sql = 'SELECT * FROM forum inner join category on category.category_id = forum.category where forum.status = 1 and forum.heading = $1 and ( forum.topic LIKE $2 or category.category_name LIKE $3) order by forum.forum_id desc limit 5';
                     var values = [heading, '%' + search + '%', '%' + search + '%'];
                 }                    
             } else {
-                var sql = 'SELECT * FROM forum inner join category on category.category_id = forum.category where forum.heading = $1 order by forum.forum_id desc';
+                var sql = 'SELECT * FROM forum inner join category on category.category_id = forum.category where forum.status = 1 and forum.heading = $1 order by forum.forum_id desc limit 5';
                 var values = [heading];
             }            
 
@@ -248,6 +280,37 @@ function forum() {
         });
     };
 
+    this.getSubForumListByForumHeading = function (heading, search, forum_id, callback) {
+        connection.acquire(function (err, con) {
+
+            if (search) {
+                if (forum_id && forum_id.length > 0) {
+
+                    var sql = 'SELECT * FROM forum inner join category on category.category_id = forum.category where forum.status = 1 and forum.heading = $1 and ((forum.forum_id = ANY($2::int[])) OR (forum.topic LIKE $3 OR category.category_name LIKE $4)) order by forum.forum_id desc';
+                    var values = [heading, forum_id, '%' + search + '%', '%' + search + '%'];
+
+                } else {
+                    var sql = 'SELECT * FROM forum inner join category on category.category_id = forum.category where forum.status = 1 and forum.heading = $1 and ( forum.topic LIKE $2 or category.category_name LIKE $3) order by forum.forum_id desc';
+                    var values = [heading, '%' + search + '%', '%' + search + '%'];
+                }
+            } else {
+                var sql = 'SELECT * FROM forum inner join category on category.category_id = forum.category where forum.status = 1 and forum.heading = $1 order by forum.forum_id desc';
+                var values = [heading];
+            }
+
+            con.query(sql, values, function (err, result) {
+                con.release();
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
   
 
     this.getLastComment = function (forum_id, callback) {
@@ -344,7 +407,37 @@ function forum() {
         });
     };
 
-    
+    this.updateComment = function (record, callback) {
+        connection.acquire(function (err, con) {
+            const values = [record.status, record.user_status, record.admin_comment, record.id]
+            con.query("UPDATE forum SET status =$1, user_status =$2,comment =$3 WHERE forum_id = $4", values, function (err, result) {
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, result);
+                }
+            });
+        });
+    };
+
+    this.getforumRequestDataById = function (id, callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM forum inner join users on users.id = forum.created_by where forum_id = $1', [id], function (err, result) {
+                con.release();
+                if (result.rows.length === 0) {
+                    msg = 'forum does not exist.';
+                    callback(msg, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    }
+
+   
 
     
 

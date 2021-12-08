@@ -3,22 +3,27 @@ import { useHistory } from 'react-router-dom'
 import axios from 'axios';
 import api_url from './../../Apiurl';
 import Swal from "sweetalert2";
+import UserRequest from "./UserRequest";
+
 import {
   CCardBody,  
   CButton,
   CCollapse,
-  CDataTable
+  CDataTable,
+  CBadge
 } from '@coreui/react'
 
 
-const DemoTable = () => {
+const DemoTable = ({ moduleConfigUrls }) => {
 
   const history = useHistory()
   const [details, setDetails] = useState([])
   const [items, setItems] = useState([])
+  const [modal, setModal] = useState();
+  const [selectedItem, setSelectedItem] = useState();
 
   React.useEffect(() => {
-    getNewList();
+    getNewList(moduleConfigUrls, setItems);
     getNewListWrap();
   }, [])
 
@@ -26,7 +31,9 @@ const DemoTable = () => {
     { key: 'topic', _style: { width: '20%'} },
     { key: 'total_view', _style: { width: '20%' } },
     { key: 'created_at', _style: { width: '20%' } },
+    { key: 'created_by', _style: { width: '20%' } },
     { key: 'status', _style: { width: '20%'} },
+    { key: 'user_status', _style: { width: '20%' } },    
     {
       key: 'show_details',
       label: '',
@@ -75,16 +82,20 @@ const DemoTable = () => {
   };
 
   const getBadge = (status)=>{
-    switch (status) {
-      case '2': return 'Service Provider'
-      case '3': return 'Researchers'
-      case '4': return 'General Public'
-      case 'all': return 'All'
-      default: return 'Service Provider'
-    }
+      if (status == 1){
+        return 'success'
+      } else if (status == 2) { 
+        return 'danger'
+      } else if (status == 0) {
+        return 'warning'
+      }
+      
+     
+    
   }
 
   return (
+    <div>
     <CCardBody>
       <CDataTable
         items={items}
@@ -121,7 +132,7 @@ const DemoTable = () => {
                     );
                   }}
                 >
-                  Active{" "}
+                  Active
                 </a>
               ) : (
                 <a
@@ -137,10 +148,33 @@ const DemoTable = () => {
                 >
                   Inactive
                 </a>
-              )}
+              )
+              }
               {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}
             </td>
           ),          
+          user_status: (item) => (
+            <td>
+              {item.user_status === 1 && <CBadge color={getBadge(item.user_status)}>Approved</CBadge> }
+              {item.user_status === 2 && <CBadge color={getBadge(item.user_status)}>Rejected</CBadge>}
+              {item.user_status === 0 &&
+                <CBadge
+                color={getBadge(item.user_status)}
+                  color="primary"
+                  variant="outline"
+                  shape="square"
+                  size="sm"
+                  onClick={() => {
+                    setSelectedItem(item);
+                    setModal(true);
+                  }}
+                  className="mr-1"
+                >
+                Pending
+                  </CBadge>}
+              
+            </td>
+          ),
           'show_details':
             item => {
               return (
@@ -190,6 +224,14 @@ const DemoTable = () => {
         }}
       />
     </CCardBody>
+      <UserRequest
+        modal={modal}        
+        selectedItem={selectedItem}
+        setSelectedItem={setSelectedItem}
+        setModal={setModal}                
+        updateListing={getNewListWrap}
+      />
+    </div>
   )
 }
 

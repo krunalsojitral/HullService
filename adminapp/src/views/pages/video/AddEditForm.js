@@ -263,7 +263,7 @@ const AddEditForm = ({ match }) => {
                     <Controller
                       name={"video_url"}
                       control={control}
-                      rules={{ required: true }}
+                      rules={{ required: true, pattern: { value: /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/ }, }}
                       render={({ field: { onChange, value } }) => (
                         <CInput
                           type="video_url"
@@ -277,6 +277,9 @@ const AddEditForm = ({ match }) => {
                   {errors.video_url && errors.video_url.type === "required" && (
                     <p style={{ color: "red", fontSize: "12px" }}>Youtube video url is required.</p>
                   )}
+                  {(errors.video_url?.type === "pattern" && <p style={{ color: "red", fontSize: "12px" }}>Enter valide video url.</p>)}
+                  Note: Add only youtube embeded URL like "https://www.youtube.com/embed/piPwsPXY_a8"
+                  <br /><br />
                 </CCol>
               </CRow>
 

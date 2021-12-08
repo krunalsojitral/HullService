@@ -5,12 +5,14 @@ import Header from './../sections/Header';
 import Footer from './../sections/Footer';
 //import { useForm } from "react-hook-form";
 
+
+
 export default function About() {
-   
+
 
 //     const { loginUser } = useAuth();
 
-//    // const [isFirstRadioLoaded, setIsFirstRadioLoaded] = useState(false);  
+//    // const [isFirstRadioLoaded, setIsFirstRadioLoaded] = useState(false);
 
 //     const { register, handleSubmit, formState: { errors } } = useForm();
 //     const onSubmit = async (data) => {
@@ -36,7 +38,10 @@ export default function About() {
                     </div>
                 </div>
             </section>
-            <Footer />
+
+
+
+           <Footer />
         </div>
     )
 }

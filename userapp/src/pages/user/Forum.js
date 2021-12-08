@@ -14,7 +14,7 @@ export default function Forum() {
    
     const [forumList, setForumList] = useState([]);
     const [forumTagList, setForumTagList] = useState([]);
-
+    const [token, setToken] = useState('');
     const [searchtext, setSearchtext] = React.useState('')
     const { handleSubmit, formState } = useForm();
     const [selectedForumTag, setSelectedForumTag] = useState([]);
@@ -22,6 +22,11 @@ export default function Forum() {
     const onChangeSearch = (e) => { setSearchtext(e.currentTarget.value); }
 
     React.useEffect(() => { 
+
+        const tokenString = localStorage.getItem('token');
+        var token = JSON.parse(tokenString);
+        setToken(token);
+
         axios.post(api_url + '/forum/getForumHeadingList',{}).then((result) => {
             if (result.data.status) {
                 var forumdata = result.data.response.data;
@@ -79,13 +84,31 @@ export default function Forum() {
                             
                             {forumList.map((data, index) => (
                                  <div className="category-table">
-                                    <h2 className="mb-0">{data.forumheading_name}</h2>
 
-                                    <Link to={{ pathname: "/forum-sub", search: "?id=" + data.forumheading_id }}>
-                                        View More >>
-                                    </Link>
+                                    <div className="category-maintitle">
 
-                                    <br />
+                                        <div className="category-title">
+                                            <h2 className="mb-0 mt-0">{data.forumheading_name}</h2>
+                                            <Link to={{ pathname: "/forum-sub", search: "?id=" + data.forumheading_id }}>
+                                                View More >>
+                                        </Link>
+                                        </div>
+
+                                        {token && <div className="add-forum">                                            
+                                            <Link className="book-apoint" to={{ pathname: "/add-forum" }}>
+                                                Add Forum
+                                            </Link>
+                                        </div>}
+
+                                     </div>
+
+                                    
+                                    
+
+
+                                   
+
+                                    
                                     <div className="forum-table table-responsive">
                                         <table className="table">
                                             <thead>
@@ -113,13 +136,20 @@ export default function Forum() {
                                     <div className="pagination"></div>
                                 </div>
                              ))} 
+
+                            {
+                                forumList.length == 0 &&
+                                <div className="blog-box">
+                                    <div className="no-data">No forum available.</div>
+                                </div>
+                            }
                            
                         </div>
                         <div className="col-md-3 article-tags">
 
-                            <div class="search-box">
+                            <div className="search-box">
                                 <form onSubmit={handleSubmit(search)}>
-                                    <div class="form-group">
+                                    <div className="form-group">
                                         <button type="button"><img src="images/search.png" alt="search"/></button>
                                         <input type="text" onChange={onChangeSearch} className="form-control" name="search_name" placeholder="Search…" />
                                     </div>
@@ -132,7 +162,7 @@ export default function Forum() {
                                 <ul>
                                     {forumTagList.length > 0 && forumTagList.map((data, index) => (
                                         <li>
-                                            {selectedForumTag.length > 0 && selectedForumTag.some(cred => cred === data.forum_id) ? <a href="javascript:;" className="active" >{data.tag_name}</a> : <a href="javascript:;" >{data.tag_name}</a>}
+                                            {selectedForumTag.length > 0 && selectedForumTag.some(cred => cred === data.tag_id) ? <a href="javascript:;" className="active" >{data.tag_name}</a> : <a href="javascript:;" >{data.tag_name}</a>}
                                         </li>
                                     ))}
                                 </ul>

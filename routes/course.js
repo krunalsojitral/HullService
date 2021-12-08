@@ -57,94 +57,85 @@ router.post('/getcourseDataById', [check('course_id', 'Course is required').notE
     } else {
         let course_id = req.body.course_id;
 
-        asyn.waterfall([
-            function (done) {
-                Course.getcourseDataById(course_id, function (err, result) {
-                    if (err) {
-                        done({ 'status': 0, 'response': { 'msg': 'Something went wrong.' } });
-                    } else {
-                        if (result != '') {
-                            var courseLink;
-                            if (req.headers.host == env.ADMIN_LIVE_URL) {
-                                courseLink = env.ADMIN_LIVE_URL;
-                            } else {
-                                courseLink = env.ADMIN_LIVE_URL;
-                            }
-                            let course = {};
-                            course['course_id'] = result[0].course_id;
-                            course['title'] = result[0].title;
-                            course['description'] = result[0].description;
-                            course['created_at'] = result[0].created_at;
-                            course['image'] = (result[0].image) ? courseLink + env.COURSE_VIEW_PATH + result[0].image : '';
-                            course['role'] = result[0].role;
-                            course['status'] = result[0].status;
-                            course['learn_description'] = result[0].learn_description;
-                            course['prerequisites_description'] = result[0].prerequisites_description;
-                            course['session_type'] = result[0].session_type;
-                            course['video_content_title'] = result[0].video_content_title;
-                            course['video_title_first'] = result[0].video_title_first;
-                            course['video_url_first'] = result[0].video_url_first;
-                            course['video_time_first'] = result[0].video_time_first;
-                            course['video_title_second'] = result[0].video_title_second;
-                            course['video_url_second'] = result[0].video_url_second;
-                            course['video_time_second'] = result[0].video_time_second;
-                            course['video_title_third'] = result[0].video_title_third;
-                            course['video_url_third'] = result[0].video_url_third;
-                            course['video_time_third'] = result[0].video_time_third;
-                            course['video_title_fourth'] = result[0].video_title_fourth;
-                            course['video_url_fourth'] = result[0].video_url_fourth;
-                            course['video_time_fourth'] = result[0].video_time_fourth;
-                            course['video_title_five'] = result[0].video_title_five;
-                            course['video_url_five'] = result[0].video_url_five;
-                            course['video_time_five'] = result[0].video_time_five;
-                            course['video_title_six'] = result[0].video_title_six;
-                            course['video_url_six'] = result[0].video_url_six;
-                            course['video_time_six'] = result[0].video_time_six;
-                            course['video_title_seven'] = result[0].video_title_seven;
-                            course['video_url_seven'] = result[0].video_url_seven;
-                            course['video_time_seven'] = result[0].video_time_seven;
-                            course['video_title_eight'] = result[0].video_title_eight;
-                            course['video_url_eight'] = result[0].video_url_eight;
-                            course['video_time_eight'] = result[0].video_time_eight;
-                            course['video_title_nine'] = result[0].video_title_nine;
-                            course['video_url_nine'] = result[0].video_url_nine;
-                            course['video_time_nine'] = result[0].video_time_nine;
-                            course['video_title_ten'] = result[0].video_title_ten;
-                            course['video_url_ten'] = result[0].video_url_ten;
-                            course['video_time_ten'] = result[0].video_time_ten;
-                            course['content_title_one'] = result[0].content_title_one;
-                            course['content_description_one'] = result[0].content_description_one;
-                            course['content_title_two'] = result[0].content_title_two;
-                            course['content_description_two'] = result[0].content_description_two;
-                            course['content_title_third'] = result[0].content_title_third;
-                            course['content_description_third'] = result[0].content_description_third;
-                            course['content_title_four'] = result[0].content_title_four;
-                            course['content_description_four'] = result[0].content_description_four;
-                            course['content_title_five'] = result[0].content_title_five;
-                            course['content_description_five'] = result[0].content_description_five;
-                            course['trainer'] = result[0].trainer;
-                            course['purchase_type'] = result[0].purchase_type;
-                            course['main_cost'] = result[0].main_cost;
-                            course['sale_cost'] = result[0].sale_cost;                            
-                            course['live_session_url'] = result[0].live_session_url;
-                            course['live_session_date'] = result[0].live_session_date;
-                            course['live_session_time'] = result[0].live_session_time;
-                            course['live_session_minute'] = result[0].live_session_minute;
-                            done(err, course)
-                        } else {
-                            done('data not found', null);
-                        }
-                    }
-                });
-            }
-        ],
-        function (error, video) {
-            if (error) {
+        Course.getcourseDataById(course_id, function (err, result) {
+            if (err) {
                 return res.json({ 'status': 0, 'response': { 'msg': err } });
             } else {
-                return res.json({ 'status': 1, 'response': { 'data': video, 'msg': 'data found' } });
+                if (result != '') {
+                    var courseLink;
+                    if (req.headers.host == env.ADMIN_LIVE_URL) {
+                        courseLink = env.ADMIN_LIVE_URL;
+                    } else {
+                        courseLink = env.ADMIN_LIVE_URL;
+                    }
+                    let course = {};
+                    course['course_id'] = result[0].course_id;
+                    course['title'] = result[0].title;
+                    course['description'] = result[0].description;
+                    course['created_at'] = result[0].created_at;
+                    course['image'] = (result[0].image) ? courseLink + env.COURSE_VIEW_PATH + result[0].image : '';
+                    course['role'] = result[0].role;
+                    course['status'] = result[0].status;
+                    course['learn_description'] = result[0].learn_description;
+                    course['prerequisites_description'] = result[0].prerequisites_description;
+                    course['session_type'] = result[0].session_type;
+                    course['video_content_title'] = result[0].video_content_title;
+                    course['video_title_first'] = result[0].video_title_first;
+                    course['video_url_first'] = result[0].video_url_first;
+                    course['video_time_first'] = result[0].video_time_first;
+                    course['video_title_second'] = result[0].video_title_second;
+                    course['video_url_second'] = result[0].video_url_second;
+                    course['video_time_second'] = result[0].video_time_second;
+                    course['video_title_third'] = result[0].video_title_third;
+                    course['video_url_third'] = result[0].video_url_third;
+                    course['video_time_third'] = result[0].video_time_third;
+                    course['video_title_fourth'] = result[0].video_title_fourth;
+                    course['video_url_fourth'] = result[0].video_url_fourth;
+                    course['video_time_fourth'] = result[0].video_time_fourth;
+                    course['video_title_five'] = result[0].video_title_five;
+                    course['video_url_five'] = result[0].video_url_five;
+                    course['video_time_five'] = result[0].video_time_five;
+                    course['video_title_six'] = result[0].video_title_six;
+                    course['video_url_six'] = result[0].video_url_six;
+                    course['video_time_six'] = result[0].video_time_six;
+                    course['video_title_seven'] = result[0].video_title_seven;
+                    course['video_url_seven'] = result[0].video_url_seven;
+                    course['video_time_seven'] = result[0].video_time_seven;
+                    course['video_title_eight'] = result[0].video_title_eight;
+                    course['video_url_eight'] = result[0].video_url_eight;
+                    course['video_time_eight'] = result[0].video_time_eight;
+                    course['video_title_nine'] = result[0].video_title_nine;
+                    course['video_url_nine'] = result[0].video_url_nine;
+                    course['video_time_nine'] = result[0].video_time_nine;
+                    course['video_title_ten'] = result[0].video_title_ten;
+                    course['video_url_ten'] = result[0].video_url_ten;
+                    course['video_time_ten'] = result[0].video_time_ten;
+                    course['content_title_one'] = result[0].content_title_one;
+                    course['content_description_one'] = result[0].content_description_one;
+                    course['content_title_two'] = result[0].content_title_two;
+                    course['content_description_two'] = result[0].content_description_two;
+                    course['content_title_third'] = result[0].content_title_third;
+                    course['content_description_third'] = result[0].content_description_third;
+                    course['content_title_four'] = result[0].content_title_four;
+                    course['content_description_four'] = result[0].content_description_four;
+                    course['content_title_five'] = result[0].content_title_five;
+                    course['content_description_five'] = result[0].content_description_five;
+                    course['trainer'] = result[0].trainer;
+                    course['purchase_type'] = result[0].purchase_type;
+                    course['main_cost'] = result[0].main_cost;
+                    course['sale_cost'] = result[0].sale_cost;
+                    course['live_session_url'] = result[0].live_session_url;
+                    course['live_session_date'] = result[0].live_session_date;
+                    course['live_session_time'] = result[0].live_session_time;
+                    course['live_session_minute'] = result[0].live_session_minute;
+                    return res.json({ 'status': 1, 'response': { 'data': course, 'msg': 'Data found' } });
+                } else {
+                    return res.json({ 'status': 0, 'response': { 'data': [], 'msg': 'Data not found' } });
+                }
             }
         });
+
+       
         
     }
 });

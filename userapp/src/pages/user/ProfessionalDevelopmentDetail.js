@@ -11,6 +11,8 @@ import { useModal } from 'react-hooks-use-modal';
 import DirectionModel from "./../DirectionModel";
 import { useHistory } from "react-router-dom";
 
+
+
 export default function ProfessionalDevelopmentDetail() {
 
 
@@ -92,236 +94,293 @@ export default function ProfessionalDevelopmentDetail() {
                         <div className="col-md-2 side-col">
                             <Sidebar />
                         </div>
-                        <div class="col-md-7">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="personal-courses">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="breadcrumbs-items">
+                        <div className="col-md-7">
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <div className="personal-courses">
+                                        <div className="row">
+                                            <div className="col-md-12">
+                                                <div className="breadcrumbs-items">
                                                     <ul>
-                                                        <li><a href="javascript:;"><img src="images/notification-bell.png" alt="" /><span>Personal Development Courses</span></a></li>
-                                                        <li><a href="javascript:;"><img src="images/notification-bell.png" alt="" /><span>Paid Course</span></a></li>
+                                                        <li><img src="images/notification-bell.png" alt="" /><span>Personal Development Courses</span></li>
+                                                        {courseDetail.purchase_type == 'paid' && <li><img src="images/notification-bell.png" alt="" /><span>Paid Course</span></li>}
                                                     </ul>
                                                 </div>
-                                                <div class="course-cover">
-                                                    <img src="images/course-placeholder.png" alt="course-placeholder" />
-                                                    <div class="course-inner">
-                                                        <div class="course-title">
+                                                <div className="course-cover">                                                    
+
+                                                    {courseDetail.image && <img src={courseDetail.image} alt="author" />}
+
+                                                    <div className="course-inner">
+                                                        <div className="course-title">
                                                             <h2>{courseDetail.title}</h2>
                                                             <ul>
                                                                 <li>
                                                                     <p>1250 students</p>
                                                                 </li>
+                                                                {courseDetail.trainer && <li>
+                                                                    <p>Created by </p><span>{courseDetail.trainer}</span>
+                                                                </li>}
                                                                 <li>
-                                                                    <p>Created by </p><a href="javascript:;">>{courseDetail.trainer}</a>
-                                                                </li>
-                                                                <li><img src="images/update.png" alt="update"/>
+                                                                    <img src="images/update.png" alt="update"/>
                                                                     <p>Last update 11/2021</p>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                            <div class="course-share">
-                                                                <a href="javascript:;"><img src="images/share.png" alt="share" /></a>
-                                                            </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <div className="course-share">
+                                                            <a href="javascript:;"><img src="images/share.png" alt="share" /></a>
                                                         </div>
                                                     </div>
-                                                    <div class="what-learn">
-                                                        <h3>What you’ll learn</h3>
-                                                        <ul>
-                                                            <li><img src="images/check.png" alt="check" /><span>First thing that you’ll learn</span></li>
-                                                            <li><img src="images/check.png" alt="check" /><span>Second thing</span></li>
-                                                            <li><img src="images/check.png" alt="check" /><span>Strategies for managing the third thing in this paid program </span></li>
-                                                            <li><img src="images/check.png" alt="check" /><span>Fourth thing you’ll learn</span></li>
-                                                            <li><img src="images/check.png" alt="check" /><span>Fifth thing that you can learn</span></li>
-                                                        </ul>
-                                                        <h3>Requirement</h3>
-                                                        <ul class="full-grid" >
-                                                            <li><label></label> <span>No pre-knowledge required - we'll teach you everything you need to know</span></li>
-                                                            <li><label></label><span>A PC or Mac is required</span></li>
-                                                            <li><label></label><span>No software is required in advance of the course (all software used in the course is free or has a demo version)</span></li>
-                                                        </ul>
-                                                        <h3>Description</h3>
-                                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Turpis elit malesuada pretium quisque. Nunc malesuada molestie nascetur ac amet scelerisque ac, at. Aliquam dictumst sed egestas scelerisque volutpat mauris leo diam. Id in curabitur odio id felis, tincidunt commodo eu. Euismod a feugiat arcu mauris egestas. At viverra euismod etiam diam imperdiet at vel. Enim orci diam amet, consectetur ipsum lectus sollicitudin ut et. Feugiat sed nibh arcu ultricies. Diam, cras blandit dignissim risus pellentesque vivamus. Ac sodales vitae porta neque commodo nibh tellus nam. Eget ac fringilla ut sed molestie nulla purus sagittis nim. Diam congue sit metus sed. Egestas adipiscing erat id nisi.</p>
-                                                        <p>Elementum, id proin faucibus amet tortor turpis. Tortor, elementum proin in morbi nunc orci amet, elit. Ultricies nec aliquam imperdiet amet. Pretium elementum maecenas non urna quis erat lacinia suspendisse. Commodo vulputate hac bibendum odio mauris orci. Purus sapien sit urna, amet nunc a ac eget. </p>
-                                                        <p>Commodo ultricies cursus laoreet vulputate quam et, non. Ac urna mattis euismod ornare.</p>
-                                                        <a href="javascript:;">See more</a>
-                                                    </div>
-                                                    <div class="course-content">
+                                                </div>
+
+                                                <div className="what-learn">
+                                                    {courseDetail.learn_description && 
+                                                        <div>
+                                                            <h3>What you’ll learn</h3>
+                                                            <div dangerouslySetInnerHTML={{ __html: courseDetail.learn_description }} ></div>
+                                                        </div>                                                   
+                                                    }
+                                                    
+                                                    {courseDetail.prerequisites_description &&
+                                                        <div>
+                                                            <h3>Requirement</h3>
+                                                            <div dangerouslySetInnerHTML={{ __html: courseDetail.prerequisites_description }} ></div>                                                   
+                                                        </div>
+                                                    }
+
+                                                    {courseDetail.description &&
+                                                        <div>
+                                                            <h3>Description</h3>
+                                                            <div dangerouslySetInnerHTML={{ __html: courseDetail.description }} ></div>
+                                                        </div>
+                                                    }
+                                                    
+                                                    {/* <a href="javascript:;">See more</a> */}
+                                                </div>
+
+
+
+
+
+                                                    <div className="course-content">
                                                         <h3>Content Course</h3>
-                                                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                                                            <div class="panel panel-default">
-                                                                <div class="panel-heading" role="tab" id="headingOne">
-                                                                    <h4 class="panel-title">
+                                                        <div className="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                                            <div className="panel panel-default">
+                                                                <div className="panel-heading" role="tab" id="headingOne">
+                                                                    <h4 className="panel-title">
                                                                         <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                                                            Introduction
-                                                            </a>
+                                                                            {courseDetail.video_content_title}
+                                                                        </a>
                                                                     </h4>
                                                                 </div>
-                                                                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                                                                    <div class="panel-body">
-                                                                        <div class="content-grid">
-                                                                            <div class="course-play">
-                                                                                <a href="javascript:;"><img src="images/play.png" alt="play"/><span>Understanding the Mood of your Colour Palette</span></a>
-                                                                </div>
+                                                                <div id="collapseOne" className="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                                                    <div className="panel-body">
+                                                                        {courseDetail.video_title_first && <div className="content-grid">
+                                                                            <div className="course-play">
+                                                                               <a target="_blank" href={courseDetail.video_url_first}>
+                                                                                   <img src="images/play.png" alt="play" /><span>{courseDetail.video_title_first}</span>
+                                                                                </a>
+                                                                            </div>
                                                                                 <a href="javascript:;">Preview</a>
-                                                                                <a href="javascript:;">06:02</a>
+                                                                                <a href="javascript:;">{courseDetail.video_time_first}</a>
+                                                                        </div>}
+
+                                                                    {courseDetail.video_title_second &&  <div className="content-grid">
+                                                                            <div className="course-play">
+                                                                            <a target="_blank" href={courseDetail.video_url_second}>
+                                                                                <img src="images/play.png" alt="play" /><span>{courseDetail.video_title_second}</span>
+                                                                                </a>
                                                                             </div>
-                                                                            <div class="content-grid">
-                                                                                <div class="course-play">
-                                                                                    <a href="javascript:;"><img src="images/play.png" alt="play"/><span>How to Combine Colours to Create Colour Palettes</span></a>
-                                                                </div>
-                                                                                    <a href="javascript:;"></a>
-                                                                                    <a href="javascript:;">06:02</a>
-                                                                                </div>
-                                                                                <div class="content-grid">
-                                                                                    <div class="course-play">
-                                                                                        <a href="javascript:;"><img src="images/play.png" alt="play"/><span>Tools for Designing with Colour</span></a>
-                                                                </div>
-                                                                                        <a href="javascript:;">Preview</a>
-                                                                                        <a href="javascript:;">06:02</a>
-                                                                                    </div>
-                                                                                    <div class="content-grid">
-                                                                                        <div class="course-play">
-                                                                                            <a href="javascript:;"><img src="images/play.png" alt="play"/><span>Tools for Designing with Colour Resources</span></a>
-                                                                </div>
-                                                                                            <a href="javascript:;">Preview</a>
-                                                                                            <a href="javascript:;">06:02</a>
-                                                                                        </div>
-                                                                                        <div class="content-grid">
-                                                                                            <div class="course-play">
-                                                                                                <a href="javascript:;"><img src="images/play.png" alt="play"/><span>Further Reading on Designing with Colout</span></a>
-                                                                </div>
-                                                                                                <a href="javascript:;">Preview</a>
-                                                                                                <a href="javascript:;">06:02</a>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="panel panel-default">
-                                                                                    <div class="panel-heading" role="tab" id="headingTwo">
-                                                                                        <h4 class="panel-title">
-                                                                                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                                                                                Color Theory
-                                                            </a>
-                                                                                        </h4>
-                                                                                    </div>
-                                                                                    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                                                                                        <div class="panel-body">
-                                                                                            <div class="content-grid">
-                                                                                                <div class="course-play">
-                                                                                                    <a href="javascript:;"><img src="images/play.png" alt="play" /><span>Understanding the Mood of your Colour Palette</span></a>
-                                                                                                </div>
-                                                                                                <a href="javascript:;">Preview</a>
-                                                                                                <a href="javascript:;">06:02</a>
-                                                                                            </div>
-                                                                                            <div class="content-grid">
-                                                                                                <div class="course-play">
-                                                                                                    <a href="javascript:;"><img src="images/play.png" alt="play" /><span>How to Combine Colours to Create Colour Palettes</span></a>
-                                                                                                </div>
-                                                                                                <a href="javascript:;"></a>
-                                                                                                <a href="javascript:;">06:02</a>
-                                                                                            </div>
-                                                                                            <div class="content-grid">
-                                                                                                <div class="course-play">
-                                                                                                    <a href="javascript:;"><img src="images/play.png" alt="play" /><span>Tools for Designing with Colour</span></a>
-                                                                                                </div>
-                                                                                                <a href="javascript:;">Preview</a>
-                                                                                                <a href="javascript:;">06:02</a>
-                                                                                            </div>
-                                                                                            <div class="content-grid">
-                                                                                                <div class="course-play">
-                                                                                                    <a href="javascript:;"><img src="images/play.png" alt="play" /><span>Tools for Designing with Colour Resources</span></a>
-                                                                                                </div>
-                                                                                                <a href="javascript:;">Preview</a>
-                                                                                                <a href="javascript:;">06:02</a>
-                                                                                            </div>
-                                                                                            <div class="content-grid">
-                                                                                                <div class="course-play">
-                                                                                                    <a href="javascript:;"><img src="images/play.png" alt="play" /><span>Further Reading on Designing with Colout</span></a>
-                                                                                                </div>
-                                                                                                <a href="javascript:;">Preview</a>
-                                                                                                <a href="javascript:;">06:02</a>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="panel panel-default">
-                                                                                    <div class="panel-heading" role="tab" id="headingThree">
-                                                                                        <h4 class="panel-title">
-                                                                                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                                                                                Typography
-                                                            </a>
-                                                                                        </h4>
-                                                                                    </div>
-                                                                                    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-                                                                                        <div class="panel-body">
-                                                                                            <div class="content-grid">
-                                                                                                <div class="course-play">
-                                                                                                    <a href="javascript:;"><img src="images/play.png" alt="play" /><span>Understanding the Mood of your Colour Palette</span></a>
-                                                                                                </div>
-                                                                                                <a href="javascript:;">Preview</a>
-                                                                                                <a href="javascript:;">06:02</a>
-                                                                                            </div>
-                                                                                            <div class="content-grid">
-                                                                                                <div class="course-play">
-                                                                                                    <a href="javascript:;"><img src="images/play.png" alt="play" /><span>How to Combine Colours to Create Colour Palettes</span></a>
-                                                                                                </div>
-                                                                                                <a href="javascript:;"></a>
-                                                                                                <a href="javascript:;">06:02</a>
-                                                                                            </div>
-                                                                                            <div class="content-grid">
-                                                                                                <div class="course-play">
-                                                                                                    <a href="javascript:;"><img src="images/play.png" alt="play" /><span>Tools for Designing with Colour</span></a>
-                                                                                                </div>
-                                                                                                <a href="javascript:;">Preview</a>
-                                                                                                <a href="javascript:;">06:02</a>
-                                                                                            </div>
-                                                                                            <div class="content-grid">
-                                                                                                <div class="course-play">
-                                                                                                    <a href="javascript:;"><img src="images/play.png" alt="play" /><span>Tools for Designing with Colour Resources</span></a>
-                                                                                                </div>
-                                                                                                <a href="javascript:;">Preview</a>
-                                                                                                <a href="javascript:;">06:02</a>
-                                                                                            </div>
-                                                                                            <div class="content-grid">
-                                                                                                <div class="course-play">
-                                                                                                    <a href="javascript:;"><img src="images/play.png" alt="play" /><span>Further Reading on Designing with Colout</span></a>
-                                                                                                </div>
-                                                                                                <a href="javascript:;">Preview</a>
-                                                                                                <a href="javascript:;">06:02</a>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
+                                                                            <a href="javascript:;">Preview</a>
+                                                                            <a href="javascript:;">{courseDetail.video_time_second}</a>
+                                                                        </div>}
+
+                                                                    {courseDetail.video_title_third &&  <div className="content-grid">
+                                                                            <div className="course-play">
+                                                                            <a target="_blank" href={courseDetail.video_url_third}>
+                                                                                <img src="images/play.png" alt="play" /><span>{courseDetail.video_title_third}</span>
+                                                                                </a>
                                                                             </div>
-                                                                        </div>
+                                                                            <a href="javascript:;">Preview</a>
+                                                                        <a href="javascript:;">{courseDetail.video_time_third}</a>
+                                                                        </div>}
+
+                                                                    {courseDetail.video_title_fourth &&  <div className="content-grid">
+                                                                            <div className="course-play">
+                                                                            <a target="_blank" href={courseDetail.video_url_fourth}>
+                                                                                <img src="images/play.png" alt="play" /><span>{courseDetail.video_title_fourth}</span>
+                                                                                </a>
+                                                                            </div>
+                                                                            <a href="javascript:;">Preview</a>
+                                                                        <a href="javascript:;">{courseDetail.video_time_fourth}</a>
+                                                                        </div>}
+
+                                                                    {courseDetail.video_title_five &&  <div className="content-grid">
+                                                                            <div className="course-play">
+                                                                            <a target="_blank" href={courseDetail.video_url_five}>
+                                                                                <img src="images/play.png" alt="play" /><span>{courseDetail.video_title_five}</span>
+                                                                                </a>
+                                                                            </div>
+                                                                            <a href="javascript:;">Preview</a>
+                                                                        <a href="javascript:;">{courseDetail.video_time_five}</a>
+                                                                        </div>}
+
+                                                                    {courseDetail.video_title_six &&  <div className="content-grid">
+                                                                            <div className="course-play">
+                                                                            <a target="_blank" href={courseDetail.video_url_six}>
+                                                                                <img src="images/play.png" alt="play" /><span>{courseDetail.video_title_six}</span>
+                                                                                </a>
+                                                                            </div>
+                                                                            <a href="javascript:;">Preview</a>
+                                                                        <a href="javascript:;">{courseDetail.video_time_six}</a>
+                                                                        </div>}
+
+                                                                    {courseDetail.video_title_seven &&  <div className="content-grid">
+                                                                            <div className="course-play">
+                                                                            <a target="_blank" href={courseDetail.video_url_seven}>
+                                                                                <img src="images/play.png" alt="play" /><span>{courseDetail.video_title_seven}</span>
+                                                                                </a>
+                                                                            </div>
+                                                                            <a href="javascript:;">Preview</a>
+                                                                        <a href="javascript:;">{courseDetail.video_time_seven}</a>
+                                                                        </div>}
+
+                                                                    {courseDetail.video_title_eight &&  <div className="content-grid">
+                                                                            <div className="course-play">
+                                                                            <a target="_blank" href={courseDetail.video_url_eight}>
+                                                                                <img src="images/play.png" alt="play" /><span>{courseDetail.video_title_eight}</span>
+                                                                                </a>
+                                                                            </div>
+                                                                            <a href="javascript:;">Preview</a>
+                                                                        <a href="javascript:;">{courseDetail.video_time_eight}</a>
+                                                                        </div>}
+
+                                                                    {courseDetail.video_title_nine &&  <div className="content-grid">
+                                                                            <div className="course-play">
+                                                                            <a target="_blank" href={courseDetail.video_url_nine}>
+                                                                                <img src="images/play.png" alt="play" /><span>{courseDetail.video_title_nine}</span>
+                                                                                </a>
+                                                                            </div>
+                                                                            <a href="javascript:;">Preview</a>
+                                                                        <a href="javascript:;">{courseDetail.video_time_nine}</a>
+                                                                        </div>}
+
+                                                                    {courseDetail.video_title_ten &&  <div className="content-grid">
+                                                                            <div className="course-play">
+                                                                            <a target="_blank" href={courseDetail.video_url_ten}>
+                                                                                <img src="images/play.png" alt="play" /><span>{courseDetail.video_title_ten}</span>
+                                                                                </a>
+                                                                            </div>
+                                                                            <a href="javascript:;">Preview</a>
+                                                                           <a href="javascript:;">{courseDetail.video_time_ten}</a>
+                                                                        </div>}
+                                                                        
                                                                     </div>
                                                                 </div>
                                                             </div>
+
+
+                                                            {courseDetail.content_title_one && <div className="panel panel-default">
+                                                                <div className="panel-heading" role="tab" id="headingTwo">
+                                                                    <h4 className="panel-title">
+                                                                        <a className="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                                            {courseDetail.content_title_one}
+                                                                        </a>
+                                                                    </h4>
+                                                                </div>
+                                                                <div id="collapseTwo" className="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                                                    <div className="panel-body">
+                                                                        <div dangerouslySetInnerHTML={{ __html: courseDetail.content_description_one }}></div> 
+                                                                    </div>
+                                                                </div>
+                                                            </div>}
+
+
+                                                            {courseDetail.content_title_two && <div className="panel panel-default">
+                                                                <div className="panel-heading" role="tab" id="headingThree">
+                                                                    <h4 className="panel-title">
+                                                                        <a className="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                                        {courseDetail.content_title_two}</a>
+                                                                    </h4>
+                                                                </div>
+                                                                <div id="collapseThree" className="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                                                                    <div className="panel-body">                                                                       
+                                                                        <div dangerouslySetInnerHTML={{ __html: courseDetail.content_description_two }}></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>}
+
+                                                            {courseDetail.content_title_third && <div className="panel panel-default">
+                                                                <div className="panel-heading" role="tab" id="headingFour">
+                                                                    <h4 className="panel-title">
+                                                                        <a className="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                                                        {courseDetail.content_title_third}</a>
+                                                                    </h4>
+                                                                </div>
+                                                                <div id="collapseFour" className="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+                                                                    <div className="panel-body">                                                                    
+                                                                       <div dangerouslySetInnerHTML={{ __html: courseDetail.content_description_third }}></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>}
+
+                                                            {courseDetail.content_title_four && <div className="panel panel-default">
+                                                                <div className="panel-heading" role="tab" id="headingFive">
+                                                                    <h4 className="panel-title">
+                                                                        <a className="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                                                        {courseDetail.content_title_four}</a>
+                                                                    </h4>
+                                                                </div>
+                                                                <div id="collapseFive" className="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+                                                                    <div className="panel-body">                                                                    
+                                                                        <div dangerouslySetInnerHTML={{ __html: courseDetail.content_description_four }}></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>}
+
+                                                            {courseDetail.content_title_five && <div className="panel panel-default">
+                                                                <div className="panel-heading" role="tab" id="headingsix">
+                                                                    <h4 className="panel-title">
+                                                                        <a className="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                                                                        {courseDetail.content_title_five}</a>
+                                                                    </h4>
+                                                                </div>
+                                                                <div id="collapseSix" className="panel-collapse collapse" role="tabpanel" aria-labelledby="headingsix">
+                                                                    <div className="panel-body">
+                                                                        <div dangerouslySetInnerHTML={{ __html: courseDetail.content_description_five }}></div>                                                                    
+                                                                    </div>
+                                                                </div>
+                                                            </div>}
+
+
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3">
-                                                    <div class="course-prices">
-                                                        <div class="price-detail">
-                                                            <p>$20 <label>$30</label></p>
-                                                        </div>
-                                                        <div class="course-text">
-                                                            {/* <p>This course includes:</p>
-                                                            <ul>
-                                                                <li><img src="images/check.png" alt="check" /> 5 hours on demand video</li>
-                                                                <li><img src="images/check.png" alt="check" /> 15 articles</li>
-                                                                <li><img src="images/check.png" alt="check" /> 4 downloadalbe resources</li>
-                                                                <li><img src="images/check.png" alt="check" /> Full lifetime access</li>
-                                                                <li><img src="images/check.png" alt="check" /> Access on mobile and tv</li>
-                                                            </ul>
-                                                            <label>30 days money back guarantee</label> */}
-                                                            <a href="javascript:;">Purchase Course</a>
-                                                            {/* <a href="javascript:;" class="outline-btn">Buy Now</a> */}
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        {courseDetail.purchase_type == 'paid' && <div className="col-md-3">
+                                <div className="course-prices">
+                                    <div className="price-detail">
+                                    <p>${courseDetail.sale_cost} <label>${courseDetail.main_cost}</label></p>
+                                    </div>
+                                    <div className="course-text">
+                                        {/* <p>This course includes:</p>
+                                        <ul>
+                                            <li><img src="images/check.png" alt="check" /> 5 hours on demand video</li>
+                                            <li><img src="images/check.png" alt="check" /> 15 articles</li>
+                                            <li><img src="images/check.png" alt="check" /> 4 downloadalbe resources</li>
+                                            <li><img src="images/check.png" alt="check" /> Full lifetime access</li>
+                                            <li><img src="images/check.png" alt="check" /> Access on mobile and tv</li>
+                                        </ul>
+                                        <label>30 days money back guarantee</label> */}
+                                        <a href="javascript:;">Purchase Course</a>
+                                        {/* <a href="javascript:;" className="outline-btn">Buy Now</a> */}
+                                    </div>
+                                </div>
+                            </div> }
                     </div>
                 </div>
             </section>

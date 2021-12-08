@@ -16,6 +16,7 @@ export default function ForumSub() {
 
     const pageLimit = 12;
     const [offset, setOffset] = useState(0);
+    const [token, setToken] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [data, setData] = useState([]);
     const [currentData, setCurrentData] = useState([]);
@@ -31,6 +32,10 @@ export default function ForumSub() {
     
 
     React.useEffect(() => {
+
+        const tokenString = localStorage.getItem('token');
+        var token = JSON.parse(tokenString);
+        setToken(token);
 
         const params = new URLSearchParams(window.location.search) // id=123
         let forum_heading_id = params.get('id')
@@ -64,8 +69,14 @@ export default function ForumSub() {
         axios.post(api_url + '/forum/getForumSubHeadingList', obj).then((result) => {
             if (result.data.status) {
                 var tagdata = result.data.response.data;
-                setData(tagdata);
-                setSelectedForumTag(result.data.response.forum_id)
+                if (tagdata){
+                    setData(tagdata);
+                    setSelectedForumTag(result.data.response.forum_id)
+                }else{
+                    setData([]);
+                    setSelectedForumTag([]);
+                }               
+                
             } else {
                 // Swal.fire('Oops...', result.data.response.msg, 'error')
             }
@@ -101,14 +112,23 @@ export default function ForumSub() {
                         <div className="col-md-2 side-col">
                             <Sidebar />
                         </div>
-                        <div class="col-md-7">
-                            <div class="category-table">
-                                <h2 class="mb-0">Welcoming Forums</h2>
+                        <div className="col-md-7">
+                            <div className="category-table">
+                                <h2 className="mb-0">Welcoming Forums</h2>
                                 <p>This is <b>not</b> a moderated forum. Please be polite to your peers. Be kind and remember the human on the other end.</p>
-                                <br/>
+                                
+
+                                {token && <div className="add-forum">                                    
+                                    <Link className="book-apoint" to={{ pathname: "/add-forum" }}>
+                                        Add Forum
+                                    </Link>                                    
+                                </div>}
+
+                                
+
                                 {/* <a href="javascript:;">Back to Forum Categories</a> */}
-                                <div class="forum-table table-responsive">
-                                    <table class="table">
+                                {currentData.length > 0 && <div className="forum-table table-responsive">
+                                    <table className="table">
                                         <thead>
                                             <tr>
                                                 <th>Topic Title</th>
@@ -125,13 +145,22 @@ export default function ForumSub() {
                                                     <td>{data.category_name}</td>
                                                     <td>{(data.comment && data.comment.length > 0) ? data.comment[0].forum_comment_count : '0'}</td>
                                                     <td>{data.total_view}</td>
-                                                    <td>{(data.comment && data.comment.length > 0) ? data.comment[0].comment : '-'} <span>10 minutes ago</span></td>
+                                                    <td>{(data.comment && data.comment.length > 0) ? data.comment[0].comment : '-'}
+                                                        <span>10 minutes ago</span>
+                                                     </td>
                                                 </tr>
                                             ))} 
                                         </tbody>
                                     </table>
-                                </div>
-                                <div class="pagination">                                    
+                                </div>}
+                                {
+                                    currentData.length == 0 &&
+                                    <div className="blog-box">
+                                        <div className="no-data">No forum available.
+                                        </div>
+                                    </div>
+                                }
+                                <div className="pagination">                                    
                                         {
                                         currentData.length > 0 && <Paginator
                                             totalRecords={data.length}
@@ -148,9 +177,9 @@ export default function ForumSub() {
 
                         <div className="col-md-3 article-tags">
 
-                            <div class="search-box">
+                            <div className="search-box">
                                 <form onSubmit={handleSubmit(search)}>
-                                    <div class="form-group">
+                                    <div className="form-group">
                                         <button type="button"><img src="images/search.png" alt="search" /></button>
                                         <input type="text" onChange={onChangeSearch} className="form-control" name="search_name" placeholder="Search…" />
                                     </div>
@@ -162,7 +191,7 @@ export default function ForumSub() {
                                 <ul>
                                     {forumTagList.length > 0 && forumTagList.map((data, index) => (
                                         <li>
-                                            {selectedForumTag.length > 0 && selectedForumTag.some(cred => cred === data.forum_id) ? <a href="javascript:;" className="active" >{data.tag_name}</a> : <a href="javascript:;" >{data.tag_name}</a> }
+                                            {selectedForumTag.length > 0 && selectedForumTag.some(cred => cred === data.tag_id) ? <a href="javascript:;" className="active" >{data.tag_name}</a> : <a href="javascript:;" >{data.tag_name}</a> }
                                         </li>
                                     ))}
                                 </ul>

@@ -174,28 +174,32 @@ export default function ProfessionalDevelopment() {
                                                                 {data.image && <img src={data.image} alt="blog" />}
                                                                 {!data.image && <img src="images/blog.jpg" alt="blog" />}
                                                             </Link>                                                            
-                                                            <label>Best Seller</label>
+                                                           
                                                         </div>
                                                         <h3> <Link to={{ pathname: "/professional-development-detail", search: "?id=" + data.course_id }}> {data.title} </Link> </h3>
                                                         <div className="video-bottom">
                                                             <p><img src="images/hull-icon.png" alt="author" />Hull Service</p>
                                                         </div>
-                                                        <div className="star-ratting">
-                                                            <p><img src="images/star_rate.png" alt="" />4.7 (687 Review)</p>
-                                                        </div>
+                                                        {/* <div className="star-ratting">
+                                                            <p>687 Review)</p>
+                                                        </div> */}
                                                         <div className="add-to-cart">
                                                             <div className="price">
                                                                 <p>${data.sale_cost}</p><label>${data.main_cost}</label>
                                                             </div>
                                                             <div className="cart-btn">
-                                                                <Link to={{ pathname: "/professional-development-detail", search: "?id=" + data.course_id }}>Detail</Link>
+                                                                <Link to={{ pathname: "/professional-development-detail", search: "?id=" + data.course_id }}>View Detail</Link>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             ))}
-
-
+                                            {
+                                                currentData.length == 0 &&
+                                                <div className="blog-box">
+                                                    <div className="no-data">No course available.</div>
+                                                </div>
+                                            }
                                         </div>
                                     </div>
                                 </div>

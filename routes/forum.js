@@ -14,7 +14,10 @@ var asyn = require('async');
 var helper = require('../config/helper');
 var moment = require('moment');
 var formidable = require('formidable');
-
+var mustache = require('mustache');
+var bcrypt = require('bcryptjs');
+var nodemailer = require('nodemailer');
+const nodeMailerCredential = require('./../EmailCredential');
 
 function loggerData(req) {
     if (env.DEBUG) {
@@ -37,8 +40,10 @@ router.get('/forumList', function (req, res) {
                 retObj['forum_id'] = data.forum_id;
                 retObj['topic'] = data.topic;
                 retObj['total_view'] = data.total_view;
-                retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
-                retObj['status'] = data.status;
+                retObj['created_at'] = (data.forum_date) ? moment(data.forum_date).format('YYYY-MM-DD') : '';
+                retObj['status'] = data.forum_status;
+                retObj['user_status'] = data.user_status;
+                retObj['created_by'] = (data.first_name) ? data.first_name + ' ' + data.last_name : 'Admin';
                 return retObj;
             });
             return res.json({ status: 1, 'response': { data: forumList } });
@@ -232,6 +237,7 @@ router.post('/getForumHeadingList', function (req, res) {
 
             let search = (req.body.search) ? req.body.search : '';            
             var forum_id = [];
+            var forum_tag_id = [];
             var forumHeading = [];
 
             asyn.waterfall([
@@ -243,6 +249,7 @@ router.post('/getForumHeadingList', function (req, res) {
                             } else {
                                 data.forEach(function (d) {
                                     forum_id.push(d.forum_id);
+                                    forum_tag_id.push(d.tag_id);
                                 });
                                 done(null, forum_id)
                             }
@@ -297,7 +304,7 @@ router.post('/getForumHeadingList', function (req, res) {
                 if (error) {
                     return res.json({ 'status': 0, 'response': { 'msg': error } });
                 } else {
-                    return res.json({ 'status': 1, 'response': { 'data': finalData, 'forum_id': forum_id, 'msg': 'data found' } });
+                    return res.json({ 'status': 1, 'response': { 'data': finalData, 'forum_id': forum_tag_id, 'msg': 'data found' } });
                 }
             });            
         }
@@ -315,6 +322,7 @@ router.post('/getForumSubHeadingList', [
     } else { 
         var forum = [];
         var forum_id = [];
+        var forum_tag_id = [];
         var forum_heading_id = req.body.forum_heading_id;
 
         let search = (req.body.search) ? req.body.search : '';
@@ -328,6 +336,7 @@ router.post('/getForumSubHeadingList', [
                         } else {                           
                             data.forEach(function (d) {
                                 forum_id.push(d.forum_id);
+                                forum_tag_id.push(d.tag_id);
                             });
                             done(null, forum_id)
                         }
@@ -336,10 +345,8 @@ router.post('/getForumSubHeadingList', [
                     done(null, null)
                 }
             },
-            function (forum_id, done1) {
-
-                console.log(forum_id);
-                Forum.getForumListByForumHeading(forum_heading_id, search, forum_id, function (err, results) {
+            function (forum_id, done1) {                
+                Forum.getSubForumListByForumHeading(forum_heading_id, search, forum_id, function (err, results) {
                     if (err) {
                         return res.json({ 'status': 0, 'response': { 'data': [], 'msg': 'data not found' } });
                     } else {
@@ -369,7 +376,7 @@ router.post('/getForumSubHeadingList', [
             if (error) {
                 return res.json({ 'status': 0, 'response': { 'msg': error } });
             } else {
-                return res.json({ 'status': 1, 'response': { 'data': finalData[0], 'forum_id': forum_id, 'msg': 'data found' } });
+                return res.json({ 'status': 1, 'response': { 'data': finalData[0], 'forum_id': forum_tag_id, 'msg': 'data found' } });
             }
         });        
     }
@@ -407,6 +414,158 @@ router.post('/getSubForumTagList', [
     }
 });
 
+router.post('/addforumByuser', passport.authenticate('jwt', { session: false }), [
+    check('topic', 'Topic is required').notEmpty(),
+    check('heading', 'Heading is required').notEmpty(),
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        let record = {
+            topic: req.body.topic,
+            heading: (req.body.heading) ? req.body.heading : '',
+            category: (req.body.category) ? req.body.category : '',
+            created_at: moment().format('YYYY-MM-DD'),
+            created_by: req.user.id
+        };
+        let tag = (req.body.tag) ? req.body.tag : [];
+        Forum.addforumByuser(record, tag, function (err, data) {
+            if (err) {
+                return res.json({ 'status': 0, 'response': { 'msg': error } });
+            } else {
+                return res.json({ 'status': 1, 'response': { 'msg': 'Forum added successfully.', data: data } });
+            }
+        });
+    }
+});
+
+
+router.post('/approveRejectedRequest', [
+    check('id', 'Please enter valid id').isEmail(),
+    check('status', 'Please enter status').notEmpty(),
+    check('comment', 'Please enter comment').notEmpty()
+], (req, res) => {
+
+    var forum_id = req.body.id;
+    var status = req.body.status;
+    var comment = req.body.comment;
+
+    if (status == 1) {
+        Forum.getforumRequestDataById(forum_id, function (err, result) {
+            if (err) {
+                return res.json({ status: 0, 'response': { msg: err } });
+            } else {       
+                var obj = {
+                    id: forum_id,
+                    user_status: status,
+                    status: 1,
+                    admin_comment: comment
+                }
+                
+                Forum.updateComment(obj, function (err, updateresult) {
+                    if (err) {
+                        return res.json({ status: 0, 'msg': err, 'response': { msg: err } });
+                    } else {
+                        var logo;
+                        var home_url;
+                        var hostname = req.headers.host;
+                        if (hostname == env.LIVE_HOST_USER_APP) {
+                            home_url = env.APP_URL
+                            logo = env.APP_URL + '/assets/img/brand_logo.png';
+                        } else {
+                            home_url = env.APP_URL
+                            logo = env.APP_URL + '/assets/img/brand_logo.png';
+                        }
+                        var htmlUser = fs.readFileSync(__dirname + '/templates/forumRequest/approved_forum.html', 'utf8');
+                        var dynamicHtml = {
+                            logo: logo,
+                            home_url: home_url,
+                            comment: comment,
+                            fullName: result[0].first_name + ' ' + result[0].last_name,
+                        }
+                        var view = { data: dynamicHtml };
+                        var finalHtmlUser = mustache.render(htmlUser, view);
+
+                        let transporter = nodemailer.createTransport(nodeMailerCredential); // node mailer credentials
+                        let mailOptions = {
+                            from: env.MAIL_FROM,
+                            to: result[0].email,
+                            subject: 'Your new forum topic has been approved.',
+                            html: finalHtmlUser.replace(/&#x2F;/g, '/')
+                        };
+
+                        transporter.sendMail(mailOptions, (error, info) => {
+                            if (error) {
+                                console.log(error);
+                            } else {
+                            }
+                        });
+                        return res.json({ status: 1, 'msg': 'Forum approved successfully.', 'response': { data: status } });
+                    }
+                });
+
+               
+            }
+        });
+    } else {
+
+        Forum.getforumRequestDataById(forum_id, function (err, result) {
+
+            var obj = {
+                id: forum_id,
+                user_status: status,
+                status: 0,
+                admin_comment: comment
+            }
+            Forum.updateComment(obj, function (err, results) {
+                if (err) {
+                    return res.json({ status: 0, 'msg': err, 'response': { msg: err } });
+                } else {
+
+                    var logo;
+                    var home_url;
+                    var hostname = req.headers.host;
+                    if (hostname == env.LIVE_HOST_USER_APP) {
+                        home_url = env.APP_URL
+                        logo = env.APP_URL + '/assets/img/brand_logo.png';
+                    } else {
+                        home_url = env.APP_URL
+                        logo = env.APP_URL + '/assets/img/brand_logo.png';
+                    }
+                    var htmlUser = fs.readFileSync(__dirname + '/templates/forumRequest/reject_forum.html', 'utf8');
+                    var dynamicHtml = {
+                        logo: logo,
+                        home_url: home_url,
+                        fullName: result[0].first_name + ' ' + result[0].last_name,
+                        comment: comment
+                    }
+                    var view = { data: dynamicHtml };
+                    var finalHtmlUser = mustache.render(htmlUser, view);
+
+                    let transporter = nodemailer.createTransport(nodeMailerCredential); // node mailer credentials
+                    let mailOptions = {
+                        from: env.MAIL_FROM,
+                        to: result[0].email,
+                        subject: 'Your new forum topic has been rejected.',
+                        html: finalHtmlUser.replace(/&#x2F;/g, '/')
+                    };
+
+                    transporter.sendMail(mailOptions, (error, info) => {
+                        if (error) {
+                            console.log(error);
+                        } else {
+                        }
+                    });
+
+                    return res.json({ status: 1, 'msg': 'Forum rejected successfully.', 'response': { data: status } });
+                }
+            });
+        });
+
+    }
+});
 
 
 

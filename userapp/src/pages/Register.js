@@ -7,14 +7,13 @@ import $ from 'jquery';
 import usePlacesAutocomplete, { getGeocode, getLatLng, } from "use-places-autocomplete";
 import api_url from './../components/Apiurl';
 import axios from "axios";
-import { useHistory } from 'react-router-dom';
-import Swal from "sweetalert2";
+
 import { MultiSelect } from "react-multi-select-component";
 import useAuth from './../hooks/useAuth';
 
 export default function Register() {
 
-    let history = useHistory();
+    
 
     const [sectorList, setSectorList] = React.useState([]);
     const [academicDisciplineList, setAcademicDisciplineList] = React.useState([]);
@@ -37,8 +36,7 @@ export default function Register() {
         setSelectedProfessionalInterestArea(removeskill);
     };
 
-    const removeResearcherInterest = (value) => {
-        console.log('test');
+    const removeResearcherInterest = (value) => {        
         var removeskill = selectedResearcherInterestArea.filter(function (place) { return place.value !== value })
         setSelectedResearcherInterestArea(removeskill);
     };
@@ -51,8 +49,7 @@ export default function Register() {
 
         setTimeout(() => {
             $(".dropdown-heading-value .gray").text("Interest area");
-        }, 50);
-        
+        }, 50);        
 
         const typeString = localStorage.getItem('selection');
         //var userdata = JSON.parse(typeString);

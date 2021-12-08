@@ -71,3 +71,114 @@
 .dashboard-card .side-bar ul li.sub-active ul {
     display: block;
 }
+
+.forum-section {
+    padding: 30px;
+    background: #fff;
+}
+
+.forum-box .forum-details .form-group input.form-control{
+font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 18px;
+    color: #A0A0A0;
+    border: none;
+    box-shadow: none;
+    border-bottom: #A0A0A0 solid 1px;
+    border-radius: 0px;
+    padding: 13px 0px;
+    height: 50px;
+}
+
+.forum-box .forum-details .form-group select.form-control {
+
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 18px;
+    color: #A0A0A0;
+    box-shadow: none;
+    border: #A0A0A0 solid 1px;
+    border-radius: 10px;
+    padding: 13px 10px;
+    height: 50px;
+    
+}
+.forum-box .forum-details .dropdown-container{
+    border-radius: 9px;
+    border: #A0A0A0 solid 1px;
+}
+.forum-box .forum-details .dropdown-heading{
+   height: 50px;
+}
+.forum-box .forum-details .forum-btn{
+    background: linear-gradient(135deg, #036E80 30.73%, #5EA5C7 100%);
+    border-radius: 25px;
+    width: 150px;
+    height: 42px;
+    color: #fff;
+    line-height: 42px;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: block;
+    margin: 0 auto;
+    border: none;
+}
+.video-card .video-img a {
+    width: 100%;
+    height: 100%;
+}
+
+.add-forum {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 15px 0;
+}
+.add-forum a.book-apoint {
+     display: inline-block;
+    width: auto;
+    margin-top: 0;
+}
+@media(max-width:480px){
+  .add-forum a.book-apoint {
+   padding: 14px 10px;
+       font-size: 14px;
+   }
+}
+@media(max-width:380px){
+    .add-forum {flex-direction: column;align-items: flex-start;}
+  .add-forum a.book-apoint {
+  margin-top: 15px;
+   }
+}
+
+a.book-apoint {
+    background: #036E80;
+    border-radius: 8px;
+    display: block;
+    width: 100%;
+    padding: 14px 24px;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 120%;
+    text-align: center;
+    letter-spacing: 0.005em;
+    margin-top: 15px;
+}
+
+.course-title ul li span {
+    font-size: 16px;
+    line-height: 120%;
+    letter-spacing: 0.005em;
+    color: #000;
+    display: flex;
+    align-items: center;
+    padding-left: 6px;
+}
+

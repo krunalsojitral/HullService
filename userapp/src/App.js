@@ -23,6 +23,7 @@ const VideoDetail = lazy(() => import("./pages/user/VideoDetail"));
 const Blog = lazy(() => import("./pages/user/Blog"));
 const BlogDetail = lazy(() => import("./pages/user/BlogDetail"));
 const ArticlesDetail = lazy(() => import("./pages/user/ArticlesDetail"));
+const AddForum = lazy(() => import("./pages/user/AddForum"));
 const Forum = lazy(() => import("./pages/user/Forum"));
 const ForumDetail = lazy(() => import("./pages/user/ForumDetail"));
 const ForumSub = lazy(() => import("./pages/user/ForumSub"));
@@ -78,6 +79,7 @@ function App() {
           <Route path="/blog-detail" component={BlogDetail} />
           <Route path="/articles" component={Articles} />
           <Route path="/article-detail" component={ArticlesDetail} />
+          <Route path="/add-forum" component={AddForum} />
           <Route path="/forum" component={Forum} />          
           <Route path="/forum-sub" component={ForumSub} />
           <Route path="/forum-detail" component={ForumDetail} />

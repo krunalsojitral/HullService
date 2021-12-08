@@ -987,6 +987,15 @@ section.banner-card .banner-text .banner-btn {
 }
 
 
+.forum-section .form-group .interest-area {
+    border: 1px solid #ccc;
+    padding: 3px 6px;
+    border-radius: 10px;
+    margin-top: 6px;
+    margin-right: 7px;
+    font-size: 13px;
+    color: gray;
+}
 
 .login-details .form-group .interest-area {
     border: 1px solid #ccc;
@@ -1668,7 +1677,7 @@ section.inner-header h2 {
 }
 
 .dashboard-card .side-bar ul li a .icon {
-    fill: #025077;
+    fill: #9A9AB0;
 }
 
 .dashboard-card .side-bar ul li a.active .icon,
@@ -3128,8 +3137,16 @@ section.inner-header h2 {
 }
 .table {
     border-left: 1px solid transparent;
-     border-right: 1px solid transparent;
-      border-bottom: 1px solid transparent;
+    border-right: 1px solid transparent;
+    border-bottom: 1px solid transparent;
+    font-family:'Open Sans';
+    margin-bottom:0 ;
+}
+
+.category-table .category-maintitle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .table tbody tr td span {
@@ -3138,6 +3155,7 @@ section.inner-header h2 {
     color: #A0A0A0;
     font-style: italic;
     padding-top: 5px;
+    font-size: 14px;
 }
 
 .table>tbody>tr>td:first-child,
@@ -3187,7 +3205,8 @@ section.inner-header h2 {
     line-height: 120%;
     font-weight: normal;
     text-align: center;
-    /*border: 1px double #036E80;*/
+    padding: 12px 8px;
+    font-family: Open Sans;
     letter-spacing: 0.005em;
     color: #000000;
 }
@@ -3200,6 +3219,7 @@ section.inner-header h2 {
     line-height: 120%;
     letter-spacing: 0.005em;
     color: #92929D;
+    padding: 12px 8px;
 }
 
 .category-table h2 {
@@ -3226,6 +3246,10 @@ section.inner-header h2 {
     margin-bottom: 0;
 }
 
+
+
+
+
 .category-table h2~p {
     font-weight: normal;
     font-size: 14px;
@@ -3243,7 +3267,7 @@ section.inner-header h2 {
     letter-spacing: 0.005em;
     color: #038EA6;
     display: block;
-    margin: 20px 0;
+    margin: 15px 0;
     text-align: left;
 }
 

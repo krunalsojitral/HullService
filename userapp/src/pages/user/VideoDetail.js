@@ -136,7 +136,7 @@ export default function VideoDetail() {
                                                 <a onClick={(e) => linkTarget(data.video_id)}><h3>{data.title.slice(0, 46)}</h3></a>
                                                 {/* <Link to={{ pathname: "/video-detail", search: "?id=" + data.video_id }}> <h3>{data.title.slice(0, 46)}</h3></Link> */}
                                                 <div className="video-inner-text">
-                                                    <img class="user-profile" src="images/hull-icon.png" alt="author" />
+                                                    <img className="user-profile" src="images/hull-icon.png" alt="author" />
                                                     <div>
                                                         <p>Hull Service</p>
                                                         {/* <small><img src="images/star.png" alt="star" />4.7 (687 Review)</small>  */}
