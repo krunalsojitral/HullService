@@ -354,7 +354,14 @@ router.post('/getForumHeadingList', function (req, res) {
                                 for (let dataf of datas.forum) {
                                     await Forum.getLastComment(dataf.forum_id, function (err, data) {
                                         if (data.length > 0) {
-                                            dataf.comment = data;
+                                            var forumList = data.map(comment => {
+                                                let retObj = {};
+                                                retObj['created_at'] = helper.timeSince(comment.created_at)
+                                                retObj['forum_comment_count'] = comment.forum_comment_count
+                                                return retObj;
+                                            });
+
+                                            dataf.comment = forumList;
                                         }
                                     });
                                 }
@@ -425,7 +432,15 @@ router.post('/getForumSubHeadingList', [
                                 for (let datas of results) {
                                     await Forum.getLastComment(datas.forum_id, function (err, data) {
                                         if (data.length > 0) {
-                                            datas.comment = data;
+
+                                            var forumList = data.map(comment => {
+                                                let retObj = {};
+                                                retObj['created_at'] = helper.timeSince(comment.created_at)
+                                                retObj['forum_comment_count'] = comment.forum_comment_count
+                                                return retObj;
+                                            });
+
+                                            datas.comment = forumList;
                                         }
                                     });
                                 }

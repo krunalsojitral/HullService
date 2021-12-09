@@ -270,9 +270,7 @@ function Course() {
                 }
             });
         });
-    };
-
-     
+    };     
 
     this.purchase_course = function (record, callback) {
         connection.acquire(function (err, con) {            
@@ -292,5 +290,83 @@ function Course() {
         });
     };
 
+    this.getMyCourseList = function (user_id, search, sortby, callback) {
+        connection.acquire(function (err, con) {
+            if (search) {
+
+                var order_by = '';
+
+                if (sortby == "low") {
+                    order_by += 'order by course.main_cost ASC';
+                } else if (sortby == "high") {
+                    order_by += 'order by course.main_cost DESC';
+                } else {
+                    order_by += 'order by course.course_id desc';
+                }
+
+                if (sortby == "paid") {
+
+                    var sql = 'SELECT *,course.created_at as course_date FROM course inner join course_order on course_order.course_id = course.course_id where course_order.user_id = $1 and course.status = $2 and ( title ILIKE $3) ' + order_by;
+                    var values = [user_id, 1, '%' + search + '%'];
+                } else if (sortby == "unpaid") {
+
+                    var sql = 'SELECT *,course.created_at as course_date FROM course inner join course_order on course_order.course_id = course.course_id where course_order.user_id = $1 and course.status = $2 and ( title ILIKE $3) ' + order_by;
+                    var values = [user_id, 1, '%' + search + '%'];
+                } else {
+
+                    var sql = 'SELECT *,course.created_at as course_date FROM course inner join course_order on course_order.course_id = course.course_id where course_order.user_id = $1 and course.status = $2 and ( title ILIKE $3) ' + order_by;
+                    var values = [user_id, 1, '%' + search + '%'];
+                }
+
+
+
+            } else {
+
+                var order_by = '';
+
+                if (sortby == "low") {
+                    order_by += 'order by course.main_cost ASC';
+                } else if (sortby == "high") {
+                    order_by += 'order by course.main_cost DESC';
+                } else {
+                    order_by += 'order by course.course_id desc';
+                }
+
+
+                if (sortby == "paid") {
+                    var sql = 'SELECT *,course.created_at as course_date FROM course inner join course_order on course_order.course_id = course.course_id where course_order.user_id = $1 and course.status = $2 ' + order_by;
+                    var values = [user_id,1];
+                } else if (sortby == "unpaid") {
+                    var sql = 'SELECT *,course.created_at as course_date FROM course inner join course_order on course_order.course_id = course.course_id where course_order.user_id = $1 and course.status = $2 ' + order_by;
+                    var values = [user_id,1];
+                } else {
+                    var sql = 'SELECT *,course.created_at as course_date FROM course inner join course_order on course_order.course_id = course.course_id where course_order.user_id = $1 and course.status = $2 ' + order_by;
+                    var values = [user_id,1];
+                }
+
+
+
+            }
+            con.query(sql, values, function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
+    this.getUserPurchaseCourseOrNot = function (user_id, course_id, callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM course_order where user_id = $1 and course_id = $2', [user_id, course_id], function (err, result) {
+                con.release();
+                callback(null, result.rows);
+            });
+        });
+    }
+    
 }
 module.exports = new Course();

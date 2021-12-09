@@ -81,88 +81,94 @@ export default function Forum() {
                         <div className="col-md-2 side-col">
                             <Sidebar />
                         </div>
-                        <div className="col-md-7">
 
-                            {token && <div className="add-forum">
-                                <Link className="book-apoint" to={{ pathname: "/add-forum" }}>
-                                    Thread Request
-                                            </Link>
-                            </div>}
-                            
-                            {forumList.map((data, index) => (
-                                 <div className="category-table">
-                                    <div className="category-maintitle">
-                                        <div className="category-title">
-                                            <h2 className="mb-0 mt-0">{data.forumheading_name}</h2>
-                                            <Link to={{ pathname: "/forum-sub", search: "?id=" + data.forumheading_id }}>
-                                                View More >>
-                                        </Link>
+                        <div class="col-md-10 full-width">
+                            <div class="search-forum">
+                                <div class="search-box">
+                                    <form onSubmit={handleSubmit(search)}>
+                                        <div className="form-group">
+                                            <button type="button"><img src="images/search.png" alt="search" /></button>
+                                            <input type="text" onChange={onChangeSearch} className="form-control" name="search_name" placeholder="Search…" />
                                         </div>
-                                     </div>
-                                    
-                                    <div className="forum-table table-responsive">
-                                        <table className="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Topic Title</th>
-                                                    <th>Category</th>
-                                                    <th>Replies</th>
-                                                    {/* <th>Views</th> */}
-                                                    <th>Last Post</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {data.forum.map((forumdata, index) => (
-                                                    <tr>
-                                                        <td><Link to={{ pathname: "/forum-detail", search: "?id=" + forumdata.forum_id }}>{forumdata.topic}</Link></td>
-                                                        <td>{forumdata.category_name}</td>
-                                                        <td>{forumdata.total_view}</td>
-                                                        {/* <td>{(forumdata.comment && forumdata.comment.length > 0) ? forumdata.comment[0].forum_comment_count :'0' }</td> */}
-                                                        <td><span>10 minutes ago</span></td>
-                                                    </tr>
-                                                ))}                                             
-                                            </tbody>
-                                        </table>
+                                    </form>                            
+                                 </div>                                        
+
+                                    {token &&
+                                        <div className="add-forum">
+                                            <Link className="book-apoint" to={{ pathname: "/add-forum" }}>
+                                               New Thread Request
+                                            </Link>
+                                        </div>}
+
                                     </div>
-                                    <div className="pagination"></div>
-                                </div>
-                             ))} 
+                                    <div class="video-tag">
+                                        <h3>Sort By Tags</h3>
+                                        <ul>
+                                            {forumTagList.length > 0 && forumTagList.map((data, index) => (
+                                                <li>
+                                                    {selectedForumTag.length > 0 && selectedForumTag.some(cred => cred === data.tag_id) ? <a href="javascript:;" className="active" >{data.tag_name}</a> : <a href="javascript:;" >{data.tag_name}</a>}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>                                   
 
-                            {
-                                forumList.length == 0 &&
-                                <div className="blog-box">
-                                    <div className="no-data">No forum available.</div>
-                                </div>
-                            }
-                           
-                        </div>
-                        <div className="col-md-3 article-tags">
+                                    <div class="category-table">                                        
+                                        {forumList.map((data, index) => (
+                                            <div>
 
-                            <div className="search-box">
-                                <form onSubmit={handleSubmit(search)}>
-                                    <div className="form-group">
-                                        <button type="button"><img src="images/search.png" alt="search"/></button>
-                                        <input type="text" onChange={onChangeSearch} className="form-control" name="search_name" placeholder="Search…" />
+                                                <div class="category-title">
+                                                    <h2>{data.forumheading_name}</h2>                                                    
+                                                    <Link to={{ pathname: "/forum-sub", search: "?id=" + data.forumheading_id }}>View More >></Link>
+                                                </div>                                                
+                                                
+                                                <div class="forum-table table-responsive">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Topic Title</th>
+                                                                <th>Category</th>
+                                                                <th>Replies</th>                                                            
+                                                                <th>Last Post</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {data.forum.map((forumdata, index) => (
+                                                                <tr>
+                                                                    <td>
+
+                                                                        {/* <div class="tooltip-box">
+                                                                            <Link to={{ pathname: "/forum-detail", search: "?id=" + forumdata.blog_id }}>
+                                                                                {forumdata.topic.slice(0, 45)}
+                                                                                <span className="tooltip-title">{forumdata.topic}</span>
+                                                                            </Link>
+                                                                        </div> */}
+
+                                                                        <Link to={{ pathname: "/forum-detail", search: "?id=" + forumdata.forum_id }}>{forumdata.topic}</Link> 
+                                                                    </td>
+                                                                    <td>{forumdata.category_name}</td>
+                                                                    <td>{(forumdata.comment && forumdata.comment[0].forum_comment_count) ? forumdata.comment[0].forum_comment_count : 0}</td>
+                                                                    <td><span>{(forumdata.comment && forumdata.comment[0].created_at) ? forumdata.comment[0].created_at : '-'}</span></td>
+                                                                </tr>
+                                                            ))}
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        ))}
+
+                                        {
+                                            forumList.length == 0 &&
+                                            <div className="blog-box">
+                                                <div className="no-data">No forum available.</div>
+                                            </div>
+                                        }
+
                                     </div>
-                                </form>
-                            </div>                                  
+                                </div>
 
 
-                            <div className="video-tag">
-                                <h3>Sort By Tags</h3>
-                                <ul>
-                                    {forumTagList.length > 0 && forumTagList.map((data, index) => (
-                                        <li>
-                                            {selectedForumTag.length > 0 && selectedForumTag.some(cred => cred === data.tag_id) ? <a href="javascript:;" className="active" >{data.tag_name}</a> : <a href="javascript:;" >{data.tag_name}</a>}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                            <div className="banner-ads">
-                                <a href="javascript:;"><img src="images/course-ad.png" alt="course-ad"/></a>
-                                <a href="javascript:;"><img src="images/Banner-ad.png" alt="Banner-ad"/></a>
-                            </div>
-                        </div>
+                  
                     </div>
                 </div>
             </section>                    

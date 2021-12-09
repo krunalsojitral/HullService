@@ -320,11 +320,11 @@ function forum() {
                     var values = [heading, forum_id, '%' + search + '%', '%' + search + '%'];
 
                 } else {
-                    var sql = 'SELECT * FROM forum inner join forumheading on forumheading.forumheading_id = forum.heading where forum.status = 1 and forum.heading = $1 and ( forum.topic ILIKE $2 or category.category_name ILIKE $3) order by forum.forum_id desc';
+                    var sql = 'SELECT * FROM forum inner join forumheading on forumheading.forumheading_id = forum.heading inner join category on category.category_id = forum.category where forum.status = 1 and forum.heading = $1 and ( forum.topic ILIKE $2 or category.category_name ILIKE $3) order by forum.forum_id desc';
                     var values = [heading, '%' + search + '%', '%' + search + '%'];
                 }
             } else {
-                var sql = 'SELECT * FROM forum inner join forumheading on forumheading.forumheading_id = forum.heading where forum.status = 1 and forum.heading = $1 order by forum.forum_id desc';
+                var sql = 'SELECT * FROM forum inner join forumheading on forumheading.forumheading_id = forum.heading inner join category on category.category_id = forum.category where forum.status = 1 and forum.heading = $1 order by forum.forum_id desc';
                 var values = [heading];
             }
 

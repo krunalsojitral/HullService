@@ -111,44 +111,64 @@ export default function ForumSub() {
                         <div className="col-md-2 side-col">
                             <Sidebar />
                         </div>
-                        <div className="col-md-7">
-                            <div className="category-table">
-                                <h2 className="mb-0"> {data && data[0] && data[0].forumheading_name && data[0].forumheading_name} </h2>
-                                <p>This is <b>not</b> a moderated forum. Please be polite to your peers. Be kind and remember the human on the other end.</p>
+
+
+
+                        <div class="col-md-10 full-width">
+                            <div class="search-forum">
+                                <div>
+                                    <h2 className="mb-0"> {data && data[0] && data[0].forumheading_name && data[0].forumheading_name} </h2>
+                                    <p>This is <b>not</b> a moderated forum. Please be polite to your peers. Be kind and remember the human on the other end.</p>
+                                </div>
+
+                                {token &&
+                                    <div className="add-forum">
+                                        <Link className="book-apoint" to={{ pathname: "/add-forum" }}>
+                                            New Thread Request
+                                            </Link>
+                                    </div>}
+
+                            </div>
+                            <div class="video-tag">
+                                <h3>Sort By Tags</h3>
+                                <ul>
+                                    {forumTagList.length > 0 && forumTagList.map((data, index) => (
+                                        <li>
+                                            {selectedForumTag.length > 0 && selectedForumTag.some(cred => cred === data.tag_id) ? <a href="javascript:;" className="active" >{data.tag_name}</a> : <a href="javascript:;" >{data.tag_name}</a>}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+
+                            <br/>
+
+                            <div class="category-table">
                                 
-
-                                {token && <div className="add-forum">                                    
-                                    {data && data[0] && data[0].forumheading_id &&  <Link className="book-apoint" to={{ pathname: "/add-forum", search: "?id=" + data[0].forumheading_id }}>
-                                        Add Forum
-                                    </Link>}                                    
-                                </div>}
-
-                                
-
-                                {/* <a href="javascript:;">Back to Forum Categories</a> */}
-                                {currentData.length > 0 && <div className="forum-table table-responsive">
-                                    <table className="table">
-                                        <thead>
-                                            <tr>
-                                                <th>Topic Title</th>
-                                                <th>Category</th>
-                                                <th>Replies</th>                                                
-                                                <th>Last Post</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
+                                {currentData.length > 0 && <div class="forum-table table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Topic Title</th>
+                                                    <th>Category</th>
+                                                    <th>Replies</th>
+                                                    <th>Last Post</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
                                             {currentData.map((data, index) => (
                                                 <tr>
                                                     <td><Link to={{ pathname: "/forum-detail", search: "?id=" + data.forum_id }}>{data.topic}</Link></td>
                                                     <td>{data.category_name}</td>
-                                                    <td>{(data.comment && data.comment.length > 0) ? data.comment[0].forum_comment_count : '0'}</td>                                                    
-                                                    <td><span>10 minutes ago</span>
-                                                     </td>
+                                                    <td>{(data.comment && data.comment.length > 0) ? data.comment[0].forum_comment_count : '0'}</td>
+                                                    <td><span>{(data.comment && data.comment[0].created_at) ? data.comment[0].created_at : '-'}</span></td>
                                                 </tr>
-                                            ))} 
-                                        </tbody>
-                                    </table>
-                                </div>}
+                                            ))}
+
+                                            </tbody>
+                                        </table>
+                                    </div> }
+                                
+
                                 {
                                     currentData.length == 0 &&
                                     <div className="blog-box">
@@ -156,8 +176,9 @@ export default function ForumSub() {
                                         </div>
                                     </div>
                                 }
-                                <div className="pagination">                                    
-                                        {
+
+                                <div className="pagination">
+                                    {
                                         currentData.length > 0 && <Paginator
                                             totalRecords={data.length}
                                             pageLimit={pageLimit}
@@ -166,38 +187,10 @@ export default function ForumSub() {
                                             currentPage={currentPage}
                                             setCurrentPage={setCurrentPage}
 
-                                        />}                                    
+                                        />}
                                 </div>
                             </div>
-                        </div>
-
-                        <div className="col-md-3 article-tags">
-
-                            <div className="search-box">
-                                <form onSubmit={handleSubmit(search)}>
-                                    <div className="form-group">
-                                        <button type="button"><img src="images/search.png" alt="search" /></button>
-                                        <input type="text" onChange={onChangeSearch} className="form-control" name="search_name" placeholder="Search…" />
-                                    </div>
-                                </form>
-                            </div> 
-
-                            <div className="video-tag">
-                                <h3>Sort By Tags</h3>
-                                <ul>
-                                    {forumTagList.length > 0 && forumTagList.map((data, index) => (
-                                        <li>
-                                            {selectedForumTag.length > 0 && selectedForumTag.some(cred => cred === data.tag_id) ? <a href="javascript:;" className="active" >{data.tag_name}</a> : <a href="javascript:;" >{data.tag_name}</a> }
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                            <div className="banner-ads">
-                                <a href="javascript:;"><img src="images/course-ad.png" alt="course-ad" /></a>
-                                <a href="javascript:;"><img src="images/Banner-ad.png" alt="Banner-ad" /></a>
-                            </div>
-                        </div>
-                        
+                        </div>                       
                     </div>
                 </div>
             </section>
@@ -205,3 +198,92 @@ export default function ForumSub() {
         </div>
     )
 }
+
+
+
+//  <div className="col-md-7">
+//                             <div className="category-table">
+//                                 <h2 className="mb-0"> {data && data[0] && data[0].forumheading_name && data[0].forumheading_name} </h2>
+//                                 <p>This is <b>not</b> a moderated forum. Please be polite to your peers. Be kind and remember the human on the other end.</p>
+                                
+
+//                                 {token && <div className="add-forum">                                    
+//                                     {data && data[0] && data[0].forumheading_id &&  <Link className="book-apoint" to={{ pathname: "/add-forum", search: "?id=" + data[0].forumheading_id }}>
+//                 Add Forum
+//                                     </Link>}                                    
+//                                 </div>}
+
+                                
+
+                                
+//                                 {currentData.length > 0 && <div className="forum-table table-responsive">
+//                                     <table className="table">
+//                                         <thead>
+//                                             <tr>
+//                                                 <th>Topic Title</th>
+//                                                 <th>Category</th>
+//                                                 <th>Replies</th>                                                
+//                                                 <th>Last Post</th>
+//                                             </tr>
+//                                         </thead>
+//                                         <tbody>
+//                                             {currentData.map((data, index) => (
+//                                                 <tr>
+//                                                     <td><Link to={{ pathname: "/forum-detail", search: "?id=" + data.forum_id }}>{data.topic}</Link></td>
+//                                                     <td>{data.category_name}</td>
+//                                                     <td>{(data.comment && data.comment.length > 0) ? data.comment[0].forum_comment_count : '0'}</td>                                                    
+//                                                     <td><span>10 minutes ago</span>
+//                                                      </td>
+//                                                 </tr>
+//                                             ))} 
+//                                         </tbody>
+//                                     </table>
+//                                 </div>}
+//                                 {
+//                                     currentData.length == 0 &&
+//                                     <div className="blog-box">
+//                                         <div className="no-data">No forum available.
+//                                         </div>
+//                                     </div>
+//                                 }
+//                                 <div className="pagination">                                    
+//                                         {
+//                                         currentData.length > 0 && <Paginator
+//                                             totalRecords={data.length}
+//                                             pageLimit={pageLimit}
+//                                             pageNeighbours={2}
+//                                             setOffset={setOffset}
+//                                             currentPage={currentPage}
+//                                             setCurrentPage={setCurrentPage}
+
+//                                         />}                                    
+//                                 </div>
+//                             </div>
+//                         </div>
+
+//                         <div className="col-md-3 article-tags">
+
+//                             <div className="search-box">
+//                                 <form onSubmit={handleSubmit(search)}>
+//                                     <div className="form-group">
+//                                         <button type="button"><img src="images/search.png" alt="search" /></button>
+//                                         <input type="text" onChange={onChangeSearch} className="form-control" name="search_name" placeholder="Search…" />
+//                                     </div>
+//                                 </form>
+//                             </div> 
+
+//                             <div className="video-tag">
+//                                 <h3>Sort By Tags</h3>
+//                                 <ul>
+//                                     {forumTagList.length > 0 && forumTagList.map((data, index) => (
+//                                         <li>
+//                                             {selectedForumTag.length > 0 && selectedForumTag.some(cred => cred === data.tag_id) ? <a href="javascript:;" className="active" >{data.tag_name}</a> : <a href="javascript:;" >{data.tag_name}</a> }
+//                                         </li>
+//                                     ))}
+//                                 </ul>
+//                             </div>
+//                             <div className="banner-ads">
+//                                 <a href="javascript:;"><img src="images/course-ad.png" alt="course-ad" /></a>
+//                                 <a href="javascript:;"><img src="images/Banner-ad.png" alt="Banner-ad" /></a>
+//                             </div>
+//                         </div>

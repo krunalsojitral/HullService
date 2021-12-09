@@ -13,39 +13,49 @@ module.exports.getVideoId = function (url) {
 
 
 //post date formate
-module.exports.diffYMDHMS = function (postDate, timezone) {
-    const postUpdatedDate = moment.utc(postDate).tz(timezone);
-    const currentDate = moment.utc().tz(timezone);
+// module.exports.time_ago = function (date) {
+//     var seconds = Math.floor((new Date() - date) / 1000);
 
-    const diffTime = moment.duration(postUpdatedDate.diff(currentDate));
-    // const diffTime = moment.duration(currentDate.diff(postUpdatedDate));
-    // console.log('diffTime.days()', diffTime.abs().asDays(), diffTime.abs().asMonths(), diffTime.humanize(true), postUpdatedDateWithoutTZ.format(), currentDateWithoutTZ.format());
+//     var interval = seconds / 31536000;
 
-    if ((diffTime.abs().asDays() <= 6) && diffTime.abs().asMonths() <= 1) {
-        if (diffTime.abs().asDays() < 1 && diffTime.abs().asDays() >= 0) {
-            if (diffTime.abs().asMinutes() < 1) {
-                return "Just now";
-            } else {
-                // return diffTime.humanize(true);
-                return postUpdatedDate.fromNow();;
-            }
-        } else if (diffTime.abs().asDays() <= 1 && diffTime.abs().asDays() > 0 && diffTime.asMonths() <= 0) {
-            return "Yesterday at " + moment(postUpdatedDate.toDate()).tz(timezone).format('hh:mm A');
-        } else {
-            return moment(postUpdatedDate.toDate()).tz(timezone).format('dddd') + " at " + moment(postUpdatedDate.toDate()).tz(timezone).format('hh:mm A');
-        }
-    } else {
-        // after one year
-        return moment(postUpdatedDate.toDate()).tz(timezone).format('MMMM D') + ", " + moment(postUpdatedDate.toDate()).tz(timezone).format('YYYY');
-    }
+//     if (interval > 1) {
+//         return Math.floor(interval) + " years";
+//     }
+//     interval = seconds / 2592000;
+//     if (interval > 1) {
+//         return Math.floor(interval) + " months";
+//     }
+//     interval = seconds / 86400;
+//     if (interval > 1) {
+//         return Math.floor(interval) + " days";
+//     }
+//     interval = seconds / 3600;
+//     if (interval > 1) {
+//         return Math.floor(interval) + " hours";
+//     }
+//     interval = seconds / 60;
+//     if (interval > 1) {
+//         return Math.floor(interval) + " minutes";
+//     }
+//     return Math.floor(seconds) + " seconds";
+// }
+
+const intervals = [
+    { label: 'year', seconds: 31536000 },
+    { label: 'month', seconds: 2592000 },
+    { label: 'day', seconds: 86400 },
+    { label: 'hour', seconds: 3600 },
+    { label: 'minute', seconds: 60 },
+    { label: 'second', seconds: 1 }
+];
+
+module.exports.timeSince = function (date) {
+    const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
+    const interval = intervals.find(i => i.seconds < seconds);
+    const count = Math.floor(seconds / interval.seconds);
+    return `A few ${interval.label}${count !== 1 ? 's' : ''} ago`;
+    //return `${count} ${interval.label}${count !== 1 ? 's' : ''} ago`;
 }
 
-module.exports.diffEventDates = function (postDate, timezone) {
-    const postUpdatedDate = moment.utc(postDate).tz(timezone);
-    const currentDate = moment.utc().tz(timezone);
 
-    // const diffTime = moment.duration(postUpdatedDate.diff(currentDate));
-    // const diffTime = moment.duration(currentDate.diff(postUpdatedDate));
-    // console.log('diffTime.days()', diffTime.abs().asDays(), diffTime.abs().asMonths(), diffTime.humanize(true), postUpdatedDateWithoutTZ.format(), currentDateWithoutTZ.format());
-    return moment(postUpdatedDate.toDate()).tz(timezone).format('MMMM D') + ", " + moment(postUpdatedDate.toDate()).tz(timezone).format('YYYY');
-}
+

@@ -49,40 +49,40 @@ export default function Dashboard() {
                                     <div className="dashboard-content">
                                         <div className="row">
                                             <div className="col-md-4">
-                                                <Link to='/group-session' className="Support-card">
-                                                    <h3>Group Sessions</h3>
+                                                <Link to='/events' className="Support-card">
+                                                    <h3>My Events</h3>
                                                     <div className="support-img">
                                                         <img alt="support" src="images/support01.png"/>
                                                     </div>
                                                 </Link>
                                             </div>
                                             <div className="col-md-4">
-                                                <Link to='/informational-video' className="Support-card">
-                                                    <h3>Informational Videos</h3>
+                                                <Link to='/group-session' className="Support-card">
+                                                    <h3>My Meetings </h3>
                                                     <div className="support-img">
                                                         <img alt="support" src="images/support02.png"/>
                                                     </div>
                                                 </Link>
                                             </div>
                                             <div className="col-md-4">
-                                                <Link to='/professional-development' className="Support-card">
-                                                    <h3>Personal Development</h3>
+                                                <Link to='/my-professional-development' className="Support-card">
+                                                    <h3>My Professional Development Courses </h3>
                                                     <div className="support-img">
                                                          <img alt="support" src="images/support03.png"/>
                                                     </div>
                                                 </Link>
                                             </div>
                                             <div className="col-md-4">
-                                                <Link to='/events' className="Support-card">
-                                                    <h3>Virtual Events</h3>
+                                                <Link to='/forum' className="Support-card">
+                                                    <h3>My Threads</h3>
                                                     <div className="support-img">
                                                             <img alt="support" src="images/support04.png"/>
                                                     </div>
                                                 </Link>
                                             </div>
                                             <div className="col-md-4">
-                                                <Link to='/forum' className="Support-card">
-                                                    <h3>Forums</h3>
+                                                <Link to='/my-studies' className="Support-card">
+                                                    <h3>My Studies</h3>
                                                     <div className="support-img">
                                                         <img alt="support" src="images/support05.png"/>
                                                     </div>

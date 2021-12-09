@@ -35,6 +35,8 @@ const ParticipateInResearch = lazy(() => import("./pages/ParticipateInResearch")
 const InformationalVideo = lazy(() => import("./pages/user/InformationalVideo"));
 const GroupSession = lazy(() => import("./pages/user/GroupSession"));
 const ProfessionalDevelopment = lazy(() => import("./pages/user/ProfessionalDevelopment"));
+const MyProfessionalDevelopment = lazy(() => import("./pages/user/MyProfessionalDevelopment"));
+const MyProfessionalDevelopmentDetail = lazy(() => import("./pages/user/MyProfessionalDevelopmentDetail"));
 const ProfessionalDevelopmentDetail = lazy(() => import("./pages/user/ProfessionalDevelopmentDetail"));
 const ParticipantsInMyStudies = lazy(() => import("./pages/user/ParticipantsInMyStudies"));
 const MyStudies = lazy(() => import("./pages/user/MyStudies"));
@@ -86,15 +88,19 @@ function App() {
           <Route path="/forum-detail" component={ForumDetail} />
           <Route path="/dashboard" component={Dashboard} />
           <Route exact path="/" component={Landing} />
-          <Route exact path="/contact" component={Contact} />
-          <Route exact path="/group-session" component={GroupSession} />
-          <Route exact path="/informational-video" component={InformationalVideo} />
-          <Route exact path="/professional-development" component={ProfessionalDevelopment} />
-          <Route exact path="/professional-development-detail" component={ProfessionalDevelopmentDetail} />
-          <Route exact path="/participants-in-my-studies" component={ParticipantsInMyStudies} />
-          <Route exact path="/participate-in-research" component={ParticipateInResearch} />
-          <Route exact path="/my-studies" component={MyStudies} />
-          <Route exact path="/course-payment" component={CoursePayment} />         
+          <Route path="/contact" component={Contact} />
+          <Route path="/group-session" component={GroupSession} />
+          <Route path="/informational-video" component={InformationalVideo} />
+          <Route path="/professional-development" component={ProfessionalDevelopment} />
+          <PrivateRoute path="/my-professional-development" component={MyProfessionalDevelopment} />
+          <PrivateRoute path="/my-professional-development-detail" component={MyProfessionalDevelopmentDetail} />          
+          <Route path="/professional-development-detail" component={ProfessionalDevelopmentDetail} />
+          <Route path="/participants-in-my-studies" component={ParticipantsInMyStudies} />
+          <Route path="/participate-in-research" component={ParticipateInResearch} />
+          <Route path="/my-studies" component={MyStudies} />
+          <Route path="/course-payment" component={CoursePayment} />   
+
+          
         </Switch>
         </Suspense>
       </UserContext.Provider>

@@ -6,8 +6,11 @@ import LoadSpinner from '../LoadSpinner/LoadSpinner';
 import Swal from "sweetalert2";
 import axios from 'axios';
 import api_url from '../../components/Apiurl';
+import { useHistory } from "react-router-dom";
 
 export default function CoursePayment() {
+
+    let history = useHistory();
 
     const [courseId, setCourseId] = React.useState(0)
     const [price, setPrice] = React.useState(0)
@@ -77,9 +80,10 @@ export default function CoursePayment() {
     const coursePayment = (paymentDetail) => {
         const registerData = localStorage.getItem('userdata');
         var data = JSON.parse(registerData);
+        console.log(paymentDetail);
         var obj = {
             user_id: data.id,
-            order_id: paymentDetail,
+            order_id: paymentDetail.id,
             course_id: courseId
         }
         axios.post(api_url + '/course/purchase_course', obj).then(async (result) => {
@@ -92,7 +96,7 @@ export default function CoursePayment() {
                 }).then((result) => {
                     /* Read more about isConfirmed, isDenied below */
                     if (result.isConfirmed) {
-                       // history.push("/login");
+                        history.push("/my-professional-development");
                     } else {
                         Swal.fire('Changes are not saved', '', 'info')
                     }
@@ -100,12 +104,11 @@ export default function CoursePayment() {
             } else {
                 Swal.fire('Oops...', result.data.response.msg, 'error')
             }
-
             //history.push('/login');
         })
-            .catch((err) => {
-               
-            })
+        .catch((err) => {
+            
+        })
     }
 
    

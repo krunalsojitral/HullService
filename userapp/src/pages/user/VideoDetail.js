@@ -98,7 +98,7 @@ export default function VideoDetail() {
                             <div className="row">
                                 <div className="col-md-12">
                                     <div className="video-box">
-                                        <iframe width="100%" height="555px" src={videoDetail.video_url+"?rel=0"} title="YouTube video player" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>
+                                        <iframe width="100%" height="555px" src={`https://www.youtube.com/embed/${videoDetail.video_embeded_id}?rel=0&modestbranding=1&showinfo=0`} title="YouTube video player" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>
                                     </div>
                                 </div>
                             </div>

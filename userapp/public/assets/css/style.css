@@ -1994,9 +1994,9 @@ section.inner-header h2 {
 .video-tag {}
 
 .video-tag h3 {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: bold;
-    margin-bottom: 24px;
+    margin-bottom: 6px;
 }
 
 .video-tag ul {}
@@ -3234,7 +3234,7 @@ section.inner-header h2 {
     padding: 5px;
     line-height: 1.42857143;
     vertical-align: top;
-    border-top: 1px solid #036E80;
+    border-top: 1px solid #CFCFCF;
     text-align: center;
 
 }
@@ -3243,13 +3243,13 @@ section.inner-header h2 {
     font-weight: 600;
     text-align: left;
     color: #11142D;
-    border-left: 1px double #036E80;
+    border-left: 1px double #CFCFCF;
 }
  .table>tbody>tr>td:last-child {
-     border-right: 1px double #036E80;
+     border-right: 1px double #CFCFCF;
 }
  .table>tbody>tr:last-child>td {
-     border-bottom: 1px double #036E80;
+     border-bottom: 1px double #CFCFCF;
 }
 .table>thead>tr>th:first-child {
     font-weight: bold;
@@ -3262,6 +3262,7 @@ section.inner-header h2 {
     font-size: 16px;
     line-height: 120%;
     font-weight: normal;
+    vertical-align: middle;
     text-align: center;
     padding: 12px 8px;
     font-family: Open Sans;
@@ -3273,7 +3274,7 @@ section.inner-header h2 {
     font-weight: bold;
     background: transparent;
     font-size: 16px;
-    border-bottom: 1px solid #036E80;
+    border-bottom: 1px solid #CFCFCF;
     line-height: 120%;
     letter-spacing: 0.005em;
     color: #92929D;
@@ -3738,4 +3739,95 @@ div#swal2-html-container{
 .swal2-confirm {
     font-size: 12px !important;
     padding: 7px 13px;
+}
+.full-width .search-box {
+    margin-top: 0px;
+    margin-bottom: 0;
+    display: block;
+    width: 100%;
+    margin-right: 15px;
+}
+  .full-width .video-tag ul li a.active, .full-width .video-tag ul li a:hover {
+    border: 1px solid #036E80;
+    color: #036E80;
+}
+
+  .full-width .table>thead>tr>th:first-child, .full-width .table>thead>tr>th {
+    color: #036E80;
+    padding: 0 8px 20px;
+}
+ /*.full-width .table>thead>tr>th:first-child{padding-left: 0;}*/
+.full-width .table tr td a{
+    color: #000;
+    display: block;
+    text-decoration: none;
+    padding-top: 10px;
+    /* font-style: italic; */
+    font-size: 16px;
+    /* line-height: 120%; */
+    font-weight: normal;
+}
+ .full-width .category-table h2 {
+    margin-bottom: 15px;
+    margin-top: 30px;
+}
+ .full-width{margin-bottom: 30px;}
+.search-forum {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;    
+}
+.search-forum .add-forum {
+    width: 100%;
+    max-width: 250px;
+}
+.search-forum a.book-apoint {
+    background: #036E80;
+    border-radius: 8px;
+    display: block;
+    width: 100%;
+    padding: 0px 24px;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+    letter-spacing: 0.005em;
+    margin-top: 0;
+   
+    height: 66px;
+    line-height: 66px;
+}
+.category-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.category-table .category-title h2~a {
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 120%;
+    text-align: center;
+    letter-spacing: 0.005em;
+    color: #038EA6;
+    display: block;
+    margin: 15px 0;
+    text-align: left;
+    font-weight: bold;
+}
+@media(max-width:767px){
+    .category-title {flex-direction: column;}
+}
+@media(max-width:480px){
+    .search-forum {
+        margin-bottom: 30px;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .search-forum .add-forum {
+    width: 100%;
+    max-width: 100%;
+}
 }
