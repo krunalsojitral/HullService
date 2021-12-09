@@ -173,12 +173,14 @@ export default function Video() {
                                                 <div key={index} className="col-md-6 col-lg-4">
                                                     <div className="video-card">
                                                         <div className="video-img">
-                                                            <iframe width="100%" height="195px" src={data.video + "?rel=0"} title="YouTube video player" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>
+                                                            <iframe width="100%" height="195px" title="YouTube video player" src={`https://www.youtube.com/embed/${data.video_embeded_id}?rel=0&modestbranding=1&showinfo=0`} allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>                                                            
                                                         </div>
-                                                        <h3 class="tooltip-box"><Link to={{ pathname: "/video-detail", search: "?id=" + data.video_id }}>
+                                                        <h3 class="tooltip-box">
+                                                            <Link to={{ pathname: "/video-detail", search: "?id=" + data.video_id }}>
                                                              {data.title.slice(0, 30)}
                                                             <span className="tooltip-title">{data.title}</span>
-                                                        </Link></h3>
+                                                            </Link>
+                                                        </h3>
                                                         <div className="video-bottom">
                                                             <p><img src="images/hull-icon.png" alt="author" />Hull Service</p>
                                                             <Link to={{ pathname: "/video-detail", search: "?id=" + data.video_id }}><img src="images/video.png" alt="video" /></Link>

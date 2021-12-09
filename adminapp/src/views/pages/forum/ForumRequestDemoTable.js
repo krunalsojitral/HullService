@@ -29,7 +29,7 @@ const ForumRequestDemoTable = ({ moduleConfigUrls }) => {
 
   const fields = [
     { key: 'topic', _style: { width: '20%'} },    
-    { key: 'created_at', _style: { width: '20%' } },
+    { key: 'created_on', _style: { width: '20%' } },
     { key: 'created_by', _style: { width: '20%' } },    
     { key: 'user_status', _style: { width: '20%' } },    
     {

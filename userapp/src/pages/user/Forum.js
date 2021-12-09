@@ -82,25 +82,22 @@ export default function Forum() {
                             <Sidebar />
                         </div>
                         <div className="col-md-7">
+
+                            {token && <div className="add-forum">
+                                <Link className="book-apoint" to={{ pathname: "/add-forum" }}>
+                                    Thread Request
+                                            </Link>
+                            </div>}
                             
                             {forumList.map((data, index) => (
                                  <div className="category-table">
-
                                     <div className="category-maintitle">
-
                                         <div className="category-title">
                                             <h2 className="mb-0 mt-0">{data.forumheading_name}</h2>
                                             <Link to={{ pathname: "/forum-sub", search: "?id=" + data.forumheading_id }}>
                                                 View More >>
                                         </Link>
                                         </div>
-
-                                        {token && <div className="add-forum">    
-                                            <Link className="book-apoint" to={{ pathname: "/add-forum", search: "?id=" + data.forumheading_id }}>
-                                                Add Forum
-                                            </Link>
-                                        </div>}
-
                                      </div>
                                     
                                     <div className="forum-table table-responsive">

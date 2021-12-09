@@ -40,7 +40,7 @@ router.get('/forumList', function (req, res) {
                 retObj['forum_id'] = data.forum_id;
                 retObj['topic'] = data.topic;
                 retObj['total_view'] = data.total_view;
-                retObj['created_at'] = (data.forum_date) ? moment(data.forum_date).format('YYYY-MM-DD') : '';
+                retObj['created_on'] = (data.forum_date) ? moment(data.forum_date).format('YYYY-MM-DD') : '';
                 retObj['status'] = data.forum_status;
                 retObj['user_status'] = data.user_status;
                 retObj['created_by'] = (data.first_name) ? data.first_name + ' ' + data.last_name : 'Admin';
@@ -637,9 +637,6 @@ router.post('/approveRejectedRequest', [
     }
 });
 
-
-
-
 router.post('/getForumCommentList', [
     check('forum_id', 'Please enter valid id').notEmpty()
 ], (req, res) => {
@@ -665,7 +662,7 @@ router.get('/forumRequestList', function (req, res) {
                 retObj['forum_id'] = data.forum_id;
                 retObj['topic'] = data.topic;
                 retObj['total_view'] = data.total_view;
-                retObj['created_at'] = (data.forum_date) ? moment(data.forum_date).format('YYYY-MM-DD') : '';
+                retObj['created_on'] = (data.forum_date) ? moment(data.forum_date).format('YYYY-MM-DD') : '';
                 retObj['status'] = data.forum_status;
                 retObj['user_status'] = data.user_status;
                 retObj['created_by'] = (data.first_name) ? data.first_name + ' ' + data.last_name : 'Admin';

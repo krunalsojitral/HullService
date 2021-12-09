@@ -128,6 +128,7 @@ router.post('/getcourseDataById', [check('course_id', 'Course is required').notE
                     course['live_session_date'] = result[0].live_session_date;
                     course['live_session_time'] = result[0].live_session_time;
                     course['live_session_minute'] = result[0].live_session_minute;
+                    course['update_at'] = (result[0].update_at) ? moment(result[0].update_at).format('MM/YYYY'):'';
                     return res.json({ 'status': 1, 'response': { 'data': course, 'msg': 'Data found' } });
                 } else {
                     return res.json({ 'status': 0, 'response': { 'data': [], 'msg': 'Data not found' } });
@@ -312,7 +313,7 @@ router.post('/updatecourseByadmin', function (req, res) {
                 obj.content_title_third,obj.content_description_third,
                 obj.content_title_four,obj.content_description_four,
                 obj.content_title_five,obj.content_description_five,
-                obj.trainer,obj.user_role,obj.purchase_type,obj.main_cost,obj.sale_cost]
+                obj.trainer, obj.user_role, obj.purchase_type, obj.main_cost, obj.sale_cost, moment().format('YYYY-MM-DD')]
             let record = {
                 title: obj.title,
                 live_session_url: (obj.live_session_url) ? obj.live_session_url : '',
@@ -368,7 +369,8 @@ router.post('/updatecourseByadmin', function (req, res) {
                 role: obj.user_role,
                 purchase_type: obj.purchase_type,
                 main_cost: obj.main_cost,
-                sale_cost: obj.sale_cost
+                sale_cost: obj.sale_cost,                
+                update_at: moment().format('YYYY-MM-DD'),
             };
             let course_id = obj.course_id;
             

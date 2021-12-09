@@ -8,7 +8,8 @@ export default function useLogout() {
         
         try {
             localStorage.clear();
-            history.push('/');            
+            history.push('/');   
+            window.location.reload();
         } catch(err) {
             console.log(err);
         } 

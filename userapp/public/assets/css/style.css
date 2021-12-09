@@ -3730,3 +3730,12 @@ color: #11142D;
 .tooltip-box a:hover .tooltip-title {
     display: block;
 }
+
+div#swal2-html-container{
+    font-size: 16px;;
+}
+
+.swal2-confirm {
+    font-size: 12px !important;
+    padding: 7px 13px;
+}

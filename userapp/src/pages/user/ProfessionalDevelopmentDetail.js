@@ -117,10 +117,10 @@ export default function ProfessionalDevelopmentDetail() {
                                                                 {courseDetail.trainer && <li>
                                                                     <p>Created by </p><span>{courseDetail.trainer}</span>
                                                                 </li>}
-                                                                <li>
+                                                                {courseDetail.update_at && <li>
                                                                     <img src="images/update.png" alt="update"/>
-                                                                    <p>Last update 11/2021</p>
-                                                                </li>
+                                                                    <p>Last update {courseDetail.update_at}</p>
+                                                                </li>}
                                                             </ul>
                                                         </div>
                                                         <div className="course-share">
@@ -170,10 +170,11 @@ export default function ProfessionalDevelopmentDetail() {
                                                                     </h4>
                                                                 </div>
                                                                 <div id="collapseOne" className="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                                                                    <div className="panel-body">
+                                                                    <div className="panel-body">                                                                        
+
                                                                         {courseDetail.video_title_first && <div className="content-grid">
-                                                                            <div className="course-play">
-                                                                               <a target="_blank" href={courseDetail.video_url_first}>
+                                                                            <div className="course-play">                                                                                
+                                                                               <a target="_blank" href={(courseDetail.purchase_type == 'unpaid')?courseDetail.video_url_first:'javascript:;'}>
                                                                                    <img src="images/play.png" alt="play" /><span>{courseDetail.video_title_first}</span>
                                                                                 </a>
                                                                             </div>
@@ -183,7 +184,7 @@ export default function ProfessionalDevelopmentDetail() {
 
                                                                     {courseDetail.video_title_second &&  <div className="content-grid">
                                                                             <div className="course-play">
-                                                                            <a target="_blank" href={courseDetail.video_url_second}>
+                                                                            <a target="_blank" href={(courseDetail.purchase_type == 'unpaid')?courseDetail.video_url_second:'javascript:;'}>
                                                                                 <img src="images/play.png" alt="play" /><span>{courseDetail.video_title_second}</span>
                                                                                 </a>
                                                                             </div>
@@ -193,7 +194,7 @@ export default function ProfessionalDevelopmentDetail() {
 
                                                                     {courseDetail.video_title_third &&  <div className="content-grid">
                                                                             <div className="course-play">
-                                                                            <a target="_blank" href={courseDetail.video_url_third}>
+                                                                            <a target="_blank" href={(courseDetail.purchase_type == 'unpaid')?courseDetail.video_url_third:'javascript:;'}>
                                                                                 <img src="images/play.png" alt="play" /><span>{courseDetail.video_title_third}</span>
                                                                                 </a>
                                                                             </div>
@@ -203,7 +204,7 @@ export default function ProfessionalDevelopmentDetail() {
 
                                                                     {courseDetail.video_title_fourth &&  <div className="content-grid">
                                                                             <div className="course-play">
-                                                                            <a target="_blank" href={courseDetail.video_url_fourth}>
+                                                                            <a target="_blank" href={(courseDetail.purchase_type == 'unpaid')?courseDetail.video_url_fourth:'javascript:;'}>
                                                                                 <img src="images/play.png" alt="play" /><span>{courseDetail.video_title_fourth}</span>
                                                                                 </a>
                                                                             </div>
@@ -213,7 +214,7 @@ export default function ProfessionalDevelopmentDetail() {
 
                                                                     {courseDetail.video_title_five &&  <div className="content-grid">
                                                                             <div className="course-play">
-                                                                            <a target="_blank" href={courseDetail.video_url_five}>
+                                                                            <a target="_blank" href={(courseDetail.purchase_type == 'unpaid') ? courseDetail.video_url_five : 'javascript:;'}>
                                                                                 <img src="images/play.png" alt="play" /><span>{courseDetail.video_title_five}</span>
                                                                                 </a>
                                                                             </div>
@@ -223,7 +224,7 @@ export default function ProfessionalDevelopmentDetail() {
 
                                                                     {courseDetail.video_title_six &&  <div className="content-grid">
                                                                             <div className="course-play">
-                                                                            <a target="_blank" href={courseDetail.video_url_six}>
+                                                                            <a target="_blank" href={(courseDetail.purchase_type == 'unpaid') ? courseDetail.video_url_six : 'javascript:;'}>
                                                                                 <img src="images/play.png" alt="play" /><span>{courseDetail.video_title_six}</span>
                                                                                 </a>
                                                                             </div>
@@ -233,7 +234,7 @@ export default function ProfessionalDevelopmentDetail() {
 
                                                                     {courseDetail.video_title_seven &&  <div className="content-grid">
                                                                             <div className="course-play">
-                                                                            <a target="_blank" href={courseDetail.video_url_seven}>
+                                                                            <a target="_blank" href={(courseDetail.purchase_type == 'unpaid') ? courseDetail.video_url_seven : 'javascript:;'}>
                                                                                 <img src="images/play.png" alt="play" /><span>{courseDetail.video_title_seven}</span>
                                                                                 </a>
                                                                             </div>
@@ -243,7 +244,7 @@ export default function ProfessionalDevelopmentDetail() {
 
                                                                     {courseDetail.video_title_eight &&  <div className="content-grid">
                                                                             <div className="course-play">
-                                                                            <a target="_blank" href={courseDetail.video_url_eight}>
+                                                                            <a target="_blank" href={(courseDetail.purchase_type == 'unpaid') ? courseDetail.video_url_eight : 'javascript:;'}>
                                                                                 <img src="images/play.png" alt="play" /><span>{courseDetail.video_title_eight}</span>
                                                                                 </a>
                                                                             </div>
@@ -253,7 +254,7 @@ export default function ProfessionalDevelopmentDetail() {
 
                                                                     {courseDetail.video_title_nine &&  <div className="content-grid">
                                                                             <div className="course-play">
-                                                                            <a target="_blank" href={courseDetail.video_url_nine}>
+                                                                            <a target="_blank" href={(courseDetail.purchase_type == 'unpaid') ? courseDetail.video_url_nine : 'javascript:;'}>
                                                                                 <img src="images/play.png" alt="play" /><span>{courseDetail.video_title_nine}</span>
                                                                                 </a>
                                                                             </div>
@@ -263,7 +264,7 @@ export default function ProfessionalDevelopmentDetail() {
 
                                                                     {courseDetail.video_title_ten &&  <div className="content-grid">
                                                                             <div className="course-play">
-                                                                            <a target="_blank" href={courseDetail.video_url_ten}>
+                                                                            <a target="_blank" href={(courseDetail.purchase_type == 'unpaid') ? courseDetail.video_url_ten : 'javascript:;'}>
                                                                                 <img src="images/play.png" alt="play" /><span>{courseDetail.video_title_ten}</span>
                                                                                 </a>
                                                                             </div>

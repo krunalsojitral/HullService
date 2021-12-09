@@ -9,6 +9,7 @@ var formidable = require('formidable');
 var asyn = require('async');
 var fs = require('fs');
 var path = require('path');
+var helper = require('../config/helper');
 
 function loggerData(req) {
     if (env.DEBUG) {
@@ -47,23 +48,12 @@ router.get('/getHomeContentData', (req, res, next) => {
     });
 });
 
-function getId(url) {
-    var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-    var match = url.match(regExp);
 
-    if (match && match[2].length == 11) {
-        return match[2];
-    } else {
-        return 'error';
-    }
-}
+router.post('/updatecontentByadmin', function (req, res) {    
 
-router.post('/updatecontentByadmin', function (req, res) {
-    
-    if (req.body.video_url){
-        var videoId = getId(req.body.video_url)
-    }else{
-        var videoId = '';
+    var videoId = '';
+    if (req.body.video_url) {
+        var videoId = helper.getVideoId(req.body.video_url);
     }
     
     
@@ -167,7 +157,6 @@ router.post('/addpartnerByadmin', function (req, res) {
                     overview['name'] = '';
                     done1('Image is required.', overview);
                 }
-
             }
         ],
             function (error, userList) {

@@ -26,17 +26,13 @@ export default function AddForum() {
     const [selectedTag, setSelectedTag] = React.useState([])
     const [headingList, setHeadingList] = React.useState([]);
     const [categoryList, setCategoryList] = React.useState([]);
-    const [headingId, setHeadingId] = useState(0);
+    
 
     React.useEffect(() => { 
 
         setTimeout(() => {
             $(".dropdown-heading-value .gray").text("Tag");
         }, 50);
-
-        const params = new URLSearchParams(window.location.search) // id=123
-        let forum_heading_id = params.get('id')
-        setHeadingId(forum_heading_id);
 
         axios.get(api_url + "/common/tagList", {})
             .then((result) => {
@@ -89,7 +85,7 @@ export default function AddForum() {
         };
 
         data.tag = selectedTag;
-        data.heading = headingId;
+        
 
         axios.post(api_url + "/forum/addforumByuser", data, config)
             .then((result) => {
@@ -129,7 +125,7 @@ export default function AddForum() {
                 <div className="container">
                     <div className="row">
                         <div className="col-md-12">
-                            <h2>Add Forum</h2>
+                            <h2>Thread Request</h2>
                         </div>
                     </div>
                 </div>
@@ -153,27 +149,7 @@ export default function AddForum() {
                                                    
 
 
-                                                    {/* <div className="form-group">
-                                                        <Controller
-                                                            name="heading"
-                                                            control={control}
-                                                            rules={{ required: true }}
-                                                            render={({ field: { onChange, value } }) => (
-                                                                <select className="form-control" onChange={onChange} value={value}>
-                                                                    <option key="0" value="">select value</option>
-                                                                    {headingList.map((item) => (
-                                                                        <option key={item.forumheading_id} value={item.forumheading_id}>
-                                                                            {item.forumheading_name}
-                                                                        </option>
-                                                                    ))}
-                                                                </select>
-                                                            )}
-                                                        ></Controller>
-                                                        {errors.heading && errors.heading.type === "required" && (
-                                                            <small className="error">Heading is required.<div><br /></div></small>
-                                                        )}
-
-                                                    </div> */}
+                                                    
 
 
                                                     <div className="form-group">
@@ -196,6 +172,27 @@ export default function AddForum() {
                                                             <small className="error">Category is required.</small>
                                                         )}
                                                        
+                                                    </div>
+
+                                                    <div className="form-group">
+                                                        <Controller
+                                                            name="heading"
+                                                            control={control}
+                                                            rules={{ required: true }}
+                                                            render={({ field: { onChange, value } }) => (
+                                                                <select className="form-control" onChange={onChange} value={value}>
+                                                                    <option key="0" value="">Forum Heading</option>
+                                                                    {headingList.map((item) => (
+                                                                        <option key={item.forumheading_id} value={item.forumheading_id}>
+                                                                            {item.forumheading_name}
+                                                                        </option>
+                                                                    ))}
+                                                                </select>
+                                                            )}
+                                                        ></Controller>
+                                                        {errors.heading && errors.heading.type === "required" && (
+                                                            <small className="error">Heading is required.<div><br /></div></small>
+                                                        )}
                                                     </div>
 
                                                     <div className="form-group">

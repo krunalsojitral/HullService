@@ -1,57 +1,17 @@
 var moment = require('moment-timezone');
 
 
-// check for string value
-module.exports.isStirng = function (value) {
-    var str = value;
-    var myRegEx = /^[a-zA-Z\s]*$/;
-    var isValid = myRegEx.test(str);
-    if (isValid) {
-        return true;
+module.exports.getVideoId = function (url) {
+    var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    var match = url.match(regExp);    
+    if (match && match[2].length == 11) {
+        return match[2];
     } else {
-        return false;
-    }
-}
-
-// check for Numaric value
-module.exports.isNumber = function (value) {
-    var number = value;
-    var myRegEx = /^(\s*[0-9]+\s*)+$/;
-    var isValid = myRegEx.test(number);
-    if (isValid) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-// check for Email value
-module.exports.isEmail = function (value) {
-    var email = value;
-    var myRegEx = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    var isValid = myRegEx.test(email);
-    if (isValid) {
-        return true;
-    } else {
-        return false;
+        return '';
     }
 }
 
 
-
-// check for Numaric value
-module.exports.isArrayNumber = function (myArray) {
-    var status = false;
-    myArray.every(function (value) {
-        var number = value;
-        var myRegEx = /^(\s*[0-9]+\s*)+$/;
-        var isValid = myRegEx.test(number);
-        if (!isValid) {
-            status = true;
-        }
-    });
-    return status;
-}
 //post date formate
 module.exports.diffYMDHMS = function (postDate, timezone) {
     const postUpdatedDate = moment.utc(postDate).tz(timezone);

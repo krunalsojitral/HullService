@@ -132,8 +132,7 @@ export default function ForumSub() {
                                             <tr>
                                                 <th>Topic Title</th>
                                                 <th>Category</th>
-                                                <th>Replies</th>
-                                                <th>Views</th>
+                                                <th>Replies</th>                                                
                                                 <th>Last Post</th>
                                             </tr>
                                         </thead>
@@ -142,10 +141,8 @@ export default function ForumSub() {
                                                 <tr>
                                                     <td><Link to={{ pathname: "/forum-detail", search: "?id=" + data.forum_id }}>{data.topic}</Link></td>
                                                     <td>{data.category_name}</td>
-                                                    <td>{(data.comment && data.comment.length > 0) ? data.comment[0].forum_comment_count : '0'}</td>
-                                                    <td>{data.total_view}</td>
-                                                    <td>{(data.comment && data.comment.length > 0) ? data.comment[0].comment : '-'}
-                                                        <span>10 minutes ago</span>
+                                                    <td>{(data.comment && data.comment.length > 0) ? data.comment[0].forum_comment_count : '0'}</td>                                                    
+                                                    <td><span>10 minutes ago</span>
                                                      </td>
                                                 </tr>
                                             ))} 

@@ -35,6 +35,7 @@ router.get('/videoList', function (req, res) {
             var videoList = result.map(data => {
                 let retObj = {};
                 retObj['video_id'] = data.video_id;
+                retObj['video_embeded_id'] = data.video_embeded_id;
                 retObj['title'] = data.title;
                 retObj['description'] = data.description;
                 retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
@@ -75,6 +76,7 @@ router.post('/getvideoDataById', [check('video_id', 'video is required').notEmpt
                             video['description'] = result[0].description;
                             video['created_at'] = result[0].created_at;
                             video['video_url'] = result[0].video_url;
+                            video['video_embeded_id'] = result[0].video_embeded_id;                            
                             // video['overview'] = result[0].overview;
                             // video['qna'] = result[0].qna;
                             // video['notes'] = result[0].notes;
@@ -164,9 +166,18 @@ router.post('/addVideoByadmin', function (req, res) {
 
             var json = fields.data;
             let obj = JSON.parse(json);
+
+            var videoId = '';
+            if (obj.video_url) {
+                var videoId = helper.getVideoId(obj.video_url);               
+            } 
+            
+
+            
             let record = {
                 title: obj.title,                
                 video_url: obj.video_url,
+                video_embeded_id: videoId,
                 description: obj.description,
                 // qna: obj.qna,
                 // notes: obj.notes,
@@ -244,12 +255,19 @@ router.post('/updatevideoByadmin', function (req, res) {
 
             var json = fields.data;
             let obj = JSON.parse(json);
+
+            var videoId = '';
+            if (obj.video_url) {
+                var videoId = helper.getVideoId(obj.video_url);
+            }
+
             //let update_value = [obj.title, obj.description, obj.qna, obj.notes, obj.overview, obj.information, moment().format('YYYY-MM-DD'), obj.user_role, obj.purchase_type]
-            let update_value = [obj.title, obj.video_url, obj.description, moment().format('YYYY-MM-DD'), obj.user_role, obj.purchase_type, obj.cost]
+            let update_value = [obj.title, obj.video_url, obj.description, videoId, moment().format('YYYY-MM-DD'), obj.user_role, obj.purchase_type, obj.cost]
             let record = {
                 title: obj.title,
                 video_url: obj.video_url,
                 description: obj.description,
+                video_embeded_id: videoId,
                 // qna: obj.qna,
                 // notes: obj.notes,
                 // overview: obj.overview,
@@ -345,6 +363,7 @@ router.post('/getPaidVideoList', passport.authenticate('jwt', { session: false }
                 retObj['created_at'] = moment(data.video_date).format('MMMM DD, YYYY');
                 retObj['role'] = data.role;
                 retObj['video'] = data.video_url;
+                retObj['video_embeded_id'] = data.video_embeded_id;
                 retObj['status'] = data.status;
                 return retObj;
             });
@@ -374,6 +393,7 @@ router.post('/getUnpaidVideoList', function (req, res) {
                 retObj['title'] = data.title;
                 retObj['created_at'] = moment(data.video_date).format('MMMM DD, YYYY');
                 retObj['role'] = data.role;
+                retObj['video_embeded_id'] = data.video_embeded_id;
                 retObj['video'] = data.video_url;
                 retObj['status'] = data.status;
                 return retObj;
@@ -408,6 +428,7 @@ router.post('/getRelatedUnpaidVideoList', [ check('video_id', 'video id is requi
                     retObj['title'] = data.title;
                     retObj['created_at'] = moment(data.video_date).format('MMMM DD, YYYY');
                     retObj['role'] = data.role;
+                    retObj['video_embeded_id'] = data.video_embeded_id;
                     retObj['video'] = data.video_url;
                     retObj['status'] = data.status;
                     return retObj;
@@ -444,6 +465,7 @@ router.post('/getRelatedPaidVideoList', passport.authenticate('jwt', { session: 
                     retObj['title'] = data.title;
                     retObj['created_at'] = moment(data.video_date).format('MMMM DD, YYYY');
                     retObj['role'] = data.role;
+                    retObj['video_embeded_id'] = data.video_embeded_id;
                     retObj['video'] = data.video_url;
                     retObj['status'] = data.status;
                     return retObj;

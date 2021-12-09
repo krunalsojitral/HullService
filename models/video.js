@@ -39,8 +39,8 @@ function Video() {
             // const sql = 'INSERT INTO video(title,description,overview,qna,notes,information,created_at,role,purchase_type,video,status) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING *'
             // const values = [record.title, record.description, record.overview, record.qna, record.notes, record.information, record.created_at, record.role, record.purchase_type, record.video, 1]
 
-            const sql = 'INSERT INTO video(title,description,created_at,role,purchase_type,video_url,cost,status) VALUES($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *'
-            const values = [record.title, record.description,record.created_at, record.role, record.purchase_type, record.video_url, record.cost, 1]
+            const sql = 'INSERT INTO video(title,description,created_at,role,purchase_type,video_url,cost,video_embeded_id,status) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *'
+            const values = [record.title, record.description, record.created_at, record.role, record.purchase_type, record.video_url, record.cost, record.video_embeded_id, 1]
             con.query(sql, values, function (err, result) {
                 if (err) {
                     if (env.DEBUG) {

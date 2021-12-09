@@ -30,12 +30,6 @@ export default function Header() {
 
     const handleOpenDirection = () => {
         if (userData) {
-            // if (userData.user_role === 2) {
-            //     history.push('/jobs');
-            // } else {
-            //     history.push('/find-talent');
-            // }
-
             history.push('/');
         }
         else {
