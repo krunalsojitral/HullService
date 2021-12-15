@@ -120,24 +120,24 @@ const _nav = [
     route: "/forum",
     icon: "cil-list",
     _children: [
+      // {
+      //   _tag: "CSidebarNavItem",
+      //   name: "Forum category",
+      //   to: "/category",
+      // },
       {
         _tag: "CSidebarNavItem",
-        name: "Forum category",
-        to: "/category",
-      },
-      {
-        _tag: "CSidebarNavItem",
-        name: "Forum Heading",
+        name: "Add Topics",
         to: "/forumheading",
       },
       {
         _tag: "CSidebarNavItem",
-        name: "Forum",
+        name: "Add/View Threads",
         to: "/forum",
       },
       {
         _tag: "CSidebarNavItem",
-        name: "New Thread Request",
+        name: "Thread Requests",
         to: "/forum-request",
       },
     ],

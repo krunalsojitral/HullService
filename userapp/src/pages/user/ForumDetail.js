@@ -7,17 +7,27 @@ import Footer from './../../sections/Footer';
 import Sidebar from './Sidebar';
 import axios from 'axios';
 import api_url from '../../components/Apiurl';
+import Swal from "sweetalert2";
 
 export default function ForumDetail() { 
 
     const [forumCommentList, setForumCommentList] = useState([]);
+    const [forumCommentDetail, setForumCommentDetail] = useState([]);
+    const [forumId, setForumId] = useState([]);
 
     React.useEffect(() => {
 
+        const tokenString = localStorage.getItem('token');
+        var token = JSON.parse(tokenString);
+        const config = {
+            headers: { Authorization: `${token}` }
+        };
+
         const params = new URLSearchParams(window.location.search) // id=123
         let forum_id = params.get('id')
+        setForumId(forum_id);
 
-        axios.post(api_url + '/forum/getForumCommentList', { 'forum_id': forum_id }).then((result) => {
+        axios.post(api_url + '/forum/getForumCommentList', { 'forum_id': forum_id }, config).then((result) => {
             if (result.data.status) {
                 var forumdata = result.data.response.data;
                 setForumCommentList(forumdata);
@@ -26,8 +36,47 @@ export default function ForumDetail() {
             }
         }).catch((err) => { console.log(err); })
 
-    },[]);
+        axios.post(api_url + '/forum/getForumCommentDetail', { 'forum_id': forum_id }, config).then((result) => {
+            if (result.data.status) {
+                var forumDetailData = result.data.response.data;
+                setForumCommentDetail(forumDetailData);
+            } else {
+                // Swal.fire('Oops...', result.data.response.msg, 'error')
+            }
+        }).catch((err) => { console.log(err); })
+    },[]);    
 
+    const handleFollow = (id) => {
+        const tokenString = localStorage.getItem('token');
+        var token = JSON.parse(tokenString);
+        const config = {
+            headers: { Authorization: `${token}` }
+        };
+        axios.post(api_url + '/forum/followUser', { "forum_id": forumId }, config).then((result) => {
+            if (result.data.status) {                     
+                forumCommentDetail.follow = 1
+            } 
+        }).catch((err) => {
+            console.log(err);
+        })
+    }
+
+    const handleUnFollow = () => {
+        const tokenString = localStorage.getItem('token');
+        var token = JSON.parse(tokenString);
+        const config = {
+            headers: { Authorization: `${token}` }
+        };
+        axios.post(api_url + '/forum/unfollowUser', { "forum_id": forumId }, config).then((result) => {
+            if (result.data.status) {                
+                forumCommentDetail.follow = 0
+            } 
+        }).catch((err) => {
+            console.log(err);
+        })
+    }
+
+    
    
    
     return(
@@ -55,22 +104,27 @@ export default function ForumDetail() {
                                 <br />
                                 <div className="forum-post">
                                     <div className="forum-cal">
-                                        <div className="forum-inner">
-                                            <p><label>Started</label> <i>1 day ago </i></p>
+                                        <div className="forum-inner">                                           
+                                            <p><label>Started</label> <br/> <i>{forumCommentDetail.started} </i></p>
                                         </div>
                                         <div className="forum-inner">
-                                            <p>Likes <label>22</label></p>
+                                            <p>Likes <br /> <label>{forumCommentDetail.likes}</label></p>
                                         </div>
                                         <div className="forum-inner">
-                                            <p>Replies <label>47</label></p>
+                                            <p>Replies <br /> <label>{forumCommentDetail.replies}</label></p>
                                         </div>
                                         <div className="forum-inner">
-                                            <p>Views <label>456</label></p>
+                                            <p>Views <br /> <label>{forumCommentDetail.views}</label></p>
                                         </div>
                                     </div>
                                     <div className="forum-cat">
                                         <div className="forum-inner">
-                                            <p>Category <label>Therapy</label></p>
+                                            <p onClick={(e) => handleFollow()} >                                                 
+                                                {forumCommentDetail.follow == 0 && 'Follow'}
+                                            </p>
+                                            <p onClick={(e) => handleUnFollow()} >
+                                                {forumCommentDetail.follow == 1 && 'Followed'}                                                
+                                            </p>
                                         </div>
                                         <div className="forum-inner">
                                             <p>Last Post <label>1 min</label></p>
@@ -89,18 +143,22 @@ export default function ForumDetail() {
 
                                 {forumCommentList.map((data, index) => (
                                     <div className="forum-topic">
-                                        <h4>NOV 3rd, 2021 11:00 am</h4>
+                                        <h4>{data.created_on}</h4>
                                         <div className="forum-chat">
                                             <div className="forum-title">
-                                                <p><label>{data.first_name} {data.last_name} </label> researcher</p>
+                                                <p><label>{data.first_name} {data.last_name} </label> {data.role}</p>
                                             </div>
                                             <div className="forum-text">
+
+                                                {data.parent && data.parent.length > 0 && <div className="replied-text">
+                                                    {data.parent[0].comment}
+                                                </div>}
+
                                                 <p>{data.comment}</p>
                                                 <div className="forum-comments">
                                                     <a href="javascript:;"><img src="images/like.png" alt="like" /> <span>+3</span></a>
                                                     <div className="reply-forum">
-                                                        <a href="javascript:;"><img src="images/reply.png" alt="reply" /> <span>Reply</span></a>
-                                                        <a href="javascript:;"><img src="images/quote.png" alt="quote" /> <span>Quote</span></a>
+                                                        <a href="javascript:;"><img src="images/reply.png" alt="reply" /> <span>Reply</span></a>                                                        
                                                     </div>
                                                 </div>
                                             </div>
@@ -110,30 +168,7 @@ export default function ForumDetail() {
 
 
 
-                                <div className="forum-topic">
-                                    <h4>NOV 3rd, 2021 11:00 am</h4>
-                                    <div className="forum-chat">
-                                        <div className="forum-title">
-                                            <p><label>DocSmiles (OP)</label> researcher</p>
-                                            <a href="javascript:;"><img src="images/briefcase.png" alt="briefcase" /><span>Oct 2021</span></a>
-                                            <a href="javascript:;"><img src="images/edit.png" alt="briefcase" /><span>222 Posts</span></a>
-                                        </div>
-                                        <div className="forum-text">
-                                            <div className="replied-text">
-                                                <p>Hey Everyone, <br /><br />
-                                        Ive been having difficulty finding a therapist that works for me. have any of you experienced this? Got any tips on overcoming it?</p>
-                                            </div>
-                                            <p>Hope You find what you’re looking for. It’s often difficult to find the right mental health professional for you.</p>
-                                            <div className="forum-comments">
-                                                <a href="javascript:;"><img src="images/like-black.png" alt="like" /></a>
-                                                <div className="reply-forum">
-                                                    <a href="javascript:;"><img src="images/reply.png" alt="reply" /> <span>Reply</span></a>
-                                                    <a href="javascript:;"><img src="images/quote.png" alt="quote" /> <span>Quote</span></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                               
 
                             </div>
                             <div className="pagination">

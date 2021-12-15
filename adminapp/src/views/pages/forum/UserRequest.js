@@ -6,9 +6,13 @@ import {
     CModalTitle,
     CModalFooter,
     CFormGroup,
-    CInput,
-    CLabel,
+    CRow,
+    CCol,
+    CCard,
+    CCardHeader,
+    CCardBody,
     CButton,
+    CLabel,
 } from "@coreui/react";
 import { useForm, Controller } from "react-hook-form";
 
@@ -33,7 +37,7 @@ function UserRequest({
     } = useForm();
 
     useEffect(() => {
-        
+        console.log(selectedItem);
         if (modal === true && selectedItem) {
             setValue("name", selectedItem.name);
         } else {
@@ -74,12 +78,24 @@ function UserRequest({
     return (
         <CModal show={modal} onClose={setModal}>
             <CModalHeader closeButton>
-                <CModalTitle>{selectedItem && selectedItem.topic}</CModalTitle>
+                <CModalTitle>Request Detail</CModalTitle>
             </CModalHeader>
+
+            <CCardBody>
+                <table className="table table-striped table-hover">
+                    <tbody>                            
+                        <tr><td>Created by</td><td><strong>{selectedItem && selectedItem.created_by}</strong></td></tr>
+                        <tr><td>Thread title</td><td><strong>{selectedItem && selectedItem.question}</strong></td></tr>
+                        <tr><td>Thread description</td><td><strong>{selectedItem && selectedItem.description}</strong></td></tr>
+                        <tr><td>Heading</td><td><strong>{selectedItem && selectedItem.topic}</strong></td></tr>
+                    </tbody>
+                </table>
+            </CCardBody>
 
             <form>
                 <CModalBody>
-                    <CFormGroup>                        
+                    <CFormGroup> 
+                        <CLabel>Feedback</CLabel>                       
                         <Controller
                             name={"comment"}
                             control={control}
@@ -89,13 +105,13 @@ function UserRequest({
                                     type="text"
                                     onChange={onChange}
                                     value={value}
-                                    placeholder={`Enter comment`}
+                                    placeholder={`Provide your approval/rejection comments`}
                                 />
                             )}
                         ></Controller>
                     </CFormGroup>
                     {errors.comment && errors.comment.type === "required" && (
-                        <p style={{ color: "red", fontSize: "12px" }}>Please enter comment.</p>
+                        <p style={{ color: "red", fontSize: "12px" }}>Please enter feedback.</p>
                     )}
                 </CModalBody>
                 <CModalFooter>
@@ -107,7 +123,7 @@ function UserRequest({
                     </CButton>
                     <CButton color="secondary" onClick={() => setModal(false)}>
                         Cancel
-          </CButton>
+                    </CButton>
                 </CModalFooter>
             </form>
         </CModal>

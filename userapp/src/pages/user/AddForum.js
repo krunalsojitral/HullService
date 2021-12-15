@@ -140,17 +140,11 @@ export default function AddForum() {
 
                         <div className="col-md-8 articlebox">
                             <div className="row">
-                                <div className="blog-box">
+                                <div className="blog-box forumadd">
                                     <div className="forum-section">
                                         <div className="forum-box">
                                             <form onSubmit={handleSubmit(addInformationAct)}>
                                                 <div className="forum-details">
-
-                                                   
-
-
-                                                    
-
 
                                                     <div className="form-group">
                                                         <Controller
@@ -181,7 +175,7 @@ export default function AddForum() {
                                                             rules={{ required: true }}
                                                             render={({ field: { onChange, value } }) => (
                                                                 <select className="form-control" onChange={onChange} value={value}>
-                                                                    <option key="0" value="">Forum Heading</option>
+                                                                    <option key="0" value="">Select a Topic</option>
                                                                     {headingList.map((item) => (
                                                                         <option key={item.forumheading_id} value={item.forumheading_id}>
                                                                             {item.forumheading_name}
@@ -207,12 +201,12 @@ export default function AddForum() {
                                                                     onChange={onChange}
                                                                     value={value}
                                                                     className="form-control"
-                                                                    placeholder={`Thread title  *`}
+                                                                    placeholder={`Enter your question  *`}
                                                                 />
                                                             )}
                                                         ></Controller>
                                                         {errors.topic && errors.topic.type === "required" && (
-                                                            <small className="error">Thread title is required.<br /><br /></small>
+                                                            <small className="error">Question is required.<br /><br /></small>
                                                         )}
 
                                                     </div>
@@ -231,12 +225,12 @@ export default function AddForum() {
                                                                     onChange={onChange}
                                                                     value={value}
                                                                     className="form-control"
-                                                                    placeholder={`Thread description  *`}
+                                                                    placeholder={`Add description to discuss more about your question (Optional)  *`}
                                                                 />
                                                             )}
                                                         ></Controller>
                                                         {errors.topic && errors.topic.type === "required" && (
-                                                            <small className="error">Thread description is required.</small>
+                                                            <small className="error">Description is required.</small>
                                                         )}
                                                     </div>
 

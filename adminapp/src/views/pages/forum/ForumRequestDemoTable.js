@@ -28,7 +28,8 @@ const ForumRequestDemoTable = ({ moduleConfigUrls }) => {
   }, [])
 
   const fields = [
-    { key: 'topic', _style: { width: '20%'} },    
+    { key: 'question', _style: { width: '20%'} },
+    { key: 'topic', _style: { width: '20%' } },
     { key: 'created_on', _style: { width: '20%' } },
     { key: 'created_by', _style: { width: '20%' } },    
     { key: 'user_status', _style: { width: '20%' } },    
@@ -39,28 +40,6 @@ const ForumRequestDemoTable = ({ moduleConfigUrls }) => {
       filter: false
     }
   ]
-  
-
-  const updateItemStatus = (item, status) => {
-   
-    var obj = {
-      forum_id: item.forum_id,
-      status: status,
-    };
-    axios.post(api_url + "/forum/changeforumStatus", obj)
-      .then((result) => {
-        if (result.data.status) {
-          getNewListWrap();
-        } else {
-          Swal.fire("Oops...", result.data.response.msg, "error");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        //Swal.fire('Oops...', err, 'error')
-      });
-  }
-
   
   const getNewList = () => { 
     axios.get(api_url + '/forum/forumRequestList', {}).then((result) => {
@@ -117,39 +96,28 @@ const ForumRequestDemoTable = ({ moduleConfigUrls }) => {
             <td>
               {item.user_status === 1 && <CBadge color={getBadge(item.user_status)}>Approved</CBadge> }
               {item.user_status === 2 && <CBadge color={getBadge(item.user_status)}>Rejected</CBadge>}
-              {item.user_status === 0 &&
-                <CBadge
-                color={getBadge(item.user_status)}
-                  color="primary"
-                  variant="outline"
-                  shape="square"
-                  size="sm"
-                  onClick={() => {
-                    setSelectedItem(item);
-                    setModal(true);
-                  }}
-                  className="mr-1"
-                >
-                Pending
-                  </CBadge>}
-              
+              {item.user_status === 0 && <CBadge color={getBadge(item.user_status)}>Pending</CBadge>}              
             </td>
           ),
           'show_details':
             item => {
               return (
                 <td className="py-2">                  
-
-                  <CButton
+                  {item.user_status === 0 && 
+                  <CBadge
+                    color={getBadge(item.user_status)}
                     color="primary"
                     variant="outline"
                     shape="square"
                     size="sm"
-                    onClick={() => history.push(`/forum-view/${item.forum_id}`)}
+                    onClick={() => {
+                      setSelectedItem(item);
+                      setModal(true);
+                    }}
                     className="mr-1"
                   > View
-                  </CButton>
-
+                  </CBadge>
+                  }
                 </td>
               )
             },

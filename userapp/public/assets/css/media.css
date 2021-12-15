@@ -1027,3 +1027,18 @@
         font-size: 10px;
     }
 }
+
+@media(max-width:767px){
+    .category-title {flex-direction: column;}
+}
+@media(max-width:480px){
+    .search-forum {
+        margin-bottom: 30px;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .search-forum .add-forum {
+    width: 100%;
+    max-width: 100%;
+}
+}

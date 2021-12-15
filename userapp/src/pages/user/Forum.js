@@ -96,11 +96,12 @@ export default function Forum() {
                                     {token &&
                                         <div className="add-forum">
                                             <Link className="book-apoint" to={{ pathname: "/add-forum" }}>
-                                               New Thread Request
+                                                Request a Thread
                                             </Link>
                                         </div>}
 
                                     </div>
+
                                     <div class="video-tag">
                                         <h3>Sort By Tags</h3>
                                         <ul>
@@ -125,8 +126,7 @@ export default function Forum() {
                                                     <table class="table">
                                                         <thead>
                                                             <tr>
-                                                                <th>Topic Title</th>
-                                                                <th>Category</th>
+                                                                <th>Question</th>                                                                
                                                                 <th>Replies</th>                                                            
                                                                 <th>Last Post</th>
                                                             </tr>
@@ -135,17 +135,14 @@ export default function Forum() {
                                                             {data.forum.map((forumdata, index) => (
                                                                 <tr>
                                                                     <td>
-
                                                                         {/* <div class="tooltip-box">
                                                                             <Link to={{ pathname: "/forum-detail", search: "?id=" + forumdata.blog_id }}>
                                                                                 {forumdata.topic.slice(0, 45)}
                                                                                 <span className="tooltip-title">{forumdata.topic}</span>
                                                                             </Link>
                                                                         </div> */}
-
                                                                         <Link to={{ pathname: "/forum-detail", search: "?id=" + forumdata.forum_id }}>{forumdata.topic}</Link> 
-                                                                    </td>
-                                                                    <td>{forumdata.category_name}</td>
+                                                                    </td>                                                                    
                                                                     <td>{(forumdata.comment && forumdata.comment[0].forum_comment_count) ? forumdata.comment[0].forum_comment_count : 0}</td>
                                                                     <td><span>{(forumdata.comment && forumdata.comment[0].created_at) ? forumdata.comment[0].created_at : '-'}</span></td>
                                                                 </tr>
@@ -166,9 +163,6 @@ export default function Forum() {
 
                                     </div>
                                 </div>
-
-
-                  
                     </div>
                 </div>
             </section>                    

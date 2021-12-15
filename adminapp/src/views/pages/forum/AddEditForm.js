@@ -24,15 +24,12 @@ const AddEditForm = ({ match }) => {
     setValue,
     control,   
     formState: { errors },
-  } = useForm();
+  } = useForm(); 
   
-  
-  const [isEditMode, setisEditMode] = React.useState(0);
-  
+  const [isEditMode, setisEditMode] = React.useState(0);  
   const [tagList, setTagList] = React.useState([]);
   const [selectedTag, setSelectedTag] = React.useState([])
-  const [headingList, setHeadingList] = React.useState([]);  
-  const [categoryList, setCategoryList] = React.useState([]);
+  const [headingList, setHeadingList] = React.useState([]);   
  
 
   const modules = {
@@ -84,17 +81,7 @@ const AddEditForm = ({ match }) => {
       })
       .catch((err) => { console.log(err); });
     
-    
-    axios.get(api_url + "/common/categoryList", {})
-      .then((result) => {
-        if (result.data.status) {
-          var roledata = result.data.response.data;
-          setCategoryList(roledata);
-        } else {
-          Swal.fire("Oops...", result.data.response.msg, "error");
-        }
-      })
-      .catch((err) => { console.log(err); });
+  
 
     if (match.params.id) {
       setisEditMode(1);
@@ -103,8 +90,7 @@ const AddEditForm = ({ match }) => {
           if (result.data.status) {
             var usersdata = result.data.response.data;
             setValue("title", usersdata.title);
-            setValue("heading", usersdata.heading);
-            setValue("category", usersdata.category);
+            setValue("heading", usersdata.heading);            
             setSelectedTag(usersdata.tag);
             
           } else {
@@ -168,7 +154,7 @@ const AddEditForm = ({ match }) => {
               <CRow>
                 <CCol xs="12">
                   <CFormGroup>
-                    <CLabel htmlFor="title">Topic <span className="label-validation">*</span></CLabel>
+                    <CLabel htmlFor="title">Question <span className="label-validation">*</span></CLabel>
                     <Controller
                       name={"title"}
                       control={control}
@@ -192,7 +178,7 @@ const AddEditForm = ({ match }) => {
               <CRow>
                 <CCol xs="12">
                   <CFormGroup>
-                    <CLabel htmlFor="city">Heading <span className="label-validation">*</span></CLabel>
+                    <CLabel htmlFor="city">Topic <span className="label-validation">*</span></CLabel>
                     <Controller
                       name="heading"
                       control={control}
@@ -215,7 +201,7 @@ const AddEditForm = ({ match }) => {
                 </CCol>
               </CRow>
 
-
+{/* 
               <CRow>
                 <CCol xs="12">
                   <CFormGroup>
@@ -240,7 +226,7 @@ const AddEditForm = ({ match }) => {
                     <p style={{ color: "red", fontSize: "12px" }}>Please enter category.</p>
                   )}
                 </CCol>
-              </CRow>
+              </CRow> */}
 
              
               

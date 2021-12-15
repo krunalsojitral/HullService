@@ -38,7 +38,8 @@ router.get('/forumList', function (req, res) {
             var forumList = result.map(data => {
                 let retObj = {};
                 retObj['forum_id'] = data.forum_id;
-                retObj['topic'] = data.topic;
+                retObj['question'] = data.topic;
+                retObj['topic'] = data.forumheading_name;
                 retObj['total_view'] = data.total_view;
                 retObj['created_on'] = (data.forum_date) ? moment(data.forum_date).format('YYYY-MM-DD') : '';
                 retObj['status'] = data.forum_status;
@@ -101,8 +102,7 @@ router.post('/getforumDataById', [check('forum_id', 'forum is required').notEmpt
                             forum['forum_id'] = result[0].forum_id;
                             forum['title'] = result[0].topic;
                             forum['description'] = result[0].description;
-                            forum['heading'] = result[0].heading;
-                            forum['category'] = result[0].category;
+                            forum['heading'] = result[0].heading;                            
                             forum['tag'] = [];
                             done(err, forum)
                         } else {
@@ -169,8 +169,7 @@ router.post('/getforumViewDataById', [check('forum_id', 'forum is required').not
                             forum['forum_id'] = result[0].forum_id;
                             forum['title'] = result[0].topic;
                             forum['description'] = result[0].description;
-                            forum['heading'] = result[0].forumheading_name;
-                            forum['category'] = result[0].category_name;
+                            forum['heading'] = result[0].forumheading_name;                            
                             forum['tag'] = [];
                             done(err, forum)
                         } else {
@@ -252,8 +251,7 @@ router.post('/addforumByadmin', [
     } else {
             let record = {
                 topic: req.body.title,
-                heading: (req.body.heading) ? req.body.heading:'',
-                category: (req.body.category) ? req.body.category : '',
+                heading: (req.body.heading) ? req.body.heading:'',                
                 created_at: moment().format('YYYY-MM-DD'),
             };
             let tag = (req.body.tag) ? req.body.tag : [];
@@ -269,11 +267,10 @@ router.post('/addforumByadmin', [
 
 router.post('/updateforumByadmin', function (req, res) {
     var forum_id = req.body.forum_id;
-    let update_value = [req.body.title, req.body.heading, req.body.category]
+    let update_value = [req.body.title, req.body.heading]
     let record = {
         topic: req.body.title,
-        heading: (req.body.heading) ? req.body.heading : '',
-        category: (req.body.category) ? req.body.category : ''
+        heading: (req.body.heading) ? req.body.heading : ''
     };
     let tag = (req.body.tag) ? req.body.tag : [];
     Forum.updateforumByadmin(record, forum_id, update_value, tag, function (err, data) {
@@ -510,8 +507,7 @@ router.post('/addforumByuser', passport.authenticate('jwt', { session: false }),
         let record = {
             topic: req.body.topic,
             heading: (req.body.heading) ? req.body.heading : '',
-            description: (req.body.description) ? req.body.description : '',
-            category: (req.body.category) ? req.body.category : '',
+            description: (req.body.description) ? req.body.description : '',            
             created_at: moment().format('YYYY-MM-DD'),
             created_by: req.user.id
         };
@@ -652,17 +648,127 @@ router.post('/approveRejectedRequest', [
     }
 });
 
+router.post('/getForumCommentDetail', passport.authenticate('jwt', { session: false }), [
+    check('forum_id', 'Please enter valid id').notEmpty()
+], (req, res) => {
+    var user_id = req.user.id;
+    var forum_id = req.body.forum_id;
+    var comment = {
+        'started': '',
+        'likes':'',
+        'replies':'',
+        'views':'',        
+        'follow': ''
+    }
+    asyn.waterfall([
+        function (done) {            
+            Forum.getforumRequestDataById(forum_id, function (err, result) {
+                if (err) {                    
+                    done(err, null)
+                } else {                    
+                    comment.started = helper.timeCountSince(result[0].created_at);
+                    done(null, comment)
+                }
+            });
+        },
+        function (comment, done1) {
+            Forum.getForumLikeCount(forum_id, function (err, result) {
+                if (err) {
+                    done1(err, null)
+                } else {
+                    comment.likes = result[0].cnt;
+                    done1(err, comment)
+                }
+            });
+        },
+        function (comment, done2) {
+            Forum.getForumReplyCount(forum_id, function (err, result) {
+                if (err) {
+                    done2(err, null)
+                } else {
+                    comment.replies = result[0].cnt;
+                    done2(err, comment)
+                }
+            });
+        },
+        function (comment, done3) {
+            Forum.getForumFollow(forum_id, user_id, function (err, result) {
+                if (err) {
+                    done3(err, null)
+                } else {
+                    if (result){
+                        comment.follow = 1;
+                    }else{
+                        comment.follow = 0;
+                    }                    
+                    done3(err, comment)
+                }
+            });
+        }
+    ],
+    function (error, comment) {
+        if (error) {
+            return res.json({ 'status': 0, 'response': { 'msg': error } });
+        } else {
+            return res.json({ 'status': 1, 'response': { 'data': comment, 'msg': 'data found' } });
+        }
+    });
+});
+
 router.post('/getForumCommentList', [
     check('forum_id', 'Please enter valid id').notEmpty()
 ], (req, res) => {
+    
     var forum_id = req.body.forum_id;
-    Forum.getForumCommentList(forum_id, function (err, result) {
-        if (err) {
-            return res.json({ status: 0, 'response': { msg: err } });
-        } else {            
-            return res.json({ 'status': 1, 'response': { 'msg': 'Forum added successfully.', data: result } });
+
+    asyn.waterfall([        
+        function (done) {
+            var comment = []
+            Forum.getForumCommentList(forum_id, function (err, result) {
+                if (err) {
+                    return res.json({ status: 0, 'response': { msg: err } });
+                } else {
+                    
+                    let temparray = new Promise(async (resolve, reject) => {
+                        for (let comments of result) {                            
+                            await Forum.getForumReplyComment(comments.parent_comment_id, function (err, data) {
+                                if (data && data.length > 0) {
+                                    comments.parent = data;
+                                }
+                                comment.push(comments);
+                            });
+                        }
+                        setTimeout(() => resolve(comment), 20)
+                    });
+                    temparray.then(result => {
+
+                        var commentList = result.map(data => {
+                            let retObj = {};
+                            retObj['comment'] = data.comment;
+                            retObj['comment_date'] = data.comment_date;
+                            retObj['first_name'] = data.first_name;
+                            retObj['forum_comment_id'] = data.forum_comment_id;
+                            retObj['last_name'] = data.last_name;
+                            retObj['created_on'] = (data.comment_date) ? moment(data.comment_date).format('MMMM Do, YYYY h:mm a') : '';
+                            retObj['parent_comment_id'] = data.parent_comment_id;
+                            retObj['reply'] = data.reply;
+                            retObj['role'] = data.role;
+                            return retObj;
+                        });
+
+                        done(null, commentList)
+                    })
+                }
+            }); 
         }
-    });
+    ],
+        function (error, finalData) {
+            if (error) {
+                return res.json({ 'status': 0, 'response': { 'msg': error } });
+            } else {
+                return res.json({ 'status': 1, 'response': { 'data': finalData, 'msg': 'data found' } });
+            }
+        });
 });
 
 
@@ -674,8 +780,10 @@ router.get('/forumRequestList', function (req, res) {
         } else {
             var forumList = result.map(data => {
                 let retObj = {};
-                retObj['forum_id'] = data.forum_id;
-                retObj['topic'] = data.topic;
+                retObj['forum_id'] = data.forum_id;                
+                retObj['question'] = data.topic;
+                retObj['description'] = data.description;
+                retObj['topic'] = data.forumheading_name;                
                 retObj['total_view'] = data.total_view;
                 retObj['created_on'] = (data.forum_date) ? moment(data.forum_date).format('YYYY-MM-DD') : '';
                 retObj['status'] = data.forum_status;
@@ -686,6 +794,127 @@ router.get('/forumRequestList', function (req, res) {
             return res.json({ status: 1, 'response': { data: forumList } });
         }
     });
+});
+
+
+router.post('/followUser', passport.authenticate('jwt', { session: false }), [
+    check('forum_id', 'Forum is required').notEmpty()
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        var obj = {
+            user_id: req.user.id,
+            forum_id: req.body.forum_id
+        }
+        Forum.followUser(obj, function (err, result) {
+            if (err) {
+                return res.json({ 'status': 0, 'response': { 'msg': err } });
+            } else {
+                if (result) {
+                    return res.json({ 'status': 1, 'response': { 'data': result, 'msg': 'Data found' } });
+                } else {
+                    return res.json({ 'status': 0, 'response': { 'data': [], 'msg': 'Data not found' } });
+                }
+            }
+        });
+    }
+});
+
+
+router.post('/getMyForumList', passport.authenticate('jwt', { session: false }),(req, res) => {
+   
+        var forum = [];
+        var forum_id = [];
+        var forum_tag_id = [];
+        var user_id = req.user.id;
+        let search = (req.body.search) ? req.body.search : '';
+        asyn.waterfall([
+            function (done) {
+                if (req.body.search) {
+                    Forum.getSubForumTagSearchList(user_id,search, function (err, data) {
+                        if (err) {
+                            done(null, data)
+                        } else {
+                            data.forEach(function (d) {
+                                forum_id.push(d.forum_id);
+                                forum_tag_id.push(d.tag_id);
+                            });
+                            done(null, forum_id)
+                        }
+                    });
+                } else {
+                    done(null, null)
+                }
+            },
+            function (forum_id, done1) {
+                Forum.getMyForumList(user_id, search, forum_id, function (err, results) {
+                    if (err) {
+                        return res.json({ 'status': 0, 'response': { 'data': [], 'msg': 'data not found' } });
+                    } else {
+                        if (results.length > 0) {
+                            forum.push(results)
+                            let temparray = new Promise(async (resolve, reject) => {
+                                for (let datas of results) {
+                                    await Forum.getLastComment(datas.forum_id, function (err, data) {
+                                        if (data.length > 0) {
+                                            var forumList = data.map(comment => {
+                                                let retObj = {};
+                                                retObj['created_at'] = helper.timeSince(comment.created_at)
+                                                retObj['forum_comment_count'] = comment.forum_comment_count
+                                                return retObj;
+                                            });
+                                            datas.comment = forumList;
+                                        }
+                                    });
+                                }
+                                setTimeout(() => resolve(forum), 50)
+                            });
+                            temparray.then(data => {
+                                done1(null, data)
+                            })
+                        } else {
+                            done1(null, forum)
+                        }
+                    }
+                });
+            }
+        ],
+        function (error, finalData) {
+            if (error) {
+                return res.json({ 'status': 0, 'response': { 'msg': error } });
+            } else {
+                return res.json({ 'status': 1, 'response': { 'data': finalData[0], 'forum_id': forum_tag_id, 'msg': 'data found' } });
+            }
+        });    
+});
+
+router.post('/unfollowUser', passport.authenticate('jwt', { session: false }), [
+    check('forum_id', 'Forum is required').notEmpty()
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        var obj = {
+            user_id: req.user.id,
+            forum_id: req.body.forum_id
+        }
+        Forum.unfollowUser(obj, function (err, result) {
+            if (err) {
+                return res.json({ 'status': 0, 'response': { 'msg': err } });
+            } else {
+                if (result) {
+                    return res.json({ 'status': 1, 'response': { 'data': result, 'msg': 'Data found' } });
+                } else {
+                    return res.json({ 'status': 0, 'response': { 'data': [], 'msg': 'Data not found' } });
+                }
+            }
+        });
+    }
 });
 
 

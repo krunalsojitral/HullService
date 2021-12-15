@@ -10,19 +10,15 @@ export default function Dashboard() {
    
 
 //     const { loginUser } = useAuth();
-
 //    // const [isFirstRadioLoaded, setIsFirstRadioLoaded] = useState(false);  
-
 //     const { register, handleSubmit, formState: { errors } } = useForm();
 //     const onSubmit = async (data) => {
 //         var obj = {
 //             email: data.email,
 //             password: data.password
 //         }
-
 //        // setIsFirstRadioLoaded(currentIsLoaded => !currentIsLoaded)
 //         await loginUser(obj);
-
 //     }
 
     return(
@@ -73,7 +69,7 @@ export default function Dashboard() {
                                                 </Link>
                                             </div>
                                             <div className="col-md-4">
-                                                <Link to='/forum' className="Support-card">
+                                                <Link to='/my-forum' className="Support-card">
                                                     <h3>My Threads</h3>
                                                     <div className="support-img">
                                                             <img alt="support" src="images/support04.png"/>

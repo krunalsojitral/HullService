@@ -112,22 +112,13 @@ export default function ForumSub() {
                             <Sidebar />
                         </div>
 
-
-
                         <div class="col-md-10 full-width">
                             <div class="search-forum">
                                 <div>
                                     <h2 className="mb-0"> {data && data[0] && data[0].forumheading_name && data[0].forumheading_name} </h2>
                                     <p>This is <b>not</b> a moderated forum. Please be polite to your peers. Be kind and remember the human on the other end.</p>
                                 </div>
-
-                                {token &&
-                                    <div className="add-forum">
-                                        <Link className="book-apoint" to={{ pathname: "/add-forum" }}>
-                                            New Thread Request
-                                            </Link>
-                                    </div>}
-
+                                {token && <div className="add-forum"><Link className="book-apoint" to={{ pathname: "/add-forum" }}>Request a Thread</Link></div>}
                             </div>
                             <div class="video-tag">
                                 <h3>Sort By Tags</h3>
@@ -148,8 +139,7 @@ export default function ForumSub() {
                                         <table class="table">
                                             <thead>
                                                 <tr>
-                                                    <th>Topic Title</th>
-                                                    <th>Category</th>
+                                                    <th>Question</th>
                                                     <th>Replies</th>
                                                     <th>Last Post</th>
                                                 </tr>
@@ -158,7 +148,6 @@ export default function ForumSub() {
                                             {currentData.map((data, index) => (
                                                 <tr>
                                                     <td><Link to={{ pathname: "/forum-detail", search: "?id=" + data.forum_id }}>{data.topic}</Link></td>
-                                                    <td>{data.category_name}</td>
                                                     <td>{(data.comment && data.comment.length > 0) ? data.comment[0].forum_comment_count : '0'}</td>
                                                     <td><span>{(data.comment && data.comment[0].created_at) ? data.comment[0].created_at : '-'}</span></td>
                                                 </tr>

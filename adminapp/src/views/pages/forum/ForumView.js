@@ -48,14 +48,10 @@ const ForumView = ({ match }) => {
           </CCardHeader>
           <CCardBody>
             <table className="table table-striped table-hover">
-              <tbody>
-                
-                <tr><td>Thread title</td><td><strong>{details.title}</strong></td></tr>
-                <tr><td>Thread description</td><td><strong>{details.description}</strong></td></tr>
-                <tr><td>Category</td><td><strong>{details.category}</strong></td></tr>
+              <tbody>                
+                <tr><td>Thread title</td><td><strong>{details.question}</strong></td></tr>
+                <tr><td>Thread description</td><td><strong>{details.description}</strong></td></tr>                
                 <tr><td>Heading</td><td><strong>{details.heading}</strong></td></tr>
-                
-
               </tbody>
             </table>
           </CCardBody>

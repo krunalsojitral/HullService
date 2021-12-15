@@ -58,4 +58,12 @@ module.exports.timeSince = function (date) {
 }
 
 
+module.exports.timeCountSince = function (date) {
+    const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
+    const interval = intervals.find(i => i.seconds < seconds);
+    const count = Math.floor(seconds / interval.seconds);    
+    return `${count} ${interval.label}${count !== 1 ? 's' : ''} ago`;
+}
+
+
 
