@@ -85,10 +85,10 @@ export default function Dashboard() {
                                                 </Link>
                                             </div>
                                             <div className="col-md-4">
-                                                <Link to='/blog' className="Support-card">                                                                    
+                                                <Link to='/my-blog' className="Support-card">                                                                    
                                                     <h3>Blogs & Articles</h3>
                                                     <div className="support-img">                                                                            
-                                                            <img alt="support" src="images/support06.png" />                                                                            
+                                                        <img alt="support" src="images/support06.png" />                                                                            
                                                     </div>                                                                    
                                                 </Link>
                                             </div>                                                                    

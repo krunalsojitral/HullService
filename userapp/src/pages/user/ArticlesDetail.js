@@ -13,7 +13,7 @@ import { useHistory } from "react-router-dom";
 
 export default function ArticlesDetail() {
     let history = useHistory();
-
+    const [articleId, setArticleId] = React.useState(0)
     const [articleDetail, setArticleDetail] = React.useState({})
     const [relatedArticleDetail, setRelatedArticleDetail] = React.useState([])
     //const [showModal, setShowModal] = useState(false);
@@ -55,7 +55,7 @@ export default function ArticlesDetail() {
 
         const params = new URLSearchParams(window.location.search) // id=123
         let article_id = params.get('id')
-
+        setArticleId(article_id);
 
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
@@ -69,11 +69,17 @@ export default function ArticlesDetail() {
                 if (articledata.purchase_type == "unpaid"){
                     setArticleDetail(articledata);
                 }else{
-                    if (!token){
-                        open()
-                    }else{
+                    if (articledata.purchase_type == "unpaid") { 
                         setArticleDetail(articledata);
+                    }else{
+                        open()
                     }
+
+                    // if (!token){
+                    //     open()
+                    // }else{
+                    //     setArticleDetail(articledata);
+                    // }
                     
                 }
             } else {
@@ -111,7 +117,7 @@ export default function ArticlesDetail() {
         <div>
             <Header />
             <Modal>
-                <DirectionModel close={close}></DirectionModel>
+                <DirectionModel close={close} articleDetail={articleId}></DirectionModel>
             </Modal>
             <section className="inner-header">
                 <div className="container">
@@ -162,8 +168,10 @@ export default function ArticlesDetail() {
                                     {relatedArticleDetail.map(data => (
                                         <div className="video-list-view">
                                             <div className="video-list-icon">
-                                                {data.image && <img src={data.image} alt="blog" />}
-                                                {!data.image && <img src="images/blog.jpg" alt="blog" />}
+                                                <a onClick={(e) => linkTarget(data.article_id)}>
+                                                    {data.image && <img src={data.image} alt="blog" />}
+                                                    {!data.image && <img src="images/blog.jpg" alt="blog" />}
+                                                </a>                                                
                                             </div>
                                             <div className="video-list-text">
                                                 {/* <h3>{data.title}</h3> */}

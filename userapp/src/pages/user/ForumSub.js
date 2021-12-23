@@ -112,15 +112,15 @@ export default function ForumSub() {
                             <Sidebar />
                         </div>
 
-                        <div class="col-md-10 full-width">
-                            <div class="search-forum">
+                        <div className="col-md-10 full-width">
+                            <div className="search-forum">
                                 <div>
                                     <h2 className="mb-0"> {data && data[0] && data[0].forumheading_name && data[0].forumheading_name} </h2>
                                     <p>This is <b>not</b> a moderated forum. Please be polite to your peers. Be kind and remember the human on the other end.</p>
                                 </div>
                                 {token && <div className="add-forum"><Link className="book-apoint" to={{ pathname: "/add-forum" }}>Request a Thread</Link></div>}
                             </div>
-                            <div class="video-tag">
+                            <div className="video-tag">
                                 <h3>Sort By Tags</h3>
                                 <ul>
                                     {forumTagList.length > 0 && forumTagList.map((data, index) => (
@@ -133,10 +133,10 @@ export default function ForumSub() {
 
                             <br/>
 
-                            <div class="category-table">
+                            <div className="category-table">
                                 
-                                {currentData.length > 0 && <div class="forum-table table-responsive">
-                                        <table class="table">
+                                {currentData.length > 0 && <div className="forum-table table-responsive">
+                                        <table className="table">
                                             <thead>
                                                 <tr>
                                                     <th>Question</th>

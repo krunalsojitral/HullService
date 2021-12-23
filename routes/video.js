@@ -14,7 +14,7 @@ var asyn = require('async');
 var helper = require('../config/helper');
 var moment = require('moment');
 var formidable = require('formidable');
-
+var Common = require('../models/common');
 
 function loggerData(req) {
     if (env.DEBUG) {
@@ -87,6 +87,7 @@ router.post('/getvideoDataById', [check('video_id', 'video is required').notEmpt
                             video['cost'] = result[0].cost;
                             video['status'] = result[0].status;
                             video['tag'] = [];
+                            video['draft_status'] = result[0].draft_status;
                             done(err, video)
                         } else {
                             done('data not found', null);
@@ -114,6 +115,45 @@ router.post('/getvideoDataById', [check('video_id', 'video is required').notEmpt
                     });
                 } else {
                     done(null, video)
+                }
+            },
+            function (video, done2) {
+                if (video['role']) {
+                    var role = video['role'];
+                    Common.getRoleAllList(function (err, result) {
+                        if (result && result.length > 0) {
+
+                            var array = [];
+                            result.find((o, i) => {                                
+                                if (role.includes(o.role_id)) {
+                                    array.push(o);                                    
+                                }
+                            });
+
+                            video['selected_role'] = array;
+                            done2(null, video)
+                        } else {
+                            video['selected_role'] = [];
+                            done2(null, video)
+                        }
+                    });
+                } else {
+                    video['selected_role'] = [];
+                    done2(null, video)
+                }
+            }, function (video, done2) {
+
+                if (video['selected_role'].length > 0) {
+                    video['selected_role'] = video['selected_role'].map((data, index) => {
+                        let retObj = {};
+                        retObj['id'] = (index + 1);
+                        retObj['label'] = data.role;
+                        retObj['value'] = data.role_id;
+                        return retObj;
+                    });
+                    done2(null, video)
+                } else {
+                    done2(null, video)
                 }
             }
         ],
@@ -170,9 +210,7 @@ router.post('/addVideoByadmin', function (req, res) {
             var videoId = '';
             if (obj.video_url) {
                 var videoId = helper.getVideoId(obj.video_url);               
-            } 
-            
-
+            }
             
             let record = {
                 title: obj.title,                
@@ -187,8 +225,15 @@ router.post('/addVideoByadmin', function (req, res) {
                 role: obj.user_role,
                 tag: obj.tag,
                 purchase_type: obj.purchase_type,
-                cost: obj.cost
+                cost: obj.cost,
+                draft: (obj.draft) ? obj.draft : 0
             };
+
+            if (obj.user_role.length > 0) {
+                record.role = obj.user_role.map(data => {
+                    return data.value
+                }).join(',');
+            }
 
             Video.addVideoByadmin(record, function (err, data) {
                 if (err) {
@@ -256,13 +301,21 @@ router.post('/updatevideoByadmin', function (req, res) {
             var json = fields.data;
             let obj = JSON.parse(json);
 
+            var role = '';
+
+            if (obj.user_role.length > 0) {
+                role = obj.user_role.map(data => {
+                    return data.value
+                }).join(',');
+            }
+
             var videoId = '';
             if (obj.video_url) {
                 var videoId = helper.getVideoId(obj.video_url);
             }
 
             //let update_value = [obj.title, obj.description, obj.qna, obj.notes, obj.overview, obj.information, moment().format('YYYY-MM-DD'), obj.user_role, obj.purchase_type]
-            let update_value = [obj.title, obj.video_url, obj.description, videoId, moment().format('YYYY-MM-DD'), obj.user_role, obj.purchase_type, obj.cost]
+            let update_value = [obj.title, obj.video_url, obj.description, videoId, moment().format('YYYY-MM-DD'), role, obj.purchase_type, obj.cost]
             let record = {
                 title: obj.title,
                 video_url: obj.video_url,
@@ -273,7 +326,7 @@ router.post('/updatevideoByadmin', function (req, res) {
                 // overview: obj.overview,
                 // information: obj.information,
                 created_at: moment().format('YYYY-MM-DD'),
-                role: obj.user_role,
+                role: role,
                 purchase_type: obj.purchase_type,
                 cost: obj.cost
             };
@@ -344,9 +397,10 @@ router.post('/updatevideoByadmin', function (req, res) {
 router.post('/getPaidVideoList', passport.authenticate('jwt', { session: false }), function (req, res) {
     loggerData(req);
     var user_role = req.user.userrole;
+    var user_id = req.user.id;
     let search = (req.body.search) ? req.body.search : '';
     let sortby = (req.body.sortby) ? req.body.sortby : '';
-    Video.getPaidVideoList(user_role, search, sortby, function (err, result) {
+    Video.getPaidVideoList(user_id, user_role, search, sortby, function (err, result) {
         if (err) {
             return res.json({ status: 0, 'response': { msg: err } });
         } else {
@@ -358,12 +412,14 @@ router.post('/getPaidVideoList', passport.authenticate('jwt', { session: false }
             }
             var videoList = result.map(data => {
                 let retObj = {};
-                retObj['video_id'] = data.video_id;
+                retObj['video_id'] = data.videoid;
                 retObj['title'] = data.title;
                 retObj['created_at'] = moment(data.video_date).format('MMMM DD, YYYY');
                 retObj['role'] = data.role;
                 retObj['video'] = data.video_url;
                 retObj['video_embeded_id'] = data.video_embeded_id;
+                retObj['bookmark_video_id'] = data.bookmark_video_id;
+                retObj['cost'] = data.cost;                
                 retObj['status'] = data.status;
                 return retObj;
             });
@@ -395,6 +451,7 @@ router.post('/getUnpaidVideoList', function (req, res) {
                 retObj['role'] = data.role;
                 retObj['video_embeded_id'] = data.video_embeded_id;
                 retObj['video'] = data.video_url;
+                retObj['cost'] = data.cost;
                 retObj['status'] = data.status;
                 return retObj;
             });
@@ -430,6 +487,7 @@ router.post('/getRelatedUnpaidVideoList', [ check('video_id', 'video id is requi
                     retObj['role'] = data.role;
                     retObj['video_embeded_id'] = data.video_embeded_id;
                     retObj['video'] = data.video_url;
+                    retObj['cost'] = data.cost;
                     retObj['status'] = data.status;
                     return retObj;
                 });
@@ -467,6 +525,7 @@ router.post('/getRelatedPaidVideoList', passport.authenticate('jwt', { session: 
                     retObj['role'] = data.role;
                     retObj['video_embeded_id'] = data.video_embeded_id;
                     retObj['video'] = data.video_url;
+                    retObj['cost'] = data.cost;
                     retObj['status'] = data.status;
                     return retObj;
                 });
@@ -474,6 +533,128 @@ router.post('/getRelatedPaidVideoList', passport.authenticate('jwt', { session: 
             }
         });
     }
+});
+
+
+router.post('/purchase_video', [
+    check('user_id', 'User is required').notEmpty(),
+    check('order_id', 'Order id is required').notEmpty(),
+    check('video_id', 'video is required').notEmpty()
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        var obj = {
+            user_id: req.body.user_id,
+            order_id: req.body.order_id,
+            video_id: req.body.video_id
+        }
+
+        Video.purchase_video(obj, function (err, result) {
+            if (err) {
+                return res.json({ 'status': 0, 'response': { 'msg': err } });
+            } else {
+                if (result) {
+                    return res.json({ 'status': 1, 'response': { 'data': result, 'msg': 'Data found' } });
+                } else {
+                    return res.json({ 'status': 0, 'response': { 'data': [], 'msg': 'Data not found' } });
+                }
+            }
+        });
+    }
+});
+
+
+router.get('/draftvideoList', function (req, res) {
+    loggerData(req);
+    Video.draftvideoList(function (err, result) {
+        if (err) {
+            return res.json({ status: 0, 'response': { msg: err } });
+        } else {
+            var videoList = result.map(data => {
+                let retObj = {};
+                retObj['video_id'] = data.video_id;
+                retObj['title'] = data.title;
+                retObj['description'] = data.description;
+                retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
+                retObj['role'] = data.role;
+                retObj['status'] = data.status;
+                return retObj;
+            });
+            return res.json({ status: 1, 'response': { data: videoList } });
+        }
+    });
+});
+
+
+router.post('/changeDraftvideoStatus', [
+    check('video_id', 'video id is required').notEmpty(),
+    check('draft_status', 'Please enter status').notEmpty(),
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        let video_id = req.body.video_id;
+        let record = {
+            draft_status: req.body.draft_status
+        }
+        Video.changeDraftvideoStatus(record, video_id, function (err, result) {
+            if (err) {
+                return res.json({ 'status': 0, 'response': { 'msg': 'Error Occured.' } });
+            } else {
+                if (result) {
+                    return res.json({ 'status': 1, 'response': { 'msg': 'Status Changed successfully.' } });
+                } else {
+                    return res.json({ 'status': 0, 'response': { 'msg': 'Data not found.' } });
+                }
+            }
+        });
+    }
+});
+
+
+router.post('/changeDraftvideoStatus', [
+    check('video_id', 'video id is required').notEmpty(),
+    check('draft_status', 'Please enter status').notEmpty(),
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        let video_id = req.body.video_id;
+        let record = {
+            draft_status: req.body.draft_status
+        }
+        Video.changeDraftvideoStatus(record, video_id, function (err, result) {
+            if (err) {
+                return res.json({ 'status': 0, 'response': { 'msg': 'Error Occured.' } });
+            } else {
+                if (result) {
+                    return res.json({ 'status': 1, 'response': { 'msg': 'Status Changed successfully.' } });
+                } else {
+                    return res.json({ 'status': 0, 'response': { 'msg': 'Data not found.' } });
+                }
+            }
+        });
+    }
+});
+
+router.post('/videoBookmark', passport.authenticate('jwt', { session: false }), function (req, res) {
+    loggerData(req);
+    var user_id = req.user.id;
+    let video_id = req.body.video_id;
+    Video.videoBookmark(user_id, video_id, function (err, result) {
+        if (err) {
+            return res.json({ status: 0, 'response': { msg: err } });
+        } else {
+            return res.json({ status: 1, 'response': { data: result } });
+        }
+    });
 });
 
 module.exports = router;

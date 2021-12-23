@@ -11,13 +11,13 @@ const _nav = [
   },
   {
     _tag: "CSidebarNavDropdown",
-    name: "User",
+    name: "Users",
     route: "/serviceprovider",
     icon: "cil-list",
     _children: [
       {
         _tag: "CSidebarNavItem",
-        name: "Service Provider",
+        name: "Service Providers",
         to: "/serviceprovider",
       },
       {
@@ -39,31 +39,83 @@ const _nav = [
     icon: "cil-list",
     _children: [
       {
-        _tag: "CSidebarNavItem",
-        name: "Blog",
-        to: "/blog",
+        _tag: "CSidebarNavDropdown",
+        name: "Blogs",
+        route: "/#",
+        icon: "cil-list",
+        _children: [
+          {
+            _tag: "CSidebarNavItem",
+            name: "Publish Blogs",
+            to: "/blog",
+          },
+          {
+            _tag: "CSidebarNavItem",
+            name: "Draft Blogs",
+            to: "/draft-blog",
+          }
+        ]
       },
       {
-        _tag: "CSidebarNavItem",
-        name: "Article",
-        to: "/article",
+        _tag: "CSidebarNavDropdown",
+        name: "Articles",
+        route: "/#",
+        icon: "cil-list",
+        _children: [
+          {
+            _tag: "CSidebarNavItem",
+            name: "Publish Articles",
+            to: "/article",
+          },
+          {
+            _tag: "CSidebarNavItem",
+            name: "Draft Articles",
+            to: "/draft-articles",
+          }
+        ],
       },
       {
-        _tag: "CSidebarNavItem",
-        name: "Video",
-        to: "/video",
+        _tag: "CSidebarNavDropdown",
+        name: "Videos",
+        route: "/#",
+        icon: "cil-list",
+        _children: [
+          {
+            _tag: "CSidebarNavItem",
+            name: "Publish Videos",
+            to: "/video",
+          },
+          {
+            _tag: "CSidebarNavItem",
+            name: "Draft Videos",
+            to: "/draft-video",
+          }
+        ],
       },
       {
-        _tag: "CSidebarNavItem",
-        name: "Course",
-        to: "/course",
-        icon: "cil-calculator",
-        badge: {
-          color: "info",
-          text: "",
-        },
+        _tag: "CSidebarNavDropdown",
+        name: "Courses",
+        route: "/#",
+        icon: "cil-list",
+        _children: [
+          {
+            _tag: "CSidebarNavItem",
+            name: "Publish Courses",
+            to: "/course",
+            icon: "cil-calculator",
+            badge: {
+              color: "info",
+              text: "",
+            },
+          },
+          {
+            _tag: "CSidebarNavItem",
+            name: "Draft Courses",
+            to: "/draft-courses",
+          }
+        ],
       }
-    ],
+    ]
   },
   {
     _tag: "CSidebarNavDropdown",
@@ -163,6 +215,7 @@ const _nav = [
   {
     _tag: "CSidebarNavItem",
     name: "Tag",
+    route: "/#",
     to: "/tag",
     icon: "cil-calculator",
     badge: {
@@ -173,6 +226,7 @@ const _nav = [
   {
     _tag: "CSidebarNavItem",
     name: "Media",
+    route: "/#",
     to: "/media",
     icon: "cil-calculator",
     badge: {

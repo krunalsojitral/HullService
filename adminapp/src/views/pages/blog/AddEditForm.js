@@ -18,6 +18,7 @@ import api_url from './../../Apiurl';
 import axios from "axios";
 import Swal from "sweetalert2";
 
+
 const AddEditForm = ({ match }) => {
 
   let history = useHistory();
@@ -36,6 +37,8 @@ const AddEditForm = ({ match }) => {
   const [setectimage, setSetectimage] = React.useState(0);
   const [selectedFile, setSelectedFile] = useState();
   const [selectedTag, setSelectedTag] = React.useState([])
+  const [selectedRole, setSelectedRole] = React.useState([])
+  const [draftStatus, setDraftStatus] = React.useState(0)
 
   const [contentEditor, setContentEditor] = useState();
   const handleEditorChange = (content, editor) => {
@@ -80,7 +83,17 @@ const AddEditForm = ({ match }) => {
       .then((result) => {
         if (result.data.status) {
           var roledata = result.data.response.data;
-          setRoleList(roledata);
+
+          var obj = roledata.map((data, index) => {
+            let retObj = {};
+            retObj['id'] = (index + 1);
+            retObj['label'] = data.name;
+            retObj['value'] = data.role_id;
+            return retObj;
+          });
+          setRoleList(obj);
+
+          // setRoleList(roledata);
         } else {
           Swal.fire("Oops...", result.data.response.msg, "error");
         }
@@ -93,10 +106,15 @@ const AddEditForm = ({ match }) => {
         .then((result) => {
           if (result.data.status) {
             var usersdata = result.data.response.data;
+            if (usersdata.draft_status) {
+              setDraftStatus(usersdata.draft_status);
+            } else {
+              setDraftStatus(0);
+            }
             setValue("title", usersdata.title);
             setValue("description", usersdata.description);
             setValue("purchase_type", usersdata.purchase_type);
-            setValue("user_role", usersdata.role);
+            setSelectedRole(usersdata.selected_role);
             setValue("cost", usersdata.cost);
             setSelectedTag(usersdata.tag);
             setSetectimage(usersdata.image);
@@ -112,21 +130,25 @@ const AddEditForm = ({ match }) => {
   const updateInformationAct = (data) => {
     data.blog_id = match.params.id;
     data.description = contentEditor;
+    data.user_role = selectedRole;
     data.tag = selectedTag;
     const formData = new FormData();
     formData.append("data", JSON.stringify(data));
     if (selectedFile) {
       formData.append("image", selectedFile, selectedFile.name);
     }
-    axios.post(api_url + "/blog/updateBlogByadmin", formData, {})
-      .then((result) => {
-        if (result.data.status) {
-          Swal.fire("Success!", result.data.response.msg, "success");
-          history.push("/blog");
+    axios.post(api_url + "/blog/updateBlogByadmin", formData, {}).then((result) => {
+      if (result.data.status) {
+        Swal.fire("Success!", result.data.response.msg, "success");
+        if (draftStatus == 1) {
+          history.push("/draft-blog");
         } else {
-          Swal.fire("Oops...", result.data.response.msg, "error");
+          history.push("/blog");
         }
-      }).catch((err) => { console.log(err); });
+      } else {
+        Swal.fire("Oops...", result.data.response.msg, "error");
+      }
+    }).catch((err) => { console.log(err); });
 
   };
 
@@ -134,20 +156,20 @@ const AddEditForm = ({ match }) => {
   const addInformationAct = (data) => {
     data.description = contentEditor;
     data.tag = selectedTag;
+    data.user_role = selectedRole;
     const formData = new FormData();
     formData.append("data", JSON.stringify(data));
     if (selectedFile) {
       formData.append("image", selectedFile, selectedFile.name);
     }
-    axios.post(api_url + "/blog/addBlogByadmin", formData, {})
-      .then((result) => {
-        if (result.data.status) {
-          Swal.fire("Success!", result.data.response.msg, "success");
-          history.push("/blog");
-        } else {
-          Swal.fire("Oops...", result.data.response.msg, "error");
-        }
-      }).catch((err) => { console.log(err); });
+    axios.post(api_url + "/blog/addBlogByadmin", formData, {}).then((result) => {
+      if (result.data.status) {
+        Swal.fire("Success!", result.data.response.msg, "success");
+        history.push("/blog");
+      } else {
+        Swal.fire("Oops...", result.data.response.msg, "error");
+      }
+    }).catch((err) => { console.log(err); });
   };
 
   // const [text, setText] = React.useState(initialText)
@@ -156,6 +178,65 @@ const AddEditForm = ({ match }) => {
     var removeskill = selectedTag.filter(function (place) { return place.value !== value })
     setSelectedTag(removeskill);
   };
+
+  const removeRole = (value) => {
+    var removeRole = selectedRole.filter(function (place) { return place.value !== value })
+    setSelectedRole(removeRole);
+  };
+
+  const preview = () => {
+
+    var obj = {
+      cost: (control._fields.cost && control._fields.cost._f.value) ? control._fields.cost._f.value : '',
+      purchase_type: (control._fields.purchase_type && control._fields.purchase_type._f.value) ? control._fields.purchase_type._f.value : '',
+      title: (control._fields.title && control._fields.title._f.value) ? control._fields.title._f.value : '',
+      description: (contentEditor) ? contentEditor : '',
+      tag: selectedTag,
+      type: 'blog'
+    }
+
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(obj));
+    if (selectedFile) {
+      formData.append("image", selectedFile, selectedFile.name);
+    }
+    axios.post(api_url + "/common/addPreview", formData).then((result) => {
+      if (result.data.status) {
+        window.open(result.data.response.preview + "preview-module");
+        //window.open("http://localhost:4200/preview-module");
+      } else {
+        Swal.fire("Oops...", result.data.response.msg, "error");
+      }
+    }).catch((err) => { console.log(err); });
+
+  }
+
+  const draft_blog = () => {
+    var obj = {
+      cost: (control._fields.cost && control._fields.cost._f.value) ? control._fields.cost._f.value : '',
+      purchase_type: (control._fields.purchase_type && control._fields.purchase_type._f.value) ? control._fields.purchase_type._f.value : '',
+      title: (control._fields.title && control._fields.title._f.value) ? control._fields.title._f.value : '',
+      user_role: selectedRole,
+      description: (contentEditor) ? contentEditor : '',
+      tag: selectedTag,
+      draft: 1
+    }
+
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(obj));
+    if (selectedFile) {
+      formData.append("image", selectedFile, selectedFile.name);
+    }
+    axios.post(api_url + "/blog/addBlogByadmin", formData, {}).then((result) => {
+      if (result.data.status) {
+        Swal.fire("Success!", 'Draft added successfully.', "success");
+        history.push("/draft-blog");
+      } else {
+        Swal.fire("Oops...", result.data.response.msg, "error");
+      }
+    }).catch((err) => { console.log(err); });
+  }
+
 
 
 
@@ -229,7 +310,8 @@ const AddEditForm = ({ match }) => {
                       cloudChannel="dev"
                       init={{
                         selector: "textarea",
-                        plugins: "link image textpattern lists "
+                        plugins: "link image textpattern lists textcolor colorpicker",
+                        toolbar: "undo redo | styleselect | forecolor | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | link image | code forecolor backcolor",
                       }}
                       value={contentEditor}
                       onEditorChange={handleEditorChange}
@@ -258,7 +340,29 @@ const AddEditForm = ({ match }) => {
                 </CCol>
               </CRow>
               <br />
+
               <CRow>
+                <CCol xs="12">
+                  <CFormGroup>
+                    <CLabel htmlFor="city">
+                      User Role <span className="label-validation">*</span>
+                    </CLabel>
+                    <MultiSelect
+                      options={roleList}
+                      value={selectedRole}
+                      selectionLimit="2"
+                      hasSelectAll={true}
+                      onChange={setSelectedRole}
+                      labelledBy="Select"
+                    />
+                  </CFormGroup>
+                  {selectedRole.map(item => (
+                    <span className="skill-name">{item.label} &nbsp;<i onClick={(e) => removeRole(item.value)} className="fa fa-times">X</i></span>
+                  ))}
+                </CCol>
+              </CRow>
+              <br />
+              {/* <CRow>
                 <CCol xs="12">
                   <CFormGroup>
                     <CLabel htmlFor="role">User Role <span className="label-validation">*</span></CLabel>
@@ -283,7 +387,7 @@ const AddEditForm = ({ match }) => {
                     <p style={{ color: "red", fontSize: "12px" }}>User role is required.</p>
                   )}
                 </CCol>
-              </CRow>
+              </CRow> */}
 
               <CRow>
                 <CCol xs="12">
@@ -334,6 +438,10 @@ const AddEditForm = ({ match }) => {
                 </CRow>}
 
               <button type="submit" className="btn btn-outline-primary btn-sm btn-square"> {(isEditMode === 1) ? 'Update' : 'Add'}</button>
+              &nbsp;
+              {(isEditMode !== 1) && <button type="button" className="btn btn-outline-primary btn-sm btn-square" onClick={(e) => preview()}> Preview </button>}
+              &nbsp;
+              {(isEditMode !== 1) && <button type="button" className="btn btn-outline-primary btn-sm btn-square" onClick={(e) => draft_blog()}> Draft </button>}
 
             </form>
           </CCardBody>

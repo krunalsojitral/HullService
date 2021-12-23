@@ -3,29 +3,23 @@ import { useHistory } from 'react-router-dom';
 import $ from 'jquery';
 import { Link } from 'react-router-dom';
 
-function DirectionModel(props) {    
+function DirectionModel(props) {  
+    const [token, setToken] = React.useState('')
+   
     let history = useHistory();
     useEffect(() => {
-        
+
+        const tokenString = localStorage.getItem('token');
+        var token = JSON.parse(tokenString);
+        setToken(token);
+
+        console.log(props);
+
     }, []);
 
-    const handleSelectUser = (type) => {
-        if (type === 'user'){
-            $(".user").addClass('active');
-            $(".company").removeClass('active');
-        }else{
-            $(".company").addClass('active');
-            $(".user").removeClass('active');
-        }
-        console.log(type);
-        localStorage.setItem('selection', type);
-    };
+ 
 
-    
-    const continueSubmit = () => {
-        props.close()
-        history.push('/register');
-    }
+  
 
     
 
@@ -42,13 +36,29 @@ function DirectionModel(props) {
                     your account to continue reading. Upgrading
                     your account gives you unlimited
                         access to all articles. </p>
-                    <Link to='/userSelection' className="thm-btn">
+
+                    {props.blogDetail && <Link to={{ pathname: "/blog-payment", search: "?id=" + props.blogDetail }}>
+                        Purchase Blog
+                    </Link>} 
+
+                    {props.articleDetail && <Link to={{ pathname: "/article-payment", search: "?id=" + props.articleDetail }}>
                         Purchase Article
-                    </Link>
+                    </Link>}
+
+                    {props.videoDetail && <Link to={{ pathname: "/video-payment", search: "?id=" + props.videoDetail }}>
+                        Purchase Article
+                    </Link>}
+
                     
-                    <Link to='/userSelection' className="thm-btn">
+
+                    {/* <Link to='/userSelection' className="thm-btn">
+                        Purchase Article
+                    </Link> */}
+                    
+                    {!token && <Link to='/userSelection' className="thm-btn">
                         Upgrade Account
-                    </Link>
+                    </Link>}
+                    <br/>
                     {/* <a href="javascript:;" onClick={props.close}>Go back</a> */}
                     <button onClick={() => history.goBack()}>Go back</button>
                 </div>

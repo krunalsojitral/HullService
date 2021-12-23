@@ -90,7 +90,9 @@ const AddEditForm = ({ match }) => {
           if (result.data.status) {
             var usersdata = result.data.response.data;
             setValue("title", usersdata.title);
-            setValue("heading", usersdata.heading);            
+            setValue("heading", usersdata.heading);    
+            setValue("description", usersdata.description);
+            
             setSelectedTag(usersdata.tag);
             
           } else {
@@ -200,6 +202,29 @@ const AddEditForm = ({ match }) => {
                   )}
                 </CCol>
               </CRow>
+
+              <CRow>
+                <CCol xs="12">
+                  <CFormGroup>
+                    <CLabel htmlFor="city">Description <span className="label-validation">*</span></CLabel>
+                    <Controller
+                      name={"description"}
+                      control={control}
+                      rules={{ required: true }}
+                      render={({ field: { onChange, value } }) => (
+                        <textarea
+                          rows="6" cols="50"
+                          type="text"
+                          onChange={onChange}
+                          value={value}
+                          className="form-control"
+                          placeholder={`Description`}
+                        />
+                      )}
+                    ></Controller>                    
+                </CFormGroup>
+              </CCol>
+            </CRow>
 
 {/* 
               <CRow>

@@ -11,19 +11,32 @@ import './../dev.css';
 import { UserContext } from './../../hooks/UserContext';
 
 
+
 export default function Blog() {
 
-    const pageLimit = 12;
+    const pageLimit = 9;
     const [offset, setOffset] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [data, setData] = useState([]);
     const [currentData, setCurrentData] = useState([]);
 
     const { user, isLoading } = useContext(UserContext);
-    
+    const [token, setToken] = useState('');
 
 
     React.useEffect(() => {
+
+        const tokenString = localStorage.getItem('token');
+        var token = JSON.parse(tokenString);
+
+        setToken(token);
+
+        getBlogData();
+        getBlogDataWrap();
+    }, [])
+
+
+    const getBlogData = () => {
 
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
@@ -31,9 +44,7 @@ export default function Blog() {
             headers: { Authorization: `${token}` }
         };
 
-        
-
-        if (token){
+        if (token) {
             axios.post(api_url + '/blog/getPaidBlogList', {}, config).then((result) => {
                 if (result.data.status) {
                     var blogdata = result.data.response.data;
@@ -47,7 +58,7 @@ export default function Blog() {
                 console.log(err);
                 //Swal.fire('Oops...', err, 'error')
             })
-        }else{
+        } else {
 
             axios.post(api_url + '/blog/getUnpaidBlogList', {}).then((result) => {
                 if (result.data.status) {
@@ -64,11 +75,8 @@ export default function Blog() {
             })
 
         }
-       
 
-
-
-    }, [])
+    }
 
     React.useEffect(() => {
         if (offset > 0) {
@@ -82,12 +90,14 @@ export default function Blog() {
     const bookmarkClick = (id) => {
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
+
         const config = {
             headers: { Authorization: `${token}` }
         };
         axios.post(api_url + '/blog/blogBookmark', { "blog_id": id }, config).then((result) => {
             if (result.data.status) {
-                var blogdata = result.data.response.data;
+                var blogdata = result.data.response.data;               
+                getBlogDataWrap();
             } else {
                 Swal.fire('Oops...', result.data.response.msg, 'error')
             }
@@ -95,6 +105,10 @@ export default function Blog() {
             console.log(err);
         })
     }
+
+    const getBlogDataWrap = () => {
+        getBlogData(setData);
+    };
 
     return (
         <div>
@@ -125,18 +139,18 @@ export default function Blog() {
                                     <div className="blog-box">
                                         <div className="blog-image">
                                             <Link to={{ pathname: "/blog-detail", search: "?id=" + data.blog_id }}>
-                                                {data.image && <img src={data.image} alt="blog" />}
+                                                {data.image_thumb && <img src={data.image_thumb} alt="blog" />}
                                                 {!data.image && <img src="images/blog.jpg" alt="blog" />}
                                             </Link>
                                         </div>
                                         <div className="blog-text">
-                                            <div className="blog-tags" onClick={(e) => bookmarkClick(data.blog_id)}>
+                                            {token && <div className="blog-tags" onClick={(e) => bookmarkClick(data.blog_id)}>
                                                 {/* <p>Telemedicine</p> */}                                                
-                                                <img className="bookmark-fill" src="images/bookmark-fill.png" alt="bookmark-fill" />
-                                                {/* <img className="bookmark-outline" src="images/bookmark-outline.png" alt="bookmark-fill" /> */}
+                                                {data.bookmark_blog_id && <img className="bookmark-fill" src="images/bookmark-fill.png" alt="bookmark-fill" />}
+                                                {!data.bookmark_blog_id && <img className="bookmark-outline" src="images/bookmark-outline.png" alt="bookmark-fill" />}
                                                 
-                                            </div>
-                                            <h3 class="tooltip-box">
+                                            </div>}
+                                            <h3 className="tooltip-box">
                                                 <Link to={{ pathname: "/blog-detail", search: "?id=" + data.blog_id }}> 
                                                 {data.title.slice(0, 30)}
                                                 <span className="tooltip-title">{data.title}</span>

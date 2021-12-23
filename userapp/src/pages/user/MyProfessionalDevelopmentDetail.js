@@ -68,13 +68,9 @@ export default function ProfessionalDevelopmentDetail() {
         //         }
         //     }).catch((err) => { console.log(err); })
         // }
-
-
     }, [])
 
     const [Modal, open, close] = useModal('root', {});
-
-
 
     return (
         <div>

@@ -1,50 +1,71 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-// import useAuth from './../../hooks/useAuth';
 import Header from './../../sections/Header';
 import Footer from './../../sections/Footer';
-//import { useForm } from "react-hook-form";
 import Sidebar from './Sidebar';
 import axios from 'axios';
 import api_url from '../../components/Apiurl';
 import Swal from "sweetalert2";
+import $ from 'jquery';
+import AddCommentModel from "./AddCommentModel";
+import { useModal } from 'react-hooks-use-modal';
+import { useForm, Controller } from "react-hook-form";
+import ForumReply from "./ForumReply";
 
 export default function ForumDetail() { 
 
     const [forumCommentList, setForumCommentList] = useState([]);
+    const [visible, setVisible] = useState(3);
     const [forumCommentDetail, setForumCommentDetail] = useState([]);
     const [forumId, setForumId] = useState([]);
+    const [hideLoad, setHideLoad] = useState(true);
+
+    const [Modal, open, close] = useModal('root', {});
 
     React.useEffect(() => {
 
+        const params = new URLSearchParams(window.location.search) // id=123
+        let forum_id = params.get('id')
+        setForumId(forum_id);
+        getNewList(forum_id);
+        getNewListWrap(forum_id);
+        getCommentDetail(forum_id);
+        getCommentDetailWrap(forum_id);
+       
+    }, []);
+
+    React.useEffect(() => {      
+
+        if (forumCommentList.length > 0 && parseInt(forumCommentList.length) < parseInt(visible)) {
+            setHideLoad(false);
+        }
+
+    }, [visible]);
+
+   
+
+    const getNewList = (forum_id) => {
+       
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
         const config = {
             headers: { Authorization: `${token}` }
         };
 
-        const params = new URLSearchParams(window.location.search) // id=123
-        let forum_id = params.get('id')
-        setForumId(forum_id);
-
-        axios.post(api_url + '/forum/getForumCommentList', { 'forum_id': forum_id }, config).then((result) => {
+        var obj = {
+            'forum_id': forum_id
+        }
+        
+        axios.post(api_url + '/forum/getForumCommentList', obj, config).then((result) => {
             if (result.data.status) {
                 var forumdata = result.data.response.data;
                 setForumCommentList(forumdata);
+                
             } else {
                 // Swal.fire('Oops...', result.data.response.msg, 'error')
             }
         }).catch((err) => { console.log(err); })
-
-        axios.post(api_url + '/forum/getForumCommentDetail', { 'forum_id': forum_id }, config).then((result) => {
-            if (result.data.status) {
-                var forumDetailData = result.data.response.data;
-                setForumCommentDetail(forumDetailData);
-            } else {
-                // Swal.fire('Oops...', result.data.response.msg, 'error')
-            }
-        }).catch((err) => { console.log(err); })
-    },[]);    
+    }
 
     const handleFollow = (id) => {
         const tokenString = localStorage.getItem('token');
@@ -76,12 +97,152 @@ export default function ForumDetail() {
         })
     }
 
+    const reply = (id) => {        
+        $("#" + id).css('display', 'block');
+    }
+
+    const replySubmit = (comment_id) => {
+        const tokenString = localStorage.getItem('token');
+        var token = JSON.parse(tokenString);
+        const config = { headers: { Authorization: `${token}` } };
+        var obj = {
+            forum_id : forumId,
+            parent_comment_id : comment_id,
+            comment: $("#input" + comment_id).val()
+        }
+        axios.post(api_url + "/forum/addComment", obj, config)
+            .then((result) => {
+                if (result.data.status) {
+                    $("#" + comment_id).css('display', 'none');
+                    getNewListWrap(forumId);
+                } else {
+                    Swal.fire("Oops...", result.data.response.msg, "error");
+                }
+        }).catch((err) => { console.log(err); });
+    }
+
+    const { handleSubmit, control, reset, formState: { errors } } = useForm();
+
+    const onSubmit = (data) => {
+        const tokenString = localStorage.getItem('token');
+        var token = JSON.parse(tokenString);
+        const config = {
+            headers: { Authorization: `${token}` }
+        };
+        data.forum_id = forumId;
+        axios.post(api_url + "/forum/addComment", data, config)
+            .then((result) => {
+                if (result.data.status) {    
+                    reset()
+                    getNewListWrap(forumId);
+                } else {
+                    Swal.fire("Oops...", result.data.response.msg, "error");
+                }
+            }).catch((err) => { console.log(err); });
+    } 
+
+    const getNewListWrap = (forum_id) => {
+        getNewList(forum_id,setForumCommentList);
+    };
+
     
-   
+
+    const forumlikeClick = () => {
+        const tokenString = localStorage.getItem('token');
+        var token = JSON.parse(tokenString);
+        const config = {
+            headers: { Authorization: `${token}` }
+        };
+        var obj = {
+            "forumid": forumId,
+            "action_type": 'like'
+        }
+        axios.post(api_url + '/forum/forumLike', obj, config).then(response => {
+            var res = response.data;
+            if (res.status) {
+                getCommentDetailWrap(forumId);
+            }
+        }).catch(function (error) { console.log(error); });
+    };
+
+    const forumdislikeClick = () => {
+        const tokenString = localStorage.getItem('token');
+        var token = JSON.parse(tokenString);
+        const config = {
+            headers: { Authorization: `${token}` }
+        };
+        var obj = {
+            "forumid": forumId,
+            "action_type": 'unlike'
+        }
+        axios.post(api_url + '/forum/forumLike', obj, config).then(response => {
+            var res = response.data;
+            if (res.status) {
+                getCommentDetailWrap(forumId);
+            }
+        }).catch(function (error) { console.log(error); });
+    };
+
+
+    const getCommentDetailWrap = (forum_id) => {
+        getCommentDetail(forum_id, setForumCommentDetail);
+    };
+    
+    const getCommentDetail = (forum_id) => {
+        const tokenString = localStorage.getItem('token');
+        var token = JSON.parse(tokenString);
+        const config = {
+            headers: { Authorization: `${token}` }
+        };
+        axios.post(api_url + '/forum/getForumCommentDetail', { 'forum_id': forum_id }, config).then((result) => {
+            if (result.data.status) {
+                var forumDetailData = result.data.response.data;
+                setForumCommentDetail(forumDetailData);
+            } else {
+                // Swal.fire('Oops...', result.data.response.msg, 'error')
+            }
+        }).catch((err) => { console.log(err); })
+    }
+
+    const showMoreItems = () => {        
+
+        setVisible((prevValue) => prevValue + 3);
+    }
+
+    const forumCommentLikeClick = (comment_id, index) => {
+        const tokenString = localStorage.getItem('token');
+        var token = JSON.parse(tokenString);
+        const config = {
+            headers: { Authorization: `${token}` }
+        };
+        var obj = {
+            "comment_id": comment_id
+        }
+        axios.post(api_url + '/forum/forumCommentLike', obj, config).then(response => {
+            var res = response.data;
+            if (res.status) {
+                let tempColl = [...forumCommentList];                
+                if (res.response.data == 'like'){
+                    tempColl[index].comment_count = parseInt(tempColl[index].comment_count) + parseInt(1);
+                    tempColl[index].comment_like_id = 1;
+                }else{
+                    tempColl[index].comment_count = ( parseInt(tempColl[index].comment_count) > 0) ? parseInt(tempColl[index].comment_count) - parseInt(1) : parseInt(tempColl[index].comment_count);
+                    tempColl[index].comment_like_id = '';
+                }
+                setForumCommentList(tempColl);
+            }
+        }).catch(function (error) { console.log(error); });
+    }
    
     return(
         <div>
             <Header/>
+{/* 
+            <Modal>
+                <AddCommentModel close={close} forumdetail={forumId}></AddCommentModel>
+            </Modal> */}
+
+
             <section className="inner-header">
                 <div className="container">
                     <div className="row">
@@ -97,100 +258,146 @@ export default function ForumDetail() {
                         <div className="col-md-2 side-col">
                             <Sidebar />
                         </div>
-                        <div className="col-md-7">
-                            <div className="category-table">
-                                <h2 className="mb-0 text-center">How Do I Find An Appropriate Therapist For Me?</h2>
-                                {/* <a href="javascript:;"> Back to Forum Categories</a> */}
-                                <br />
-                                <div className="forum-post">
-                                    <div className="forum-cal">
-                                        <div className="forum-inner">                                           
-                                            <p><label>Started</label> <br/> <i>{forumCommentDetail.started} </i></p>
-                                        </div>
-                                        <div className="forum-inner">
-                                            <p>Likes <br /> <label>{forumCommentDetail.likes}</label></p>
-                                        </div>
-                                        <div className="forum-inner">
-                                            <p>Replies <br /> <label>{forumCommentDetail.replies}</label></p>
-                                        </div>
-                                        <div className="forum-inner">
-                                            <p>Views <br /> <label>{forumCommentDetail.views}</label></p>
-                                        </div>
+
+
+                        
+                        <div class="col-md-10">
+                            <div class="category-table">
+                                {/* <div class="breadcrumbs-main"> <a href="javascript:;">
+                                {"<<"} Back to Forum Categories</a> </div>  */}
+                                <div class="cat-title">
+                                    <div>
+                                        <h2 class="mb-0"> {forumCommentDetail.forum_title && forumCommentDetail.forum_title} </h2>
+                                        <p> {forumCommentDetail.forum_description && forumCommentDetail.forum_description}  </p>
                                     </div>
-                                    <div className="forum-cat">
-                                        <div className="forum-inner">
-                                            <p onClick={(e) => handleFollow()} >                                                 
-                                                {forumCommentDetail.follow == 0 && 'Follow'}
-                                            </p>
-                                            <p onClick={(e) => handleUnFollow()} >
-                                                {forumCommentDetail.follow == 1 && 'Followed'}                                                
-                                            </p>
-                                        </div>
-                                        <div className="forum-inner">
-                                            <p>Last Post <label>1 min</label></p>
-                                        </div>
-                                        <div className="forum-inner">
-                                            <p>HappyDude</p>
-                                        </div>
-                                        <div className="forum-inner">
-                                            <a href="javascript:;"><img src="images/forward.png" alt="forward" /></a>
-                                        </div>
-                                    </div>
+                                   
                                 </div>
-                                <br/>
+
+                               
+                                <div className="row comment-box">
+                                    <form onSubmit={handleSubmit(onSubmit)}>    
+                                        <Controller
+                                            name={"comment"}
+                                            control={control}
+                                            rules={{ required: true }}
+                                            render={({ field: { onChange, value } }) => (
+                                                <input
+                                                    type="comment"
+                                                    onChange={onChange}
+                                                    value={value}
+                                                    className="form-control"
+                                                    placeholder={`Add Comment *`}
+                                                />
+                                            )}
+                                        ></Controller>
+                                        {errors.comment && errors.comment.type === "required" && (
+                                            <small className="error">Comment is required.</small>
+                                        )}                                         
+                                        <button type="submit" class="add-comment">Add Comment</button>                                        
+                                    </form>
+                                </div>
+                               
 
 
+                                <div className="row">
+                                    <div className="col-md-8">
+                                        <div className="dislike-like"> 
+                                            <ul>
+                                                <li className={forumCommentDetail.user_like === 1 ? 'liked' : ''} onClick={() => forumlikeClick()}> <i className="fa fa-arrow-up"></i> <span>{forumCommentDetail.likes}</span> </li>
+                                                <li className={forumCommentDetail.user_dislike === 1 ? 'liked' : ''} onClick={() => forumdislikeClick()}> <i className="fa fa-arrow-down"></i> <span>{forumCommentDetail.unlikes}</span> </li>
+                                                <li> <i className="fa fa-comment"></i> <span>{forumCommentDetail.replies}</span> </li>
+                                            </ul>
+                                        </div>                                          
+                                    </div>
+                                    <div className="col-md-4">
+                                        <div className="follow">                                            
+                                            {forumCommentDetail.follow == 0 && <span onClick={(e) => handleFollow()} >
+                                                 Follow
+                                            </span>}
+                                            {forumCommentDetail.follow == 1 &&  <span onClick={(e) => handleUnFollow()} >
+                                                Following
+                                            </span>}
+                                        </div>
+                                    </div>
+                                </div> 
 
-                                {forumCommentList.map((data, index) => (
-                                    <div className="forum-topic">
-                                        <h4>{data.created_on}</h4>
-                                        <div className="forum-chat">
-                                            <div className="forum-title">
-                                                <p><label>{data.first_name} {data.last_name} </label> {data.role}</p>
-                                            </div>
-                                            <div className="forum-text">
 
-                                                {data.parent && data.parent.length > 0 && <div className="replied-text">
-                                                    {data.parent[0].comment}
-                                                </div>}
-
-                                                <p>{data.comment}</p>
-                                                <div className="forum-comments">
-                                                    <a href="javascript:;"><img src="images/like.png" alt="like" /> <span>+3</span></a>
-                                                    <div className="reply-forum">
-                                                        <a href="javascript:;"><img src="images/reply.png" alt="reply" /> <span>Reply</span></a>                                                        
-                                                    </div>
+                                {forumCommentList && forumCommentList.slice(0, visible).map((data, index) => (
+                                    <div key={index} class="research-main">
+                                        <div class="research-box">                                            
+                                            <div class="research-detail">
+                                                <p>{data.first_name} {data.last_name}  <span class="researcher">( {data.role} )</span>  </p>
+                                                <div class="research-date">
+                                                    <label>{data.created_on}</label>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="forum-text">
+                                            <p>{data.comment}</p>
+                                            <div class="forum-comments">  
+                                                <p className={(data.comment_like_id && data.comment_like_id > 0) ? 'comment-liked' : ''} onClick={() => forumCommentLikeClick(data.forum_comment_id, index)}>
+                                                    <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                                                    {/* <i class="fa fa-thumbs-o-up" aria-hidden="true"></i> */}
+                                                    &nbsp;
+                                                    <span>+{data.comment_count}</span>
+                                                </p>
+                                                <p onClick={(e) => reply(data.forum_comment_id)}><img src="images/reply.png" alt="reply" /> <span>Reply</span></p>
+                                            </div>
+                                            <div className="reply-box" id={data.forum_comment_id} style={{ display: 'none' }}>
+
+
+                                                 {/* 
+                                                 <form onSubmit={handleSubmit(replySubmit())}>   
+                                                        <Controller
+                                                            name={"comment"}
+                                                            control={control}
+                                                            rules={{ required: true }}
+                                                            render={({ field: { onChange, value } }) => (
+                                                                <input
+                                                                    type="comment"
+                                                                    onChange={onChange}
+                                                                    value={value}
+                                                                    className="form-control"
+                                                                    placeholder={`Add Comment *`}
+                                                                />
+                                                            )}
+                                                        ></Controller>                                                        
+                                                        {errors.comment && errors.comment.type === "required" && (
+                                                            <small className="error">Comment is required.</small>
+                                                        )}            
+                                                        <Controller
+                                                            name={"comment_id"}
+                                                            control={control}
+                                                            rules={{ required: true }}
+                                                            render={({ field: { onChange, value } }) => (
+                                                                <input
+                                                                    type="hidden"
+                                                                    onChange={onChange}
+                                                                    value={data.forum_comment_id}
+                                                                    className="form-control"
+                                                                    placeholder={` Comment ID *`}
+                                                                />
+                                                            )}
+                                                        ></Controller>                                                        
+                                                    <button type="submit" class="add-comment">Submit</button>
+                                                 </form>  */}
+
+                                                <input className="form-control" type="text" id={"input"+data.forum_comment_id} name="comment" />
+                                                <button type="submit" onClick={(e) => replySubmit(data.forum_comment_id)}>Reply</button> 
+                                            </div>
+
+                                            {data.reply && <ForumReply close={close} replyDetail={data.reply}></ForumReply>
+                                            }
+                                        </div>
                                     </div>
+                                   
                                 ))}
-
-
-
-                               
-
                             </div>
-                            <div className="pagination">
-
+                            <div class="loadmore">
+                                {(forumCommentList && forumCommentList.length > 0 && hideLoad) && <span onClick={showMoreItems}>View collapsed comments</span>}
                             </div>
                         </div>
-                        <div className="col-md-3 article-tags">
-                            <div className="video-tag">
-                                <h3>Sort By Tags</h3>
-                                <ul>
-                                    <li><a className="active" href="#">Telemedicine</a></li>
-                                    <li><a href="#">Mavisamankwah</a></li>
-                                    <li><a href="#">Medilives</a></li>
-                                    <li><a href="#">Blockchain</a></li>
-                                    <li><a href="#">Mliv</a></li>
-                                </ul>
-                            </div>
-                            <div className="banner-ads">
-                                <a href="javascript:;"><img src="images/course-ad.png" alt="course-ad"/></a>
-                                <a href="javascript:;"><img src="images/Banner-ad.png" alt="Banner-ad"/></a>
-                            </div>
-                        </div>
+                   
                     </div>
                 </div>
             </section>                    

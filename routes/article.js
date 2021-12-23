@@ -14,7 +14,8 @@ var asyn = require('async');
 var helper = require('../config/helper');
 var moment = require('moment');
 var formidable = require('formidable');
-
+var Common = require('../models/common');
+const gm = require('gm');
 
 function loggerData(req) {
     if (env.DEBUG) {
@@ -80,6 +81,7 @@ router.post('/getarticleDataById', [check('article_id', 'article is required').n
                         article['cost'] = result[0].cost;
                         article['status'] = result[0].status;
                         article['tag'] = [];
+                        article['draft_status'] = result[0].draft_status;
                         done(err, article)
                     }
                 });
@@ -106,6 +108,44 @@ router.post('/getarticleDataById', [check('article_id', 'article is required').n
                 } else {
                     done(null, article)
                 }
+            },
+            function (article, done2) {
+                if (article['role']) {
+                    var role = article['role'];
+                    Common.getRoleAllList(function (err, result) {
+                        if (result && result.length > 0) {
+
+                            var array = [];
+                            result.find((o, i) => {                                
+                                if (role.includes(o.role_id)) {
+                                    array.push(o);                                    
+                                }
+                            });
+                            article['selected_role'] = array;
+                            done2(null, article)
+                        } else {
+                            article['selected_role'] = [];
+                            done2(null, article)
+                        }
+                    });
+                } else {
+                    article['selected_role'] = [];
+                    done2(null, article)
+                }
+            }, function (article, done2) {
+
+                if (article['selected_role'].length > 0) {
+                    article['selected_role'] = article['selected_role'].map((data, index) => {
+                        let retObj = {};
+                        retObj['id'] = (index + 1);
+                        retObj['label'] = data.role;
+                        retObj['value'] = data.role_id;
+                        return retObj;
+                    });
+                    done2(null, article)
+                } else {
+                    done2(null, article)
+                }
             }
         ],
             function (error, article) {
@@ -114,8 +154,7 @@ router.post('/getarticleDataById', [check('article_id', 'article is required').n
                 } else {
                     return res.json({ 'status': 1, 'response': { 'data': article, 'msg': 'data found' } });
                 }
-            });
-
+        });
         
     }
 });
@@ -166,22 +205,34 @@ router.post('/addarticleByadmin', function (req, res) {
                 tag: obj.tag,
                 cost: obj.cost,
                 purchase_type: obj.purchase_type,
-                image:''
+                image:'',
+                draft: (obj.draft) ? obj.draft : 0
             };
             asyn.waterfall([
                 function (done) {
                     let overview = {};
                     if (typeof files.image !== 'undefined') {
                         let file_ext = files.image.name.split('.').pop();
-                        let ProfileImage = Date.now() + '-' + files.image.name.split(" ").join("");
+                        let filename = Date.now() + '-' + files.image.name.split(" ").join("");
                         let tmp_path = files.image.path;
                         if (file_ext == 'png' || file_ext == 'PNG' || file_ext == 'jpg' || file_ext == 'JPG' || file_ext == 'jpeg' || file_ext == 'JPEG') {
-                            fs.rename(tmp_path, path.join(__dirname, env.ARTICLE_PATH + ProfileImage), function (err) {
-                                overview['image'] = ProfileImage;
-                                done(err, overview)
-                                fs.unlink(tmp_path, function () {
+                            // fs.rename(tmp_path, path.join(__dirname, env.ARTICLE_PATH + ProfileImage), function (err) {
+                            //     overview['image'] = ProfileImage;
+                            //     done(err, overview)
+                            //     fs.unlink(tmp_path, function () {
+                            //         if (err) {
+                            //             return res.json({ status: 1, 'response': { msg: err } });
+                            //         }
+                            //     });
+                            // });
+
+                            fs.rename(tmp_path, path.join(__dirname, env.ARTICLE_PATH + filename), function (err) {
+                                gm(__dirname + env.ARTICLE_PATH + filename).gravity('Center').thumb(258, 195, __dirname + env.ARTICLE_PATH_THUMB + filename, 100, function (err, data) {
                                     if (err) {
-                                        return res.json({ status: 1, 'response': { msg: err } });
+                                        done("Image upload error", overview)
+                                    } else {
+                                        overview['image'] = filename;
+                                        done(err, overview)
                                     }
                                 });
                             });
@@ -224,12 +275,21 @@ router.post('/updatearticleByadmin', function (req, res) {
 
             var json = fields.data;
             let obj = JSON.parse(json);
-            let update_value = [obj.title, obj.description, moment().format('YYYY-MM-DD'), obj.user_role, obj.purchase_type, obj.cost]
+
+            var role = '';
+
+            if (obj.user_role.length > 0) {
+                role = obj.user_role.map(data => {
+                    return data.value
+                }).join(',');
+            }
+
+            let update_value = [obj.title, obj.description, moment().format('YYYY-MM-DD'), role, obj.purchase_type, obj.cost]
             let record = {
                 title: obj.title,
                 description: obj.description,
                 created_at: moment().format('YYYY-MM-DD'),
-                role: obj.user_role,
+                role: role,
                 purchase_type: obj.purchase_type,
                 cost: obj.cost
             };
@@ -240,21 +300,33 @@ router.post('/updatearticleByadmin', function (req, res) {
                     
                     if (typeof files.image !== 'undefined') {
                         let file_ext = files.image.name.split('.').pop();
-                        let ProfileImage = Date.now() + '-' + files.image.name.split(" ").join("");
+                        let filename = Date.now() + '-' + files.image.name.split(" ").join("");
                         let tmp_path = files.image.path;
                         if (file_ext == 'png' || file_ext == 'PNG' || file_ext == 'jpg' || file_ext == 'JPG' || file_ext == 'jpeg' || file_ext == 'JPEG') {
-                            
-                            fs.rename(tmp_path, path.join(__dirname, env.ARTICLE_PATH + ProfileImage), function (err) {
-                                overview['image'] = ProfileImage;                                
-                                fs.unlink(tmp_path, function () {
+
+                            fs.rename(tmp_path, path.join(__dirname, env.ARTICLE_PATH + filename), function (err) {
+                                gm(__dirname + env.ARTICLE_PATH + filename).gravity('Center').thumb(258, 195, __dirname + env.ARTICLE_PATH_THUMB + filename, 100, function (err, data) {
                                     if (err) {
-                                        done(err, overview)
-                                        //return res.json({ status: 1, 'response': { msg: err } });
-                                    }else{
+                                        done("Image upload error", overview)
+                                    } else {
+                                        overview['image'] = filename;
                                         done(err, overview)
                                     }
                                 });
                             });
+
+                            
+                            // fs.rename(tmp_path, path.join(__dirname, env.ARTICLE_PATH + ProfileImage), function (err) {
+                            //     overview['image'] = ProfileImage;                                
+                            //     fs.unlink(tmp_path, function () {
+                            //         if (err) {
+                            //             done(err, overview)
+                            //             //return res.json({ status: 1, 'response': { msg: err } });
+                            //         }else{
+                            //             done(err, overview)
+                            //         }
+                            //     });
+                            // });
                         } else {
                             return res.json({ status: 0, response: { msg: 'Only image with jpg, jpeg and png format are allowed', } });
                         }
@@ -292,7 +364,8 @@ router.post('/updatearticleByadmin', function (req, res) {
 router.post('/getPaidArticleList', passport.authenticate('jwt', { session: false }), function (req, res) {
     loggerData(req);
     var user_role = req.user.userrole;
-    Article.getPaidArticleList(user_role, function (err, result) {
+    var user_id = req.user.id;
+    Article.getPaidArticleList(user_id, user_role, function (err, result) {
         if (err) {
             return res.json({ status: 0, 'response': { msg: err } });
         } else {
@@ -304,12 +377,14 @@ router.post('/getPaidArticleList', passport.authenticate('jwt', { session: false
             }
             var articleList = result.map(data => {
                 let retObj = {};
-                retObj['article_id'] = data.article_id;
+                retObj['article_id'] = data.art_id;
                 retObj['title'] = data.title;
                 retObj['description'] = data.description;
                 retObj['created_at'] = moment(data.article_date).format('MMMM DD, YYYY');
                 retObj['role'] = data.role;
+                retObj['bookmark_article_id'] = data.bookmark_article_id;
                 retObj['image'] = (data.image) ? imageLink + env.ARTICLE_VIEW_PATH + data.image : '';
+                retObj['image_thumb'] = (data.image) ? imageLink + env.ARTICLE_VIEW_PATH_THUMB + data.image : '';
                 retObj['status'] = data.status;
                 return retObj;
             });
@@ -339,6 +414,7 @@ router.post('/getUnpaidArticleList', function (req, res) {
                 retObj['created_at'] = moment(data.article_date).format('MMMM DD, YYYY');
                 retObj['role'] = data.role;
                 retObj['image'] = (data.image) ? imageLink + env.ARTICLE_VIEW_PATH + data.image : '';
+                retObj['image_thumb'] = (data.image) ? imageLink + env.ARTICLE_VIEW_PATH_THUMB + data.image : '';
                 retObj['status'] = data.status;
                 return retObj;
             });
@@ -423,6 +499,83 @@ router.post('/articleBookmark', passport.authenticate('jwt', { session: false })
 
 
 
+router.post('/purchase_article', [
+    check('user_id', 'User is required').notEmpty(),
+    check('order_id', 'Order id is required').notEmpty(),
+    check('article_id', 'article is required').notEmpty()
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        var obj = {
+            user_id: req.body.user_id,
+            order_id: req.body.order_id,
+            article_id: req.body.article_id
+        }
+
+        Article.purchase_article(obj, function (err, result) {
+            if (err) {
+                return res.json({ 'status': 0, 'response': { 'msg': err } });
+            } else {
+                if (result) {
+                    return res.json({ 'status': 1, 'response': { 'data': result, 'msg': 'Data found' } });
+                } else {
+                    return res.json({ 'status': 0, 'response': { 'data': [], 'msg': 'Data not found' } });
+                }
+            }
+        });
+    }
+});
+
+router.post('/changeDraftArticleStatus', [
+    check('article_id', 'article id is required').notEmpty(),
+    check('draft_status', 'Please enter status').notEmpty(),
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        let article_id = req.body.article_id;
+        let record = {
+            draft_status: req.body.draft_status
+        }
+        Article.changeDraftArticleStatus(record, article_id, function (err, result) {
+            if (err) {
+                return res.json({ 'status': 0, 'response': { 'msg': 'Error Occured.' } });
+            } else {
+                if (result) {
+                    return res.json({ 'status': 1, 'response': { 'msg': 'Status Changed successfully.' } });
+                } else {
+                    return res.json({ 'status': 0, 'response': { 'msg': 'Data not found.' } });
+                }
+            }
+        });
+    }
+});
+
+router.get('/draftarticleList', function (req, res) {
+    loggerData(req);
+    Article.draftarticleList(function (err, result) {
+        if (err) {
+            return res.json({ status: 0, 'response': { msg: err } });
+        } else {
+            var articleList = result.map(data => {
+                let retObj = {};
+                retObj['article_id'] = data.article_id;
+                retObj['title'] = data.title;
+                retObj['description'] = data.description;
+                retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
+                retObj['role'] = data.role;
+                retObj['status'] = data.status;
+                return retObj;
+            });
+            return res.json({ status: 1, 'response': { data: articleList } });
+        }
+    });
+});
 
 
 module.exports = router;

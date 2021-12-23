@@ -1,11 +1,14 @@
 import './App.css';
 import { Suspense, lazy  } from "react";
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import { UserContext } from './hooks/UserContext';
 import PrivateRoute from './pages/PrivateRoute';
 import useFindUser from './hooks/useFindUser';
 import { WebsiteLoader } from "./components";
 import useAutoLogout from "./useAutoLogout";
+import { browserHistory } from 'react-router';
+
+
 const Register = lazy(() => import("./pages/Register"));
 const Payment = lazy(() => import("./pages/Payment"));
 const UserSelection = lazy(() => import("./pages/UserSelection"));
@@ -42,19 +45,26 @@ const ProfessionalDevelopmentDetail = lazy(() => import("./pages/user/Profession
 const ParticipantsInMyStudies = lazy(() => import("./pages/user/ParticipantsInMyStudies"));
 const MyStudies = lazy(() => import("./pages/user/MyStudies"));
 const CoursePayment = lazy(() => import("./pages/user/CoursePayment"));
+const ArticlePayment = lazy(() => import("./pages/user/ArticlePayment"));
+const BlogPayment = lazy(() => import("./pages/user/BlogPayment"));
+const MyBlog = lazy(() => import("./pages/user/MyBlog"));
+const MyArticle = lazy(() => import("./pages/user/MyArticle"));
+const Preview = lazy(() => import("./pages/Preview"));
+
 
 function App() {
 
   const timer = useAutoLogout(18000);
-  
-
-  if (timer == 0) {
-    localStorage.clear();
-  }
+  let history = useHistory(); 
 
   const {
     user,
     setUser } = useFindUser();
+
+  if (timer == 0) {
+    localStorage.clear();
+    window.location.replace('/');
+  }
 
   return (
     <Router>
@@ -101,7 +111,11 @@ function App() {
           <Route path="/participate-in-research" component={ParticipateInResearch} />
           <Route path="/my-studies" component={MyStudies} />
           <Route path="/course-payment" component={CoursePayment} />   
-
+          <Route path="/article-payment" component={ArticlePayment} />
+          <Route path="/blog-payment" component={BlogPayment} />
+          <Route path="/my-blog" component={MyBlog} />
+          <Route path="/my-article" component={MyArticle} />
+          <Route path="/preview-module" component={Preview} />
           
         </Switch>
         </Suspense>

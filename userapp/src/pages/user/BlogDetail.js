@@ -14,12 +14,14 @@ import { useHistory } from "react-router-dom";
 export default function BlogDetail() {
     let history = useHistory();
 
+    const [blogId, setBlogId] = React.useState(0)
     const [blogDetail, setBlogDetail] = React.useState({})
     const [relatedBlogDetail, setRelatedBlogDetail] = React.useState([])
 
     React.useEffect(() => {
         const params = new URLSearchParams(window.location.search) // id=123
         let blog_id = params.get('id')
+        setBlogId(blog_id);
 
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
@@ -33,11 +35,17 @@ export default function BlogDetail() {
                 if (blogdata.purchase_type == "unpaid") {
                     setBlogDetail(blogdata);
                 } else {
-                    if (!token) {
-                        open()
-                    }else{
+
+                    if (blogdata.purchase_type == "unpaid") { 
                         setBlogDetail(blogdata);
+                    }else{
+                        open()
                     }
+                    // if (!token) {
+                    //     open()
+                    // }else{
+                    //     setBlogDetail(blogdata);
+                    // }
                 }
             } else {
                 Swal.fire('Oops...', result.data.response.msg, 'error')
@@ -77,14 +85,14 @@ export default function BlogDetail() {
             <Header />
 
             <Modal>
-                <DirectionModel close={close}></DirectionModel>
+                <DirectionModel close={close} blogDetail={blogId}></DirectionModel>
             </Modal>
 
             <section className="inner-header">
                 <div className="container">
                     <div className="row">
                         <div className="col-md-12">
-                            <h2>Blog</h2>
+                            <h2>Blogs</h2>
                         </div>
                     </div>
                 </div>
@@ -114,36 +122,36 @@ export default function BlogDetail() {
                                 <div className="video-text" dangerouslySetInnerHTML={{ __html: blogDetail.description }}></div>
                                 </div>
                             </div>
-                                    <div className="col-md-3 article-tags">
-                                        {blogDetail.tag && blogDetail.tag.length > 0 &&
-                                        <div className="video-tag">
-                                            <h3>Tags</h3>
-                                            <ul>
-                                                 {blogDetail.tag.map(data => (<li><a href="javascript:;">{data.label}</a></li> ))}
-                                            </ul>
-                                        </div>}
-                                        <div className="video-list">
-                                            <h3>Other Blogs </h3>
-                                            <div className="video-list-card">
-                                                {relatedBlogDetail.map(data => (
-                                                    <div className="video-list-view">
-                                                        <div className="video-list-icon">                                                            
-                                                            {data.image && <img src={data.image} alt="blog" />}
-                                                            {!data.image && <img src="images/blog.jpg" alt="blog" />}
-                                                        </div>
-                                                        <div className="video-list-text">
-                                                            {/* <h3>{data.title}</h3> */}
-                                                            <a onClick={(e) => linkTarget(data.blog_id)}><h3>{data.title.slice(0, 46)}</h3></a>
-                                                            <p>{data.created_at}</p>
-                                                        </div>
-                                                    </div>
-                                                ))}
+                        <div className="col-md-3 article-tags">
+                            {blogDetail.tag && blogDetail.tag.length > 0 &&
+                            <div className="video-tag">
+                                <h3>Tags</h3>
+                                <ul> {blogDetail.tag.map(data => (<li><a href="javascript:;">{data.label}</a></li> ))} </ul>
+                            </div>}
+                            <div className="video-list">
+                                <h3>Other Blogs </h3>
+                                <div className="video-list-card">
+                                    {relatedBlogDetail.map(data => (
+                                        <div className="video-list-view">
+                                            <div className="video-list-icon">    
+                                                <a onClick={(e) => linkTarget(data.blog_id)}>
+                                                    {data.image && <img src={data.image} alt="blog" />}
+                                                    {!data.image && <img src="images/blog.jpg" alt="blog" />}
+                                                </a>                                                            
+                                            </div>
+                                            <div className="video-list-text">
+                                                {/* <h3>{data.title}</h3> */}
+                                                <a onClick={(e) => linkTarget(data.blog_id)}><h3>{data.title.slice(0, 46)}</h3></a>
+                                                <p>{data.created_at}</p>
                                             </div>
                                         </div>
-                                    </div>
+                                    ))}
                                 </div>
                             </div>
-    </section>
+                        </div>
+                    </div>
+                </div>
+            </section>
             <Footer />
         </div>
     )

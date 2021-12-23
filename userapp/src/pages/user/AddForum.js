@@ -94,7 +94,7 @@ export default function AddForum() {
                     Swal.fire({
                         title: "Success!",
                         icon: "success",
-                        text: "You will get email from us soon about your request. Thank You!",                        
+                        text: "Your request for the forum has been successfully sent to Admin.",
                         confirmButtonText: 'Ok'
                     })
                     .then((res) => {
@@ -146,7 +146,7 @@ export default function AddForum() {
                                             <form onSubmit={handleSubmit(addInformationAct)}>
                                                 <div className="forum-details">
 
-                                                    <div className="form-group">
+                                                    {/* <div className="form-group">
                                                         <Controller
                                                             name="category"
                                                             control={control}
@@ -166,9 +166,9 @@ export default function AddForum() {
                                                             <small className="error">Category is required.</small>
                                                         )}
                                                        
-                                                    </div>
+                                                    </div> */}
 
-                                                    <div className="form-group">
+                                                    <div className="form-group select-dropdown">
                                                         <Controller
                                                             name="heading"
                                                             control={control}
@@ -213,7 +213,6 @@ export default function AddForum() {
 
 
                                                     <div className="form-group">
-
                                                         <Controller
                                                             name={"description"}
                                                             control={control}
@@ -249,8 +248,7 @@ export default function AddForum() {
                                                             <span className="interest-area">{item.label}&nbsp;<i onClick={(e) => removeSkill(item.value)} className="fa fa-times"></i></span>
                                                             
                                                         ))}        
-                                                    </div>
-
+                                                    </div>                                                   
 
                                                     <button type="submit" className="forum-btn">Submit</button>
 

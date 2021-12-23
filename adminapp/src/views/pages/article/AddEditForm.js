@@ -35,6 +35,8 @@ const AddEditForm = ({ match }) => {
   const [selectedTag, setSelectedTag] = React.useState([])
   const [setectimage, setSetectimage] = React.useState(0);
   const [selectedFile, setSelectedFile] = useState();
+  const [selectedRole, setSelectedRole] = React.useState([])
+  const [draftStatus, setDraftStatus] = React.useState(0)
 
   const [contentEditor, setContentEditor] = useState();
   const handleEditorChange = (content, editor) => {
@@ -79,7 +81,14 @@ const AddEditForm = ({ match }) => {
       .then((result) => {
         if (result.data.status) {
           var roledata = result.data.response.data;
-          setRoleList(roledata);
+          var obj = roledata.map((data, index) => {
+            let retObj = {};
+            retObj['id'] = (index + 1);
+            retObj['label'] = data.name;
+            retObj['value'] = data.role_id;
+            return retObj;
+          });
+          setRoleList(obj);          
         } else {
           Swal.fire("Oops...", result.data.response.msg, "error");
         }
@@ -97,10 +106,18 @@ const AddEditForm = ({ match }) => {
             setValue("purchase_type", usersdata.purchase_type);
             setValue("user_role", usersdata.role);      
             setValue("cost", usersdata.cost);
+            setSelectedRole(usersdata.selected_role);
             setSelectedTag(usersdata.tag);
             setSetectimage(usersdata.image);
             //setText(usersdata.description);
             setContentEditor(usersdata.description);
+
+            if (usersdata.draft_status) {
+              setDraftStatus(usersdata.draft_status);
+            } else {
+              setDraftStatus(0);
+            }
+
           } else {
             Swal.fire("Oops...", result.data.response.msg, "error");
           }
@@ -113,6 +130,7 @@ const AddEditForm = ({ match }) => {
     data.article_id = match.params.id;
     //data.description = text;
     data.description = contentEditor;
+    data.user_role = selectedRole;
     data.tag = selectedTag;
     const formData = new FormData();
     formData.append("data", JSON.stringify(data));
@@ -123,7 +141,11 @@ const AddEditForm = ({ match }) => {
       .then((result) => {
         if (result.data.status) {
           Swal.fire("Success!", result.data.response.msg, "success");
-          history.push("/article");
+          if (draftStatus == 1) {
+            history.push("/draft-articles");
+          } else {
+            history.push("/article");
+          }
         } else {
           Swal.fire("Oops...", result.data.response.msg, "error");
         }
@@ -136,6 +158,7 @@ const AddEditForm = ({ match }) => {
     //data.description = text;
     data.description = contentEditor;
     data.tag = selectedTag;
+    data.user_role = selectedRole;
     const formData = new FormData();
     formData.append("data", JSON.stringify(data));
     if (selectedFile) {
@@ -159,7 +182,63 @@ const AddEditForm = ({ match }) => {
     setSelectedTag(removeskill);
   };
 
- 
+  const removeRole = (value) => {
+    var removeRole = selectedRole.filter(function (place) { return place.value !== value })
+    setSelectedRole(removeRole);
+  };
+
+  const preview = () => {
+
+    var obj = {
+      cost: (control._fields.cost && control._fields.cost._f.value) ? control._fields.cost._f.value : '',
+      purchase_type: (control._fields.purchase_type && control._fields.purchase_type._f.value) ? control._fields.purchase_type._f.value : '',
+      title: (control._fields.title && control._fields.title._f.value) ? control._fields.title._f.value : '',
+      description: (contentEditor) ? contentEditor : '',
+      tag: selectedTag,
+      type: 'article'
+    }
+
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(obj));
+    if (selectedFile) {
+      formData.append("image", selectedFile, selectedFile.name);
+    }
+    axios.post(api_url + "/common/addPreview", formData).then((result) => {
+      if (result.data.status) {
+        window.open(result.data.response.preview + "preview-module");
+        //window.open("http://localhost:4200/preview-module");
+      } else {
+        Swal.fire("Oops...", result.data.response.msg, "error");
+      }
+    }).catch((err) => { console.log(err); });
+
+  }
+
+  const draft_article = () => {
+    var obj = {
+      cost: (control._fields.cost && control._fields.cost._f.value) ? control._fields.cost._f.value : '',
+      purchase_type: (control._fields.purchase_type && control._fields.purchase_type._f.value) ? control._fields.purchase_type._f.value : '',
+      title: (control._fields.title && control._fields.title._f.value) ? control._fields.title._f.value : '',
+      user_role: selectedRole,
+      description: (contentEditor) ? contentEditor : '',
+      tag: selectedTag,
+      draft: 1
+    }
+
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(obj));
+    if (selectedFile) {
+      formData.append("image", selectedFile, selectedFile.name);
+    }
+    axios.post(api_url + "/article/addarticleByadmin", formData, {}).then((result) => {
+      if (result.data.status) {
+        Swal.fire("Success!", 'Draft added successfully.', "success");
+        history.push("/draft-articles");
+      } else {
+        Swal.fire("Oops...", result.data.response.msg, "error");
+      }
+    }).catch((err) => { console.log(err); });
+  }
 
   return (
     <CRow>
@@ -229,7 +308,8 @@ const AddEditForm = ({ match }) => {
                       cloudChannel="dev"
                       init={{
                         selector: "textarea",
-                        plugins: "link image textpattern lists "
+                        plugins: "link image textpattern lists textcolor colorpicker",
+                        toolbar: "undo redo | styleselect | forecolor | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | link image | code forecolor backcolor",
                       }}
                       value={contentEditor}
                       onEditorChange={handleEditorChange}
@@ -263,6 +343,28 @@ const AddEditForm = ({ match }) => {
               <CRow>
                 <CCol xs="12">
                   <CFormGroup>
+                    <CLabel htmlFor="city">
+                      User Role <span className="label-validation">*</span>
+                    </CLabel>
+                    <MultiSelect
+                      options={roleList}
+                      value={selectedRole}
+                      selectionLimit="2"
+                      hasSelectAll={true}
+                      onChange={setSelectedRole}
+                      labelledBy="Select"
+                    />
+                  </CFormGroup>
+                  {selectedRole.map(item => (
+                    <span className="skill-name">{item.label} &nbsp;<i onClick={(e) => removeRole(item.value)} className="fa fa-times">X</i></span>
+                  ))}
+                </CCol>
+              </CRow>
+              <br />
+
+              {/* <CRow>
+                <CCol xs="12">
+                  <CFormGroup>
                     <CLabel htmlFor="role">User Role <span className="label-validation">*</span></CLabel>
                     <Controller
                       name="user_role"
@@ -285,7 +387,7 @@ const AddEditForm = ({ match }) => {
                     <p style={{ color: "red", fontSize: "12px" }}>User role is required.</p>
                   )}
                 </CCol>
-              </CRow>
+              </CRow> */}
 
               <CRow>
                 <CCol xs="12">
@@ -336,6 +438,10 @@ const AddEditForm = ({ match }) => {
                 </CRow>}
 
               <button type="submit" className="btn btn-outline-primary btn-sm btn-square"> {(isEditMode === 1) ? 'Update' : 'Add'}</button>
+              &nbsp;
+              {(isEditMode !== 1) && <button type="button" className="btn btn-outline-primary btn-sm btn-square" onClick={(e) => preview()}> Preview </button>}
+              &nbsp;
+              {(isEditMode !== 1) && <button type="button" className="btn btn-outline-primary btn-sm btn-square" onClick={(e) => draft_article()}> Draft </button>}
 
             </form> 
           </CCardBody>

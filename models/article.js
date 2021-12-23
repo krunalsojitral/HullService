@@ -23,7 +23,7 @@ function User() {
 
     this.getAllAdminArticle = function (callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM article order by article_id desc', function (err, result) {
+            con.query('SELECT * FROM article where draft_status IS NULL order by article_id desc', function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }
@@ -33,13 +33,12 @@ function User() {
                 }
             });
         });
-    };
-
+    }
     
     this.addarticleByadmin = function (record, callback) {
         connection.acquire(function (err, con) {
-            const sql = 'INSERT INTO article(title,description,created_at,role,purchase_type,image,cost,status) VALUES($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *'
-            const values = [record.title, record.description, record.created_at, record.role, record.purchase_type, record.image, record.cost, 1]
+            const sql = 'INSERT INTO article(title,description,created_at,role,purchase_type,image,draft_status,cost,status) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *'
+            const values = [record.title, record.description, record.created_at, record.role, record.purchase_type, record.image, record.draft, record.cost, 1]
             con.query(sql, values, function (err, result) {
                 con.release()
                 if (err) {
@@ -178,10 +177,10 @@ function User() {
         });
     }    
 
-    this.getPaidArticleList = function (role, callback) {
+    this.getPaidArticleList = function (user_id, role, callback) {
         connection.acquire(function (err, con) {
             console.log(role);
-            con.query('SELECT *,article.created_at as article_date FROM article where article.status = $1 and (role = $2 or role = $3) order by article.article_id desc', [1, role, "all"], function (err, result) {
+            con.query('SELECT *,article.article_id as art_id, article.created_at as article_date FROM article left join bookmark_article on article.article_id = bookmark_article.article_id and bookmark_article.user_id = $1 where article.draft_status IS NULL and article.status = $2 and (role ILIKE $3 or role ILIKE $4) order by article.article_id desc', [user_id, 1, '%' + role + '%', '%4%'], function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }
@@ -195,7 +194,7 @@ function User() {
 
     this.getUnpaidArticleList = function (callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT *,article.created_at as article_date FROM article where article.status = $1 and (role = $2 or role = $3) order by article.article_id desc', [1,4,'all'], function (err, result) {
+            con.query('SELECT *,article.created_at as article_date FROM article where article.draft_status IS NULL and article.status = $1 and (role ILIKE $2) order by article.article_id desc', [1,'%4%'], function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }
@@ -210,8 +209,8 @@ function User() {
 
     this.getRelatedUnpaidArticleList = function (article_id, callback) {
         connection.acquire(function (err, con) {
-            var sql = 'SELECT *,article.created_at as article_date FROM article where article.status = $1 and (role = $2 or role = $3) and article.article_id != $4 order by article.article_id desc limit 5';
-            var values = [1, 4, "all", article_id];
+            var sql = 'SELECT *,article.created_at as article_date FROM article where article.draft_status IS NULL and article.status = $1 and (role ILIKE $2) and article.article_id != $3 order by article.article_id desc limit 5';
+            var values = [1, '%4%', article_id];
             con.query(sql, values, function (err, result) {
                 con.release()
                 if (err) {
@@ -226,8 +225,8 @@ function User() {
 
     this.getRelatedPaidArticleList = function (role, blog_id, callback) {
         connection.acquire(function (err, con) {
-            var sql = 'SELECT *,article.created_at as article_date FROM article where article.status = $1 and (role = $2 or role = $3) and article.article_id != $4 order by article.article_id desc limit 5';
-            var values = [1, role, "all", blog_id];
+            var sql = 'SELECT *,article.created_at as article_date FROM article where article.draft_status IS NULL and article.status = $1 and (role ILIKE $2 or role ILIKE $3) and article.article_id != $4 order by article.article_id desc limit 5';
+            var values = [1, '%' + role + '%', '%4%', blog_id];
             con.query(sql, values, function (err, result) {
                 con.release()
                 if (err) {
@@ -277,9 +276,55 @@ function User() {
         });
     };
 
+    this.purchase_article = function (record, callback) {
+        connection.acquire(function (err, con) {
+            const sql = 'INSERT INTO article_order(user_id,order_id,article_id,created_at) VALUES($1,$2,$3,$4) RETURNING *'
+            const values = [record.user_id, record.order_id, record.article_id, record.created_at]
+            con.query(sql, values, function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
     
 
+    this.changeDraftArticleStatus = function (record, article_id, callback) {
+        connection.acquire(function (err, con) {
+            con.query("UPDATE article SET draft_status =$1 WHERE article_id = $2", [record.status, article_id], function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, record);
+                }
+            });
+        });
+    }
     
+
+    this.draftarticleList = function (callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM article where draft_status = $1 order by article_id desc', [1], function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
 
 }
 module.exports = new User();

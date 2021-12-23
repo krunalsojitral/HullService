@@ -82,9 +82,9 @@ export default function Forum() {
                             <Sidebar />
                         </div>
 
-                        <div class="col-md-10 full-width">
-                            <div class="search-forum">
-                                <div class="search-box">
+                        <div className="col-md-10 full-width">
+                            <div className="search-forum">
+                                <div className="search-box">
                                     <form onSubmit={handleSubmit(search)}>
                                         <div className="form-group">
                                             <button type="button"><img src="images/search.png" alt="search" /></button>
@@ -102,7 +102,7 @@ export default function Forum() {
 
                                     </div>
 
-                                    <div class="video-tag">
+                                    <div className="video-tag">
                                         <h3>Sort By Tags</h3>
                                         <ul>
                                             {forumTagList.length > 0 && forumTagList.map((data, index) => (
@@ -113,17 +113,17 @@ export default function Forum() {
                                         </ul>
                                     </div>                                   
 
-                                    <div class="category-table">                                        
+                                    <div className="category-table">                                        
                                         {forumList.map((data, index) => (
                                             <div>
 
-                                                <div class="category-title">
+                                                <div className="category-title">
                                                     <h2>{data.forumheading_name}</h2>                                                    
                                                     <Link to={{ pathname: "/forum-sub", search: "?id=" + data.forumheading_id }}>View More >></Link>
                                                 </div>                                                
                                                 
-                                                <div class="forum-table table-responsive">
-                                                    <table class="table">
+                                                <div className="forum-table table-responsive">
+                                                    <table className="table">
                                                         <thead>
                                                             <tr>
                                                                 <th>Question</th>                                                                
@@ -135,7 +135,7 @@ export default function Forum() {
                                                             {data.forum.map((forumdata, index) => (
                                                                 <tr>
                                                                     <td>
-                                                                        {/* <div class="tooltip-box">
+                                                                        {/* <div className="tooltip-box">
                                                                             <Link to={{ pathname: "/forum-detail", search: "?id=" + forumdata.blog_id }}>
                                                                                 {forumdata.topic.slice(0, 45)}
                                                                                 <span className="tooltip-title">{forumdata.topic}</span>

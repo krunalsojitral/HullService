@@ -251,6 +251,7 @@ router.post('/addforumByadmin', [
     } else {
             let record = {
                 topic: req.body.title,
+                description: req.body.description,
                 heading: (req.body.heading) ? req.body.heading:'',                
                 created_at: moment().format('YYYY-MM-DD'),
             };
@@ -267,9 +268,10 @@ router.post('/addforumByadmin', [
 
 router.post('/updateforumByadmin', function (req, res) {
     var forum_id = req.body.forum_id;
-    let update_value = [req.body.title, req.body.heading]
+    let update_value = [req.body.title, req.body.description, req.body.heading]
     let record = {
         topic: req.body.title,
+        description: req.body.description,
         heading: (req.body.heading) ? req.body.heading : ''
     };
     let tag = (req.body.tag) ? req.body.tag : [];
@@ -655,53 +657,97 @@ router.post('/getForumCommentDetail', passport.authenticate('jwt', { session: fa
     var forum_id = req.body.forum_id;
     var comment = {
         'started': '',
-        'likes':'',
-        'replies':'',
-        'views':'',        
-        'follow': ''
+        'likes':0,
+        'unlikes':0,
+        'replies':0,        
+        'follow': '',
+        'user_like': 0,
+        'user_dislike': 0,
     }
     asyn.waterfall([
         function (done) {            
-            Forum.getforumRequestDataById(forum_id, function (err, result) {
+            Forum.getforumRequestDataById(user_id, forum_id, function (err, result) {
                 if (err) {                    
                     done(err, null)
-                } else {                    
-                    comment.started = helper.timeCountSince(result[0].created_at);
+                } else {                        
+                    if (result[0].created_at){                        
+                        comment.started = helper.timeCountSince(result[0].created_at);
+                    }   
+                    comment.forum_title = result[0].topic;
+                    comment.forum_description = result[0].description;
                     done(null, comment)
                 }
             });
         },
         function (comment, done1) {
-            Forum.getForumLikeCount(forum_id, function (err, result) {
+            Forum.getForumLikeUser(user_id, forum_id, function (err, result) {
                 if (err) {
                     done1(err, null)
-                } else {
-                    comment.likes = result[0].cnt;
-                    done1(err, comment)
+                } else {                   
+                    if (result.length > 0){
+                        comment.user_like = 1;
+                        done1(null, comment)
+                    }else{
+                        done1(null, comment)
+                    }
                 }
             });
         },
         function (comment, done2) {
-            Forum.getForumReplyCount(forum_id, function (err, result) {
+            Forum.getForumUnLikeUser(user_id, forum_id, function (err, result) {
                 if (err) {
                     done2(err, null)
                 } else {
-                    comment.replies = result[0].cnt;
-                    done2(err, comment)
+                    if (result.length > 0) {
+                        comment.user_dislike = 1;
+                        done2(null, comment)
+                    } else {
+                        done2(null, comment)
+                    }
                 }
             });
         },
         function (comment, done3) {
-            Forum.getForumFollow(forum_id, user_id, function (err, result) {
+            Forum.getForumLikeCount(forum_id, function (err, result) {
                 if (err) {
                     done3(err, null)
+                } else {
+                    comment.likes = result[0].cnt;
+                    done3(err, comment)
+                }
+            });
+        },
+        function (comment, done4) {
+            Forum.getForumUnLikeCount(forum_id, function (err, result) {
+                if (err) {
+                    done4(err, null)
+                } else {
+                    comment.unlikes = result[0].cnt;
+                    done4(err, comment)
+                }
+            });
+        }, 
+        function (comment, done5) {
+            Forum.getForumReplyCount(forum_id, function (err, result) {
+                if (err) {
+                    done5(err, null)
+                } else {
+                    comment.replies = result[0].cnt;
+                    done5(err, comment)
+                }
+            });
+        },
+        function (comment, done6) {
+            Forum.getForumFollow(forum_id, user_id, function (err, result) {
+                if (err) {
+                    done6(err, null)
                 } else {
                     if (result){
                         comment.follow = 1;
                     }else{
                         comment.follow = 0;
                     }                    
-                    done3(err, comment)
+                    done6(err, comment)
                 }
             });
         }
@@ -715,51 +761,139 @@ router.post('/getForumCommentDetail', passport.authenticate('jwt', { session: fa
     });
 });
 
-router.post('/getForumCommentList', [
+router.post('/getForumCommentList', passport.authenticate('jwt', { session: false }), [
     check('forum_id', 'Please enter valid id').notEmpty()
 ], (req, res) => {
     
     var forum_id = req.body.forum_id;
+    var user_id = req.user.id;
 
     asyn.waterfall([        
         function (done) {
             var comment = []
-            Forum.getForumCommentList(forum_id, function (err, result) {
+            // Forum.getForumCommentList(forum_id, user_id, function (err, result) {
+            //     if (err) {
+            //         return res.json({ status: 0, 'response': { msg: err } });
+            //     } else {
+            //         if (result.length > 0){
+            //             let temparray = new Promise(async (resolve, reject) => {
+            //                 for (let comments of result) {
+            //                     await Forum.getForumReplyComment(comments.forum_comment_id, function (err, data) {                                    
+            //                         if (data && data.reply_list.length > 0) {
+            //                             comments.reply = data.reply_list;
+            //                         }                                   
+            //                         comments.comment_count = data.comment_count[0].cnt;
+            //                         comment.push(comments);
+            //                     });
+            //                 }
+            //                 setTimeout(() => resolve(comment), 50)
+            //             });
+            //             temparray.then(result => {
+            //                 var commentList = result.map(data => {
+            //                     let retObj = {};
+            //                     retObj['comment'] = data.comment;
+            //                     retObj['comment_date'] = data.comment_date;
+            //                     retObj['first_name'] = data.first_name;
+            //                     retObj['forum_comment_id'] = data.forum_comment_id;
+            //                     retObj['last_name'] = data.last_name;
+            //                     //retObj['created_on'] = helper.timeSince(data.comment_date); 
+            //                     retObj['created_on'] = moment(data.comment_date).format('MMMM Do, YYYY');
+            //                     retObj['parent_comment_id'] = data.parent_comment_id;
+            //                     retObj['comment_like_id'] = data.comment_like_id;                                
+            //                     retObj['reply'] = data.reply;
+            //                     retObj['comment_count'] = data.comment_count;                                
+            //                     retObj['role'] = data.role;
+            //                     return retObj;
+            //                 });
+            //                 done(null, commentList);
+            //             })
+            //         }else{
+            //             done(null, []);
+            //         }
+            //     }
+            // }); 
+
+
+            Forum.getForumCommentList(forum_id, user_id, function (err, result) {
                 if (err) {
                     return res.json({ status: 0, 'response': { msg: err } });
                 } else {
-                    
-                    let temparray = new Promise(async (resolve, reject) => {
-                        for (let comments of result) {                            
-                            await Forum.getForumReplyComment(comments.parent_comment_id, function (err, data) {
-                                if (data && data.length > 0) {
-                                    comments.parent = data;
-                                }
-                                comment.push(comments);
+                    if (result.length > 0) {
+                        var response = [];
+                        Promise.all(result.map(function (item) {
+                              
+                            var temparray = new Promise(function (resolve, reject) {
+                               // for (let comments of result) {
+                                Forum.getForumReplyComment(item.forum_comment_id, function (err, data) {
+                                        if (data && data.reply_list.length > 0) {
+                                            item.reply = data.reply_list;
+                                        }
+                                        item.comment_count = data.comment_count[0].cnt;
+                                        //resolve(item);
+                                        setTimeout(() => resolve(item), 20)
+                                    });
+                              //  }
+                             //   setTimeout(() => resolve(comment), 50)
                             });
-                        }
-                        setTimeout(() => resolve(comment), 20)
-                    });
-                    temparray.then(result => {
+                            return temparray.then(result => {
 
-                        var commentList = result.map(data => {
-                            let retObj = {};
-                            retObj['comment'] = data.comment;
-                            retObj['comment_date'] = data.comment_date;
-                            retObj['first_name'] = data.first_name;
-                            retObj['forum_comment_id'] = data.forum_comment_id;
-                            retObj['last_name'] = data.last_name;
-                            retObj['created_on'] = (data.comment_date) ? moment(data.comment_date).format('MMMM Do, YYYY h:mm a') : '';
-                            retObj['parent_comment_id'] = data.parent_comment_id;
-                            retObj['reply'] = data.reply;
-                            retObj['role'] = data.role;
-                            return retObj;
-                        });
+                               // console.log(result);
+                                // var commentList = result.map(data => {
+                                //     let retObj = {};
+                                //     retObj['comment'] = data.comment;
+                                //     retObj['comment_date'] = data.comment_date;
+                                //     retObj['first_name'] = data.first_name;
+                                //     retObj['forum_comment_id'] = data.forum_comment_id;
+                                //     retObj['last_name'] = data.last_name;
+                                //     //retObj['created_on'] = helper.timeSince(data.comment_date); 
+                                //     retObj['created_on'] = moment(data.comment_date).format('MMMM Do, YYYY');
+                                //     retObj['parent_comment_id'] = data.parent_comment_id;
+                                //     retObj['comment_like_id'] = data.comment_like_id;
+                                //     retObj['reply'] = data.reply;
+                                //     retObj['comment_count'] = data.comment_count;
+                                //     retObj['role'] = data.role;
+                                //     return retObj;
+                                // });
+                                response.push(result);
+                                
+                            })
 
-                        done(null, commentList)
-                    })
+
+                        })).then(function () {
+                            done(null, response);
+                        })
+
+                        
+                    } else {
+                        done(null, response);
+                    }
                 }
-            }); 
+            });
+
+
+
+            // Forum.getForumCommentList(forum_id, user_id, function (err, rows) {
+            //     var response = [];
+            //     //doing something with rows
+            //     Promise.all(rows.map(function (item) {
+            //         var promise = new Promise(function (resolve, reject) {
+            //             connection.query(queryItem, function (err, rows) {
+            //                 //doing something
+            //                 result = rows[0].field;
+            //                 //and want to push it to an array
+            //                 resolve(result);
+            //             });
+            //         });
+            //         return promise.then(function (result) {
+            //             console.log(result); //ok
+            //             response.push(result) //ok
+            //         });
+            //     }).then(function () {
+            //         console.log(response); //not empty
+            //     })
+            // })
+
+
         }
     ],
         function (error, finalData) {
@@ -768,7 +902,7 @@ router.post('/getForumCommentList', [
             } else {
                 return res.json({ 'status': 1, 'response': { 'data': finalData, 'msg': 'data found' } });
             }
-        });
+    });
 });
 
 
@@ -917,6 +1051,88 @@ router.post('/unfollowUser', passport.authenticate('jwt', { session: false }), [
     }
 });
 
+router.post('/addComment', passport.authenticate('jwt', { session: false }), [
+    check('forum_id', 'Forum is required').notEmpty()
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        var obj = {
+            user_id: req.user.id,
+            forum_id: req.body.forum_id,
+            comment: req.body.comment,
+            parent_comment_id: (req.body.parent_comment_id) ? req.body.parent_comment_id: '',
+            created_at: moment().format('YYYY-MM-DD h:m:s')
+        }
+        Forum.addComment(obj, function (err, result) {
+            if (err) {
+                return res.json({ 'status': 0, 'response': { 'msg': err } });
+            } else {
+                if (result) {
+                    return res.json({ 'status': 1, 'response': { 'data': result, 'msg': 'Data found' } });
+                } else {
+                    return res.json({ 'status': 0, 'response': { 'data': [], 'msg': 'Data not found' } });
+                }
+            }
+        });
+    }
+});
 
+
+router.post('/forumLike', passport.authenticate('jwt', { session: false }), [
+    check('forumid', 'Forum is required').notEmpty()
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        var obj = {
+            user_id: req.user.id,
+            forum_id: req.body.forumid,
+            action_type: req.body.action_type,
+        }
+        Forum.forumLike(obj, function (err, result) {
+            if (err) {
+                return res.json({ 'status': 0, 'response': { 'msg': err } });
+            } else {
+                if (result) {
+                    return res.json({ 'status': 1, 'response': { 'data': result, 'msg': 'Data found' } });
+                } else {
+                    return res.json({ 'status': 0, 'response': { 'data': [], 'msg': 'Data not found' } });
+                }
+            }
+        });
+    }
+});
+
+
+router.post('/forumCommentLike', passport.authenticate('jwt', { session: false }), [
+    check('comment_id', 'Forum is required').notEmpty()
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        var obj = {
+            user_id: req.user.id,
+            comment_id: req.body.comment_id
+        }
+        Forum.forumCommentLike(obj, function (err, result) {
+            if (err) {
+                return res.json({ 'status': 0, 'response': { 'msg': err } });
+            } else {    
+                if (result.length > 0) {
+                    return res.json({ 'status': 1, 'response': { 'data': 'like', 'msg': 'Data found' } });
+                } else {
+                    return res.json({ 'status': 1, 'response': { 'data': 'unlike', 'msg': 'Data not found' } });
+                }
+            }
+        });
+    }
+});
 
 module.exports = router;

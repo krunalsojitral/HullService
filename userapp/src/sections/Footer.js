@@ -24,13 +24,13 @@ export default function Footer() {
                         </div>
                             <ul>
                                 <li>
-                                    <Link to='/'>About</Link>
+                                    <Link to='/about'>About</Link>
                                 </li>
                                 <li>
-                                    <Link to='/'>Blog</Link>
+                                    <Link to='/blog'>Blog</Link>
                                 </li>
                                 <li>
-                                    <Link to='/'>Contact us</Link>
+                                    <Link to='/contact'>Contact us</Link>
                                 </li>
                             </ul>
                         </div>

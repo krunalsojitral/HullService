@@ -80,10 +80,10 @@
 .forum-box .forum-details .form-group input.form-control{
 font-family: Open Sans;
     font-style: normal;
-    font-weight: normal;
-    font-size: 13px;
+    font-weight: 500;
+    font-size: 17px;
     line-height: 18px;
-    color: #A0A0A0;
+    color: #000;
     border: none;
     box-shadow: none;
     border-bottom: #A0A0A0 solid 1px;
@@ -92,11 +92,19 @@ font-family: Open Sans;
     height: 50px;
 }
 
-.forum-box .forum-details .form-group select.form-control {
-
+.forum-box .forum-details .form-group textarea.form-control{
+    font-family: Open Sans;
     font-style: normal;
-    font-weight: normal;
-    font-size: 15px;
+    font-weight: 500;
+    font-size: 17px;    
+    color: #000;
+}
+
+.forum-box .forum-details .form-group select.form-control {
+    appearance: none;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 17px;
     line-height: 18px;
     color: #A0A0A0;
     box-shadow: none;
@@ -112,6 +120,8 @@ font-family: Open Sans;
 }
 .forum-box .forum-details .dropdown-heading{
    height: 50px;
+   font-size: 17px;
+   font-weight: 500;
 }
 .forum-box .forum-details .forum-btn{
     background: linear-gradient(135deg, #036E80 30.73%, #5EA5C7 100%);
@@ -189,3 +199,22 @@ a.book-apoint {
     padding: 5px;
     font-size: 12px;
   }
+.accout-section{
+    text-align: center;
+}
+
+.accout-section a.btn-submit {
+    background: linear-gradient(
+135deg
+, #036E80 30.73%, #5EA5C7 100%);
+    border-radius: 25px;
+    width: 150px;
+    height: 42px;
+    color: #fff;
+    line-height: 42px;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: block;
+    margin: 0 auto;
+    border: none;
+}

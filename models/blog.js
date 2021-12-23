@@ -17,11 +17,11 @@ function User() {
                 }
             });
         });
-    }   
+    }        
 
     this.getAllAdminBlog = function (callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM blog order by blog_id desc', function (err, result) {
+            con.query('SELECT * FROM blog where draft_status IS NULL order by blog_id desc', function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }
@@ -36,8 +36,8 @@ function User() {
     
     this.addBlogByadmin = function (record, callback) {
         connection.acquire(function (err, con) {
-            const sql = 'INSERT INTO blog(title,description,created_at,role,purchase_type,image,cost,status) VALUES($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *'
-            const values = [record.title, record.description, record.created_at, record.role, record.purchase_type, record.image, record.cost, 1]
+            const sql = 'INSERT INTO blog(title,description,created_at,role,purchase_type,image,cost,draft_status,status) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *'
+            const values = [record.title, record.description, record.created_at, record.role, record.purchase_type, record.image, record.cost, record.draft, 1]
             con.query(sql, values, function (err, result) {                
                 if (err) {
                     if (env.DEBUG) {
@@ -150,6 +150,22 @@ function User() {
         });
     }
 
+    this.changeDraftBlogStatus = function (record, blog_id, callback) {
+        connection.acquire(function (err, con) {
+            con.query("UPDATE blog SET draft_status =$1 WHERE blog_id = $2", [record.status, blog_id], function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, record);
+                }
+            });
+        });
+    }
+
     this.getBlogDataById = function (id, callback) {
         connection.acquire(function (err, con) {
             con.query('SELECT * FROM blog where blog_id = $1', [id], function (err, result) {
@@ -164,10 +180,10 @@ function User() {
         });
     }
 
-    this.getPaidBlogList = function (role, callback) {
+    this.getPaidBlogList = function (role, user_id, callback) {
         connection.acquire(function (err, con) {
             console.log(role);
-            con.query('SELECT *,blog.created_at as blog_date FROM blog where blog.status = $1 and (role = $2 or role = $3) order by blog.blog_id desc', [1, role, "all"], function (err, result) {
+            con.query('SELECT *,blog.blog_id as b_id, blog.created_at as blog_date FROM blog left join bookmark_blog on blog.blog_id = bookmark_blog.blog_id and bookmark_blog.user_id = $1 where blog.draft_status IS NULL and blog.status = $2 and (blog.role ILIKE $3 or blog.role ILIKE $4) order by blog.blog_id desc', [user_id, 1, '%' + role + '%', '%4%'], function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }
@@ -181,7 +197,7 @@ function User() {
 
     this.getUnpaidBlogList = function (callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT *,blog.created_at as blog_date FROM blog where blog.status = $1 and (role = $2 or role = $3) order by blog.blog_id desc', [1, 4, "all"], function (err, result) {
+            con.query('SELECT *,blog.created_at as blog_date FROM blog where blog.draft_status IS NULL and blog.status = $1 and (role ILIKE $2) order by blog.blog_id desc', [1, '%4%'], function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }
@@ -195,8 +211,8 @@ function User() {
 
     this.getRelatedUnpaidBlogList = function (blog_id, callback) {
         connection.acquire(function (err, con) {            
-            var sql = 'SELECT *,blog.created_at as blog_date FROM blog where blog.status = $1 and (role = $2 or role = $3) and blog.blog_id != $4 order by blog.blog_id desc limit 5';
-            var values = [1, 4, "all", blog_id];
+            var sql = 'SELECT *,blog.created_at as blog_date FROM blog where blog.draft_status IS NULL and blog.status = $1 and (role ILIKE $2) and blog.blog_id != $3 order by blog.blog_id desc limit 5';
+            var values = [1, '%4%', blog_id];
             con.query(sql, values, function (err, result) {
                 con.release()
                 if (err) {
@@ -211,8 +227,8 @@ function User() {
 
     this.getRelatedPaidBlogList = function (role, blog_id, callback) {
         connection.acquire(function (err, con) {            
-            var sql = 'SELECT *,blog.created_at as blog_date FROM blog where blog.status = $1 and (role = $2 or role = $3) and blog.blog_id != $4 order by blog.blog_id desc limit 5';
-            var values = [1, role, "all", blog_id];
+            var sql = 'SELECT *,blog.created_at as blog_date FROM blog where blog.draft_status IS NULL and blog.status = $1 and (role ILIKE $2 or role ILIKE $3) and blog.blog_id != $4 order by blog.blog_id desc limit 5';
+            var values = [1, '%' + role + '%', '%4%', blog_id];
             con.query(sql, values, function (err, result) {
                 con.release()
                 if (err) {
@@ -260,8 +276,55 @@ function User() {
             });
         });
     };
+    
+    this.purchase_blog = function (record, callback) {
+        connection.acquire(function (err, con) {
+            const sql = 'INSERT INTO blog_order(user_id,order_id,blog_id,created_at) VALUES($1,$2,$3,$4) RETURNING *'
+            const values = [record.user_id, record.order_id, record.blog_id, record.created_at]
+            con.query(sql, values, function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+    
+
+    this.getBookMarkBlog = function (user_id, role, callback) {
+        connection.acquire(function (err, con) {
+            console.log(role);
+            con.query('SELECT *,blog.blog_id as b_id, blog.created_at as blog_date FROM bookmark_blog inner join blog on blog.blog_id = bookmark_blog.blog_id where bookmark_blog.user_id = $1 and blog.status = $2 and (blog.role = $3 or blog.role = $4) order by blog.blog_id desc', [user_id, 1, role, "all"], function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
 
     
+    this.draftblogList = function (callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM blog where draft_status = $1 order by blog_id desc', [1], function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
 
 }
 module.exports = new User();

@@ -407,7 +407,7 @@ export default function Register() {
 
                                         {userTypeList == 'researcher' &&
                                             <div>
-                                                <div className="form-group">
+                                            <div className="form-group select-dropdown open-select">
                                                     <Controller
                                                         name="academic_discipline"
                                                         control={control}
@@ -446,7 +446,7 @@ export default function Register() {
 
                                         {userTypeList == 'professional' && <div>
 
-                                            <div className="form-group">
+                                            <div className="form-group select-dropdown">
                                                 <Controller
                                                     name="sector"
                                                     control={control}
@@ -467,7 +467,7 @@ export default function Register() {
                                                 )}
                                             </div>
                                            
-                                            <div className="form-group">
+                                            <div className="form-group select-dropdown">
                                                 <Controller
                                                     name="level_of_education"
                                                     control={control}
@@ -489,7 +489,7 @@ export default function Register() {
                                                 )}
                                             </div>
                                             
-                                            <div className="form-group">
+                                            <div className="form-group select-dropdown">
                                                 <Controller
                                                     name="occupation"
                                                     control={control}

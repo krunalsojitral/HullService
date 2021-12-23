@@ -12,7 +12,7 @@ import './../dev.css';
 
 export default function Video() {
 
-    const pageLimit = 12;
+    const pageLimit = 9;
     const [offset, setOffset] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [data, setData] = useState([]);
@@ -21,46 +21,19 @@ export default function Video() {
     const { handleSubmit, formState } = useForm();
     const [selectedFilter, setSelectedFilter] = useState("desending");
 
+    const [token, setToken] = useState('');
+
 
 
     React.useEffect(() => {
 
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
-        const config = {
-            headers: { Authorization: `${token}` }
-        };
 
-        if (token) {
-            axios.post(api_url + '/video/getPaidVideoList', {}, config).then((result) => {
-                if (result.data.status) {
-                    var videodata = result.data.response.data;
-                    if (videodata.length > 0) {
-                        setData(videodata);
-                    }
-                } else {
-                    Swal.fire('Oops...', result.data.response.msg, 'error')
-                }
-            }).catch((err) => {
-                console.log(err);
-                //Swal.fire('Oops...', err, 'error')
-            })
-        } else {
+        setToken(token);
 
-            axios.post(api_url + '/video/getUnpaidVideoList', {}).then((result) => {
-                if (result.data.status) {
-                    var videodata = result.data.response.data;
-                    if (videodata.length > 0) {
-                        setData(videodata);
-                    }
-                } else {
-                    Swal.fire('Oops...', result.data.response.msg, 'error')
-                }
-            }).catch((err) => {
-                console.log(err);
-                //Swal.fire('Oops...', err, 'error')
-            })
-        }
+        getVideoData();
+        getVideoDataWrap();
     }, [])
 
     React.useEffect(() => {
@@ -119,6 +92,72 @@ export default function Video() {
         }
     }
 
+    const bookmarkClick = (id) => {        
+        const tokenString = localStorage.getItem('token');
+        var token = JSON.parse(tokenString);
+
+        
+
+        const config = {
+            headers: { Authorization: `${token}` }
+        };
+        axios.post(api_url + '/video/videoBookmark', { "video_id": id }, config).then((result) => {
+            if (result.data.status) {
+                var blogdata = result.data.response.data;
+                getVideoDataWrap();
+            } else {
+                Swal.fire('Oops...', result.data.response.msg, 'error')
+            }
+        }).catch((err) => {
+            console.log(err);
+        })
+    }
+
+    const getVideoData = () => {
+
+        const tokenString = localStorage.getItem('token');
+        var token = JSON.parse(tokenString);
+        const config = {
+            headers: { Authorization: `${token}` }
+        };
+
+        if (token) {
+            axios.post(api_url + '/video/getPaidVideoList', {}, config).then((result) => {
+                if (result.data.status) {
+                    var videodata = result.data.response.data;
+                    if (videodata.length > 0) {
+                        setData(videodata);
+                    }
+                } else {
+                    Swal.fire('Oops...', result.data.response.msg, 'error')
+                }
+            }).catch((err) => {
+                console.log(err);
+                //Swal.fire('Oops...', err, 'error')
+            })
+        } else {
+
+            axios.post(api_url + '/video/getUnpaidVideoList', {}).then((result) => {
+                if (result.data.status) {
+                    var videodata = result.data.response.data;
+                    if (videodata.length > 0) {
+                        setData(videodata);
+                    }
+                } else {
+                    Swal.fire('Oops...', result.data.response.msg, 'error')
+                }
+            }).catch((err) => {
+                console.log(err);
+                //Swal.fire('Oops...', err, 'error')
+            })
+        }
+
+    }
+
+    const getVideoDataWrap = () => {
+        getVideoData(setData);
+    };
+
     return (
         <div>
             <Header />
@@ -147,7 +186,7 @@ export default function Video() {
                                                 <form onSubmit={handleSubmit(search)}>
                                                     <div className="form-group search-input video-flex">
                                                         <input type="text" onChange={onChangeSearch} className="form-control" name="search_name" placeholder="Search…" />
-                                                        <button className="btn-submit-video" type="button">Submit</button>
+                                                        <button className="btn-submit-video" type="submit">Submit</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -175,23 +214,35 @@ export default function Video() {
                                                         <div className="video-img">
                                                             <iframe width="100%" height="195px" title="YouTube video player" src={`https://www.youtube.com/embed/${data.video_embeded_id}?rel=0&modestbranding=1&showinfo=0`} allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>                                                            
                                                         </div>
-                                                        <h3 class="tooltip-box">
-                                                            <Link to={{ pathname: "/video-detail", search: "?id=" + data.video_id }}>
-                                                             {data.title.slice(0, 30)}
-                                                            <span className="tooltip-title">{data.title}</span>
-                                                            </Link>
-                                                        </h3>
-                                                        <div className="video-bottom">
-                                                            <p><img src="images/hull-icon.png" alt="author" />Hull Service</p>
-                                                            <Link to={{ pathname: "/video-detail", search: "?id=" + data.video_id }}><img src="images/video.png" alt="video" /></Link>
+
+                                                        <div className="blog-text">
+                                                            {token && <div className="blog-tags" onClick={(e) => bookmarkClick(data.video_id)}>                                                                
+                                                                {data.bookmark_video_id && <img className="bookmark-fill" src="images/bookmark-fill.png" alt="bookmark-fill" />}
+                                                                {!data.bookmark_video_id && <img className="bookmark-outline" src="images/bookmark-outline.png" alt="bookmark-fill" />}
+                                                            </div>}
+
+                                                            <h3 className="tooltip-box">
+                                                                <Link to={{ pathname: "/video-detail", search: "?id=" + data.video_id }}>
+                                                                {data.title.slice(0, 30)}
+                                                                <span className="tooltip-title">{data.title}</span>
+                                                                </Link>
+                                                            </h3>
+                                                            <div className="video-bottom">
+                                                                <p><img src="images/hull-icon.png" alt="author" />Hull Service</p>
+                                                                {data.cost && <p className="price">${data.cost}</p>}
+                                                                {!data.cost && <p className="price">Free</p>}
+                                                                {/* <Link to={{ pathname: "/video-detail", search: "?id=" + data.video_id }}><img src="images/video.png" alt="video" /></Link> */}
+                                                            </div>
+
                                                         </div>
+
                                                     </div>
                                                 </div>
                                             ))}
                                             {
                                                 currentData.length == 0 &&
                                                 <div className="video-card">
-                                                    <div className="no-data">No video available.</div>
+                                                    <div className="no-data">No results found.</div>
                                                 </div>
                                             }
                                         </div>

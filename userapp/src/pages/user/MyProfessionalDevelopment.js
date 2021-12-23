@@ -145,11 +145,11 @@ export default function MyProfessionalDevelopment() {
                                                     <div className="video-card">
                                                         <div className="video-img">
                                                             <Link to={{ pathname: "/professional-development-detail", search: "?id=" + data.course_id }}>
-                                                                {data.image && <img src={data.image} alt="blog" />}
+                                                                {data.image_thumb && <img src={data.image_thumb} alt="blog" />}
                                                                 {!data.image && <img src="images/blog.jpg" alt="blog" />}
                                                             </Link>
                                                         </div>
-                                                        <h3 class="tooltip-box">
+                                                        <h3 className="tooltip-box">
                                                             <Link to={{ pathname: "/professional-development-detail", search: "?id=" + data.course_id }}>
                                                                 {data.title.slice(0, 30)}
                                                                 <span className="tooltip-title">{data.title}</span>

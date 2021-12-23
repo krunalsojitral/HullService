@@ -4,6 +4,7 @@ import useAuth from './../hooks/useAuth';
 import Header from './../sections/Header';
 import Footer from './../sections/Footer';
 import { Link } from 'react-router-dom';
+import './dev.css';
 
 export default function ActivationAccount() {
   
@@ -32,9 +33,8 @@ export default function ActivationAccount() {
                 <div className="login-img">
                   <img alt="logo" src="images/logo.png" />
                 </div>
-
                 {
-                  (flag === 1 && <div>
+                  (flag === 1 && <div className="accout-section">
                     <img style={{ height: "132px", width: "232px", marginBottom: "54px" }} alt="average" src="images/right.png" />
                     <h4>Your account has been activated.</h4>
                     <div>&nbsp;</div>
@@ -45,14 +45,12 @@ export default function ActivationAccount() {
                 }
                 {
                   (flag === 0 &&
-                    <div>
+                    <div className="accout-section">
                       <img style={{ height: "212px", width: "312px" }} alt="average" src="images/error.webp" />
                       <h4>Link is Expired.</h4>
                       <div>Please go back and try again.</div>
                     </div>)
                 }
-
-               
               </div>
             </div>
           </div>

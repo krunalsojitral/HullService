@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import InlineButton from './../components/InlineButton';
 import { useHistory } from 'react-router-dom';
 import useLogout from './../hooks/useLogout';
+
 // import api_url from './../components/Apiurl';
 // import axios from 'axios';
 // import Swal from "sweetalert2";
@@ -13,6 +14,8 @@ export default function Header() {
     let history = useHistory();
     const [userData, setUserData] = useState(0);
     const [token, setToken] = React.useState(0);
+
+    const { pathname } = useLocation();
 
     const { logoutUser } = useLogout();
 
@@ -189,17 +192,17 @@ export default function Header() {
                                                 </a>
                                                 <ul>
                                                     <li>
-                                                        <NavLink activeClassName="active" to="/articles">
+                                                        <NavLink activeClassName="active" to="/articles" isActive={() => ['/articles', '/article-detail', '/article-payment'].includes(pathname)}>
                                                             <InlineButton name={"Articles"} />
                                                         </NavLink>
                                                     </li>
                                                     <li>
-                                                        <NavLink activeClassName="active" to="/blog">
-                                                            <InlineButton name={"Blog"} />
+                                                        <NavLink isActive={() => ['/blog', '/blog-detail', '/blog-payment', '/my-blog'].includes(pathname)} to="/blog">
+                                                            <InlineButton name={"Blogs"} />
                                                         </NavLink>
                                                     </li>
                                                     <li>
-                                                        <NavLink activeClassName="active" to="/informational-video">
+                                                        <NavLink activeClassName="active" to="/informational-video" isActive={() => ['/informational-video', '/video-detail', '/video-payment'].includes(pathname)}>
                                                             <InlineButton name={"Informational Videos"} />
                                                         </NavLink>
                                                     </li>

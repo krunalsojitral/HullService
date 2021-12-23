@@ -15,13 +15,14 @@ import { useHistory } from "react-router-dom";
 export default function VideoDetail() {
 
     let history = useHistory();
-
+    const [videoId, setVideoId] = React.useState(0);
     const [videoDetail, setVideoDetail] = React.useState({})
     const [relatedVideoDetail, setRelatedVideoDetail] = React.useState([])
 
     React.useEffect(() => {
         const params = new URLSearchParams(window.location.search) // id=123
         let video_id = params.get('id')
+        setVideoId(video_id);
 
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
@@ -32,11 +33,18 @@ export default function VideoDetail() {
                 if (videodata.purchase_type == "unpaid") {
                     setVideoDetail(videodata);
                 } else {
-                    if (!token) {
-                        open()
-                    } else {
+
+                    if (videodata.purchase_type == "unpaid") {
                         setVideoDetail(videodata);
+                    }else{
+                        open()
                     }
+                    
+                    // if (!token) {
+                    //     open()
+                    // } else {
+                    //     setVideoDetail(videodata);
+                    // }
                 }
             } else {
                 Swal.fire('Oops...', result.data.response.msg, 'error')
@@ -75,7 +83,7 @@ export default function VideoDetail() {
             <Header/>
 
             <Modal>
-                <DirectionModel close={close}></DirectionModel>
+                <DirectionModel close={close} videoDetail={videoId}></DirectionModel>
             </Modal>
 
             <section className="inner-header">
@@ -98,7 +106,7 @@ export default function VideoDetail() {
                             <div className="row">
                                 <div className="col-md-12">
                                     <div className="video-box">
-                                        <iframe width="100%" height="555px" src={`https://www.youtube.com/embed/${videoDetail.video_embeded_id}?rel=0&modestbranding=1&showinfo=0`} title="YouTube video player" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>
+                                        <iframe width="100%" height="555px" src={`https://www.youtube.com/embed/${videoDetail.video_embeded_id}?rel=0&modestbranding=1&showinfo=0`} title="YouTube video player" allow="fullscreen; accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>
                                     </div>
                                 </div>
                             </div>

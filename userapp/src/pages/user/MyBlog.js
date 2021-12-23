@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import Header from './../../sections/Header';
 import Footer from './../../sections/Footer';
@@ -8,31 +8,22 @@ import axios from 'axios';
 import Swal from "sweetalert2";
 import api_url from '../../components/Apiurl';
 import './../dev.css';
+import { UserContext } from './../../hooks/UserContext';
 
 
-export default function Articles() {
-    
-    const pageLimit = 9;
+export default function Blog() {
+
+    const pageLimit = 12;
     const [offset, setOffset] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [data, setData] = useState([]);
     const [currentData, setCurrentData] = useState([]);
-    const [token, setToken] = useState('');
+
+    const { user, isLoading } = useContext(UserContext);
+
+
 
     React.useEffect(() => {
-
-        const tokenString = localStorage.getItem('token');
-        var token = JSON.parse(tokenString);
-
-        setToken(token);
-
-        getArticleData();
-        getArticleDataWrap();
-
-        
-    }, [])
-
-    const getArticleData = () => {
 
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
@@ -40,38 +31,21 @@ export default function Articles() {
             headers: { Authorization: `${token}` }
         };
 
-        if (token) {
-
-            axios.post(api_url + '/article/getPaidArticleList', {}, config).then((result) => {
-                if (result.data.status) {
-                    var blogdata = result.data.response.data;
-                    if (blogdata.length > 0) {
-                        setData(blogdata);
-                    }
-                } else {
-                    Swal.fire('Oops...', result.data.response.msg, 'error')
+        axios.post(api_url + '/blog/getBookMarkBlog', {}, config).then((result) => {
+            if (result.data.status) {
+                var coursedata = result.data.response.data;
+                if (coursedata.length > 0) {
+                    setData(coursedata);
                 }
-            }).catch((err) => {
-                console.log(err);
-            })
+            } else {
+                Swal.fire('Oops...', result.data.response.msg, 'error')
+            }
+        }).catch((err) => {
+            console.log(err);
+            //Swal.fire('Oops...', err, 'error')
+        })
 
-        } else {
-
-            axios.post(api_url + '/article/getUnpaidArticleList').then((result) => {
-                if (result.data.status) {
-                    var blogdata = result.data.response.data;
-                    if (blogdata.length > 0) {
-                        setData(blogdata);
-                    }
-                } else {
-                    Swal.fire('Oops...', result.data.response.msg, 'error')
-                }
-            }).catch((err) => {
-                console.log(err);
-            })
-        }
-
-    }
+    }, [])
 
     React.useEffect(() => {
         if (offset > 0) {
@@ -82,39 +56,19 @@ export default function Articles() {
         setCurrentData(data.slice(offset, offset + pageLimit));
     }, [offset, data]);
 
-    
-    const bookmarkClick = (id) => {
-        const tokenString = localStorage.getItem('token');
-        var token = JSON.parse(tokenString);
-        const config = {
-            headers: { Authorization: `${token}` }
-        };
-        axios.post(api_url + '/article/articleBookmark', { "article_id" : id }, config).then((result) => {
-            if (result.data.status) {
-                var blogdata = result.data.response.data;
-                getArticleDataWrap();
-            } else {
-                Swal.fire('Oops...', result.data.response.msg, 'error')
-            }
-        }).catch((err) => {
-            console.log(err);
-        })
-    }
-
-    const getArticleDataWrap = () => {
-        getArticleData(setData);
-    };
-
    
 
     return (
         <div>
             <Header />
+
+
+
             <section className="inner-header">
                 <div className="container">
                     <div className="row">
                         <div className="col-md-12">
-                            <h2>Articles</h2>
+                            <h2>Blogs</h2>
                         </div>
                     </div>
                 </div>
@@ -128,26 +82,21 @@ export default function Articles() {
 
                         <div className="col-md-8 articlebox">
                             <div className="row">
-
                                 {currentData.map((data, index) => (<div key={index} className="col-md-4">
+
                                     <div className="blog-box">
                                         <div className="blog-image">
-                                        <Link to={{ pathname: "/article-detail", search: "?id=" + data.article_id }}>
-                                            {data.image_thumb && <img src={data.image_thumb} alt="article" />}
-                                            {!data.image && <img src="images/blog.jpg" alt="article" />}
-                                        </Link>
+                                            <Link to={{ pathname: "/blog-detail", search: "?id=" + data.blog_id }}>
+                                                {data.image && <img src={data.image} alt="blog" />}
+                                                {!data.image && <img src="images/blog.jpg" alt="blog" />}
+                                            </Link>
                                         </div>
-                                        <div className="blog-text">                                            
-
-                                            {token && <div className="blog-tags" onClick={(e) => bookmarkClick(data.article_id)}>
-                                                {data.bookmark_article_id && <img className="bookmark-fill" src="images/bookmark-fill.png" alt="bookmark-fill" />}
-                                                {!data.bookmark_article_id && <img className="bookmark-outline" src="images/bookmark-outline.png" alt="bookmark-fill" />}
-                                            </div>}
-
+                                        <div className="blog-text">
+                                            <br/>
                                             <h3 className="tooltip-box">
-                                                <Link data-toggle="tooltip" title={data.title} data-placement="bottom" to={{ pathname: "/article-detail", search: "?id=" + data.article_id }}> 
-                                                {data.title.slice(0, 30)}
-                                                <span className="tooltip-title">{data.title}</span>
+                                                <Link to={{ pathname: "/blog-detail", search: "?id=" + data.blog_id }}>
+                                                    {data.title.slice(0, 30)}
+                                                    <span className="tooltip-title">{data.title}</span>
                                                 </Link>
                                             </h3>
                                             <div className="blog-post">
@@ -162,18 +111,18 @@ export default function Articles() {
                                             </div>
                                         </div>
                                     </div>
-                                </div>))}
 
+                                </div>
+                                ))}
                                 {
                                     currentData.length == 0 &&
                                     <div className="blog-box">
-                                        <div className="no-data">No article available.
+                                        <div className="no-data">No blog available.
                                         </div>
                                     </div>
                                 }
-                               
-                            </div>
 
+                            </div>
                             <div className="row">
                                 {
                                     currentData.length > 0 && <Paginator

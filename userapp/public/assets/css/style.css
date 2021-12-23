@@ -225,6 +225,7 @@ header .header-card {
 header .header-card .logo {
     display: block;
     width: 100px;
+    cursor: pointer;
 }
 
 header .header-card .hull-links {
@@ -249,7 +250,7 @@ header .header-card .hull-links .hull-menu ul li a {
     line-height: 25px;
     color: #036E80;
     padding: 3px 12px;
-
+    cursor: pointer;
 }
 
 header .header-card .hull-links .hull-menu ul li a.active {
@@ -314,6 +315,13 @@ header .header-card .hull-links a.mob-btn {
     color: #000;
     text-align: right;
     margin: 15px 0;
+}
+img.bookmark-outline {
+    cursor: pointer;
+}
+
+img.bookmark-fill {
+    cursor: pointer;
 }
 
 .callout-section {
@@ -1008,7 +1016,7 @@ section.banner-card .banner-text .banner-btn {
 }
 
 .login-section .login-box .login-details .form-group select.form-control {
-
+    appearance: none;
     font-style: normal;
     font-weight: normal;
     font-size: 15px;
@@ -1049,11 +1057,11 @@ section.banner-card .banner-text .banner-btn {
 .login-section .login-box .login-details .form-group input.form-control {
     font-family: Open Sans;
     font-style: normal;
-    font-weight: normal;
-    font-size: 13px;
+    font-weight: 500;
+    font-size: 17px;
     line-height: 18px;
     /* identical to box height */
-    color: #A0A0A0;
+    color: #000;
     border: none;
     box-shadow: none;
     border-bottom: #A0A0A0 solid 1px;
@@ -1065,8 +1073,8 @@ section.banner-card .banner-text .banner-btn {
 .login-section .login-box .login-details .form-group select.form-control {
     font-family: Open Sans;
     font-style: normal;
-    font-weight: normal;
-    font-size: 13px;
+    font-weight: 500;
+    font-size: 17px;
     line-height: 18px;
     color: #A0A0A0;
     box-shadow: none;
@@ -1089,8 +1097,8 @@ section.banner-card .banner-text .banner-btn {
     float: left;
     font-family: Open Sans;
     font-style: normal;
-    font-weight: normal;
-    font-size: 13px;
+    font-weight: 500;
+    font-size: 17px;
     color: #A0A0A0;
     box-shadow: none;
     border-radius: 10px;
@@ -1288,13 +1296,18 @@ header .header-card .hull-links .Sign-header a {
 
 li.city_suggestion {
     display: block !important;
+    cursor: pointer;
 }
 
 .city_suggestion p {
     font-weight: 400;
 }
-
-
+textarea.form-control{
+    color: #000;
+}
+.video-list-icon a {
+    cursor: pointer;
+}
 /*
  24 Nov
 */
@@ -1721,8 +1734,13 @@ section.inner-header h2 {
 
 }
 
+.dashboard-content a.Support-card{
+min-height: 258px;
+}
+
 .dashboard-card .side-bar ul li a span {
     margin-left: 10px;
+    width: 100%;
 }
 
 .dashboard-card .side-bar ul li a .icon {
@@ -1841,7 +1859,9 @@ section.inner-header h2 {
     position: relative;
     padding-left: 0;
 }
-
+.video-card .price{
+    font-weight: 500;
+}
 
 .video-card p img {
     content: '';
@@ -2069,8 +2089,11 @@ section.inner-header h2 {
     width: 17px;
 }
 
-.video-list .video-list-card .video-list-view .video-list-text h3 {
+.video-list .video-list-card .video-list-view .video-list-text a {
+    cursor: pointer;
+}
 
+.video-list .video-list-card .video-list-view .video-list-text h3 {
     font-style: normal;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -2083,7 +2106,6 @@ section.inner-header h2 {
     line-height: 120%;
     /* or 22px */
     letter-spacing: 0.005em;
-
     /* Light/Text Color/Title */
     color: #11142D;
     margin: 0 0 15px;
@@ -2096,10 +2118,9 @@ section.inner-header h2 {
 }
 
 .video-list .video-list-card .video-list-view .video-list-text .video-inner-text p {
-
     font-style: normal;
-    font-weight: 500;
-    font-size: 15px;
+    font-weight: 400;
+    font-size: 14px;
     line-height: 120%;
     letter-spacing: 0.005em;
     color: #11142D;
@@ -2108,7 +2129,6 @@ section.inner-header h2 {
 
 .video-list .video-list-card .video-list-view .video-list-text .video-inner-text small {
     display: block;
-
     font-style: normal;
     font-weight: normal;
     font-size: 12px;
@@ -2210,11 +2230,11 @@ section.inner-header h2 {
 }
 
 .research-date label {
-    font-size: 18px;
-    line-height: 25px;
+    font-size: 12px;
+    line-height: normal;
     text-align: right;
     letter-spacing: 1.5px;
-    text-transform: uppercase;
+    text-transform: capitalize;
     color: rgba(0, 0, 0, 0.75);
     font-weight: 300;
 }
@@ -2249,7 +2269,7 @@ section.inner-header h2 {
     display: block;
     width: 100%;
     float: left;
-    height: 500px;
+    /* height: 500px; */
 }
 
 .research-main .video-text {
@@ -3060,8 +3080,9 @@ section.inner-header h2 {
 .blog-text h3 {
     font-weight: bold;
     font-size: 22px;
-    line-height: 28px;
+    line-height: 25px;
     color: #000000;
+    margin-bottom:4px;
 }
 
 .blog-text h3 a {
@@ -3415,7 +3436,7 @@ section.inner-header h2 {
     display: block;
 }
 
-.forum-comments a span {
+.forum-comments p span {
     font-style: italic;
     font-weight: normal;
     font-size: 16px;
@@ -3436,7 +3457,7 @@ section.inner-header h2 {
 
 .replied-text {
     background: #FFEFC4;
-    margin-left: 35px;
+    margin-left: 0;
     padding: 8px;
     margin-bottom: 10px;
     display: block;
@@ -3464,7 +3485,7 @@ section.inner-header h2 {
     font-size: 16px;
     line-height: 120%;
     letter-spacing: 0.005em;
-    color: #92929D;
+    color: #036E80;
 }
 
 .forum-post label {
@@ -3472,7 +3493,7 @@ section.inner-header h2 {
     font-size: 16px;
     line-height: 120%;
     letter-spacing: 0.005em;
-    color: #000000;
+    color: #7f7f7f;
     margin-left: 5px;
 }
 
@@ -3486,7 +3507,7 @@ section.inner-header h2 {
 }
 
 .forum-cal .forum-inner:first-of-type label {
-    color: #11142D;
+    color: #7f7f7f;
     font-weight: bold;
     margin-left: 0;
 }
@@ -3821,4 +3842,354 @@ div#swal2-html-container{
 
 .forumadd {
     overflow: inherit;
+}
+
+
+	.view-btn a {		
+    font-size: 16px;		
+    line-height: 120%;		
+    text-align: center;		
+    letter-spacing: 0.005em;		
+    color: #038EA6;		
+    display: block;		
+    margin: 10px 0;		
+    text-align: left;		
+    font-weight: bold;		
+    padding-left: 10px;		
+}		
+	
+.research-date {	
+    display: flex;	
+    gap: 50px;	
+    font-size: 16px;	
+}	
+.research-main {	
+    background: #fff;	
+    padding: 10px;	
+    border-radius: 8px;	
+    margin: 15px 0;	
+}	
+.category-table .research-box {	
+    justify-content: flex-start;	
+    align-items: flex-start;	
+    margin-bottom: 0;	
+}	
+.breadcrumbs-main {	
+    display: block;	
+    margin: 30px 0;	
+    background: #fff;	
+    padding: 10px;	
+    border-radius: 8px;	
+}	
+.category-table .forum-comments {	
+    display: flex;	
+    justify-content: flex-start;	
+    gap: 30px;	
+}	
+.forum-comments p {	
+    display: flex;	
+    align-items: center;
+    margin: 0;	
+}	
+.cat-title {	
+    display: flex;	
+    justify-content: space-between;	
+    align-items: center;	
+    margin: 25px 0;	
+}	
+.category-table .cat-title h2 {	
+    font-weight: bold;	
+    font-size: 24px;	
+    line-height: 120%;	
+    letter-spacing: 0.005em;	
+    color: #11142D;	
+    margin: 0 0 8px !important;
+    font-family: 'Mulish', sans-serif;	
+}	
+.cat-title a.add-comment {	
+    background: #036E80;	
+    border-radius: 8px;	
+    padding: 15px 24px;	
+    color: #fff;	
+    text-align: center;	
+    text-decoration: none;	
+    font-weight: bold;	
+    font-size: 16px;	
+    text-align: center;	
+    letter-spacing: 0.005em;	
+    margin: 0;	
+}	
+.research-date label {	
+    font-size: 13px;	
+}	
+.research-detail p {	
+    display: block;	
+    font-style: normal;	
+    font-weight: 600;	
+    font-size: 18px;	
+    line-height: 25px;	
+    text-align: left;	
+    color: rgba(0, 0, 0, 0.75);	
+    /* mix-blend-mode: normal; */	
+    /* opacity: 0.75; */	
+}	
+.researcher {	    
+    font-weight: 300;	
+    font-size: 15px;	
+    color: rgb(88 88 88 / 75%);	
+    line-height: 25px;	
+    text-align: left;	
+    margin: 3px 0;	
+}	
+@media(max-width:767px) {	
+    .category-title {	
+        align-items: flex-end;	
+    }	
+    .cat-title {	
+        align-items: flex-start;	
+        flex-direction: column;	
+    }	
+.category-table .research-box {	
+    flex-direction: row;	
+}	
+.category-table  .research-date label {	
+    margin-top: 0;	
+}	
+    .cat-title a.add-comment {	
+        margin-top: 15px;	
+    }	
+}	
+@media(max-width:480px) {	
+    .full-width .category-table h2 {	
+        font-size: 22px;	
+    }	
+    .category-title {	
+        flex-direction: column;	
+        align-items: flex-start;	
+        margin-bottom: 20px;	
+    }	
+    .search-forum {	
+        margin-bottom: 30px;	
+        flex-direction: column;	
+        gap: 10px;	
+    }	
+    .search-forum .add-forum {	
+        width: 100%;	
+        max-width: 100%;	
+    }	
+}
+
+.select-dropdown {
+    position: relative;
+}
+
+.select-dropdown:after {
+    content: '\f107';
+    position: absolute;
+    top: 9px;
+    right: 16px;
+    font-family: FontAwesome;
+    font-size: 22px;
+    color: #aaa;
+ }
+
+
+ .dislike-like {}
+
+.dislike-like ul {}
+
+.dislike-like ul li {
+    display: inline-block;
+    margin-right: 20px;
+    color: #3f3f3f;
+}
+
+.dislike-like ul li i {
+    display: inline-block;
+    cursor: pointer;
+}
+
+.dislike-like ul li span {
+    display: inline-flex;
+    cursor: pointer;
+}
+.dislike-like ul li:first-child {
+    margin-right: 8px;
+}
+.liked{
+color: #276e80 !important;
+}
+
+.follow {
+    text-align: right;
+    margin-right: 10px;
+}
+
+.follow span {
+    font-size: 14px;
+    color: #276e80;
+    border: solid 1px;
+    padding: 4px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #fff;
+}
+
+
+.comment-box {     
+    padding: 0px;
+    border-radius: 5px;
+    margin: 20px 0;
+    position: relative;    
+}
+
+.comment-box input {
+    width: 100%;
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+    border: solid 1px #ddd;
+    box-shadow: none;
+}
+
+.comment-box button {
+        width: 124px;
+    border: none;
+    height: 35px;
+    position: absolute;
+    right: 8px;
+    background: #276E80;
+    color: #fff;
+    font-weight: 600;
+    top: 3px;
+    right: 2px;
+    border-radius: 5px;
+}
+
+.reply-box {
+  width: 70%;
+    background: #ddd;
+    padding: 0px;
+    border-radius: 5px;
+    margin: 20px 0;
+    position: relative;
+    border: solid 1px #ddd;
+    margin-left: 39px;
+}
+
+.reply-box input {
+    width: 100%;
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+}
+
+.reply-box button {
+        width: 100px;
+    border: none;
+    height: 35px;
+    position: absolute;
+    right: 8px;
+    background: #276E80;
+    color: #fff;
+    font-weight: 600;
+    top: 3px;
+    right: 2px;
+    border-radius: 5px;
+}
+.reply-list {
+    margin: 21px 0px;
+    /* background: #f1f1f1; */
+    /* border: solid 1px #ddd; */
+    width: 93%;
+    margin-left: 37px;
+}
+
+.reply-list .reply-card {}
+
+.reply-list .reply-card {
+        padding: 7px 15px;
+    background: #f1f1f1;
+    border-left: 4px solid #276e80;
+    margin-bottom: 10px;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.reply-list .reply-card h3 {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 22px;
+    display: block;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: left;
+    color: rgba(0, 0, 0, 0.75);
+    /* mix-blend-mode: normal; */
+    /* opacity: 0.75; */
+}
+
+.reply-list .reply-card span {
+    font-weight: 600;
+    font-weight: 300;
+    font-size: 15px;
+    color: rgb(88 88 88 / 75%);
+    line-height: 20px;
+    text-align: left;
+    margin:0;
+}
+
+.reply-list .reply-card  p {
+    font-size: 13px;
+    color: #333;
+    margin: 0;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 1.2;
+    letter-spacing: 0.005em;
+    color: #11142D;
+    display: block;
+    padding: 8px 0px 4px 0px;
+}
+
+.reply-list .reply-card small {
+    font-size: 12px;
+    color: #777;
+    font-size: 12px;
+    line-height: normal;
+    text-align: right;
+    letter-spacing: 1.5px;
+    text-transform: capitalize;
+    color: rgba(0, 0, 0, 0.75);
+    font-weight: 300;
+}
+.reply-list .reply-card:last-child {
+    border-bottom: none;
+}
+.comment-liked i.fa.fa-thumbs-up {
+    color: #276E80;
+}
+.loadmore {
+    width: 250px;
+    text-align: center;
+    margin: 0 auto 40px;
+    display: block;
+}
+
+.loadmore span {
+    color: #276E80;
+    font-size: 17px;
+    font-weight: 400;
+    font-size: 16px;
+    border: 1px solid #276E80;
+    padding: 8px 15px;
+    border-radius: 5px;
+    background: #fff;
+}
+
+.reply-loadmore{
+    color: #276E80;
+    font-size: 15px;
 }

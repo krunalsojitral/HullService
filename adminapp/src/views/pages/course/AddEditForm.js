@@ -16,7 +16,7 @@ import api_url from './../../Apiurl';
 import axios from "axios";
 import Swal from "sweetalert2";
 import $ from 'jquery';
-
+import { MultiSelect } from "react-multi-select-component";
 
 const AddEditForm = ({ match }) => {
 
@@ -35,6 +35,9 @@ const AddEditForm = ({ match }) => {
   const purchase_type_selected = watch("purchase_type");
   const [setectimage, setSetectimage] = React.useState(0);
   const [selectedFile, setSelectedFile] = useState();
+  const [selectedRole, setSelectedRole] = React.useState([])
+  const [draftStatus, setDraftStatus] = React.useState(0)
+
   const changeFileHandler = (event) => {
     if (event.target.files && event.target.files[0]) {
       var reader = new FileReader();
@@ -93,7 +96,14 @@ const AddEditForm = ({ match }) => {
       .then((result) => {
         if (result.data.status) {
           var roledata = result.data.response.data;
-          setRoleList(roledata);
+          var obj = roledata.map((data, index) => {
+            let retObj = {};
+            retObj['id'] = (index + 1);
+            retObj['label'] = data.name;
+            retObj['value'] = data.role_id;
+            return retObj;
+          });
+          setRoleList(obj);
         } else {
           Swal.fire("Oops...", result.data.response.msg, "error");
         }
@@ -106,6 +116,13 @@ const AddEditForm = ({ match }) => {
         .then((result) => {
           if (result.data.status) {
             var usersdata = result.data.response.data;
+
+            if (usersdata.draft_status) {
+              setDraftStatus(usersdata.draft_status);
+            } else {
+              setDraftStatus(0);
+            }
+
             setValue("title", usersdata.title);
             setValue("description", usersdata.description);
             setValue("purchase_type", usersdata.purchase_type);
@@ -158,6 +175,7 @@ const AddEditForm = ({ match }) => {
             setValue("live_session_url", usersdata.live_session_url);           
             setValue("live_session_time", usersdata.live_session_time);
             setValue("live_session_minute", usersdata.live_session_minute);
+            setSelectedRole(usersdata.selected_role);
             setSession(usersdata.session_type);
             setSetectimage(usersdata.image);
             setContentDescriptionEditor(usersdata.description);
@@ -180,6 +198,7 @@ const AddEditForm = ({ match }) => {
 
   const updateInformationAct = (data) => {
     data.course_id = match.params.id;
+    data.user_role = selectedRole;
     data.live_session_date = $('#date-input').val();
     data.session_type = session;
     data.description = contentDescriptionEditor;
@@ -199,7 +218,12 @@ const AddEditForm = ({ match }) => {
       .then((result) => {
         if (result.data.status) {
           Swal.fire("Success!", result.data.response.msg, "success");
-          history.push("/course");
+          
+          if (draftStatus == 1) {
+            history.push("/draft-courses");
+          } else {
+            history.push("/course");
+          }
         } else {
           Swal.fire("Oops...", result.data.response.msg, "error");
         }
@@ -210,7 +234,7 @@ const AddEditForm = ({ match }) => {
 
   const addInformationAct = (data) => {   
     
-    console.log('in');
+    data.user_role = selectedRole;
     data.session_type = session;
     data.live_session_date = $('#date-input').val();
     data.description = contentDescriptionEditor;
@@ -246,6 +270,186 @@ const AddEditForm = ({ match }) => {
     setSession(status);
   };
 
+  const removeRole = (value) => {
+    var removeRole = selectedRole.filter(function (place) { return place.value !== value })
+    setSelectedRole(removeRole);
+  };
+
+  const preview = () => {
+
+    var obj = {
+      title: (control._fields.title && control._fields.title._f.value) ? control._fields.title._f.value : '',
+      live_session_url: (control._fields.live_session_url && control._fields.live_session_url._f.value) ? control._fields.live_session_url._f.value : '',
+      live_session_date: (control._fields.live_session_date && control._fields.live_session_date._f.value) ? control._fields.live_session_date._f.value : '',
+      live_session_time: (control._fields.live_session_time && control._fields.live_session_time._f.value) ? control._fields.live_session_time._f.value : '',
+      live_session_minute: (control._fields.live_session_minute && control._fields.live_session_minute._f.value) ? control._fields.live_session_minute._f.value : '',
+      description: (control._fields.description && control._fields.description._f.value) ? control._fields.description._f.value : '',
+      learn_description: (control._fields.learn_description && control._fields.learn_description._f.value) ? control._fields.learn_description._f.value : '',
+      prerequisites_description: (control._fields.prerequisites_description && control._fields.prerequisites_description._f.value) ? control._fields.prerequisites_description._f.value : '',
+      session_type: (control._fields.session_type && control._fields.session_type._f.value) ? control._fields.session_type._f.value : '',
+      video_content_title: (control._fields.video_content_title && control._fields.video_content_title._f.value) ? control._fields.video_content_title._f.value : '',
+      video_title_first: (control._fields.video_title_first && control._fields.video_title_first._f.value) ? control._fields.video_title_first._f.value : '',
+      video_url_first: (control._fields.video_url_first && control._fields.video_url_first._f.value) ? control._fields.video_url_first._f.value : '',
+      video_time_first: (control._fields.video_time_first && control._fields.video_time_first._f.value) ? control._fields.video_time_first._f.value : '',
+      video_title_second: (control._fields.video_title_second && control._fields.video_title_second._f.value) ? control._fields.video_title_second._f.value : '',
+      video_url_second: (control._fields.video_url_second && control._fields.video_url_second._f.value) ? control._fields.video_url_second._f.value : '',
+      video_time_second: (control._fields.video_time_second && control._fields.video_time_second._f.value) ? control._fields.video_time_second._f.value : '',
+      video_title_third: (control._fields.video_title_third && control._fields.video_title_third._f.value) ? control._fields.video_title_third._f.value : '',
+      video_url_third: (control._fields.video_url_third && control._fields.video_url_third._f.value) ? control._fields.video_url_third._f.value : '',
+      video_time_third: (control._fields.video_time_third && control._fields.video_time_third._f.value) ? control._fields.video_time_third._f.value : '',
+      video_title_fourth: (control._fields.video_title_fourth && control._fields.video_title_fourth._f.value) ? control._fields.video_title_fourth._f.value : '',
+      video_url_fourth: (control._fields.video_url_fourth && control._fields.video_url_fourth._f.value) ? control._fields.video_url_fourth._f.value : '',
+      video_time_fourth: (control._fields.video_time_fourth && control._fields.video_time_fourth._f.value) ? control._fields.video_time_fourth._f.value : '',
+      video_title_five: (control._fields.video_title_five && control._fields.video_title_five._f.value) ? control._fields.video_title_five._f.value : '',
+      video_url_five: (control._fields.video_url_five && control._fields.video_url_five._f.value) ? control._fields.video_url_five._f.value : '',
+      video_time_five: (control._fields.video_time_five && control._fields.video_time_five._f.value) ? control._fields.video_time_five._f.value : '',
+      video_title_six: (control._fields.video_title_six && control._fields.video_title_six._f.value) ? control._fields.video_title_six._f.value : '',
+      video_url_six: (control._fields.video_url_six && control._fields.video_url_six._f.value) ? control._fields.video_url_six._f.value : '',
+      video_time_six: (control._fields.video_time_six && control._fields.video_time_six._f.value) ? control._fields.video_time_six._f.value : '',
+      video_title_seven: (control._fields.video_title_seven && control._fields.video_title_seven._f.value) ? control._fields.video_title_seven._f.value : '',
+      video_url_seven: (control._fields.video_url_seven && control._fields.video_url_seven._f.value) ? control._fields.video_url_seven._f.value : '',
+      video_time_seven: (control._fields.video_time_seven && control._fields.video_time_seven._f.value) ? control._fields.video_time_seven._f.value : '',
+      video_title_eight: (control._fields.video_title_eight && control._fields.video_title_eight._f.value) ? control._fields.video_title_eight._f.value : '',
+      video_url_eight: (control._fields.video_url_eight && control._fields.video_url_eight._f.value) ? control._fields.video_url_eight._f.value : '',
+      video_time_eight: (control._fields.video_time_eight && control._fields.video_time_eight._f.value) ? control._fields.video_time_eight._f.value : '',
+      video_title_nine: (control._fields.video_title_nine && control._fields.video_title_nine._f.value) ? control._fields.video_title_nine._f.value : '',
+      video_url_nine: (control._fields.video_url_nine && control._fields.video_url_nine._f.value) ? control._fields.video_url_nine._f.value : '',
+      video_time_nine: (control._fields.video_time_nine && control._fields.video_time_nine._f.value) ? control._fields.video_time_nine._f.value : '',
+      video_title_ten: (control._fields.video_title_ten && control._fields.video_title_ten._f.value) ? control._fields.video_title_ten._f.value : '',
+      video_url_ten: (control._fields.video_url_ten && control._fields.video_url_ten._f.value) ? control._fields.video_url_ten._f.value : '',
+      video_time_ten: (control._fields.video_time_ten && control._fields.video_time_ten._f.value) ? control._fields.video_time_ten._f.value : '',
+      content_title_one: (control._fields.content_title_one && control._fields.content_title_one._f.value) ? control._fields.content_title_one._f.value : '',
+      content_description_one: (control._fields.content_description_one && control._fields.content_description_one._f.value) ? control._fields.content_description_one._f.value : '',
+      content_title_two: (control._fields.content_title_two && control._fields.content_title_two._f.value) ? control._fields.content_title_two._f.value : '',
+      content_description_two: (control._fields.content_description_two && control._fields.content_description_two._f.value) ? control._fields.content_description_two._f.value : '',
+      content_title_third: (control._fields.content_title_third && control._fields.content_title_third._f.value) ? control._fields.content_title_third._f.value : '',
+      content_description_third: (control._fields.content_description_third && control._fields.content_description_third._f.value) ? control._fields.content_description_third._f.value : '',
+      content_title_four: (control._fields.content_title_four && control._fields.content_title_four._f.value) ? control._fields.content_title_four._f.value : '',
+      content_description_four: (control._fields.content_description_four && control._fields.content_description_four._f.value) ? control._fields.content_description_four._f.value : '',
+      content_title_five: (control._fields.content_title_five && control._fields.content_title_five._f.value) ? control._fields.content_title_five._f.value : '',
+      content_description_five: (control._fields.content_description_five && control._fields.content_description_five._f.value) ? control._fields.content_description_five._f.value : '',
+      trainer: (control._fields.trainer && control._fields.trainer._f.value) ? control._fields.trainer._f.value : '',
+      purchase_type: (control._fields.purchase_type && control._fields.purchase_type._f.value) ? control._fields.purchase_type._f.value : '',
+      main_cost: (control._fields.main_cost && control._fields.main_cost._f.value) ? control._fields.main_cost._f.value : '',
+      sale_cost: (control._fields.sale_cost && control._fields.sale_cost._f.value) ? control._fields.sale_cost._f.value : '',
+      draft: 1,
+      user_role: selectedRole,
+      session_type: session,
+      live_session_date: $('#date-input').val(),
+      description: contentDescriptionEditor,
+      learn_description: contentLearnEditor,
+      prerequisites_description: contentPrerequisitesEditor,
+      content_description_one: courseContentFirstChange,
+      content_description_two: courseContentSecondChange,
+      content_description_third: courseContentThirdChange,
+      content_description_four: courseContentFourthChange,
+      content_description_five: courseContentFiveChange
+    }
+
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(obj));
+    if (selectedFile) {
+      formData.append("image", selectedFile, selectedFile.name);
+    }
+    axios.post(api_url + "/common/addPreview", formData).then((result) => {
+      if (result.data.status) {
+        window.open(result.data.response.preview + "preview-module");
+        //window.open("http://localhost:4200/preview-module");
+      } else {
+        Swal.fire("Oops...", result.data.response.msg, "error");
+      }
+    }).catch((err) => { console.log(err); });
+
+  }
+
+
+
+  const draft_course = () => {  
+
+
+    var obj = {      
+      title: (control._fields.title && control._fields.title._f.value) ? control._fields.title._f.value : '',  
+      live_session_url: (control._fields.live_session_url && control._fields.live_session_url._f.value) ? control._fields.live_session_url._f.value : '',  
+      live_session_date: (control._fields.live_session_date && control._fields.live_session_date._f.value) ? control._fields.live_session_date._f.value : '',
+      live_session_time: (control._fields.live_session_time && control._fields.live_session_time._f.value) ? control._fields.live_session_time._f.value : '',                  
+      live_session_minute: (control._fields.live_session_minute && control._fields.live_session_minute._f.value) ? control._fields.live_session_minute._f.value : '',
+      description: (control._fields.description && control._fields.description._f.value) ? control._fields.description._f.value : '',
+      learn_description: (control._fields.learn_description && control._fields.learn_description._f.value) ? control._fields.learn_description._f.value : '',
+      prerequisites_description: (control._fields.prerequisites_description && control._fields.prerequisites_description._f.value) ? control._fields.prerequisites_description._f.value : '',
+      session_type: (control._fields.session_type && control._fields.session_type._f.value) ? control._fields.session_type._f.value : '',
+      video_content_title: (control._fields.video_content_title && control._fields.video_content_title._f.value) ? control._fields.video_content_title._f.value : '',
+      video_title_first: (control._fields.video_title_first && control._fields.video_title_first._f.value) ? control._fields.video_title_first._f.value : '',
+      video_url_first: (control._fields.video_url_first && control._fields.video_url_first._f.value) ? control._fields.video_url_first._f.value : '',
+      video_time_first: (control._fields.video_time_first && control._fields.video_time_first._f.value) ? control._fields.video_time_first._f.value : '',
+      video_title_second: (control._fields.video_title_second && control._fields.video_title_second._f.value) ? control._fields.video_title_second._f.value : '',
+      video_url_second: (control._fields.video_url_second && control._fields.video_url_second._f.value) ? control._fields.video_url_second._f.value : '',
+      video_time_second: (control._fields.video_time_second && control._fields.video_time_second._f.value) ? control._fields.video_time_second._f.value : '',
+      video_title_third: (control._fields.video_title_third && control._fields.video_title_third._f.value) ? control._fields.video_title_third._f.value : '',
+      video_url_third: (control._fields.video_url_third && control._fields.video_url_third._f.value) ? control._fields.video_url_third._f.value : '',
+      video_time_third: (control._fields.video_time_third && control._fields.video_time_third._f.value) ? control._fields.video_time_third._f.value : '',
+      video_title_fourth: (control._fields.video_title_fourth && control._fields.video_title_fourth._f.value) ? control._fields.video_title_fourth._f.value : '',
+      video_url_fourth: (control._fields.video_url_fourth && control._fields.video_url_fourth._f.value) ? control._fields.video_url_fourth._f.value : '',
+      video_time_fourth: (control._fields.video_time_fourth && control._fields.video_time_fourth._f.value) ? control._fields.video_time_fourth._f.value : '',
+      video_title_five: (control._fields.video_title_five && control._fields.video_title_five._f.value) ? control._fields.video_title_five._f.value : '',
+      video_url_five: (control._fields.video_url_five && control._fields.video_url_five._f.value) ? control._fields.video_url_five._f.value : '',
+      video_time_five: (control._fields.video_time_five && control._fields.video_time_five._f.value) ? control._fields.video_time_five._f.value : '',
+      video_title_six: (control._fields.video_title_six && control._fields.video_title_six._f.value) ? control._fields.video_title_six._f.value : '',
+      video_url_six: (control._fields.video_url_six && control._fields.video_url_six._f.value) ? control._fields.video_url_six._f.value : '',
+      video_time_six: (control._fields.video_time_six && control._fields.video_time_six._f.value) ? control._fields.video_time_six._f.value : '',
+      video_title_seven: (control._fields.video_title_seven && control._fields.video_title_seven._f.value) ? control._fields.video_title_seven._f.value : '',
+      video_url_seven: (control._fields.video_url_seven && control._fields.video_url_seven._f.value) ? control._fields.video_url_seven._f.value : '',
+      video_time_seven: (control._fields.video_time_seven && control._fields.video_time_seven._f.value) ? control._fields.video_time_seven._f.value : '',
+      video_title_eight: (control._fields.video_title_eight && control._fields.video_title_eight._f.value) ? control._fields.video_title_eight._f.value : '',
+      video_url_eight: (control._fields.video_url_eight && control._fields.video_url_eight._f.value) ? control._fields.video_url_eight._f.value : '',
+      video_time_eight: (control._fields.video_time_eight && control._fields.video_time_eight._f.value) ? control._fields.video_time_eight._f.value : '',
+      video_title_nine: (control._fields.video_title_nine && control._fields.video_title_nine._f.value) ? control._fields.video_title_nine._f.value : '',
+      video_url_nine: (control._fields.video_url_nine && control._fields.video_url_nine._f.value) ? control._fields.video_url_nine._f.value : '',
+      video_time_nine: (control._fields.video_time_nine && control._fields.video_time_nine._f.value) ? control._fields.video_time_nine._f.value : '',
+      video_title_ten: (control._fields.video_title_ten && control._fields.video_title_ten._f.value) ? control._fields.video_title_ten._f.value : '',
+      video_url_ten: (control._fields.video_url_ten && control._fields.video_url_ten._f.value) ? control._fields.video_url_ten._f.value : '',
+      video_time_ten: (control._fields.video_time_ten && control._fields.video_time_ten._f.value) ? control._fields.video_time_ten._f.value : '',
+      content_title_one: (control._fields.content_title_one && control._fields.content_title_one._f.value) ? control._fields.content_title_one._f.value : '',
+      content_description_one: (control._fields.content_description_one && control._fields.content_description_one._f.value) ? control._fields.content_description_one._f.value : '',
+      content_title_two: (control._fields.content_title_two && control._fields.content_title_two._f.value) ? control._fields.content_title_two._f.value : '',
+      content_description_two: (control._fields.content_description_two && control._fields.content_description_two._f.value) ? control._fields.content_description_two._f.value : '',
+      content_title_third: (control._fields.content_title_third && control._fields.content_title_third._f.value) ? control._fields.content_title_third._f.value : '',
+      content_description_third: (control._fields.content_description_third && control._fields.content_description_third._f.value) ? control._fields.content_description_third._f.value : '',
+      content_title_four: (control._fields.content_title_four && control._fields.content_title_four._f.value) ? control._fields.content_title_four._f.value : '',
+      content_description_four: (control._fields.content_description_four && control._fields.content_description_four._f.value) ? control._fields.content_description_four._f.value : '',
+      content_title_five: (control._fields.content_title_five && control._fields.content_title_five._f.value) ? control._fields.content_title_five._f.value : '',
+      content_description_five: (control._fields.content_description_five && control._fields.content_description_five._f.value) ? control._fields.content_description_five._f.value : '',
+      trainer: (control._fields.trainer && control._fields.trainer._f.value) ? control._fields.trainer._f.value : '',      
+      purchase_type: (control._fields.purchase_type && control._fields.purchase_type._f.value) ? control._fields.purchase_type._f.value : '',
+      main_cost: (control._fields.main_cost && control._fields.main_cost._f.value) ? control._fields.main_cost._f.value : '',
+      sale_cost: (control._fields.sale_cost && control._fields.sale_cost._f.value) ? control._fields.sale_cost._f.value : '',
+      draft: 1,
+      user_role : selectedRole,
+      session_type : session,
+      live_session_date : $('#date-input').val(),
+      description : contentDescriptionEditor,
+      learn_description : contentLearnEditor,
+      prerequisites_description : contentPrerequisitesEditor,
+      content_description_one : courseContentFirstChange,
+      content_description_two : courseContentSecondChange,
+      content_description_third : courseContentThirdChange,
+      content_description_four : courseContentFourthChange,
+      content_description_five : courseContentFiveChange
+    } 
+
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(obj));
+    if (selectedFile) {
+      formData.append("image", selectedFile, selectedFile.name);
+    }
+    axios.post(api_url + "/course/addcourseByadmin", formData, {}).then((result) => {
+      if (result.data.status) {
+        Swal.fire("Success!", 'Draft added successfully.', "success");
+        history.push("/draft-course");
+      } else {
+        Swal.fire("Oops...", result.data.response.msg, "error");
+      }
+    }).catch((err) => { console.log(err); });
+  }
  
 
   return (
@@ -1024,7 +1228,8 @@ const AddEditForm = ({ match }) => {
                       cloudChannel="dev"
                       init={{
                         selector: "textarea",
-                        plugins: "link image textpattern lists "
+                        plugins: "link image textpattern lists textcolor colorpicker",
+                        toolbar: "undo redo | styleselect | forecolor | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | link image | code forecolor backcolor",
                       }}
                       value={courseContentFirstChange}
                       onEditorChange={handleEditorCourseContentFirstChange}
@@ -1062,7 +1267,8 @@ const AddEditForm = ({ match }) => {
                       cloudChannel="dev"
                       init={{
                         selector: "textarea",
-                        plugins: "link image textpattern lists "
+                        plugins: "link image textpattern lists textcolor colorpicker",
+                        toolbar: "undo redo | styleselect | forecolor | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | link image | code forecolor backcolor",
                       }}
                       value={courseContentSecondChange}
                       onEditorChange={handleEditorCourseContentSecondChange}
@@ -1100,7 +1306,8 @@ const AddEditForm = ({ match }) => {
                       cloudChannel="dev"
                       init={{
                         selector: "textarea",
-                        plugins: "link image textpattern lists "
+                        plugins: "link image textpattern lists textcolor colorpicker",
+                        toolbar: "undo redo | styleselect | forecolor | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | link image | code forecolor backcolor",
                       }}
                       value={courseContentThirdChange}
                       onEditorChange={handleEditorCourseContentThirdChange}
@@ -1138,7 +1345,8 @@ const AddEditForm = ({ match }) => {
                       cloudChannel="dev"
                       init={{
                         selector: "textarea",
-                        plugins: "link image textpattern lists "
+                        plugins: "link image textpattern lists textcolor colorpicker",
+                        toolbar: "undo redo | styleselect | forecolor | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | link image | code forecolor backcolor",
                       }}
                       value={courseContentFourthChange}
                       onEditorChange={handleEditorCourseContentFourthChange}
@@ -1176,7 +1384,8 @@ const AddEditForm = ({ match }) => {
                       cloudChannel="dev"
                       init={{
                         selector: "textarea",
-                        plugins: "link image textpattern lists "
+                        plugins: "link image textpattern lists textcolor colorpicker",
+                        toolbar: "undo redo | styleselect | forecolor | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | link image | code forecolor backcolor",
                       }}
                       value={courseContentFiveChange}
                       onEditorChange={handleEditorCourseContentFiveChange}
@@ -1189,6 +1398,28 @@ const AddEditForm = ({ match }) => {
               <hr />
 
               <CRow>
+                <CCol xs="12">
+                  <CFormGroup>
+                    <CLabel htmlFor="city">
+                      User Role <span className="label-validation">*</span>
+                    </CLabel>
+                    <MultiSelect
+                      options={roleList}
+                      value={selectedRole}
+                      selectionLimit="2"
+                      hasSelectAll={true}
+                      onChange={setSelectedRole}
+                      labelledBy="Select"
+                    />
+                  </CFormGroup>
+                  {selectedRole.map(item => (
+                    <span className="skill-name">{item.label} &nbsp;<i onClick={(e) => removeRole(item.value)} className="fa fa-times">X</i></span>
+                  ))}
+                </CCol>
+              </CRow>
+              <br />
+
+              {/* <CRow>
                 <CCol xs="12">
                   <CFormGroup>
                     <CLabel htmlFor="role">User Role <span className="label-validation">*</span></CLabel>
@@ -1213,7 +1444,7 @@ const AddEditForm = ({ match }) => {
                     <p style={{ color: "red", fontSize: "12px" }}>User role is required.</p>
                   )}
                 </CCol>
-              </CRow>
+              </CRow> */}
 
               <CRow>
                 <CCol xs="12">
@@ -1270,7 +1501,8 @@ const AddEditForm = ({ match }) => {
                       cloudChannel="dev"
                       init={{
                         selector: "textarea",
-                        plugins: "link image textpattern lists "
+                        plugins: "link image textpattern lists textcolor colorpicker",
+                        toolbar: "undo redo | styleselect | forecolor | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | link image | code forecolor backcolor",
                       }}
                       value={contentLearnEditor}
                       onEditorChange={handleEditorLearnChange}
@@ -1288,7 +1520,8 @@ const AddEditForm = ({ match }) => {
                       cloudChannel="dev"
                       init={{
                         selector: "textarea",
-                        plugins: "link image textpattern lists "
+                        plugins: "link image textpattern lists textcolor colorpicker",
+                        toolbar: "undo redo | styleselect | forecolor | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | link image | code forecolor backcolor",
                       }}
                       value={contentPrerequisitesEditor}
                       onEditorChange={handleEditorPrerequisitesChange}
@@ -1307,7 +1540,8 @@ const AddEditForm = ({ match }) => {
                       cloudChannel="dev"
                       init={{
                         selector: "textarea",
-                        plugins: "link image textpattern lists "
+                        plugins: "link image textpattern lists textcolor colorpicker",
+                        toolbar: "undo redo | styleselect | forecolor | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | link image | code forecolor backcolor",
                       }}
                       value={contentDescriptionEditor}
                       onEditorChange={handleEditorDescriptionChange}
@@ -1417,9 +1651,15 @@ const AddEditForm = ({ match }) => {
                   </CCol>
                 </CRow>
               </div>
-                }
+                }              
 
               <button type="submit" className="btn btn-outline-primary btn-sm btn-square"> {(isEditMode === 1) ? 'Update' : 'Add'}</button>
+              &nbsp;
+              {/* {(isEditMode !== 1) && <button type="button" className="btn btn-outline-primary btn-sm btn-square" onClick={(e) => preview()}> Preview </button>}
+              &nbsp; */}
+              {(isEditMode !== 1) && <button type="button" className="btn btn-outline-primary btn-sm btn-square" onClick={(e) => draft_course()}> Draft </button>}
+
+
             </form> 
           </CCardBody>
         </CCard>

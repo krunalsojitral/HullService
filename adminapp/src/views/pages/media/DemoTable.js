@@ -18,12 +18,12 @@ import $ from 'jquery';
 
 const DemoTable = () => {
 
-  
+  const ref = React.useRef();
+
   const [details, setDetails] = useState([])
   const [items, setItems] = useState([])
   const [selectedFile, setSelectedFile] = useState('');
-  const [isUploaded, setIsUploaded] = useState(false);
-  
+  const [isUploaded, setIsUploaded] = useState(false);  
   const [setectimage, setSetectimage] = React.useState('');
 
   React.useEffect(() => {
@@ -52,16 +52,11 @@ const DemoTable = () => {
       setSelectedFile(event.target.files[0]);
     }
   };
-
   
   const {
     handleSubmit,    
     formState: { errors },
   } = useForm();
-  
-
-  
-
   
   const getNewList = () => { 
     axios.get(api_url + '/media/mediaList', {}).then((result) => {
@@ -89,8 +84,6 @@ const DemoTable = () => {
         axios.post(api_url + '/media/deleteMedia', obj).then((result) => {
           if (result.data.status) {
             getNewListWrap();
-            
-
           } else {
             Swal.fire('Oops...', result.data.response.msg, 'error')
           }
@@ -98,7 +91,6 @@ const DemoTable = () => {
           console.log(err);
         })
       } else {
-
       }
     })
   };
@@ -122,6 +114,7 @@ const DemoTable = () => {
           getNewListWrap();
           setSetectimage('')
           setSelectedFile('');
+          ref.current.value = "";
           var image = $('#image_id');
           image.removeAttr('src').replaceWith(image.clone());
 
@@ -148,6 +141,7 @@ const DemoTable = () => {
                         accept=".png,.PNG,.JPG,.jpg,.jpeg"
                         name="myfile"
                         onChange={changeFileHandler}
+                        ref={ref}
                       />                      
                       <button type="submit" className="btn btn-outline-primary btn-sm btn-square"> Add</button> &nbsp;
                       <br/>                      

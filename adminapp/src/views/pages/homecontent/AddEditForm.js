@@ -152,7 +152,8 @@ const AddEditForm = ({ match }) => {
                       cloudChannel="dev"
                       init={{
                         selector: "textarea",
-                        plugins: "link image textpattern lists "
+                        plugins: "link image textpattern lists textcolor colorpicker",
+                        toolbar: "undo redo | styleselect | forecolor | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | link image | code forecolor backcolor",
                       }}
                       value={firstsectionupperparagraph}
                       onEditorChange={handlefirstsectionupperparagraph}
@@ -172,7 +173,8 @@ const AddEditForm = ({ match }) => {
                       cloudChannel="dev"
                       init={{
                         selector: "textarea",
-                        plugins: "link image textpattern lists "
+                        plugins: "link image textpattern lists textcolor colorpicker",
+                        toolbar: "undo redo | styleselect | forecolor | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | link image | code forecolor backcolor",
                       }}
                       value={firstsectionlowerparagraph}
                       onEditorChange={handlefirstsectionlowerparagraph}
@@ -299,7 +301,8 @@ const AddEditForm = ({ match }) => {
                       cloudChannel="dev"
                       init={{
                         selector: "textarea",
-                        plugins: "link image textpattern lists "
+                        plugins: "link image textpattern lists textcolor colorpicker",
+                        toolbar: "undo redo | styleselect | forecolor | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | link image | code forecolor backcolor",
                       }}
                       value={thirdsectionupperparagraph}
                       onEditorChange={handlethirdsectionupperparagraph}
@@ -320,7 +323,8 @@ const AddEditForm = ({ match }) => {
                       cloudChannel="dev"
                       init={{
                         selector: "textarea",
-                        plugins: "link image textpattern lists "
+                        plugins: "link image textpattern lists textcolor colorpicker",
+                        toolbar: "undo redo | styleselect | forecolor | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | link image | code forecolor backcolor",
                       }}
                       value={thirdsectionlowerparagraph}
                       onEditorChange={handlethirdsectionlowerparagraph}

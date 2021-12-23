@@ -14,7 +14,8 @@ var asyn = require('async');
 var helper = require('../config/helper');
 var moment = require('moment');
 var formidable = require('formidable');
-
+var Common = require('../models/common');
+const gm = require('gm');
 
 function loggerData(req) {
     if (env.DEBUG) {
@@ -57,86 +58,137 @@ router.post('/getcourseDataById', [check('course_id', 'Course is required').notE
     } else {
         let course_id = req.body.course_id;
 
-        Course.getcourseDataById(course_id, function (err, result) {
-            if (err) {
-                return res.json({ 'status': 0, 'response': { 'msg': err } });
-            } else {
-                if (result != '') {
-                    var courseLink;
-                    if (req.headers.host == env.ADMIN_LIVE_URL) {
-                        courseLink = env.ADMIN_LIVE_URL;
+        asyn.waterfall([
+            function (done) {
+                Course.getcourseDataById(course_id, function (err, result) {
+                    if (err) {
+                        return res.json({ 'status': 0, 'response': { 'msg': err } });
                     } else {
-                        courseLink = env.ADMIN_LIVE_URL;
+                        if (result != '') {
+                            var courseLink;
+                            if (req.headers.host == env.ADMIN_LIVE_URL) {
+                                courseLink = env.ADMIN_LIVE_URL;
+                            } else {
+                                courseLink = env.ADMIN_LIVE_URL;
+                            }
+                            let course = {};
+                            course['course_id'] = result[0].course_id;
+                            course['title'] = result[0].title;
+                            course['description'] = result[0].description;
+                            course['created_at'] = result[0].created_at;
+                            course['image'] = (result[0].image) ? courseLink + env.COURSE_VIEW_PATH + result[0].image : '';
+                            course['image_thumb'] = (result[0].image) ? courseLink + env.COURSE_VIEW_PATH_THUMB + result[0].image : '';
+                            course['role'] = result[0].role;
+                            course['status'] = result[0].status;
+                            course['learn_description'] = result[0].learn_description;
+                            course['prerequisites_description'] = result[0].prerequisites_description;
+                            course['session_type'] = result[0].session_type;
+                            course['video_content_title'] = result[0].video_content_title;
+                            course['video_title_first'] = result[0].video_title_first;
+                            course['video_url_first'] = result[0].video_url_first;
+                            course['video_time_first'] = result[0].video_time_first;
+                            course['video_title_second'] = result[0].video_title_second;
+                            course['video_url_second'] = result[0].video_url_second;
+                            course['video_time_second'] = result[0].video_time_second;
+                            course['video_title_third'] = result[0].video_title_third;
+                            course['video_url_third'] = result[0].video_url_third;
+                            course['video_time_third'] = result[0].video_time_third;
+                            course['video_title_fourth'] = result[0].video_title_fourth;
+                            course['video_url_fourth'] = result[0].video_url_fourth;
+                            course['video_time_fourth'] = result[0].video_time_fourth;
+                            course['video_title_five'] = result[0].video_title_five;
+                            course['video_url_five'] = result[0].video_url_five;
+                            course['video_time_five'] = result[0].video_time_five;
+                            course['video_title_six'] = result[0].video_title_six;
+                            course['video_url_six'] = result[0].video_url_six;
+                            course['video_time_six'] = result[0].video_time_six;
+                            course['video_title_seven'] = result[0].video_title_seven;
+                            course['video_url_seven'] = result[0].video_url_seven;
+                            course['video_time_seven'] = result[0].video_time_seven;
+                            course['video_title_eight'] = result[0].video_title_eight;
+                            course['video_url_eight'] = result[0].video_url_eight;
+                            course['video_time_eight'] = result[0].video_time_eight;
+                            course['video_title_nine'] = result[0].video_title_nine;
+                            course['video_url_nine'] = result[0].video_url_nine;
+                            course['video_time_nine'] = result[0].video_time_nine;
+                            course['video_title_ten'] = result[0].video_title_ten;
+                            course['video_url_ten'] = result[0].video_url_ten;
+                            course['video_time_ten'] = result[0].video_time_ten;
+                            course['content_title_one'] = result[0].content_title_one;
+                            course['content_description_one'] = result[0].content_description_one;
+                            course['content_title_two'] = result[0].content_title_two;
+                            course['content_description_two'] = result[0].content_description_two;
+                            course['content_title_third'] = result[0].content_title_third;
+                            course['content_description_third'] = result[0].content_description_third;
+                            course['content_title_four'] = result[0].content_title_four;
+                            course['content_description_four'] = result[0].content_description_four;
+                            course['content_title_five'] = result[0].content_title_five;
+                            course['content_description_five'] = result[0].content_description_five;
+                            course['trainer'] = result[0].trainer;
+                            course['purchase_type'] = result[0].purchase_type;
+                            course['main_cost'] = result[0].main_cost;
+                            course['sale_cost'] = result[0].sale_cost;
+                            course['live_session_url'] = result[0].live_session_url;
+                            course['live_session_date'] = result[0].live_session_date;
+                            course['live_session_time'] = result[0].live_session_time;
+                            course['live_session_minute'] = result[0].live_session_minute;
+                            course['update_at'] = (result[0].update_at) ? moment(result[0].update_at).format('MM/YYYY') : '';
+                            course['course_purchase'] = 0;
+                            course['draft_status'] = result[0].draft_status;
+                            done(err, course)
+                        } else {
+                            done(err, null)
+                        }
                     }
-                    let course = {};
-                    course['course_id'] = result[0].course_id;
-                    course['title'] = result[0].title;
-                    course['description'] = result[0].description;
-                    course['created_at'] = result[0].created_at;
-                    course['image'] = (result[0].image) ? courseLink + env.COURSE_VIEW_PATH + result[0].image : '';
-                    course['role'] = result[0].role;
-                    course['status'] = result[0].status;
-                    course['learn_description'] = result[0].learn_description;
-                    course['prerequisites_description'] = result[0].prerequisites_description;
-                    course['session_type'] = result[0].session_type;
-                    course['video_content_title'] = result[0].video_content_title;
-                    course['video_title_first'] = result[0].video_title_first;
-                    course['video_url_first'] = result[0].video_url_first;
-                    course['video_time_first'] = result[0].video_time_first;
-                    course['video_title_second'] = result[0].video_title_second;
-                    course['video_url_second'] = result[0].video_url_second;
-                    course['video_time_second'] = result[0].video_time_second;
-                    course['video_title_third'] = result[0].video_title_third;
-                    course['video_url_third'] = result[0].video_url_third;
-                    course['video_time_third'] = result[0].video_time_third;
-                    course['video_title_fourth'] = result[0].video_title_fourth;
-                    course['video_url_fourth'] = result[0].video_url_fourth;
-                    course['video_time_fourth'] = result[0].video_time_fourth;
-                    course['video_title_five'] = result[0].video_title_five;
-                    course['video_url_five'] = result[0].video_url_five;
-                    course['video_time_five'] = result[0].video_time_five;
-                    course['video_title_six'] = result[0].video_title_six;
-                    course['video_url_six'] = result[0].video_url_six;
-                    course['video_time_six'] = result[0].video_time_six;
-                    course['video_title_seven'] = result[0].video_title_seven;
-                    course['video_url_seven'] = result[0].video_url_seven;
-                    course['video_time_seven'] = result[0].video_time_seven;
-                    course['video_title_eight'] = result[0].video_title_eight;
-                    course['video_url_eight'] = result[0].video_url_eight;
-                    course['video_time_eight'] = result[0].video_time_eight;
-                    course['video_title_nine'] = result[0].video_title_nine;
-                    course['video_url_nine'] = result[0].video_url_nine;
-                    course['video_time_nine'] = result[0].video_time_nine;
-                    course['video_title_ten'] = result[0].video_title_ten;
-                    course['video_url_ten'] = result[0].video_url_ten;
-                    course['video_time_ten'] = result[0].video_time_ten;
-                    course['content_title_one'] = result[0].content_title_one;
-                    course['content_description_one'] = result[0].content_description_one;
-                    course['content_title_two'] = result[0].content_title_two;
-                    course['content_description_two'] = result[0].content_description_two;
-                    course['content_title_third'] = result[0].content_title_third;
-                    course['content_description_third'] = result[0].content_description_third;
-                    course['content_title_four'] = result[0].content_title_four;
-                    course['content_description_four'] = result[0].content_description_four;
-                    course['content_title_five'] = result[0].content_title_five;
-                    course['content_description_five'] = result[0].content_description_five;
-                    course['trainer'] = result[0].trainer;
-                    course['purchase_type'] = result[0].purchase_type;
-                    course['main_cost'] = result[0].main_cost;
-                    course['sale_cost'] = result[0].sale_cost;
-                    course['live_session_url'] = result[0].live_session_url;
-                    course['live_session_date'] = result[0].live_session_date;
-                    course['live_session_time'] = result[0].live_session_time;
-                    course['live_session_minute'] = result[0].live_session_minute;
-                    course['update_at'] = (result[0].update_at) ? moment(result[0].update_at).format('MM/YYYY'):'';
-                    return res.json({ 'status': 1, 'response': { 'data': course, 'msg': 'Data found' } });
+                });
+            },
+            function (course, done2) {
+                if (course['role']) {
+                    var role = course['role'];
+                    Common.getRoleAllList(function (err, result) {
+                        if (result && result.length > 0) {
+
+                            var array = [];
+                            result.find((o, i) => {                                
+                                if (role.includes(o.role_id)) {
+                                    array.push(o);
+                                }
+                            });
+
+                            course['selected_role'] = array;
+                            done2(null, course)
+                        } else {
+                            course['selected_role'] = [];
+                            done2(null, course)
+                        }
+                    });
                 } else {
-                    return res.json({ 'status': 0, 'response': { 'data': [], 'msg': 'Data not found' } });
+                    course['selected_role'] = [];
+                    done2(null, course)
+                }
+            }, function (course, done2) {
+
+                if (course['selected_role'].length > 0) {
+                    course['selected_role'] = course['selected_role'].map((data, index) => {
+                        let retObj = {};
+                        retObj['id'] = (index + 1);
+                        retObj['label'] = data.role;
+                        retObj['value'] = data.role_id;
+                        return retObj;
+                    });
+                    done2(null, course)
+                } else {
+                    done2(null, course)
                 }
             }
+        ],
+        function (error, coursedata) {
+            if (error) {
+                return res.json({ 'status': 0, 'response': { 'msg': error } });
+            } else {
+                return res.json({ 'status': 1, 'response': { 'msg': 'Media added successfully.', data: coursedata } });
+            }
         });
-
-       
         
     }
 });
@@ -235,26 +287,46 @@ router.post('/addcourseByadmin', function (req, res) {
                 role: obj.user_role,
                 purchase_type: obj.purchase_type,
                 main_cost: obj.main_cost,
-                sale_cost: obj.sale_cost
+                sale_cost: obj.sale_cost,
+                draft: (obj.draft) ? obj.draft : 0
             };
+
+            if (obj.user_role.length > 0) {
+                record.role = obj.user_role.map(data => {
+                    return data.value
+                }).join(',');
+            }
+
             asyn.waterfall([
                 function (done) {
                     let overview = {};
                     if (typeof files.image !== 'undefined') {
                         let file_ext = files.image.name.split('.').pop();
-                        let CourseImage = Date.now() + '-' + files.image.name.split(" ").join("");
+                        let filename = Date.now() + '-' + files.image.name.split(" ").join("");
                         let tmp_path = files.image.path;
                         
                         if (file_ext == 'png' || file_ext == 'Png' || file_ext == 'jpg' || file_ext == 'JPG' || file_ext == 'jpeg' || file_ext == 'JPEG') {
-                            fs.rename(tmp_path, path.join(__dirname, env.VIDEO_PATH + CourseImage), function (err) {
-                                overview['image'] = CourseImage;
-                                done(err, overview)
-                                fs.unlink(tmp_path, function () {
+
+                            fs.rename(tmp_path, path.join(__dirname, env.COURSE_PATH + filename), function (err) {
+                                gm(__dirname + env.COURSE_PATH + filename).gravity('Center').thumb(258, 195, __dirname + env.COURSE_PATH_THUMB + filename, 100, function (err, data) {
                                     if (err) {
-                                        return res.json({ status: 1, 'response': { msg: err } });
+                                        done("Image upload error", overview)
+                                    } else {
+                                        overview['image'] = filename;
+                                        done(err, overview)
                                     }
                                 });
                             });
+
+                            // fs.rename(tmp_path, path.join(__dirname, env.VIDEO_PATH + CourseImage), function (err) {
+                            //     overview['image'] = CourseImage;
+                            //     done(err, overview)
+                            //     fs.unlink(tmp_path, function () {
+                            //         if (err) {
+                            //             return res.json({ status: 1, 'response': { msg: err } });
+                            //         }
+                            //     });
+                            // });
                         } else {
                             return res.json({ status: 0, response: { msg: 'Only image with jpg, jpeg and png format are allowed', } });
                         }
@@ -294,6 +366,15 @@ router.post('/updatecourseByadmin', function (req, res) {
 
             var json = fields.data;
             let obj = JSON.parse(json);
+
+            var role = '';
+
+            if (obj.user_role.length > 0) {
+                role = obj.user_role.map(data => {
+                    return data.value
+                }).join(',');
+            }
+
             let update_value = [obj.title, obj.live_session_url, obj.live_session_date,
                 obj.live_session_time, obj.live_session_minute, obj.description, 
                 obj.learn_description, obj.prerequisites_description, obj.session_type,
@@ -313,7 +394,7 @@ router.post('/updatecourseByadmin', function (req, res) {
                 obj.content_title_third,obj.content_description_third,
                 obj.content_title_four,obj.content_description_four,
                 obj.content_title_five,obj.content_description_five,
-                obj.trainer, obj.user_role, obj.purchase_type, obj.main_cost, obj.sale_cost, moment().format('YYYY-MM-DD')]
+                obj.trainer, role, obj.purchase_type, obj.main_cost, obj.sale_cost, moment().format('YYYY-MM-DD')]
             let record = {
                 title: obj.title,
                 live_session_url: (obj.live_session_url) ? obj.live_session_url : '',
@@ -366,7 +447,7 @@ router.post('/updatecourseByadmin', function (req, res) {
                 content_title_five: obj.content_title_five,
                 content_description_five: obj.content_description_five,
                 trainer: obj.trainer,                
-                role: obj.user_role,
+                role: role,
                 purchase_type: obj.purchase_type,
                 main_cost: obj.main_cost,
                 sale_cost: obj.sale_cost,                
@@ -380,16 +461,27 @@ router.post('/updatecourseByadmin', function (req, res) {
                     let overview = {};
                     if (typeof files.image !== 'undefined') {
                         let file_ext = files.image.name.split('.').pop();
-                        let CourseImage = Date.now() + '-' + files.image.name.split(" ").join("");
+                        let filename = Date.now() + '-' + files.image.name.split(" ").join("");
                         let tmp_path = files.image.path;
 
                         if (file_ext == 'png' || file_ext == 'Png' || file_ext == 'jpg' || file_ext == 'JPG' || file_ext == 'jpeg' || file_ext == 'JPEG') {
-                            fs.rename(tmp_path, path.join(__dirname, env.COURSE_PATH + CourseImage), function (err) {
-                                overview['image'] = CourseImage;
-                                done(err, overview)
-                                fs.unlink(tmp_path, function () {
+                            // fs.rename(tmp_path, path.join(__dirname, env.COURSE_PATH + CourseImage), function (err) {
+                            //     overview['image'] = CourseImage;
+                            //     done(err, overview)
+                            //     fs.unlink(tmp_path, function () {
+                            //         if (err) {
+                            //             return res.json({ status: 1, 'response': { msg: err } });
+                            //         }
+                            //     });
+                            // });
+
+                            fs.rename(tmp_path, path.join(__dirname, env.COURSE_PATH + filename), function (err) {
+                                gm(__dirname + env.COURSE_PATH + filename).gravity('Center').thumb(258, 195, __dirname + env.COURSE_PATH_THUMB + filename, 100, function (err, data) {
                                     if (err) {
-                                        return res.json({ status: 1, 'response': { msg: err } });
+                                        done("Image upload error", overview)
+                                    } else {
+                                        overview['image'] = filename;
+                                        done(err, overview)
                                     }
                                 });
                             });
@@ -448,6 +540,7 @@ router.post('/getPaidCourseList', passport.authenticate('jwt', { session: false 
                 retObj['created_at'] = moment(data.course_date).format('MMMM DD, YYYY');
                 retObj['role'] = data.role;
                 retObj['image'] = (data.image) ? imageLink + env.COURSE_VIEW_PATH + data.image : '';
+                retObj['image_thumb'] = (data.image) ? imageLink + env.COURSE_VIEW_PATH_THUMB + data.image : '';
                 retObj['status'] = data.status;
                 retObj['main_cost'] = data.main_cost;
                 retObj['sale_cost'] = data.sale_cost;
@@ -478,6 +571,7 @@ router.post('/getUnpaidCourseList', function (req, res) {
                 retObj['course_id'] = data.course_id;
                 retObj['title'] = data.title;
                 retObj['image'] = (data.image) ? imageLink + env.COURSE_VIEW_PATH + data.image : '';
+                retObj['image_thumb'] = (data.image) ? imageLink + env.COURSE_VIEW_PATH_THUMB + data.image : '';
                 retObj['created_at'] = moment(data.course_date).format('MMMM DD, YYYY');
                 retObj['role'] = data.role;
                 retObj['status'] = data.status;
@@ -607,6 +701,7 @@ router.post('/getUserCourseDataById', [check('course_id', 'Course is required').
                             course['description'] = result[0].description;
                             course['created_at'] = result[0].created_at;
                             course['image'] = (result[0].image) ? courseLink + env.COURSE_VIEW_PATH + result[0].image : '';
+                            course['image_thumb'] = (result[0].image) ? courseLink + env.COURSE_VIEW_PATH_THUMB + result[0].image : '';
                             course['role'] = result[0].role;
                             course['status'] = result[0].status;
                             course['learn_description'] = result[0].learn_description;
@@ -669,29 +764,27 @@ router.post('/getUserCourseDataById', [check('course_id', 'Course is required').
                         }
                     }
                 });
-            },
-            function (overview, done1) {
+            },           
+            function (overview, done3) {
 
                 if (req.body.user_id){
                     let user_id = req.body.user_id;
                     Course.getUserPurchaseCourseOrNot(course_id, user_id, function (err, data) {
                         if (err) {
-                            done1(err, overview)
+                            done3(err, overview)
                         } else {
                             if (data.length > 0) {
                                 overview.course_purchase = 1
-                                done1(err, overview);
+                                done3(err, overview);
                             } else {
                                 overview.course_purchase = 1
-                                done1(err, overview);
+                                done3(err, overview);
                             }
                         }
                     });
                 }else{
-                    done1(err, overview);
+                    done3(err, overview);
                 }
-
-
             }
         ],
             function (error, coursedata) {
@@ -706,9 +799,55 @@ router.post('/getUserCourseDataById', [check('course_id', 'Course is required').
     }
 });
 
+router.get('/draftcourseList', function (req, res) {
+    loggerData(req);
+    Course.draftcourseList(function (err, result) {
+        if (err) {
+            return res.json({ status: 0, 'response': { msg: err } });
+        } else {
+            var courseList = result.map(data => {
+                let retObj = {};
+                retObj['course_id'] = data.course_id;
+                retObj['title'] = data.title;
+                retObj['description'] = data.description;
+                retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
+                retObj['role'] = data.role;
+                retObj['status'] = data.status;
+                return retObj;
+            });
+            return res.json({ status: 1, 'response': { data: courseList } });
+        }
+    });
+});
 
 
 
 
+router.post('/changeDraftCourseStatus', [
+    check('course_id', 'Course id is required').notEmpty(),
+    check('draft_status', 'Please enter status').notEmpty(),
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        let course_id = req.body.course_id;
+        let record = {
+            draft_status: req.body.draft_status
+        }
+        Course.changeDraftCourseStatus(record, course_id, function (err, result) {
+            if (err) {
+                return res.json({ 'status': 0, 'response': { 'msg': 'Error Occured.' } });
+            } else {
+                if (result) {
+                    return res.json({ 'status': 1, 'response': { 'msg': 'Status Changed successfully.' } });
+                } else {
+                    return res.json({ 'status': 0, 'response': { 'msg': 'Data not found.' } });
+                }
+            }
+        });
+    }
+});
 
 module.exports = router;
