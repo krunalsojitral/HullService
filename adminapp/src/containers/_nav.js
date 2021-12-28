@@ -213,6 +213,29 @@ const _nav = [
     ],
   },
   {
+    _tag: "CSidebarNavDropdown",
+    name: "Researches",
+    route: "/researches",
+    icon: "cil-list",
+    _children: [
+      {
+        _tag: "CSidebarNavItem",
+        name: "View Researches",
+        to: "/researches-list",
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "Research Requests",
+        to: "/research-requests",
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "View Future Participants",
+        to: "/future-participants",
+      },
+    ],
+  },
+  {
     _tag: "CSidebarNavItem",
     name: "Tag",
     route: "/#",

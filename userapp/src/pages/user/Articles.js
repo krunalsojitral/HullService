@@ -152,7 +152,7 @@ export default function Articles() {
                                             </h3>
                                             <div className="blog-post">
                                                 <div className="blog-author">
-                                                    <img src="images/hull-icon.png" alt="author" />
+                                                    <img src="images/favicon.png" alt="author" />
                                                     <p>Hull Service</p>
                                                 </div>
                                                 {/* <div className="clap">
@@ -166,9 +166,15 @@ export default function Articles() {
 
                                 {
                                     currentData.length == 0 &&
-                                    <div className="blog-box">
-                                        <div className="no-data">No article available.
-                                        </div>
+                                    // <div className="blog-box">
+                                    //     <div className="no-data">No article available.
+                                    //     </div>
+                                    // </div>
+                                    <div>
+                                        <center>
+                                            <img height="250px" width="350px" src="images/hull-no-results.png" alt="author" />
+                                            <div className="no-data">No results found.</div>
+                                        </center>
                                     </div>
                                 }
                                

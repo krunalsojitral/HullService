@@ -42,6 +42,7 @@ var sectorRouter = require('./routes/sector');
 var academicdisciplineRouter = require('./routes/academicdiscipline');
 var professionalinterestareaRouter = require('./routes/professionalinterestarea');
 var researcherinterestareaRouter = require('./routes/researcherinterestarea');
+var researchesRouter = require('./routes/researches');
 
 
 //app.use(express.static('uploads'));
@@ -65,6 +66,7 @@ app.use('/api/sector', sectorRouter);
 app.use('/api/academicdiscipline', academicdisciplineRouter);
 app.use('/api/professionalinterestarea', professionalinterestareaRouter);
 app.use('/api/researcherinterestarea', researcherinterestareaRouter);
+app.use('/api/researches', researchesRouter);
 
 
 

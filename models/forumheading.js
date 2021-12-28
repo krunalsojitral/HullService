@@ -8,7 +8,7 @@ function Forumheading() {
 
     this.getAllAdminforumheading = function (callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM forumheading order by forumheading_id desc', function (err, result) {
+            con.query('SELECT * FROM forumheading order by forumheading_name ASC', function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }

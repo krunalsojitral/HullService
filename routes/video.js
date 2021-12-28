@@ -686,6 +686,7 @@ router.post('/getBookMarkVideo', passport.authenticate('jwt', { session: false }
                 retObj['purchase_type'] = data.purchase_type;
                 retObj['video_embeded_id'] = data.video_embeded_id;                
                 retObj['bookmark_video_id'] = data.bookmark_video_id;
+                retObj['cost'] = data.cost;
                 return retObj;
             });
             return res.json({ status: 1, 'response': { data: videoList } });

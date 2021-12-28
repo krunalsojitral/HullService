@@ -824,7 +824,7 @@ router.post('/getForumCommentList', passport.authenticate('jwt', { session: fals
                         Promise.all(result.map(function (item) {
                             var temparray = new Promise(function (resolve, reject) {
                                 Forum.getForumReplyComment(item.forum_comment_id, function (err, data) {
-                                        if (data && data.reply_list.length > 0) {
+                                        if (data && data.reply_list.length > 0) {     
                                             item.reply = data.reply_list;
                                         }
                                         item.comment_count = data.comment_count[0].cnt;
@@ -885,8 +885,6 @@ router.post('/getForumCommentList', passport.authenticate('jwt', { session: fals
             //         console.log(response); //not empty
             //     })
             // })
-
-
         }
     ],
         function (error, finalData) {
@@ -1066,13 +1064,30 @@ router.post('/addComment', passport.authenticate('jwt', { session: false }), [
                 return res.json({ 'status': 0, 'response': { 'msg': err } });
             } else {
                 if (result) {
-                    var user_obj = {
-                        comment: obj.comment,
-                        created_at: obj.created_at,
-                        first_name: userDetail.first_name,
-                        last_name: userDetail.last_name,
-                        role: userDetail.role
+
+                    if (req.body.parent_comment_id){
+                        var user_obj = {
+                            comment: obj.comment,
+                            created_at: moment(obj.created_at).format('MMMM Do, YYYY'),
+                            first_name: userDetail.first_name,
+                            last_name: userDetail.last_name,
+                            role: userDetail.role
+                        }
+                    }else{
+                        var user_obj = {
+                            comment: obj.comment,
+                            comment_count: "0",
+                            comment_like_id: null,
+                            created_at: moment(obj.created_at).format('MMMM Do, YYYY'),
+                            first_name: userDetail.first_name,
+                            last_name: userDetail.last_name,
+                            role: userDetail.role,
+                            forum_comment_id: result[0].forum_comment_id,
+                            parent_comment_id: null,
+                            reply: []
+                        }
                     }
+
                     return res.json({ 'status': 1, 'response': { 'data': user_obj, 'msg': 'Data found' } });
                 } else {
                     return res.json({ 'status': 0, 'response': { 'data': [], 'msg': 'Data not found' } });

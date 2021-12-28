@@ -2,6 +2,7 @@
 var connection = require('../config/database');
 var env = require('../config/env');
 var asyn = require('async');
+var moment = require('moment');
 
 function forum() {
     connection.init();
@@ -597,8 +598,16 @@ function forum() {
                     con.query(sql, [id], function (err, result) {                       
                         if (err) {
                             done(err, null);
-                        } else {        
-                            obj.reply_list = result.rows;
+                        } else {                                     
+                            obj.reply_list = result.rows.map(data => {
+                                let retObj = {};
+                                retObj['comment'] = data.comment;
+                                retObj['created_at'] = moment(data.created_at).format('MMMM Do, YYYY');
+                                retObj['first_name'] = data.first_name;
+                                retObj['last_name'] = data.last_name;
+                                retObj['role'] = data.role;
+                                return retObj;
+                            })
                             done(err, obj);
                         }
                     });

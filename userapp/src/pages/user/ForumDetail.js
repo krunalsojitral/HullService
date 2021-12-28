@@ -18,7 +18,7 @@ export default function ForumDetail() {
     const [visible, setVisible] = useState(3);
     const [forumCommentDetail, setForumCommentDetail] = useState([]);
     const [forumId, setForumId] = useState([]);
-    const [hideLoad, setHideLoad] = useState(true);
+    const [hideLoad, setHideLoad] = useState(false);
 
     const [Modal, open, close] = useModal('root', {});
 
@@ -28,24 +28,21 @@ export default function ForumDetail() {
         let forum_id = params.get('id')
         setForumId(forum_id);
         getNewList(forum_id);
-        getNewListWrap(forum_id);
+       // getNewListWrap(forum_id);
         getCommentDetail(forum_id);
         getCommentDetailWrap(forum_id);
        
     }, []);
 
-    React.useEffect(() => {      
+    React.useEffect(() => {
 
-        if (forumCommentList.length > 0 && parseInt(forumCommentList.length) < parseInt(visible)) {
-            
-            if (parseInt(forumCommentList.length) !== parseInt(visible)){
-                setHideLoad(false);
-            }
-            
+        if (forumCommentList.length > 0 && parseInt(forumCommentList.length) > parseInt(visible)) {
+            setHideLoad(true);
+        }else{
+            setHideLoad(false);
         }
 
-    }, [visible]);
-
+    }, [visible, forumCommentList]);
    
 
     const getNewList = (forum_id) => {
@@ -62,9 +59,13 @@ export default function ForumDetail() {
         
         axios.post(api_url + '/forum/getForumCommentList', obj, config).then((result) => {
             if (result.data.status) {
-                var forumdata = result.data.response.data;
-                setForumCommentList(forumdata);
-                
+                var forumdata = result.data.response.data;                
+                if (forumdata){                    
+                    if (forumCommentList.length > 0 && parseInt(forumCommentList.length) > parseInt(visible)) {
+                        setHideLoad(true);
+                    }
+                    setForumCommentList(forumdata);
+                }
             } else {
                 // Swal.fire('Oops...', result.data.response.msg, 'error')
             }
@@ -145,13 +146,10 @@ export default function ForumDetail() {
         }
     }
 
-    const { handleSubmit, control, setValue, formState: { errors } } = useForm({});
+    const { handleSubmit, control, setValue, reset, formState: { errors } } = useForm({});
 
     const onSubmit = (data, e) => {
-        // console.log(e);
-        // console.log(e.target.reset());
-        // e.target.reset();
-        // setValue("comment","")
+       
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
         const config = {
@@ -161,17 +159,27 @@ export default function ForumDetail() {
         axios.post(api_url + "/forum/addComment", data, config)
             .then((result) => {
                 if (result.data.status) {    
-                   
-                    getNewListWrap(forumId);
+                    
+                    let tempColl = [result.data.response.data, ...forumCommentList]
+                    setForumCommentList(tempColl);                    
+                    forumCommentDetail.replies = parseInt(forumCommentDetail.replies) + parseInt(1);
+                    setForumCommentDetail(forumCommentDetail);
+                    if (forumCommentList.length > 0 && parseInt(forumCommentList.length) > parseInt(visible)) {
+                        setHideLoad(true);
+                    }
+                    reset()
+                    e.target.reset();
+                    setValue("comment","") 
+                    
                 } else {
                     Swal.fire("Oops...", result.data.response.msg, "error");
                 }
             }).catch((err) => { console.log(err); });
     } 
 
-    const getNewListWrap = (forum_id) => {
-        getNewList(forum_id,setForumCommentList);
-    };
+    // const getNewListWrap = (forum_id) => {
+    //     getNewList(forum_id,setForumCommentList);
+    // };
 
     const forumlikeClick = () => {
         const tokenString = localStorage.getItem('token');
@@ -308,7 +316,9 @@ export default function ForumDetail() {
                                             rules={{ required: true }}
                                             render={({ field: { onChange, value } }) => (
                                                 <input
-                                                    type="text"                                                    
+                                                    type="text"  
+                                                    name="comment"
+                                                    id="main-comment"                                                  
                                                     onChange={onChange}
                                                     value={value}
                                                     className="form-control"
@@ -385,7 +395,7 @@ export default function ForumDetail() {
                                 ))}
                             </div>
                             <div class="loadmore">
-                                {(forumCommentList && forumCommentList.length > 0 && hideLoad) && <span onClick={showMoreItems}>View more comments</span>}
+                                {(hideLoad) && <span onClick={showMoreItems}>View more comments</span>}
                             </div>
                         </div>
                    

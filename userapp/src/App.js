@@ -47,6 +47,7 @@ const MyStudies = lazy(() => import("./pages/user/MyStudies"));
 const CoursePayment = lazy(() => import("./pages/user/CoursePayment"));
 const ArticlePayment = lazy(() => import("./pages/user/ArticlePayment"));
 const BlogPayment = lazy(() => import("./pages/user/BlogPayment"));
+const VideoPayment = lazy(() => import("./pages/user/VideoPayment"));
 const MyBlog = lazy(() => import("./pages/user/MyBlog"));
 const MyArticle = lazy(() => import("./pages/user/MyArticle"));
 const MyVideo = lazy(() => import("./pages/user/MyVideo"));
@@ -114,6 +115,7 @@ function App() {
           <Route path="/course-payment" component={CoursePayment} />   
           <Route path="/article-payment" component={ArticlePayment} />
           <Route path="/blog-payment" component={BlogPayment} />
+          <Route path="/video-payment" component={VideoPayment} />          
           <Route path="/my-blog" component={MyBlog} />
           <Route path="/my-article" component={MyArticle} />
           <Route path="/my-video" component={MyVideo} />

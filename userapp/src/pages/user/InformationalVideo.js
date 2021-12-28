@@ -190,7 +190,7 @@ export default function Video() {
                                                     </div>
                                                 </form>
                                             </div>
-                                            <div className="col-md-12">
+                                            {currentData.length > 0 &&<div className="col-md-12">
                                                 <div className="page-title search">
                                                     <div className="your-result">
                                                         <div className="col-md-9"><h3 className="page-name">Your results</h3></div>
@@ -205,15 +205,18 @@ export default function Video() {
                                                         </a> */}
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div>}
                                         </div>
                                         <div className="row">
-                                            {currentData.map((data, index) => (
+                                            {currentData.length > 0 && currentData.map((data, index) => (
                                                 <div key={index} className="col-md-6 col-lg-4">
                                                     <div className="video-card">
-                                                        {data.purchase_type == 'paid' && <div className="video-img">  
-                                                            <iframe class="ytplayer" id="ytplayer" width="100%" height="195px" title="YouTube video player" src={`https://www.youtube.com/embed/${data.video_embeded_id}?rel=0&modestbranding=1&showinfo=0`} autoplay="false"></iframe>
-                                                        </div>}
+                                                        {data.purchase_type == 'paid' && 
+                                                            <div className="video-img tooltip-video">  
+                                                                <iframe class="ytplayer" id="ytplayer" width="100%" height="195px" title="YouTube video player" src={`https://www.youtube.com/embed/${data.video_embeded_id}?rel=0&modestbranding=1&showinfo=0`} autoplay="false"></iframe>
+                                                                <span class="tooltip-title">Paid Video.</span>
+                                                            </div>
+                                                        }
 
                                                         {data.purchase_type == 'unpaid' &&
                                                             <div className="video-img"> 
@@ -234,9 +237,9 @@ export default function Video() {
                                                                 </Link>
                                                             </h3>
                                                             <div className="video-bottom">
-                                                                <p><img src="images/hull-icon.png" alt="author" />Hull Service</p>
-                                                                {data.cost && <p className="price">${data.cost}</p>}
-                                                                {!data.cost && <p className="price">Free</p>}
+                                                                <p><img src="images/favicon.png" alt="author" />Hull Service</p>
+                                                                {data.purchase_type == 'paid' && <p className="price">${data.cost}</p>}
+                                                                {data.purchase_type == 'unpaid' && <p className="price">Free</p>}
                                                                 {/* <Link to={{ pathname: "/video-detail", search: "?id=" + data.video_id }}><img src="images/video.png" alt="video" /></Link> */}
                                                             </div>
 
@@ -247,8 +250,15 @@ export default function Video() {
                                             ))}
                                             {
                                                 currentData.length == 0 &&
-                                                <div className="video-card">
-                                                    <div className="no-data">No results found.</div>
+                                                // <div className="video-card">
+                                                //     <img height="250px" width="350px" src="images/hull-no-results.png" alt="author" />
+                                                //     <div className="no-data">No results found.</div>
+                                                // </div>
+                                                <div>
+                                                    <center>
+                                                        <img height="250px" width="350px" src="images/hull-no-results.png" alt="author" />
+                                                        <div className="no-data">No results found.</div>
+                                                    </center>                                                    
                                                 </div>
                                             }
                                         </div>

@@ -3,7 +3,7 @@
 }
 
 .no-data{
-  margin: 265px;
+    font-size: 20px;
 }
 
 .blog-image {
@@ -47,7 +47,7 @@
 
 .dashboard-card .side-bar ul li ul li a {
     color: #000;
-    font-size: 12px;
+    font-size: 16px;
 }
 
 .dashboard-card .side-bar ul li ul li {padding-left: 28px;}

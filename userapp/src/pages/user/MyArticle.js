@@ -95,7 +95,7 @@ export default function MyArticle() {
                                             </h3>
                                             <div className="blog-post">
                                                 <div className="blog-author">
-                                                    <img src="images/hull-icon.png" alt="author" />
+                                                    <img src="images/favicon.png" alt="author" />
                                                     <p>Hull Service</p>
                                                 </div>                                                
                                                 <div className="date">{data.created_at}</div>

@@ -36,7 +36,7 @@ function Common() {
 
     this.getTagList = function (callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM tag where status = $1', [1], function (err, result) {
+            con.query('SELECT * FROM tag where status = $1 order by tag_name ASC', [1], function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }
@@ -50,7 +50,7 @@ function Common() {
 
     this.getHeadingList = function (callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM forumheading where status = $1', [1], function (err, result) {
+            con.query('SELECT * FROM forumheading where status = $1 order by forumheading_name ASC', [1], function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }

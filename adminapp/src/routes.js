@@ -44,6 +44,10 @@ const ProfessionalinterestareaAddEditForm = React.lazy(() => import('./views/pag
 const Researcherinterestarea = React.lazy(() => import('./views/pages/researcherinterestarea/Researcherinterestarea'))
 const ResearcherinterestareaAddEditForm = React.lazy(() => import('./views/pages/researcherinterestarea/AddEditForm'))
 
+const FutureParticipantsDemoTable = React.lazy(() => import('./views/pages/researches/FutureParticipantsDemoTable'))
+const ResearchesDemoTable = React.lazy(() => import('./views/pages/researches/ResearchesDemoTable'))
+const ResearchRequestsDemoTable = React.lazy(() => import('./views/pages/researches/ResearchRequestsDemoTable'))
+
 
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
@@ -107,9 +111,11 @@ const routes = [
   { path: '/researcherinterestareaadd', name: 'Researcher Interest Area Add', component: ResearcherinterestareaAddEditForm },
   { path: '/researcherinterestareaedit/:id', name: 'Researcher Interest Area Edit', component: ResearcherinterestareaAddEditForm },
 
-  { path: '/professional-interest-area', name: 'Professional Interest Area', component: Professionalinterestarea },
-  { path: '/professionalinterestareaadd', name: 'Professional Interest Area Add', component: ProfessionalinterestareaAddEditForm },
-  { path: '/professionalinterestareaedit/:id', name: 'Professional Interest Area Edit', component: ProfessionalinterestareaAddEditForm },
+  { path: '/researches-list', name: 'Researches List', component: ResearchesDemoTable },
+  { path: '/research-requests', name: 'Researches Requests', component: ResearchRequestsDemoTable },
+  { path: '/future-participants', name: 'Future Participants', component: FutureParticipantsDemoTable },
+
+  
 
 ]
 

@@ -76,7 +76,7 @@ export default function BlogPayment() {
     const blogPayment = (paymentDetail) => {
         const registerData = localStorage.getItem('userdata');
         var data = JSON.parse(registerData);
-        console.log(paymentDetail);
+        
         var obj = {
             user_id: data.id,
             order_id: paymentDetail.id,
