@@ -1020,7 +1020,7 @@ section.banner-card .banner-text .banner-btn {
     font-style: normal;
     font-weight: normal;
     font-size: 15px;
-    line-height: 18px;
+    line-height: 20px;
     color: #A0A0A0;
     box-shadow: none;
     border: #A0A0A0 solid 1px;
@@ -1036,7 +1036,7 @@ section.banner-card .banner-text .banner-btn {
     border-radius: 10px;
     margin-top: 6px;
     margin-right: 7px;
-    font-size: 13px;
+    font-size: 16px;
     color: gray;
 }
 
@@ -1075,7 +1075,7 @@ section.banner-card .banner-text .banner-btn {
     font-style: normal;
     font-weight: 500;
     font-size: 17px;
-    line-height: 18px;
+    line-height: 20px;
     color: #A0A0A0;
     box-shadow: none;
     height: 50px;
@@ -1143,8 +1143,8 @@ section.banner-card .banner-text .banner-btn {
 .login-section .login-box .login-details span {
     font-family: Open Sans;
     font-style: normal;
-    font-weight: normal;
-    font-size: 15px;
+    font-weight: 500;
+    font-size: 17px;
     color: #A0A0A0;
 }
 
@@ -3233,7 +3233,7 @@ min-height: 258px;
     text-align: center;
     color: #A0A0A0;
     font-style: italic;
-    padding-top: 5px;
+    /* padding-top: 5px; */
     font-size: 14px;
 }
 
@@ -4192,4 +4192,9 @@ color: #276e80 !important;
 .reply-loadmore{
     color: #276E80;
     font-size: 15px;
+}
+
+.ytplayer {
+pointer-events: none;
+position: absolute;
 }

@@ -141,7 +141,7 @@ export default function Forum() {
                                                                                 <span className="tooltip-title">{forumdata.topic}</span>
                                                                             </Link>
                                                                         </div> */}
-                                                                        <Link to={{ pathname: "/forum-detail", search: "?id=" + forumdata.forum_id }}>{forumdata.topic}</Link> 
+                                                                        <Link to={{ pathname: "/forum-detail", search: "?id=" + forumdata.forum_id }}>{forumdata.topic.slice(0, 45)}</Link>
                                                                     </td>                                                                    
                                                                     <td>{(forumdata.comment && forumdata.comment[0].forum_comment_count) ? forumdata.comment[0].forum_comment_count : 0}</td>
                                                                     <td><span>{(forumdata.comment && forumdata.comment[0].created_at) ? forumdata.comment[0].created_at : '-'}</span></td>

@@ -37,7 +37,11 @@ export default function ForumDetail() {
     React.useEffect(() => {      
 
         if (forumCommentList.length > 0 && parseInt(forumCommentList.length) < parseInt(visible)) {
-            setHideLoad(false);
+            
+            if (parseInt(forumCommentList.length) !== parseInt(visible)){
+                setHideLoad(false);
+            }
+            
         }
 
     }, [visible]);
@@ -101,29 +105,53 @@ export default function ForumDetail() {
         $("#" + id).css('display', 'block');
     }
 
-    const replySubmit = (comment_id) => {
-        const tokenString = localStorage.getItem('token');
-        var token = JSON.parse(tokenString);
-        const config = { headers: { Authorization: `${token}` } };
-        var obj = {
-            forum_id : forumId,
-            parent_comment_id : comment_id,
-            comment: $("#input" + comment_id).val()
+    const replySubmit = (comment_id, index) => {
+
+        if ($("#input" + comment_id).val().trim() == ''){
+            $("#error" + comment_id).show();
+        }else{
+
+            $("#error" + comment_id).hide();
+            const tokenString = localStorage.getItem('token');
+            var token = JSON.parse(tokenString);
+            const config = { headers: { Authorization: `${token}` } };
+            var obj = {
+                forum_id: forumId,
+                parent_comment_id: comment_id,
+                comment: $("#input" + comment_id).val()
+            }
+            axios.post(api_url + "/forum/addComment", obj, config)
+                .then((result) => {
+                    if (result.data.status) {
+                        $("#" + comment_id).css('display', 'none');
+                        console.log(result.data.response.data);
+                        var objs = {
+                            comment: "dfg",
+                            created_at: "2021-12-27T01:26:48.000Z",
+                            first_name: "Ak",
+                            last_name: "Patel",
+                            role: "Researchers"
+                        }
+                        let tempColl = [...forumCommentList];
+                        tempColl[index].reply = [result.data.response.data, ...tempColl[index].reply]
+                        $("#input" + comment_id).val('')                        
+                        setForumCommentList(tempColl);
+
+                        //   getNewListWrap(forumId);
+                    } else {
+                        Swal.fire("Oops...", result.data.response.msg, "error");
+                    }
+                }).catch((err) => { console.log(err); });
         }
-        axios.post(api_url + "/forum/addComment", obj, config)
-            .then((result) => {
-                if (result.data.status) {
-                    $("#" + comment_id).css('display', 'none');
-                    getNewListWrap(forumId);
-                } else {
-                    Swal.fire("Oops...", result.data.response.msg, "error");
-                }
-        }).catch((err) => { console.log(err); });
     }
 
-    const { handleSubmit, control, reset, formState: { errors } } = useForm();
+    const { handleSubmit, control, setValue, formState: { errors } } = useForm({});
 
-    const onSubmit = (data) => {
+    const onSubmit = (data, e) => {
+        // console.log(e);
+        // console.log(e.target.reset());
+        // e.target.reset();
+        // setValue("comment","")
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
         const config = {
@@ -133,7 +161,7 @@ export default function ForumDetail() {
         axios.post(api_url + "/forum/addComment", data, config)
             .then((result) => {
                 if (result.data.status) {    
-                    reset()
+                   
                     getNewListWrap(forumId);
                 } else {
                     Swal.fire("Oops...", result.data.response.msg, "error");
@@ -144,8 +172,6 @@ export default function ForumDetail() {
     const getNewListWrap = (forum_id) => {
         getNewList(forum_id,setForumCommentList);
     };
-
-    
 
     const forumlikeClick = () => {
         const tokenString = localStorage.getItem('token');
@@ -282,7 +308,7 @@ export default function ForumDetail() {
                                             rules={{ required: true }}
                                             render={({ field: { onChange, value } }) => (
                                                 <input
-                                                    type="comment"
+                                                    type="text"                                                    
                                                     onChange={onChange}
                                                     value={value}
                                                     className="form-control"
@@ -292,7 +318,8 @@ export default function ForumDetail() {
                                         ></Controller>
                                         {errors.comment && errors.comment.type === "required" && (
                                             <small className="error">Comment is required.</small>
-                                        )}                                         
+                                        )}    
+                                     
                                         <button type="submit" class="add-comment">Add Comment</button>                                        
                                     </form>
                                 </div>
@@ -343,47 +370,11 @@ export default function ForumDetail() {
                                                 </p>
                                                 <p onClick={(e) => reply(data.forum_comment_id)}><img src="images/reply.png" alt="reply" /> <span>Reply</span></p>
                                             </div>
-                                            <div className="reply-box" id={data.forum_comment_id} style={{ display: 'none' }}>
-
-
-                                                 {/* 
-                                                 <form onSubmit={handleSubmit(replySubmit())}>   
-                                                        <Controller
-                                                            name={"comment"}
-                                                            control={control}
-                                                            rules={{ required: true }}
-                                                            render={({ field: { onChange, value } }) => (
-                                                                <input
-                                                                    type="comment"
-                                                                    onChange={onChange}
-                                                                    value={value}
-                                                                    className="form-control"
-                                                                    placeholder={`Add Comment *`}
-                                                                />
-                                                            )}
-                                                        ></Controller>                                                        
-                                                        {errors.comment && errors.comment.type === "required" && (
-                                                            <small className="error">Comment is required.</small>
-                                                        )}            
-                                                        <Controller
-                                                            name={"comment_id"}
-                                                            control={control}
-                                                            rules={{ required: true }}
-                                                            render={({ field: { onChange, value } }) => (
-                                                                <input
-                                                                    type="hidden"
-                                                                    onChange={onChange}
-                                                                    value={data.forum_comment_id}
-                                                                    className="form-control"
-                                                                    placeholder={` Comment ID *`}
-                                                                />
-                                                            )}
-                                                        ></Controller>                                                        
-                                                    <button type="submit" class="add-comment">Submit</button>
-                                                 </form>  */}
+                                            <div className="reply-box" id={data.forum_comment_id} style={{ display: 'none' }}>                                             
 
                                                 <input className="form-control" type="text" id={"input"+data.forum_comment_id} name="comment" />
-                                                <button type="submit" onClick={(e) => replySubmit(data.forum_comment_id)}>Reply</button> 
+                                                <small id={"error" + data.forum_comment_id} style={{ display: 'none' }} class="error">Comment is required.</small>
+                                                <button type="submit" onClick={(e) => replySubmit(data.forum_comment_id, index)}>Reply</button>
                                             </div>
 
                                             {data.reply && <ForumReply close={close} replyDetail={data.reply}></ForumReply>
@@ -394,7 +385,7 @@ export default function ForumDetail() {
                                 ))}
                             </div>
                             <div class="loadmore">
-                                {(forumCommentList && forumCommentList.length > 0 && hideLoad) && <span onClick={showMoreItems}>View collapsed comments</span>}
+                                {(forumCommentList && forumCommentList.length > 0 && hideLoad) && <span onClick={showMoreItems}>View more comments</span>}
                             </div>
                         </div>
                    

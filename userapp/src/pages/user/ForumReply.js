@@ -7,10 +7,17 @@ function ForumReply(props) {
     const [hideLoad, setHideLoad] = useState(true);    
     useEffect(() => {        
         setForumReplyCommentList(props.replyDetail);
-        if (parseInt(props.replyDetail.length) < parseInt(visible)){            
+       // console.log(parseInt(props.replyDetail.length)+"============"+ parseInt(visible));
+        if (parseInt(props.replyDetail.length) < parseInt(visible)){                  
             setHideLoad(false);
+        }else{
+            if (parseInt(props.replyDetail.length) !== parseInt(visible)){
+                console.log("testt");
+                setHideLoad(true);
+            }
+            
         }
-    }, [visible]);
+    }, [visible, props.replyDetail]);
     const showMoreCommentItems = () => {
         setVisible((prevValue) => prevValue + 3);
     }
@@ -28,7 +35,7 @@ function ForumReply(props) {
                     </div>
                 ))}
 
-                {hideLoad && <span className="reply-loadmore" onClick={showMoreCommentItems}>View collapsed comments</span>}
+                {hideLoad && <span className="reply-loadmore" onClick={showMoreCommentItems}>View more comments</span>}
 
             </div>
 

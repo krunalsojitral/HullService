@@ -52,7 +52,9 @@ export default function Preview() {
                         <div className="col-md-2 side-col">
                             <Sidebar />
                         </div>
-                        <div className="col-md-7 bg-white">
+
+
+                        {(detail.module_type == 'article' || detail.module_type == 'blog' || detail.module_type == 'video') && <div className="col-md-7 bg-white">
                             <div className="research-main">
                                 <div className="research-title">
                                     <h2>{detail.title}</h2>
@@ -71,8 +73,276 @@ export default function Preview() {
 
                                 <div className="video-text" dangerouslySetInnerHTML={{ __html: detail.description }}></div>
                             </div>
-                        </div>
-                        <div className="col-md-3 article-tags">
+                        </div>}
+
+
+
+                        {(detail.module_type == 'course') && <div className="col-md-7">
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <div className="personal-courses">
+                                        <div className="row">
+                                            <div className="col-md-12">
+                                                <div className="breadcrumbs-items">
+                                                    <ul>
+                                                        <li><img src="images/notification-bell.png" alt="" /><span>Personal Development Courses</span></li>
+                                                        {detail.purchase_type == 'paid' && <li><img src="images/notification-bell.png" alt="" /><span>Paid Course</span></li>}
+                                                    </ul>
+                                                </div>
+                                                <div className="course-cover">
+
+                                                    {detail.image && <img src={detail.image} alt="author" />}
+
+                                                    <div className="course-inner">
+                                                        <div className="course-title">
+                                                            <h2>{detail.title}</h2>
+                                                            <ul>
+                                                                <li>
+                                                                    <p>1250 students</p>
+                                                                </li>
+                                                                {detail.trainer && <li>
+                                                                    <p>Created by </p><span>{detail.trainer}</span>
+                                                                </li>}
+                                                                {detail.update_at && <li>
+                                                                    <img src="images/update.png" alt="update" />
+                                                                    <p>Last update {detail.update_at}</p>
+                                                                </li>}
+                                                            </ul>
+                                                        </div>
+                                                        {/* <div className="course-share">
+                                                            <a href="javascript:;"><img src="images/share.png" alt="share" /></a>
+                                                        </div> */}
+                                                    </div>
+                                                </div>
+
+                                                <div className="what-learn">
+                                                    {detail.learn_description &&
+                                                        <div>
+                                                            <h3>What you’ll learn</h3>
+                                                            <div dangerouslySetInnerHTML={{ __html: detail.learn_description }} ></div>
+                                                        </div>
+                                                    }
+
+                                                    {detail.prerequisites_description &&
+                                                        <div>
+                                                            <h3>Requirement</h3>
+                                                            <div dangerouslySetInnerHTML={{ __html: detail.prerequisites_description }} ></div>
+                                                        </div>
+                                                    }
+
+                                                    {detail.description &&
+                                                        <div>
+                                                            <h3>Description</h3>
+                                                            <div dangerouslySetInnerHTML={{ __html: detail.description }} ></div>
+                                                        </div>
+                                                    }
+
+                                                    {/* <a href="javascript:;">See more</a> */}
+                                                </div>
+
+                                                <div className="course-content">
+                                                    <h3>Content Course</h3>
+                                                    <div className="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                                        <div className="panel panel-default">
+                                                            <div className="panel-heading" role="tab" id="headingOne">
+                                                                <h4 className="panel-title">
+                                                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                                        {detail.video_content_title}
+                                                                    </a>
+                                                                </h4>
+                                                            </div>
+                                                            <div id="collapseOne" className="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                                                <div className="panel-body">
+
+                                                                    {detail.video_title_first && <div className="content-grid">
+                                                                        <div className="course-play">
+                                                                            <a target="_blank" href={(detail.purchase_type == 'unpaid') ? detail.video_url_first : 'javascript:;'}>
+                                                                                <img src="images/play.png" alt="play" /><span>{detail.video_title_first}</span>
+                                                                            </a>
+                                                                        </div>
+                                                                        <a href="javascript:;">Preview</a>
+                                                                        <a href="javascript:;">{detail.video_time_first}</a>
+                                                                    </div>}
+
+                                                                    {detail.video_title_second && <div className="content-grid">
+                                                                        <div className="course-play">
+                                                                            <a target="_blank" href={(detail.purchase_type == 'unpaid') ? detail.video_url_second : 'javascript:;'}>
+                                                                                <img src="images/play.png" alt="play" /><span>{detail.video_title_second}</span>
+                                                                            </a>
+                                                                        </div>
+                                                                        <a href="javascript:;">Preview</a>
+                                                                        <a href="javascript:;">{detail.video_time_second}</a>
+                                                                    </div>}
+
+                                                                    {detail.video_title_third && <div className="content-grid">
+                                                                        <div className="course-play">
+                                                                            <a target="_blank" href={(detail.purchase_type == 'unpaid') ? detail.video_url_third : 'javascript:;'}>
+                                                                                <img src="images/play.png" alt="play" /><span>{detail.video_title_third}</span>
+                                                                            </a>
+                                                                        </div>
+                                                                        <a href="javascript:;">Preview</a>
+                                                                        <a href="javascript:;">{detail.video_time_third}</a>
+                                                                    </div>}
+
+                                                                    {detail.video_title_fourth && <div className="content-grid">
+                                                                        <div className="course-play">
+                                                                            <a target="_blank" href={(detail.purchase_type == 'unpaid') ? detail.video_url_fourth : 'javascript:;'}>
+                                                                                <img src="images/play.png" alt="play" /><span>{detail.video_title_fourth}</span>
+                                                                            </a>
+                                                                        </div>
+                                                                        <a href="javascript:;">Preview</a>
+                                                                        <a href="javascript:;">{detail.video_time_fourth}</a>
+                                                                    </div>}
+
+                                                                    {detail.video_title_five && <div className="content-grid">
+                                                                        <div className="course-play">
+                                                                            <a target="_blank" href={(detail.purchase_type == 'unpaid') ? detail.video_url_five : 'javascript:;'}>
+                                                                                <img src="images/play.png" alt="play" /><span>{detail.video_title_five}</span>
+                                                                            </a>
+                                                                        </div>
+                                                                        <a href="javascript:;">Preview</a>
+                                                                        <a href="javascript:;">{detail.video_time_five}</a>
+                                                                    </div>}
+
+                                                                    {detail.video_title_six && <div className="content-grid">
+                                                                        <div className="course-play">
+                                                                            <a target="_blank" href={(detail.purchase_type == 'unpaid') ? detail.video_url_six : 'javascript:;'}>
+                                                                                <img src="images/play.png" alt="play" /><span>{detail.video_title_six}</span>
+                                                                            </a>
+                                                                        </div>
+                                                                        <a href="javascript:;">Preview</a>
+                                                                        <a href="javascript:;">{detail.video_time_six}</a>
+                                                                    </div>}
+
+                                                                    {detail.video_title_seven && <div className="content-grid">
+                                                                        <div className="course-play">
+                                                                            <a target="_blank" href={(detail.purchase_type == 'unpaid') ? detail.video_url_seven : 'javascript:;'}>
+                                                                                <img src="images/play.png" alt="play" /><span>{detail.video_title_seven}</span>
+                                                                            </a>
+                                                                        </div>
+                                                                        <a href="javascript:;">Preview</a>
+                                                                        <a href="javascript:;">{detail.video_time_seven}</a>
+                                                                    </div>}
+
+                                                                    {detail.video_title_eight && <div className="content-grid">
+                                                                        <div className="course-play">
+                                                                            <a target="_blank" href={(detail.purchase_type == 'unpaid') ? detail.video_url_eight : 'javascript:;'}>
+                                                                                <img src="images/play.png" alt="play" /><span>{detail.video_title_eight}</span>
+                                                                            </a>
+                                                                        </div>
+                                                                        <a href="javascript:;">Preview</a>
+                                                                        <a href="javascript:;">{detail.video_time_eight}</a>
+                                                                    </div>}
+
+                                                                    {detail.video_title_nine && <div className="content-grid">
+                                                                        <div className="course-play">
+                                                                            <a target="_blank" href={(detail.purchase_type == 'unpaid') ? detail.video_url_nine : 'javascript:;'}>
+                                                                                <img src="images/play.png" alt="play" /><span>{detail.video_title_nine}</span>
+                                                                            </a>
+                                                                        </div>
+                                                                        <a href="javascript:;">Preview</a>
+                                                                        <a href="javascript:;">{detail.video_time_nine}</a>
+                                                                    </div>}
+
+                                                                    {detail.video_title_ten && <div className="content-grid">
+                                                                        <div className="course-play">
+                                                                            <a target="_blank" href={(detail.purchase_type == 'unpaid') ? detail.video_url_ten : 'javascript:;'}>
+                                                                                <img src="images/play.png" alt="play" /><span>{detail.video_title_ten}</span>
+                                                                            </a>
+                                                                        </div>
+                                                                        <a href="javascript:;">Preview</a>
+                                                                        <a href="javascript:;">{detail.video_time_ten}</a>
+                                                                    </div>}
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        {detail.content_title_one && <div className="panel panel-default">
+                                                            <div className="panel-heading" role="tab" id="headingTwo">
+                                                                <h4 className="panel-title">
+                                                                    <a className="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                                        {detail.content_title_one}
+                                                                    </a>
+                                                                </h4>
+                                                            </div>
+                                                            <div id="collapseTwo" className="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                                                <div className="panel-body">
+                                                                    <div dangerouslySetInnerHTML={{ __html: detail.content_description_one }}></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>}
+
+
+                                                        {detail.content_title_two && <div className="panel panel-default">
+                                                            <div className="panel-heading" role="tab" id="headingThree">
+                                                                <h4 className="panel-title">
+                                                                    <a className="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                                        {detail.content_title_two}</a>
+                                                                </h4>
+                                                            </div>
+                                                            <div id="collapseThree" className="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                                                                <div className="panel-body">
+                                                                    <div dangerouslySetInnerHTML={{ __html: detail.content_description_two }}></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>}
+
+                                                        {detail.content_title_third && <div className="panel panel-default">
+                                                            <div className="panel-heading" role="tab" id="headingFour">
+                                                                <h4 className="panel-title">
+                                                                    <a className="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                                                        {detail.content_title_third}</a>
+                                                                </h4>
+                                                            </div>
+                                                            <div id="collapseFour" className="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+                                                                <div className="panel-body">
+                                                                    <div dangerouslySetInnerHTML={{ __html: detail.content_description_third }}></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>}
+
+                                                        {detail.content_title_four && <div className="panel panel-default">
+                                                            <div className="panel-heading" role="tab" id="headingFive">
+                                                                <h4 className="panel-title">
+                                                                    <a className="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                                                        {detail.content_title_four}</a>
+                                                                </h4>
+                                                            </div>
+                                                            <div id="collapseFive" className="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+                                                                <div className="panel-body">
+                                                                    <div dangerouslySetInnerHTML={{ __html: detail.content_description_four }}></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>}
+
+                                                        {detail.content_title_five && <div className="panel panel-default">
+                                                            <div className="panel-heading" role="tab" id="headingsix">
+                                                                <h4 className="panel-title">
+                                                                    <a className="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                                                                        {detail.content_title_five}</a>
+                                                                </h4>
+                                                            </div>
+                                                            <div id="collapseSix" className="panel-collapse collapse" role="tabpanel" aria-labelledby="headingsix">
+                                                                <div className="panel-body">
+                                                                    <div dangerouslySetInnerHTML={{ __html: detail.content_description_five }}></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>}
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>}
+
+
+                        {/* <div className="col-md-3 article-tags">
                             {detail.tag && detail.tag.length > 0 &&
                                 <div className="video-tag">
                                     <h3>Tags</h3>
@@ -80,7 +350,7 @@ export default function Preview() {
                                         {detail.tag.map(data => (<li><a href="javascript:;">{data.label}</a></li>))}
                                     </ul>
                                 </div>}                           
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </section>

@@ -143,7 +143,7 @@ export default function Articles() {
                                                 {data.bookmark_article_id && <img className="bookmark-fill" src="images/bookmark-fill.png" alt="bookmark-fill" />}
                                                 {!data.bookmark_article_id && <img className="bookmark-outline" src="images/bookmark-outline.png" alt="bookmark-fill" />}
                                             </div>}
-
+                                            {!token && <br />}
                                             <h3 className="tooltip-box">
                                                 <Link data-toggle="tooltip" title={data.title} data-placement="bottom" to={{ pathname: "/article-detail", search: "?id=" + data.article_id }}> 
                                                 {data.title.slice(0, 30)}

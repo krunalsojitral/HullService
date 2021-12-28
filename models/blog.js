@@ -170,9 +170,8 @@ function User() {
         connection.acquire(function (err, con) {
             con.query('SELECT * FROM blog where blog_id = $1', [id], function (err, result) {
                 con.release();
-                if (result.rows.length === 0) {
-                    msg = 'User does not exist.';
-                    callback(msg, null);
+                if (err) {                    
+                    callback(err, null);
                 } else {
                     callback(null, result.rows);
                 }
@@ -299,7 +298,7 @@ function User() {
     this.getBookMarkBlog = function (user_id, role, callback) {
         connection.acquire(function (err, con) {
             console.log(role);
-            con.query('SELECT *,blog.blog_id as b_id, blog.created_at as blog_date FROM bookmark_blog inner join blog on blog.blog_id = bookmark_blog.blog_id where bookmark_blog.user_id = $1 and blog.status = $2 and (blog.role = $3 or blog.role = $4) order by blog.blog_id desc', [user_id, 1, role, "all"], function (err, result) {
+            con.query('SELECT *,blog.blog_id as b_id, blog.created_at as blog_date FROM bookmark_blog inner join blog on blog.blog_id = bookmark_blog.blog_id where bookmark_blog.user_id = $1 and blog.status = $2 order by blog.blog_id desc', [user_id, 1], function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }

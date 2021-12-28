@@ -86,12 +86,28 @@ export default function Dashboard() {
                                             </div>
                                             <div className="col-md-4">
                                                 <Link to='/my-blog' className="Support-card">                                                                    
-                                                    <h3>Blogs & Articles</h3>
+                                                    <h3>My Blogs</h3>
                                                     <div className="support-img">                                                                            
                                                         <img alt="support" src="images/support06.png" />                                                                            
                                                     </div>                                                                    
                                                 </Link>
-                                            </div>                                                                    
+                                            </div>
+                                            <div className="col-md-4">
+                                                <Link to='/my-article' className="Support-card">
+                                                    <h3>My Articles</h3>
+                                                    <div className="support-img">
+                                                        <img alt="support" src="images/support06.png" />
+                                                    </div>
+                                                </Link>
+                                            </div>
+                                            <div className="col-md-4">
+                                                <Link to='/my-video' className="Support-card">
+                                                    <h3>My Informational Videos</h3>
+                                                    <div className="support-img">
+                                                        <img alt="support" src="images/support06.png" />
+                                                    </div>
+                                                </Link>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

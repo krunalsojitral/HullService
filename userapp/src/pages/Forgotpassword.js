@@ -47,7 +47,7 @@ export default function Forgotpassword() {
                                     </div>
                                 </form>
 
-                                <div className="row">
+                                {/* <div className="row">
                                     <div className="col-md-6">
                                         <Link className="forgot-btn" to='/login'>
                                             Sign In
@@ -58,7 +58,7 @@ export default function Forgotpassword() {
                                             Sign Up
                                         </Link>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>

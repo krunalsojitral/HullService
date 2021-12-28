@@ -209,8 +209,143 @@ router.post('/addPreview', function (req, res) {
                 cost: obj.cost,
                 module_type: obj.type,
                 videoId: videoId,
-                created_at: moment().format('YYYY-MM-DD')
+                created_at: moment().format('YYYY-MM-DD'),
+                live_session_url: (obj.live_session_url) ? obj.live_session_url : '',
+                live_session_date: (obj.live_session_date) ? obj.live_session_date : '',
+                live_session_time: (obj.live_session_time) ? obj.live_session_time : '',
+                live_session_minute: (obj.live_session_minute) ? obj.live_session_minute : '',
+                description: obj.description,
+                learn_description: obj.learn_description,
+                prerequisites_description: obj.prerequisites_description,
+                session_type: obj.session_type,
+                video_content_title: obj.video_content_title,
+                video_title_first: obj.video_title_first,
+                video_url_first: obj.video_url_first,
+                video_time_first: obj.video_time_first,
+                video_title_second: obj.video_title_second,
+                video_url_second: obj.video_url_second,
+                video_time_second: obj.video_time_second,
+                video_title_third: obj.video_title_third,
+                video_url_third: obj.video_url_third,
+                video_time_third: obj.video_time_third,
+                video_title_fourth: obj.video_title_fourth,
+                video_url_fourth: obj.video_url_fourth,
+                video_time_fourth: obj.video_time_fourth,
+                video_title_five: obj.video_title_five,
+                video_url_five: obj.video_url_five,
+                video_time_five: obj.video_time_five,
+                video_title_six: obj.video_title_six,
+                video_url_six: obj.video_url_six,
+                video_time_six: obj.video_time_six,
+                video_title_seven: obj.video_title_seven,
+                video_url_seven: obj.video_url_seven,
+                video_time_seven: obj.video_time_seven,
+                video_title_eight: obj.video_title_eight,
+                video_url_eight: obj.video_url_eight,
+                video_time_eight: obj.video_time_eight,
+                video_title_nine: obj.video_title_nine,
+                video_url_nine: obj.video_url_nine,
+                video_time_nine: obj.video_time_nine,
+                video_title_ten: obj.video_title_ten,
+                video_url_ten: obj.video_url_ten,
+                video_time_ten: obj.video_time_ten,
+                content_title_one: obj.content_title_one,
+                content_description_one: obj.content_description_one,
+                content_title_two: obj.content_title_two,
+                content_description_two: obj.content_description_two,
+                content_title_third: obj.content_title_third,
+                content_description_third: obj.content_description_third,
+                content_title_four: obj.content_title_four,
+                content_description_four: obj.content_description_four,
+                content_title_five: obj.content_title_five,
+                content_description_five: obj.content_description_five,
+                trainer: obj.trainer,
+                created_at: moment().format('YYYY-MM-DD'),
+                role: obj.user_role,
+                purchase_type: obj.purchase_type,
+                main_cost: obj.main_cost,
+                sale_cost: obj.sale_cost,
             };
+
+            let course_record = {
+                title: obj.title,                               
+                live_session_url: (obj.live_session_url) ? obj.live_session_url : '',
+                live_session_date: (obj.live_session_date) ? obj.live_session_date : '',
+                live_session_time: (obj.live_session_time) ? obj.live_session_time : '',
+                live_session_minute: (obj.live_session_minute) ? obj.live_session_minute : '',
+                description: obj.description,
+                learn_description: obj.learn_description,
+                prerequisites_description: obj.prerequisites_description,
+                session_type: obj.session_type,
+                video_content_title: obj.video_content_title,
+                video_title_first: obj.video_title_first,
+                video_url_first: obj.video_url_first,
+                video_time_first: obj.video_time_first,
+                video_title_second: obj.video_title_second,
+                video_url_second: obj.video_url_second,
+                video_time_second: obj.video_time_second,
+                video_title_third: obj.video_title_third,
+                video_url_third: obj.video_url_third,
+                video_time_third: obj.video_time_third,
+                video_title_fourth: obj.video_title_fourth,
+                video_url_fourth: obj.video_url_fourth,
+                video_time_fourth: obj.video_time_fourth,
+                video_title_five: obj.video_title_five,
+                video_url_five: obj.video_url_five,
+                video_time_five: obj.video_time_five,
+                video_title_six: obj.video_title_six,
+                video_url_six: obj.video_url_six,
+                video_time_six: obj.video_time_six,
+                video_title_seven: obj.video_title_seven,
+                video_url_seven: obj.video_url_seven,
+                video_time_seven: obj.video_time_seven,
+                video_title_eight: obj.video_title_eight,
+                video_url_eight: obj.video_url_eight,
+                video_time_eight: obj.video_time_eight,
+                video_title_nine: obj.video_title_nine,
+                video_url_nine: obj.video_url_nine,
+                video_time_nine: obj.video_time_nine,
+                video_title_ten: obj.video_title_ten,
+                video_url_ten: obj.video_url_ten,
+                video_time_ten: obj.video_time_ten,
+                content_title_one: obj.content_title_one,
+                content_description_one: obj.content_description_one,
+                content_title_two: obj.content_title_two,
+                content_description_two: obj.content_description_two,
+                content_title_third: obj.content_title_third,
+                content_description_third: obj.content_description_third,
+                content_title_four: obj.content_title_four,
+                content_description_four: obj.content_description_four,
+                content_title_five: obj.content_title_five,
+                content_description_five: obj.content_description_five,
+                trainer: obj.trainer,                                
+                purchase_type: obj.purchase_type,
+                main_cost: obj.main_cost,
+                sale_cost: obj.sale_cost,
+                created_at: moment().format('YYYY-MM-DD'),
+                module_type: obj.type,
+            };
+
+            let update_value = [obj.title, obj.live_session_url, obj.live_session_date,
+            obj.live_session_time, obj.live_session_minute, obj.description,
+            obj.learn_description, obj.prerequisites_description, obj.session_type,
+            obj.video_content_title,
+            obj.video_title_first, obj.video_url_first, obj.video_time_first,
+            obj.video_title_second, obj.video_url_second, obj.video_time_second,
+            obj.video_title_third, obj.video_url_third, obj.video_time_third,
+            obj.video_title_fourth, obj.video_url_fourth, obj.video_time_fourth,
+            obj.video_title_five, obj.video_url_five, obj.video_time_five,
+            obj.video_title_six, obj.video_url_six, obj.video_time_six,
+            obj.video_title_seven, obj.video_url_seven, obj.video_time_seven,
+            obj.video_title_eight, obj.video_url_eight, obj.video_time_eight,
+            obj.video_title_nine, obj.video_url_nine, obj.video_time_nine,
+            obj.video_title_ten, obj.video_url_ten, obj.video_time_ten,
+            obj.content_title_one, obj.content_description_one,
+            obj.content_title_two, obj.content_description_two,
+            obj.content_title_third, obj.content_description_third,
+            obj.content_title_four, obj.content_description_four,
+            obj.content_title_five, obj.content_description_five,
+                obj.trainer, obj.purchase_type, obj.main_cost, obj.sale_cost, moment().format('YYYY-MM-DD'), obj.type]
             
             asyn.waterfall([
                 function (done) {
@@ -241,7 +376,7 @@ router.post('/addPreview', function (req, res) {
                 },
                 function (overview, done1) {
                     if (overview.image != '') { record.image = overview.image; }                    
-                    Common.addPreview(record, function (err, result) {
+                    Common.addPreview(record, update_value, course_record, function (err, result) {
                         if (err) {
                             done1(err, overview)
                         } else {
@@ -286,6 +421,64 @@ router.get('/getPreview', function (req, res) {
             retObj['module_type'] = result[0].module_type;
             retObj['videoid'] = result[0].videoid;
             retObj['created_at'] = moment(result[0].created_at).format('MMMM DD, YYYY');
+            retObj['role'] = result[0].role;
+            retObj['status'] = result[0].status;
+            retObj['learn_description'] = result[0].learn_description;
+            retObj['prerequisites_description'] = result[0].prerequisites_description;
+            retObj['session_type'] = result[0].session_type;
+            retObj['video_content_title'] = result[0].video_content_title;
+            retObj['video_title_first'] = result[0].video_title_first;
+            retObj['video_url_first'] = result[0].video_url_first;
+            retObj['video_time_first'] = result[0].video_time_first;
+            retObj['video_title_second'] = result[0].video_title_second;
+            retObj['video_url_second'] = result[0].video_url_second;
+            retObj['video_time_second'] = result[0].video_time_second;
+            retObj['video_title_third'] = result[0].video_title_third;
+            retObj['video_url_third'] = result[0].video_url_third;
+            retObj['video_time_third'] = result[0].video_time_third;
+            retObj['video_title_fourth'] = result[0].video_title_fourth;
+            retObj['video_url_fourth'] = result[0].video_url_fourth;
+            retObj['video_time_fourth'] = result[0].video_time_fourth;
+            retObj['video_title_five'] = result[0].video_title_five;
+            retObj['video_url_five'] = result[0].video_url_five;
+            retObj['video_time_five'] = result[0].video_time_five;
+            retObj['video_title_six'] = result[0].video_title_six;
+            retObj['video_url_six'] = result[0].video_url_six;
+            retObj['video_time_six'] = result[0].video_time_six;
+            retObj['video_title_seven'] = result[0].video_title_seven;
+            retObj['video_url_seven'] = result[0].video_url_seven;
+            retObj['video_time_seven'] = result[0].video_time_seven;
+            retObj['video_title_eight'] = result[0].video_title_eight;
+            retObj['video_url_eight'] = result[0].video_url_eight;
+            retObj['video_time_eight'] = result[0].video_time_eight;
+            retObj['video_title_nine'] = result[0].video_title_nine;
+            retObj['video_url_nine'] = result[0].video_url_nine;
+            retObj['video_time_nine'] = result[0].video_time_nine;
+            retObj['video_title_ten'] = result[0].video_title_ten;
+            retObj['video_url_ten'] = result[0].video_url_ten;
+            retObj['video_time_ten'] = result[0].video_time_ten;
+            retObj['content_title_one'] = result[0].content_title_one;
+            retObj['content_description_one'] = result[0].content_description_one;
+            retObj['content_title_two'] = result[0].content_title_two;
+            retObj['content_description_two'] = result[0].content_description_two;
+            retObj['content_title_third'] = result[0].content_title_third;
+            retObj['content_description_third'] = result[0].content_description_third;
+            retObj['content_title_four'] = result[0].content_title_four;
+            retObj['content_description_four'] = result[0].content_description_four;
+            retObj['content_title_five'] = result[0].content_title_five;
+            retObj['content_description_five'] = result[0].content_description_five;
+            retObj['trainer'] = result[0].trainer;
+            retObj['purchase_type'] = result[0].purchase_type;
+            retObj['main_cost'] = result[0].main_cost;
+            retObj['sale_cost'] = result[0].sale_cost;
+            retObj['live_session_url'] = result[0].live_session_url;
+            retObj['live_session_date'] = result[0].live_session_date;
+            retObj['live_session_time'] = result[0].live_session_time;
+            retObj['live_session_minute'] = result[0].live_session_minute;
+            retObj['update_at'] = (result[0].update_at) ? moment(result[0].update_at).format('MM/YYYY') : '';
+            retObj['course_purchase'] = 0;
+            retObj['draft_status'] = result[0].draft_status;
+
             
             return res.json({ status: 1, 'response': { data: retObj } });
         }

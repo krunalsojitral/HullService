@@ -147,8 +147,8 @@ export default function ForumSub() {
                                             <tbody>
                                             {currentData.map((data, index) => (
                                                 <tr>
-                                                    <td><Link to={{ pathname: "/forum-detail", search: "?id=" + data.forum_id }}>{data.topic}</Link></td>
-                                                    <td>{(data.comment && data.comment.length > 0) ? data.comment[0].forum_comment_count : '0'}</td>
+                                                    <td><Link to={{ pathname: "/forum-detail", search: "?id=" + data.forum_id }}>{data.topic.slice(0, 45)}</Link></td>
+                                                    <td>{(data.comment && data.comment[0].forum_comment_count) ? data.comment[0].forum_comment_count : 0}</td>
                                                     <td><span>{(data.comment && data.comment[0].created_at) ? data.comment[0].created_at : '-'}</span></td>
                                                 </tr>
                                             ))}

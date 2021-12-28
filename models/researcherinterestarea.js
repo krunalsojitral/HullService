@@ -8,7 +8,7 @@ function Researcherinterestarea() {
 
     this.getAllAdminresearcherinterestarea = function (callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM researcher_interest_area order by researcher_interest_area_id desc', function (err, result) {
+            con.query('SELECT * FROM researcher_interest_area order by name ASC', function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }

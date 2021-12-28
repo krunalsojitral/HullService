@@ -361,5 +361,20 @@ function Video() {
         });
     };
 
+    this.getBookMarkVideo = function (user_id, role, callback) {
+        connection.acquire(function (err, con) {
+            console.log(role);
+            con.query('SELECT *,video.video_id as b_id, video.created_at as video_date FROM bookmark_video inner join video on video.video_id = bookmark_video.video_id where bookmark_video.user_id = $1 and video.status = $2 order by video.video_id desc', [user_id, 1], function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
 }
 module.exports = new Video();

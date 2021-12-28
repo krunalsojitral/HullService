@@ -211,16 +211,22 @@ export default function Video() {
                                             {currentData.map((data, index) => (
                                                 <div key={index} className="col-md-6 col-lg-4">
                                                     <div className="video-card">
-                                                        <div className="video-img">
-                                                            <iframe width="100%" height="195px" title="YouTube video player" src={`https://www.youtube.com/embed/${data.video_embeded_id}?rel=0&modestbranding=1&showinfo=0`} allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>                                                            
-                                                        </div>
+                                                        {data.purchase_type == 'paid' && <div className="video-img">  
+                                                            <iframe class="ytplayer" id="ytplayer" width="100%" height="195px" title="YouTube video player" src={`https://www.youtube.com/embed/${data.video_embeded_id}?rel=0&modestbranding=1&showinfo=0`} autoplay="false"></iframe>
+                                                        </div>}
+
+                                                        {data.purchase_type == 'unpaid' &&
+                                                            <div className="video-img"> 
+                                                                <iframe width="100%" height="195px" title="YouTube video player" src={`https://www.youtube.com/embed/${data.video_embeded_id}?rel=0&modestbranding=1&showinfo=0`} allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>
+                                                            </div>
+                                                        }
 
                                                         <div className="blog-text">
                                                             {token && <div className="blog-tags" onClick={(e) => bookmarkClick(data.video_id)}>                                                                
                                                                 {data.bookmark_video_id && <img className="bookmark-fill" src="images/bookmark-fill.png" alt="bookmark-fill" />}
                                                                 {!data.bookmark_video_id && <img className="bookmark-outline" src="images/bookmark-outline.png" alt="bookmark-fill" />}
                                                             </div>}
-
+                                                            {!token && <br />}
                                                             <h3 className="tooltip-box">
                                                                 <Link to={{ pathname: "/video-detail", search: "?id=" + data.video_id }}>
                                                                 {data.title.slice(0, 30)}

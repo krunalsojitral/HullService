@@ -8,7 +8,7 @@ function Academicdiscipline() {
 
     this.getAllAdminacademicdiscipline = function (callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM academic_discipline order by academic_discipline_id desc', function (err, result) {
+            con.query('SELECT * FROM academic_discipline order by name ASC', function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }

@@ -9,7 +9,7 @@ function User() {
     //check User reset password token
     this.checkUserRegistration = function (email, callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM users where email = $1', [email], function (err, results) {
+            con.query('SELECT * FROM users where LOWER(email) = $1', [email.toLowerCase()], function (err, results) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) {
@@ -171,7 +171,7 @@ function User() {
     this.checkUser = function (req, callback) {
         var email = req.body.email;
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM users WHERE email = $1', [email], function (err, results) {
+            con.query('SELECT * FROM users WHERE LOWER(email) = $1', [email.toLowerCase()], function (err, results) {
                 con.release();
                 if (err) {
                     if (env.DEBUG) {

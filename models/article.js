@@ -167,9 +167,8 @@ function User() {
         connection.acquire(function (err, con) {
             con.query('SELECT * FROM article where article_id = $1', [id], function (err, result) {
                 con.release();
-                if (result.rows.length === 0) {
-                    msg = 'User does not exist.';
-                    callback(msg, null);
+                if (err) {                    
+                    callback(err, null);
                 } else {
                     callback(null, result.rows);
                 }
@@ -315,6 +314,21 @@ function User() {
     this.draftarticleList = function (callback) {
         connection.acquire(function (err, con) {
             con.query('SELECT * FROM article where draft_status = $1 order by article_id desc', [1], function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
+    this.getBookMarkArticle = function (user_id, role, callback) {
+        connection.acquire(function (err, con) {
+            console.log(role);
+            con.query('SELECT *,article.article_id as b_id, article.created_at as article_date FROM bookmark_article inner join article on article.article_id = bookmark_article.article_id where bookmark_article.user_id = $1 and article.status = $2 order by article.article_id desc', [user_id, 1], function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }

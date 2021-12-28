@@ -343,7 +343,8 @@ const AddEditForm = ({ match }) => {
       content_description_two: courseContentSecondChange,
       content_description_third: courseContentThirdChange,
       content_description_four: courseContentFourthChange,
-      content_description_five: courseContentFiveChange
+      content_description_five: courseContentFiveChange,
+      type: 'course'
     }
 
     const formData = new FormData();
@@ -353,8 +354,8 @@ const AddEditForm = ({ match }) => {
     }
     axios.post(api_url + "/common/addPreview", formData).then((result) => {
       if (result.data.status) {
-        window.open(result.data.response.preview + "preview-module");
-        //window.open("http://localhost:4200/preview-module");
+       // window.open(result.data.response.preview + "preview-module");
+        window.open("http://localhost:4200/preview-module");
       } else {
         Swal.fire("Oops...", result.data.response.msg, "error");
       }
@@ -1655,8 +1656,8 @@ const AddEditForm = ({ match }) => {
 
               <button type="submit" className="btn btn-outline-primary btn-sm btn-square"> {(isEditMode === 1) ? 'Update' : 'Add'}</button>
               &nbsp;
-              {/* {(isEditMode !== 1) && <button type="button" className="btn btn-outline-primary btn-sm btn-square" onClick={(e) => preview()}> Preview </button>}
-              &nbsp; */}
+              {(isEditMode !== 1) && <button type="button" className="btn btn-outline-primary btn-sm btn-square" onClick={(e) => preview()}> Preview </button>}
+              &nbsp; 
               {(isEditMode !== 1) && <button type="button" className="btn btn-outline-primary btn-sm btn-square" onClick={(e) => draft_course()}> Draft </button>}
 
 

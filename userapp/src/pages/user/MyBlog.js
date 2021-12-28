@@ -11,7 +11,7 @@ import './../dev.css';
 import { UserContext } from './../../hooks/UserContext';
 
 
-export default function Blog() {
+export default function MyBlog() {
 
     const pageLimit = 12;
     const [offset, setOffset] = useState(0);

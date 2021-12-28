@@ -150,6 +150,7 @@ export default function Blog() {
                                                 {!data.bookmark_blog_id && <img className="bookmark-outline" src="images/bookmark-outline.png" alt="bookmark-fill" />}
                                                 
                                             </div>}
+                                            {!token && <br/>}
                                             <h3 className="tooltip-box">
                                                 <Link to={{ pathname: "/blog-detail", search: "?id=" + data.blog_id }}> 
                                                 {data.title.slice(0, 30)}

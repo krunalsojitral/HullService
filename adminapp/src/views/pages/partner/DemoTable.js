@@ -17,7 +17,7 @@ import { useForm, Controller } from "react-hook-form";
 import $ from 'jquery';
 
 const DemoTable = () => {
-
+  const ref = React.useRef();
   
   const [details, setDetails] = useState([])
   const [items, setItems] = useState([])
@@ -119,6 +119,7 @@ const DemoTable = () => {
       .then((result) => {
         if (result.data.status) {
           Swal.fire("Success!", result.data.response.msg, "success");
+          ref.current.value = "";
           getNewListWrap();
           setSetectimage('')
           setSelectedFile('');
@@ -143,6 +144,7 @@ const DemoTable = () => {
                     <CFormGroup>
                       <CLabel htmlFor="ccnumber">Upload Image &nbsp; </CLabel>
                       <input
+                        ref={ref}
                         id="myFile"
                         type="file"
                         accept=".png,.PNG,.JPG,.jpg,.jpeg"

@@ -49,6 +49,7 @@ const ArticlePayment = lazy(() => import("./pages/user/ArticlePayment"));
 const BlogPayment = lazy(() => import("./pages/user/BlogPayment"));
 const MyBlog = lazy(() => import("./pages/user/MyBlog"));
 const MyArticle = lazy(() => import("./pages/user/MyArticle"));
+const MyVideo = lazy(() => import("./pages/user/MyVideo"));
 const Preview = lazy(() => import("./pages/Preview"));
 
 
@@ -115,6 +116,7 @@ function App() {
           <Route path="/blog-payment" component={BlogPayment} />
           <Route path="/my-blog" component={MyBlog} />
           <Route path="/my-article" component={MyArticle} />
+          <Route path="/my-video" component={MyVideo} />
           <Route path="/preview-module" component={Preview} />
           
         </Switch>

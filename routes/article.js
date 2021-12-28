@@ -577,5 +577,35 @@ router.get('/draftarticleList', function (req, res) {
     });
 });
 
+router.post('/getBookMarkArticle', passport.authenticate('jwt', { session: false }), function (req, res) {
+
+    var user_id = req.user.id;
+    var user_role = req.user.userrole;
+    Article.getBookMarkArticle(user_id, user_role, function (err, result) {
+        if (err) {
+            return res.json({ status: 0, 'response': { msg: err } });
+        } else {
+            var imageLink;
+            if (req.headers.host == env.ADMIN_LIVE_URL) {
+                imageLink = env.ADMIN_LIVE_URL;
+            } else {
+                imageLink = env.ADMIN_LIVE_URL;
+            }
+            var articleList = result.map(data => {
+                let retObj = {};
+                retObj['article_id'] = data.b_id;
+                retObj['title'] = data.title;
+                retObj['description'] = data.description;
+                retObj['created_at'] = moment(data.article_date).format('MMMM DD, YYYY');
+                retObj['role'] = data.role;
+                retObj['image'] = (data.image) ? imageLink + env.ARTICLE_VIEW_PATH + data.image : '';
+                retObj['status'] = data.status;
+                retObj['bookmark_article_id'] = data.bookmark_article_id;
+                return retObj;
+            });
+            return res.json({ status: 1, 'response': { data: articleList } });
+        }
+    });
+});
 
 module.exports = router;

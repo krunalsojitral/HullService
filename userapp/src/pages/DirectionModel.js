@@ -26,7 +26,7 @@ function DirectionModel(props) {
     return (
         <div className="popup" style={{ width: '450px',background: '#fff',padding: '19px',display: 'block'}}>
 
-           <div><button className="modelclose" onClick={props.close}>x</button></div>
+            <div><button className="modelclose" onClick={() => history.goBack()}>x</button></div>
 
             <div className="article-modal">
                 <div className="modal-body">
@@ -37,15 +37,15 @@ function DirectionModel(props) {
                     your account gives you unlimited
                         access to all articles. </p>
 
-                    {props.blogDetail && <Link to={{ pathname: "/blog-payment", search: "?id=" + props.blogDetail }}>
+                    {token && props.blogDetail && <Link to={{ pathname: "/blog-payment", search: "?id=" + props.blogDetail }}>
                         Purchase Blog
                     </Link>} 
 
-                    {props.articleDetail && <Link to={{ pathname: "/article-payment", search: "?id=" + props.articleDetail }}>
+                    {token && props.articleDetail && <Link to={{ pathname: "/article-payment", search: "?id=" + props.articleDetail }}>
                         Purchase Article
                     </Link>}
 
-                    {props.videoDetail && <Link to={{ pathname: "/video-payment", search: "?id=" + props.videoDetail }}>
+                    {token && props.videoDetail && <Link to={{ pathname: "/video-payment", search: "?id=" + props.videoDetail }}>
                         Purchase Article
                     </Link>}
 

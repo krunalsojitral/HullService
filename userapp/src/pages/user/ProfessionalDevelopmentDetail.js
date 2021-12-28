@@ -154,11 +154,7 @@ export default function ProfessionalDevelopmentDetail() {
                                                     {/* <a href="javascript:;">See more</a> */}
                                                 </div>
 
-
-
-
-
-                                                    <div className="course-content">
+                                                <div className="course-content">
                                                         <h3>Content Course</h3>
                                                         <div className="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                                                             <div className="panel panel-default">
@@ -351,8 +347,8 @@ export default function ProfessionalDevelopmentDetail() {
 
 
                                                         </div>
-                                                    </div>
                                                 </div>
+                                            </div>
                                             </div>
                                         </div>
                                     </div>

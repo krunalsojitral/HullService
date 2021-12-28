@@ -820,52 +820,45 @@ router.post('/getForumCommentList', passport.authenticate('jwt', { session: fals
                 } else {
                     if (result.length > 0) {
                         var response = [];
+                        var final_response = [];
                         Promise.all(result.map(function (item) {
-                              
                             var temparray = new Promise(function (resolve, reject) {
-                               // for (let comments of result) {
                                 Forum.getForumReplyComment(item.forum_comment_id, function (err, data) {
                                         if (data && data.reply_list.length > 0) {
                                             item.reply = data.reply_list;
                                         }
                                         item.comment_count = data.comment_count[0].cnt;
-                                        //resolve(item);
-                                        setTimeout(() => resolve(item), 20)
+                                        setTimeout(() => resolve(item), 30)
                                     });
-                              //  }
-                             //   setTimeout(() => resolve(comment), 50)
+                              
                             });
                             return temparray.then(result => {
-
-                               // console.log(result);
-                                // var commentList = result.map(data => {
-                                //     let retObj = {};
-                                //     retObj['comment'] = data.comment;
-                                //     retObj['comment_date'] = data.comment_date;
-                                //     retObj['first_name'] = data.first_name;
-                                //     retObj['forum_comment_id'] = data.forum_comment_id;
-                                //     retObj['last_name'] = data.last_name;
-                                //     //retObj['created_on'] = helper.timeSince(data.comment_date); 
-                                //     retObj['created_on'] = moment(data.comment_date).format('MMMM Do, YYYY');
-                                //     retObj['parent_comment_id'] = data.parent_comment_id;
-                                //     retObj['comment_like_id'] = data.comment_like_id;
-                                //     retObj['reply'] = data.reply;
-                                //     retObj['comment_count'] = data.comment_count;
-                                //     retObj['role'] = data.role;
-                                //     return retObj;
-                                // });
                                 response.push(result);
-                                
+                                var commentList = response.map(data => {
+                                    let retObj = {};
+                                    retObj['comment'] = data.comment;
+                                    retObj['comment_date'] = data.comment_date;
+                                    retObj['first_name'] = data.first_name;
+                                    retObj['forum_comment_id'] = data.forum_comment_id;
+                                    retObj['last_name'] = data.last_name;
+                                    //retObj['created_on'] = helper.timeSince(data.comment_date); 
+                                    retObj['created_on'] = moment(data.comment_date).format('MMMM Do, YYYY');
+                                    retObj['parent_comment_id'] = data.parent_comment_id;
+                                    retObj['comment_like_id'] = data.comment_like_id;
+                                    retObj['reply'] = (data.reply && data.reply.length > 0) ? data.reply: [];
+                                    retObj['comment_count'] = data.comment_count;
+                                    retObj['role'] = data.role;
+                                    return retObj;
+                                }).sort(function (a, b) {
+                                    return a.forum_comment_id - b.forum_comment_id;
+                                });
+                                final_response = commentList;
                             })
-
-
                         })).then(function () {
-                            done(null, response);
+                            done(null, final_response);
                         })
-
-                        
                     } else {
-                        done(null, response);
+                        done(null, final_response);
                     }
                 }
             });
@@ -1059,6 +1052,8 @@ router.post('/addComment', passport.authenticate('jwt', { session: false }), [
         var error = errors.array();
         res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
     } else {
+        
+        var userDetail = req.user;
         var obj = {
             user_id: req.user.id,
             forum_id: req.body.forum_id,
@@ -1071,7 +1066,14 @@ router.post('/addComment', passport.authenticate('jwt', { session: false }), [
                 return res.json({ 'status': 0, 'response': { 'msg': err } });
             } else {
                 if (result) {
-                    return res.json({ 'status': 1, 'response': { 'data': result, 'msg': 'Data found' } });
+                    var user_obj = {
+                        comment: obj.comment,
+                        created_at: obj.created_at,
+                        first_name: userDetail.first_name,
+                        last_name: userDetail.last_name,
+                        role: userDetail.role
+                    }
+                    return res.json({ 'status': 1, 'response': { 'data': user_obj, 'msg': 'Data found' } });
                 } else {
                     return res.json({ 'status': 0, 'response': { 'data': [], 'msg': 'Data not found' } });
                 }

@@ -419,7 +419,8 @@ router.post('/getPaidVideoList', passport.authenticate('jwt', { session: false }
                 retObj['video'] = data.video_url;
                 retObj['video_embeded_id'] = data.video_embeded_id;
                 retObj['bookmark_video_id'] = data.bookmark_video_id;
-                retObj['cost'] = data.cost;                
+                retObj['cost'] = data.cost;
+                retObj['purchase_type'] = data.purchase_type;                
                 retObj['status'] = data.status;
                 return retObj;
             });
@@ -453,6 +454,7 @@ router.post('/getUnpaidVideoList', function (req, res) {
                 retObj['video'] = data.video_url;
                 retObj['cost'] = data.cost;
                 retObj['status'] = data.status;
+                retObj['purchase_type'] = data.purchase_type;
                 return retObj;
             });
             return res.json({ status: 1, 'response': { data: videoList } });
@@ -653,6 +655,40 @@ router.post('/videoBookmark', passport.authenticate('jwt', { session: false }), 
             return res.json({ status: 0, 'response': { msg: err } });
         } else {
             return res.json({ status: 1, 'response': { data: result } });
+        }
+    });
+});
+
+
+router.post('/getBookMarkVideo', passport.authenticate('jwt', { session: false }), function (req, res) {
+
+    var user_id = req.user.id;
+    var user_role = req.user.userrole;
+    Video.getBookMarkVideo(user_id, user_role, function (err, result) {
+        if (err) {
+            return res.json({ status: 0, 'response': { msg: err } });
+        } else {
+            var imageLink;
+            if (req.headers.host == env.ADMIN_LIVE_URL) {
+                imageLink = env.ADMIN_LIVE_URL;
+            } else {
+                imageLink = env.ADMIN_LIVE_URL;
+            }
+            var videoList = result.map(data => {
+                let retObj = {};
+                retObj['video_id'] = data.b_id;
+                retObj['title'] = data.title;
+                retObj['description'] = data.description;
+                retObj['created_at'] = moment(data.video_date).format('MMMM DD, YYYY');
+                retObj['role'] = data.role;
+                retObj['image'] = (data.image) ? imageLink + env.VIDEO_VIEW_PATH + data.image : '';
+                retObj['status'] = data.status;
+                retObj['purchase_type'] = data.purchase_type;
+                retObj['video_embeded_id'] = data.video_embeded_id;                
+                retObj['bookmark_video_id'] = data.bookmark_video_id;
+                return retObj;
+            });
+            return res.json({ status: 1, 'response': { data: videoList } });
         }
     });
 });
