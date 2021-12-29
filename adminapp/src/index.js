@@ -12,6 +12,10 @@ import store from './store'
 
 import { icons } from './assets/icons'
 
+
+
+
+
 React.icons = icons
 
 ReactDOM.render(

@@ -33,27 +33,42 @@ const DemoTable = () => {
     }
   ]
   
-
   const updateItemStatus = (item, status) => {
-   
-    var obj = {
-      forumheading_id: item.forumheading_id,
-      status: status,
-    };
-    axios.post(api_url + "/forumheading/changeforumheadingStatus", obj)
-      .then((result) => {
-        if (result.data.status) {
-          getNewListWrap();
-        } else {
-          Swal.fire("Oops...", result.data.response.msg, "error");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        //Swal.fire('Oops...', err, 'error')
-      });
-  }
 
+    if (status == 1) {
+      var message = 'Are you sure you want to activate a Forum heading ?'
+    } else {
+      var message = 'Are you sure you want to deactivate a Forum heading ?'
+    }
+    Swal.fire({
+      //title: 'warning!',
+      icon: 'warning',
+      text: message,
+      confirmButtonText: `Yes`,
+      showCancelButton: true,
+      cancelButtonText: 'No',
+      cancelButtonColor: '#e57979',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        var obj = {
+          forumheading_id: item.forumheading_id,
+          status: status,
+        };
+        axios.post(api_url + "/forumheading/changeforumheadingStatus", obj)
+          .then((result) => {
+            if (result.data.status) {
+              getNewListWrap();
+            } else {
+              Swal.fire("Oops...", result.data.response.msg, "error");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            //Swal.fire('Oops...', err, 'error')
+          });
+      }
+    });
+  }
   
   const getNewList = () => { 
     axios.get(api_url + '/forumheading/forumheadingList', {}).then((result) => {
@@ -133,7 +148,7 @@ const DemoTable = () => {
                     );
                   }}
                 >
-                  Inactive
+                    Deactive
                 </a>
               )}
               {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}

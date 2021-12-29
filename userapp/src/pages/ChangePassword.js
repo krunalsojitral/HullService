@@ -108,7 +108,7 @@ export default function Changepassword() {
                                     </div>
                                 </form>
 
-                                <div className="row">
+                                {/* <div className="row">
                                     <div className="col-md-6">
                                         <Link className="forgot-btn" to='/login'>
                                             Sign In
@@ -119,7 +119,7 @@ export default function Changepassword() {
                                             Sign Up
                                         </Link>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>

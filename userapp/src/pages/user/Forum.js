@@ -159,8 +159,11 @@ export default function Forum() {
 
                                 {
                                     forumList.length == 0 &&
-                                    <div className="blog-box">
-                                        <div className="no-data">No forum available.</div>
+                                    <div>
+                                        <center>
+                                            <img height="250px" width="350px" src="images/hull-no-results.png" alt="author" />
+                                            <div className="no-data">No results found.</div>
+                                        </center>
                                     </div>
                                 }
 

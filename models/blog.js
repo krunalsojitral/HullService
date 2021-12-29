@@ -21,7 +21,7 @@ function User() {
 
     this.getAllAdminBlog = function (callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM blog where draft_status IS NULL order by blog_id desc', function (err, result) {
+            con.query('SELECT * FROM blog where draft_status IS NULL order by blog_id DESC', function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }

@@ -114,8 +114,11 @@ export default function MyVideo() {
                                             ))}
                                             {
                                                 currentData.length == 0 &&
-                                                <div className="video-card">
-                                                    <div className="no-data">No results found.</div>
+                                                <div>
+                                                    <center>
+                                                        <img height="250px" width="350px" src="images/hull-no-results.png" alt="author" />
+                                                        <div className="no-data">No results found.</div>
+                                                    </center>
                                                 </div>
                                             }
                                         </div>

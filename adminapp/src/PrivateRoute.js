@@ -1,12 +1,15 @@
 import React, { Suspense } from 'react';
 import { Route, Redirect } from 'react-router-dom';
-
-
 import { CContainer, CFade } from '@coreui/react'
+import useAutoLogout from "./useAutoLogout";
 
 export default function PrivateRoute(props) {   
     
-
+    if (useAutoLogout(18000) == 0) {
+      localStorage.clear();
+      window.location.replace('/');
+    }
+    
     const tokenString = localStorage.getItem('token');
 
     const { component: Component,...rest } = props;

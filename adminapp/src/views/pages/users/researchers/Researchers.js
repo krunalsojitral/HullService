@@ -49,7 +49,7 @@ const Researchers = () => {
             </div>
             <div className="header-right">
               <CSVLink data={csvData}>Export User</CSVLink> &nbsp;
-              <CButton
+              {/* <CButton
                 color="primary"
                 variant="outline"
                 shape="square"
@@ -57,7 +57,7 @@ const Researchers = () => {
                 onClick={() => history.push(`/researchersadd`)}
               >
                 Add
-            </CButton>
+            </CButton> */}
             </div>
           </CCardHeader>
           <DemoTable />

@@ -121,7 +121,8 @@ export default function MyProfessionalDevelopment() {
                                                     </div>
                                                 </form>
 
-                                                <div className="page-title search">
+                                                {
+                                                    currentData.length > 0 && <div className="page-title search">
                                                     <div className="your-result">
                                                         <div className="col-md-9"><h3 className="page-name">Your results</h3></div>
                                                         <div className="col-md-3">
@@ -134,13 +135,14 @@ export default function MyProfessionalDevelopment() {
                                                             </select>
                                                         </div>
                                                     </div>
+                                                </div>}
 
-                                                </div>
+
                                             </div>
                                         </div>
                                         <div className="row">
 
-                                            {currentData.map((data, index) => (
+                                            {currentData.length > 0 && currentData.map((data, index) => (
                                                 <div key={index} className="col-md-6 col-lg-4">
                                                     <div className="video-card">
                                                         <div className="video-img">
@@ -174,8 +176,11 @@ export default function MyProfessionalDevelopment() {
                                             ))}
                                             {
                                                 currentData.length == 0 &&
-                                                <div className="blog-box">
-                                                    <div className="no-data">No course available.</div>
+                                                <div>
+                                                    <center>
+                                                        <img height="250px" width="350px" src="images/hull-no-results.png" alt="author" />
+                                                        <div className="no-data">No results found.</div>
+                                                    </center>
                                                 </div>
                                             }
                                         </div>

@@ -136,7 +136,7 @@ export default function Sidebar() {
             </svg>
             <ul>
                 {users && (users.role == 3 || users.role == 2) &&     <li>
-                    <NavLink activeClassName="active" to="/dashboard">
+                    <NavLink activeClassName="active" to="/dashboard" isActive={() => ['/my-blog', '/my-professional-development', '/my-forum', '/my-article','/my-video'].includes(pathname)}>
                         <svg className="icon icon-tag">
                             <use xlinkHref="#icon-dashboard"></use>
                         </svg><InlineButton name={"Dashboard"} />
@@ -151,7 +151,7 @@ export default function Sidebar() {
                     </NavLink>                    
                 </li>
                 <li>
-                    <NavLink activeClassName="active" isActive={() => ['/blog', '/blog-detail', '/blog-payment', '/my-blog'].includes(pathname)} to="/blog">
+                    <NavLink activeClassName="active" isActive={() => ['/blog', '/blog-detail', '/blog-payment'].includes(pathname)} to="/blog">
                         <svg className="icon icon-tag">
                             <use xlinkHref="#icon-blog"></use>
                         </svg>
@@ -167,7 +167,7 @@ export default function Sidebar() {
                     </NavLink>
                 </li>
                 {users && (users.role == 3 || users.role == 2) && <li>
-                    <NavLink activeClassName="active" isActive={() => ['/forum','/forum-sub', '/forum-detail', '/my-forum'].includes(pathname)} to="/forum">
+                    <NavLink activeClassName="active" isActive={() => ['/forum', '/forum-sub', '/forum-detail', '/add-forum'].includes(pathname)} to="/forum">
                         <svg className="icon icon-tag">
                             <use xlinkHref="#icon-forum"></use>
                         </svg>

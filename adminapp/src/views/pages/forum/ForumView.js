@@ -49,9 +49,9 @@ const ForumView = ({ match }) => {
           <CCardBody>
             <table className="table table-striped table-hover">
               <tbody>                
+                <tr><td>Topic</td><td><strong>{details.heading}</strong></td></tr>
                 <tr><td>Thread title</td><td><strong>{details.question}</strong></td></tr>
-                <tr><td>Thread description</td><td><strong>{details.description}</strong></td></tr>                
-                <tr><td>Heading</td><td><strong>{details.heading}</strong></td></tr>
+                <tr><td>Thread description</td><td><strong>{details.description}</strong></td></tr>                                
               </tbody>
             </table>
           </CCardBody>

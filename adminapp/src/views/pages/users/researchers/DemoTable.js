@@ -25,8 +25,8 @@ const DemoTable = () => {
 
   const fields = [
     { key: 'name', _style: { width: '20%'} },
-    { key: 'phone', _style: { width: '20%' } },
-    { key: 'created_at', _style: { width: '20%' } },
+    { key: 'email', _style: { width: '20%' } },
+    { key: 'joining_date', _style: { width: '20%' } },
     { key: 'status', _style: { width: '20%'} },
     {
       key: 'show_details',
@@ -39,22 +39,38 @@ const DemoTable = () => {
 
   const updateItemStatus = (item, status) => {
 
-    var obj = {
-      id: item.id,
-      status: status,
-    };
-    axios.post(api_url + "/user/changeuserStatus", obj)
-      .then((result) => {
-        if (result.data.status) {
-          getNewListWrap();
-        } else {
-          Swal.fire("Oops...", result.data.response.msg, "error");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        //Swal.fire('Oops...', err, 'error')
-      });
+    if (status == 1) {
+      var message = 'Are you sure you want to activate a User ?'
+    } else {
+      var message = 'Are you sure you want to deactivate a User ?'
+    }
+    Swal.fire({
+      //title: 'warning!',
+      icon: 'warning',
+      text: message,
+      confirmButtonText: `Yes`,
+      showCancelButton: true,
+      cancelButtonText: 'No',
+      cancelButtonColor: '#e57979',
+    }).then((result) => {      
+      if (result.isConfirmed) {         
+        var obj = {
+          id: item.id,
+          status: status,
+        };
+        axios.post(api_url + "/user/changeuserStatus", obj)
+          .then((result) => {
+            if (result.data.status) {
+              getNewListWrap();
+            } else {
+              Swal.fire("Oops...", result.data.response.msg, "error");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    });    
   }
 
   
@@ -136,7 +152,7 @@ const DemoTable = () => {
                     );
                   }}
                 >
-                  Inactive
+                   Deactive
                 </a>
               )}
               {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}
@@ -152,17 +168,17 @@ const DemoTable = () => {
             item => {
               return (
                 <td className="py-2">
-                  {/* <CButton
+                  <CButton
                     color="primary"
                     variant="outline"
                     shape="square"
                     size="sm"
                     onClick={() => history.push(`/userdetail/${item.id}`)}
                   >
-                    Show
-                  </CButton> */}
+                    View
+                  </CButton> 
 
-                  <CButton
+                  {/* <CButton
                     color="primary"
                     variant="outline"
                     shape="square"
@@ -170,7 +186,7 @@ const DemoTable = () => {
                     onClick={() => history.push(`/researchersedit/${item.id}`)}
                     className="mr-1"
                   > Edit
-                  </CButton>
+                  </CButton> */}
 
                 </td>
               )

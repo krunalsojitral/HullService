@@ -1,5 +1,6 @@
 import React from 'react'
 
+
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Blog = React.lazy(() => import('./views/pages/blog/Blog'))
 const DraftBlogDemoTable = React.lazy(() => import('./views/pages/blog/DraftBlogDemoTable'))
@@ -27,6 +28,7 @@ const ForumRequestDemoTable = React.lazy(() => import('./views/pages/forum/Forum
 const ForumheadingAddEditForm = React.lazy(() => import('./views/pages/forumheading/AddEditForm'))
 const Generalpublic = React.lazy(() => import('./views/pages/users/generalpublic/Generalpublic'))
 const GeneralpublicAddEditForm = React.lazy(() => import('./views/pages/users/generalpublic/AddEditForm'))
+const UserDetail = React.lazy(() => import('./views/pages/users/UserDetail'))
 const Researchers = React.lazy(() => import('./views/pages/users/researchers/Researchers'))
 const ResearchersAddEditForm = React.lazy(() => import('./views/pages/users/researchers/AddEditForm'))
 const Serviceprovider = React.lazy(() => import('./views/pages/users/serviceprovider/Serviceprovider'))
@@ -47,7 +49,6 @@ const ResearcherinterestareaAddEditForm = React.lazy(() => import('./views/pages
 const FutureParticipantsDemoTable = React.lazy(() => import('./views/pages/researches/FutureParticipantsDemoTable'))
 const ResearchesDemoTable = React.lazy(() => import('./views/pages/researches/ResearchesDemoTable'))
 const ResearchRequestsDemoTable = React.lazy(() => import('./views/pages/researches/ResearchRequestsDemoTable'))
-
 
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
@@ -92,9 +93,10 @@ const routes = [
   { path: '/researchers', name: 'Researchers', component: Researchers },
   { path: '/researchersadd', name: 'Researchers Add', component: ResearchersAddEditForm },
   { path: '/researchersedit/:id', name: 'Researchers Edit', component: ResearchersAddEditForm },
-  { path: '/serviceprovider', name: 'Service Provider', component: Serviceprovider },
-  { path: '/serviceprovideradd', name: 'Service Provider Add', component: ServiceproviderAddEditForm },
-  { path: '/serviceprovideredit/:id', name: 'Service Provider Edit', component: ServiceproviderAddEditForm },
+  { path: '/userdetail/:id', name: 'User Detail', component: UserDetail },
+  { path: '/serviceprovider', name: 'Professionals', component: Serviceprovider },
+  { path: '/serviceprovideradd', name: 'Professionals Add', component: ServiceproviderAddEditForm },
+  { path: '/serviceprovideredit/:id', name: 'Professionals Edit', component: ServiceproviderAddEditForm },
   { path: '/homecontenteditform', name: 'Home Content Edit', component: HomeContentAddEditForm },
   { path: '/partner', name: 'Partners & Sponsors', component: Partner },
   { path: '/academic-discipline', name: 'Academic Discipline', component: Academicdiscipline },
@@ -107,6 +109,11 @@ const routes = [
   { path: '/occupationadd', name: 'Occupation Add', component: OccupationAddEditForm },
   { path: '/occupationedit/:id', name: 'Occupation Edit', component: OccupationAddEditForm },
 
+  
+  { path: '/professional-interest-area', name: 'Professional Interest Area', component: Professionalinterestarea },
+  { path: '/professionalinterestareaadd', name: 'Professional Interest Area Add', component: ProfessionalinterestareaAddEditForm },
+  { path: '/professionalinterestareaedit/:id', name: 'Professional Interest Area Edit', component: ProfessionalinterestareaAddEditForm },
+
   { path: '/researcher-interest-area', name: 'Researcher Interest Area', component: Researcherinterestarea },
   { path: '/researcherinterestareaadd', name: 'Researcher Interest Area Add', component: ResearcherinterestareaAddEditForm },
   { path: '/researcherinterestareaedit/:id', name: 'Researcher Interest Area Edit', component: ResearcherinterestareaAddEditForm },
@@ -118,5 +125,8 @@ const routes = [
   
 
 ]
+
+
+
 
 export default routes

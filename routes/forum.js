@@ -44,6 +44,7 @@ router.get('/forumList', function (req, res) {
                 retObj['created_on'] = (data.forum_date) ? moment(data.forum_date).format('YYYY-MM-DD') : '';
                 retObj['status'] = data.forum_status;
                 retObj['user_status'] = data.user_status;
+                retObj['retire'] = data.retire;
                 retObj['created_by'] = (data.first_name) ? data.first_name + ' ' + data.last_name : 'Admin';
                 return retObj;
             });
@@ -237,8 +238,36 @@ router.post('/changeforumStatus', [
             }
         });
     }
-
 });
+
+router.post('/changeforumRetireStatus', [
+    check('forum_id', 'forum id is required').notEmpty(),
+    check('retire', 'Please enter retire').notEmpty(),
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        let forum_id = req.body.forum_id;
+        let record = {
+            retire: req.body.retire
+        }
+        Forum.changeforumRetireStatus(record, forum_id, function (err, result) {
+            if (err) {
+                return res.json({ 'status': 0, 'response': { 'msg': 'Error Occured.' } });
+            } else {
+                if (result) {
+                    return res.json({ 'status': 1, 'response': { 'msg': 'Status Changed successfully.' } });
+                } else {
+                    return res.json({ 'status': 0, 'response': { 'msg': 'Data not found.' } });
+                }
+            }
+        });
+    }
+});
+
+
 
 router.post('/addforumByadmin', [
     check('title', 'Topic is required').notEmpty(),
@@ -663,6 +692,7 @@ router.post('/getForumCommentDetail', passport.authenticate('jwt', { session: fa
         'follow': '',
         'user_like': 0,
         'user_dislike': 0,
+        'retire':''
     }
     asyn.waterfall([
         function (done) {            
@@ -674,6 +704,7 @@ router.post('/getForumCommentDetail', passport.authenticate('jwt', { session: fa
                         comment.started = helper.timeCountSince(result[0].created_at);
                     }   
                     comment.forum_title = result[0].topic;
+                    comment.retire = result[0].retire;
                     comment.forum_description = result[0].description;
                     done(null, comment)
                 }

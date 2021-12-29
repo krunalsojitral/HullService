@@ -17,7 +17,7 @@ const _nav = [
     _children: [
       {
         _tag: "CSidebarNavItem",
-        name: "Service Providers",
+        name: "Professionals",
         to: "/serviceprovider",
       },
       {

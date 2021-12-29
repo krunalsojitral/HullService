@@ -330,7 +330,8 @@ export default function ForumDetail() {
                                             <small className="error">Comment is required.</small>
                                         )}    
                                      
-                                        <button type="submit" class="add-comment">Add Comment</button>                                        
+                                        {forumCommentDetail.retire && <button type="button" class="add-comment">Add Comment</button>}
+                                        {!forumCommentDetail.retire && <button type="submit" class="add-comment">Add Comment</button>}
                                     </form>
                                 </div>
                                
@@ -338,23 +339,42 @@ export default function ForumDetail() {
 
                                 <div className="row">
                                     <div className="col-md-8">
-                                        <div className="dislike-like"> 
+                                        {forumCommentDetail.retire && <div className="dislike-like">
+                                            <ul>
+                                                <li className={forumCommentDetail.user_like === 1 ? 'liked' : ''}> <i className="fa fa-arrow-up"></i> <span>{forumCommentDetail.likes}</span> </li>
+                                                <li className={forumCommentDetail.user_dislike === 1 ? 'liked' : ''}> <i className="fa fa-arrow-down"></i> <span>{forumCommentDetail.unlikes}</span> </li>
+                                                <li> <i className="fa fa-comment"></i> <span>{forumCommentDetail.replies}</span> </li>
+                                            </ul>
+                                        </div>}  
+                                        {!forumCommentDetail.retire && <div className="dislike-like">
                                             <ul>
                                                 <li className={forumCommentDetail.user_like === 1 ? 'liked' : ''} onClick={() => forumlikeClick()}> <i className="fa fa-arrow-up"></i> <span>{forumCommentDetail.likes}</span> </li>
                                                 <li className={forumCommentDetail.user_dislike === 1 ? 'liked' : ''} onClick={() => forumdislikeClick()}> <i className="fa fa-arrow-down"></i> <span>{forumCommentDetail.unlikes}</span> </li>
                                                 <li> <i className="fa fa-comment"></i> <span>{forumCommentDetail.replies}</span> </li>
                                             </ul>
-                                        </div>                                          
+                                        </div>}
                                     </div>
                                     <div className="col-md-4">
-                                        <div className="follow">                                            
-                                            {forumCommentDetail.follow == 0 && <span onClick={(e) => handleFollow()} >
+
+                                        {forumCommentDetail.retire && <div className="follow">
+                                            {forumCommentDetail.follow == 0 && <span>
                                                  Follow
                                             </span>}
-                                            {forumCommentDetail.follow == 1 &&  <span onClick={(e) => handleUnFollow()} >
+                                            {forumCommentDetail.follow == 1 &&  <span>
                                                 Following
                                             </span>}
-                                        </div>
+                                        </div>}
+
+                                        {!forumCommentDetail.retire && <div className="follow">
+                                            {forumCommentDetail.follow == 0 && <span onClick={(e) => handleFollow()} >
+                                                Follow
+                                            </span>}
+                                            {forumCommentDetail.follow == 1 && <span onClick={(e) => handleUnFollow()} >
+                                                Following
+                                            </span>}
+                                        </div>}
+
+
                                     </div>
                                 </div> 
 
@@ -371,7 +391,18 @@ export default function ForumDetail() {
                                         </div>
                                         <div class="forum-text">
                                             <p>{data.comment}</p>
-                                            <div class="forum-comments">  
+
+                                            {forumCommentDetail.retire && <div class="forum-comments">
+                                                <p className={(data.comment_like_id && data.comment_like_id > 0) ? 'comment-liked' : ''}>
+                                                    <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                                                    {/* <i class="fa fa-thumbs-o-up" aria-hidden="true"></i> */}
+                                                    &nbsp;
+                                                    <span>+{data.comment_count}</span>
+                                                </p>
+                                                <p><img src="images/reply.png" alt="reply" /> <span>Reply</span></p>
+                                            </div>}
+
+                                            {!forumCommentDetail.retire && <div class="forum-comments">
                                                 <p className={(data.comment_like_id && data.comment_like_id > 0) ? 'comment-liked' : ''} onClick={() => forumCommentLikeClick(data.forum_comment_id, index)}>
                                                     <i class="fa fa-thumbs-up" aria-hidden="true"></i>
                                                     {/* <i class="fa fa-thumbs-o-up" aria-hidden="true"></i> */}
@@ -379,9 +410,10 @@ export default function ForumDetail() {
                                                     <span>+{data.comment_count}</span>
                                                 </p>
                                                 <p onClick={(e) => reply(data.forum_comment_id)}><img src="images/reply.png" alt="reply" /> <span>Reply</span></p>
-                                            </div>
-                                            <div className="reply-box" id={data.forum_comment_id} style={{ display: 'none' }}>                                             
+                                            </div>}                                            
 
+
+                                            <div className="reply-box" id={data.forum_comment_id} style={{ display: 'none' }}>    
                                                 <input className="form-control" type="text" id={"input"+data.forum_comment_id} name="comment" />
                                                 <small id={"error" + data.forum_comment_id} style={{ display: 'none' }} class="error">Comment is required.</small>
                                                 <button type="submit" onClick={(e) => replySubmit(data.forum_comment_id, index)}>Reply</button>

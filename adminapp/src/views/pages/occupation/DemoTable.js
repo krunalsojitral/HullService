@@ -35,24 +35,43 @@ const DemoTable = () => {
   
 
   const updateItemStatus = (item, status) => {
-   
-    var obj = {
-      occupation_id: item.occupation_id,
-      status: status,
-    };
-    axios.post(api_url + "/occupation/changeOccupationStatus", obj)
-      .then((result) => {
-        if (result.data.status) {
-          getNewListWrap();
-        } else {
-          Swal.fire("Oops...", result.data.response.msg, "error");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        //Swal.fire('Oops...', err, 'error')
-      });
+
+    if (status == 1) {
+      var message = 'Are you sure you want to activate an Occupation ?'
+    } else {
+      var message = 'Are you sure you want to deactivate an Occupation ?'
+    }
+    Swal.fire({
+      //title: 'warning!',
+      icon: 'warning',
+      text: message,
+      confirmButtonText: `Yes`,
+      showCancelButton: true,
+      cancelButtonText: 'No',
+      cancelButtonColor: '#e57979',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        var obj = {
+          occupation_id: item.occupation_id,
+          status: status,
+        };
+        axios.post(api_url + "/occupation/changeOccupationStatus", obj)
+          .then((result) => {
+            if (result.data.status) {
+              getNewListWrap();
+            } else {
+              Swal.fire("Oops...", result.data.response.msg, "error");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            //Swal.fire('Oops...', err, 'error')
+          });
+      }
+    });
   }
+
+ 
 
   
   const getNewList = () => { 
@@ -125,7 +144,7 @@ const DemoTable = () => {
                     );
                   }}
                 >
-                  Inactive
+                    Deactive
                 </a>
               )}
               {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}

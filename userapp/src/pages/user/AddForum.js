@@ -216,7 +216,7 @@ export default function AddForum() {
                                                         <Controller
                                                             name={"description"}
                                                             control={control}
-                                                            rules={{ required: true }}
+                                                            //rules={{ required: true }}
                                                             render={({ field: { onChange, value } }) => (
                                                                 <textarea
                                                                     rows="6" cols="50"
@@ -224,13 +224,13 @@ export default function AddForum() {
                                                                     onChange={onChange}
                                                                     value={value}
                                                                     className="form-control"
-                                                                    placeholder={`Add description to discuss more about your question (Optional)  *`}
+                                                                    placeholder={`Add description to discuss more about your question (Optional)`}
                                                                 />
                                                             )}
                                                         ></Controller>
-                                                        {errors.topic && errors.topic.type === "required" && (
+                                                        {/* {errors.topic && errors.topic.type === "required" && (
                                                             <small className="error">Description is required.</small>
-                                                        )}
+                                                        )} */}
                                                     </div>
 
                                                     {errors.topic && errors.topic.type === "required" && (<div><br /></div>)}

@@ -84,10 +84,14 @@ function UserRequest({
             <CCardBody>
                 <table className="table table-striped table-hover">
                     <tbody>                            
-                        <tr><td>Created by</td><td><strong>{selectedItem && selectedItem.created_by}</strong></td></tr>
+                        <tr><td>Requested by</td><td><strong>{selectedItem && selectedItem.created_by}</strong></td></tr>
+                        <tr><td>Topic</td><td><strong>{selectedItem && selectedItem.topic}</strong></td></tr>
                         <tr><td>Thread title</td><td><strong>{selectedItem && selectedItem.question}</strong></td></tr>
-                        <tr><td>Thread description</td><td><strong>{selectedItem && selectedItem.description}</strong></td></tr>
-                        <tr><td>Heading</td><td><strong>{selectedItem && selectedItem.topic}</strong></td></tr>
+                        <tr><td>Thread description</td><td>
+                            <div className={selectedItem && selectedItem.description.length >380 ? "overflow-description": ""}>
+                                <strong>{selectedItem && selectedItem.description}</strong>
+                            </div>
+                        </td></tr>                        
                     </tbody>
                 </table>
             </CCardBody>
@@ -95,13 +99,13 @@ function UserRequest({
             <form>
                 <CModalBody>
                     <CFormGroup> 
-                        <CLabel>Feedback</CLabel>                       
+                        <CLabel className="forum-feedback"><b>Feedback : </b> &nbsp;</CLabel>
                         <Controller
                             name={"comment"}
                             control={control}
                             rules={{ required: true }}
                             render={({ field: { onChange, value } }) => (
-                                <textarea rows="6" cols="55"
+                                <textarea rows="6" cols="45"
                                     type="text"
                                     onChange={onChange}
                                     value={value}

@@ -39,9 +39,9 @@ const ResearchesDemoTable = () => {
   const updateItemStatus = (item, status) => {
 
     if (status == 1){
-      var message = 'Are you sure you want to activate the research and which gets display from the front end'
+      var message = 'Are you sure you want to activate the research and which gets display from the front end ?'
     }else{
-      var message = 'Are you sure you want to inactivate the research and which gets removed from the front end'
+      var message = 'Are you sure you want to inactivate the research and which gets removed from the front end ?'
     }
 
     

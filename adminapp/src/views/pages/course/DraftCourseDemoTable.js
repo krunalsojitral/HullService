@@ -44,6 +44,9 @@ const DraftCourseDemoTable = () => {
       icon: 'warning',
       //text: "You will not be able to recover this resume!",
       confirmButtonText: `Publish`,
+      showCancelButton: true,
+      cancelButtonText: 'No',
+      cancelButtonColor: '#e57979',
     }).then((results) => {
 
       if (results.isConfirmed) { 

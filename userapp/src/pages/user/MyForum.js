@@ -100,7 +100,10 @@ export default function ForumSub() {
             //     scrollTop: $("#scrolltop").offset().top
             // }, 2);
         }
-        setCurrentData(data.slice(offset, offset + pageLimit));
+        if (data){
+            setCurrentData(data.slice(offset, offset + pageLimit));
+        }
+        
     }, [offset, data]);
 
     return (
@@ -165,7 +168,7 @@ export default function ForumSub() {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {currentData.map((data, index) => (
+                                            {currentData.length > 0 && currentData.map((data, index) => (
                                                 <tr>
                                                     <td>
                                                         {/* <Link to={{ pathname: "/forum-detail", search: "?id=" + data.forum_id }}>{data.topic}</Link> */}
@@ -186,9 +189,11 @@ export default function ForumSub() {
                                 </div>}
                                 {
                                     currentData.length == 0 &&
-                                    <div className="blog-box">
-                                        <div className="no-data">No forum available.
-                                        </div>
+                                    <div>
+                                        <center>
+                                            <img height="250px" width="350px" src="images/hull-no-results.png" alt="author" />
+                                            <div className="no-data">No results found.</div>
+                                        </center>
                                     </div>
                                 }
 

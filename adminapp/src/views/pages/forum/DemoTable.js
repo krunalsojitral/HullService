@@ -32,7 +32,8 @@ const DemoTable = ({ moduleConfigUrls }) => {
     { key: 'topic', _style: { width: '20%' } },
     { key: 'created_by', _style: { width: '20%' } },
     { key: 'status', _style: { width: '20%'} },
-    { key: 'user_status', _style: { width: '20%' } },    
+    { key: 'retire', _style: { width: '20%' } },    
+   // { key: 'user_status', _style: { width: '20%' } },    
     {
       key: 'show_details',
       label: '',
@@ -43,25 +44,76 @@ const DemoTable = ({ moduleConfigUrls }) => {
   
 
   const updateItemStatus = (item, status) => {
-   
-    var obj = {
-      forum_id: item.forum_id,
-      status: status,
-    };
-    axios.post(api_url + "/forum/changeforumStatus", obj)
-      .then((result) => {
-        if (result.data.status) {
-          getNewListWrap();
-        } else {
-          Swal.fire("Oops...", result.data.response.msg, "error");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        //Swal.fire('Oops...', err, 'error')
-      });
+    if (status == 1) {
+      var message = 'Are you sure you want to activate a Forum ?'
+    } else {
+      var message = 'Are you sure you want to deactivate a Forum ?'
+    }
+    Swal.fire({
+      //title: 'warning!',
+      icon: 'warning',
+      text: message,
+      confirmButtonText: `Yes`,
+      showCancelButton: true,
+      cancelButtonText: 'No',
+      cancelButtonColor: '#e57979',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        var obj = {
+          forum_id: item.forum_id,
+          status: status,
+        };
+        axios.post(api_url + "/forum/changeforumStatus", obj)
+          .then((result) => {
+            if (result.data.status) {
+              getNewListWrap();
+            } else {
+              Swal.fire("Oops...", result.data.response.msg, "error");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            //Swal.fire('Oops...', err, 'error')
+          });
+      }
+    });
   }
 
+  const updateItemRetire = (item, status) => {
+    if (status == 1) {
+      var message = 'Are you sure you want to Retire the forum ?'
+    } else {
+      var message = 'Are you sure you want to deactivate a Forum ?'
+    }
+    Swal.fire({
+      //title: 'warning!',
+      icon: 'warning',
+      text: message,
+      confirmButtonText: `Yes`,
+      showCancelButton: true,
+      cancelButtonText: 'No',
+      cancelButtonColor: '#e57979',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        var obj = {
+          forum_id: item.forum_id,
+          retire: status,
+        };
+        axios.post(api_url + "/forum/changeforumRetireStatus", obj)
+          .then((result) => {
+            if (result.data.status) {
+              getNewListWrap();
+            } else {
+              Swal.fire("Oops...", result.data.response.msg, "error");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            //Swal.fire('Oops...', err, 'error')
+          });
+      }
+    });
+  }
   
   const getNewList = () => { 
     axios.get(api_url + '/forum/forumList', {}).then((result) => {
@@ -142,35 +194,71 @@ const DemoTable = ({ moduleConfigUrls }) => {
                     );
                   }}
                 >
-                  Inactive
+                   Deactive
                 </a>
               )
               }
               {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}
             </td>
-          ),          
-          user_status: (item) => (
+          ),    
+          retire: (item) => (
             <td>
-              {item.user_status === 1 && <CBadge color={getBadge(item.user_status)}>Approved</CBadge> }
-              {item.user_status === 2 && <CBadge color={getBadge(item.user_status)}>Rejected</CBadge>}
-              {item.user_status === 0 &&
-                <CBadge
-                color={getBadge(item.user_status)}
-                  color="primary"
-                  variant="outline"
-                  shape="square"
-                  size="sm"
+              {item.retire === 1 ? (
+                'Retired'
+                // <a
+                //   href
+                //   style={{ cursor: "pointer", textDecoration: "underline" }}
+                //   onClick={() => {
+                //     updateItemRetire(
+                //       item,
+                //       0,
+                //       getNewListWrap
+                //     );
+                //   }}
+                // >
+                //   Retired
+                // </a>
+              ) : (
+                <a
+                  href
+                  style={{ cursor: "pointer", textDecoration: "underline" }}
                   onClick={() => {
-                    setSelectedItem(item);
-                    setModal(true);
+                    updateItemRetire(
+                      item,
+                      1,
+                      getNewListWrap
+                    );
                   }}
-                  className="mr-1"
                 >
-                Pending
-                  </CBadge>}
-              
+                  Retire
+                </a>
+              )
+              }
+              {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}
             </td>
           ),
+          // user_status: (item) => (
+          //   <td>
+          //     {item.user_status === 1 && <CBadge color={getBadge(item.user_status)}>Approved</CBadge> }
+          //     {item.user_status === 2 && <CBadge color={getBadge(item.user_status)}>Rejected</CBadge>}
+          //     {item.user_status === 0 &&
+          //       <CBadge
+          //       color={getBadge(item.user_status)}
+          //         color="primary"
+          //         variant="outline"
+          //         shape="square"
+          //         size="sm"
+          //         onClick={() => {
+          //           setSelectedItem(item);
+          //           setModal(true);
+          //         }}
+          //         className="mr-1"
+          //       >
+          //       Pending
+          //         </CBadge>}
+              
+          //   </td>
+          // ),
           'show_details':
             item => {
               return (

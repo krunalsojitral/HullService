@@ -35,24 +35,41 @@ const DemoTable = () => {
   
 
   const updateItemStatus = (item, status) => {
-   
-    var obj = {
-      professional_interest_area_id: item.professional_interest_area_id,
-      status: status,
-    };
-    axios.post(api_url + "/professionalinterestarea/changeprofessionalinterestareaStatus", obj)
-      .then((result) => {
-        if (result.data.status) {
-          getNewListWrap();
-        } else {
-          Swal.fire("Oops...", result.data.response.msg, "error");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        //Swal.fire('Oops...', err, 'error')
-      });
-  }
+
+    if (status == 1) {
+      var message = 'Are you sure you want to activate an Interest area ?'
+    } else {
+      var message = 'Are you sure you want to deactivate an Interest area ?'
+    }
+    Swal.fire({
+      //title: 'warning!',
+      icon: 'warning',
+      text: message,
+      confirmButtonText: `Yes`,
+      showCancelButton: true,
+      cancelButtonText: 'No',
+      cancelButtonColor: '#e57979',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        var obj = {
+          professional_interest_area_id: item.professional_interest_area_id,
+          status: status,
+        };
+        axios.post(api_url + "/professionalinterestarea/changeprofessionalinterestareaStatus", obj)
+          .then((result) => {
+            if (result.data.status) {
+              getNewListWrap();
+            } else {
+              Swal.fire("Oops...", result.data.response.msg, "error");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            //Swal.fire('Oops...', err, 'error')
+          });
+      }
+    });
+  } 
 
   
   const getNewList = () => { 
@@ -125,7 +142,7 @@ const DemoTable = () => {
                     );
                   }}
                 >
-                  Inactive
+                    Deactive
                 </a>
               )}
               {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}

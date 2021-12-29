@@ -34,27 +34,44 @@ const DemoTable = () => {
       _style: { width: '1%' },
       filter: false
     }
-  ]
-  
+  ] 
+
 
   const updateItemStatus = (item, status) => {
-   
-    var obj = {
-      article_id: item.article_id,
-      status: status,
-    };
-    axios.post(api_url + "/article/changearticleStatus", obj)
-      .then((result) => {
-        if (result.data.status) {
-          getNewListWrap();
-        } else {
-          Swal.fire("Oops...", result.data.response.msg, "error");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        //Swal.fire('Oops...', err, 'error')
-      });
+
+    if (status == 1) {
+      var message = 'Are you sure you want to activate an Article ?'
+    } else {
+      var message = 'Are you sure you want to deactivate an Article ?'
+    }
+    Swal.fire({
+      //title: 'warning!',
+      icon: 'warning',
+      text: message,
+      confirmButtonText: `Yes`,
+      showCancelButton: true,
+      cancelButtonText: 'No',
+      cancelButtonColor: '#e57979',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        var obj = {
+          article_id: item.article_id,
+          status: status,
+        };
+        axios.post(api_url + "/article/changearticleStatus", obj)
+          .then((result) => {
+            if (result.data.status) {
+              getNewListWrap();
+            } else {
+              Swal.fire("Oops...", result.data.response.msg, "error");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            //Swal.fire('Oops...', err, 'error')
+          });
+      }
+    });
   }
 
   
@@ -136,7 +153,7 @@ const DemoTable = () => {
                     );
                   }}
                 >
-                  Inactive
+                  Deactive
                 </a>
               )}
               {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}

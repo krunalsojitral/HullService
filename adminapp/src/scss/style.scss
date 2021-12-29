@@ -67,3 +67,13 @@
 .c-sidebar-nav-dropdown-toggle:after{
     transform: rotate(-180deg);
 }
+.forum-feedback{
+    vertical-align: top;
+}
+.overflow-description{
+    overflow-y: scroll;
+    height: 170px;
+}
+.badge-primary {
+    cursor: pointer;
+}

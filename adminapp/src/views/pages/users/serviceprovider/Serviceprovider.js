@@ -42,11 +42,11 @@ const Serviceprovider = () => {
         <CCard>
           <CCardHeader>
             <div className="header-left">
-              <CIcon name="cil-grid" /> Service Provider              
+              <CIcon name="cil-grid" /> Professionals
             </div>
             <div className="header-right">
               <CSVLink data={csvData}>Export User</CSVLink> &nbsp;
-              <CButton
+              {/* <CButton
                 color="primary"
                 variant="outline"
                 shape="square"
@@ -54,7 +54,7 @@ const Serviceprovider = () => {
                 onClick={() => history.push(`/serviceprovideradd`)}
               >
                 Add
-            </CButton>
+            </CButton> */}
             </div>
             
           </CCardHeader>

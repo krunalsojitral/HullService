@@ -36,7 +36,7 @@ function Common() {
 
     this.getTagList = function (callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM tag where status = $1 order by tag_name ASC', [1], function (err, result) {
+            con.query('SELECT * FROM tag where status = $1 order by UPPER(tag_name) ASC', [1], function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }
@@ -50,7 +50,7 @@ function Common() {
 
     this.getHeadingList = function (callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM forumheading where status = $1 order by forumheading_name ASC', [1], function (err, result) {
+            con.query('SELECT * FROM forumheading where status = $1 order by UPPER(forumheading_name) ASC', [1], function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }
@@ -78,7 +78,7 @@ function Common() {
 
     this.getAcademicDisciplineList = function (callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM academic_discipline where status = $1 order by name ASC', [1], function (err, result) {
+            con.query('SELECT * FROM academic_discipline where status = $1 order by UPPER(name) ASC', [1], function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }
@@ -92,7 +92,7 @@ function Common() {
 
     this.getOccupationList = function (callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM occupation where status = $1 order by name ASC', [1], function (err, result) {
+            con.query('SELECT * FROM occupation where status = $1 order by UPPER(name) ASC', [1], function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }
@@ -106,7 +106,7 @@ function Common() {
 
     this.getSectorList = function (callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM sector where status = $1 order by name ASC', [1], function (err, result) {
+            con.query('SELECT * FROM sector where status = $1 order by UPPER(name) ASC', [1], function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }
@@ -120,7 +120,7 @@ function Common() {
 
     this.getProfessionalInterestAreaList = function (callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM professional_interest_area where status = $1 order by name ASC', [1], function (err, result) {
+            con.query('SELECT * FROM professional_interest_area where status = $1 order by UPPER(name) ASC', [1], function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }
@@ -134,7 +134,7 @@ function Common() {
     
     this.getResearcherInterestAreaList = function (callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM researcher_interest_area where status = $1 order by name ASC', [1], function (err, result) {
+            con.query('SELECT * FROM researcher_interest_area where status = $1 order by UPPER(name) ASC', [1], function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }

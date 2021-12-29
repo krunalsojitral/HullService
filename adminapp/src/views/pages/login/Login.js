@@ -31,14 +31,14 @@ export default function Login() {
     setIsFirstRadioLoaded(currentIsLoaded => !currentIsLoaded)
     axios.post(api_url + '/user/login', obj)
       .then(response => {
-        var res = response.data;
+        var res = response.data;        
         if (res.status) {
           localStorage.setItem('token', JSON.stringify(res));
           setIsFirstRadioLoaded(currentIsLoaded => !currentIsLoaded)
           history.push({ pathname: '/dashboard', state: { some: 'state' } })
         } else {
           setIsFirstRadioLoaded(currentIsLoaded => !currentIsLoaded)
-          Swal.fire('Oops...', res.message, 'error');
+          Swal.fire('Oops...', res.response.msg, 'error');
         }
       })
       .catch(function (error) {

@@ -326,6 +326,7 @@ router.post('/userList', function (req, res) {
                 retObj['name'] = (data.first_name) ? data.first_name : '' + ' ' + (data.last_name) ? data.last_name:'';
                 retObj['phone'] = data.phone;
                 retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
+                retObj['joining_date'] = moment(data.created_at).format('YYYY-MM-DD');
                 retObj['role'] = data.role;
                 retObj['email'] = data.email;                
                 retObj['status'] = data.status;
@@ -407,6 +408,40 @@ router.post('/getuserData', [
                     userList['phone'] = result[0].phone;
                     userList['email'] = result[0].email;
                     userList['password'] = result[0].password;
+                    return res.json({ 'status': 1, 'response': { 'data': userList, 'msg': 'data found' } });
+                } else {
+                    return res.json({ 'status': 1, 'response': { 'data': userList, 'msg': 'data found' } });
+                }
+            }
+        });
+    }
+});
+
+router.post('/getAdminUserById', [
+    check('user_id', 'User is required').notEmpty(),
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        let user_id = req.body.user_id;
+        User.getAdminUserById(user_id, function (err, result) {
+            if (err) {
+                return res.json({ 'status': 0, 'response': { 'msg': err } });
+            } else {
+                if (result != '') {
+                    let userList = {};
+                    userList['id'] = result[0].id;
+                    userList['first_name'] = result[0].first_name;
+                    userList['last_name'] = result[0].last_name;
+                    userList['email'] = result[0].email;
+                    userList['city'] = result[0].city;
+                    userList['rinterestarea'] = result[0].rinterestarea;
+                    userList['sectorname'] = result[0].sectorname;
+                    userList['occupationname'] = result[0].occupationname;
+                    userList['academicdisciplinename'] = result[0].academicdisciplinename;
+                    userList['pinterestarea'] = result[0].pinterestarea;
                     return res.json({ 'status': 1, 'response': { 'data': userList, 'msg': 'data found' } });
                 } else {
                     return res.json({ 'status': 1, 'response': { 'data': userList, 'msg': 'data found' } });

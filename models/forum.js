@@ -214,6 +214,22 @@ function forum() {
         });
     }
 
+    this.changeforumRetireStatus = function (record, forum_id, callback) {
+        connection.acquire(function (err, con) {
+            con.query("UPDATE forum SET retire =$1 WHERE forum_id = $2", [record.retire, forum_id], function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, record);
+                }
+            });
+        });
+    }    
+
     this.getforumDataById = function (id, callback) {
         connection.acquire(function (err, con) {
             con.query('SELECT * FROM forum where forum_id = $1', [id], function (err, result) {
