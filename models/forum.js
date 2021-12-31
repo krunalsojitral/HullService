@@ -68,8 +68,8 @@ function forum() {
     this.addforumByadmin = function (record, tag, callback) {
         connection.acquire(function (err, con) {
            
-            const sql = 'INSERT INTO forum(topic,description, heading,status,created_at,total_view) VALUES($1,$2,$3,$4,$5,$6) RETURNING *'
-            const values = [record.topic, record.description, record.heading, 1, record.created_at,0]
+            const sql = 'INSERT INTO forum(topic,description, heading,status,created_at,total_view,retire) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING *'
+            const values = [record.topic, record.description, record.heading, 1, record.created_at,0,0]
             con.query(sql, values, function (err, result) {
                 con.release()
                 if (err) {
@@ -98,8 +98,8 @@ function forum() {
     this.addforumByuser = function (record, tag, callback) {
         connection.acquire(function (err, con) {
 
-            const sql = 'INSERT INTO forum(topic,heading,status,created_at,total_view, created_by,user_status, description) VALUES($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *'
-            const values = [record.topic, record.heading, 0, record.created_at, 0, record.created_by, 0, record.description]
+            const sql = 'INSERT INTO forum(topic,heading,status,created_at,total_view, created_by,user_status, description,retire) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *'
+            const values = [record.topic, record.heading, 0, record.created_at, 0, record.created_by, 0, record.description,0]
             con.query(sql, values, function (err, result) {
                 con.release()
                 if (err) {
@@ -470,7 +470,7 @@ function forum() {
         });
     };
 
-    this.getforumRequestDataById = function (user_id, id, callback) {
+    this.getforumRequestDataById = function (id, callback) {
         connection.acquire(function (err, con) {
             con.query('SELECT * FROM forum as c left join users on users.id = c.created_by where c.forum_id = $1', [id], function (err, result) {
                 con.release();
@@ -543,7 +543,7 @@ function forum() {
 
     this.getForumFollow = function (forum_id, user_id, callback) {
         connection.acquire(function (err, con) {
-            var sql = 'SELECT count(*) as cnt FROM forum_follow WHERE forum_id = $1 and user_id = $2';
+            var sql = 'SELECT * FROM forum_follow WHERE forum_id = $1 and user_id = $2';
             con.query(sql, [forum_id, user_id], function (err, result) {
                 con.release();
                 if (err) {
@@ -606,7 +606,8 @@ function forum() {
 
             var obj = {
                 reply_list : [],
-                comment_count: 0
+                like_comment_count: 0,
+                unlike_comment_count:0
             }
             asyn.waterfall([
                 function (done) {                    
@@ -629,20 +630,31 @@ function forum() {
                     });
                 },    
                 function (obj, done2) {
-                    var sql = 'SELECT count(*) as cnt FROM forum_comment as c inner join comment_like as cl on cl.comment_id = c.forum_comment_id where c.forum_comment_id = $1';
-                    con.query(sql, [id], function (err, result) {
+                    var sql = 'SELECT count(*) as cnt FROM forum_comment as c inner join comment_like as cl on cl.comment_id = c.forum_comment_id and action_type = $1 where c.forum_comment_id = $2';
+                    con.query(sql, ["like",id], function (err, result) {                        
+                        if (err) {
+                            done2(err, null);
+                        } else {
+                            obj.like_comment_count = result.rows
+                            done2(err, obj);
+                        }
+                    });
+                },
+                function (obj, done2) {
+                    var sql = 'SELECT count(*) as cnt FROM forum_comment as c inner join comment_like as cl on cl.comment_id = c.forum_comment_id and action_type = $1 where c.forum_comment_id = $2';
+                    con.query(sql, ["unlike", id], function (err, result) {
                         con.release();
                         if (err) {
                             done2(err, null);
                         } else {
-                            obj.comment_count = result.rows
+                            obj.unlike_comment_count = result.rows
                             done2(err, obj);
                         }
                     });
                 }
             ],
-            function (err, overview) {
-                callback(null, overview);
+                function (err, obj) {
+                    callback(null, obj);
             });
         });
     }
@@ -730,7 +742,7 @@ function forum() {
                     }
                     callback(err, null);
                 } else {
-                    if (result.rows.length > 0){                        
+                    if (result.rows.length > 0){      
                         if (record.action_type != result.rows[0].action_type){
                             const sql = 'DELETE FROM forum_like WHERE user_id = $1 and forum_id = $2'
                             const values = [record.user_id, record.forum_id]
@@ -756,7 +768,18 @@ function forum() {
                                     });
                                 }
                             });
-                        }                        
+                        }  else{
+                            const sql = 'DELETE FROM forum_like WHERE user_id = $1 and forum_id = $2'
+                            const values = [record.user_id, record.forum_id]
+                            con.query(sql, values, function (err, result) {
+                                if (err) {
+                                    if (env.DEBUG) { console.log(err); }
+                                    callback(err, null);
+                                } else {
+                                    callback(null, result.rows);
+                                }
+                            });
+                        }                      
                     }else{
                         const sql = 'INSERT INTO forum_like(user_id,forum_id,action_type) VALUES($1,$2,$3) RETURNING *'
                         const values = [record.user_id, record.forum_id, record.action_type]
@@ -789,21 +812,52 @@ function forum() {
                     callback(err, null);
                 } else {
                     if (result.rows.length > 0) {
-                        const sql = 'DELETE FROM comment_like WHERE user_id = $1 and comment_id = $2'
-                        const values = [record.user_id, record.comment_id]
-                        con.query(sql, values, function (err, result) {
-                            if (err) {
-                                if (env.DEBUG) {
-                                    console.log(err);
+
+                        if (record.action_type != result.rows[0].action_type) {
+                            const sql = 'DELETE FROM comment_like WHERE user_id = $1 and comment_id = $2'
+                            const values = [record.user_id, record.comment_id]
+                            con.query(sql, values, function (err, result) {
+                                if (err) {
+                                    if (env.DEBUG) {
+                                        console.log(err);
+                                    }
+                                    callback(err, null);
+                                } else {
+                                    const sql = 'INSERT INTO comment_like(user_id,comment_id,action_type) VALUES($1,$2,$3) RETURNING *'
+                                    const values = [record.user_id, record.comment_id, record.action_type]
+                                    con.query(sql, values, function (err, result) {
+                                        con.release()
+                                        if (err) {
+                                            if (env.DEBUG) {
+                                                console.log(err);
+                                            }
+                                            callback(err, null);
+                                        } else {
+                                            callback(null, result.rows);
+                                        }
+                                    });
                                 }
-                                callback(err, null);
-                            } else {
-                                callback(null, result.rows);
-                            }
-                        });
+                            });
+
+                        }else{
+                            const sql = 'DELETE FROM comment_like WHERE user_id = $1 and comment_id = $2'
+                            const values = [record.user_id, record.comment_id]
+                            con.query(sql, values, function (err, result) {
+                                if (err) {
+                                    if (env.DEBUG) {
+                                        console.log(err);
+                                    }
+                                    callback(err, null);
+                                } else {
+                                    callback(null, result.rows);
+                                }
+                            });
+                        }
+                        
+                        
                     } else {
-                        const sql = 'INSERT INTO comment_like(user_id,comment_id) VALUES($1,$2) RETURNING *'
-                        const values = [record.user_id, record.comment_id]
+                        const sql = 'INSERT INTO comment_like(user_id,comment_id,action_type) VALUES($1,$2,$3) RETURNING *'
+                        const values = [record.user_id, record.comment_id, record.action_type]
                         con.query(sql, values, function (err, result) {
                             con.release()
                             if (err) {

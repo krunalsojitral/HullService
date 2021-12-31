@@ -18,18 +18,16 @@ export default function Articles() {
     const [data, setData] = useState([]);
     const [currentData, setCurrentData] = useState([]);
     const [token, setToken] = useState('');
+    const [noresult, setNoresult] = React.useState(false)
 
     React.useEffect(() => {
 
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
-
         setToken(token);
-
         getArticleData();
         getArticleDataWrap();
 
-        
     }, [])
 
     const getArticleData = () => {
@@ -47,6 +45,9 @@ export default function Articles() {
                     var blogdata = result.data.response.data;
                     if (blogdata.length > 0) {
                         setData(blogdata);
+                        setNoresult(false)
+                    }else{
+                        setNoresult(true)
                     }
                 } else {
                     Swal.fire('Oops...', result.data.response.msg, 'error')
@@ -62,6 +63,9 @@ export default function Articles() {
                     var blogdata = result.data.response.data;
                     if (blogdata.length > 0) {
                         setData(blogdata);
+                        setNoresult(false)
+                    }else{
+                        setNoresult(true)
                     }
                 } else {
                     Swal.fire('Oops...', result.data.response.msg, 'error')
@@ -129,7 +133,7 @@ export default function Articles() {
                         <div className="col-md-8 articlebox">
                             <div className="row">
 
-                                {currentData.map((data, index) => (<div key={index} className="col-md-4">
+                                {!noresult && currentData.map((data, index) => (<div key={index} className="col-md-4">
                                     <div className="blog-box">
                                         <div className="blog-image">
                                         <Link to={{ pathname: "/article-detail", search: "?id=" + data.article_id }}>
@@ -164,8 +168,7 @@ export default function Articles() {
                                     </div>
                                 </div>))}
 
-                                {
-                                    currentData.length == 0 &&
+                                {noresult && 
                                     // <div className="blog-box">
                                     //     <div className="no-data">No article available.
                                     //     </div>
@@ -181,8 +184,7 @@ export default function Articles() {
                             </div>
 
                             <div className="row">
-                                {
-                                    currentData.length > 0 && <Paginator
+                                {!noresult && currentData.length > 0 && <Paginator
                                         totalRecords={data.length}
                                         pageLimit={pageLimit}
                                         pageNeighbours={2}

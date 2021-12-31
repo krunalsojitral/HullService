@@ -8,7 +8,7 @@ import axios from 'axios';
 import Swal from "sweetalert2";
 import api_url from '../../components/Apiurl';
 import './../dev.css';
-import { UserContext } from './../../hooks/UserContext';
+//import { UserContext } from './../../hooks/UserContext';
 
 
 export default function MyVideo() {
@@ -18,8 +18,9 @@ export default function MyVideo() {
     const [currentPage, setCurrentPage] = useState(1);
     const [data, setData] = useState([]);
     const [currentData, setCurrentData] = useState([]);
+    const [noresult, setNoresult] = React.useState(false)
 
-    const { user, isLoading } = useContext(UserContext);
+    //const { user, isLoading } = useContext(UserContext);
 
     React.useEffect(() => {
 
@@ -28,12 +29,14 @@ export default function MyVideo() {
         const config = {
             headers: { Authorization: `${token}` }
         };
-
         axios.post(api_url + '/video/getBookMarkVideo', {}, config).then((result) => {
             if (result.data.status) {
                 var coursedata = result.data.response.data;
                 if (coursedata.length > 0) {
                     setData(coursedata);
+                    setNoresult(false);
+                }else{
+                    setNoresult(true);
                 }
             } else {
                 Swal.fire('Oops...', result.data.response.msg, 'error')
@@ -80,7 +83,7 @@ export default function MyVideo() {
                                 <div className="col-md-12">
                                     <div className="dashboard-content">                                      
                                         <div className="row">
-                                            {currentData.map((data, index) => (
+                                            {!noresult && currentData.map((data, index) => (
                                                 <div key={index} className="col-md-6 col-lg-4">
                                                     <div className="video-card">
                                                         {data.purchase_type == 'paid' && <div className="video-img tooltip-video">
@@ -112,8 +115,7 @@ export default function MyVideo() {
                                                     </div>
                                                 </div>
                                             ))}
-                                            {
-                                                currentData.length == 0 &&
+                                            {noresult &&
                                                 <div>
                                                     <center>
                                                         <img height="250px" width="350px" src="images/hull-no-results.png" alt="author" />
@@ -128,8 +130,7 @@ export default function MyVideo() {
                             <div className="row">
                                 <div className="col-md-12">
                                     <div className="pagination">
-                                        {
-                                            currentData.length > 0 && <Paginator
+                                        {!noresult && currentData.length > 0 && <Paginator
                                                 totalRecords={data.length}
                                                 pageLimit={pageLimit}
                                                 pageNeighbours={2}

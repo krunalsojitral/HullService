@@ -81,9 +81,9 @@ const DemoTable = ({ moduleConfigUrls }) => {
 
   const updateItemRetire = (item, status) => {
     if (status == 1) {
-      var message = 'Are you sure you want to Retire the forum ?'
+      var message = 'Are you sure you want to Retire a forum ?'
     } else {
-      var message = 'Are you sure you want to deactivate a Forum ?'
+      var message = 'Are you sure you want to Unretire a Forum ?'
     }
     Swal.fire({
       //title: 'warning!',
@@ -203,21 +203,20 @@ const DemoTable = ({ moduleConfigUrls }) => {
           ),    
           retire: (item) => (
             <td>
-              {item.retire === 1 ? (
-                'Retired'
-                // <a
-                //   href
-                //   style={{ cursor: "pointer", textDecoration: "underline" }}
-                //   onClick={() => {
-                //     updateItemRetire(
-                //       item,
-                //       0,
-                //       getNewListWrap
-                //     );
-                //   }}
-                // >
-                //   Retired
-                // </a>
+              {item.retire === 1 ? (                
+                <a
+                  href
+                  style={{ cursor: "pointer", textDecoration: "underline" }}
+                  onClick={() => {
+                    updateItemRetire(
+                      item,
+                      0,
+                      getNewListWrap
+                    );
+                  }}
+                >
+                  Retired
+                </a>
               ) : (
                 <a
                   href

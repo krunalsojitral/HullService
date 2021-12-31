@@ -16,11 +16,9 @@ import {
 } from "@coreui/react";
 import { useForm, Controller } from "react-hook-form";
 
-import { useHistory } from "react-router-dom";
 import api_url from './../../Apiurl';
 import axios from "axios";
 import Swal from "sweetalert2";
-
 
 function UserRequest({
     modal,
@@ -36,8 +34,7 @@ function UserRequest({
         formState: { errors },
     } = useForm();
 
-    useEffect(() => {
-        console.log(selectedItem);
+    useEffect(() => {        
         if (modal === true && selectedItem) {
             setValue("name", selectedItem.name);
         } else {
@@ -46,16 +43,12 @@ function UserRequest({
     }, [modal]);
     
     const addInformationAct = (finalData, status) => {
-        
-        console.log(finalData);
 
         var obj = {
             id: selectedItem.forum_id,
             status: status,
             comment: finalData.comment,
         };
-       
-
         axios.post(api_url + "/forum/approveRejectedRequest", obj)
             .then((result) => {
                 if (result.data.status) {
@@ -64,6 +57,7 @@ function UserRequest({
                     finalData.comment = '';
                     Swal.fire("Success!", result.data.msg, "success");
                     setModal(!modal);
+                    setValue("comment", "");
                    
                 } else {
                     Swal.fire("Oops...", result.data.response.msg, "error");
@@ -71,7 +65,6 @@ function UserRequest({
             })
             .catch((err) => {
                 console.log(err);
-                //Swal.fire('Oops...', err, 'error')
             });
 
     };
@@ -120,10 +113,10 @@ function UserRequest({
                 </CModalBody>
                 <CModalFooter>
                     <CButton type="submit" color="info" onClick={handleSubmit(data => addInformationAct(data, 1))} >
-                        Approved
+                        Approve
                     </CButton>
                     <CButton type="submit" color="info" onClick={handleSubmit(data => addInformationAct(data, 2))}>
-                        Rejected
+                        Reject
                     </CButton>
                     <CButton color="secondary" onClick={() => setModal(false)}>
                         Cancel

@@ -20,13 +20,14 @@ export default function ForumSub() {
     const [currentPage, setCurrentPage] = useState(1);
     const [data, setData] = useState([]);
     const [currentData, setCurrentData] = useState([]);
+    const [noresult, setNoresult] = React.useState(false)
     const [forumTagList, setForumTagList] = useState([]);
 
-    const [selectedForumTag, setSelectedForumTag] = useState([]);
-    const [searchtext, setSearchtext] = React.useState('')
-    const { handleSubmit, formState } = useForm();
+    //const [selectedForumTag, setSelectedForumTag] = useState([]);
+   // const [searchtext, setSearchtext] = React.useState('')
+    //const { handleSubmit, formState } = useForm();
 
-    const onChangeSearch = (e) => { setSearchtext(e.currentTarget.value); }
+   // const onChangeSearch = (e) => { setSearchtext(e.currentTarget.value); }
 
 
 
@@ -34,21 +35,26 @@ export default function ForumSub() {
 
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
+        setToken(token);
         const config = {
             headers: { Authorization: `${token}` }
         };
-
-        setToken(token);
-
         const params = new URLSearchParams(window.location.search) // id=123
         let forum_heading_id = params.get('id')
         setHeadingId(forum_heading_id);
 
         axios.post(api_url + '/forum/getMyForumList', { "forum_heading_id": forum_heading_id }, config).then((result) => {
             if (result.data.status) {
-                var forumdata = result.data.response.data;
-                setData(forumdata);
+                var forumdata = result.data.response.data;                
+                if (forumdata && forumdata.length > 0){
+                    setData(forumdata);
+                    setNoresult(false);
+                }else{
+                    console.log('in');
+                    setNoresult(true);
+                }
             } else {
+                setNoresult(true);
                 Swal.fire('Oops...', result.data.response.msg, 'error')
             }
         }).catch((err) => { console.log(err); })
@@ -64,33 +70,33 @@ export default function ForumSub() {
 
     }, [])
 
-    const search = () => {
+    // const search = () => {
 
-        const tokenString = localStorage.getItem('token');
-        var token = JSON.parse(tokenString);
-        const config = {
-            headers: { Authorization: `${token}` }
-        };
-        var obj = {
-            "search": searchtext,
-            "forum_heading_id": headingId
-        }
-        axios.post(api_url + '/forum/getMyForumList', obj, config).then((result) => {
-            if (result.data.status) {
-                var tagdata = result.data.response.data;
-                if (tagdata) {
-                    setData(tagdata);
-                    setSelectedForumTag(result.data.response.forum_id)
-                } else {
-                    setData([]);
-                    setSelectedForumTag([]);
-                }
+    //     const tokenString = localStorage.getItem('token');
+    //     var token = JSON.parse(tokenString);
+    //     const config = {
+    //         headers: { Authorization: `${token}` }
+    //     };
+    //     var obj = {
+    //         "search": searchtext,
+    //         "forum_heading_id": headingId
+    //     }
+    //     axios.post(api_url + '/forum/getMyForumList', obj, config).then((result) => {
+    //         if (result.data.status) {
+    //             var tagdata = result.data.response.data;
+    //             if (tagdata) {
+    //                 setData(tagdata);
+    //                 setSelectedForumTag(result.data.response.forum_id)
+    //             } else {
+    //                 setData([]);
+    //                 setSelectedForumTag([]);
+    //             }
 
-            } else {
-                // Swal.fire('Oops...', result.data.response.msg, 'error')
-            }
-        }).catch((err) => { console.log(err); })
-    }
+    //         } else {
+    //             // Swal.fire('Oops...', result.data.response.msg, 'error')
+    //         }
+    //     }).catch((err) => { console.log(err); })
+    // }
 
 
 
@@ -113,7 +119,7 @@ export default function ForumSub() {
                 <div className="container">
                     <div className="row">
                         <div className="col-md-12">
-                            <h2>Forum</h2>
+                            <h2>My Threads</h2>
                         </div>
                     </div>
                 </div>
@@ -157,7 +163,7 @@ export default function ForumSub() {
 
                             <div className="category-table">
 
-                                {currentData.length > 0 && <div className="forum-table table-responsive">
+                                {!noresult && currentData.length > 0 && <div className="forum-table table-responsive">
                                     <table className="table">
                                         <thead>
                                             <tr>
@@ -187,8 +193,7 @@ export default function ForumSub() {
                                         </tbody>
                                     </table>
                                 </div>}
-                                {
-                                    currentData.length == 0 &&
+                                {noresult &&
                                     <div>
                                         <center>
                                             <img height="250px" width="350px" src="images/hull-no-results.png" alt="author" />
@@ -198,8 +203,7 @@ export default function ForumSub() {
                                 }
 
                                 <div className="pagination">
-                                    {
-                                        currentData.length > 0 && <Paginator
+                                    {!noresult && currentData.length > 0 && <Paginator
                                             totalRecords={data.length}
                                             pageLimit={pageLimit}
                                             pageNeighbours={2}

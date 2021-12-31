@@ -25,6 +25,7 @@ export default function ForumSub() {
     const [selectedForumTag, setSelectedForumTag] = useState([]);
     const [searchtext, setSearchtext] = React.useState('')
     const { handleSubmit, formState } = useForm();
+    const [noresult, setNoresult] = React.useState(false)
 
     const onChangeSearch = (e) => { setSearchtext(e.currentTarget.value); }
 
@@ -43,7 +44,13 @@ export default function ForumSub() {
         axios.post(api_url + '/forum/getForumSubHeadingList', { "forum_heading_id" : forum_heading_id }).then((result) => {
             if (result.data.status) {
                 var forumdata = result.data.response.data;
-                setData(forumdata);
+                if (forumdata.length > 0){                   
+                    setData(forumdata);
+                    setNoresult(false)
+                }else{
+                    setNoresult(true)
+                }
+                
             } else {
                 Swal.fire('Oops...', result.data.response.msg, 'error')
             }
@@ -59,29 +66,6 @@ export default function ForumSub() {
         }).catch((err) => { console.log(err); })
 
     }, [])
-
-    const search = () => {
-        var obj = {
-            "search": searchtext,
-            "forum_heading_id": headingId
-        }
-        axios.post(api_url + '/forum/getForumSubHeadingList', obj).then((result) => {
-            if (result.data.status) {
-                var tagdata = result.data.response.data;
-                if (tagdata){
-                    setData(tagdata);
-                    setSelectedForumTag(result.data.response.forum_id)
-                }else{
-                    setData([]);
-                    setSelectedForumTag([]);
-                }               
-                
-            } else {
-                // Swal.fire('Oops...', result.data.response.msg, 'error')
-            }
-        }).catch((err) => { console.log(err); })
-    }
-
 
 
     React.useEffect(() => {
@@ -120,7 +104,7 @@ export default function ForumSub() {
                                 </div>
                                 {token && <div className="add-forum"><Link className="book-apoint" to={{ pathname: "/add-forum" }}>Request a Thread</Link></div>}
                             </div>
-                            <div className="video-tag">
+                            {!noresult && <div className="video-tag">
                                 <h3>Sort By Tags</h3>
                                 <ul>
                                     {forumTagList.length > 0 && forumTagList.map((data, index) => (
@@ -129,13 +113,13 @@ export default function ForumSub() {
                                         </li>
                                     ))}
                                 </ul>
-                            </div>
+                            </div>}
 
                             <br/>
 
                             <div className="category-table">
                                 
-                                {currentData.length > 0 && <div className="forum-table table-responsive">
+                                {!noresult && currentData.length > 0 && <div className="forum-table table-responsive">
                                         <table className="table">
                                             <thead>
                                                 <tr>
@@ -166,8 +150,7 @@ export default function ForumSub() {
                                     </div> }
                                 
 
-                                {
-                                    currentData.length == 0 &&
+                                {noresult &&
                                     <div className="blog-box">
                                         <div className="no-data">No forum available.
                                         </div>
@@ -175,8 +158,7 @@ export default function ForumSub() {
                                 }
 
                                 <div className="pagination">
-                                    {
-                                        currentData.length > 0 && <Paginator
+                                    {!noresult && currentData.length > 0 && <Paginator
                                             totalRecords={data.length}
                                             pageLimit={pageLimit}
                                             pageNeighbours={2}

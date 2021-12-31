@@ -20,18 +20,13 @@ export default function Video() {
     const [searchtext, setSearchtext] = React.useState('')
     const { handleSubmit, formState } = useForm();
     const [selectedFilter, setSelectedFilter] = useState("desending");
-
+    const [noresult, setNoresult] = React.useState(false)
     const [token, setToken] = useState('');
 
-
-
     React.useEffect(() => {
-
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
-
         setToken(token);
-
         getVideoData();
         getVideoDataWrap();
     }, [])
@@ -69,8 +64,14 @@ export default function Video() {
             axios.post(api_url + '/video/getPaidVideoList', obj, config).then((result) => {
                 if (result.data.status) {
                     var videodata = result.data.response.data;
-                    setData(videodata);
+                    if (videodata.length > 0){
+                        setData(videodata);
+                        setNoresult(false);
+                    }else{
+                        setNoresult(true);
+                    }
                 } else {
+                    setNoresult(true);
                     Swal.fire('Oops...', result.data.response.msg, 'error')
                 }
             }).catch((err) => {
@@ -81,8 +82,14 @@ export default function Video() {
             axios.post(api_url + '/video/getUnpaidVideoList', obj, config).then((result) => {
                 if (result.data.status) {
                     var videodata = result.data.response.data;
-                    setData(videodata);
+                    if (videodata.length > 0) {
+                        setData(videodata);
+                        setNoresult(false);
+                    } else {
+                        setNoresult(true);
+                    }
                 } else {
+                    setNoresult(true);
                     Swal.fire('Oops...', result.data.response.msg, 'error')
                 }
             }).catch((err) => {
@@ -95,15 +102,12 @@ export default function Video() {
     const bookmarkClick = (id) => {        
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
-
-        
-
         const config = {
             headers: { Authorization: `${token}` }
         };
         axios.post(api_url + '/video/videoBookmark', { "video_id": id }, config).then((result) => {
             if (result.data.status) {
-                var blogdata = result.data.response.data;
+                //var blogdata = result.data.response.data;
                 getVideoDataWrap();
             } else {
                 Swal.fire('Oops...', result.data.response.msg, 'error')
@@ -127,6 +131,9 @@ export default function Video() {
                     var videodata = result.data.response.data;
                     if (videodata.length > 0) {
                         setData(videodata);
+                        setNoresult(false);
+                    }else{
+                        setNoresult(true);
                     }
                 } else {
                     Swal.fire('Oops...', result.data.response.msg, 'error')
@@ -142,6 +149,9 @@ export default function Video() {
                     var videodata = result.data.response.data;
                     if (videodata.length > 0) {
                         setData(videodata);
+                        setNoresult(false);
+                    }else{
+                        setNoresult(true);
                     }
                 } else {
                     Swal.fire('Oops...', result.data.response.msg, 'error')
@@ -190,7 +200,7 @@ export default function Video() {
                                                     </div>
                                                 </form>
                                             </div>
-                                            {currentData.length > 0 &&<div className="col-md-12">
+                                            {!noresult && currentData.length > 0 &&<div className="col-md-12">
                                                 <div className="page-title search">
                                                     <div className="your-result">
                                                         <div className="col-md-9"><h3 className="page-name">Your results</h3></div>
@@ -208,7 +218,7 @@ export default function Video() {
                                             </div>}
                                         </div>
                                         <div className="row">
-                                            {currentData.length > 0 && currentData.map((data, index) => (
+                                            {!noresult && currentData.length > 0 && currentData.map((data, index) => (
                                                 <div key={index} className="col-md-6 col-lg-4">
                                                     <div className="video-card">
                                                         {data.purchase_type == 'paid' && 
@@ -248,8 +258,7 @@ export default function Video() {
                                                     </div>
                                                 </div>
                                             ))}
-                                            {
-                                                currentData.length == 0 &&
+                                            {noresult &&
                                                 // <div className="video-card">
                                                 //     <img height="250px" width="350px" src="images/hull-no-results.png" alt="author" />
                                                 //     <div className="no-data">No results found.</div>
@@ -268,8 +277,7 @@ export default function Video() {
                             <div className="row">
                                 <div className="col-md-12">
                                     <div className="pagination">
-                                        {
-                                            currentData.length > 0 && <Paginator
+                                        {!noresult && currentData.length > 0 && <Paginator
                                                 totalRecords={data.length}
                                                 pageLimit={pageLimit}
                                                 pageNeighbours={2}

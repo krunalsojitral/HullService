@@ -19,6 +19,7 @@ export default function ProfessionalDevelopment() {
     const [searchtext, setSearchtext] = React.useState('')
     const { handleSubmit, formState } = useForm();
     const [selectedFilter, setSelectedFilter] = useState("");
+    const [noresult, setNoresult] = React.useState(false)
 
     React.useEffect(() => {
 
@@ -34,6 +35,9 @@ export default function ProfessionalDevelopment() {
                     var coursedata = result.data.response.data;
                     if (coursedata.length > 0) {
                         setData(coursedata);
+                        setNoresult(false);
+                    }else{
+                        setNoresult(true);
                     }
                 } else {
                     Swal.fire('Oops...', result.data.response.msg, 'error')
@@ -49,6 +53,9 @@ export default function ProfessionalDevelopment() {
                     var coursedata = result.data.response.data;
                     if (coursedata.length > 0) {
                         setData(coursedata);
+                        setNoresult(false);
+                    }else{
+                        setNoresult(true);
                     }
                 } else {
                     Swal.fire('Oops...', result.data.response.msg, 'error')
@@ -91,7 +98,12 @@ export default function ProfessionalDevelopment() {
             axios.post(api_url + '/course/getPaidcourseList', obj, config).then((result) => {
                 if (result.data.status) {
                     var coursedata = result.data.response.data;
-                    setData(coursedata);
+                    if (coursedata.length > 0){
+                        setData(coursedata);
+                        setNoresult(false);
+                    }else{
+                        setNoresult(true);
+                    }                    
                 } else {
                     Swal.fire('Oops...', result.data.response.msg, 'error')
                 }
@@ -102,7 +114,12 @@ export default function ProfessionalDevelopment() {
             axios.post(api_url + '/course/getUnpaidcourseList', obj, config).then((result) => {
                 if (result.data.status) {
                     var coursedata = result.data.response.data;
-                    setData(coursedata);
+                    if (coursedata.length > 0) {
+                        setData(coursedata);
+                        setNoresult(false);
+                    } else {
+                        setNoresult(true);
+                    }
                 } else {
                     Swal.fire('Oops...', result.data.response.msg, 'error')
                 }
@@ -149,7 +166,7 @@ export default function ProfessionalDevelopment() {
                                                     </div>
                                                 </form>
                                                 
-                                                {currentData.length > 0 && <div className="page-title search">
+                                                {!noresult && currentData.length > 0 && <div className="page-title search">
                                                     <div className="your-result">
                                                         <div className="col-md-9"><h3 className="page-name">Your results</h3></div>
                                                         <div className="col-md-3">
@@ -169,7 +186,7 @@ export default function ProfessionalDevelopment() {
 
                                         <div className="row">
 
-                                            {currentData.length > 0 && currentData.map((data, index) => (
+                                            {!noresult && currentData.length > 0 && currentData.map((data, index) => (
                                                 <div key={index} className="col-md-6 col-lg-4">
                                                     <div className="video-card">
                                                         <div className="video-img">
@@ -201,8 +218,7 @@ export default function ProfessionalDevelopment() {
                                                     </div>
                                                 </div>
                                             ))}
-                                            {
-                                                currentData.length == 0 &&
+                                            {noresult &&
                                                 // <div className="blog-box">
                                                 //     <div className="no-data">No course available.</div>
                                                 // </div>

@@ -30,7 +30,7 @@ function ForumReply(props) {
                 {forumReplyCommentList && forumReplyCommentList.slice(0, visible).map((replydata, index) => (
                     <div class="reply-card">
                         <h3>{replydata.first_name} {replydata.last_name} <span>({replydata.role})</span></h3>
-                        <small>{replydata.created_at}</small>
+                        <small>{replydata.created_on}</small>
                         <p>{replydata.comment}</p>
                     </div>
                 ))}

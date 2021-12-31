@@ -696,7 +696,7 @@ router.post('/getForumCommentDetail', passport.authenticate('jwt', { session: fa
     }
     asyn.waterfall([
         function (done) {            
-            Forum.getforumRequestDataById(user_id, forum_id, function (err, result) {
+            Forum.getforumRequestDataById(forum_id, function (err, result) {
                 if (err) {                    
                     done(err, null)
                 } else {                        
@@ -772,8 +772,8 @@ router.post('/getForumCommentDetail', passport.authenticate('jwt', { session: fa
             Forum.getForumFollow(forum_id, user_id, function (err, result) {
                 if (err) {
                     done6(err, null)
-                } else {
-                    if (result){
+                } else {                    
+                    if (result.length > 0){
                         comment.follow = 1;
                     }else{
                         comment.follow = 0;
@@ -855,17 +855,19 @@ router.post('/getForumCommentList', passport.authenticate('jwt', { session: fals
                         Promise.all(result.map(function (item) {
                             var temparray = new Promise(function (resolve, reject) {
                                 Forum.getForumReplyComment(item.forum_comment_id, function (err, data) {
-                                        if (data && data.reply_list.length > 0) {     
-                                            item.reply = data.reply_list;
-                                        }
-                                        item.comment_count = data.comment_count[0].cnt;
-                                        setTimeout(() => resolve(item), 30)
-                                    });
+                                    if (data && data.reply_list.length > 0) {     
+                                        item.reply = data.reply_list;
+                                    }
+                                    item.like_comment_count = data.like_comment_count[0].cnt;
+                                    item.unlike_comment_count = data.unlike_comment_count[0].cnt;
+                                    setTimeout(() => resolve(item), 30)
+                                });
                               
                             });
                             return temparray.then(result => {
                                 response.push(result);
-                                var commentList = response.map(data => {
+                                var commentList = response.map(data => {                                   
+
                                     let retObj = {};
                                     retObj['comment'] = data.comment;
                                     retObj['comment_date'] = data.comment_date;
@@ -875,9 +877,11 @@ router.post('/getForumCommentList', passport.authenticate('jwt', { session: fals
                                     //retObj['created_on'] = helper.timeSince(data.comment_date); 
                                     retObj['created_on'] = moment(data.comment_date).format('MMMM Do, YYYY');
                                     retObj['parent_comment_id'] = data.parent_comment_id;
-                                    retObj['comment_like_id'] = data.comment_like_id;
+                                    retObj['comment_like_id'] = (data.action_type == 'like') ? data.comment_like_id :'';
+                                    retObj['comment_dislike_id'] = (data.action_type == 'unlike') ? data.comment_like_id : '';
                                     retObj['reply'] = (data.reply && data.reply.length > 0) ? data.reply: [];
-                                    retObj['comment_count'] = data.comment_count;
+                                    retObj['like_comment_count'] = data.like_comment_count;
+                                    retObj['unlike_comment_count'] = data.unlike_comment_count;
                                     retObj['role'] = data.role;
                                     return retObj;
                                 }).sort(function (a, b) {
@@ -1040,7 +1044,7 @@ router.post('/getMyForumList', passport.authenticate('jwt', { session: false }),
         ],
         function (error, finalData) {
             if (error) {
-                return res.json({ 'status': 0, 'response': { 'msg': error } });
+                return res.json({ 'status': 0, 'response': { 'data': [], 'msg': error } });
             } else {
                 return res.json({ 'status': 1, 'response': { 'data': finalData[0], 'forum_id': forum_tag_id, 'msg': 'data found' } });
             }
@@ -1088,7 +1092,7 @@ router.post('/addComment', passport.authenticate('jwt', { session: false }), [
             forum_id: req.body.forum_id,
             comment: req.body.comment,
             parent_comment_id: (req.body.parent_comment_id) ? req.body.parent_comment_id: '',
-            created_at: moment().format('YYYY-MM-DD h:m:s')
+            created_at: moment().format('YYYY-MM-DD')
         }
         Forum.addComment(obj, function (err, result) {
             if (err) {
@@ -1099,7 +1103,7 @@ router.post('/addComment', passport.authenticate('jwt', { session: false }), [
                     if (req.body.parent_comment_id){
                         var user_obj = {
                             comment: obj.comment,
-                            created_at: moment(obj.created_at).format('MMMM Do, YYYY'),
+                            created_on: moment(result[0].created_at).format('MMMM Do, YYYY'),
                             first_name: userDetail.first_name,
                             last_name: userDetail.last_name,
                             role: userDetail.role
@@ -1109,7 +1113,7 @@ router.post('/addComment', passport.authenticate('jwt', { session: false }), [
                             comment: obj.comment,
                             comment_count: "0",
                             comment_like_id: null,
-                            created_at: moment(obj.created_at).format('MMMM Do, YYYY'),
+                            created_on: moment(result[0].created_at).format('MMMM Do, YYYY'),
                             first_name: userDetail.first_name,
                             last_name: userDetail.last_name,
                             role: userDetail.role,
@@ -1167,7 +1171,8 @@ router.post('/forumCommentLike', passport.authenticate('jwt', { session: false }
     } else {
         var obj = {
             user_id: req.user.id,
-            comment_id: req.body.comment_id
+            comment_id: req.body.comment_id,
+            action_type: req.body.action_type,
         }
         Forum.forumCommentLike(obj, function (err, result) {
             if (err) {
@@ -1182,5 +1187,7 @@ router.post('/forumCommentLike', passport.authenticate('jwt', { session: false }
         });
     }
 });
+
+
 
 module.exports = router;

@@ -20,6 +20,8 @@ export default function Forum() {
     const { handleSubmit, formState } = useForm();
     const [selectedForumTag, setSelectedForumTag] = useState([]);
 
+    const [noresult, setNoresult] = React.useState(false)
+
     const onChangeSearch = (e) => { setSearchtext(e.currentTarget.value); }
 
     React.useEffect(() => {
@@ -31,8 +33,14 @@ export default function Forum() {
         axios.post(api_url + '/forum/getForumHeadingList', {}).then((result) => {
             if (result.data.status) {
                 var forumdata = result.data.response.data;
-                setForumList(forumdata);
+                if (forumdata.length > 0){
+                    setForumList(forumdata);
+                    setNoresult(false)
+                }else{
+                    setNoresult(true)
+                }                
             } else {
+                setNoresult(true)
                 // Swal.fire('Oops...', result.data.response.msg, 'error')
             }
         }).catch((err) => { console.log(err); })
@@ -54,9 +62,15 @@ export default function Forum() {
         axios.post(api_url + '/forum/getForumHeadingList', obj).then((result) => {
             if (result.data.status) {
                 var tagdata = result.data.response.data;
-                setForumList(tagdata);
-                setSelectedForumTag(result.data.response.forum_id)
+                if (tagdata.length > 0){
+                    setForumList(tagdata);
+                    setSelectedForumTag(result.data.response.forum_id)
+                    setNoresult(false)
+                }else{
+                    setNoresult(true)
+                }
             } else {
+                setNoresult(true)
                 // Swal.fire('Oops...', result.data.response.msg, 'error')
             }
         }).catch((err) => { console.log(err); })
@@ -102,7 +116,7 @@ export default function Forum() {
 
                             </div>
 
-                            <div className="video-tag">
+                            {!noresult && <div className="video-tag">
                                 <h3>Sort By Tags</h3>
                                 <ul>
                                     {forumTagList.length > 0 && forumTagList.map((data, index) => (
@@ -111,17 +125,15 @@ export default function Forum() {
                                         </li>
                                     ))}
                                 </ul>
-                            </div>
+                            </div>}
 
                             <div className="category-table">
-                                {forumList.map((data, index) => (
+                                {!noresult && forumList.map((data, index) => (
                                     <div>
-
                                         <div className="category-title">
                                             <h2>{data.forumheading_name}</h2>
                                             <Link to={{ pathname: "/forum-sub", search: "?id=" + data.forumheading_id }}>View More >></Link>
                                         </div>
-
                                         <div className="forum-table table-responsive">
                                             <table className="table">
                                                 <thead>
@@ -150,15 +162,13 @@ export default function Forum() {
                                                             <td><span>{(forumdata.comment && forumdata.comment[0].created_at) ? forumdata.comment[0].created_at : '-'}</span></td>
                                                         </tr>
                                                     ))}
-
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
                                 ))}
 
-                                {
-                                    forumList.length == 0 &&
+                                {noresult &&
                                     <div>
                                         <center>
                                             <img height="250px" width="350px" src="images/hull-no-results.png" alt="author" />

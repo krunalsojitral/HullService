@@ -8,7 +8,7 @@ import axios from 'axios';
 import Swal from "sweetalert2";
 import api_url from '../../components/Apiurl';
 import './../dev.css';
-import { UserContext } from './../../hooks/UserContext';
+//import { UserContext } from './../../hooks/UserContext';
 
 
 
@@ -19,18 +19,15 @@ export default function Blog() {
     const [currentPage, setCurrentPage] = useState(1);
     const [data, setData] = useState([]);
     const [currentData, setCurrentData] = useState([]);
-
-    const { user, isLoading } = useContext(UserContext);
+   // const { user, isLoading } = useContext(UserContext);
     const [token, setToken] = useState('');
+    const [noresult, setNoresult] = React.useState(false)
 
 
     React.useEffect(() => {
-
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
-
         setToken(token);
-
         getBlogData();
         getBlogDataWrap();
     }, [])
@@ -50,6 +47,9 @@ export default function Blog() {
                     var blogdata = result.data.response.data;
                     if (blogdata.length > 0) {
                         setData(blogdata);
+                        setNoresult(false);
+                    }else{
+                        setNoresult(true);
                     }
                 } else {
                     Swal.fire('Oops...', result.data.response.msg, 'error')
@@ -65,6 +65,9 @@ export default function Blog() {
                     var blogdata = result.data.response.data;
                     if (blogdata.length > 0) {
                         setData(blogdata);
+                        setNoresult(false);
+                    }else{
+                        setNoresult(true);
                     }
                 } else {
                     Swal.fire('Oops...', result.data.response.msg, 'error')
@@ -134,7 +137,7 @@ export default function Blog() {
 
                         <div className="col-md-8 articlebox">
                             <div className="row">
-                                {currentData.map((data, index) => (<div key={index} className="col-md-4">
+                                {!noresult && currentData.map((data, index) => (<div key={index} className="col-md-4">
 
                                     <div className="blog-box">
                                         <div className="blog-image">
@@ -172,8 +175,7 @@ export default function Blog() {
 
                                 </div> 
                                 ))}
-                                {
-                                    currentData.length == 0 && 
+                                {noresult && 
                                     // <div className="blog-box">
                                     //     <div className="no-data">
                                     //         <img src="images/hull-no-results.png" alt="author" />
@@ -190,8 +192,7 @@ export default function Blog() {
 
                             </div>
                             <div className="row">
-                                {
-                                    currentData.length > 0 && <Paginator
+                                {!noresult && currentData.length > 0 && <Paginator
                                         totalRecords={data.length}
                                         pageLimit={pageLimit}
                                         pageNeighbours={2}

@@ -1,5 +1,5 @@
 html {
-    scroll-behavior: smooth;
+    /* scroll-behavior: smooth; */
     padding: 0;
     margin: 0;
 }
@@ -246,7 +246,7 @@ header .header-card .hull-links .hull-menu ul li {
 header .header-card .hull-links .hull-menu ul li a {
     font-style: normal;
     font-weight: normal;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 25px;
     color: #036E80;
     padding: 3px 12px;
@@ -3522,7 +3522,6 @@ min-height: 258px;
     gap: 15px;
 }
 
-
 .media-bdy h4 {
     font-weight: bold;
     font-size: 24px;
@@ -3754,7 +3753,7 @@ color: #11142D;
 }
 
 div#swal2-html-container{
-    font-size: 18px;;
+    font-size: 20px;
 }
 
 .swal2-confirm {
@@ -3890,7 +3889,12 @@ div#swal2-html-container{
     display: flex;	
     align-items: center;
     margin: 0;	
+    cursor: pointer;
 }	
+.forum-comments p:first-child{
+    margin-right: -19px;
+    display: inline-block;
+}
 .cat-title {	
     display: flex;	
     justify-content: space-between;	
@@ -4007,6 +4011,7 @@ div#swal2-html-container{
 .dislike-like ul li i {
     display: inline-block;
     cursor: pointer;
+    font-size: 17px;
 }
 
 .dislike-like ul li span {
@@ -4169,6 +4174,9 @@ color: #276e80 !important;
     border-bottom: none;
 }
 .comment-liked i.fa.fa-thumbs-up {
+    color: #276E80;
+}
+.comment-liked i.fa.fa-thumbs-down {
     color: #276E80;
 }
 .loadmore {

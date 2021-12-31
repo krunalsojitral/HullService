@@ -8,7 +8,7 @@ import axios from 'axios';
 import Swal from "sweetalert2";
 import api_url from '../../components/Apiurl';
 import './../dev.css';
-import { UserContext } from './../../hooks/UserContext';
+//import { UserContext } from './../../hooks/UserContext';
 
 
 export default function MyArticle() {
@@ -18,8 +18,8 @@ export default function MyArticle() {
     const [currentPage, setCurrentPage] = useState(1);
     const [data, setData] = useState([]);
     const [currentData, setCurrentData] = useState([]);
-
-    const { user, isLoading } = useContext(UserContext);
+    const [noresult, setNoresult] = React.useState(false);
+    //const { user, isLoading } = useContext(UserContext);
 
     React.useEffect(() => {
 
@@ -34,8 +34,12 @@ export default function MyArticle() {
                 var coursedata = result.data.response.data;
                 if (coursedata.length > 0) {
                     setData(coursedata);
+                    setNoresult(false)
+                }else{
+                    setNoresult(true)
                 }
             } else {
+                setNoresult(true)
                 Swal.fire('Oops...', result.data.response.msg, 'error')
             }
         }).catch((err) => {
@@ -62,7 +66,7 @@ export default function MyArticle() {
                 <div className="container">
                     <div className="row">
                         <div className="col-md-12">
-                            <h2>Article</h2>
+                            <h2>My Article</h2>
                         </div>
                     </div>
                 </div>
@@ -76,7 +80,7 @@ export default function MyArticle() {
 
                         <div className="col-md-8 articlebox">
                             <div className="row">
-                                {currentData.map((data, index) => (<div key={index} className="col-md-4">
+                                {!noresult && currentData.map((data, index) => (<div key={index} className="col-md-4">
 
                                     <div className="blog-box">
                                         <div className="blog-image">
@@ -105,8 +109,7 @@ export default function MyArticle() {
 
                                 </div>
                                 ))}
-                                {
-                                    currentData.length == 0 &&
+                                {noresult &&
                                     <div>
                                         <center>
                                             <img height="250px" width="350px" src="images/hull-no-results.png" alt="author" />
@@ -117,8 +120,7 @@ export default function MyArticle() {
 
                             </div>
                             <div className="row">
-                                {
-                                    currentData.length > 0 && <Paginator
+                                {!noresult && currentData.length > 0 && <Paginator
                                         totalRecords={data.length}
                                         pageLimit={pageLimit}
                                         pageNeighbours={2}

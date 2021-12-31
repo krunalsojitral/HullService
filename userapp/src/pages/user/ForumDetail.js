@@ -7,7 +7,6 @@ import axios from 'axios';
 import api_url from '../../components/Apiurl';
 import Swal from "sweetalert2";
 import $ from 'jquery';
-import AddCommentModel from "./AddCommentModel";
 import { useModal } from 'react-hooks-use-modal';
 import { useForm, Controller } from "react-hook-form";
 import ForumReply from "./ForumReply";
@@ -19,7 +18,6 @@ export default function ForumDetail() {
     const [forumCommentDetail, setForumCommentDetail] = useState([]);
     const [forumId, setForumId] = useState([]);
     const [hideLoad, setHideLoad] = useState(false);
-
     const [Modal, open, close] = useModal('root', {});
 
     React.useEffect(() => {
@@ -27,32 +25,27 @@ export default function ForumDetail() {
         const params = new URLSearchParams(window.location.search) // id=123
         let forum_id = params.get('id')
         setForumId(forum_id);
-        getNewList(forum_id);
-       // getNewListWrap(forum_id);
+        getNewList(forum_id);       
         getCommentDetail(forum_id);
         getCommentDetailWrap(forum_id);
        
     }, []);
 
     React.useEffect(() => {
-
         if (forumCommentList.length > 0 && parseInt(forumCommentList.length) > parseInt(visible)) {
             setHideLoad(true);
         }else{
             setHideLoad(false);
         }
-
     }, [visible, forumCommentList]);
    
 
-    const getNewList = (forum_id) => {
-       
+    const getNewList = (forum_id) => {       
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
         const config = {
             headers: { Authorization: `${token}` }
         };
-
         var obj = {
             'forum_id': forum_id
         }
@@ -102,16 +95,13 @@ export default function ForumDetail() {
         })
     }
 
-    const reply = (id) => {        
-        $("#" + id).css('display', 'block');
-    }
+    const reply = (id) => { $("#" + id).css('display', 'block'); }
 
     const replySubmit = (comment_id, index) => {
 
         if ($("#input" + comment_id).val().trim() == ''){
             $("#error" + comment_id).show();
         }else{
-
             $("#error" + comment_id).hide();
             const tokenString = localStorage.getItem('token');
             var token = JSON.parse(tokenString);
@@ -125,20 +115,11 @@ export default function ForumDetail() {
                 .then((result) => {
                     if (result.data.status) {
                         $("#" + comment_id).css('display', 'none');
-                        console.log(result.data.response.data);
-                        var objs = {
-                            comment: "dfg",
-                            created_at: "2021-12-27T01:26:48.000Z",
-                            first_name: "Ak",
-                            last_name: "Patel",
-                            role: "Researchers"
-                        }
                         let tempColl = [...forumCommentList];
                         tempColl[index].reply = [result.data.response.data, ...tempColl[index].reply]
                         $("#input" + comment_id).val('')                        
                         setForumCommentList(tempColl);
 
-                        //   getNewListWrap(forumId);
                     } else {
                         Swal.fire("Oops...", result.data.response.msg, "error");
                     }
@@ -176,11 +157,7 @@ export default function ForumDetail() {
                 }
             }).catch((err) => { console.log(err); });
     } 
-
-    // const getNewListWrap = (forum_id) => {
-    //     getNewList(forum_id,setForumCommentList);
-    // };
-
+  
     const forumlikeClick = () => {
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
@@ -217,7 +194,6 @@ export default function ForumDetail() {
         }).catch(function (error) { console.log(error); });
     };
 
-
     const getCommentDetailWrap = (forum_id) => {
         getCommentDetail(forum_id, setForumCommentDetail);
     };
@@ -239,29 +215,59 @@ export default function ForumDetail() {
     }
 
     const showMoreItems = () => {        
-
         setVisible((prevValue) => prevValue + 3);
     }
 
     const forumCommentLikeClick = (comment_id, index) => {
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
-        const config = {
-            headers: { Authorization: `${token}` }
-        };
+        const config = { headers: { Authorization: `${token}` } };
         var obj = {
-            "comment_id": comment_id
+            "comment_id": comment_id,
+            "action_type": 'like'
         }
         axios.post(api_url + '/forum/forumCommentLike', obj, config).then(response => {
             var res = response.data;
             if (res.status) {
                 let tempColl = [...forumCommentList];                
                 if (res.response.data == 'like'){
-                    tempColl[index].comment_count = parseInt(tempColl[index].comment_count) + parseInt(1);
+
+                    tempColl[index].like_comment_count = parseInt(tempColl[index].like_comment_count) + parseInt(1);
                     tempColl[index].comment_like_id = 1;
+                    if (tempColl[index].comment_dislike_id > 0){
+                        tempColl[index].unlike_comment_count = (parseInt(tempColl[index].unlike_comment_count) > 0) ? parseInt(tempColl[index].unlike_comment_count) - parseInt(1) : parseInt(tempColl[index].unlike_comment_count);
+                        tempColl[index].comment_dislike_id = '';
+                    }
+                    
                 }else{
-                    tempColl[index].comment_count = ( parseInt(tempColl[index].comment_count) > 0) ? parseInt(tempColl[index].comment_count) - parseInt(1) : parseInt(tempColl[index].comment_count);
+                    tempColl[index].like_comment_count = (parseInt(tempColl[index].like_comment_count) > 0) ? parseInt(tempColl[index].like_comment_count) - parseInt(1) : parseInt(tempColl[index].like_comment_count);
                     tempColl[index].comment_like_id = '';
+                }
+                setForumCommentList(tempColl);
+            }
+        }).catch(function (error) { console.log(error); });
+    }
+
+    const forumCommentDisLikeClick = (comment_id, index) => {
+        const tokenString = localStorage.getItem('token');
+        var token = JSON.parse(tokenString);
+        const config = { headers: { Authorization: `${token}` } };
+        var obj = { "comment_id": comment_id, "action_type": 'unlike' }
+        axios.post(api_url + '/forum/forumCommentLike', obj, config).then(response => {
+            var res = response.data;
+            if (res.status) {
+                let tempColl = [...forumCommentList];
+                if (res.response.data == 'like') {
+                    tempColl[index].unlike_comment_count = parseInt(tempColl[index].unlike_comment_count) + parseInt(1);
+                    tempColl[index].comment_dislike_id = 1;
+
+                    if (tempColl[index].comment_like_id > 0) {
+                        tempColl[index].like_comment_count = (parseInt(tempColl[index].like_comment_count) > 0) ? parseInt(tempColl[index].like_comment_count) - parseInt(1) : parseInt(tempColl[index].like_comment_count);
+                        tempColl[index].comment_like_id = '';
+                    }
+                } else {
+                    tempColl[index].unlike_comment_count = (parseInt(tempColl[index].unlike_comment_count) > 0) ? parseInt(tempColl[index].unlike_comment_count) - parseInt(1) : parseInt(tempColl[index].unlike_comment_count);
+                    tempColl[index].comment_dislike_id = '';
                 }
                 setForumCommentList(tempColl);
             }
@@ -271,11 +277,6 @@ export default function ForumDetail() {
     return(
         <div>
             <Header/>
-{/* 
-            <Modal>
-                <AddCommentModel close={close} forumdetail={forumId}></AddCommentModel>
-            </Modal> */}
-
 
             <section className="inner-header">
                 <div className="container">
@@ -293,8 +294,6 @@ export default function ForumDetail() {
                             <Sidebar />
                         </div>
 
-
-                        
                         <div class="col-md-10">
                             <div class="category-table">
                                 {/* <div class="breadcrumbs-main"> <a href="javascript:;">
@@ -303,8 +302,7 @@ export default function ForumDetail() {
                                     <div>
                                         <h2 class="mb-0"> {forumCommentDetail.forum_title && forumCommentDetail.forum_title} </h2>
                                         <p> {forumCommentDetail.forum_description && forumCommentDetail.forum_description}  </p>
-                                    </div>
-                                   
+                                    </div>                                   
                                 </div>
 
                                
@@ -328,35 +326,31 @@ export default function ForumDetail() {
                                         ></Controller>
                                         {errors.comment && errors.comment.type === "required" && (
                                             <small className="error">Comment is required.</small>
-                                        )}    
-                                     
-                                        {forumCommentDetail.retire && <button type="button" class="add-comment">Add Comment</button>}
-                                        {!forumCommentDetail.retire && <button type="submit" class="add-comment">Add Comment</button>}
+                                        )}                                         
+                                        {forumCommentDetail.retire == 1 && <button type="button" class="add-comment">Add Comment</button>}
+                                        {forumCommentDetail.retire == 0 && <button type="submit" class="add-comment">Add Comment</button>}
                                     </form>
                                 </div>
-                               
-
 
                                 <div className="row">
                                     <div className="col-md-8">
-                                        {forumCommentDetail.retire && <div className="dislike-like">
+                                        {forumCommentDetail.retire == 1 && <div className="dislike-like">
                                             <ul>
-                                                <li className={forumCommentDetail.user_like === 1 ? 'liked' : ''}> <i className="fa fa-arrow-up"></i> <span>{forumCommentDetail.likes}</span> </li>
-                                                <li className={forumCommentDetail.user_dislike === 1 ? 'liked' : ''}> <i className="fa fa-arrow-down"></i> <span>{forumCommentDetail.unlikes}</span> </li>
+                                                <li className={forumCommentDetail.user_like === 1 ? 'liked' : ''}> <i className="fa fa-thumbs-o-up"></i> <span>{forumCommentDetail.likes}</span> </li>
+                                                <li className={forumCommentDetail.user_dislike === 1 ? 'liked' : ''}> <i className="fa fa-thumbs-o-down"></i> <span>{forumCommentDetail.unlikes}</span> </li>
                                                 <li> <i className="fa fa-comment"></i> <span>{forumCommentDetail.replies}</span> </li>
                                             </ul>
                                         </div>}  
-                                        {!forumCommentDetail.retire && <div className="dislike-like">
+                                        {forumCommentDetail.retire == 0 && <div className="dislike-like">
                                             <ul>
-                                                <li className={forumCommentDetail.user_like === 1 ? 'liked' : ''} onClick={() => forumlikeClick()}> <i className="fa fa-arrow-up"></i> <span>{forumCommentDetail.likes}</span> </li>
-                                                <li className={forumCommentDetail.user_dislike === 1 ? 'liked' : ''} onClick={() => forumdislikeClick()}> <i className="fa fa-arrow-down"></i> <span>{forumCommentDetail.unlikes}</span> </li>
+                                                <li className={forumCommentDetail.user_like === 1 ? 'liked' : ''} onClick={() => forumlikeClick()}> <i className="fa fa-thumbs-o-up"></i> <span>{forumCommentDetail.likes}</span> </li>
+                                                <li className={forumCommentDetail.user_dislike === 1 ? 'liked' : ''} onClick={() => forumdislikeClick()}> <i className="fa fa-thumbs-o-down"></i> <span>{forumCommentDetail.unlikes}</span> </li>
                                                 <li> <i className="fa fa-comment"></i> <span>{forumCommentDetail.replies}</span> </li>
                                             </ul>
                                         </div>}
                                     </div>
                                     <div className="col-md-4">
-
-                                        {forumCommentDetail.retire && <div className="follow">
+                                        {forumCommentDetail.retire == 1 && <div className="follow">
                                             {forumCommentDetail.follow == 0 && <span>
                                                  Follow
                                             </span>}
@@ -365,7 +359,7 @@ export default function ForumDetail() {
                                             </span>}
                                         </div>}
 
-                                        {!forumCommentDetail.retire && <div className="follow">
+                                        {forumCommentDetail.retire == 0 && <div className="follow">
                                             {forumCommentDetail.follow == 0 && <span onClick={(e) => handleFollow()} >
                                                 Follow
                                             </span>}
@@ -373,8 +367,6 @@ export default function ForumDetail() {
                                                 Following
                                             </span>}
                                         </div>}
-
-
                                     </div>
                                 </div> 
 
@@ -392,22 +384,31 @@ export default function ForumDetail() {
                                         <div class="forum-text">
                                             <p>{data.comment}</p>
 
-                                            {forumCommentDetail.retire && <div class="forum-comments">
+                                            {forumCommentDetail.retire == 1 && <div class="forum-comments">
                                                 <p className={(data.comment_like_id && data.comment_like_id > 0) ? 'comment-liked' : ''}>
-                                                    <i class="fa fa-thumbs-up" aria-hidden="true"></i>
-                                                    {/* <i class="fa fa-thumbs-o-up" aria-hidden="true"></i> */}
+                                                    <i class="fa fa-thumbs-up" aria-hidden="true"></i>                                                    
                                                     &nbsp;
-                                                    <span>+{data.comment_count}</span>
+                                                    <span>+{data.like_comment_count}</span>
+                                                </p>    
+                                                <p className={(data.comment_dislike_id && data.comment_dislike_id > 0) ? 'comment-liked' : ''}>
+                                                    <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+                                                    &nbsp;
+                                                    <span>+{data.unlike_comment_count}</span>
                                                 </p>
                                                 <p><img src="images/reply.png" alt="reply" /> <span>Reply</span></p>
                                             </div>}
 
-                                            {!forumCommentDetail.retire && <div class="forum-comments">
+                                            {forumCommentDetail.retire == 0 && <div class="forum-comments">
                                                 <p className={(data.comment_like_id && data.comment_like_id > 0) ? 'comment-liked' : ''} onClick={() => forumCommentLikeClick(data.forum_comment_id, index)}>
-                                                    <i class="fa fa-thumbs-up" aria-hidden="true"></i>
-                                                    {/* <i class="fa fa-thumbs-o-up" aria-hidden="true"></i> */}
+                                                    <i class="fa fa-thumbs-up" aria-hidden="true"></i>                                                    
                                                     &nbsp;
-                                                    <span>+{data.comment_count}</span>
+                                                    <span>+{data.like_comment_count}</span>
+                                                </p>
+
+                                                <p className={(data.comment_dislike_id && data.comment_dislike_id > 0) ? 'comment-liked' : ''} onClick={() => forumCommentDisLikeClick(data.forum_comment_id, index)}>
+                                                    <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+                                                    &nbsp;
+                                                    <span>+{data.unlike_comment_count}</span>
                                                 </p>
                                                 <p onClick={(e) => reply(data.forum_comment_id)}><img src="images/reply.png" alt="reply" /> <span>Reply</span></p>
                                             </div>}                                            

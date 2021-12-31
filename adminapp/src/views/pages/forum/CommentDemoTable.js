@@ -9,9 +9,7 @@ import {
   CDataTable
 } from '@coreui/react'
 
-
 const CommentDemoTable = ({ match }) => {
-
  
   const [details, setDetails] = useState([])
   const [items, setItems] = useState([])
@@ -73,15 +71,12 @@ const CommentDemoTable = ({ match }) => {
       }).catch((err) => {
         console.log(err);
       })
-    }
-    
+    }    
   }
 
   const getNewListWrap = () => {
     getNewList(setItems);
-  };
-
- 
+  }; 
 
   return (
     <CCardBody>
