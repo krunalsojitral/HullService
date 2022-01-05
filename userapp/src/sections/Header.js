@@ -4,19 +4,17 @@ import { Link, useLocation } from 'react-router-dom';
 import InlineButton from './../components/InlineButton';
 import { useHistory } from 'react-router-dom';
 import useLogout from './../hooks/useLogout';
-
-// import api_url from './../components/Apiurl';
-// import axios from 'axios';
-// import Swal from "sweetalert2";
-// import $ from 'jquery';
+import api_url from './../components/Apiurl';
+import axios from 'axios';
+import Swal from "sweetalert2";
+import $ from 'jquery';
 
 export default function Header() {
     let history = useHistory();
     const [userData, setUserData] = useState(0);
     const [token, setToken] = React.useState(0);
-
+    const [menuList, setMenuList] = React.useState([]);
     const { pathname } = useLocation();
-
     const { logoutUser } = useLogout();
 
     React.useEffect(() => {
@@ -29,6 +27,21 @@ export default function Header() {
         setToken(tokens);
 
         window.scrollTo(0, 0)
+
+        axios.get(api_url + '/common/getDynamicMenu', {}).then((result) => {
+            if (result.data.status) {
+                var menudata = result.data.response.data;
+                if (menudata.length > 0) {
+                    setMenuList(menudata);
+                } 
+            } else {
+                Swal.fire('Oops...', result.data.response.msg, 'error')
+            }
+        }).catch((err) => {
+            console.log(err);
+            //Swal.fire('Oops...', err, 'error')
+        })
+
     }, [])
 
     const handleOpenDirection = () => {
@@ -213,6 +226,16 @@ export default function Header() {
                                                     <InlineButton name={"CONTACT"} />
                                                 </NavLink>
                                             </li>
+
+                                            {menuList.length > 0 && menuList.map((data, index) => (
+                                                <li>
+                                                    <NavLink to={"/dynamic-page?menu=" + data.dynamic_menu_id}>
+                                                        <InlineButton name={data.menu_name} />
+                                                    </NavLink>
+                                                </li>
+                                            ))}
+
+
                                             {token && <li>
                                                 <a className="logout">
                                                     <InlineButton handleClick={logoutUser} name={"LOGOUT"} />

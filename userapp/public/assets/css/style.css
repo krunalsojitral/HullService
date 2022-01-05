@@ -101,7 +101,7 @@ p {
     width: 1300px;
 } */
 .error {
-    color: red;
+    color: red !important;
     float: left;
 }
 
@@ -1026,7 +1026,7 @@ section.banner-card .banner-text .banner-btn {
     border: #A0A0A0 solid 1px;
     border-radius: 10px;
     padding: 13px 10px;
-    height: 50px;
+    height: 52px;
 }
 
 
@@ -3423,7 +3423,7 @@ min-height: 258px;
 
 .forum-text {
     background: #fff;
-    padding: 10px;
+    padding: 10px 10px 0px 10px;
 }
 
 .forum-text p {
@@ -3890,6 +3890,7 @@ div#swal2-html-container{
     align-items: center;
     margin: 0;	
     cursor: pointer;
+    font-size: 21px;
 }	
 .forum-comments p:first-child{
     margin-right: -19px;
@@ -3997,11 +3998,6 @@ div#swal2-html-container{
     color: #aaa;
  }
 
-
- .dislike-like {}
-
-.dislike-like ul {}
-
 .dislike-like ul li {
     display: inline-block;
     margin-right: 20px;
@@ -4011,7 +4007,7 @@ div#swal2-html-container{
 .dislike-like ul li i {
     display: inline-block;
     cursor: pointer;
-    font-size: 17px;
+    font-size: 20px;
 }
 
 .dislike-like ul li span {
@@ -4048,20 +4044,22 @@ color: #276e80 !important;
     position: relative;    
 }
 
-.comment-box input {
-    width: 100%;
+.comment-box textarea {
+    width: 87%;
     height: 40px;
     border: none;
     border-radius: 5px;
     border: solid 1px #ddd;
     box-shadow: none;
+    float: left;
+    margin-right: 8px;
+    line-height: 26px;
 }
 
 .comment-box button {
-        width: 124px;
+    width: 124px;
     border: none;
-    height: 35px;
-    position: absolute;
+    height: 40px;    
     right: 8px;
     background: #276E80;
     color: #fff;
@@ -4072,35 +4070,33 @@ color: #276e80 !important;
 }
 
 .reply-box {
-  width: 70%;
-    background: #ddd;
+    width: 70%;   
     padding: 0px;
     border-radius: 5px;
     margin: 20px 0;
-    position: relative;
-    border: solid 1px #ddd;
+    position: relative;    
     margin-left: 39px;
 }
 
-.reply-box input {
-    width: 100%;
-    height: 40px;
-    border: none;
-    border-radius: 5px;
+.reply-box textarea {
+    width: 83%;
+    height: 40px;    
+    border-radius: 5px;    
+    margin-right: 13px;
 }
 
 .reply-box button {
-        width: 100px;
+    width: 100px;
     border: none;
-    height: 35px;
+    height: 40px;
     position: absolute;
     right: 8px;
     background: #276E80;
     color: #fff;
-    font-weight: 600;
-    top: 3px;
+    font-weight: 600;    
     right: 2px;
     border-radius: 5px;
+    top:0px;
 }
 .reply-list {
     margin: 21px 0px;
@@ -4158,7 +4154,17 @@ color: #276e80 !important;
     display: block;
     padding: 8px 0px 4px 0px;
 }
+.reply-list .reply-card .reply-box .error{
+    letter-spacing:0.3px;
+    text-transform:inherit;
+    font-weight: 400;
+    font-size: 11px;
+}
+.sub-reply {border-left: 2px #ddd solid;padding: 8px 10px;margin-left: 46px;margin-top: 9px;}
 
+.sub-reply p {
+    font-style: italic;
+}
 .reply-list .reply-card small {
     font-size: 12px;
     color: #777;
@@ -4184,6 +4190,7 @@ color: #276e80 !important;
     text-align: center;
     margin: 0 auto 40px;
     display: block;
+    cursor: pointer;
 }
 
 .loadmore span {
@@ -4200,6 +4207,7 @@ color: #276e80 !important;
 .reply-loadmore{
     color: #276E80;
     font-size: 15px;
+    cursor: pointer;
 }
 
 .ytplayer {
@@ -4241,7 +4249,7 @@ color: #276e80 !important;
     background: #060606;
     font-size: 13px;
     line-height: 15px;
-    padding: 5px 5px;
+    padding: 5px;
     color: #FFF;
     border-radius: 5px;
     font-weight: 500;
@@ -4256,4 +4264,181 @@ color: #276e80 !important;
 }
 .forum-table .table tr td a{
     display: inline-block;
+    padding: 5px;
 }
+.forum-comments p i {
+    vertical-align: top;
+}
+
+
+.studies-research {
+    padding: 70px 0;
+    background: #F7F7FC;
+}
+.studies-research .studies-title {}
+
+.studies-research .studies-title h2 {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 27px;
+    
+/* identical to box height, or 45px */
+    text-align: left;
+    color: #036E80;
+    line-height: 50px;
+}
+
+.studies-research .studies-Btn {
+    text-align: right;
+}
+
+.studies-research .studies-Btn .study-btn {
+    background: linear-gradient(135deg, #036E80 30.73%, #5EA5C7 100%);
+    border-radius: 20px;
+    width: auto;
+    height: auto;
+    color: #fff;
+    text-align: center;
+    line-height: 22px;
+    font-size: 16px;
+    padding: 10px 0;
+    font-weight: 700;
+    border: none;
+}
+
+.studies-research .studies-Btn .study-btn span {
+    font-weight: 400;
+    font-size: 15px;
+}
+
+.studies-card {
+    background: #FFFFFF;
+    border-radius: 8px;
+    padding: 25px;
+    margin: 25px 0;
+}
+
+.studies-card .studies-list {}
+
+.studies-card .studies-list h3 {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 22px;
+    line-height: 42px;
+    letter-spacing: 0.005em;
+    color: #11142D;
+}
+
+.studies-card .studies-list p {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 25px;
+    letter-spacing: 0.005em;
+    color: #92929D;
+}
+
+.studies-box {
+    background: #FFFFFF;
+    border: 1px solid #D2D2D2;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.151033);
+    border-radius: 6px;
+}
+
+.studies-box .studies-header {
+    padding: 15px;
+}
+
+.studies-box .studies-header h3 {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 17px;
+    line-height: 18px;
+    color: #303030;
+    font-family: 'Mulish', sans-serif;
+    margin-bottom: 9px;
+}
+
+.studies-box .studies-header  small {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 16px;
+    color: #303030;
+    mix-blend-mode: normal;
+    opacity: 0.5;
+}
+
+.studies-box .btn-apply {
+    border: none;
+    display: block;
+    background: #036E80;
+    border-radius: 6px;
+    height: 47px;
+    color: #fff;
+    text-align: center;
+    line-height: 47px;
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+    width: 100%;
+}
+
+.research-banner-title {
+    text-align: center;
+    padding: 30px 0;
+}
+
+.research-banner-title h1 {
+    font-size: 34px;
+    color: #1e6e80;
+}
+
+.research-banner-img {
+    padding: 50px 0;
+    height: 760px;
+}
+
+.research-banner-img img {
+    height: 100%;
+    width: 100%;
+}
+
+.research-popup label.child-label {
+    margin-top: 10px;
+    display: block;
+    text-align: left;
+}
+.research-popup .submit-btn{
+    background: linear-gradient(135deg, #036E80 30.73%, #5EA5C7 100%) !important;
+    border-radius: 25px;
+    width: 150px;
+    height: 42px;
+    color: #fff !important;
+    line-height: 42px;
+    font-weight: 700;    
+    display: block;
+    margin: 0 auto;
+    border: none;
+    font-size: 18px;
+}
+
+.research-popup .child-btn{
+    background: linear-gradient(135deg, #036E80 30.73%, #5EA5C7 100%) !important;
+    border-radius: 25px;
+    width: 115px;
+    height: 42px;
+    color: #fff !important;
+    line-height: 42px;
+    font-weight: 700;      
+    border: none;
+    margin-bottom: 40px;
+    font-size: 16px !important;
+}
+   

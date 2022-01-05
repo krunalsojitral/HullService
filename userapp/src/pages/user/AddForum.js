@@ -83,7 +83,9 @@ export default function AddForum() {
         const config = {
             headers: { Authorization: `${token}` }
         };
-
+        var textareaText = data.description;
+        textareaText = textareaText.replace(/\r?\n/g, '<br />');
+        data.description = textareaText;
         data.tag = selectedTag;
         
 

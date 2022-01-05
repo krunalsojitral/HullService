@@ -52,6 +52,7 @@ const MyBlog = lazy(() => import("./pages/user/MyBlog"));
 const MyArticle = lazy(() => import("./pages/user/MyArticle"));
 const MyVideo = lazy(() => import("./pages/user/MyVideo"));
 const Preview = lazy(() => import("./pages/Preview"));
+const DynamicPage = lazy(() => import("./pages/DynamicPage"));
 
 
 function App() {
@@ -120,6 +121,7 @@ function App() {
           <Route path="/my-article" component={MyArticle} />
           <Route path="/my-video" component={MyVideo} />
           <Route path="/preview-module" component={Preview} />
+          <Route path="/dynamic-page" component={DynamicPage} />
           
         </Switch>
         </Suspense>

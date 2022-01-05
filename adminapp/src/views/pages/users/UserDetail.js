@@ -38,7 +38,9 @@ const UserDetail = ({ match }) => {
                 <tr><td>Last Name :</td><td><strong>{details.last_name}</strong></td></tr>                
                 <tr><td>Email :</td><td><strong>{details.email}</strong></td></tr>
                 <tr><td>City :</td><td><strong>{details.city}</strong></td></tr>
+                <tr><td>Organization :</td><td><strong>{details.organization}</strong></td></tr>
                 {details.sectorname && <tr><td>Sector :</td><td><strong>{details.sectorname}</strong></td></tr>}
+                {details.level_of_education && <tr><td>Level Of Education :</td><td><strong>{details.level_of_education}</strong></td></tr>}
                 {details.occupationname && <tr><td>Occupation :</td><td><strong>{details.occupationname}</strong></td></tr>}
                 {details.academicdisciplinename && <tr><td>Academic Discipline :</td><td><strong>{details.academicdisciplinename}</strong></td></tr>}
                 {details.rinterestarea && <tr><td>Interest Area :</td><td><strong>{details.rinterestarea}</strong></td></tr>}

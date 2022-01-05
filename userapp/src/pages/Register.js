@@ -145,7 +145,7 @@ export default function Register() {
                 data.role = 3;
             }else{
                 data.role = 2;
-            }            
+            }     
 
             registerUser(data);
 
@@ -179,10 +179,9 @@ export default function Register() {
         ({ description }) =>
             () => {
                 // When user selects a place, we can replace the keyword without request data from API
-                // by setting the second parameter to "false"
-
+                // by setting the second parameter to "false"                
                 setValue(description, false);
-                // value.city = description
+                setCity(description);                
                 clearSuggestions();
 
                 // Get latitude and longitude via utility functions
@@ -280,7 +279,7 @@ export default function Register() {
                                                 rules={{ required: true }}
                                                 render={({ field: { onChange, value } }) => (
                                                     <input
-                                                        type="first_name"
+                                                        type="text"
                                                         onChange={onChange}
                                                         value={value}
                                                         className="form-control"
@@ -299,7 +298,7 @@ export default function Register() {
                                                 rules={{ required: true }}
                                                 render={({ field: { onChange, value } }) => (
                                                     <input
-                                                        type="last_name"
+                                                        type="text"
                                                         onChange={onChange}
                                                         value={value}
                                                         className="form-control"
@@ -402,6 +401,26 @@ export default function Register() {
                                                 {status === "OK" && <ul className="suggestion">{renderSuggestions()}</ul>}
                                                 {cityError && <small className="error">{cityError}<div><br /></div></small>}
                                             </div>
+                                        </div>
+
+                                        <div className="form-group">
+                                            <Controller
+                                                name={"organization"}
+                                                control={control}
+                                                //rules={{ required: true }}
+                                                render={({ field: { onChange, value } }) => (
+                                                    <input
+                                                        type="text"
+                                                        onChange={onChange}
+                                                        value={value}
+                                                        className="form-control"
+                                                        placeholder={`Organization`}
+                                                    />
+                                                )}
+                                            ></Controller>
+                                            {/* {errors.first_name && errors.first_name.type === "required" && (
+                                                <small className="error">First Name is required.</small>
+                                            )} */}
                                         </div>
                                         
 

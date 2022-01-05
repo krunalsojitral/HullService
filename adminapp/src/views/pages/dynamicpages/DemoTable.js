@@ -4,7 +4,8 @@ import axios from 'axios';
 import api_url from './../../Apiurl';
 import Swal from "sweetalert2";
 import {
-  CCardBody,  
+  CCardBody,
+  CBadge,
   CButton,
   CCollapse,
   CDataTable
@@ -23,7 +24,8 @@ const DemoTable = () => {
   }, [])
 
   const fields = [
-    { key: 'sector_name', _style: { width: '20%'} },
+    { key: 'title', _style: { width: '20%'} },   
+    { key: 'created_at', _style: { width: '20%' } },
     { key: 'status', _style: { width: '20%'} },
     {
       key: 'show_details',
@@ -32,14 +34,14 @@ const DemoTable = () => {
       filter: false
     }
   ]
-  
+
 
   const updateItemStatus = (item, status) => {
 
     if (status == 1) {
-      var message = 'Are you sure you want to activate a Sector?'
+      var message = 'Are you sure you want to activate the Page ?'
     } else {
-      var message = 'Are you sure you want to deactivate a Sector?'
+      var message = 'Are you sure you want to deactivate the Page ?'
     }
     Swal.fire({
       //title: 'warning!',
@@ -52,10 +54,10 @@ const DemoTable = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         var obj = {
-          sector_id: item.sector_id,
+          dynamic_page_id: item.dynamic_page_id,
           status: status,
         };
-        axios.post(api_url + "/sector/changesectorStatus", obj)
+        axios.post(api_url + "/common/changeBlogStatus", obj)
           .then((result) => {
             if (result.data.status) {
               getNewListWrap();
@@ -71,11 +73,8 @@ const DemoTable = () => {
     });
   }
 
- 
-
-  
-  const getNewList = () => { 
-    axios.get(api_url + '/sector/sectorList', {}).then((result) => {
+  const getNewList = () => {
+    axios.get(api_url + '/common/dynamicPageList', {}).then((result) => {
       if (result.data.status) {
         var usersdatas = result.data.response.data;
         setItems(usersdatas);
@@ -91,7 +90,15 @@ const DemoTable = () => {
     getNewList(setItems);
   };
 
-
+  const getBadge = (status)=>{
+    switch (status) {
+      case '2': return 'Service Provider'
+      case '3': return 'Researchers'
+      case '4': return 'General Public'
+      case 'all': return 'All'
+      default: return 'Service Provider'
+    }
+  }
 
   return (
     <CCardBody>
@@ -144,12 +151,18 @@ const DemoTable = () => {
                     );
                   }}
                 >
-                    Inactive
+                   Inactive
                 </a>
               )}
               {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}
             </td>
           ),
+          'role':
+            (item) => (
+              <td>
+                {getBadge(item.role)}
+              </td>
+            ),
           'show_details':
             item => {
               return (
@@ -159,7 +172,7 @@ const DemoTable = () => {
                     variant="outline"
                     shape="square"
                     size="sm"
-                    onClick={() => history.push(`/sectordetail/${item.id}`)}
+                    onClick={() => history.push(`/blogdetail/${item.id}`)}
                   >
                     Show
                   </CButton> */}
@@ -169,7 +182,7 @@ const DemoTable = () => {
                     variant="outline"
                     shape="square"
                     size="sm"
-                    onClick={() => history.push(`/sectoredit/${item.sector_id}`)}
+                    onClick={() => history.push(`/dynamicPagesedit/${item.dynamic_page_id}`)}
                     className="mr-1"
                   > Edit
                   </CButton>

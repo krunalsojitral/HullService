@@ -49,11 +49,16 @@ const intervals = [
     { label: 'second', seconds: 1 }
 ];
 
-module.exports.timeSince = function (date) {
+module.exports.timeSince = function (date) {    
     const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
     const interval = intervals.find(i => i.seconds < seconds);
-    const count = Math.floor(seconds / interval.seconds);
-    return `A few ${interval.label}${count !== 1 ? 's' : ''} ago`;
+    if (interval){
+        const count = Math.floor(seconds / interval.seconds);
+        return `A few ${interval.label}${count !== 1 ? 's' : ''} ago`;
+    }else{        
+        return ``;
+    }
+    
     //return `${count} ${interval.label}${count !== 1 ? 's' : ''} ago`;
 }
 

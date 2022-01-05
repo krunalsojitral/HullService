@@ -437,7 +437,7 @@ export default function ForumDetail() {
                                                 <button type="submit" onClick={(e) => replySubmit(data.forum_comment_id, index)}>Reply</button>
                                             </div>
 
-                                            {data.reply && <ForumReply close={close} replyDetail={data.reply} replyForumId={forumId}></ForumReply>}  
+                                            {/* {data.reply && <ForumReply close={close} replyDetail={data.reply} replyForumId={forumId}></ForumReply>}  */}
                                         </div>
                                     </div>
 
@@ -455,19 +455,3 @@ export default function ForumDetail() {
         </div>
     )
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

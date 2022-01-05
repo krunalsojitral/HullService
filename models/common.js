@@ -76,6 +76,20 @@ function Common() {
         });
     };
 
+    this.getMenuList = function (callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM dynamic_menu where status = $1 order by UPPER(menu_name) ASC', [1], function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
     this.getAcademicDisciplineList = function (callback) {
         connection.acquire(function (err, con) {
             con.query('SELECT * FROM academic_discipline where status = $1 order by UPPER(name) ASC', [1], function (err, result) {
@@ -196,7 +210,6 @@ function Common() {
                                 callback(null, result.rows);
                             }
                         });
-                       
                     }                    
                 }
             });
@@ -228,7 +241,6 @@ function Common() {
 
     this.updatepreviewByadmin = function (record, preview_id, update_value, callback) {
         connection.acquire(function (err, con) {
-
             var query = updateProductByID(preview_id, record);
             con.query(query, update_value, function (err, result) {
                 con.release()
@@ -269,7 +281,67 @@ function Common() {
             });
         });
     };
+
+
+
+    this.addPageByadmin = function (record, callback) {
+        connection.acquire(function (err, con) {
+            const sql = 'INSERT INTO dynamic_page(title,description,created_at,slug,menu_id,image,status) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING *'
+            const values = [record.title, record.description, record.created_at, record.slug, record.menu_id, record.image, 1]
+            con.query(sql, values, function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
+    this.dynamicPageList = function (callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM dynamic_page order by dynamic_page_id DESC', function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
     
+    this.getDynamicPageDataByMenu = function (menu, callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM dynamic_page where menu_id = $1', [menu], function (err, result) {
+                con.release();
+                if (err) {
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    }
+
+    this.getDynamicMenu = function (callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM dynamic_menu order by UPPER(menu_name) DESC', function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
 
 }
 module.exports = new Common();

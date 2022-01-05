@@ -134,7 +134,7 @@ export default function Forum() {
                                             <h2>{data.forumheading_name}</h2>
                                             <Link to={{ pathname: "/forum-sub", search: "?id=" + data.forumheading_id }}>View More >></Link>
                                         </div>
-                                        <div className="forum-table table-responsive">
+                                        <div className="forum-table">
                                             <table className="table">
                                                 <thead>
                                                     <tr>

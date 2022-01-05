@@ -48,7 +48,12 @@ const ResearcherinterestareaAddEditForm = React.lazy(() => import('./views/pages
 
 const FutureParticipantsDemoTable = React.lazy(() => import('./views/pages/researches/FutureParticipantsDemoTable'))
 const ResearchesDemoTable = React.lazy(() => import('./views/pages/researches/ResearchesDemoTable'))
+const AddContentForm = React.lazy(() => import('./views/pages/researches/AddContentForm'))
 const ResearchRequestsDemoTable = React.lazy(() => import('./views/pages/researches/ResearchRequestsDemoTable'))
+
+const DynamicPages = React.lazy(() => import('./views/pages/dynamicpages/DynamicPages'))
+const DynamicPagesAddEditForm = React.lazy(() => import('./views/pages/dynamicpages/AddEditForm'))
+
 
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
@@ -108,20 +113,19 @@ const routes = [
   { path: '/occupation', name: 'Occupation', component: Occupation },
   { path: '/occupationadd', name: 'Occupation Add', component: OccupationAddEditForm },
   { path: '/occupationedit/:id', name: 'Occupation Edit', component: OccupationAddEditForm },
-
-  
   { path: '/professional-interest-area', name: 'Professional Interest Area', component: Professionalinterestarea },
   { path: '/professionalinterestareaadd', name: 'Professional Interest Area Add', component: ProfessionalinterestareaAddEditForm },
   { path: '/professionalinterestareaedit/:id', name: 'Professional Interest Area Edit', component: ProfessionalinterestareaAddEditForm },
-
   { path: '/researcher-interest-area', name: 'Researcher Interest Area', component: Researcherinterestarea },
   { path: '/researcherinterestareaadd', name: 'Researcher Interest Area Add', component: ResearcherinterestareaAddEditForm },
   { path: '/researcherinterestareaedit/:id', name: 'Researcher Interest Area Edit', component: ResearcherinterestareaAddEditForm },
-
   { path: '/researches-list', name: 'Researches List', component: ResearchesDemoTable },
+  { path: '/add-content-form', name: 'Researches Content', component: AddContentForm },
   { path: '/research-requests', name: 'Researches Requests', component: ResearchRequestsDemoTable },
   { path: '/future-participants', name: 'Future Participants', component: FutureParticipantsDemoTable },
 
+  { path: '/dynamicPages', name: 'Dynamic Pages', component: DynamicPages },
+  { path: '/dynamicPagesadd', name: 'Dynamic Pages', component: DynamicPagesAddEditForm }
   
 
 ]

@@ -56,12 +56,12 @@ router.get('/forumList', function (req, res) {
 router.post('/forumCommentList', function (req, res) {
     loggerData(req);
     var forum_id = req.body.forum_id;
-    Forum.getAllForumComment(forum_id,function (err, result) {
+    Forum.getAllForumComment(forum_id, function (err, result) {
         if (err) {
             return res.json({ status: 0, 'response': { msg: err } });
         } else {
             var forumCommentList = result.map(data => {
-                let retObj = {};                
+                let retObj = {};
                 retObj['forum_comment_id'] = data.forum_comment_id;
                 retObj['forum_id'] = data.forum_id;
                 retObj['comment'] = data.comment;
@@ -103,7 +103,7 @@ router.post('/getforumDataById', [check('forum_id', 'forum is required').notEmpt
                             forum['forum_id'] = result[0].forum_id;
                             forum['title'] = result[0].topic;
                             forum['description'] = result[0].description;
-                            forum['heading'] = result[0].heading;                            
+                            forum['heading'] = result[0].heading;
                             forum['tag'] = [];
                             done(err, forum)
                         } else {
@@ -134,14 +134,14 @@ router.post('/getforumDataById', [check('forum_id', 'forum is required').notEmpt
                 }
             }
         ],
-        function (error, video) {
-            if (error) {
-                return res.json({ 'status': 0, 'response': { 'msg': err } });
-            } else {
-                return res.json({ 'status': 1, 'response': { 'data': video, 'msg': 'data found' } });
-            }
-        });
-        
+            function (error, video) {
+                if (error) {
+                    return res.json({ 'status': 0, 'response': { 'msg': err } });
+                } else {
+                    return res.json({ 'status': 1, 'response': { 'data': video, 'msg': 'data found' } });
+                }
+            });
+
     }
 });
 
@@ -170,7 +170,7 @@ router.post('/getforumViewDataById', [check('forum_id', 'forum is required').not
                             forum['forum_id'] = result[0].forum_id;
                             forum['title'] = result[0].topic;
                             forum['description'] = result[0].description;
-                            forum['heading'] = result[0].forumheading_name;                            
+                            forum['heading'] = result[0].forumheading_name;
                             forum['tag'] = [];
                             done(err, forum)
                         } else {
@@ -278,21 +278,21 @@ router.post('/addforumByadmin', [
         var error = errors.array();
         res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
     } else {
-            let record = {
-                topic: req.body.title,
-                description: req.body.description,
-                heading: (req.body.heading) ? req.body.heading:'',                
-                created_at: moment().format('YYYY-MM-DD'),
-            };
-            let tag = (req.body.tag) ? req.body.tag : [];
-            Forum.addforumByadmin(record, tag, function (err, data) {
-                if (err) {
-                    return res.json({ 'status': 0, 'response': { 'msg': error } });
-                } else {
-                    return res.json({ 'status': 1, 'response': { 'msg': 'Forum added successfully.', data: data } });
-                }
-            });
-        }
+        let record = {
+            topic: req.body.title,
+            description: req.body.description,
+            heading: (req.body.heading) ? req.body.heading : '',
+            created_at: moment().format('YYYY-MM-DD'),
+        };
+        let tag = (req.body.tag) ? req.body.tag : [];
+        Forum.addforumByadmin(record, tag, function (err, data) {
+            if (err) {
+                return res.json({ 'status': 0, 'response': { 'msg': error } });
+            } else {
+                return res.json({ 'status': 1, 'response': { 'msg': 'Forum added successfully.', data: data } });
+            }
+        });
+    }
 });
 
 router.post('/updateforumByadmin', function (req, res) {
@@ -332,14 +332,14 @@ router.post('/getForumHeadingList', function (req, res) {
             return res.json({ 'status': 0, 'response': { 'data': [], 'msg': 'data not found' } });
         } else {
 
-            let search = (req.body.search) ? req.body.search : '';            
+            let search = (req.body.search) ? req.body.search : '';
             var forum_id = [];
             var forum_tag_id = [];
             var forumHeading = [];
 
             asyn.waterfall([
                 function (done) {
-                    if (req.body.search){
+                    if (req.body.search) {
                         Forum.getTagSearchList(search, function (err, data) {
                             if (err) {
                                 done(null, data)
@@ -351,33 +351,33 @@ router.post('/getForumHeadingList', function (req, res) {
                                 done(null, forum_id)
                             }
                         });
-                    }else{
+                    } else {
                         done(null, null)
                     }
                 },
                 function (forum_id, done1) {
                     if (results.length > 0) {
-                        let temparray = new Promise(async (resolve, reject) => {                            
+                        let temparray = new Promise(async (resolve, reject) => {
                             for (let heading of results) {
                                 await Forum.getForumListByForumHeading(heading.forumheading_id, search, forum_id, function (err, data) {
                                     if (data && data.length > 0) {
                                         heading.forum = data;
                                         forumHeading.push(heading);
-                                    }                                    
+                                    }
                                 });
                             }
                             setTimeout(() => resolve(forumHeading), 40)
                         });
                         temparray.then(data => {
-                            done1(null, data)                        
+                            done1(null, data)
                         })
                     } else {
-                        done1('Data Not Found', null)                        
+                        done1('Data Not Found', null)
                     }
                 },
                 function (forum, done2) {
-                    if (forum.length > 0) {                        
-                        let temparray = new Promise(async (resolve, reject) => {                           
+                    if (forum.length > 0) {
+                        let temparray = new Promise(async (resolve, reject) => {
                             for (let datas of forum) {
                                 for (let dataf of datas.forum) {
                                     await Forum.getLastComment(dataf.forum_id, function (err, data) {
@@ -404,13 +404,13 @@ router.post('/getForumHeadingList', function (req, res) {
                     }
                 }
             ],
-            function (error, finalData) {
-                if (error) {
-                    return res.json({ 'status': 0, 'response': { 'msg': error } });
-                } else {
-                    return res.json({ 'status': 1, 'response': { 'data': finalData, 'forum_id': forum_tag_id, 'msg': 'data found' } });
-                }
-            });            
+                function (error, finalData) {
+                    if (error) {
+                        return res.json({ 'status': 0, 'response': { 'msg': error } });
+                    } else {
+                        return res.json({ 'status': 1, 'response': { 'data': finalData, 'forum_id': forum_tag_id, 'msg': 'data found' } });
+                    }
+                });
         }
     });
 });
@@ -423,7 +423,7 @@ router.post('/getForumSubHeadingList', [
     if (!errors.isEmpty()) {
         var error = errors.array();
         res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
-    } else { 
+    } else {
         var forum = [];
         var forum_id = [];
         var forum_tag_id = [];
@@ -437,7 +437,7 @@ router.post('/getForumSubHeadingList', [
                     Forum.getSubForumTagSearchList(forum_heading_id, search, function (err, data) {
                         if (err) {
                             done(null, data)
-                        } else {                           
+                        } else {
                             data.forEach(function (d) {
                                 forum_id.push(d.forum_id);
                                 forum_tag_id.push(d.tag_id);
@@ -449,7 +449,7 @@ router.post('/getForumSubHeadingList', [
                     done(null, null)
                 }
             },
-            function (forum_id, done1) {                
+            function (forum_id, done1) {
                 Forum.getSubForumListByForumHeading(forum_heading_id, search, forum_id, function (err, results) {
                     if (err) {
                         return res.json({ 'status': 0, 'response': { 'data': [], 'msg': 'data not found' } });
@@ -484,25 +484,25 @@ router.post('/getForumSubHeadingList', [
                 });
             }
         ],
-        function (error, finalData) {
-            if (error) {
-                return res.json({ 'status': 0, 'response': { 'msg': error } });
-            } else {
-                return res.json({ 'status': 1, 'response': { 'data': finalData[0], 'forum_id': forum_tag_id, 'msg': 'data found' } });
-            }
-        });        
+            function (error, finalData) {
+                if (error) {
+                    return res.json({ 'status': 0, 'response': { 'msg': error } });
+                } else {
+                    return res.json({ 'status': 1, 'response': { 'data': finalData[0], 'forum_id': forum_tag_id, 'msg': 'data found' } });
+                }
+            });
     }
 });
 
 router.get('/getForumTagList', function (req, res) {
     loggerData(req);
     Forum.getForumTagList(function (err, results) {
-        if (err){
+        if (err) {
             return res.json({ 'status': 0, 'response': [], 'msg': err });
-        }else{
+        } else {
             var newarray = [...new Map(results.map(v => [v.tag_id, v])).values()]
-            return res.json({ 'status': 1, 'response': { 'msg': 'Tag list successfully.', data: newarray }  });
-        }        
+            return res.json({ 'status': 1, 'response': { 'msg': 'Tag list successfully.', data: newarray } });
+        }
     });
 });
 
@@ -538,7 +538,7 @@ router.post('/addforumByuser', passport.authenticate('jwt', { session: false }),
         let record = {
             topic: req.body.topic,
             heading: (req.body.heading) ? req.body.heading : '',
-            description: (req.body.description) ? req.body.description : '',            
+            description: (req.body.description) ? req.body.description : '',
             created_at: moment().format('YYYY-MM-DD'),
             created_by: req.user.id
         };
@@ -568,14 +568,14 @@ router.post('/approveRejectedRequest', [
         Forum.getforumRequestDataById(forum_id, function (err, result) {
             if (err) {
                 return res.json({ status: 0, 'response': { msg: err } });
-            } else {       
+            } else {
                 var obj = {
                     id: forum_id,
                     user_status: status,
                     status: 1,
                     admin_comment: comment
                 }
-                
+
                 Forum.updateComment(obj, function (err, updateresult) {
                     if (err) {
                         return res.json({ status: 0, 'msg': err, 'response': { msg: err } });
@@ -618,7 +618,7 @@ router.post('/approveRejectedRequest', [
                     }
                 });
 
-               
+
             }
         });
     } else {
@@ -686,23 +686,23 @@ router.post('/getForumCommentDetail', passport.authenticate('jwt', { session: fa
     var forum_id = req.body.forum_id;
     var comment = {
         'started': '',
-        'likes':0,
-        'unlikes':0,
-        'replies':0,        
+        'likes': 0,
+        'unlikes': 0,
+        'replies': 0,
         'follow': '',
         'user_like': 0,
         'user_dislike': 0,
-        'retire':''
+        'retire': ''
     }
     asyn.waterfall([
-        function (done) {            
+        function (done) {
             Forum.getforumRequestDataById(forum_id, function (err, result) {
-                if (err) {                    
+                if (err) {
                     done(err, null)
-                } else {                        
-                    if (result[0].created_at){                        
+                } else {
+                    if (result[0].created_at) {
                         comment.started = helper.timeCountSince(result[0].created_at);
-                    }   
+                    }
                     comment.forum_title = result[0].topic;
                     comment.retire = result[0].retire;
                     comment.forum_description = result[0].description;
@@ -714,11 +714,11 @@ router.post('/getForumCommentDetail', passport.authenticate('jwt', { session: fa
             Forum.getForumLikeUser(user_id, forum_id, function (err, result) {
                 if (err) {
                     done1(err, null)
-                } else {                   
-                    if (result.length > 0){
+                } else {
+                    if (result.length > 0) {
                         comment.user_like = 1;
                         done1(null, comment)
-                    }else{
+                    } else {
                         done1(null, comment)
                     }
                 }
@@ -757,7 +757,7 @@ router.post('/getForumCommentDetail', passport.authenticate('jwt', { session: fa
                     done4(err, comment)
                 }
             });
-        }, 
+        },
         function (comment, done5) {
             Forum.getForumReplyCount(forum_id, function (err, result) {
                 if (err) {
@@ -772,34 +772,34 @@ router.post('/getForumCommentDetail', passport.authenticate('jwt', { session: fa
             Forum.getForumFollow(forum_id, user_id, function (err, result) {
                 if (err) {
                     done6(err, null)
-                } else {                    
-                    if (result.length > 0){
+                } else {
+                    if (result.length > 0) {
                         comment.follow = 1;
-                    }else{
+                    } else {
                         comment.follow = 0;
-                    }                    
+                    }
                     done6(err, comment)
                 }
             });
         }
     ],
-    function (error, comment) {
-        if (error) {
-            return res.json({ 'status': 0, 'response': { 'msg': error } });
-        } else {
-            return res.json({ 'status': 1, 'response': { 'data': comment, 'msg': 'data found' } });
-        }
-    });
+        function (error, comment) {
+            if (error) {
+                return res.json({ 'status': 0, 'response': { 'msg': error } });
+            } else {
+                return res.json({ 'status': 1, 'response': { 'data': comment, 'msg': 'data found' } });
+            }
+        });
 });
 
 router.post('/getForumCommentList', passport.authenticate('jwt', { session: false }), [
     check('forum_id', 'Please enter valid id').notEmpty()
 ], (req, res) => {
-    
+
     var forum_id = req.body.forum_id;
     var user_id = req.user.id;
 
-    asyn.waterfall([        
+    asyn.waterfall([
         function (done) {
             var comment = []
             // Forum.getForumCommentList(forum_id, user_id, function (err, result) {
@@ -855,18 +855,18 @@ router.post('/getForumCommentList', passport.authenticate('jwt', { session: fals
                         Promise.all(result.map(function (item) {
                             var temparray = new Promise(function (resolve, reject) {
                                 Forum.getForumReplyComment(item.forum_comment_id, function (err, data) {
-                                    if (data && data.reply_list.length > 0) {     
+                                    if (data && data.reply_list.length > 0) {
                                         item.reply = data.reply_list;
                                     }
                                     item.like_comment_count = data.like_comment_count[0].cnt;
                                     item.unlike_comment_count = data.unlike_comment_count[0].cnt;
                                     setTimeout(() => resolve(item), 50)
                                 });
-                              
+
                             });
                             return temparray.then(result => {
                                 response.push(result);
-                                var commentList = response.map(data => {    
+                                var commentList = response.map(data => {
                                     let retObj = {};
                                     retObj['comment'] = data.comment;
                                     retObj['comment_date'] = data.comment_date;
@@ -876,14 +876,14 @@ router.post('/getForumCommentList', passport.authenticate('jwt', { session: fals
                                     //retObj['created_on'] = helper.timeSince(data.comment_date); 
                                     retObj['created_on'] = moment(data.comment_date).format('MMMM Do, YYYY');
                                     retObj['parent_comment_id'] = data.parent_comment_id;
-                                    retObj['comment_like_id'] = (data.action_type == 'like') ? data.comment_like_id :'';
+                                    retObj['comment_like_id'] = (data.action_type == 'like') ? data.comment_like_id : '';
                                     retObj['comment_dislike_id'] = (data.action_type == 'unlike') ? data.comment_like_id : '';
-                                    retObj['reply'] = (data.reply && data.reply.length > 0) ? data.reply: [];
+                                    retObj['reply'] = (data.reply && data.reply.length > 0) ? data.reply : [];
                                     retObj['like_comment_count'] = data.like_comment_count;
                                     retObj['unlike_comment_count'] = data.unlike_comment_count;
                                     retObj['role'] = data.role;
                                     return retObj;
-                                }).sort(function (a, b) {                                                                                                         
+                                }).sort(function (a, b) {
                                     return a.forum_comment_id - b.forum_comment_id;
                                 });
                                 final_response = commentList.reverse();
@@ -927,7 +927,7 @@ router.post('/getForumCommentList', passport.authenticate('jwt', { session: fals
             } else {
                 return res.json({ 'status': 1, 'response': { 'data': finalData, 'msg': 'data found' } });
             }
-    });
+        });
 });
 
 
@@ -939,10 +939,10 @@ router.get('/forumRequestList', function (req, res) {
         } else {
             var forumList = result.map(data => {
                 let retObj = {};
-                retObj['forum_id'] = data.forum_id;                
+                retObj['forum_id'] = data.forum_id;
                 retObj['question'] = data.topic;
                 retObj['description'] = data.description;
-                retObj['topic'] = data.forumheading_name;                
+                retObj['topic'] = data.forumheading_name;
                 retObj['total_view'] = data.total_view;
                 retObj['created_on'] = (data.forum_date) ? moment(data.forum_date).format('YYYY-MM-DD') : '';
                 retObj['status'] = data.forum_status;
@@ -983,71 +983,71 @@ router.post('/followUser', passport.authenticate('jwt', { session: false }), [
 });
 
 
-router.post('/getMyForumList', passport.authenticate('jwt', { session: false }),(req, res) => {
-   
-        var forum = [];
-        var forum_id = [];
-        var forum_tag_id = [];
-        var user_id = req.user.id;
-        let search = (req.body.search) ? req.body.search : '';
-        asyn.waterfall([
-            function (done) {
-                if (req.body.search) {
-                    Forum.getSubForumTagSearchList(user_id,search, function (err, data) {
-                        if (err) {
-                            done(null, data)
-                        } else {
-                            data.forEach(function (d) {
-                                forum_id.push(d.forum_id);
-                                forum_tag_id.push(d.tag_id);
-                            });
-                            done(null, forum_id)
-                        }
-                    });
-                } else {
-                    done(null, null)
-                }
-            },
-            function (forum_id, done1) {
-                Forum.getMyForumList(user_id, search, forum_id, function (err, results) {
+router.post('/getMyForumList', passport.authenticate('jwt', { session: false }), (req, res) => {
+
+    var forum = [];
+    var forum_id = [];
+    var forum_tag_id = [];
+    var user_id = req.user.id;
+    let search = (req.body.search) ? req.body.search : '';
+    asyn.waterfall([
+        function (done) {
+            if (req.body.search) {
+                Forum.getSubForumTagSearchList(user_id, search, function (err, data) {
                     if (err) {
-                        return res.json({ 'status': 0, 'response': { 'data': [], 'msg': 'data not found' } });
+                        done(null, data)
                     } else {
-                        if (results.length > 0) {
-                            forum.push(results)
-                            let temparray = new Promise(async (resolve, reject) => {
-                                for (let datas of results) {
-                                    await Forum.getLastComment(datas.forum_id, function (err, data) {
-                                        if (data.length > 0) {
-                                            var forumList = data.map(comment => {
-                                                let retObj = {};
-                                                retObj['created_at'] = helper.timeSince(comment.created_at)
-                                                retObj['forum_comment_count'] = comment.forum_comment_count
-                                                return retObj;
-                                            });
-                                            datas.comment = forumList;
-                                        }
-                                    });
-                                }
-                                setTimeout(() => resolve(forum), 50)
-                            });
-                            temparray.then(data => {
-                                done1(null, data)
-                            })
-                        } else {
-                            done1(null, forum)
-                        }
+                        data.forEach(function (d) {
+                            forum_id.push(d.forum_id);
+                            forum_tag_id.push(d.tag_id);
+                        });
+                        done(null, forum_id)
                     }
                 });
+            } else {
+                done(null, null)
             }
-        ],
+        },
+        function (forum_id, done1) {
+            Forum.getMyForumList(user_id, search, forum_id, function (err, results) {
+                if (err) {
+                    return res.json({ 'status': 0, 'response': { 'data': [], 'msg': 'data not found' } });
+                } else {
+                    if (results.length > 0) {
+                        forum.push(results)
+                        let temparray = new Promise(async (resolve, reject) => {
+                            for (let datas of results) {
+                                await Forum.getLastComment(datas.forum_id, function (err, data) {
+                                    if (data.length > 0) {
+                                        var forumList = data.map(comment => {
+                                            let retObj = {};
+                                            retObj['created_at'] = helper.timeSince(comment.created_at)
+                                            retObj['forum_comment_count'] = comment.forum_comment_count
+                                            return retObj;
+                                        });
+                                        datas.comment = forumList;
+                                    }
+                                });
+                            }
+                            setTimeout(() => resolve(forum), 50)
+                        });
+                        temparray.then(data => {
+                            done1(null, data)
+                        })
+                    } else {
+                        done1(null, forum)
+                    }
+                }
+            });
+        }
+    ],
         function (error, finalData) {
             if (error) {
                 return res.json({ 'status': 0, 'response': { 'data': [], 'msg': error } });
             } else {
                 return res.json({ 'status': 1, 'response': { 'data': finalData[0], 'forum_id': forum_tag_id, 'msg': 'data found' } });
             }
-        });    
+        });
 });
 
 router.post('/unfollowUser', passport.authenticate('jwt', { session: false }), [
@@ -1084,13 +1084,13 @@ router.post('/addComment', passport.authenticate('jwt', { session: false }), [
         var error = errors.array();
         res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
     } else {
-        
+
         var userDetail = req.user;
         var obj = {
             user_id: req.user.id,
             forum_id: req.body.forum_id,
             comment: req.body.comment,
-            parent_comment_id: (req.body.parent_comment_id) ? req.body.parent_comment_id: '',
+            parent_comment_id: (req.body.parent_comment_id) ? req.body.parent_comment_id : '',
             created_at: moment().format('YYYY-MM-DD')
         }
         Forum.addComment(obj, function (err, result) {
@@ -1099,9 +1099,9 @@ router.post('/addComment', passport.authenticate('jwt', { session: false }), [
             } else {
                 if (result) {
 
-                    if (req.body.subcomment && req.body.subcomment == 'subcomment'){
-                        
-                        Forum.getforumCommentDataById(obj.parent_comment_id, function (err, mainresult) {                            
+                    if (req.body.subcomment && req.body.subcomment == 'subcomment') {
+
+                        Forum.getforumCommentDataById(obj.parent_comment_id, function (err, mainresult) {
                             var user_obj = {
                                 comment: mainresult[0].subcomment,
                                 created_on: moment(mainresult[0].c_date).format('MMMM Do, YYYY'),
@@ -1117,7 +1117,7 @@ router.post('/addComment', passport.authenticate('jwt', { session: false }), [
                             }
                             return res.json({ 'status': 1, 'response': { 'data': user_obj, 'msg': 'Data found' } });
                         });
-                    }else{
+                    } else {
 
                         if (req.body.parent_comment_id) {
                             Forum.getForumReplyComment(obj.parent_comment_id, function (err, data) {
@@ -1141,7 +1141,7 @@ router.post('/addComment', passport.authenticate('jwt', { session: false }), [
                             //     sublastname: '',
                             //     subrole: '',
                             // }
-                           
+
                         } else {
                             var user_obj = {
                                 comment: obj.comment,
@@ -1160,9 +1160,9 @@ router.post('/addComment', passport.authenticate('jwt', { session: false }), [
                         }
                     }
 
-                   
 
-                    
+
+
                 } else {
                     return res.json({ 'status': 0, 'response': { 'data': [], 'msg': 'Data not found' } });
                 }
@@ -1216,7 +1216,7 @@ router.post('/forumCommentLike', passport.authenticate('jwt', { session: false }
         Forum.forumCommentLike(obj, function (err, result) {
             if (err) {
                 return res.json({ 'status': 0, 'response': { 'msg': err } });
-            } else {    
+            } else {
                 if (result.length > 0) {
                     return res.json({ 'status': 1, 'response': { 'data': 'like', 'msg': 'Data found' } });
                 } else {
@@ -1230,3 +1230,4 @@ router.post('/forumCommentLike', passport.authenticate('jwt', { session: false }
 
 
 module.exports = router;
+

@@ -220,6 +220,11 @@ const _nav = [
     _children: [
       {
         _tag: "CSidebarNavItem",
+        name: "Researches Content",
+        to: "/add-content-form",
+      },
+      {
+        _tag: "CSidebarNavItem",
         name: "View Researches",
         to: "/researches-list",
       },
@@ -235,6 +240,24 @@ const _nav = [
       },
     ],
   },
+  // {
+  //   _tag: "CSidebarNavDropdown",
+  //   name: "Dynamic Pages",
+  //   route: "/dynamicPages",
+  //   icon: "cil-list",
+  //   _children: [
+  //     {
+  //       _tag: "CSidebarNavItem",
+  //       name: "Menu",
+  //       to: "/dynamicPages",
+  //     },
+  //     {
+  //       _tag: "CSidebarNavItem",
+  //       name: "Pages",
+  //       to: "/dynamicPages",
+  //     }
+  //   ],
+  // },
   {
     _tag: "CSidebarNavItem",
     name: "Tag",

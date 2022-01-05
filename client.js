@@ -37,7 +37,7 @@ var mediaRouter = require('./routes/media');
 var cmsRouter = require('./routes/cms');
 var forumheadingRouter = require('./routes/forumheading');
 var forumRouter = require('./routes/forum');
-
+var researchesRouter = require('./routes/researches');
 
 //app.use(express.static('uploads'));
 app.use(express.static('routes/uploads'));
@@ -55,6 +55,7 @@ app.use('/api/media', mediaRouter);
 app.use('/api/forumheading', forumheadingRouter);
 app.use('/api/forum', forumRouter);
 app.use('/api/cms', cmsRouter);
+app.use('/api/researches', researchesRouter);
 
 
 app.get('/', (req, res) => {

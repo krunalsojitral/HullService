@@ -207,6 +207,7 @@ router.post('/register', (req, res) => {
                                     first_name: req.body.first_name,
                                     last_name: req.body.last_name,
                                     email: req.body.email,
+                                    organization: (req.body.organization) ? req.body.organization :'',
                                     city: (req.body.city) ? req.body.city : '',
                                     lat: (req.body.latitude) ? req.body.latitude : '',
                                     long: (req.body.longitude) ? req.body.longitude : '',
@@ -437,10 +438,12 @@ router.post('/getAdminUserById', [
                     userList['last_name'] = result[0].last_name;
                     userList['email'] = result[0].email;
                     userList['city'] = result[0].city;
+                    userList['organization'] = result[0].organization;
                     userList['rinterestarea'] = result[0].rinterestarea;
                     userList['sectorname'] = result[0].sectorname;
                     userList['occupationname'] = result[0].occupationname;
                     userList['academicdisciplinename'] = result[0].academicdisciplinename;
+                    userList['level_of_education'] = result[0].level_of_education;                    
                     userList['pinterestarea'] = result[0].pinterestarea;
                     return res.json({ 'status': 1, 'response': { 'data': userList, 'msg': 'data found' } });
                 } else {

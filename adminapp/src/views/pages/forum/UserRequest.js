@@ -82,7 +82,7 @@ function UserRequest({
                         <tr><td>Thread title</td><td><strong>{selectedItem && selectedItem.question}</strong></td></tr>
                         <tr><td>Thread description</td><td>
                             <div className={selectedItem && selectedItem.description.length >380 ? "overflow-description": ""}>
-                                <strong>{selectedItem && selectedItem.description}</strong>
+                                {selectedItem && <strong dangerouslySetInnerHTML={{ __html: selectedItem.description }}></strong>}
                             </div>
                         </td></tr>                        
                     </tbody>

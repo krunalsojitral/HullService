@@ -223,8 +223,8 @@ export default function Video() {
                                                     <div className="video-card">
                                                         {data.purchase_type == 'paid' && 
                                                             <div className="video-img tooltip-video">  
-                                                                <iframe class="ytplayer" id="ytplayer" width="100%" height="195px" title="YouTube video player" src={`https://www.youtube.com/embed/${data.video_embeded_id}?rel=0&modestbranding=1&showinfo=0`} autoplay="false"></iframe>
-                                                                <span class="tooltip-title">Paid Video.</span>
+                                                            <iframe className="ytplayer" id="ytplayer" width="100%" height="195px" title="YouTube video player" src={`https://www.youtube.com/embed/${data.video_embeded_id}?rel=0&modestbranding=1&showinfo=0`} autoplay="false"></iframe>
+                                                            <span className="tooltip-title">Paid Video.</span>
                                                             </div>
                                                         }
 

@@ -119,7 +119,7 @@ export default function ForumSub() {
 
                             <div className="category-table">
                                 
-                                {!noresult && currentData.length > 0 && <div className="forum-table table-responsive">
+                                {!noresult && currentData.length > 0 && <div className="forum-table">
                                         <table className="table">
                                             <thead>
                                                 <tr>

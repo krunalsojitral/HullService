@@ -12,6 +12,7 @@ var asyn = require('async');
 var path = require('path');
 var fs = require('fs');
 var helper = require('../config/helper');
+const gm = require('gm');
 
 function loggerData(req) {
     if (env.DEBUG) {
@@ -102,6 +103,23 @@ router.get('/tagList', function (req, res) {
                 return retObj;
             });
             return res.json({ status: 1, 'response': { data: tagList } });
+        }
+    });
+});
+
+router.get('/menuList', function (req, res) {
+    loggerData(req);
+    Common.getMenuList(function (err, result) {
+        if (err) {
+            return res.json({ status: 0, 'response': { msg: err } });
+        } else {
+            var menuList = result.map(data => {
+                let retObj = {};
+                retObj['dynamic_menu_id'] = data.dynamic_menu_id;
+                retObj['menu_name'] = data.menu_name;
+                return retObj;
+            });
+            return res.json({ status: 1, 'response': { data: menuList } });
         }
     });
 });
@@ -478,8 +496,6 @@ router.get('/getPreview', function (req, res) {
             retObj['update_at'] = (result[0].update_at) ? moment(result[0].update_at).format('MM/YYYY') : '';
             retObj['course_purchase'] = 0;
             retObj['draft_status'] = result[0].draft_status;
-
-            
             return res.json({ status: 1, 'response': { data: retObj } });
         }
     });
@@ -487,8 +503,153 @@ router.get('/getPreview', function (req, res) {
 
 
 
+router.post('/addPageByadmin', function (req, res) {
+    var form = new formidable.IncomingForm();
+    form.parse(req, function (err, fields, files) {
+        if (err) return res.json({ status: 1, 'response': { msg: err } });
+        var validationErrors = false;
+        if (validationErrors == false) {
+
+            var json = fields.data;
+            let obj = JSON.parse(json);
+            let record = {
+                title: obj.title,
+                description: obj.description,
+                created_at: moment().format('YYYY-MM-DD'),
+                menu_id: obj.menu,
+                slug: obj.title.replace(/[^a-zA-Z ]/g, "")
+            };
+            asyn.waterfall([
+                function (done) {
+                    let overview = {};
+
+                    if (typeof files.image !== 'undefined') {
+                        let file_ext = files.image.name.split('.').pop();
+                        let filename = Date.now() + '-' + files.image.name.split(" ").join("");
+                        let tmp_path = files.image.path;
+                        if (file_ext == 'png' || file_ext == 'PNG' || file_ext == 'jpg' || file_ext == 'JPG' || file_ext == 'jpeg' || file_ext == 'JPEG') {
+
+                            fs.rename(tmp_path, path.join(__dirname, env.BLOG_PATH + filename), function (err) {
+                                gm(__dirname + env.BLOG_PATH + filename).gravity('Center').thumb(258, 195, __dirname + env.BLOG_PATH_THUMB + filename, 100, function (err, data) {
+                                    if (err) {
+                                        done("Image upload error", overview)
+                                    } else {
+                                        overview['image'] = filename;
+                                        done(err, overview)
+                                    }
+                                });
+                            });
+
+                        } else {
+                            return res.json({ status: 0, response: { msg: 'Only image with jpg, jpeg and png format are allowed', } });
+                        }
+                    } else {
+                        overview['image'] = '';
+                        done(err, overview);
+                    }
+                },
+                function (overview, done1) {
+                    if (overview.image != '') { record.image = overview.image; }
+                    Common.addPageByadmin(record, function (err, data) {
+                        if (err) {
+                            done1(err, overview)
+                        } else {
+                            done1(err, data);
+                        }
+                    });
+                }
+            ],
+            function (error, userList) {
+                if (error) {
+                    return res.json({ 'status': 0, 'response': { 'msg': error } });
+                } else {
+                    return res.json({ 'status': 1, 'response': { 'msg': 'Page added successfully.', data: userList } });
+                }
+            });
+        }
+    });
+});
+
+router.get('/dynamicPageList', function (req, res) {
+    loggerData(req);
+    Common.dynamicPageList(function (err, result) {
+        if (err) {
+            return res.json({ status: 0, 'response': { msg: err } });
+        } else {
+            var blogList = result.map(data => {
+                let retObj = {};
+                retObj['dynamic_page_id'] = data.dynamic_page_id;
+                retObj['title'] = data.title;
+                retObj['description'] = data.description;
+                retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
+                retObj['menu_id'] = data.menu_id;
+                retObj['status'] = data.status;
+                return retObj;
+            });
+            return res.json({ status: 1, 'response': { data: blogList } });
+        }
+    });
+});
+
+router.post('/getDynamicPageDataByMenu', [check('menu', 'menu is required').notEmpty()], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        let menu = req.body.menu;
+        asyn.waterfall([
+            function (done) {
+                Common.getDynamicPageDataByMenu(menu, function (err, result) {
+                    if (err) {
+                        done({ 'status': 0, 'response': { 'msg': 'Something went wrong.' } });
+                    } else {
+                        var imageLink;
+                        if (req.headers.host == env.ADMIN_LIVE_URL) {
+                            imageLink = env.ADMIN_LIVE_URL;
+                        } else {
+                            imageLink = env.ADMIN_LIVE_URL;
+                        }
+                        let page = {};
+                        page['dynamic_page_id'] = result[0].dynamic_page_id;
+                        page['menu_id'] = result[0].menu_id;
+                        page['title'] = result[0].title;
+                        page['created_at'] = moment(result[0].created_at).format('MMMM DD, YYYY');
+                        page['description'] = result[0].description;
+                        page['image'] = (result[0].image) ? imageLink + env.BLOG_VIEW_PATH + result[0].image : '';                        
+                        page['status'] = result[0].status;
+                        done(err, page)
+                    }
+                });
+            }
+        ],
+        function (error, page) {
+            if (error) {
+                return res.json({ 'status': 0, 'response': { 'msg': err } });
+            } else {
+                return res.json({ 'status': 1, 'response': { 'data': page, 'msg': 'data found' } });
+            }
+        });
+    }
+});
 
 
+router.get('/getDynamicMenu', function (req, res) {
+    loggerData(req);
+    Common.getDynamicMenu(function (err, result) {
+        if (err) {
+            return res.json({ status: 0, 'response': { msg: err } });
+        } else {
+            var menuList = result.map(data => {
+                let retObj = {};
+                retObj['dynamic_menu_id'] = data.dynamic_menu_id;
+                retObj['menu_name'] = data.menu_name;                
+                return retObj;
+            });
+            return res.json({ status: 1, 'response': { data: menuList } });
+        }
+    });
+});
 
 module.exports = router;
 

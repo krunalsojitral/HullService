@@ -152,7 +152,7 @@ const DemoTable = () => {
                     );
                   }}
                 >
-                    Deactive
+                    Inactive
                 </a>
               )}
               {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}
