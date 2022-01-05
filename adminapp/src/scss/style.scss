@@ -77,3 +77,29 @@
 .badge-primary {
     cursor: pointer;
 }
+.tooltip-box a {
+    display: block;
+    position: relative;
+}
+.tooltip-box a:hover .tooltip-title {
+    display: block;
+}
+.tooltip-box a .tooltip-title{
+    display: none;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: auto;
+    z-index: 1;
+    background: #060606;
+    font-size: 11px;
+    line-height: 15px;
+    padding: 5px 5px;
+    color: #FFF;
+    border-radius: 5px;
+    font-weight: 400;
+    right: 0;
+}
+.table{
+    margin-bottom:2rem !important;
+}

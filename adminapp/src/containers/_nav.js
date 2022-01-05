@@ -171,12 +171,7 @@ const _nav = [
     name: "Forums",
     route: "/forum",
     icon: "cil-list",
-    _children: [
-      // {
-      //   _tag: "CSidebarNavItem",
-      //   name: "Forum category",
-      //   to: "/category",
-      // },
+    _children: [      
       {
         _tag: "CSidebarNavItem",
         name: "Add Topics",
@@ -193,36 +188,13 @@ const _nav = [
         to: "/forum-request",
       },
     ],
-  },
-  {
-    _tag: "CSidebarNavDropdown",
-    name: "Home Page",
-    route: "/homecontenteditform",
-    icon: "cil-list",
-    _children: [
-      {
-        _tag: "CSidebarNavItem",
-        name: "Content",
-        to: "/homecontenteditform",
-      },
-      {
-        _tag: "CSidebarNavItem",
-        name: "Partners & Sponsors",
-        to: "/partner",
-      }
-    ],
-  },
+  }, 
   {
     _tag: "CSidebarNavDropdown",
     name: "Researches",
     route: "/researches",
     icon: "cil-list",
-    _children: [
-      {
-        _tag: "CSidebarNavItem",
-        name: "Researches Content",
-        to: "/add-content-form",
-      },
+    _children: [      
       {
         _tag: "CSidebarNavItem",
         name: "View Researches",
@@ -238,6 +210,40 @@ const _nav = [
         name: "View Future Participants",
         to: "/future-participants",
       },
+    ],
+  },
+
+  {
+    _tag: "CSidebarNavDropdown",
+    name: "Website’s content",
+    route: "/homecontenteditform",
+    icon: "cil-list",
+    _children: [
+      {
+        _tag: "CSidebarNavItem",
+        name: "Home Page Content",
+        to: "/homecontenteditform",
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "Become a member content",
+        to: "/homecontenteditform",
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "Participate in Research Content ",
+        to: "/add-content-form",
+      },      
+      {
+        _tag: "CSidebarNavItem",
+        name: "Sponsors and Partners",
+        to: "/partner",
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "Forums Content",
+        to: "/partner",
+      }      
     ],
   },
   // {

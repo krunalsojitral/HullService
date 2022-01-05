@@ -54,6 +54,8 @@ const AddContentForm = ({ match }) => {
             setValue("main_title", usersdata.main_title);
             setValue("sub_title", usersdata.sub_title);
             setValue("description", usersdata.description);            
+            setValue("future_participate_text", usersdata.future_participate_text);
+            setValue("participate_text", usersdata.participate_text);
             setSetectimage(usersdata.image);
             setContentEditor(usersdata.description);
           } else {
@@ -104,7 +106,7 @@ const AddContentForm = ({ match }) => {
                       rules={{ required: true }}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="main_title"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           required
@@ -129,7 +131,7 @@ const AddContentForm = ({ match }) => {
                       rules={{ required: true }}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="sub_title"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           required
@@ -183,7 +185,57 @@ const AddContentForm = ({ match }) => {
                     />
                   </CFormGroup>
                 </CCol>
-              </CRow>             
+              </CRow>       
+
+              <CRow>
+                <CCol xs="12">
+                  <CFormGroup>
+                    <CLabel htmlFor="title">Future Participate Checkbox Text <span className="label-validation">*</span></CLabel>
+                    <Controller
+                      name={"future_participate_text"}
+                      control={control}
+                      rules={{ required: true }}
+                      render={({ field: { onChange, value } }) => (
+                        <CInput
+                          type="text"
+                          onChange={onChange}
+                          value={value}
+                          required
+                          placeholder={`Enter your future participate checkbox text`}
+                        />
+                      )}
+                    ></Controller>
+                  </CFormGroup>
+                  {errors.future_participate_text && errors.future_participate_text.type === "required" && (
+                    <p style={{ color: "red", fontSize: "12px" }}>Future Participate Checkbox Text is required.</p>
+                  )}
+                </CCol>
+              </CRow>
+
+              <CRow>
+                <CCol xs="12">
+                  <CFormGroup>
+                    <CLabel htmlFor="title">Participate Checkbox Text <span className="label-validation">*</span></CLabel>
+                    <Controller
+                      name={"participate_text"}
+                      control={control}
+                      rules={{ required: true }}
+                      render={({ field: { onChange, value } }) => (
+                        <CInput
+                          type="text"
+                          onChange={onChange}
+                          value={value}
+                          required
+                          placeholder={`Enter your participate text`}
+                        />
+                      )}
+                    ></Controller>
+                  </CFormGroup>
+                  {errors.participate_text && errors.participate_text.type === "required" && (
+                    <p style={{ color: "red", fontSize: "12px" }}>Participate Checkbox Text is required.</p>
+                  )}
+                </CCol>
+              </CRow>
 
               <button type="submit" className="btn btn-outline-primary btn-sm btn-square"> Update </button>
 

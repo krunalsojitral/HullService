@@ -43,9 +43,6 @@ const ResearchesDemoTable = () => {
     }else{
       var message = 'Are you sure you want to inactivate the research and which gets removed from the front end ?'
     }
-
-    
-
     Swal.fire({
       //title: 'warning!',
       icon: 'warning',
@@ -76,12 +73,8 @@ const ResearchesDemoTable = () => {
             console.log(err);
             //Swal.fire('Oops...', err, 'error')
           });
-
       } 
     })
-
-
-    
   }
 
 
@@ -137,7 +130,7 @@ const ResearchesDemoTable = () => {
         // onColumnFilterChange={(val) => console.log('new column filter:', val)}
         scopedSlots = {{
           status: (item) => (
-            <td>
+            <td class="tooltip-box">
               {item.status === 1 ? (
                 <a
                   href
@@ -151,6 +144,7 @@ const ResearchesDemoTable = () => {
                   }}
                 >
                   Active{" "}
+                  <span class="tooltip-title">De-activating the forum will remove the research from the front end.</span>
                 </a>
               ) : (
                 <a
@@ -164,7 +158,8 @@ const ResearchesDemoTable = () => {
                     );
                   }}
                 >
-                  Inactive
+                    Inactive
+                    <span class="tooltip-title">Activating the forum will add the research back on the front end.</span>
                 </a>
               )}
               {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}
@@ -190,15 +185,27 @@ const ResearchesDemoTable = () => {
                     Show
                   </CButton> */}
 
+                  {/* <CButton
+                    color="primary"
+                    variant="outline"
+                    shape="square"
+                    size="sm"
+                    onClick={() => history.push(`/blogedit/${item.researches_id}`)}
+                    className="mr-1"
+                  > View
+                  </CButton> */}
+
                   <CButton
                     color="primary"
                     variant="outline"
                     shape="square"
                     size="sm"
-                    onClick={() => history.push(`/blogedit/${item.blog_id}`)}
+                    onClick={() => history.push(`/participate-list/${item.researches_id}`)}
                     className="mr-1"
-                  > View
+                  > View Participants
                   </CButton>
+
+                  
 
                 </td>
               )

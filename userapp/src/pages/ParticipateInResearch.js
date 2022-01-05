@@ -12,6 +12,8 @@ export default function ParticipateInResearch() {
     const [researchesDetail, setResearchesDetail] = React.useState({})
     const [researchesList, setResearchesList] = React.useState([]);
     const [futurePopup, setFuturePopup] = React.useState(false);
+
+    const [researchID, setResearchID] = React.useState('');
     
     React.useEffect(() => {
         axios.get(api_url + "/researches/getResearchesDataById", {})
@@ -34,7 +36,10 @@ export default function ParticipateInResearch() {
     }, []);
 
     const [Modal, open, close] = useModal('root', {});
-    const applybutton = (id) => { open(); }
+    const applybutton = (id) => { 
+        setResearchID(id);
+        open(); 
+    }
 
     const applyfuturebutton = (id) => {
          setFuturePopup(true);
@@ -95,7 +100,7 @@ export default function ParticipateInResearch() {
                             {researchesList.map((data, index) => (
                             <div class="studies-card" key={index}>
                                 <Modal>
-                                    <ApplyInResearchModel close={close} apply={data.researches_id}></ApplyInResearchModel>
+                                    <ApplyInResearchModel close={close} researchtitle={data.topic} apply={researchID}></ApplyInResearchModel>
                                 </Modal>
                                 
                                 <div class="row">
@@ -109,9 +114,9 @@ export default function ParticipateInResearch() {
                                         <div class="studies-box">
                                             <div class="studies-header">
                                                 <h3>{data.user_name}</h3>
-                                                <small>{data.user_role}</small>
+                                                <small>{data.name}</small>
                                             </div>
-                                            <button class="btn-apply" onClick={(e) => applybutton()}>Apply</button>
+                                                <button class="btn-apply" onClick={(e) => applybutton(data.researches_id)}>Participate</button>
                                         </div>
                                     </div>
                                 </div>

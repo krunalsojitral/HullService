@@ -45,12 +45,7 @@ export default function Header() {
     }, [])
 
     const handleOpenDirection = () => {
-        if (userData) {
-            history.push('/');
-        }
-        else {
-            history.push('/');
-        }
+        history.push('/');
     }
  
 

@@ -8,7 +8,6 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import DemoTable from './DemoTable'
-import { useHistory } from 'react-router-dom'
 import { CSVLink, CSVDownload } from "react-csv";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -35,7 +34,7 @@ const Researchers = () => {
     })
   }
 
-  const history = useHistory()
+  
   return (
     <CRow>
       <CCol sm="12">

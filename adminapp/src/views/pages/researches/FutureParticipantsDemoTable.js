@@ -45,9 +45,7 @@ const FutureParticipantsDemoTable = () => {
       //text: "You will not be able to recover this resume!",
       confirmButtonText: `Publish`,
     }).then((results) => {
-
       if (results.isConfirmed) { 
-
         var obj = {
           blog_id: item.blog_id,
           draft_status: 0,
@@ -66,13 +64,7 @@ const FutureParticipantsDemoTable = () => {
             //Swal.fire('Oops...', err, 'error')
           });
       }
-
-    });  
-        
-
-
-    
-
+    });
   }
 
 
@@ -90,7 +82,7 @@ const FutureParticipantsDemoTable = () => {
   }
 
   const getNewListWrap = () => {
-    getNewList(setItems);
+      getNewList(setItems);
   };
 
   const getBadge = (status)=>{
@@ -180,7 +172,6 @@ const FutureParticipantsDemoTable = () => {
                   >
                     Show
                   </CButton> */}
-
                     <CButton
                       color="primary"
                       variant="outline"
@@ -216,8 +207,7 @@ const FutureParticipantsDemoTable = () => {
           }}
         />
       </CCardBody>
-    </div>
-    
+    </div>    
   )
 }
 

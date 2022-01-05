@@ -167,7 +167,7 @@ const DemoTable = ({ moduleConfigUrls }) => {
         // onColumnFilterChange={(val) => console.log('new column filter:', val)}
         scopedSlots = {{
           status: (item) => (
-            <td>
+            <td className="tooltip-box">
               {item.status === 1 ? (
                 <a
                   href
@@ -181,6 +181,7 @@ const DemoTable = ({ moduleConfigUrls }) => {
                   }}
                 >
                   Active
+                  <span class="tooltip-title">De-activating the forum will remove the forum from the front end.</span>
                 </a>
               ) : (
                 <a
@@ -194,7 +195,8 @@ const DemoTable = ({ moduleConfigUrls }) => {
                     );
                   }}
                 >
-                   Inactive
+                    Inactive
+                    <span class="tooltip-title">Activating the forum will add  the forum back on the front end.</span>
                 </a>
               )
               }
@@ -202,7 +204,7 @@ const DemoTable = ({ moduleConfigUrls }) => {
             </td>
           ),    
           retire: (item) => (
-            <td>
+            <td className="tooltip-box">
               {item.retire === 1 ? (                
                 <a
                   href
@@ -215,7 +217,8 @@ const DemoTable = ({ moduleConfigUrls }) => {
                     );
                   }}
                 >
-                  Retired
+                  <CBadge color={getBadge(2)}>Retired</CBadge>
+                  <span class="tooltip-title">Un-Retiring will un-lock the thread on the Front End and  new Comments can be added.</span>
                 </a>
               ) : (
                 <a
@@ -229,7 +232,8 @@ const DemoTable = ({ moduleConfigUrls }) => {
                     );
                   }}
                 >
-                  Retire
+                    <CBadge color={getBadge(0)}>Retire</CBadge>
+                    <span class="tooltip-title">Hitting Retire will lock the thread on the Front End and no Comments can be added.</span>
                 </a>
               )
               }

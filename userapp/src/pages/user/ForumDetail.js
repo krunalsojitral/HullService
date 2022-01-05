@@ -6,6 +6,7 @@ import Sidebar from './Sidebar';
 import axios from 'axios';
 import api_url from '../../components/Apiurl';
 import Swal from "sweetalert2";
+import TextareaAutosize from 'react-textarea-autosize';
 import $ from 'jquery';
 import { useModal } from 'react-hooks-use-modal';
 import { useForm, Controller } from "react-hook-form";
@@ -316,17 +317,28 @@ export default function ForumDetail() {
                                         <p> {forumCommentDetail.forum_description && forumCommentDetail.forum_description}  </p>
                                     </div>
                                 </div>
-
-
-                                <div className="row comment-box">
+                                {forumCommentDetail.retire == 1 && 
+                                    <div class="message-card">
+                                        <div class="message-icon">
+                                            <i class="fa fa-lock" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="message-text">
+                                            <h2>This thread has been locked by the moderators of r/communism101</h2>
+                                            <p>New comments cannot be posted</p>
+                                        </div>
+                                    </div>
+                                }
+                                {forumCommentDetail.retire == 1 && <br/>}
+                                {forumCommentDetail.retire == 0 &&  <div className="row comment-box">
                                     <form onSubmit={handleSubmit(onSubmit)}>
                                         <Controller
                                             name={"comment"}
                                             control={control}
                                             rules={{ required: true }}
                                             render={({ field: { onChange, value } }) => (
-                                                <textarea
-                                                    type="text"
+                                                <TextareaAutosize
+                                                    maxRows="4"
+                                                    type="text"                                                    
                                                     name="comment"
                                                     id="main-comment"
                                                     onChange={onChange}
@@ -339,11 +351,10 @@ export default function ForumDetail() {
                                         ></Controller>
                                         {errors.comment && errors.comment.type === "required" && (
                                             <small className="error">Comment is required.</small>
-                                        )}
-                                        {forumCommentDetail.retire == 1 && <button type="button" className="add-comment">Add Comment</button>}
-                                        {forumCommentDetail.retire == 0 && <button type="submit" className="add-comment">Add Comment</button>}
+                                        )}                                        
+                                        <button type="submit" className="add-comment">Add Comment</button>
                                     </form>
-                                </div>
+                                </div>}
 
                                 <div className="row">
                                     <div className="col-md-8">
@@ -363,23 +374,14 @@ export default function ForumDetail() {
                                         </div>}
                                     </div>
                                     <div className="col-md-4">
-                                        {forumCommentDetail.retire == 1 && <div className="follow">
-                                            {forumCommentDetail.follow == 0 && <span>
-                                                Follow
-                                            </span>}
-                                            {forumCommentDetail.follow == 1 && <span>
-                                                Following
-                                            </span>}
-                                        </div>}
-
-                                        {forumCommentDetail.retire == 0 && <div className="follow">
+                                        <div className="follow">
                                             {forumCommentDetail.follow == 0 && <span onClick={(e) => handleFollow()} >
                                                 Follow
                                             </span>}
                                             {forumCommentDetail.follow == 1 && <span onClick={(e) => handleUnFollow()} >
                                                 Following
                                             </span>}
-                                        </div>}
+                                        </div>
                                     </div>
                                 </div>
 

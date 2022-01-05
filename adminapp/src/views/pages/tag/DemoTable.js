@@ -36,9 +36,9 @@ const DemoTable = () => {
   const updateItemStatus = (item, status) => {
 
     if (status == 1) {
-      var message = 'Are you sure you want to activate a Tag ?'
+      var message = 'Are you sure you want to activate the tag ?'
     } else {
-      var message = 'Are you sure you want to deactivate a Tag ?'
+      var message = 'Are you sure you want to deactivate the tag ?'
     }
     Swal.fire({
       //title: 'warning!',
@@ -113,7 +113,7 @@ const DemoTable = () => {
         // onColumnFilterChange={(val) => console.log('new column filter:', val)}
         scopedSlots = {{
           status: (item) => (
-            <td>
+            <td class="tooltip-box">
               {item.status === 1 ? (
                 <a
                   href
@@ -127,6 +127,7 @@ const DemoTable = () => {
                   }}
                 >
                   Active{" "}
+                  <span class="tooltip-title">De-activating the forum will remove the tag from the front end.</span>
                 </a>
               ) : (
                 <a
@@ -140,7 +141,8 @@ const DemoTable = () => {
                     );
                   }}
                 >
-                   Inactive
+                    Inactive
+                    <span class="tooltip-title">Activating the forum will add the tag back on the front end.</span>
                 </a>
               )}
               {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}

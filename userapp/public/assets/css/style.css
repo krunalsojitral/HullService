@@ -2402,14 +2402,6 @@ min-height: 258px;
     margin: 17px 0 15px 0;
 }
 
-.article-modal .modal-body {
-    /* margin-bottom: 30px; */
-}
-
-.article-modal .modal-body .form-group {
-    /* margin-bottom: 30px; */
-}
-
 .article-modal .modal-body .form-control {
     font-style: normal;
     font-weight: normal;
@@ -3326,17 +3318,13 @@ min-height: 258px;
     margin-bottom: 0;
 }
 
-
-
-
-
 .category-table h2~p {
     font-weight: normal;
     font-size: 14px;
     line-height: 120%;
     text-align: left;
     letter-spacing: 0.005em;
-    color: #7F7F7F;
+    color: #000;
 }
 
 .category-table h2~a {
@@ -4105,9 +4093,6 @@ color: #276e80 !important;
     width: 93%;
     margin-left: 37px;
 }
-
-.reply-list .reply-card {}
-
 .reply-list .reply-card {
         padding: 7px 15px;
     background: #f1f1f1;
@@ -4134,12 +4119,13 @@ color: #276e80 !important;
 
 .reply-list .reply-card span {
     font-weight: 600;
-    font-weight: 300;
+    font-weight: normal;
     font-size: 15px;
     color: rgb(88 88 88 / 75%);
     line-height: 20px;
     text-align: left;
     margin:0;
+    cursor: pointer;
 }
 
 .reply-list .reply-card  p {
@@ -4428,7 +4414,6 @@ color: #276e80 !important;
     border: none;
     font-size: 18px;
 }
-
 .research-popup .child-btn{
     background: linear-gradient(135deg, #036E80 30.73%, #5EA5C7 100%) !important;
     border-radius: 25px;
@@ -4441,4 +4426,147 @@ color: #276e80 !important;
     margin-bottom: 40px;
     font-size: 16px !important;
 }
-   
+.message-card {
+    border: solid 3px #FEBD2B;
+    color: #000;
+    padding: 19px;
+    border-radius: 5px;
+    border-left: solid 10px #FEBD2B;
+    background: #fff;
+}
+.message-card .message-icon {
+    width: 50px;
+    height: 50px;
+    float: left;
+    margin-right: 15px;
+}
+.message-card .message-text {
+    overflow: hidden;
+}
+.message-card .message-text h2 {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
+    text-align: left;
+    letter-spacing: 0.005em;
+    color: #000000;
+    margin-bottom: 0;
+    display: block;
+    margin-top: 5px;
+}
+
+.message-card .message-text p {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    letter-spacing: 0.005em;
+    color: #11142D;
+    text-align: left;
+    margin: 4px 0 0;
+}
+.message-card .message-icon i {
+    font-size: 38px;
+    text-align: center;
+    display: block;
+    line-height: 50px;
+    color: #FEBD2B;
+}
+
+.participate-modal .modal-body {
+    position: relative;
+    padding: 15px;
+    text-align: center;
+}
+
+.participate-modal .modal-body img {
+    width: 110px;
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+}
+
+.participate-modal .modal-body h3 {
+    font-size: 22px;
+    line-height: 31px;
+    text-align: center;
+    font-weight: 200;
+    color: #036E80;
+    margin: 15px ​0 12px 0;
+}
+
+.participate-modal .modal-body p {
+    font-size: 17px;
+    max-width: 380px;
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+    line-height: 25px;
+    text-align: center;
+    margin-bottom: 25px;
+    font-weight: normal;
+    color: #A0A0A0;
+    margin-top: 12px;
+}
+
+.participate-modal .modal-body a.thm-btn {
+    background: linear-gradient(135deg, #036E80 30.73%, #5EA5C7 100%);
+    border-radius: 25px;
+    font-weight: 800;
+    font-size: 18.5px;
+    line-height: 44px;
+    height: 44px;
+    text-align: center;
+    letter-spacing: 0.616667px;
+    color: #FFFFFF;
+    display: block;
+    max-width: 221px;
+    width: 100%;
+    margin: 10px auto;
+}
+
+.participate-modal .modal-body a {
+    font-size: 18px;
+    line-height: 21px;
+    color: #036E80;
+    font-weight: normal;
+}
+
+.participate-modal .modal-body .submit-btn {
+    font-size: 18px;
+    line-height: 21px;
+    color: #036E80;
+    font-weight: normal;
+    border: none;
+    background: none;
+    margin-top: 4px;
+}
+
+.participate-modal .modal-body a:last-of-type:not(.thm-btn) {
+    margin: 17px 0 15px 0;
+}
+.participate-modal .modal-body .form-group{
+    text-align: left;
+}
+.participate-modal .modal-body .form-control {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 18px;
+    color: #000;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    box-shadow: unset;
+    border-radius: 0;
+    padding-left: 0;
+}
+
+.participate-modal .modal-body input[type="checkbox"]{
+        display: inline-block;
+    text-align: left;
+}
+
+.participate-modal .modal-body span{
+    display: inline;
+}

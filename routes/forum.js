@@ -267,8 +267,6 @@ router.post('/changeforumRetireStatus', [
     }
 });
 
-
-
 router.post('/addforumByadmin', [
     check('title', 'Topic is required').notEmpty(),
     check('heading', 'Heading is required').notEmpty(),

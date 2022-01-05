@@ -37,9 +37,9 @@ const DemoTable = () => {
   const updateItemStatus = (item, status) => {
 
     if (status == 1) {
-      var message = 'Are you sure you want to activate Academic discipline ?'
+      var message = 'Are you sure you want to activate an academic discipline ?'
     } else {
-      var message = 'Are you sure you want to deactivate Academic discipline ?'
+      var message = 'Are you sure you want to deactivate an academic discipline ?'
     }
     
     Swal.fire({
@@ -115,7 +115,7 @@ const DemoTable = () => {
         // onColumnFilterChange={(val) => console.log('new column filter:', val)}
         scopedSlots = {{
           status: (item) => (
-            <td>
+            <td class="tooltip-box">
               {item.status === 1 ? (
                 <a
                   href
@@ -129,6 +129,7 @@ const DemoTable = () => {
                   }}
                 >
                   Active{" "}
+                  <span class="tooltip-title">De-activating the forum will remove the academic discipline from the front end.</span>
                 </a>
               ) : (
                 <a
@@ -143,6 +144,7 @@ const DemoTable = () => {
                   }}
                 >
                     Inactive
+                    <span class="tooltip-title">Activating the forum will add the academic discipline back on the front end.</span>
                 </a>
               )}
               {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}

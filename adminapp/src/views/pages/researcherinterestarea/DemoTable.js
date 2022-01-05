@@ -114,7 +114,7 @@ const DemoTable = () => {
         // onColumnFilterChange={(val) => console.log('new column filter:', val)}
         scopedSlots = {{
           status: (item) => (
-            <td>
+            <td class="tooltip-box">
               {item.status === 1 ? (
                 <a
                   href
@@ -128,6 +128,7 @@ const DemoTable = () => {
                   }}
                 >
                   Active{" "}
+                  <span class="tooltip-title">De-activating the forum will remove the interest area from the front end.</span>
                 </a>
               ) : (
                 <a
@@ -142,6 +143,7 @@ const DemoTable = () => {
                   }}
                 >
                     Inactive
+                    <span class="tooltip-title">Activating the forum will add the interest area back on the front end.</span>
                 </a>
               )}
               {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}

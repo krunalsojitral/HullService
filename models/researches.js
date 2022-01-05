@@ -107,7 +107,39 @@ function Researches() {
 
     this.getFutureParticipateResearchesList = function (callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM researches inner join users on users.id = researches.created_by inner join user_role on user_role.role_id = users.role where researches.status = $1 order by researches_id DESC',[1], function (err, result) {
+            con.query('SELECT * FROM researches inner join users on users.id = researches.created_by inner join user_role on user_role.role_id = users.role left join academic_discipline on academic_discipline.academic_discipline_id = users.academic_discipline where researches.status = $1 order by researches_id DESC',[1], function (err, result) {
+                con.release();
+                if (err) {
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    }
+
+    this.addParticipate = function (record, callback) {
+        connection.acquire(function (err, con) {
+            const sql = 'INSERT INTO researches_participate(name,dob,email,created_at,researches_id) VALUES($1,$2,$3,$4,$5) RETURNING *'
+            const values = [record.name, record.dob, record.email, record.created_at, record.researches_id]
+            con.query(sql, values, function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
+    
+    this.participateList = function (id, callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM researches_participate where researches_id = $1 order by researches_participate_id DESC', [id], function (err, result) {
                 con.release();
                 if (err) {
                     callback(err, null);

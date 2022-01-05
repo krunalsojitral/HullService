@@ -23,8 +23,6 @@ function loggerData(req) {
         //  console.log(moment().format('YYYY-MM-DD h:m:s A') + ": " + URL);
     }
 }
-
-
 // researches list
 //passport.authenticate('jwt', { session: false }), 
 router.get('/researchesList', function (req, res) {
@@ -79,7 +77,7 @@ router.get('/getResearchesDataById', (req, res, next) => {
     if (!errors.isEmpty()) {
         var error = errors.array();
         res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
-    } else {        
+    } else {
         asyn.waterfall([
             function (done) {
                 Researches.getResearchesDataById(function (err, result) {
@@ -95,25 +93,26 @@ router.get('/getResearchesDataById', (req, res, next) => {
                         let researches = {};
                         researches['sub_title'] = result[0].sub_title;
                         researches['main_title'] = result[0].main_title;
-                        researches['description'] = result[0].description;
-                        researches['created_at'] = moment(result[0].created_at).format('MMMM DD, YYYY');
-                        researches['image'] = (result[0].image) ? imageLink + env.RESEARCHES_VIEW_PATH + result[0].image : '';
-                        researches['status'] = result[0].status;                        
+                        researches['description'] = result[0].description;                        
+                        researches['image'] = (result[0].image) ? imageLink + env.RESEARCHES_VIEW_PATH + result[0].image : '';                        
+                        researches['future_participate_text'] = result[0].future_participate_text;
+                        researches['participate_text'] = result[0].participate_text;
                         done(err, researches)
                     }
-                });           
+                });
             }
         ],
-        function (error, researches) {
-            if (error) {
-                return res.json({ 'status': 0, 'response': { 'msg': err } });
-            } else {
-                return res.json({ 'status': 1, 'response': { 'data': researches, 'msg': 'data found' } });
-            }
-        });
+            function (error, researches) {
+                if (error) {
+                    return res.json({ 'status': 0, 'response': { 'msg': err } });
+                } else {
+                    return res.json({ 'status': 1, 'response': { 'data': researches, 'msg': 'data found' } });
+                }
+            });
 
     }
 });
+
 
 router.post('/updateResearchesByadmin', function (req, res) {
     var form = new formidable.IncomingForm();
@@ -124,12 +123,14 @@ router.post('/updateResearchesByadmin', function (req, res) {
             var json = fields.data;
             let obj = JSON.parse(json);            
 
-            let update_value = [obj.main_title, obj.sub_title, obj.description, moment().format('YYYY-MM-DD')]
+            let update_value = [obj.main_title, obj.sub_title, obj.description, obj.participate_text, obj.future_participate_text,  moment().format('YYYY-MM-DD')]
 
             let record = {
                 main_title: obj.main_title,
                 sub_title: obj.sub_title,
                 description: obj.description,
+                participate_text: obj.participate_text,
+                future_participate_text: obj.future_participate_text,
                 created_at: moment().format('YYYY-MM-DD')
             };
             let researches_content_id = 1;
@@ -199,6 +200,7 @@ router.get('/getFutureParticipateResearchesList', function (req, res) {
                 retObj['user_role'] = data.role;
                 retObj['start_date'] = moment(data.start_date).format('YYYY-MM-DD');
                 retObj['status'] = data.status;
+                retObj['name'] = data.name;
                 return retObj;
             });
             return res.json({ status: 1, 'response': { data: researchList } });
@@ -206,5 +208,86 @@ router.get('/getFutureParticipateResearchesList', function (req, res) {
     });
 });
 
+router.post('/addParticipate', [
+    check('name', 'Name is required').notEmpty(),
+    check('email', 'Email is required').notEmpty(),
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        let record = {
+            name: req.body.name,
+            email: req.body.email,
+            dob: (req.body.dob) ? moment(req.body.dob).format('YYYY-MM-DD') : '',
+            created_at: moment().format('YYYY-MM-DD'),
+            researches_id: req.body.researches_id
+        };        
+        Researches.addParticipate(record, function (err, data) {
+            if (err) {
+                return res.json({ 'status': 0, 'response': { 'msg': error } });
+            } else {
+                return res.json({ 'status': 1, 'response': { 'msg': 'Participate added successfully.', data: data } });
+            }
+        });
+    }
+});
+
+router.post('/participateList', [
+    check('researches_id', 'Researches_id is required').notEmpty(),
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else { 
+        loggerData(req);
+        var researches_id = req.body.researches_id; 
+        Researches.participateList(researches_id, function (err, result) {
+            if (err) {
+                return res.json({ status: 0, 'response': { msg: err } });
+            } else {
+                var participateList = result.map(data => {
+                    let retObj = {};
+                    retObj['researches_id'] = data.researches_id;
+                    retObj['name'] = data.name;
+                    retObj['email'] = data.email;
+                    retObj['dob'] = moment(data.dob).format('YYYY-MM-DD');
+                    retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
+                    return retObj;
+                });
+                return res.json({ status: 1, 'response': { data: participateList } });
+            }
+        });
+    }    
+});
+
+router.post('/csvParticipateList', [
+    check('researches_id', 'Researches_id is required').notEmpty(),
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        loggerData(req);
+        var researches_id = req.body.researches_id;
+        Researches.participateList(researches_id, function (err, result) {
+            if (err) {
+                return res.json({ status: 0, 'response': { msg: err } });
+            } else {
+                var participateList = result.map(data => {
+                    let retObj = {};
+                    retObj['Name'] = data.name;
+                    retObj['Email'] = data.email;
+                    retObj['DOB'] = moment(data.dob).format('YYYY-MM-DD');
+                    return retObj;
+                });
+                return res.json({ status: 1, 'response': { data: participateList } });
+            }
+        });
+    }
+});
 
 module.exports = router;
