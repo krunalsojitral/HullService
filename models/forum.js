@@ -683,6 +683,128 @@ function forum() {
         });
     }
 
+    // this.getForumReplyComment = function (id, callback) {
+    //     connection.acquire(function (err, con) {
+    //         var obj = {
+    //             reply_list: [],
+    //             like_comment_count: 0,
+    //             unlike_comment_count: 0
+    //         }
+    //         asyn.waterfall([
+    //             function (done) {                      
+                    
+    //                 var sql = 'SELECT ur.role,u.first_name,u.last_name,c.comment,c.created_at,c.forum_comment_id as reply_comment_id FROM forum_comment as c inner join users as u on u.id = c.user_id inner join user_role as ur on ur.role_id = u.role where c.parent_comment_id = $1 order by c.forum_comment_id DESC';
+    //                 con.query(sql, [id], function (err, result) {
+    //                     var response = [];                        
+    //                     Promise.all(result.rows.map(function (item) {
+    //                         var temparray = new Promise(function (resolve, reject) {
+    //                             var sql = 'SELECT ur.role,u.first_name,u.last_name,c.comment,c.created_at,c.forum_comment_id as reply_comment_id FROM forum_comment as c inner join users as u on u.id = c.user_id inner join user_role as ur on ur.role_id = u.role where c.parent_comment_id = $1 order by c.forum_comment_id DESC';
+    //                             con.query(sql, [item.reply_comment_id], function (err, results) {
+
+    //                                 console.log(results.rows);
+    //                                 if (results && results.rows.length > 0) {
+    //                                     item.reply = results.rows.map(data => {
+    //                                             let retObj = {};
+    //                                             retObj['comment'] = data.comment;
+    //                                             retObj['created_at'] = moment(data.created_at).format('MMMM Do, YYYY');
+    //                                             retObj['first_name'] = data.first_name;
+    //                                             retObj['last_name'] = data.last_name;
+    //                                             retObj['role'] = data.role;
+    //                                             retObj['reply_comment_id'] = data.reply_comment_id;
+    //                                             return retObj;
+    //                                         })
+    //                                 }                                    
+    //                                 setTimeout(() => resolve(item), 50)
+    //                             });                               
+
+    //                         });
+    //                         return temparray.then(result => {
+    //                             response.push(result);
+    //                             var commentList = response.map(data => {
+    //                                 let retObj = {};
+    //                                 retObj['comment'] = data.comment;
+    //                                 retObj['created_at'] = data.created_at;
+    //                                 retObj['first_name'] = data.first_name;
+    //                                 retObj['forum_comment_id'] = data.forum_comment_id;
+    //                                 retObj['reply_comment_id'] = data.reply_comment_id;                                    
+    //                                 retObj['last_name'] = data.last_name;                                    
+    //                                 retObj['created_at'] = moment(data.created_at).format('MMMM Do, YYYY');
+    //                                 retObj['parent_comment_id'] = data.parent_comment_id;
+    //                                 retObj['comment_like_id'] = (data.action_type == 'like') ? data.comment_like_id : '';
+    //                                 retObj['comment_dislike_id'] = (data.action_type == 'unlike') ? data.comment_like_id : '';
+    //                                 retObj['reply'] = (data.reply && data.reply.length > 0) ? data.reply : [];                                    
+    //                                 retObj['role'] = data.role;
+    //                                 return retObj;
+    //                             }).sort(function (a, b) {
+    //                                 return a.forum_comment_id - b.forum_comment_id;
+    //                             });                                
+    //                             obj.reply_list = commentList.reverse();
+    //                         })
+    //                     })).then(function () {
+    //                         done(null, obj);
+    //                     })
+    //                 });
+
+                    
+
+
+    //                 // var sql = 'SELECT rc.comment as rcom, rc.created_at as subdate, ur.role,u.first_name,u.last_name,c.comment,c.created_at,c.forum_comment_id as reply_comment_id FROM forum_comment as c left join forum_comment as rc on c.forum_comment_id = rc.parent_comment_id inner join users as u on u.id = c.user_id inner join user_role as ur on ur.role_id = u.role where c.parent_comment_id = $1 order by c.forum_comment_id DESC';
+    //                 // con.query(sql, [id], function (err, result) {
+    //                 //     if (err) {
+    //                 //         console.log(err);
+    //                 //         done(err, null);
+    //                 //     } else {
+
+    //                 //         obj.reply_list = result.rows.map(data => {
+    //                 //             let retObj = {};
+    //                 //             retObj['comment'] = data.comment;
+    //                 //             retObj['created_at'] = moment(data.created_at).format('MMMM Do, YYYY');
+    //                 //             retObj['first_name'] = data.first_name;
+    //                 //             retObj['last_name'] = data.last_name;
+    //                 //             retObj['role'] = data.role;
+    //                 //             retObj['reply_comment_id'] = data.reply_comment_id;
+
+    //                 //             // retObj['subrole'] = data.subrole;
+    //                 //             // retObj['subfirstname'] = data.subfirstname;
+    //                 //             // retObj['sublastname'] = data.sublastname;
+    //                 //             // retObj['subcom'] = data.subcom;
+    //                 //             // retObj['subdate'] = moment(data.subdate).format('MMMM Do, YYYY');
+    //                 //             return retObj;
+    //                 //         })
+    //                 //         done(err, obj);
+    //                 //     }
+    //                 // });
+    //             },
+    //             function (obj, done2) {
+    //                 var sql = 'SELECT count(*) as cnt FROM forum_comment as c inner join comment_like as cl on cl.comment_id = c.forum_comment_id and action_type = $1 where c.forum_comment_id = $2';
+    //                 con.query(sql, ["like", id], function (err, result) {
+    //                     if (err) {
+    //                         done2(err, null);
+    //                     } else {
+    //                         obj.like_comment_count = result.rows
+    //                         done2(err, obj);
+    //                     }
+    //                 });
+    //             },
+    //             function (obj, done2) {
+    //                 var sql = 'SELECT count(*) as cnt FROM forum_comment as c inner join comment_like as cl on cl.comment_id = c.forum_comment_id and action_type = $1 where c.forum_comment_id = $2';
+    //                 con.query(sql, ["unlike", id], function (err, result) {
+    //                     con.release();
+    //                     if (err) {
+    //                         done2(err, null);
+    //                     } else {
+    //                         obj.unlike_comment_count = result.rows
+    //                         done2(err, obj);
+    //                     }
+    //                 });
+    //             }
+    //         ],
+    //             function (err, obj) {
+    //                 callback(null, obj);
+    //             });
+    //     });
+    // }
+
     
 
     this.followUser = function (record, callback) {
@@ -899,8 +1021,41 @@ function forum() {
         });
     };
 
+    this.getforumContent = function (callback) {
+        connection.acquire(function (err, con) {
+            con.query("SELECT * FROM forum_content WHERE forum_content_id = 1", function (err, result) {
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    }
+
+
+    this.updateForumContent = function (record, callback) {
+        connection.acquire(function (err, con) { 
+            con.query("UPDATE forum_content SET description =$1 WHERE forum_content_id = 1", [record.description], function (err, result) {
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, record);
+                }
+            });
+        });
+        
+
+    }
 
     
 
+   
 }
 module.exports = new forum();

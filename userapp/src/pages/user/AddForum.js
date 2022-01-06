@@ -223,6 +223,7 @@ export default function AddForum() {
                                                                 <textarea
                                                                     rows="6" cols="50"
                                                                     type="text"
+                                                                    maxlength="5000"
                                                                     onChange={onChange}
                                                                     value={value}
                                                                     className="form-control"

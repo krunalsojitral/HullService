@@ -27,26 +27,138 @@ function loggerData(req) {
 
 // article list
 //passport.authenticate('jwt', { session: false }), 
+
 router.get('/articleList', function (req, res) {
-    loggerData(req);
-    Article.getAllAdminArticle(function (err, result) {
-        if (err) {
-            return res.json({ status: 0, 'response': { msg: err } });
-        } else {
-            var articleList = result.map(data => {
-                let retObj = {};
-                retObj['article_id'] = data.article_id;
-                retObj['title'] = data.title;
-                retObj['description'] = data.description;
-                retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
-                retObj['role'] = data.role;
-                retObj['status'] = data.status;
-                return retObj;
+    asyn.waterfall([
+        function (done) {
+            Article.getAllAdminArticle(function (err, result) {
+                if (err) {
+                    return res.json({ status: 0, 'response': { msg: err } });
+                } else {
+                    if (result.length > 0) {
+                        var response = [];
+                        var final_response = [];
+                        Promise.all(result.map(function (item) {
+                            var temparray = new Promise(function (resolve, reject) {
+                                Article.getArticleRoleName(item.article_id, function (err, data) {
+                                    if (data && data.length > 0) {
+                                        item.role = data[0].string_agg
+                                    }
+                                    setTimeout(() => resolve(item), 50)
+                                });
+
+                            });
+                            return temparray.then(result => {
+                                response.push(result);
+                                var commentList = response.map(data => {
+                                    let retObj = {};
+                                    retObj['article_id'] = data.article_id;
+                                    retObj['title'] = data.title;
+                                    retObj['description'] = data.description;
+                                    retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
+                                    retObj['role'] = data.role;
+                                    retObj['status'] = data.status;
+                                    return retObj;
+                                }).sort(function (a, b) {
+                                    return a.article_id - b.article_id;
+                                });
+                                final_response = commentList.reverse();
+                            })
+                        })).then(function () {
+                            done(null, final_response);
+                        })
+                    } else {
+                        done(null, final_response);
+                    }
+                }
             });
-            return res.json({ status: 1, 'response': { data: articleList } });
+        }
+    ],
+    function (error, finalData) {
+        if (error) {
+            return res.json({ 'status': 0, 'response': { 'msg': error } });
+        } else {
+            return res.json({ 'status': 1, 'response': { 'data': finalData, 'msg': 'data found' } });
         }
     });
 });
+
+router.get('/draftarticleList', function (req, res) {
+    loggerData(req);
+    asyn.waterfall([
+        function (done) {
+            Article.draftarticleList(function (err, result) {
+                if (err) {
+                    return res.json({ status: 0, 'response': { msg: err } });
+                } else {
+                    if (result.length > 0) {
+                        var response = [];
+                        var final_response = [];
+                        Promise.all(result.map(function (item) {
+                            var temparray = new Promise(function (resolve, reject) {
+                                Article.getArticleRoleName(item.article_id, function (err, data) {
+                                    if (data && data.length > 0) {
+                                        item.role = data[0].string_agg
+                                    }
+                                    setTimeout(() => resolve(item), 50)
+                                });
+
+                            });
+                            return temparray.then(result => {
+                                response.push(result);
+                                var commentList = response.map(data => {
+                                    let retObj = {};
+                                    retObj['article_id'] = data.article_id;
+                                    retObj['title'] = data.title;
+                                    retObj['description'] = data.description;
+                                    retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
+                                    retObj['role'] = data.role;
+                                    retObj['status'] = data.status;
+                                    return retObj;
+                                }).sort(function (a, b) {
+                                    return a.article_id - b.article_id;
+                                });
+                                final_response = commentList.reverse();
+                            })
+                        })).then(function () {
+                            done(null, final_response);
+                        })
+                    } else {
+                        done(null, final_response);
+                    }
+                }
+            });
+        }
+    ],
+    function (error, finalData) {
+        if (error) {
+            return res.json({ 'status': 0, 'response': { 'msg': error } });
+        } else {
+            return res.json({ 'status': 1, 'response': { 'data': finalData, 'msg': 'data found' } });
+        }
+    });
+});
+
+// router.get('/articleList', function (req, res) {
+//     loggerData(req);
+//     Article.getAllAdminArticle(function (err, result) {
+//         if (err) {
+//             return res.json({ status: 0, 'response': { msg: err } });
+//         } else {
+//             var articleList = result.map(data => {
+//                 let retObj = {};
+//                 retObj['article_id'] = data.article_id;
+//                 retObj['title'] = data.title;
+//                 retObj['description'] = data.description;
+//                 retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
+//                 retObj['role'] = data.role;
+//                 retObj['status'] = data.status;
+//                 return retObj;
+//             });
+//             return res.json({ status: 1, 'response': { data: articleList } });
+//         }
+//     });
+// });
 
 //get article data - adminside
 router.post('/getarticleDataById', [check('article_id', 'article is required').notEmpty()], (req, res, next) => {
@@ -498,7 +610,6 @@ router.post('/articleBookmark', passport.authenticate('jwt', { session: false })
 });
 
 
-
 router.post('/purchase_article', [
     check('user_id', 'User is required').notEmpty(),
     check('order_id', 'Order id is required').notEmpty(),
@@ -556,26 +667,7 @@ router.post('/changeDraftArticleStatus', [
     }
 });
 
-router.get('/draftarticleList', function (req, res) {
-    loggerData(req);
-    Article.draftarticleList(function (err, result) {
-        if (err) {
-            return res.json({ status: 0, 'response': { msg: err } });
-        } else {
-            var articleList = result.map(data => {
-                let retObj = {};
-                retObj['article_id'] = data.article_id;
-                retObj['title'] = data.title;
-                retObj['description'] = data.description;
-                retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
-                retObj['role'] = data.role;
-                retObj['status'] = data.status;
-                return retObj;
-            });
-            return res.json({ status: 1, 'response': { data: articleList } });
-        }
-    });
-});
+
 
 router.post('/getBookMarkArticle', passport.authenticate('jwt', { session: false }), function (req, res) {
 

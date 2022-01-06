@@ -198,9 +198,19 @@ export default function Sidebar() {
                         <InlineButton name={"Professional Development"} />
                     </NavLink>
                 </li>
+
+
+                {users && users.role == 3 && <li>
+                    <NavLink activeClassName="active" to="/my-studies" isActive={() => ['/my-studies', '/add-research'].includes(pathname)}>
+                        <svg className="icon icon-tag">
+                            <use xlinkHref="#icon-book"></use>
+                        </svg>
+                        <InlineButton name={"My Studies"} />
+                    </NavLink>
+                </li>}
                            
                              
-                {users && users.role == 3 &&                
+                {/* {users && users.role == 3 &&                
                     <li className="dropdown sub-menu">
                         <a activeClassName="active" id="sub-click" onClick={(e) => submenu()}  href="javascript:;" >
                         <svg className="icon icon-tag">
@@ -210,13 +220,13 @@ export default function Sidebar() {
                         </a>
                         <ul>
                             <li>
-                                <NavLink activeClassName="active" to="/my-studies"><span>My Studies</span></NavLink></li>
+                            <NavLink activeClassName="active" isActive={() => ['/My Studies', '/add-research' ].includes(pathname)} to="/my-studies"><span>My Studies</span></NavLink></li>
                             <li>
-                                <NavLink activeClassName="active" to="/participants-in-my-studies"><span>Participants</span></NavLink>
+                            <NavLink activeClassName="active" isActive={() => ['/participants-in-my-studies'].includes(pathname)} to="/participants-in-my-studies"><span>Participants</span></NavLink>
                             </li>
                         </ul>
                     </li>
-                }               
+                }                */}
 
             </ul>
 

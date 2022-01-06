@@ -8,7 +8,7 @@ function Researches() {
 
     this.getAllAdminResearches = function (callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM researches order by researches_id desc', function (err, result) {
+            con.query('SELECT * FROM researches where user_status = $1 order by researches_id desc',[1], function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }
@@ -92,7 +92,7 @@ function Researches() {
         });
     }
 
-    this.getResearchesDataById = function (callback) {
+    this.getResearchesContentDataById = function (callback) {
         connection.acquire(function (err, con) {
             con.query('SELECT * FROM researches_content where researches_content_id = $1', [1], function (err, result) {
                 con.release();
@@ -105,9 +105,22 @@ function Researches() {
         });
     }
 
+    this.getResearchesDataById = function (id, callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM researches as c left join users on users.id = c.created_by where c.researches_id = $1', [id], function (err, result) {
+                con.release();
+                if (err) {
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    }
+
     this.getFutureParticipateResearchesList = function (callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM researches inner join users on users.id = researches.created_by inner join user_role on user_role.role_id = users.role left join academic_discipline on academic_discipline.academic_discipline_id = users.academic_discipline where researches.status = $1 order by researches_id DESC',[1], function (err, result) {
+            con.query('SELECT * FROM researches inner join users on users.id = researches.created_by inner join user_role on user_role.role_id = users.role left join academic_discipline on academic_discipline.academic_discipline_id = users.academic_discipline where researches.status = $1 and researches.user_status = $2 order by researches_id DESC',[1,1], function (err, result) {
                 con.release();
                 if (err) {
                     callback(err, null);
@@ -120,19 +133,34 @@ function Researches() {
 
     this.addParticipate = function (record, callback) {
         connection.acquire(function (err, con) {
-            const sql = 'INSERT INTO researches_participate(name,dob,email,created_at,researches_id) VALUES($1,$2,$3,$4,$5) RETURNING *'
-            const values = [record.name, record.dob, record.email, record.created_at, record.researches_id]
-            con.query(sql, values, function (err, result) {
-                con.release()
+            con.query('SELECT * FROM researches_participate WHERE researches_id = $1 and LOWER(email) = $2', [record.researches_id, record.email.toLowerCase()], function (err, results) {
                 if (err) {
                     if (env.DEBUG) {
                         console.log(err);
                     }
                     callback(err, null);
                 } else {
-                    callback(null, result.rows);
+                    if (results.rows.length === 0) {
+                        const sql = 'INSERT INTO researches_participate(name,dob,email,created_at,researches_id) VALUES($1,$2,$3,$4,$5) RETURNING *'
+                        const values = [record.name, record.dob, record.email, record.created_at, record.researches_id]
+                        con.query(sql, values, function (err, result) {
+                            con.release()
+                            if (err) {
+                                if (env.DEBUG) {
+                                    console.log(err);
+                                }
+                                callback(err, null);
+                            } else {
+                                callback(null, result.rows);
+                            }
+                        });
+                    } else {
+                        con.release();
+                        var msg = 'You are already participate in research.';
+                        callback(msg, null);
+                    }
                 }
-            });
+            });            
         });
     };
 
@@ -149,6 +177,87 @@ function Researches() {
             });
         });
     }
+
+    this.getMyResearchesList = function (id, callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM researches where created_by = $1 and user_status = $2 order by researches_id DESC', [id, 1], function (err, result) {
+                con.release();
+                if (err) {
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    }
+
+    
+    this.addResearchByuser = function (record, callback) {
+        connection.acquire(function (err, con) {
+            const sql = 'INSERT INTO researches(topic,start_date,created_by,status,created_at,description,user_status) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING *'
+            const values = [record.topic, record.start_date, record.created_by, record.status, record.created_at, record.description,0]
+            con.query(sql, values, function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
+    this.researchRequestList = function (callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT *, researches.created_at as c_at,researches.user_status as researches_status, researches.start_date as start_date FROM researches left join users on users.id = researches.created_by where (researches.user_status = $1 or researches.user_status = $2) order by researches_id desc', [0, 2], function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
+    this.updateComment = function (record, callback) {
+        connection.acquire(function (err, con) {
+            const values = [record.status, record.user_status, record.admin_comment, record.id]
+            console.log(values);
+            con.query("UPDATE researches SET status =$1, user_status =$2,comment =$3 WHERE researches_id = $4", values, function (err, result) {
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, result);
+                }
+            });
+        });
+    };
+
+
+    this.changeResearchesStatus = function (record, researches_id, callback) {
+        connection.acquire(function (err, con) {
+            con.query("UPDATE researches SET status =$1 WHERE researches_id = $2", [record.status, researches_id], function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, record);
+                }
+            });
+        });
+    }
+
    
 }
 module.exports = new Researches();

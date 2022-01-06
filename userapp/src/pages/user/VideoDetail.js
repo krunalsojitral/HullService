@@ -114,7 +114,7 @@ export default function VideoDetail() {
                                 <div className="col-md-8">
                                     <div className="video-text">
                                         <h3>{videoDetail.title}</h3>
-                                        <p className="video-text" dangerouslySetInnerHTML={{ __html: videoDetail.description }}></p>
+                                        <p dangerouslySetInnerHTML={{ __html: videoDetail.description }}></p>
                                         {/* <a href="#" className="see-more">See more</a> */}
                                     </div>
                                 </div>

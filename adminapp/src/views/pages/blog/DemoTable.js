@@ -139,7 +139,7 @@ const DemoTable = () => {
                   }}
                 >
                   Active{" "}
-                  <span class="tooltip-title">De-activating the forum will remove the blog from the front end.</span>
+                  <span class="tooltip-title">De-activating the blog will remove the blog from the front end.</span>
                 </a>
               ) : (
                 <a
@@ -154,18 +154,18 @@ const DemoTable = () => {
                   }}
                 >
                     Inactive
-                    <span class="tooltip-title">Activating the forum will add the blog back on the front end.</span>
+                    <span class="tooltip-title">Activating the blog will add the blog back on the front end.</span>
                 </a>
               )}
               {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}
             </td>
           ),
-          'role':
-            (item) => (
-              <td>
-                {getBadge(item.role)}
-              </td>
-            ),
+          // 'role':
+          //   (item) => (
+          //     <td>
+          //       {getBadge(item.role)}
+          //     </td>
+          //   ),
           'show_details':
             item => {
               return (

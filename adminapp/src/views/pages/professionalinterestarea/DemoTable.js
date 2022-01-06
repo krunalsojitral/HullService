@@ -129,7 +129,7 @@ const DemoTable = () => {
                   }}
                 >
                   Active{" "}
-                  <span class="tooltip-title">De-activating the forum will remove the interest area from the front end.</span>
+                  <span class="tooltip-title">De-activating the interest area will remove the interest area from the front end.</span>
                 </a>
               ) : (
                 <a
@@ -144,7 +144,7 @@ const DemoTable = () => {
                   }}
                 >
                     Inactive
-                    <span class="tooltip-title">Activating the forum will add the interest area back on the front end.</span>
+                    <span class="tooltip-title">Activating the interest area will add the interest area back on the front end.</span>
                 </a>
               )}
               {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}

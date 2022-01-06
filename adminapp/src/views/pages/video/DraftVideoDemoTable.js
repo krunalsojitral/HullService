@@ -157,12 +157,12 @@ const DraftVideoDemoTable = () => {
                 {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}
               </td>
             ),
-            'role':
-              (item) => (
-                <td>
-                  {getBadge(item.role)}
-                </td>
-              ),
+            // 'role':
+            //   (item) => (
+            //     <td>
+            //       {getBadge(item.role)}
+            //     </td>
+            //   ),
             'show_details':
               item => {
                 return (

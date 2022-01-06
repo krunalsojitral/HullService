@@ -314,7 +314,7 @@ export default function ForumDetail() {
                                 <div className="cat-title">
                                     <div>
                                         <h2 className="mb-0"> {forumCommentDetail.forum_title && forumCommentDetail.forum_title} </h2>
-                                        <p> {forumCommentDetail.forum_description && forumCommentDetail.forum_description}  </p>
+                                        {forumCommentDetail.forum_description && <p dangerouslySetInnerHTML={{ __html: forumCommentDetail.forum_description }}></p>}
                                     </div>
                                 </div>
                                 {forumCommentDetail.retire == 1 && 
@@ -323,7 +323,7 @@ export default function ForumDetail() {
                                             <i class="fa fa-lock" aria-hidden="true"></i>
                                         </div>
                                         <div class="message-text">
-                                            <h2>This thread has been locked by the moderators of r/communism101</h2>
+                                            <h2>This thread has been locked by the moderators of hull services</h2>
                                             <p>New comments cannot be posted</p>
                                         </div>
                                     </div>
@@ -397,17 +397,6 @@ export default function ForumDetail() {
                                             </div>
                                         </div>
                                         <div className="forum-text">
-                                            <p dangerouslySetInnerHTML={{ __html: data.comment }}></p>
-
-                                            <div className="reply-list">
-                                                {data.reply && data.reply.slice(0, visible).map((replydata, index) => (
-                                                    <div className="reply-card">
-                                                        <h3>{replydata.first_name} {replydata.last_name} <span>({replydata.role})</span></h3>
-                                                        <small>{replydata.created_on}</small>
-                                                        <p dangerouslySetInnerHTML={{ __html: replydata.comment }}></p>
-                                                    </div>
-                                                ))}
-                                            </div>
 
                                             {forumCommentDetail.retire == 1 && <div className="forum-comments">
                                                 <p className={(data.comment_like_id && data.comment_like_id > 0) ? 'comment-liked' : ''}>
@@ -432,6 +421,18 @@ export default function ForumDetail() {
                                                 </p>
                                                 <p onClick={(e) => reply(data.forum_comment_id)}><img src="images/reply.png" alt="reply" /> <span>Reply</span></p>
                                             </div>}
+
+                                            <p dangerouslySetInnerHTML={{ __html: data.comment }}></p>
+
+                                            {/* <div className="reply-list">
+                                                {data.reply && data.reply.slice(0, visible).map((replydata, index) => (
+                                                    <div className="reply-card">
+                                                        <h3>{replydata.first_name} {replydata.last_name} <span>({replydata.role})</span></h3>
+                                                        <small>{replydata.created_on}</small>
+                                                        <p dangerouslySetInnerHTML={{ __html: replydata.comment }}></p>
+                                                    </div>
+                                                ))}
+                                            </div>                                            */}
 
                                             <div className="reply-box" id={data.forum_comment_id} style={{ display: 'none' }}>
                                                 <textarea maxlength="1500" className="form-control" type="text" id={"input" + data.forum_comment_id} name="comment" />

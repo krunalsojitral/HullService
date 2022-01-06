@@ -34,6 +34,22 @@ function User() {
     };
 
     
+    this.getBlogRoleName = function (id, callback) {
+        connection.acquire(function (err, con) {
+            var sql = "select string_agg(user_role.role, ',') from (select blog_id, unnest(string_to_array(role, ',')):: INT as name_id from blog) s1 join user_role on s1.name_id = user_role.role_id where s1.blog_id = $1";
+            con.query(sql, [id], function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    }
+
+    
     this.addBlogByadmin = function (record, callback) {
         connection.acquire(function (err, con) {
             const sql = 'INSERT INTO blog(title,description,created_at,role,purchase_type,image,cost,draft_status,status) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *'
@@ -244,6 +260,11 @@ function User() {
         connection.acquire(function (err, con) {
             var sql = 'SELECT * FROM bookmark_blog where user_id=$1 and blog_id = $2';
             var values = [user_id, blog_id];
+
+            var obj = {
+                type:'',
+                result:[]
+            }
             con.query(sql, values, function (err, result) {
                 if (result && result.rows && result.rows.length > 0) {
                     const sql = 'DELETE FROM bookmark_blog where user_id=$1 and blog_id = $2'
@@ -255,7 +276,9 @@ function User() {
                             }
                             callback(err, null);
                         } else {
-                            callback(null, result.rows[0]);
+                            obj.type = 'remove';
+                            obj.result = result.rows[0];
+                            callback(null, obj);
                         }
                     });
                 } else {
@@ -268,7 +291,9 @@ function User() {
                             }
                             callback(err, null);
                         } else {
-                            callback(null, result.rows[0]);
+                            obj.type = 'add';
+                            obj.result = result.rows[0];
+                            callback(null, obj);
                         }
                     });
                 }

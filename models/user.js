@@ -197,7 +197,7 @@ function User() {
 
     this.getAdminUserById = function (id, callback) {
         connection.acquire(function (err, con) {
-            var sql = 'SELECT *, sector.name as sectorname, occupation.name as occupationname, academic_discipline.name as academicdisciplinename, professional_interest_area.name as pinterestarea,researcher_interest_area.name as rinterestarea FROM users inner join user_role on users.role = user_role.role_id left join sector on users.sector = sector.sector_id left join occupation on users.occupation = occupation.occupation_id left join academic_discipline on users.academic_discipline = academic_discipline.academic_discipline_id left join user_professional_interest_area on users.id = user_professional_interest_area.user_id left join professional_interest_area on user_professional_interest_area.professional_interest_area_id = professional_interest_area.professional_interest_area_id left join user_researcher_interest_area on users.id = user_researcher_interest_area.user_id left join researcher_interest_area on user_researcher_interest_area.researcher_interest_area_id = researcher_interest_area.researcher_interest_area_id where users.id = $1';
+            var sql = 'SELECT *, sector.name as sectorname, occupation.name as occupationname, academic_discipline.name as academicdisciplinename FROM users inner join user_role on users.role = user_role.role_id left join sector on users.sector = sector.sector_id left join occupation on users.occupation = occupation.occupation_id left join academic_discipline on users.academic_discipline = academic_discipline.academic_discipline_id where users.id = $1';
             con.query(sql, [id], function (err, result) {
                 con.release();
                 if (result.rows.length === 0) {
@@ -206,6 +206,26 @@ function User() {
                 }else{
                     callback(null, result.rows);
                 }                
+            });
+        });
+    }
+
+    this.getUserInterestAreaById = function (id,role, callback) {
+        connection.acquire(function (err, con) {            
+            var sql = '';            
+            if (role == 2){
+                sql = 'SELECT name FROM user_professional_interest_area inner join professional_interest_area on user_professional_interest_area.professional_interest_area_id = professional_interest_area.professional_interest_area_id where user_professional_interest_area.user_id = $1';
+            }else{
+                sql = 'SELECT name FROM user_researcher_interest_area inner join researcher_interest_area on user_researcher_interest_area.researcher_interest_area_id = researcher_interest_area.researcher_interest_area_id where user_researcher_interest_area.user_id = $1';
+            }
+            con.query(sql, [id], function (err, result) {
+                con.release();
+                if (result.rows.length === 0) {
+                    msg = 'User does not exist.';
+                    callback(msg, null);
+                } else {
+                    callback(null, result.rows);
+                }
             });
         });
     }

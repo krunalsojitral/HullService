@@ -190,7 +190,7 @@ const AddContentForm = ({ match }) => {
               <CRow>
                 <CCol xs="12">
                   <CFormGroup>
-                    <CLabel htmlFor="title">Future Participate Checkbox Text <span className="label-validation">*</span></CLabel>
+                    <CLabel htmlFor="title">Future Research Consent Checkbox Text <span className="label-validation">*</span></CLabel>
                     <Controller
                       name={"future_participate_text"}
                       control={control}
@@ -201,13 +201,13 @@ const AddContentForm = ({ match }) => {
                           onChange={onChange}
                           value={value}
                           required
-                          placeholder={`Enter your future participate checkbox text`}
+                          placeholder={`Enter your future research consent checkbox text`}
                         />
                       )}
                     ></Controller>
                   </CFormGroup>
                   {errors.future_participate_text && errors.future_participate_text.type === "required" && (
-                    <p style={{ color: "red", fontSize: "12px" }}>Future Participate Checkbox Text is required.</p>
+                    <p style={{ color: "red", fontSize: "12px" }}>Text is required.</p>
                   )}
                 </CCol>
               </CRow>
@@ -215,7 +215,7 @@ const AddContentForm = ({ match }) => {
               <CRow>
                 <CCol xs="12">
                   <CFormGroup>
-                    <CLabel htmlFor="title">Participate Checkbox Text <span className="label-validation">*</span></CLabel>
+                    <CLabel htmlFor="title">Current Research Consent Checkbox Text <span className="label-validation">*</span></CLabel>
                     <Controller
                       name={"participate_text"}
                       control={control}
@@ -226,7 +226,7 @@ const AddContentForm = ({ match }) => {
                           onChange={onChange}
                           value={value}
                           required
-                          placeholder={`Enter your participate text`}
+                          placeholder={`Enter your current research consent checkbox text`}
                         />
                       )}
                     ></Controller>

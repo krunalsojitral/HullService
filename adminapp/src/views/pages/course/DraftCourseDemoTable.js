@@ -25,7 +25,7 @@ const DraftCourseDemoTable = () => {
 
   const fields = [
     { key: 'title', _style: { width: '20%'} },
-    { key: 'role', _style: { width: '20%' } },
+    // { key: 'role', _style: { width: '20%' } },
     { key: 'created_at', _style: { width: '20%' } },
     { key: 'status', _style: { width: '20%'} },
     {
@@ -164,12 +164,12 @@ const DraftCourseDemoTable = () => {
                 {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}
               </td>
             ),
-            'role':
-              (item) => (
-                <td>
-                  {getBadge(item.role)}
-                </td>
-              ),
+            // 'role':
+            //   (item) => (
+            //     <td>
+            //       {getBadge(item.role)}
+            //     </td>
+            //   ),
             'show_details':
               item => {
                 return (

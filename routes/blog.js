@@ -27,23 +27,77 @@ function loggerData(req) {
 
 // blog list
 //passport.authenticate('jwt', { session: false }), 
+// router.get('/blogList', function (req, res) {
+//     loggerData(req);
+//     Blog.getAllAdminBlog(function (err, result) {
+//         if (err) {
+//             return res.json({ status: 0, 'response': { msg: err } });
+//         } else {
+//             var blogList = result.map(data => {
+//                 let retObj = {};
+//                 retObj['blog_id'] = data.blog_id;
+//                 retObj['title'] = data.title;
+//                 retObj['description'] = data.description;
+//                 retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
+//                 retObj['role'] = data.role;
+//                 retObj['status'] = data.status;
+//                 return retObj;
+//             });
+//             return res.json({ status: 1, 'response': { data: blogList } });
+//         }
+//     });
+// });
+
 router.get('/blogList', function (req, res) {
-    loggerData(req);
-    Blog.getAllAdminBlog(function (err, result) {
-        if (err) {
-            return res.json({ status: 0, 'response': { msg: err } });
-        } else {
-            var blogList = result.map(data => {
-                let retObj = {};
-                retObj['blog_id'] = data.blog_id;
-                retObj['title'] = data.title;
-                retObj['description'] = data.description;
-                retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
-                retObj['role'] = data.role;
-                retObj['status'] = data.status;
-                return retObj;
+    asyn.waterfall([
+        function (done) {
+            Blog.getAllAdminBlog(function (err, result) {
+                if (err) {
+                    return res.json({ status: 0, 'response': { msg: err } });
+                } else {
+                    if (result.length > 0) {
+                        var response = [];
+                        var final_response = [];
+                        Promise.all(result.map(function (item) {
+                            var temparray = new Promise(function (resolve, reject) {
+                                Blog.getBlogRoleName(item.blog_id, function (err, data) {
+                                    if (data && data.length > 0) {
+                                        item.role = data[0].string_agg
+                                    }
+                                    setTimeout(() => resolve(item), 50)
+                                });
+                            });
+                            return temparray.then(result => {
+                                response.push(result);
+                                var commentList = response.map(data => {
+                                    let retObj = {};
+                                    retObj['blog_id'] = data.blog_id;
+                                    retObj['title'] = data.title;
+                                    retObj['description'] = data.description;
+                                    retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
+                                    retObj['role'] = data.role;
+                                    retObj['status'] = data.status;
+                                    return retObj;
+                                }).sort(function (a, b) {
+                                    return a.blog_id - b.blog_id;
+                                });
+                                final_response = commentList.reverse();
+                            })
+                        })).then(function () {
+                            done(null, final_response);
+                        })
+                    } else {
+                        done(null, final_response);
+                    }
+                }
             });
-            return res.json({ status: 1, 'response': { data: blogList } });
+        }
+    ],
+    function (error, finalData) {
+        if (error) {
+            return res.json({ 'status': 0, 'response': { 'msg': error } });
+        } else {
+            return res.json({ 'status': 1, 'response': { 'data': finalData, 'msg': 'data found' } });
         }
     });
 });
@@ -579,21 +633,55 @@ router.post('/getBookMarkBlog', passport.authenticate('jwt', { session: false })
 
 router.get('/draftblogList', function (req, res) {
     loggerData(req);
-    Blog.draftblogList(function (err, result) {
-        if (err) {
-            return res.json({ status: 0, 'response': { msg: err } });
-        } else {
-            var blogList = result.map(data => {
-                let retObj = {};
-                retObj['blog_id'] = data.blog_id;
-                retObj['title'] = data.title;
-                retObj['description'] = data.description;
-                retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
-                retObj['role'] = data.role;
-                retObj['status'] = data.status;
-                return retObj;
+    asyn.waterfall([
+        function (done) {
+            Blog.draftblogList(function (err, result) {
+                if (err) {
+                    return res.json({ status: 0, 'response': { msg: err } });
+                } else {
+                    if (result.length > 0) {
+                        var response = [];
+                        var final_response = [];
+                        Promise.all(result.map(function (item) {
+                            var temparray = new Promise(function (resolve, reject) {
+                                Blog.getBlogRoleName(item.blog_id, function (err, data) {
+                                    if (data && data.length > 0) {
+                                        item.role = data[0].string_agg
+                                    }
+                                    setTimeout(() => resolve(item), 50)
+                                });
+                            });
+                            return temparray.then(result => {
+                                response.push(result);
+                                var commentList = response.map(data => {
+                                    let retObj = {};
+                                    retObj['blog_id'] = data.blog_id;
+                                    retObj['title'] = data.title;
+                                    retObj['description'] = data.description;
+                                    retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
+                                    retObj['role'] = data.role;
+                                    retObj['status'] = data.status;
+                                    return retObj;
+                                }).sort(function (a, b) {
+                                    return a.blog_id - b.blog_id;
+                                });
+                                final_response = commentList.reverse();
+                            })
+                        })).then(function () {
+                            done(null, final_response);
+                        })
+                    } else {
+                        done(null, final_response);
+                    }
+                }
             });
-            return res.json({ status: 1, 'response': { data: blogList } });
+        }
+    ],
+    function (error, finalData) {
+        if (error) {
+            return res.json({ 'status': 0, 'response': { 'msg': error } });
+        } else {
+            return res.json({ 'status': 1, 'response': { 'data': finalData, 'msg': 'data found' } });
         }
     });
 });

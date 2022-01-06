@@ -1968,6 +1968,9 @@ min-height: 258px;
 .video-box img {
     width: 100%;
 }
+.editor-text {
+    margin-bottom: 50px;
+}
 
 .video-text {
     margin-bottom: 50px;
@@ -3411,7 +3414,7 @@ min-height: 258px;
 
 .forum-text {
     background: #fff;
-    padding: 10px 10px 0px 10px;
+    padding: 3px 10px 0px 0px;
 }
 
 .forum-text p {
@@ -3872,6 +3875,7 @@ div#swal2-html-container{
     display: flex;	
     justify-content: flex-start;	
     gap: 30px;	
+    margin-bottom: 8px;
 }	
 .forum-comments p {	
     display: flex;	

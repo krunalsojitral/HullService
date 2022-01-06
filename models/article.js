@@ -23,17 +23,37 @@ function User() {
 
     this.getAllAdminArticle = function (callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM article where draft_status IS NULL order by article_id desc', function (err, result) {
+            var sql = 'SELECT * FROM article where draft_status IS NULL order by article_id desc';
+            con.query(sql, function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }
                     callback(err, null);
                 } else {
+
+                    console.log(result.rows);
                     callback(null, result.rows);
                 }
             });
         });
     }
+
+    this.getArticleRoleName = function (id, callback) {
+        connection.acquire(function (err, con) {
+            var sql = "select string_agg(user_role.role, ',') from (select article_id, unnest(string_to_array(role, ',')):: INT as name_id from article) s1 join user_role on s1.name_id = user_role.role_id where s1.article_id = $1";
+            con.query(sql,[id], function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {                    
+                    callback(null, result.rows);
+                }
+            });
+        });
+    }
+
+    
     
     this.addarticleByadmin = function (record, callback) {
         connection.acquire(function (err, con) {
@@ -243,6 +263,10 @@ function User() {
         connection.acquire(function (err, con) {
             var sql = 'SELECT * FROM bookmark_article where user_id=$1 and article_id = $2';
             var values = [user_id, article_id];
+            var obj = {
+                type: '',
+                result: []
+            }
             con.query(sql, values, function (err, result) { 
                 if (result && result.rows && result.rows.length > 0){
                     const sql = 'DELETE FROM bookmark_article where user_id=$1 and article_id = $2'
@@ -254,7 +278,9 @@ function User() {
                             }
                             callback(err, null);
                         } else {
-                            callback(null, result.rows[0]);
+                            obj.type = 'remove';
+                            obj.result = result.rows[0];
+                            callback(null, obj);
                         }
                     });
                 }else{
@@ -267,7 +293,9 @@ function User() {
                             }
                             callback(err, null);
                         } else {
-                            callback(null, result.rows[0]);
+                            obj.type = 'add';
+                            obj.result = result.rows[0];
+                            callback(null, obj);
                         }
                     });
                 }

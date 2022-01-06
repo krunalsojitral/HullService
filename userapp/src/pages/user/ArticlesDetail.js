@@ -150,7 +150,7 @@ export default function ArticlesDetail() {
                                     </div>
                                 </div>
                                 {articleDetail.image && <div className="video-image"><img src={articleDetail.image} alt="author" /></div>}
-                                <div className="video-text" dangerouslySetInnerHTML={{ __html: articleDetail.description }}></div>
+                                <div dangerouslySetInnerHTML={{ __html: articleDetail.description }}></div>
                             </div>
                         </div>
                         <div className="col-md-3 article-tags">

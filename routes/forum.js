@@ -1102,7 +1102,7 @@ router.post('/addComment', passport.authenticate('jwt', { session: false }), [
                         Forum.getforumCommentDataById(obj.parent_comment_id, function (err, mainresult) {                            
                             var user_obj = {
                                 comment: mainresult[0].subcomment,
-                                created_on: moment(mainresult[0].c_date).format('MMMM Do, YYYY'),
+                                created_at: moment(mainresult[0].c_date).format('MMMM Do, YYYY'),
                                 first_name: mainresult[0].first_name,
                                 last_name: mainresult[0].last_name,
                                 role: mainresult[0].role,
@@ -1157,10 +1157,6 @@ router.post('/addComment', passport.authenticate('jwt', { session: false }), [
                             return res.json({ 'status': 1, 'response': { 'data': user_obj, 'msg': 'Data found' } });
                         }
                     }
-
-                   
-
-                    
                 } else {
                     return res.json({ 'status': 0, 'response': { 'data': [], 'msg': 'Data not found' } });
                 }
@@ -1226,5 +1222,27 @@ router.post('/forumCommentLike', passport.authenticate('jwt', { session: false }
 });
 
 
+router.get('/getforumContent', function (req, res) {
+    Forum.getforumContent(function (err, result) {
+        if (err) {
+            return res.json({ 'status': 0, 'response': { 'data': {}, 'msg': err} });
+        } else {
+            return res.json({ 'status': 1, 'response': { 'data': result, 'msg': 'Data found' } });
+        }
+    });
+});
+
+router.post('/updateForumContent', function (req, res) {
+    var obj = {
+        description: req.body.description
+    }
+    Forum.updateForumContent(obj, function (err, data) {
+        if (err) {
+            return res.json({ 'status': 0, 'response': { 'msg': err } });
+        } else {
+            return res.json({ 'status': 1, 'response': { 'msg': 'Forum content updated successfully.', data: data } });
+        }
+    });
+});
 
 module.exports = router;

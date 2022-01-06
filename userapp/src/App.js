@@ -53,6 +53,7 @@ const MyArticle = lazy(() => import("./pages/user/MyArticle"));
 const MyVideo = lazy(() => import("./pages/user/MyVideo"));
 const Preview = lazy(() => import("./pages/Preview"));
 const DynamicPage = lazy(() => import("./pages/DynamicPage"));
+const AddResearch = lazy(() => import("./pages/user/AddResearch"));
 
 
 function App() {
@@ -122,7 +123,7 @@ function App() {
           <Route path="/my-video" component={MyVideo} />
           <Route path="/preview-module" component={Preview} />
           <Route path="/dynamic-page" component={DynamicPage} />
-          
+          <Route path="/add-research" component={AddResearch} />
         </Switch>
         </Suspense>
       </UserContext.Provider>

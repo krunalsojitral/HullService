@@ -62,7 +62,7 @@ const ParticipateDemoTable = ({ match }) => {
     <div className="card">
       <CCardHeader className="custom-table-header">
         <div className="header-left">
-          <CIcon name="cil-grid" /> Participate
+          <CIcon name="cil-grid" /> Participants
             </div>
         <div className="header-right">
           <CSVLink data={csvData}>Download</CSVLink> &nbsp;

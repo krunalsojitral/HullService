@@ -144,7 +144,7 @@ const ResearchesDemoTable = () => {
                   }}
                 >
                   Active{" "}
-                  <span class="tooltip-title">De-activating the forum will remove the research from the front end.</span>
+                  <span class="tooltip-title">De-activating the research will remove the research from the front end.</span>
                 </a>
               ) : (
                 <a
@@ -159,7 +159,7 @@ const ResearchesDemoTable = () => {
                   }}
                 >
                     Inactive
-                    <span class="tooltip-title">Activating the forum will add the research back on the front end.</span>
+                    <span class="tooltip-title">Activating the research will add the research back on the front end.</span>
                 </a>
               )}
               {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}

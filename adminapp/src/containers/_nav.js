@@ -242,7 +242,7 @@ const _nav = [
       {
         _tag: "CSidebarNavItem",
         name: "Forums Content",
-        to: "/partner",
+        to: "/forum-content",
       }      
     ],
   },

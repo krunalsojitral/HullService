@@ -22,6 +22,7 @@ const DraftCourseDemoTable = React.lazy(() => import('./views/pages/course/Draft
 const Forum = React.lazy(() => import('./views/pages/forum/Forum'))
 const ForumView = React.lazy(() => import('./views/pages/forum/ForumView'))
 const ForumComment = React.lazy(() => import('./views/pages/forum/ForumComment'))
+const ForumContentForm = React.lazy(() => import('./views/pages/forum/ForumContentForm'))
 const ForumAddEditForm = React.lazy(() => import('./views/pages/forum/AddEditForm'))
 const Forumheading = React.lazy(() => import('./views/pages/forumheading/Forumheading'))
 const ForumRequestDemoTable = React.lazy(() => import('./views/pages/forum/ForumRequestDemoTable'))
@@ -51,6 +52,7 @@ const ResearchesDemoTable = React.lazy(() => import('./views/pages/researches/Re
 const ParticipateDemoTable = React.lazy(() => import('./views/pages/researches/ParticipateDemoTable'))
 const AddContentForm = React.lazy(() => import('./views/pages/researches/AddContentForm'))
 const ResearchRequestsDemoTable = React.lazy(() => import('./views/pages/researches/ResearchRequestsDemoTable'))
+
 
 const DynamicPages = React.lazy(() => import('./views/pages/dynamicpages/DynamicPages'))
 const DynamicPagesAddEditForm = React.lazy(() => import('./views/pages/dynamicpages/AddEditForm'))
@@ -88,6 +90,7 @@ const routes = [
   { path: '/forumheadingadd', name: 'Forum Heading Add', component: ForumheadingAddEditForm },
   { path: '/forumheadingedit/:id', name: 'Forum Heading Edit', component: ForumheadingAddEditForm },
   { path: '/forum', name: 'Forum', component: Forum },
+  { path: '/forum-content', name: 'Forum', component: ForumContentForm },  
   { path: '/forum-view/:id', name: 'Forum View', component: ForumView },
   { path: '/forum-request', name: 'Forum Request', component: ForumRequestDemoTable },
   { path: '/forumcomment/:id', name: 'Forum', component: ForumComment },
@@ -121,17 +124,12 @@ const routes = [
   { path: '/researcherinterestareaadd', name: 'Researcher Interest Area Add', component: ResearcherinterestareaAddEditForm },
   { path: '/researcherinterestareaedit/:id', name: 'Researcher Interest Area Edit', component: ResearcherinterestareaAddEditForm },
   { path: '/researches-list', name: 'Researches List', component: ResearchesDemoTable },
-
-  { path: '/participate-list/:id', name: 'Participate List', component: ParticipateDemoTable },
-  
+  { path: '/participate-list/:id', name: 'Participants List', component: ParticipateDemoTable },
   { path: '/add-content-form', name: 'Researches Content', component: AddContentForm },
   { path: '/research-requests', name: 'Researches Requests', component: ResearchRequestsDemoTable },
   { path: '/future-participants', name: 'Future Participants', component: FutureParticipantsDemoTable },
-
   { path: '/dynamicPages', name: 'Dynamic Pages', component: DynamicPages },
   { path: '/dynamicPagesadd', name: 'Dynamic Pages', component: DynamicPagesAddEditForm }
-  
-
 ]
 
 

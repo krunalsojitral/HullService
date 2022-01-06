@@ -56,10 +56,8 @@ export default function Blog() {
                 }
             }).catch((err) => {
                 console.log(err);
-                //Swal.fire('Oops...', err, 'error')
             })
         } else {
-
             axios.post(api_url + '/blog/getUnpaidBlogList', {}).then((result) => {
                 if (result.data.status) {
                     var blogdata = result.data.response.data;
@@ -74,9 +72,7 @@ export default function Blog() {
                 }
             }).catch((err) => {
                 console.log(err);
-                //Swal.fire('Oops...', err, 'error')
             })
-
         }
 
     }
@@ -91,6 +87,7 @@ export default function Blog() {
     }, [offset, data]);
 
     const bookmarkClick = (id) => {
+
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
 
@@ -99,7 +96,12 @@ export default function Blog() {
         };
         axios.post(api_url + '/blog/blogBookmark', { "blog_id": id }, config).then((result) => {
             if (result.data.status) {
-                var blogdata = result.data.response.data;               
+                var blogdata = result.data.response.data.type;
+                if (blogdata == 'remove') {
+                    Swal.fire("Success!", 'Blog removed from your dashboard', "success");
+                } else {
+                    Swal.fire("Success!", 'Blog added to your dashboard', "success");
+                }
                 getBlogDataWrap();
             } else {
                 Swal.fire('Oops...', result.data.response.msg, 'error')
@@ -116,9 +118,6 @@ export default function Blog() {
     return (
         <div>
             <Header />
-
-         
-
             <section className="inner-header">
                 <div className="container">
                     <div className="row">
@@ -138,7 +137,6 @@ export default function Blog() {
                         <div className="col-md-8 articlebox">
                             <div className="row">
                                 {!noresult && currentData.map((data, index) => (<div key={index} className="col-md-4">
-
                                     <div className="blog-box">
                                         <div className="blog-image">
                                             <Link to={{ pathname: "/blog-detail", search: "?id=" + data.blog_id }}>

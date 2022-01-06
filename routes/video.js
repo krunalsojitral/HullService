@@ -28,24 +28,60 @@ function loggerData(req) {
 //passport.authenticate('jwt', { session: false }), 
 router.get('/videoList', function (req, res) {
     loggerData(req);
-    Video.getAllAdminVideo(function (err, result) {
-        if (err) {
-            return res.json({ status: 0, 'response': { msg: err } });
-        } else {
-            var videoList = result.map(data => {
-                let retObj = {};
-                retObj['video_id'] = data.video_id;
-                retObj['video_embeded_id'] = data.video_embeded_id;
-                retObj['title'] = data.title;
-                retObj['description'] = data.description;
-                retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
-                retObj['role'] = data.role;
-                retObj['status'] = data.status;
-                return retObj;
+
+    asyn.waterfall([
+        function (done) {
+            Video.getAllAdminVideo(function (err, result) {
+                if (err) {
+                    return res.json({ status: 0, 'response': { msg: err } });
+                } else {
+                    if (result.length > 0) {
+                        var response = [];
+                        var final_response = [];
+                        Promise.all(result.map(function (item) {
+                            var temparray = new Promise(function (resolve, reject) {
+                                Video.getVideoRoleName(item.video_id, function (err, data) {
+                                    if (data && data.length > 0) {
+                                        item.role = data[0].string_agg
+                                    }
+                                    setTimeout(() => resolve(item), 50)
+                                });
+                            });
+                            return temparray.then(result => {
+                                response.push(result);
+                                var commentList = response.map(data => {
+                                    let retObj = {};
+                                    retObj['video_id'] = data.video_id;
+                                    retObj['video_embeded_id'] = data.video_embeded_id;
+                                    retObj['title'] = data.title;
+                                    retObj['description'] = data.description;
+                                    retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
+                                    retObj['role'] = data.role;
+                                    retObj['status'] = data.status;
+                                    return retObj;
+                                }).sort(function (a, b) {
+                                    return a.video_id - b.video_id;
+                                });
+                                final_response = commentList.reverse();
+                            })
+                        })).then(function () {
+                            done(null, final_response);
+                        })
+                    } else {
+                        done(null, final_response);
+                    }
+                }
             });
-            return res.json({ status: 1, 'response': { data: videoList } });
+        }
+    ],
+    function (error, finalData) {
+        if (error) {
+            return res.json({ 'status': 0, 'response': { 'msg': error } });
+        } else {
+            return res.json({ 'status': 1, 'response': { 'data': finalData, 'msg': 'data found' } });
         }
     });
+    
 });
 
 //get video data - adminside
@@ -571,21 +607,57 @@ router.post('/purchase_video', [
 
 router.get('/draftvideoList', function (req, res) {
     loggerData(req);
-    Video.draftvideoList(function (err, result) {
-        if (err) {
-            return res.json({ status: 0, 'response': { msg: err } });
-        } else {
-            var videoList = result.map(data => {
-                let retObj = {};
-                retObj['video_id'] = data.video_id;
-                retObj['title'] = data.title;
-                retObj['description'] = data.description;
-                retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
-                retObj['role'] = data.role;
-                retObj['status'] = data.status;
-                return retObj;
+
+    asyn.waterfall([
+        function (done) {
+            Video.draftvideoList(function (err, result) {
+                if (err) {
+                    return res.json({ status: 0, 'response': { msg: err } });
+                } else {
+                    if (result.length > 0) {
+                        var response = [];
+                        var final_response = [];
+                        Promise.all(result.map(function (item) {
+                            var temparray = new Promise(function (resolve, reject) {
+                                Video.getVideoRoleName(item.video_id, function (err, data) {
+                                    if (data && data.length > 0) {
+                                        item.role = data[0].string_agg
+                                    }
+                                    setTimeout(() => resolve(item), 50)
+                                });
+                            });
+                            return temparray.then(result => {
+                                response.push(result);
+                                var commentList = response.map(data => {
+                                    let retObj = {};
+                                    retObj['video_id'] = data.video_id;
+                                    retObj['video_embeded_id'] = data.video_embeded_id;
+                                    retObj['title'] = data.title;
+                                    retObj['description'] = data.description;
+                                    retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
+                                    retObj['role'] = data.role;
+                                    retObj['status'] = data.status;
+                                    return retObj;
+                                }).sort(function (a, b) {
+                                    return a.video_id - b.video_id;
+                                });
+                                final_response = commentList.reverse();
+                            })
+                        })).then(function () {
+                            done(null, final_response);
+                        })
+                    } else {
+                        done(null, final_response);
+                    }
+                }
             });
-            return res.json({ status: 1, 'response': { data: videoList } });
+        }
+    ],
+    function (error, finalData) {
+        if (error) {
+            return res.json({ 'status': 0, 'response': { 'msg': error } });
+        } else {
+            return res.json({ 'status': 1, 'response': { 'data': finalData, 'msg': 'data found' } });
         }
     });
 });

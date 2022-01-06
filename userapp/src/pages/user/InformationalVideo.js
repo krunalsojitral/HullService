@@ -108,6 +108,12 @@ export default function Video() {
         axios.post(api_url + '/video/videoBookmark', { "video_id": id }, config).then((result) => {
             if (result.data.status) {
                 //var blogdata = result.data.response.data;
+                var videodata = result.data.response.data.type;
+                if (videodata == 'remove') {
+                    Swal.fire("Success!", 'Video removed from your dashboard', "success");
+                } else {
+                    Swal.fire("Success!", 'Video added to your dashboard', "success");
+                }
                 getVideoDataWrap();
             } else {
                 Swal.fire('Oops...', result.data.response.msg, 'error')

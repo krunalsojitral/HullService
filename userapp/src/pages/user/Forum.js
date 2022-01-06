@@ -19,7 +19,7 @@ export default function Forum() {
     const [searchtext, setSearchtext] = React.useState('')
     const { handleSubmit, formState } = useForm();
     const [selectedForumTag, setSelectedForumTag] = useState([]);
-
+    const [forumRule, setForumRule] = React.useState('');
     const [noresult, setNoresult] = React.useState(false)
 
     const onChangeSearch = (e) => { setSearchtext(e.currentTarget.value); }
@@ -53,6 +53,20 @@ export default function Forum() {
                 // Swal.fire('Oops...', result.data.response.msg, 'error')
             }
         }).catch((err) => { console.log(err); })
+
+        axios.get(api_url + "/forum/getforumContent", {})
+            .then((result) => {
+                if (result.data.status) {
+                    var usersdata = result.data.response.data;
+                    if (usersdata.length > 0) {
+                        setForumRule(usersdata[0].description);
+                    }
+                } else {
+                    Swal.fire("Oops...", result.data.response.msg, "error");
+                }
+            })
+            .catch((err) => { console.log(err); });
+
     }, [])
 
     const search = () => {
@@ -115,6 +129,9 @@ export default function Forum() {
                                     </div>}
 
                             </div>
+
+                            {forumRule && <div><div dangerouslySetInnerHTML={{ __html: forumRule }}></div><br></br></div> }
+
 
                             {!noresult && <div className="video-tag">
                                 <h3>Sort By Tags</h3>

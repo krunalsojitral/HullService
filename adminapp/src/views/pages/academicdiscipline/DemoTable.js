@@ -129,7 +129,7 @@ const DemoTable = () => {
                   }}
                 >
                   Active{" "}
-                  <span class="tooltip-title">De-activating the forum will remove the academic discipline from the front end.</span>
+                  <span class="tooltip-title">De-activating the academic discipline will remove the academic discipline from the front end.</span>
                 </a>
               ) : (
                 <a
@@ -144,7 +144,7 @@ const DemoTable = () => {
                   }}
                 >
                     Inactive
-                    <span class="tooltip-title">Activating the forum will add the academic discipline back on the front end.</span>
+                    <span class="tooltip-title">Activating the academic discipline will add the academic discipline back on the front end.</span>
                 </a>
               )}
               {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}

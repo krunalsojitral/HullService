@@ -94,8 +94,13 @@ export default function Articles() {
             headers: { Authorization: `${token}` }
         };
         axios.post(api_url + '/article/articleBookmark', { "article_id" : id }, config).then((result) => {
-            if (result.data.status) {
-                var blogdata = result.data.response.data;
+            if (result.data.status) {                
+                var articledata = result.data.response.data.type;
+                if (articledata == 'remove') {
+                    Swal.fire("Success!", 'Article removed from your dashboard', "success");
+                } else {
+                    Swal.fire("Success!", 'Article added to your dashboard', "success");
+                }
                 getArticleDataWrap();
             } else {
                 Swal.fire('Oops...', result.data.response.msg, 'error')

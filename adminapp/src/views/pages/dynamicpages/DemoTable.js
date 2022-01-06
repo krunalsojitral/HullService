@@ -138,7 +138,7 @@ const DemoTable = () => {
                   }}
                 >
                   Active{" "}
-                  <span class="tooltip-title">De-activating the forum will remove the page from the front end.</span>
+                  <span class="tooltip-title">De-activating the page will remove the page from the front end.</span>
                 </a>
               ) : (
                 <a
@@ -153,7 +153,7 @@ const DemoTable = () => {
                   }}
                 >
                     Inactive
-                    <span class="tooltip-title">Activating the forum will add the page back on the front end.</span>
+                  <span class="tooltip-title">Activating the page will add the page back on the front end.</span>
                 </a>
               )}
               {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}
