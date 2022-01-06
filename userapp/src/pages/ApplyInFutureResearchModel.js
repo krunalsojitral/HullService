@@ -25,18 +25,21 @@ function ApplyInFutureResearchModel(props) {
 
     const { fields, append, remove } = useFieldArray({
         control,
-        name: 'books',
+        name: 'child',
     });
 
-    const onSubmit = (data) => { }
+    const onSubmit = (data) => { 
+
+        console.log(data);
+    }
     return (
         <div className="popup" style={{ width: '450px', background: '#fff', padding: '19px', display: 'block' }}>
             <div><button className="modelclose" onClick={props.close}>x</button></div>
             <div className="article-modal">
                 <div className="modal-body">
-                    <a href="#"><img src="images/logo.png" alt="logo" /></a>
+                    {/* <a href="#"><img src="images/logo.png" alt="logo" /></a>
                     <h3>Apply to Participate in <b>Future Research Studies</b></h3>
-                    <p>Please provide some information about yourself and your family.</p>
+                    <p>Please provide some information about yourself and your family.</p> */}
 
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="login-details research-popup">
@@ -44,7 +47,7 @@ function ApplyInFutureResearchModel(props) {
                                 <div className="col-md-12">
                                     <div className="form-group">
                                         <Controller
-                                            name={"first_name"}
+                                            name={"name"}
                                             control={control}
                                             rules={{ required: true }}
                                             render={({ field: { onChange, value } }) => (
@@ -57,7 +60,7 @@ function ApplyInFutureResearchModel(props) {
                                                 />
                                             )}
                                         ></Controller>
-                                        {errors.first_name && errors.first_name.type === "required" && (
+                                        {errors.name && errors.name.type === "required" && (
                                             <small className="error">First Name is required.</small>
                                         )}
                                     </div>
@@ -65,7 +68,7 @@ function ApplyInFutureResearchModel(props) {
                                 <div className="col-md-12">
                                     <div className="form-group">
                                         <Controller
-                                            name={"first_name"}
+                                            name={"dob"}
                                             control={control}
                                             rules={{ required: true }}
                                             render={({ field: { onChange, value } }) => (
@@ -74,54 +77,45 @@ function ApplyInFutureResearchModel(props) {
                                                     onChange={onChange}
                                                     value={value}
                                                     className="form-control"
-                                                    placeholder={`Your Age`}
+                                                    placeholder={`Your DOB`}
                                                 />
                                             )}
                                         ></Controller>
-                                        {errors.first_name && errors.first_name.type === "required" && (
+                                        {errors.dob && errors.dob.type === "required" && (
                                             <small className="error">First Name is required.</small>
                                         )}
                                     </div>
                                 </div>
-                            </div>
-
-                            
-                            {/* {fields.map((item, index) => (      
-                                
-                                <div className="row" key={item.id}>
-                                <div className="col-md-6"> <label className="child-label">Child {index+1}</label></div>
-                                <div className="col-md-6">
+                                <div className="col-md-12">
                                     <div className="form-group">
                                         <Controller
-                                            name={`books.${index}.value`}
+                                            name={"email"}
                                             control={control}
-                                            defaultValue={item.value}
-                                            render={({ field }) => <input className="form-control" {...field} />}
-                                        />
-                                        <button onClick={() => remove(index)}>Delete</button>
+                                            rules={{ required: true }}
+                                            render={({ field: { onChange, value } }) => (
+                                                <input
+                                                    type="text"
+                                                    onChange={onChange}
+                                                    value={value}
+                                                    className="form-control"
+                                                    placeholder={`Your Email`}
+                                                />
+                                            )}
+                                        ></Controller>
+                                        {errors.email && errors.email.type === "required" && (
+                                            <small className="error">Email is required.</small>
+                                        )}
                                     </div>
                                 </div>
                             </div>
-
-                            // <li key={item.id}>
-                            //     <Controller
-                            //         name={`books.${index}.value`}
-                            //         control={control}
-                            //         defaultValue={item.value}
-                            //         render={({ field }) => <input className="form-control" {...field} />}
-                            //     />
-                            //     <button onClick={() => remove(index)}>Delete</button>
-                            // </li>
-                        ))} */}
 
                             <div className="row">
                                 <div className="col-md-6"> <label className="child-label">Child 1</label></div>
                                 <div className="col-md-6">
                                     <div className="form-group">
                                         <Controller
-                                            name={"first_name"}
+                                            name={"child_first"}
                                             control={control}
-                                            rules={{ required: true }}
                                             render={({ field: { onChange, value } }) => (
                                                 <input
                                                     type="text"
@@ -132,12 +126,29 @@ function ApplyInFutureResearchModel(props) {
                                                 />
                                             )}
                                         ></Controller>
-                                        {errors.first_name && errors.first_name.type === "required" && (
-                                            <small className="error">First Name is required.</small>
-                                        )}
                                     </div>
                                 </div>
                             </div>
+
+                            
+                            {fields.map((item, index) => (  
+                                <div className="row" key={item.id}>
+                                    <div className="col-md-6"> <label className="child-label">Child {index+2}</label></div>
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <Controller
+                                                name={`child.${index}.value`}
+                                                control={control}
+                                                defaultValue={item.value}
+                                                render={({ field }) => <input placeholder={`Child age`} className="form-control" {...field} />}                                                
+                                            />
+                                            <button onClick={() => remove(index)}>Delete</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))} 
+
+                            
 
                             <div className="row">
                                 <div className="col-md-12 text-right">

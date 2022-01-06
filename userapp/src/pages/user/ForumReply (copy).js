@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react'
 import $ from 'jquery';
 import axios from 'axios';
@@ -17,6 +18,7 @@ function ForumReply(props) {
             setHideLoad(false);
         } else {
             if (parseInt(props.replyDetail.length) !== parseInt(visible)) {
+                console.log("testt");
                 setHideLoad(true);
             }
 
@@ -78,7 +80,7 @@ function ForumReply(props) {
                         <small>{replydata.created_at}</small>
                         <p dangerouslySetInnerHTML={{ __html: replydata.comment }}></p>
 
-                        <p onClick={(e) => reply(replydata.reply_comment_id)}><img src="images/reply.png" alt="reply" /> <span>Reply</span></p>
+                        {!replydata.subfirstname && <p onClick={(e) => reply(replydata.reply_comment_id)}><img src="images/reply.png" alt="reply" /> <span>Reply</span></p>}
 
                         <div className="reply-box" id={replydata.reply_comment_id} style={{ display: 'none' }}>
                             <textarea maxlength="1500" className="form-control" type="text" id={"input" + replydata.reply_comment_id} name="comment" />
@@ -86,19 +88,11 @@ function ForumReply(props) {
                             <button type="submit" onClick={(e) => replySubmit(replydata.reply_comment_id, index)}>Reply</button>
                         </div>
 
-                        {replydata && replydata.reply.slice(0, visible).map((subdata, index) => (
-                            <div className="reply-card">
-                                <h3>{subdata.first_name} {subdata.last_name} <span>({subdata.role})</span></h3>
-                                <small>{subdata.created_at}</small>
-                                <p dangerouslySetInnerHTML={{ __html: subdata.comment }}></p>
-                            </div>
-                        ))}
-
-                        {/* {replydata.subcom && <div className="sub-reply">
+                        {replydata.subcom && <div className="sub-reply">
                             <h3>{replydata.subfirstname} {replydata.sublastname} <span>({replydata.subrole})</span></h3>
                             <small>{replydata.subdate}</small>
                             <p dangerouslySetInnerHTML={{ __html: replydata.subcom }}></p>
-                        </div>} */}
+                        </div>}
 
 
 

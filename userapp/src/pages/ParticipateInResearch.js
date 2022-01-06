@@ -11,8 +11,6 @@ import './dev.css';
 export default function ParticipateInResearch() {
     const [researchesDetail, setResearchesDetail] = React.useState({})
     const [researchesList, setResearchesList] = React.useState([]);
-    const [futurePopup, setFuturePopup] = React.useState(false);
-
     const [researchID, setResearchID] = React.useState('');
     
     React.useEffect(() => {
@@ -41,15 +39,11 @@ export default function ParticipateInResearch() {
         open(); 
     }
 
-    const applyfuturebutton = (id) => {
-         setFuturePopup(true);
-    }
+    
 
     return (
         <div>
             <Header/>
-            
-            {futurePopup && <ApplyInResearchPage></ApplyInResearchPage>}
 
             <section class="research-banner-title">
                 <div class="container">
@@ -86,12 +80,7 @@ export default function ParticipateInResearch() {
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="studies-Btn">
-                                <button href="#" class="study-btn" onClick={(e) => applyfuturebutton()}>
-                                    Click Here to Participate in Future Research
-								<span>Be notified of studies you qualify for</span>
-                                </button>
-                            </div>
+                            <ApplyInResearchPage></ApplyInResearchPage>                            
                         </div>
                     </div>
                     <div class="row">

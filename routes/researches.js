@@ -517,4 +517,28 @@ router.post('/changeResearchesStatus', [
     }
 });
 
+router.post('/addFutureResearchByuser', [
+    check('name', 'Name is required').notEmpty()
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        let record = {
+            name: req.body.name,
+            dob: req.body.dob,            
+            child: req.body.child,
+            created_at: moment().format('YYYY-MM-DD')
+        };
+        Researches.addFutureResearchByuser(record, function (err, data) {
+            if (err) {
+                return res.json({ 'status': 0, 'response': { 'msg': err } });
+            } else {
+                return res.json({ 'status': 1, 'response': { 'msg': "Your future request has been successfully sent to Admin.", data: data } });
+            }
+        });
+    }
+});
+
 module.exports = router;

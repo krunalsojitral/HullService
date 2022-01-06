@@ -1099,47 +1099,34 @@ router.post('/addComment', passport.authenticate('jwt', { session: false }), [
 
                     if (req.body.subcomment && req.body.subcomment == 'subcomment'){
                         
-                        Forum.getforumCommentDataById(obj.parent_comment_id, function (err, mainresult) {                            
-                            var user_obj = {
-                                comment: mainresult[0].subcomment,
-                                created_at: moment(mainresult[0].c_date).format('MMMM Do, YYYY'),
-                                first_name: mainresult[0].first_name,
-                                last_name: mainresult[0].last_name,
-                                role: mainresult[0].role,
-                                reply_comment_id: result[0].forum_comment_id,
-                                subcom: obj.comment,
-                                subdate: moment(result[0].created_at).format('MMMM Do, YYYY'),
-                                subfirstname: userDetail.first_name,
-                                sublastname: userDetail.last_name,
-                                subrole: userDetail.role,
-                            }
-                            return res.json({ 'status': 1, 'response': { 'data': user_obj, 'msg': 'Data found' } });
-                        });
+                        // Forum.getforumCommentDataById(obj.parent_comment_id, function (err, mainresult) {                            
+                        //     var user_obj = {
+                        //         comment: mainresult[0].subcomment,
+                        //         created_at: moment(mainresult[0].c_date).format('MMMM Do, YYYY'),
+                        //         first_name: mainresult[0].first_name,
+                        //         last_name: mainresult[0].last_name,
+                        //         role: mainresult[0].role,
+                        //         reply_comment_id: result[0].forum_comment_id
+                        //     }
+                        //     return res.json({ 'status': 1, 'response': { 'data': user_obj, 'msg': 'Data found' } });
+                        // });
+
+                        var user_obj = {
+                            comment: obj.comment,
+                            created_at: obj.created_at,
+                            first_name: userDetail.first_name,
+                            last_name: userDetail.last_name,
+                            role: userDetail.role,
+                            reply_comment_id: result[0].forum_comment_id
+                        }
+                        return res.json({ 'status': 1, 'response': { 'data': user_obj, 'msg': 'Data found' } });
+
                     }else{
 
                         if (req.body.parent_comment_id) {
-                            Forum.getForumReplyComment(obj.parent_comment_id, function (err, data) {
-                                // if (data && data.reply_list.length > 0) {
-                                //     item.reply = data.reply_list;
-                                // }
+                            Forum.getForumReplyComment(obj.parent_comment_id, function (err, data) {                               
                                 return res.json({ 'status': 1, 'response': { 'data': data.reply_list, 'msg': 'Data found' } });
                             });
-
-
-                            // var user_obj = {
-                            //     comment: obj.comment,
-                            //     created_on: moment(result[0].created_at).format('MMMM Do, YYYY'),
-                            //     first_name: userDetail.first_name,
-                            //     last_name: userDetail.last_name,
-                            //     role: userDetail.role,
-                            //     reply_comment_id: result[0].forum_comment_id,
-                            //     subcom: '',
-                            //     subdate: '',
-                            //     subfirstname: '',
-                            //     sublastname: '',
-                            //     subrole: '',
-                            // }
-                           
                         } else {
                             var user_obj = {
                                 comment: obj.comment,

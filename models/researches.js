@@ -258,6 +258,25 @@ function Researches() {
         });
     }
 
+     
+    this.addFutureResearchByuser = function (record, callback) {
+        connection.acquire(function (err, con) {
+            const sql = 'INSERT INTO future_research(name,dob) VALUES($1,$2) RETURNING *'
+            const values = [record.name, record.dob]
+            con.query(sql, values, function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
    
 }
 module.exports = new Researches();

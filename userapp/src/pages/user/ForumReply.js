@@ -8,6 +8,7 @@ function ForumReply(props) {
 
     const [forumReplyCommentList, setForumReplyCommentList] = useState([]);
     const [visible, setVisible] = useState(3);
+    const [replyVisible, setReplyVisible] = useState(3);
     const [forumId, setForumId] = useState();
     const [hideLoad, setHideLoad] = useState(true);
     useEffect(() => {
@@ -17,7 +18,6 @@ function ForumReply(props) {
             setHideLoad(false);
         } else {
             if (parseInt(props.replyDetail.length) !== parseInt(visible)) {
-                console.log("testt");
                 setHideLoad(true);
             }
 
@@ -27,6 +27,10 @@ function ForumReply(props) {
 
     const showMoreCommentItems = () => {
         setVisible((prevValue) => prevValue + 3);
+    }
+
+    const showMoreReplyCommentItems = () => {
+        setReplyVisible((prevValue) => prevValue + 3);
     }
 
     const reply = (id) => { $("#" + id).css('display', 'block'); }
@@ -55,12 +59,14 @@ function ForumReply(props) {
                         $("#" + comment_id).css('display', 'none');
                         $("#input" + comment_id).val('')
 
-                        let tempColl = [...forumReplyCommentList];
-                        tempColl[index] = result.data.response.data;
-                        setForumReplyCommentList(tempColl);
-
-                        // let tempColl = [result.data.response.data, ...forumReplyCommentList]
+                        // let tempColl = [...forumReplyCommentList];
+                        // tempColl[index] = result.data.response.data;
                         // setForumReplyCommentList(tempColl);
+
+                        let tempColl = [...forumReplyCommentList];
+                        tempColl[index].reply = [result.data.response.data, ...tempColl[index].reply]
+                        //tempColl[index].reply = result.data.response.data
+                        setForumReplyCommentList(tempColl);
 
                     } else {
                         Swal.fire("Oops...", result.data.response.msg, "error");
@@ -79,7 +85,7 @@ function ForumReply(props) {
                         <small>{replydata.created_at}</small>
                         <p dangerouslySetInnerHTML={{ __html: replydata.comment }}></p>
 
-                        {!replydata.subfirstname && <p onClick={(e) => reply(replydata.reply_comment_id)}><img src="images/reply.png" alt="reply" /> <span>Reply</span></p>}
+                        <p onClick={(e) => reply(replydata.reply_comment_id)}><img src="images/reply.png" alt="reply" /> <span>Reply</span></p>
 
                         <div className="reply-box" id={replydata.reply_comment_id} style={{ display: 'none' }}>
                             <textarea maxlength="1500" className="form-control" type="text" id={"input" + replydata.reply_comment_id} name="comment" />
@@ -87,13 +93,17 @@ function ForumReply(props) {
                             <button type="submit" onClick={(e) => replySubmit(replydata.reply_comment_id, index)}>Reply</button>
                         </div>
 
-                        {replydata.subcom && <div className="sub-reply">
-                            <h3>{replydata.subfirstname} {replydata.sublastname} <span>({replydata.subrole})</span></h3>
-                            <small>{replydata.subdate}</small>
-                            <p dangerouslySetInnerHTML={{ __html: replydata.subcom }}></p>
-                        </div>}
+                        {replydata && replydata.reply.length > 0 && replydata.reply.slice(0, replyVisible).map((subdata, index) => (
+                            <div>
+                                <div className="sub-reply">
+                                    <h3>{subdata.first_name} {subdata.last_name} <span>({subdata.role})</span></h3>
+                                    <small>{subdata.created_at}</small>
+                                    <p dangerouslySetInnerHTML={{ __html: subdata.comment }}></p>
+                                </div>                                
+                            </div>                            
+                        ))}
 
-
+                        {replydata && replydata.reply.length > 0 && <span className="reply-loadmore" onClick={showMoreReplyCommentItems}>View more comments</span>}
 
                     </div>
                 ))}
@@ -111,3 +121,17 @@ function ForumReply(props) {
 }
 
 export default ForumReply
+
+
+
+
+
+
+
+
+
+
+
+
+
+

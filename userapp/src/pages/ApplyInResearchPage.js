@@ -6,14 +6,24 @@ import ApplyInFutureResearchModel from "./ApplyInFutureResearchModel";
 
 function ApplyInResearchPage(props) {
     
-    useEffect(() => { open() }, []);
-
+    useEffect(() => { }, []);
     const [Modal, open, close] = useModal('root', {});
 
+    const applyfuturebutton = (id) => {
+        open();
+    }
+
     return (
-        <Modal>
-            <ApplyInFutureResearchModel close={close}></ApplyInFutureResearchModel>
-        </Modal>
+        <div>
+            <Modal>
+                <ApplyInFutureResearchModel close={close}></ApplyInFutureResearchModel>
+            </Modal>
+            <div class="studies-Btn">
+                <button href="#" class="study-btn" onClick={(e) => applyfuturebutton()}>Click Here to Participate in Future Research
+                <span>Be notified of studies you qualify for</span>
+                </button>
+            </div>
+        </div>
     )
 }
 
