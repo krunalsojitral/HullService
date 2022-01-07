@@ -4200,6 +4200,25 @@ color: #276e80 !important;
     cursor: pointer;
 }
 
+.subreply-list .reply-subloadmore{
+    margin-left: 47px !important;
+    margin-top: 8px !important;
+}
+.delete-icon {
+    margin-top: 5px;
+    color: #276e80;
+    text-align: center;
+    margin-right: 28px;
+    font-size: 23px;
+}
+.read-more-des{
+    border: none;
+    background: no-repeat;
+    color: #276e80;
+    font-size: 16px;
+    font-weight: 500;
+    float: right;
+}
 .ytplayer {
     pointer-events: none;
     position: absolute;
@@ -4573,4 +4592,12 @@ color: #276e80 !important;
 
 .participate-modal .modal-body span{
     display: inline;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0; 
 }

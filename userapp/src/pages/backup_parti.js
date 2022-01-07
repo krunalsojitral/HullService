@@ -5,29 +5,28 @@ import api_url from './../components/Apiurl';
 import axios from "axios";
 import ApplyInResearchModel from "./ApplyInResearchModel";
 import ApplyInResearchPage from "./ApplyInResearchPage";
-import ParticipateInResearchDescription from "./ParticipateInResearchDescription";
 import { useModal } from 'react-hooks-use-modal';
 import './dev.css';
 import Paginator from 'react-hooks-paginator';
 
 export default function ParticipateInResearch() {
-    const pageLimit = 10;
+    const pageLimit = 3;
     const [offset, setOffset] = useState(0);
     const [researchesDetail, setResearchesDetail] = React.useState({})
     const [data, setData] = useState([]);
     const [researchID, setResearchID] = React.useState('');
     const [currentData, setCurrentData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    
+
     React.useEffect(() => {
         axios.get(api_url + "/researches/getResearchesDataById", {})
-        .then((result) => {
-            if (result.data.status) {
-                var usersdata = result.data.response.data;  
-                setResearchesDetail(usersdata);
-            } 
-        })
-        .catch((err) => { console.log(err); });
+            .then((result) => {
+                if (result.data.status) {
+                    var usersdata = result.data.response.data;
+                    setResearchesDetail(usersdata);
+                }
+            })
+            .catch((err) => { console.log(err); });
 
         axios.get(api_url + "/researches/getFutureParticipateResearchesList", {})
             .then((result) => {
@@ -40,9 +39,9 @@ export default function ParticipateInResearch() {
     }, []);
 
     const [Modal, open, close] = useModal('root', {});
-    const applybutton = (id) => { 
+    const applybutton = (id) => {
         setResearchID(id);
-        open(); 
+        open();
     }
 
     React.useEffect(() => {
@@ -53,19 +52,66 @@ export default function ParticipateInResearch() {
         }
         setCurrentData(data.slice(offset, offset + pageLimit));
     }, [offset, data]);
-    
-    // const ProfileItem = (props) => {
-    //     console.log(props);
-    //     return (
-    //         <div>
-    //             <p>test</p>
-    //         </div>
-    //     );
-    // }
+
+
+
+
+    const ProfileItem = (props) => {
+        // const truncLength = 25;
+        // const [isShow, setShowHide] = React.useState(false);
+
+        // const [isCollapse, setIsCollapse] = useState(false)
+        console.log("isShow");
+        return (
+            <div class="studies-card">
+                <Modal>
+                    <ApplyInResearchModel close={close} researchtitle={props.topic} apply={researchID}></ApplyInResearchModel>
+                </Modal>
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="studies-list">
+                            <h3 className="tooltip-box">{props.topic}</h3>
+                            <p>{props.description}</p>
+                            {/* <p>
+                                {" "}
+                                {isShow
+                                    ? props.description
+                                    : props.description.substring(0, truncLength)}{" "}
+                                    ...
+                                    <button onClick={() => setShowHide((previous) => !previous)}>
+                                    {isShow ? "Read Less" : "Read more"}
+                                </button>
+                            </p>
+
+
+                            <p>
+                                {props.description.substring(0, isCollapse ? truncLength : undefined)}...
+        <button onClick={() => setIsCollapse(isCollapse => !isCollapse)}>
+                                    {isCollapse ? 'Read Less' : 'Read more'}
+                                </button>
+                            </p> */}
+
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="studies-box">
+                            <div class="studies-header">
+                                <h3>{props.user_name}</h3>
+                                <small>{props.name}</small>
+                            </div>
+                            <button class="btn-apply" onClick={(e) => applybutton(props.researches_id)}>Participate</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    };
+
 
     return (
         <div>
-            <Header/>
+            <Header />
 
             <section class="research-banner-title">
                 <div class="container">
@@ -86,7 +132,7 @@ export default function ParticipateInResearch() {
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="section-title">                                
+                            <div class="section-title">
                                 <p dangerouslySetInnerHTML={{ __html: researchesDetail.description }}></p>
                             </div>
                         </div>
@@ -102,43 +148,16 @@ export default function ParticipateInResearch() {
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <ApplyInResearchPage></ApplyInResearchPage>                            
+                            <ApplyInResearchPage></ApplyInResearchPage>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
 
-                            {/* {currentData.map((profile, _) => (
+                            {currentData.map((profile, _) => (
                                 <ProfileItem {...profile} />
-                            ))} */}
-
-                            {currentData.map((row, index) => (
-                            <div class="studies-card" key={index}>
-                                    {/* <ProfileItem {...row} /> */}
-                                <Modal>
-                                    <ApplyInResearchModel close={close} researchtitle={row.topic} apply={researchID}></ApplyInResearchModel>
-                                </Modal>
-                                
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <div class="studies-list">
-                                            <h3 className="tooltip-box">{row.topic}</h3>
-                                                <ParticipateInResearchDescription description={row.description}></ParticipateInResearchDescription>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="studies-box">
-                                            <div class="studies-header">
-                                                <h3>{row.user_name}</h3>
-                                                <small>{row.name}</small>
-                                            </div>
-                                                <button class="btn-apply" onClick={(e) => applybutton(row.researches_id)}>Participate</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             ))}
-                           
+
                         </div>
                     </div>
                     <div className="row">
@@ -154,7 +173,7 @@ export default function ParticipateInResearch() {
                 </div>
             </section>
 
-          
+
             <Footer />
         </div>
     )

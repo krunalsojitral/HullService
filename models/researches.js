@@ -107,7 +107,7 @@ function Researches() {
 
     this.getResearchesDataById = function (id, callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM researches as c left join users on users.id = c.created_by where c.researches_id = $1', [id], function (err, result) {
+            con.query('SELECT *,c.status as research_status FROM researches as c left join users on users.id = c.created_by where c.researches_id = $1', [id], function (err, result) {
                 con.release();
                 if (err) {
                     callback(err, null);
@@ -120,7 +120,7 @@ function Researches() {
 
     this.getFutureParticipateResearchesList = function (callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM researches inner join users on users.id = researches.created_by inner join user_role on user_role.role_id = users.role left join academic_discipline on academic_discipline.academic_discipline_id = users.academic_discipline where researches.status = $1 and researches.user_status = $2 order by researches_id DESC',[1,1], function (err, result) {
+            con.query('SELECT *,academic_discipline.name as academic FROM researches inner join users on users.id = researches.created_by inner join user_role on user_role.role_id = users.role left join academic_discipline on academic_discipline.academic_discipline_id = users.academic_discipline where researches.status = $1 and researches.user_status = $2 order by researches_id DESC',[1,1], function (err, result) {
                 con.release();
                 if (err) {
                     callback(err, null);
@@ -261,14 +261,43 @@ function Researches() {
      
     this.addFutureResearchByuser = function (record, callback) {
         connection.acquire(function (err, con) {
-            const sql = 'INSERT INTO future_research(name,dob) VALUES($1,$2) RETURNING *'
-            const values = [record.name, record.dob]
-            con.query(sql, values, function (err, result) {
-                con.release()
+            const sql = 'INSERT INTO future_research(name,dob,created_at) VALUES($1,$2,$3) RETURNING *'
+            const values = [record.name, record.dob, record.created_at]
+            con.query(sql, values, function (err, result) {                
                 if (err) {
                     if (env.DEBUG) {
                         console.log(err);
                     }
+                    con.release()
+                    callback(err, null);
+                } else {
+                    var research_id = result.rows[0].future_research_id
+                    if (record.child_first){
+                        const sql = 'INSERT INTO future_research_child(future_research_id,child_dob) VALUES($1,$2) RETURNING *'
+                        const values = [research_id, record.child_first]
+                        con.query(sql, values, function (err, result) { });
+                    }
+                    if (record.child && record.child.length > 0) {
+                        record.child.forEach(function (value) {
+                            const sql = 'INSERT INTO future_research_child(future_research_id,child_dob) VALUES($1,$2) RETURNING *'
+                            const values = [research_id, value.value]
+                            con.query(sql, values, function (err, result) { });
+                        });                        
+                    }
+                    con.release()
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
+    
+    this.getFutureResearchList = function (callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM future_research order by future_research_id desc', function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
                     callback(err, null);
                 } else {
                     callback(null, result.rows);
@@ -277,6 +306,33 @@ function Researches() {
         });
     };
 
+    this.getFutureResearchByID = function (id, callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM future_research where future_research_id = $1',[id], function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
+    this.getResearchesChildDataById = function (id, callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM future_research_child where future_research_id = $1 order by future_research_child_id desc', [id], function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };   
    
 }
 module.exports = new Researches();

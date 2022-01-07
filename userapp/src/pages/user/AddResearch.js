@@ -107,7 +107,7 @@ export default function AddResearch() {
                                                                 <textarea
                                                                     rows="6" cols="50"
                                                                     type="text"
-                                                                    maxlength="5000"
+                                                                    maxlength="1500"
                                                                     onChange={onChange}
                                                                     value={value}
                                                                     className="form-control"

@@ -185,15 +185,15 @@ const ResearchesDemoTable = () => {
                     Show
                   </CButton> */}
 
-                  {/* <CButton
+                  <CButton
                     color="primary"
                     variant="outline"
                     shape="square"
                     size="sm"
-                    onClick={() => history.push(`/blogedit/${item.researches_id}`)}
+                    onClick={() => history.push(`/research-detail/${item.researches_id}`)}
                     className="mr-1"
                   > View
-                  </CButton> */}
+                  </CButton> 
 
                   <CButton
                     color="primary"

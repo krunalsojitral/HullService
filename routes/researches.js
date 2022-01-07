@@ -77,6 +77,42 @@ router.post('/changeResearchesStatus', [
 });
 
 router.get('/getResearchesDataById', (req, res, next) => {
+    asyn.waterfall([
+        function (done) {
+            Researches.getResearchesContentDataById(function (err, result) {
+                if (err) {
+                    done({ 'status': 0, 'response': { 'msg': 'Something went wrong.' } });
+                } else {
+                    var imageLink;
+                    if (req.headers.host == env.ADMIN_LIVE_URL) {
+                        imageLink = env.ADMIN_LIVE_URL;
+                    } else {
+                        imageLink = env.ADMIN_LIVE_URL;
+                    }
+                    let researches = {};
+                    researches['sub_title'] = result[0].sub_title;
+                    researches['main_title'] = result[0].main_title;
+                    researches['description'] = result[0].description;
+                    researches['image'] = (result[0].image) ? imageLink + env.RESEARCHES_VIEW_PATH + result[0].image : '';
+                    researches['future_participate_text'] = result[0].future_participate_text;
+                    researches['participate_text'] = result[0].participate_text;
+                    done(err, researches)
+                }
+            });
+        }
+    ],
+        function (error, researches) {
+            if (error) {
+                return res.json({ 'status': 0, 'response': { 'msg': err } });
+            } else {
+                return res.json({ 'status': 1, 'response': { 'data': researches, 'msg': 'data found' } });
+            }
+        });
+});
+
+router.post('/getResearchesDetailById', [
+    check('researches_id', 'Researches id is required').notEmpty()
+], (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         var error = errors.array();
@@ -84,7 +120,8 @@ router.get('/getResearchesDataById', (req, res, next) => {
     } else {
         asyn.waterfall([
             function (done) {
-                Researches.getResearchesContentDataById(function (err, result) {
+                var researches_id = req.body.researches_id;
+                Researches.getResearchesDataById(researches_id,function (err, result) {
                     if (err) {
                         done({ 'status': 0, 'response': { 'msg': 'Something went wrong.' } });
                     } else {
@@ -95,12 +132,12 @@ router.get('/getResearchesDataById', (req, res, next) => {
                             imageLink = env.ADMIN_LIVE_URL;
                         }
                         let researches = {};
-                        researches['sub_title'] = result[0].sub_title;
-                        researches['main_title'] = result[0].main_title;
-                        researches['description'] = result[0].description;                        
-                        researches['image'] = (result[0].image) ? imageLink + env.RESEARCHES_VIEW_PATH + result[0].image : '';                        
-                        researches['future_participate_text'] = result[0].future_participate_text;
-                        researches['participate_text'] = result[0].participate_text;
+                        researches['status'] = result[0].research_status;
+                        researches['researches_id'] = result[0].researches_id;
+                        researches['start_date'] = moment(result[0].start_date).format('YYYY-MM-DD');
+                        researches['topic'] = result[0].topic;
+                        researches['description'] = result[0].description;
+                        researches['name'] = result[0].first_name + ' ' + result[0].last_name;
                         done(err, researches)
                     }
                 });
@@ -113,7 +150,6 @@ router.get('/getResearchesDataById', (req, res, next) => {
                     return res.json({ 'status': 1, 'response': { 'data': researches, 'msg': 'data found' } });
                 }
             });
-
     }
 });
 
@@ -202,7 +238,7 @@ router.get('/getFutureParticipateResearchesList', function (req, res) {
                 retObj['user_role'] = data.role;
                 retObj['start_date'] = moment(data.start_date).format('YYYY-MM-DD');
                 retObj['status'] = data.status;
-                retObj['name'] = data.name;
+                retObj['name'] = data.academic;
                 return retObj;
             });
             return res.json({ status: 1, 'response': { data: researchList } });
@@ -292,6 +328,73 @@ router.post('/csvParticipateList', [
     }
 });
 
+router.get('/getFutureResearchList', function (req, res) {
+    loggerData(req);
+    Researches.getFutureResearchList(function (err, result) {
+        if (err) {
+            return res.json({ status: 0, 'response': { msg: err } });
+        } else {
+            let temparray = new Promise(async (resolve, reject) => {
+                for (let research of result) {
+                    await Researches.getResearchesChildDataById(research.future_research_id, function (err, childresult) {
+                        if (childresult && childresult.length > 0) {
+                            research.child_number = childresult.length;
+                            research.child = Array.from(childresult.values(), v => v.child_dob).join(", ");
+                        }
+                    });
+                }
+                setTimeout(() => resolve(result), 40)
+            });
+            temparray.then(result => {
+                var participateList = result.map(data => {
+                    let retObj = {};
+                    retObj['name'] = data.name;
+                    retObj['email'] = data.email;
+                    retObj['dob'] = moment(data.dob).format('YYYY-MM-DD');
+                    retObj['no_of_kids'] = data.child_number;
+                    retObj['age_of_kids'] = data.child;
+                    return retObj;
+                });
+                return res.json({ status: 1, 'response': { data: participateList } });
+            })
+        }
+    });
+});
+
+router.get('/getCSVFutureResearchList', (req, res) => {
+    Researches.getFutureResearchList(function (err, result) {
+        if (err) {
+            return res.json({ status: 0, 'response': { msg: err } });
+        } else {
+            let temparray = new Promise(async (resolve, reject) => {
+                for (let research of result) {                    
+                    await Researches.getResearchesChildDataById(research.future_research_id, function (err, childresult) {
+                        if (childresult && childresult.length > 0) {
+                            research.child_number = childresult.length;
+                            research.child = Array.from(childresult.values(), v => v.child_dob).join(", ");
+                        }
+                    });
+                }
+                setTimeout(() => resolve(result), 40)
+            });
+            temparray.then(result => {
+                var participateList = result.map(data => {
+                    let retObj = {};
+                    retObj['Name'] = data.name;
+                    retObj['Email'] = data.email;
+                    retObj['DOB'] = moment(data.dob).format('YYYY-MM-DD');
+                    retObj['No_of_Kids'] = data.child_number;
+                    retObj['Age_of_kids'] = data.child;
+                    return retObj;
+                });
+                return res.json({ status: 1, 'response': { data: participateList } });
+            })
+        }
+    });
+});
+
+
+
 router.get('/getMyResearchesList', passport.authenticate('jwt', { session: false }),  function (req, res) {
     loggerData(req);
     var user_id = req.user.id;
@@ -364,6 +467,8 @@ router.get('/researchRequestList', function (req, res) {
         }
     });
 });
+
+
 
 router.post('/approveRejectedRequest', [
     check('id', 'Please enter valid id').isEmail(),
@@ -524,11 +629,12 @@ router.post('/addFutureResearchByuser', [
     if (!errors.isEmpty()) {
         var error = errors.array();
         res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
-    } else {
+    } else {       
         let record = {
             name: req.body.name,
             dob: req.body.dob,            
             child: req.body.child,
+            child_first: req.body.child_first,
             created_at: moment().format('YYYY-MM-DD')
         };
         Researches.addFutureResearchByuser(record, function (err, data) {
@@ -536,6 +642,33 @@ router.post('/addFutureResearchByuser', [
                 return res.json({ 'status': 0, 'response': { 'msg': err } });
             } else {
                 return res.json({ 'status': 1, 'response': { 'msg': "Your future request has been successfully sent to Admin.", data: data } });
+            }
+        });
+    }
+});
+
+
+router.post('/getFutureParticipateById',[
+    check('future_research_id', 'Future research id is required').notEmpty()
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        var id = req.body.future_research_id;
+        Researches.getFutureResearchByID(id, function (err, result) {
+            if (err) {                
+                res.json({ 'status': 0, 'response': { 'msg': err, 'dev_msg': err } });
+            } else {
+                Researches.getResearchesChildDataById(result[0].future_research_id, function (err, childresult) {
+                    let researches = {};
+                    researches['name'] = result[0].name;
+                    researches['dob'] = (result[0].dob) ? moment(result[0].dob).format('YYYY-MM-DD') : '';
+                    researches['email'] = result[0].email;
+                    researches['child'] = childresult;
+                    return res.json({ 'status': 1, 'response': { 'data': researches, 'msg': 'data found' } });
+                });
             }
         });
     }

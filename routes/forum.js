@@ -1099,27 +1099,19 @@ router.post('/addComment', passport.authenticate('jwt', { session: false }), [
 
                     if (req.body.subcomment && req.body.subcomment == 'subcomment'){
                         
-                        // Forum.getforumCommentDataById(obj.parent_comment_id, function (err, mainresult) {                            
-                        //     var user_obj = {
-                        //         comment: mainresult[0].subcomment,
-                        //         created_at: moment(mainresult[0].c_date).format('MMMM Do, YYYY'),
-                        //         first_name: mainresult[0].first_name,
-                        //         last_name: mainresult[0].last_name,
-                        //         role: mainresult[0].role,
-                        //         reply_comment_id: result[0].forum_comment_id
-                        //     }
-                        //     return res.json({ 'status': 1, 'response': { 'data': user_obj, 'msg': 'Data found' } });
-                        // });
+                        Forum.getForumSubReplyComment(obj.parent_comment_id, function (err, mainresult) {                           
+                            return res.json({ 'status': 1, 'response': { 'data': mainresult, 'msg': 'Data found' } });
+                        });
 
-                        var user_obj = {
-                            comment: obj.comment,
-                            created_at: obj.created_at,
-                            first_name: userDetail.first_name,
-                            last_name: userDetail.last_name,
-                            role: userDetail.role,
-                            reply_comment_id: result[0].forum_comment_id
-                        }
-                        return res.json({ 'status': 1, 'response': { 'data': user_obj, 'msg': 'Data found' } });
+                        // var user_obj = {
+                        //     comment: obj.comment,
+                        //     created_at: obj.created_at,
+                        //     first_name: userDetail.first_name,
+                        //     last_name: userDetail.last_name,
+                        //     role: userDetail.role,
+                        //     reply_comment_id: result[0].forum_comment_id
+                        // }
+                        // return res.json({ 'status': 1, 'response': { 'data': user_obj, 'msg': 'Data found' } });
 
                     }else{
 

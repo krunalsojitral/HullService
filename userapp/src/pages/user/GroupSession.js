@@ -10,19 +10,15 @@ export default function GroupSession() {
 
 
     //     const { loginUser } = useAuth();
-
     //    // const [isFirstRadioLoaded, setIsFirstRadioLoaded] = useState(false);  
-
     //     const { register, handleSubmit, formState: { errors } } = useForm();
     //     const onSubmit = async (data) => {
     //         var obj = {
     //             email: data.email,
     //             password: data.password
     //         }
-
     //        // setIsFirstRadioLoaded(currentIsLoaded => !currentIsLoaded)
     //         await loginUser(obj);
-
     //     }
 
     return (

@@ -119,7 +119,6 @@ export default function ForumDetail() {
             axios.post(api_url + "/forum/addComment", obj, config)
                 .then((result) => {
                     if (result.data.status) {
-
                         $("#" + comment_id).css('display', 'none');
                         let tempColl = [...forumCommentList];
                         //tempColl[index].reply = [result.data.response.data, ...tempColl[index].reply]

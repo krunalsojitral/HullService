@@ -683,6 +683,33 @@ function forum() {
     //     });
     // }
 
+    this.getForumSubReplyComment = function (id, callback) { 
+        connection.acquire(function (err, con) { 
+            var sql = 'SELECT ur.role,u.first_name,u.last_name,c.comment,c.created_at,c.forum_comment_id as reply_comment_id FROM forum_comment as c inner join users as u on u.id = c.user_id inner join user_role as ur on ur.role_id = u.role where c.parent_comment_id = $1 order by c.forum_comment_id DESC';
+            con.query(sql, [id], function (err, results) {
+                if (err) {
+                    callback(err, null);
+                } else {
+                    if (results && results.rows.length > 0) {
+                        var obj = results.rows.map(data => {
+                            let retObj = {};
+                            retObj['comment'] = data.comment;
+                            retObj['created_at'] = moment(data.created_at).format('MMMM Do, YYYY');
+                            retObj['first_name'] = data.first_name;
+                            retObj['last_name'] = data.last_name;
+                            retObj['role'] = data.role;
+                            retObj['reply_comment_id'] = data.reply_comment_id;
+                            return retObj;
+                        })
+                        callback(null, obj);
+                    } else {
+                        callback(null, []);
+                    }
+                }
+            });
+        });       
+    }
+
     this.getForumReplyComment = function (id, callback) {
         connection.acquire(function (err, con) {
             var obj = {
@@ -699,9 +726,7 @@ function forum() {
                         Promise.all(result.rows.map(function (item) {
                             var temparray = new Promise(function (resolve, reject) {
                                 var sql = 'SELECT ur.role,u.first_name,u.last_name,c.comment,c.created_at,c.forum_comment_id as reply_comment_id FROM forum_comment as c inner join users as u on u.id = c.user_id inner join user_role as ur on ur.role_id = u.role where c.parent_comment_id = $1 order by c.forum_comment_id DESC';
-                                con.query(sql, [item.reply_comment_id], function (err, results) {
-
-                                    console.log(results.rows);
+                                con.query(sql, [item.reply_comment_id], function (err, results) {                                    
                                     if (results && results.rows.length > 0) {
                                         item.reply = results.rows.map(data => {
                                                 let retObj = {};
@@ -713,7 +738,9 @@ function forum() {
                                                 retObj['reply_comment_id'] = data.reply_comment_id;
                                                 return retObj;
                                             })
-                                    }                                    
+                                    }else{
+                                        item.reply = [];
+                                    }                                 
                                     setTimeout(() => resolve(item), 50)
                                 });                               
 
@@ -738,7 +765,8 @@ function forum() {
                                 }).sort(function (a, b) {
                                     return a.forum_comment_id - b.forum_comment_id;
                                 });                                
-                                obj.reply_list = commentList.reverse();
+                                //obj.reply_list = commentList.reverse();
+                                obj.reply_list = commentList;
                             })
                         })).then(function () {
                             done(null, obj);

@@ -4,7 +4,6 @@ import axios from 'axios';
 import api_url from './../../Apiurl';
 import Swal from "sweetalert2";
 import UserRequest from "./UserRequest";
-
 import {
   CCardBody,
   CButton,
@@ -71,6 +70,8 @@ const ResearchesDemoTable = ({ moduleConfigUrls }) => {
   return (
     <div className="card">
       <CCardBody>
+
+        
         <CDataTable
           items={items}
           fields={fields}

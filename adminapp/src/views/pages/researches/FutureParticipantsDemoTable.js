@@ -6,10 +6,13 @@ import Swal from "sweetalert2";
 import {
   CCardBody,
   CBadge,
+  CCardHeader,
   CButton,
   CCollapse,
   CDataTable
 } from '@coreui/react'
+import CIcon from '@coreui/icons-react'
+import { CSVLink, CSVDownload } from "react-csv";
 
 
 const FutureParticipantsDemoTable = () => {
@@ -17,59 +20,51 @@ const FutureParticipantsDemoTable = () => {
   const history = useHistory()
   const [details, setDetails] = useState([])
   const [items, setItems] = useState([])
+  const [csvData, setCsvData] = useState([["Name", "Email", "DOB", "No of Kids", "Age of kids"]]);
 
   React.useEffect(() => {
     getNewList();
     getNewListWrap();
+    getCSVList();
   }, [])
 
-  const fields = [
-    { key: 'title', _style: { width: '20%'} },
-    { key: 'role', _style: { width: '20%' } },
-    { key: 'created_at', _style: { width: '20%' } },
-    { key: 'status', _style: { width: '20%'} },
-    {
-      key: 'show_details',
-      label: '',
-      _style: { width: '1%' },
-      filter: false
-    }
-  ]
+  const headers = [
+    { label: "Name", key: "Name" },
+    { label: "Email", key: "Email" },
+    { label: "DOB", key: "DOB" },
+    { label: "No of Kids", key: "No_of_Kids" },
+    { label: "Age of kids", key: "Age_of_kids" }
+  ];
 
-
-  const updateItemStatus = (item, status) => {
-
-    Swal.fire({
-      title: "Are you sure?",
-      icon: 'warning',
-      //text: "You will not be able to recover this resume!",
-      confirmButtonText: `Publish`,
-    }).then((results) => {
-      if (results.isConfirmed) { 
-        var obj = {
-          blog_id: item.blog_id,
-          draft_status: 0,
-        };
-        axios.post(api_url + "/blog/changeDraftBlogStatus", obj)
-          .then((result) => {
-            if (result.data.status) {
-              getNewListWrap();
-              history.push("/blog");
-            } else {
-              Swal.fire("Oops...", result.data.response.msg, "error");
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-            //Swal.fire('Oops...', err, 'error')
-          });
+  const getCSVList = () => {
+    axios.get(api_url + '/researches/getCSVFutureResearchList').then((result) => {
+      if (result.data.status) {
+        var usersdatas = result.data.response.data;
+        setCsvData(usersdatas);
+      } else {
+        Swal.fire('Oops...', result.data.response.msg, 'error')
       }
-    });
+    }).catch((err) => {
+      console.log(err);
+    })
   }
 
+  const fields = [
+    { key: 'name', _style: { width: '20%'} },
+    { key: 'dob', _style: { width: '20%' } },
+    { key: 'email', _style: { width: '20%' } },    
+    { key: 'no_of_kids', _style: { width: '20%' } },
+    { key: 'age_of_kids', _style: { width: '20%' } },
+    // {
+    //   key: 'show_details',
+    //   label: '',
+    //   _style: { width: '1%' },
+    //   filter: false
+    // }
+  ]
 
   const getNewList = () => {
-    axios.get(api_url + '/blog/draftblogList', {}).then((result) => {
+    axios.get(api_url + '/researches/getFutureResearchList').then((result) => {
       if (result.data.status) {
         var usersdatas = result.data.response.data;
         setItems(usersdatas);
@@ -85,6 +80,8 @@ const FutureParticipantsDemoTable = () => {
       getNewList(setItems);
   };
 
+  
+
   const getBadge = (status)=>{
     switch (status) {
       case '2': return 'Service Provider'
@@ -98,6 +95,16 @@ const FutureParticipantsDemoTable = () => {
   return (
     <div className="card">
       <CCardBody>
+
+        <CCardHeader className="custom-table-header">
+          <div className="header-left">
+            <CIcon name="cil-grid" /> Future Participants
+            </div>
+          <div className="header-right">
+            <CSVLink headers={headers} data={csvData}>Download</CSVLink> &nbsp;
+            </div>
+        </CCardHeader>
+
         <CDataTable
           items={items}
           fields={fields}
@@ -118,70 +125,20 @@ const FutureParticipantsDemoTable = () => {
           // onSorterValueChange={(val) => console.log('new sorter value:', val)}
           // onTableFilterChange={(val) => console.log('new table filter:', val)}
           // onColumnFilterChange={(val) => console.log('new column filter:', val)}
-          scopedSlots={{
-            status: (item) => (
-              <td>
-                {item.status === 1 ? (
-                  <a
-                    href
-                    style={{ cursor: "pointer", textDecoration: "underline" }}
-                    onClick={() => {
-                      updateItemStatus(
-                        item,
-                        1,
-                        getNewListWrap
-                      );
-                    }}
-                  >
-                    Publish{" "}
-                  </a>
-                ) : (
-                  <a
-                    href
-                    style={{ cursor: "pointer", textDecoration: "underline" }}
-                    onClick={() => {
-                      updateItemStatus(
-                        item,
-                        1,
-                        getNewListWrap
-                      );
-                    }}
-                  >
-                    Publish
-                  </a>
-                )}
-                {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}
-              </td>
-            ),
-            'role':
-              (item) => (
-                <td>
-                  {getBadge(item.role)}
-                </td>
-              ),
+          scopedSlots={{                     
             'show_details':
               item => {
                 return (
                   <td className="py-2">
-                    {/* <CButton
+                    <CButton
                     color="primary"
                     variant="outline"
                     shape="square"
                     size="sm"
-                    onClick={() => history.push(`/blogdetail/${item.id}`)}
+                      onClick={() => history.push(`/futureresearchdetail/${item.future_research_id}`)}
                   >
-                    Show
-                  </CButton> */}
-                    <CButton
-                      color="primary"
-                      variant="outline"
-                      shape="square"
-                      size="sm"
-                      onClick={() => history.push(`/blogedit/${item.blog_id}`)}
-                      className="mr-1"
-                    > Edit
+                    View
                   </CButton>
-
                   </td>
                 )
               },

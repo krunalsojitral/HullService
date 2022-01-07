@@ -3,6 +3,8 @@ import $ from 'jquery';
 import axios from 'axios';
 import api_url from '../../components/Apiurl';
 import Swal from "sweetalert2";
+import ForumSubReply from "./ForumSubReply";
+
 
 function ForumReply(props) {
 
@@ -10,18 +12,18 @@ function ForumReply(props) {
     const [visible, setVisible] = useState(3);
     const [replyVisible, setReplyVisible] = useState(3);
     const [forumId, setForumId] = useState();
-    const [hideLoad, setHideLoad] = useState(true);
+    const [hideLoad, setHideLoad] = useState(true);    
+
     useEffect(() => {
         setForumReplyCommentList(props.replyDetail);
-        // console.log(parseInt(props.replyDetail.length)+"============"+ parseInt(visible));
-        if (parseInt(props.replyDetail.length) < parseInt(visible)) {
+        console.log(parseInt(props.replyDetail.length)+"============"+ parseInt(visible));        
+        if ((parseInt(props.replyDetail.length) < parseInt(visible)) || (parseInt(props.replyDetail.length) == parseInt(visible))) {
             setHideLoad(false);
         } else {
             if (parseInt(props.replyDetail.length) !== parseInt(visible)) {
                 setHideLoad(true);
             }
-
-        }
+        }        
         setForumId(props.replyForumId);
     }, [visible, props.replyDetail]);
 
@@ -36,12 +38,10 @@ function ForumReply(props) {
     const reply = (id) => { $("#" + id).css('display', 'block'); }
 
     const replySubmit = (comment_id, index) => {
-
         if ($("#input" + comment_id).val().trim() == '') {
             $("#error" + comment_id).show();
         } else {
             $("#error" + comment_id).hide();
-
             var textareaText = $("#input" + comment_id).val();
             textareaText = textareaText.replace(/\r?\n/g, '<br />');
             const tokenString = localStorage.getItem('token');
@@ -59,13 +59,9 @@ function ForumReply(props) {
                         $("#" + comment_id).css('display', 'none');
                         $("#input" + comment_id).val('')
 
-                        // let tempColl = [...forumReplyCommentList];
-                        // tempColl[index] = result.data.response.data;
-                        // setForumReplyCommentList(tempColl);
-
                         let tempColl = [...forumReplyCommentList];
-                        tempColl[index].reply = [result.data.response.data, ...tempColl[index].reply]
-                        //tempColl[index].reply = result.data.response.data
+                        //tempColl[index].reply = [result.data.response.data, ...tempColl[index].reply]
+                        tempColl[index].reply = result.data.response.data
                         setForumReplyCommentList(tempColl);
 
                     } else {
@@ -73,11 +69,10 @@ function ForumReply(props) {
                     }
                 }).catch((err) => { console.log(err); });
         }
-    }
+    }    
 
     return (
         <div>
-
             <div className="reply-list">
                 {forumReplyCommentList && forumReplyCommentList.slice(0, visible).map((replydata, index) => (
                     <div className="reply-card">
@@ -92,8 +87,8 @@ function ForumReply(props) {
                             <small id={"error" + replydata.reply_comment_id} style={{ display: 'none' }} className="error">Comment is required.</small>
                             <button type="submit" onClick={(e) => replySubmit(replydata.reply_comment_id, index)}>Reply</button>
                         </div>
-
-                        {replydata && replydata.reply.length > 0 && replydata.reply.slice(0, replyVisible).map((subdata, index) => (
+{/* 
+                        {replydata && replydata.reply && replydata.reply.length > 0 && replydata.reply.slice(0, replyVisible).map((subdata, index) => (
                             <div>
                                 <div className="sub-reply">
                                     <h3>{subdata.first_name} {subdata.last_name} <span>({subdata.role})</span></h3>
@@ -103,19 +98,15 @@ function ForumReply(props) {
                             </div>                            
                         ))}
 
-                        {replydata && replydata.reply.length > 0 && <span className="reply-loadmore" onClick={showMoreReplyCommentItems}>View more comments</span>}
+                         <span className="reply-loadmore" onClick={showMoreReplyCommentItems}>View more comments</span> */}
+
+                        {replydata && replydata.reply && replydata.reply.length > 0 && <ForumSubReply subReplyDetail={replydata.reply}></ForumSubReply>}
 
                     </div>
                 ))}
 
                 {hideLoad && <span className="reply-loadmore" onClick={showMoreCommentItems}>View more comments</span>}
-
             </div>
-
-
-
-
-
         </div>
     )
 }
