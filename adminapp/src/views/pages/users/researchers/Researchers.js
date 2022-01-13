@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
 import {
   CCard,
-  CCardHeader,
-  CButton,
+  CCardHeader,  
   CCol,
   CRow,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import DemoTable from './DemoTable'
-import { CSVLink, CSVDownload } from "react-csv";
+import { CSVLink } from "react-csv";
 import axios from "axios";
 import Swal from "sweetalert2";
 import api_url from './../../../Apiurl';

@@ -4,10 +4,8 @@ import axios from 'axios';
 import api_url from './../../Apiurl';
 import Swal from "sweetalert2";
 import {
-  CCardBody,
-  CBadge,
+  CCardBody,  
   CButton,
-  CCollapse,
   CDataTable
 } from '@coreui/react'
 
@@ -15,7 +13,7 @@ import {
 const DraftVideoDemoTable = () => {
 
   const history = useHistory()
-  const [details, setDetails] = useState([])
+ // const [details, setDetails] = useState([])
   const [items, setItems] = useState([])
 
   React.useEffect(() => {
@@ -89,15 +87,15 @@ const DraftVideoDemoTable = () => {
     getNewList(setItems);
   };
 
-  const getBadge = (status)=>{
-    switch (status) {
-      case '2': return 'Service Provider'
-      case '3': return 'Researchers'
-      case '4': return 'General Public'
-      case 'all': return 'All'
-      default: return 'Service Provider'
-    }
-  }
+  // const getBadge = (status)=>{
+  //   switch (status) {
+  //     case '2': return 'Service Provider'
+  //     case '3': return 'Researchers'
+  //     case '4': return 'General Public'
+  //     case 'all': return 'All'
+  //     default: return 'Service Provider'
+  //   }
+  // }
 
   return (
     <div className="card">
@@ -190,25 +188,25 @@ const DraftVideoDemoTable = () => {
                   </td>
                 )
               },
-            'details':
-              item => {
-                return (
-                  <CCollapse show={details.includes(item.id)}>
-                    <CCardBody>
-                      <h4>
-                        {item.username}
-                      </h4>
-                      <p className="text-muted">User since: {item.created_at}</p>
-                      <CButton size="sm" color="info">
-                        User Settings
-                    </CButton>
-                      <CButton size="sm" color="danger" className="ml-1">
-                        Delete
-                    </CButton>
-                    </CCardBody>
-                  </CCollapse>
-                )
-              }
+            // 'details':
+            //   item => {
+            //     return (
+            //       <CCollapse show={details.includes(item.id)}>
+            //         <CCardBody>
+            //           <h4>
+            //             {item.username}
+            //           </h4>
+            //           <p className="text-muted">User since: {item.created_at}</p>
+            //           <CButton size="sm" color="info">
+            //             User Settings
+            //         </CButton>
+            //           <CButton size="sm" color="danger" className="ml-1">
+            //             Delete
+            //         </CButton>
+            //         </CCardBody>
+            //       </CCollapse>
+            //     )
+            //   }
           }}
         />
       </CCardBody>

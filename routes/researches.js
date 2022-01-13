@@ -83,20 +83,26 @@ router.get('/getResearchesDataById', (req, res, next) => {
                 if (err) {
                     done({ 'status': 0, 'response': { 'msg': 'Something went wrong.' } });
                 } else {
-                    var imageLink;
-                    if (req.headers.host == env.ADMIN_LIVE_URL) {
-                        imageLink = env.ADMIN_LIVE_URL;
-                    } else {
-                        imageLink = env.ADMIN_LIVE_URL;
+
+                    if (result.length > 0){
+                        var imageLink;
+                        if (req.headers.host == env.ADMIN_LIVE_URL) {
+                            imageLink = env.ADMIN_LIVE_URL;
+                        } else {
+                            imageLink = env.ADMIN_LIVE_URL;
+                        }
+                        let researches = {};
+                        researches['sub_title'] = result[0].sub_title;
+                        researches['main_title'] = result[0].main_title;
+                        researches['description'] = result[0].description;
+                        researches['image'] = (result[0].image) ? imageLink + env.RESEARCHES_VIEW_PATH + result[0].image : '';
+                        researches['future_participate_text'] = result[0].future_participate_text;
+                        researches['participate_text'] = result[0].participate_text;
+                        done(err, researches)
+                    }else{
+                        done(err, null)
                     }
-                    let researches = {};
-                    researches['sub_title'] = result[0].sub_title;
-                    researches['main_title'] = result[0].main_title;
-                    researches['description'] = result[0].description;
-                    researches['image'] = (result[0].image) ? imageLink + env.RESEARCHES_VIEW_PATH + result[0].image : '';
-                    researches['future_participate_text'] = result[0].future_participate_text;
-                    researches['participate_text'] = result[0].participate_text;
-                    done(err, researches)
+                    
                 }
             });
         }
@@ -632,6 +638,7 @@ router.post('/addFutureResearchByuser', [
     } else {       
         let record = {
             name: req.body.name,
+            email: req.body.email,
             dob: req.body.dob,            
             child: req.body.child,
             child_first: req.body.child_first,

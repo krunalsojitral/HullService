@@ -54,6 +54,7 @@ const FutureParticipateDetail = React.lazy(() => import('./views/pages/researche
 const ParticipateDemoTable = React.lazy(() => import('./views/pages/researches/ParticipateDemoTable'))
 const AddContentForm = React.lazy(() => import('./views/pages/researches/AddContentForm'))
 const ResearchRequestsDemoTable = React.lazy(() => import('./views/pages/researches/ResearchRequestsDemoTable'))
+const BecomeMemberContent = React.lazy(() => import('./views/pages/becomemember/BecomeMemberContent'))
 
 
 const DynamicPages = React.lazy(() => import('./views/pages/dynamicpages/DynamicPages'))
@@ -133,7 +134,8 @@ const routes = [
   { path: '/research-requests', name: 'Researches Requests', component: ResearchRequestsDemoTable },
   { path: '/future-participants', name: 'Future Participants', component: FutureParticipantsDemoTable },
   { path: '/dynamicPages', name: 'Dynamic Pages', component: DynamicPages },
-  { path: '/dynamicPagesadd', name: 'Dynamic Pages', component: DynamicPagesAddEditForm }
+  { path: '/dynamicPagesadd', name: 'Dynamic Pages', component: DynamicPagesAddEditForm },
+  { path: '/become-member-content', name: 'Become Member Content', component: BecomeMemberContent },
 ]
 
 

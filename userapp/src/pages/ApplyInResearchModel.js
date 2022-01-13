@@ -17,9 +17,7 @@ function ApplyInResearchModel(props) {
     
     const {
         handleSubmit,
-        control,
-        watch,
-        setValue,
+        control,                
         formState: { errors },
     } = useForm();
 

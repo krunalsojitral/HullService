@@ -2,11 +2,22 @@ import React from 'react';
 import Header from '../sections/Header';
 import Footer from '../sections/Footer';
 import { Link } from 'react-router-dom';
+import api_url from './../components/Apiurl';
+import axios from "axios";
 
 export default function MembershipBenefit() {
 
-    
-
+    const [becomeMemberDetail, setBecomeMemberDetail] = React.useState({})
+    React.useEffect(() => {
+        axios.get(api_url + "/common/getBecomeMemberContent", {})
+            .then((result) => {
+                if (result.data.status) {
+                    var usersdata = result.data.response.data;
+                    setBecomeMemberDetail(usersdata);
+                }
+            })
+            .catch((err) => { console.log(err); });
+    }, []);
     
 
     return (
@@ -16,96 +27,39 @@ export default function MembershipBenefit() {
                 <div className="row">
                     <div className="col-md-12">
                         <div className="page-title">
-                            <h1>Become A Member</h1>
-                            <p>Check out Membership benefits and Join or Renew for $<span>XX</span></p>
+                            {becomeMemberDetail.main_title && <h1>{becomeMemberDetail.main_title}</h1>}
+                            {becomeMemberDetail.sub_title && <p>{becomeMemberDetail.sub_title}</p>}
                         </div>
                     </div>
                 </div>
             </div>
-            <section className="page-banner">
+            {/* <section className="page-banner">
 
-            </section>
+            </section> */}
+
+            {becomeMemberDetail.image && <section class="research-banner-img">
+                <img src={becomeMemberDetail.image} />
+            </section>}
+
             <section className="page-section">
                 <div className="container">
                     <div className="row">
                         <div className="col-md-12">
-                            <div className="Become-text">
-                                <h2>Virtual Center Membership Benefits</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit arcu id turpis quis est aliquam. Adipiscing dignissim luctus elit leo placerat. Velit enim facilisis sagittis tincidunt vestibulum. Enim ac, in lorem volutpat tincidunt morbi accumsan nulla amet. Nibh nulla eu nisl, sed. Ultricies at tincidunt orci aenean cras turpis ultrices. Ac phasellus eu, aliquet arcu pretium morbi sed.</p>
+                            {becomeMemberDetail.description && <div className="Become-text" dangerouslySetInnerHTML={{ __html: becomeMemberDetail.description }}>                                
+                            </div>}
 
-                                <p>Cursus eu neque, volutpat integer vitae. Erat sit turpis volutpat, gravida vulputate interdum. Tellus in eu purus ultrices nullam vitae sed netus eros. Ac pellentesque scelerisque nunc ac nunc vivamus hac pharetra, mauris. Pulvinar sed enim, sed at consectetur. Accumsan, nunc erat pulvinar velit. Lorem mauris posuere sagittis, fringilla eget id. Mattis quis et egestas ultricies nisl integer sapien. Elementum sed pulvinar aliquam vestibulum condimentum odio sodales volutpat risus. Eleifend tellus elit at habitasse consectetur nulla. Sed nullam elit sed odio arcu, scelerisque ac. Nulla elementum adipiscing libero, ipsum aliquet ut nisl. Dui a, orci morbi natoque velit tristique massa. Massa vel et mi neque fringilla bibendum.</p>
+                            {becomeMemberDetail.testimonials && <div className="testimonials-card" dangerouslySetInnerHTML={{ __html: becomeMemberDetail.testimonials }}>                                
+                            </div>}
 
-                                <p>Et dui mauris tellus maecenas duis enim. Lacus, eu, consequat id hac amet, sed at. In iaculis turpis pharetra eros ullamcorper eget adipiscing at nisi. Ultrices in nam eget in in. Non, in eget vitae egestas phasellus tellus, ipsum volutpat pretium. Mauris eu mauris odio viverra. Elementum rutrum mattis vel quam molestie nisl tristique. Cursus at mauris facilisi ullamcorper pellentesque. Quam eu ante sagittis, auctor faucibus posuere. Diam, felis nunc, at nisl vitae laoreet malesuada.</p>
-
-                                <p>Rhoncus mattis elementum maecenas euismod enim. Sodales at vel dignissim vitae, risus scelerisque sed lectus. Nulla eu eu quis fames quis ac.</p>
-
-                            </div>
-
-                            <div className="testimonials-card">
-                                <h2>Testimonials</h2>
-                                <div className="row">
-                                    <div className="col-md-6  col-sm-6">
-                                        <div className="testimonials-text">
-                                            <h3>Title of Testimonial</h3>
-                                            <p>Cursus eu neque, volutpat integer vitae. Erat sit turpis volutpat, gravida vulputate interdum. Tellus in eu purus ultrices nullam vitae sed netus eros. Ac pellentesque scelerisque nunc ac nunc vivamus hac pharetra, mauris. Pulvinar sed enim, sed at consectetur. Accumsan, nunc erat pulvinar velit.</p>
-                                            <a href="#">First Lastname - Occupation</a>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6  col-sm-6">
-                                        <div className="testimonials-text">
-                                            <h3>Title of Testimonial</h3>
-                                            <p>Cursus eu neque, volutpat integer vitae. Erat sit turpis volutpat, gravida vulputate interdum. Tellus in eu purus ultrices nullam vitae sed netus eros. Ac pellentesque scelerisque nunc ac nunc vivamus hac pharetra, mauris. Pulvinar sed enim, sed at consectetur. Accumsan, nunc erat pulvinar velit.</p>
-                                            <a href="#">First Lastname - Occupation</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="Become-text">
-                                <h2>Membership Types</h2>
-                                <div className="Become-card">
-                                    <h3>Professional </h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit arcu id turpis quis est aliquam. Adipiscing dignissim luctus elit leo placerat. Velit enim facilisis sagittis tincidunt vestibulum. Enim ac, in lorem volutpat tincidunt morbi accumsan nulla amet. Nibh nulla eu nisl, sed. Ultricies at tincidunt orci aenean cras turpis ultrices. Ac phasellus eu, aliquet arcu pretium morbi sed. </p>
-
-                                    <p>Cursus eu neque, volutpat integer vitae. Erat sit turpis volutpat, gravida vulputate interdum. Tellus in eu purus ultrices nullam vitae sed netus eros. Ac pellentesque scelerisque nunc ac nunc vivamus hac pharetra, mauris. Pulvinar sed enim, sed at consectetur. Accumsan, nunc erat pulvinar velit. </p>
-
-                                    <Link className="btn-renew" to='/userSelection'>
-                                        JOIN or RENEW NOW!
-                                    </Link>
-                                </div>
-                                <div className="Become-card">
-                                    <h3>Public</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit arcu id turpis quis est aliquam. Adipiscing dignissim luctus elit leo placerat. Velit enim facilisis sagittis tincidunt vestibulum. Enim ac, in lorem volutpat tincidunt morbi accumsan nulla amet. Nibh nulla eu nisl, sed. Ultricies at tincidunt orci aenean cras turpis ultrices. Ac phasellus eu, aliquet arcu pretium morbi sed.</p>
-
-                                    <p>Cursus eu neque, volutpat integer vitae. Erat sit turpis volutpat, gravida vulputate interdum. Tellus in eu purus ultrices nullam vitae sed netus eros. Ac pellentesque scelerisque nunc ac nunc vivamus hac pharetra, mauris. Pulvinar sed enim, sed at consectetur. Accumsan, nunc erat pulvinar velit. </p>
-
-                                    <Link className="btn-renew" to='/userSelection'>
-                                        JOIN or RENEW NOW!
-                                    </Link>
-                                </div>
-                                <div className="Become-card">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit arcu id turpis quis est aliquam. Adipiscing dignissim luctus elit leo placerat. Velit enim facilisis sagittis tincidunt vestibulum. Enim ac, in lorem volutpat tincidunt morbi accumsan nulla amet. Nibh nulla eu nisl, sed. Ultricies at tincidunt orci aenean cras turpis ultrices. Ac phasellus eu, aliquet arcu pretium morbi sed. </p>
-
-                                    <p>Cursus eu neque, volutpat integer vitae. Erat sit turpis volutpat, gravida vulputate interdum. Tellus in eu purus ultrices nullam vitae sed netus eros. Ac pellentesque scelerisque nunc ac nunc vivamus hac pharetra, mauris. Pulvinar sed enim, sed at consectetur. Accumsan, nunc erat pulvinar velit. </p>
-
-                                   
-                                    <Link className="btn-renew" to='/userSelection'>
-                                        JOIN or RENEW NOW!
-                                    </Link>
-                                </div>
-                                <div className="Become-card">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit arcu id turpis quis est aliquam. Adipiscing dignissim luctus elit leo placerat. Velit enim facilisis sagittis tincidunt vestibulum. Enim ac, in lorem volutpat tincidunt morbi accumsan nulla amet. Nibh nulla eu nisl, sed. Ultricies at tincidunt orci aenean cras turpis ultrices. Ac phasellus eu, aliquet arcu pretium morbi sed. </p>
-
-                                    <p>Cursus eu neque, volutpat integer vitae. Erat sit turpis volutpat, gravida vulputate interdum. Tellus in eu purus ultrices nullam vitae sed netus eros. Ac pellentesque scelerisque nunc ac nunc vivamus hac pharetra, mauris. Pulvinar sed enim, sed at consectetur. Accumsan, nunc erat pulvinar velit. </p>
-                                </div>
-                            </div>
+                            {becomeMemberDetail.second_description && <div className="Become-text" dangerouslySetInnerHTML={{ __html: becomeMemberDetail.second_description }}>                                
+                            </div>}
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-md-6 col-sm-6 bg-become">
                             <div className="Become-cta">
-                                <h3>Become a Member Today!</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit arcu id turpis quis est aliquam. Adipiscing dignissim luctus elit leo.</p>
+                                {becomeMemberDetail.become_member_title && <h3>{becomeMemberDetail.become_member_title}</h3>}
+                                {becomeMemberDetail.become_member_description && <p dangerouslySetInnerHTML={{ __html: becomeMemberDetail.become_member_description }}></p>}
                                 <Link className="join-btn" to='/userSelection'>
                                     Join or Renew Today
                                 </Link>
@@ -114,7 +68,7 @@ export default function MembershipBenefit() {
                         <div className="col-md-6  col-sm-6 bg-Email">
                             <div className="Email-cta">
                                 <h3>Email Us</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit arcu id turpis quis est aliquam. Adipiscing dignissim luctus elit leo.</p>
+                                {becomeMemberDetail.email_us_description && <p dangerouslySetInnerHTML={{ __html: becomeMemberDetail.email_us_description }}></p>}
                                 <a href="#" className="email-btn">Send A Message</a>
                             </div>
                         </div>

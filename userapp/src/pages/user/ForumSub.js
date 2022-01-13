@@ -8,11 +8,11 @@ import Swal from "sweetalert2";
 import api_url from '../../components/Apiurl';
 import './../dev.css';
 import Paginator from 'react-hooks-paginator';
-import { useForm } from "react-hook-form";
+//import { useForm } from "react-hook-form";
 
 export default function ForumSub() {
 
-    const [headingId, setHeadingId] = useState(0);
+    //const [headingId, setHeadingId] = useState(0);
 
     const pageLimit = 12;
     const [offset, setOffset] = useState(0);
@@ -23,11 +23,11 @@ export default function ForumSub() {
     const [forumTagList, setForumTagList] = useState([]);
 
     const [selectedForumTag, setSelectedForumTag] = useState([]);
-    const [searchtext, setSearchtext] = React.useState('')
-    const { handleSubmit, formState } = useForm();
+   // const [searchtext, setSearchtext] = React.useState('')
+   // const { handleSubmit, formState } = useForm();
     const [noresult, setNoresult] = React.useState(false)
 
-    const onChangeSearch = (e) => { setSearchtext(e.currentTarget.value); }
+   // const onChangeSearch = (e) => { setSearchtext(e.currentTarget.value); }
 
     
 
@@ -39,7 +39,7 @@ export default function ForumSub() {
 
         const params = new URLSearchParams(window.location.search) // id=123
         let forum_heading_id = params.get('id')
-        setHeadingId(forum_heading_id);
+      //  setHeadingId(forum_heading_id);
 
         axios.post(api_url + '/forum/getForumSubHeadingList', { "forum_heading_id" : forum_heading_id }).then((result) => {
             if (result.data.status) {

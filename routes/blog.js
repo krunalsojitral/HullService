@@ -202,7 +202,7 @@ router.post('/getBlogDataById', [check('blog_id', 'Blog is required').notEmpty()
         ],
             function (error, blog) {
                 if (error) {
-                    return res.json({ 'status': 0, 'response': { 'msg': err } });
+                    return res.json({ 'status': 0, 'response': { 'msg': error } });
                 } else {
                     return res.json({ 'status': 1, 'response': { 'data': blog, 'msg': 'data found' } });
                 }

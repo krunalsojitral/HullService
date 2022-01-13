@@ -35,11 +35,11 @@ const DemoTable = () => {
   
 
   const updateItemStatus = (item, status) => {
-
+    var message = '';
     if (status == 1) {
-      var message = 'Are you sure you want to activate the sector?'
+      message = 'Are you sure you want to activate the sector?'
     } else {
-      var message = 'Are you sure you want to deactivate the sector?'
+      message = 'Are you sure you want to deactivate the sector?'
     }
     Swal.fire({
       //title: 'warning!',

@@ -343,5 +343,60 @@ function Common() {
         });
     };
 
+    
+    this.getBecomeMemberContent = function (callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM become_member', function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
+
+    function updateProductByID(become_member_id, cols) {
+        // Setup static beginning of query
+        var query = ['UPDATE become_member'];
+        query.push('SET');
+
+        // Create another array storing each set command
+        // and assigning a number value for parameterized query
+        var set = [];
+
+        Object.keys(cols).map(function (key, i) {
+            set.push(key + ' = ($' + (i + 1) + ')');
+        });
+        query.push(set.join(', '));
+
+        // Add the WHERE statement to look up by id
+        query.push('WHERE become_member_id = ' + become_member_id);
+
+        // Return a complete query string
+        return query.join(' ');
+    }
+
+    this.updateBecomeMemberByadmin = function (record, become_member_id, update_value, callback) {
+        connection.acquire(function (err, con) {
+            var query = updateProductByID(become_member_id, record);
+            con.query(query, update_value, function (err, result) {
+                con.release()
+                console.log(err);
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, record);
+                }
+            });
+        });
+    }
+
 }
 module.exports = new Common();

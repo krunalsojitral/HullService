@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 import Header from './../../sections/Header';
 import Footer from './../../sections/Footer';
 import Sidebar from './Sidebar';
-import Paginator from 'react-hooks-paginator';
 import axios from 'axios';
 import Swal from "sweetalert2";
 import api_url from '../../components/Apiurl';

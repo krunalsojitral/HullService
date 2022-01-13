@@ -1004,13 +1004,11 @@ section.banner-card .banner-text .banner-btn {
 
 .login-section .login-box .login-details h2 {
     margin: 25px 0 0px;
-
     font-style: normal;
     font-weight: normal;
     font-size: 28px;
     line-height: 38px;
     text-align: center;
-
     /* Blue */
     color: #036E80;
 }
@@ -1026,9 +1024,8 @@ section.banner-card .banner-text .banner-btn {
     border: #A0A0A0 solid 1px;
     border-radius: 10px;
     padding: 13px 10px;
-    height: 52px;
+    height: 54px;
 }
-
 
 .forum-section .form-group .interest-area {
     border: 1px solid #ccc;
@@ -1086,10 +1083,10 @@ section.banner-card .banner-text .banner-btn {
     font-style: normal;
     font-weight: normal;
     font-size: 13px;
-    line-height: 18px;
+    line-height: 27px;
     color: #A0A0A0;
     box-shadow: none;
-    height: 50px;
+    height: 54px;
     border-radius: 10px;
 }
 
@@ -4600,4 +4597,39 @@ input[type=number]::-webkit-outer-spin-button {
     -moz-appearance: none;
     appearance: none;
     margin: 0; 
+}
+
+
+@keyframes spinner-border {
+  to { transform: rotate(360deg); }
+}
+
+.spinner-border {
+  display: inline-block;
+  width:18px;
+  height:18px;
+  vertical-align: text-bottom;
+  border:4px solid #fff;
+  border-right-color: transparent;
+  border-radius: 50%;
+  margin-right:5px;
+  animation: spinner-border .75s linear infinite;
+}
+
+@keyframes spinner-grow {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.spinner-grow {
+  display: inline-block;
+  vertical-align: text-bottom;
+  background-color: currentColor;
+  border-radius: 50%;
+  opacity: 0;
+  animation: spinner-grow .75s linear infinite;
 }

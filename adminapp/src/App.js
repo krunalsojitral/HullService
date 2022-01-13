@@ -14,7 +14,7 @@ const TheLayout = React.lazy(() => import('./containers/TheLayout'));
 
 // Pages
 const Login = React.lazy(() => import('./views/pages/login/Login'));
-const Blog = React.lazy(() => import('./views/pages/blog/Blog'));
+//const Blog = React.lazy(() => import('./views/pages/blog/Blog'));
 
 
 

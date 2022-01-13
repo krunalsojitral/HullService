@@ -697,14 +697,19 @@ router.post('/getForumCommentDetail', passport.authenticate('jwt', { session: fa
             Forum.getforumRequestDataById(forum_id, function (err, result) {
                 if (err) {                    
                     done(err, null)
-                } else {                        
-                    if (result[0].created_at){                        
-                        comment.started = helper.timeCountSince(result[0].created_at);
-                    }   
-                    comment.forum_title = result[0].topic;
-                    comment.retire = result[0].retire;
-                    comment.forum_description = result[0].description;
-                    done(null, comment)
+                } else {     
+                    if (result.length > 0){
+                        if (result[0].forum_date) {
+                            comment.started = helper.timeCountSince(result[0].forum_date);
+                        }
+                        comment.forum_title = result[0].topic;
+                        comment.retire = result[0].retire;
+                        comment.forum_description = result[0].description;
+                        done(null, comment)
+                    }else{
+                        done(null, comment)
+                    }
+                    
                 }
             });
         },

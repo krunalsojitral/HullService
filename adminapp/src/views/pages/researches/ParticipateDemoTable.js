@@ -3,11 +3,8 @@ import axios from 'axios';
 import api_url from './../../Apiurl';
 import Swal from "sweetalert2";
 import {
-  CCardBody,
-  CBadge,
-  CCardHeader,  
-  CButton,
-  CCollapse,
+  CCardBody,  
+  CCardHeader,    
   CDataTable
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'

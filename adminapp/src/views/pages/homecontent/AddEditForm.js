@@ -9,22 +9,20 @@ import {
   CLabel,
   CRow,
 } from '@coreui/react'
-import { MultiSelect } from "react-multi-select-component";
 import './TextEditors.scss'
 import { useForm, Controller } from "react-hook-form";
-import { useHistory } from "react-router-dom";
+//import { useHistory } from "react-router-dom";
 import api_url from './../../Apiurl';
 import axios from "axios";
 import Swal from "sweetalert2";
 
 const AddEditForm = ({ match }) => {
 
-  let history = useHistory();
+  //let history = useHistory();
   const {
     handleSubmit,    
     setValue,
-    control,    
-    watch,
+    control,        
     formState: { errors },
   } = useForm();
   

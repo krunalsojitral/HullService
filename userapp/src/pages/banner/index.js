@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useReducer } from "react";
 import { Link } from 'react-router-dom';
-
+import $ from 'jquery';
 import {
     SliderItem,
     SliderContainer,
@@ -12,7 +12,7 @@ import {
 } from "./styles";
 
 const Slider = () => {
-    const width = useWindowWidth();
+
     const [state, dispatch] = useReducer(reducer, {
         currentIndex: 0,
         items: [
@@ -23,6 +23,34 @@ const Slider = () => {
             // { id: 5, name: "5" }
         ]
     });
+    const width = useWindowWidth();
+
+    // React.useEffect(() => {
+        
+    //     let timer1 = setInterval(function () {
+    //         console.log('===========');
+    //         console.log(state);
+        
+    //         if (state.currentIndex < 1) {
+    //             console.log('in');
+    //             $(".fa-angle-right").click()
+    //         }
+
+    //     //    if (state.currentIndex < 2){
+    //     //     $(".fa-angle-right").click()
+    //     //    }else{
+    //     //        console.log('in');
+    //     //        dispatch("GOTO", 0)
+    //     //    }            
+        
+    //     }, 5000);
+
+    // }, [state])
+
+    
+
+    
+  
 
     return (
         <div>

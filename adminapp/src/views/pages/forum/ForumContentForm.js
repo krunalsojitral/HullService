@@ -5,14 +5,12 @@ import {
   CCard,  
   CCardBody,
   CCol,
-  CFormGroup,  
-  CInput,
+  CFormGroup,    
   CLabel,
   CRow,
 } from '@coreui/react'
-import { MultiSelect } from "react-multi-select-component";
-import { useForm, Controller } from "react-hook-form";
-import { useHistory } from "react-router-dom";
+import { useForm } from "react-hook-form";
+//import { useHistory } from "react-router-dom";
 import api_url from './../../Apiurl';
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -20,11 +18,9 @@ import './TextEditors.scss'
 
 const ForumContentForm = () => {
 
-  let history = useHistory();
+ // let history = useHistory();
   const {
-    handleSubmit,    
-    setValue,
-    control,   
+    handleSubmit,        
     formState: { errors },
   } = useForm(); 
   

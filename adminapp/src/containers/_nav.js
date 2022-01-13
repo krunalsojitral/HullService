@@ -227,7 +227,7 @@ const _nav = [
       {
         _tag: "CSidebarNavItem",
         name: "Become a member content",
-        to: "/homecontenteditform",
+        to: "/become-member-content",
       },
       {
         _tag: "CSidebarNavItem",

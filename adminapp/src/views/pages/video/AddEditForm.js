@@ -21,8 +21,7 @@ const AddEditForm = ({ match }) => {
 
   let history = useHistory();
   const {
-    handleSubmit,
-    getValues,
+    handleSubmit,    
     setValue,
     control,    
     watch,

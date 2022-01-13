@@ -43,6 +43,9 @@ export default function Landing() {
                 setContent(contentdata);
             }
         }).catch((err) => { })
+
+        
+
     }, [])
 
     const next = () => {

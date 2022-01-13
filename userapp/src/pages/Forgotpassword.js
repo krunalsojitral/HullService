@@ -8,17 +8,13 @@ import { useForm } from "react-hook-form";
 export default function Forgotpassword() {   
 
     const { forgotpassword } = useAuth();
-
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();   
     const onSubmit = async (data) => {
         var obj = {
             email: data.email
         }
         await forgotpassword(obj);
-
-    }
-
- 
+    } 
 
     return (
         <div>
@@ -42,7 +38,9 @@ export default function Forgotpassword() {
                                             {errors?.email?.type === "pattern" && (<small className="error">Invalid email address</small>)}
                                         </div>                                        
 
-                                        <button color="info" type="submit" className="sign-btn">Submit</button>
+                                        <button disabled={isSubmitting} color="info" type="submit" className="sign-btn">
+                                            {isSubmitting && <span class="spinner-border spinner-border-sm"></span>}
+                                        Submit</button>                                       
                                        
                                     </div>
                                 </form>

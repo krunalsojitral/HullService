@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import Header from './../../sections/Header';
 import Footer from './../../sections/Footer';
@@ -8,18 +8,18 @@ import Swal from "sweetalert2";
 import api_url from '../../components/Apiurl';
 import './../dev.css';
 import { useModal } from 'react-hooks-use-modal';
-import DirectionModel from "./../DirectionModel";
-import { useHistory } from "react-router-dom";
+// import DirectionModel from "./../DirectionModel";
+// import { useHistory } from "react-router-dom";
 
 
 
 export default function ProfessionalDevelopmentDetail() {
 
 
-    let history = useHistory();
+    //let history = useHistory();
 
     const [courseDetail, setcourseDetail] = React.useState({})
-    const [relatedcourseDetail, setRelatedcourseDetail] = React.useState([])
+    //const [relatedcourseDetail, setRelatedcourseDetail] = React.useState([])
 
     React.useEffect(() => {
         const params = new URLSearchParams(window.location.search) // id=123
@@ -27,9 +27,9 @@ export default function ProfessionalDevelopmentDetail() {
 
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
-        const config = {
-            headers: { Authorization: `${token}` }
-        };
+        // const config = {
+        //     headers: { Authorization: `${token}` }
+        // };
 
         axios.post(api_url + '/course/getcourseDataById', { course_id }).then((result) => {
             if (result.data.status) {

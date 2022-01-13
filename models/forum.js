@@ -472,7 +472,7 @@ function forum() {
 
     this.getforumRequestDataById = function (id, callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM forum as c left join users on users.id = c.created_by where c.forum_id = $1', [id], function (err, result) {
+            con.query('SELECT *,c.created_at as forum_date FROM forum as c left join users on users.id = c.created_by where c.forum_id = $1', [id], function (err, result) {
                 con.release();
                 if (err) {                    
                     callback(err, null);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
+//import { useHistory } from 'react-router-dom'
 import axios from 'axios';
 import api_url from './../../Apiurl';
 import Swal from "sweetalert2";
@@ -15,7 +15,7 @@ import {
 
 const ResearchesDemoTable = ({ moduleConfigUrls }) => {
 
-  const history = useHistory()
+ // const history = useHistory()
   const [details, setDetails] = useState([])
   const [items, setItems] = useState([])
   const [modal, setModal] = useState();

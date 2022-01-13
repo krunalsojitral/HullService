@@ -150,6 +150,7 @@ function ApplyInFutureResearchModel(props) {
                                             render={({ field: { onChange, value } }) => (
                                                 <input
                                                     type="number"
+                                                    min="1"
                                                     onChange={onChange}
                                                     value={value}
                                                     className="form-control"
@@ -171,7 +172,7 @@ function ApplyInFutureResearchModel(props) {
                                                 name={`child.${index}.value`}
                                                 control={control}
                                                 defaultValue={item.value}
-                                                render={({ field }) => <input type="number" placeholder={`Child age`} className="form-control" {...field} />}
+                                                render={({ field }) => <input type="number" min="1" placeholder={`Child age`} className="form-control" {...field} />}
                                             />                                            
                                         </div>
                                     </div>

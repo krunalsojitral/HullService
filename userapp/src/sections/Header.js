@@ -7,7 +7,7 @@ import useLogout from './../hooks/useLogout';
 import api_url from './../components/Apiurl';
 import axios from 'axios';
 import Swal from "sweetalert2";
-import $ from 'jquery';
+//import $ from 'jquery';
 
 export default function Header() {
     let history = useHistory();

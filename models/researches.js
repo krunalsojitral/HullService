@@ -261,8 +261,8 @@ function Researches() {
      
     this.addFutureResearchByuser = function (record, callback) {
         connection.acquire(function (err, con) {
-            const sql = 'INSERT INTO future_research(name,dob,created_at) VALUES($1,$2,$3) RETURNING *'
-            const values = [record.name, record.dob, record.created_at]
+            const sql = 'INSERT INTO future_research(name,dob,email,created_at) VALUES($1,$2,$3,$4) RETURNING *'
+            const values = [record.name, record.dob, record.email, record.created_at]
             con.query(sql, values, function (err, result) {                
                 if (err) {
                     if (env.DEBUG) {

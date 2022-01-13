@@ -430,73 +430,79 @@ router.get('/getPreview', function (req, res) {
             } else {
                 imageLink = env.ADMIN_LIVE_URL;
             }
+
+            if (result.length > 0){
+                let retObj = {};
+                retObj['preview_id'] = result[0].preview_id;
+                retObj['title'] = result[0].title;
+                retObj['image'] = (result[0].image) ? imageLink + env.PREVIEW_VIEW_PATH + result[0].image : '';
+                retObj['description'] = result[0].description;
+                retObj['module_type'] = result[0].module_type;
+                retObj['videoid'] = result[0].videoid;
+                retObj['created_at'] = moment(result[0].created_at).format('MMMM DD, YYYY');
+                retObj['role'] = result[0].role;
+                retObj['status'] = result[0].status;
+                retObj['learn_description'] = result[0].learn_description;
+                retObj['prerequisites_description'] = result[0].prerequisites_description;
+                retObj['session_type'] = result[0].session_type;
+                retObj['video_content_title'] = result[0].video_content_title;
+                retObj['video_title_first'] = result[0].video_title_first;
+                retObj['video_url_first'] = result[0].video_url_first;
+                retObj['video_time_first'] = result[0].video_time_first;
+                retObj['video_title_second'] = result[0].video_title_second;
+                retObj['video_url_second'] = result[0].video_url_second;
+                retObj['video_time_second'] = result[0].video_time_second;
+                retObj['video_title_third'] = result[0].video_title_third;
+                retObj['video_url_third'] = result[0].video_url_third;
+                retObj['video_time_third'] = result[0].video_time_third;
+                retObj['video_title_fourth'] = result[0].video_title_fourth;
+                retObj['video_url_fourth'] = result[0].video_url_fourth;
+                retObj['video_time_fourth'] = result[0].video_time_fourth;
+                retObj['video_title_five'] = result[0].video_title_five;
+                retObj['video_url_five'] = result[0].video_url_five;
+                retObj['video_time_five'] = result[0].video_time_five;
+                retObj['video_title_six'] = result[0].video_title_six;
+                retObj['video_url_six'] = result[0].video_url_six;
+                retObj['video_time_six'] = result[0].video_time_six;
+                retObj['video_title_seven'] = result[0].video_title_seven;
+                retObj['video_url_seven'] = result[0].video_url_seven;
+                retObj['video_time_seven'] = result[0].video_time_seven;
+                retObj['video_title_eight'] = result[0].video_title_eight;
+                retObj['video_url_eight'] = result[0].video_url_eight;
+                retObj['video_time_eight'] = result[0].video_time_eight;
+                retObj['video_title_nine'] = result[0].video_title_nine;
+                retObj['video_url_nine'] = result[0].video_url_nine;
+                retObj['video_time_nine'] = result[0].video_time_nine;
+                retObj['video_title_ten'] = result[0].video_title_ten;
+                retObj['video_url_ten'] = result[0].video_url_ten;
+                retObj['video_time_ten'] = result[0].video_time_ten;
+                retObj['content_title_one'] = result[0].content_title_one;
+                retObj['content_description_one'] = result[0].content_description_one;
+                retObj['content_title_two'] = result[0].content_title_two;
+                retObj['content_description_two'] = result[0].content_description_two;
+                retObj['content_title_third'] = result[0].content_title_third;
+                retObj['content_description_third'] = result[0].content_description_third;
+                retObj['content_title_four'] = result[0].content_title_four;
+                retObj['content_description_four'] = result[0].content_description_four;
+                retObj['content_title_five'] = result[0].content_title_five;
+                retObj['content_description_five'] = result[0].content_description_five;
+                retObj['trainer'] = result[0].trainer;
+                retObj['purchase_type'] = result[0].purchase_type;
+                retObj['main_cost'] = result[0].main_cost;
+                retObj['sale_cost'] = result[0].sale_cost;
+                retObj['live_session_url'] = result[0].live_session_url;
+                retObj['live_session_date'] = result[0].live_session_date;
+                retObj['live_session_time'] = result[0].live_session_time;
+                retObj['live_session_minute'] = result[0].live_session_minute;
+                retObj['update_at'] = (result[0].update_at) ? moment(result[0].update_at).format('MM/YYYY') : '';
+                retObj['course_purchase'] = 0;
+                retObj['draft_status'] = result[0].draft_status;
+                return res.json({ status: 1, 'response': { data: retObj } });
+            }else{
+                return res.json({ status: 1, 'response': { data: {} } });
+            }
             
-            let retObj = {};
-            retObj['preview_id'] = result[0].preview_id;
-            retObj['title'] = result[0].title;
-            retObj['image'] = (result[0].image) ? imageLink + env.PREVIEW_VIEW_PATH + result[0].image : '';
-            retObj['description'] = result[0].description;
-            retObj['module_type'] = result[0].module_type;
-            retObj['videoid'] = result[0].videoid;
-            retObj['created_at'] = moment(result[0].created_at).format('MMMM DD, YYYY');
-            retObj['role'] = result[0].role;
-            retObj['status'] = result[0].status;
-            retObj['learn_description'] = result[0].learn_description;
-            retObj['prerequisites_description'] = result[0].prerequisites_description;
-            retObj['session_type'] = result[0].session_type;
-            retObj['video_content_title'] = result[0].video_content_title;
-            retObj['video_title_first'] = result[0].video_title_first;
-            retObj['video_url_first'] = result[0].video_url_first;
-            retObj['video_time_first'] = result[0].video_time_first;
-            retObj['video_title_second'] = result[0].video_title_second;
-            retObj['video_url_second'] = result[0].video_url_second;
-            retObj['video_time_second'] = result[0].video_time_second;
-            retObj['video_title_third'] = result[0].video_title_third;
-            retObj['video_url_third'] = result[0].video_url_third;
-            retObj['video_time_third'] = result[0].video_time_third;
-            retObj['video_title_fourth'] = result[0].video_title_fourth;
-            retObj['video_url_fourth'] = result[0].video_url_fourth;
-            retObj['video_time_fourth'] = result[0].video_time_fourth;
-            retObj['video_title_five'] = result[0].video_title_five;
-            retObj['video_url_five'] = result[0].video_url_five;
-            retObj['video_time_five'] = result[0].video_time_five;
-            retObj['video_title_six'] = result[0].video_title_six;
-            retObj['video_url_six'] = result[0].video_url_six;
-            retObj['video_time_six'] = result[0].video_time_six;
-            retObj['video_title_seven'] = result[0].video_title_seven;
-            retObj['video_url_seven'] = result[0].video_url_seven;
-            retObj['video_time_seven'] = result[0].video_time_seven;
-            retObj['video_title_eight'] = result[0].video_title_eight;
-            retObj['video_url_eight'] = result[0].video_url_eight;
-            retObj['video_time_eight'] = result[0].video_time_eight;
-            retObj['video_title_nine'] = result[0].video_title_nine;
-            retObj['video_url_nine'] = result[0].video_url_nine;
-            retObj['video_time_nine'] = result[0].video_time_nine;
-            retObj['video_title_ten'] = result[0].video_title_ten;
-            retObj['video_url_ten'] = result[0].video_url_ten;
-            retObj['video_time_ten'] = result[0].video_time_ten;
-            retObj['content_title_one'] = result[0].content_title_one;
-            retObj['content_description_one'] = result[0].content_description_one;
-            retObj['content_title_two'] = result[0].content_title_two;
-            retObj['content_description_two'] = result[0].content_description_two;
-            retObj['content_title_third'] = result[0].content_title_third;
-            retObj['content_description_third'] = result[0].content_description_third;
-            retObj['content_title_four'] = result[0].content_title_four;
-            retObj['content_description_four'] = result[0].content_description_four;
-            retObj['content_title_five'] = result[0].content_title_five;
-            retObj['content_description_five'] = result[0].content_description_five;
-            retObj['trainer'] = result[0].trainer;
-            retObj['purchase_type'] = result[0].purchase_type;
-            retObj['main_cost'] = result[0].main_cost;
-            retObj['sale_cost'] = result[0].sale_cost;
-            retObj['live_session_url'] = result[0].live_session_url;
-            retObj['live_session_date'] = result[0].live_session_date;
-            retObj['live_session_time'] = result[0].live_session_time;
-            retObj['live_session_minute'] = result[0].live_session_minute;
-            retObj['update_at'] = (result[0].update_at) ? moment(result[0].update_at).format('MM/YYYY') : '';
-            retObj['course_purchase'] = 0;
-            retObj['draft_status'] = result[0].draft_status;
-            return res.json({ status: 1, 'response': { data: retObj } });
+            
         }
     });
 });
@@ -647,6 +653,122 @@ router.get('/getDynamicMenu', function (req, res) {
                 return retObj;
             });
             return res.json({ status: 1, 'response': { data: menuList } });
+        }
+    });
+});
+
+
+router.get('/getBecomeMemberContent', (req, res, next) => {
+    asyn.waterfall([
+        function (done) {
+            Common.getBecomeMemberContent(function (err, result) {
+                if (err) {
+                    done({ 'status': 0, 'response': { 'msg': 'Something went wrong.' } });
+                } else {
+                    var imageLink;
+                    if (req.headers.host == env.ADMIN_LIVE_URL) {
+                        imageLink = env.ADMIN_LIVE_URL;
+                    } else {
+                        imageLink = env.ADMIN_LIVE_URL;
+                    }
+                    if (result.length > 0){
+                        let data = {};
+                        data['sub_title'] = result[0].sub_title;
+                        data['main_title'] = result[0].main_title;
+                        data['description'] = result[0].description;
+                        data['second_description'] = result[0].second_description;
+                        data['image'] = (result[0].image) ? imageLink + env.MEMBER_VIEW_PATH + result[0].image : '';
+                        data['testimonials'] = result[0].testimonials;
+                        data['become_member_title'] = result[0].become_member_title;
+                        data['become_member_description'] = result[0].become_member_description;
+                        data['email_us_description'] = result[0].email_us_description;
+                        done(err, data)
+                    }else{
+                        done(err, null)
+                    }
+                }
+            });
+        }
+    ],
+    function (error, result1) {
+        if (error) {
+            return res.json({ 'status': 0, 'response': { 'msg': error } });
+        } else {
+            return res.json({ 'status': 1, 'response': { 'data': result1, 'msg': 'data found' } });
+        }
+    });
+});
+
+
+router.post('/updateBecomeMemberByadmin', function (req, res) {
+    var form = new formidable.IncomingForm();
+    form.parse(req, function (err, fields, files) {
+        if (err) return res.json({ status: 1, 'response': { msg: err } });
+        var validationErrors = false;
+        if (validationErrors == false) {
+            var json = fields.data;
+            let obj = JSON.parse(json);
+
+            let update_value = [obj.main_title, obj.sub_title, obj.description, obj.second_description, obj.testimonials, obj.become_member_title, obj.become_member_description, obj.email_us_description, moment().format('YYYY-MM-DD')]
+
+            let record = {
+                main_title: obj.main_title,
+                sub_title: obj.sub_title,
+                description: obj.description,
+                second_description: obj.second_description,
+                testimonials: obj.testimonials,
+                become_member_title: obj.become_member_title,
+                become_member_description: obj.become_member_description,
+                email_us_description: obj.email_us_description,
+                created_at: moment().format('YYYY-MM-DD')
+            };
+            let become_member_id = 1;
+            asyn.waterfall([
+                function (done) {
+                    let overview = {};
+                    if (typeof files.image !== 'undefined') {
+                        let file_ext = files.image.name.split('.').pop();
+                        let filename = Date.now() + '-' + files.image.name.split(" ").join("");
+                        let tmp_path = files.image.path;
+                        if (file_ext == 'png' || file_ext == 'PNG' || file_ext == 'jpg' || file_ext == 'JPG' || file_ext == 'jpeg' || file_ext == 'JPEG') {
+                            fs.rename(tmp_path, path.join(__dirname, env.MEMBER_PATH + filename), function (err) {
+                                overview['image'] = filename;
+                                done(err, overview)
+                                fs.unlink(tmp_path, function () {
+                                    if (err) {
+                                        return res.json({ status: 1, 'response': { msg: err } });
+                                    }
+                                });
+                            });
+                        } else {
+                            return res.json({ status: 0, response: { msg: 'Only image with jpg, jpeg and png format are allowed', } });
+                        }
+                    } else {
+                        overview['image'] = '';
+                        done(err, overview);
+                    }
+                },
+                function (overview, done1) {
+                    if (overview.image != '') {
+                        record.image = overview.image;
+                        update_value.push(overview.image);
+                    }
+                    Common.updateBecomeMemberByadmin(record, become_member_id, update_value, function (err, data) {
+                        if (err) {
+                            done1(err, overview)
+                        } else {
+                            done1(err, data);
+                        }
+                    });
+                }
+            ],
+            function (error, result) {
+                if (error) {
+                    return res.json({ 'status': 0, 'response': { 'msg': error } });
+                } else {
+                    return res.json({ 'status': 1, 'response': { 'msg': 'Become a Member content updated successfully.', data: result } });
+                }
+            });
         }
     });
 });

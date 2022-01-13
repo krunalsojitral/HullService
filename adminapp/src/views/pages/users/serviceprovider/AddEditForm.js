@@ -160,14 +160,10 @@ const AddEditForm = ({ match }) => {
                       )}
                     ></Controller>
                   </CFormGroup>
-                  {errors.email && errors.email.type === "required" && (
-                    <p style={{ color: "red", fontSize: "12px" }}>Email is required.</p>
-                  ) || (errors.email?.type === "pattern" && <p className="error">Email is invalid</p>)}
-
+                  {errors.email && errors.email.type === "required" && (<p style={{ color: "red", fontSize: "12px" }}>Email is required.</p>)}
+                  {errors.email && errors.email.type === "pattern" && (<p style={{ color: "red", fontSize: "12px" }}>Email is invalid.</p>)}                 
                 </CCol>
               </CRow>
-
-
 
               {(isEditMode !== 1) &&
                 <CRow>
