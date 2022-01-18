@@ -20,8 +20,7 @@ function User() {
     }        
 
     this.getAllAdminBlog = function (status, callback) {
-        connection.acquire(function (err, con) {
-            
+        connection.acquire(function (err, con) {            
             var sql = '';
             var array = [];
             if (status) {                
@@ -43,18 +42,25 @@ function User() {
     };
 
     
-    this.getBlogRoleName = function (id, callback) {
-        connection.acquire(function (err, con) {
-            var sql = "select string_agg(user_role.role, ',') from (select blog_id, unnest(string_to_array(role, ',')):: INT as name_id from blog) s1 join user_role on s1.name_id = user_role.role_id where s1.blog_id = $1";
-            con.query(sql, [id], function (err, result) {
+    this.getBlogRoleName = function (id, role, callback) {
+        connection.acquire(function (err, con) {            
+            if (role){                
+                var sql = "select string_agg(user_role.role, ',') from (select blog_id, unnest(string_to_array(role, ',')):: INT as name_id from blog) s1 join user_role on s1.name_id = user_role.role_id where s1.blog_id = $1";
+                con.query(sql, [id], function (err, result) {
+                    con.release()
+                    if (err) {
+                        if (env.DEBUG) {                            
+                            console.log(err);
+                        }
+                        callback(err, null);
+                    } else {
+                        callback(null, result.rows);
+                    }
+                });
+            }else{
                 con.release()
-                if (err) {
-                    if (env.DEBUG) { console.log(err); }
-                    callback(err, null);
-                } else {
-                    callback(null, result.rows);
-                }
-            });
+                callback(null, null);
+            }           
         });
     }
 
@@ -65,13 +71,13 @@ function User() {
             const values = [record.title, record.description, record.created_at, record.role, record.purchase_type, record.image, record.cost, record.draft, 1]
             con.query(sql, values, function (err, result) {                
                 if (err) {
-                    if (env.DEBUG) {
-                        console.log(err);
+                    if (env.DEBUG) {                       
+                       console.log(err);
                     }
                     con.release()
                     callback(err, null);
                 } else {
-                    if (record.tag.length > 0) {
+                    if (record.tag.length > 0) {                        
                         record.tag.map(data => {
                             var records = {
                                 tag_id: data.value,

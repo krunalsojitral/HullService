@@ -41,7 +41,7 @@ router.get('/articleList', function (req, res) {
                         var final_response = [];
                         Promise.all(result.map(function (item) {
                             var temparray = new Promise(function (resolve, reject) {
-                                Article.getArticleRoleName(item.article_id, function (err, data) {
+                                Article.getArticleRoleName(item.article_id, item.role, function (err, data) {
                                     if (data && data.length > 0) {
                                         item.role = data[0].string_agg
                                     }
@@ -97,7 +97,7 @@ router.get('/draftarticleList', function (req, res) {
                         var final_response = [];
                         Promise.all(result.map(function (item) {
                             var temparray = new Promise(function (resolve, reject) {
-                                Article.getArticleRoleName(item.article_id, function (err, data) {
+                                Article.getArticleRoleName(item.article_id, item.role, function (err, data) {
                                     if (data && data.length > 0) {
                                         item.role = data[0].string_agg
                                     }
@@ -115,6 +115,8 @@ router.get('/draftarticleList', function (req, res) {
                                     retObj['created_on'] = moment(data.created_at).format('YYYY-MM-DD');
                                     retObj['role'] = data.role;
                                     retObj['status'] = data.status;
+                                    retObj['purchase_type'] = data.purchase_type;
+                                    retObj['cost'] = data.cost;
                                     return retObj;
                                 }).sort(function (a, b) {
                                     return a.article_id - b.article_id;
@@ -314,7 +316,7 @@ router.post('/addarticleByadmin', function (req, res) {
                 title: obj.title,
                 description: obj.description,
                 created_at: moment().format('YYYY-MM-DD'),
-                role: obj.user_role,
+                role: (obj.user_role.length > 0) ? obj.user_role : '',
                 tag: obj.tag,
                 cost: obj.cost,
                 purchase_type: obj.purchase_type,

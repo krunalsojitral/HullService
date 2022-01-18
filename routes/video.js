@@ -40,7 +40,7 @@ router.get('/videoList', function (req, res) {
                         var final_response = [];
                         Promise.all(result.map(function (item) {
                             var temparray = new Promise(function (resolve, reject) {
-                                Video.getVideoRoleName(item.video_id, function (err, data) {
+                                Video.getVideoRoleName(item.video_id, item.role, function (err, data) {
                                     if (data && data.length > 0) {
                                         item.role = data[0].string_agg
                                     }
@@ -258,7 +258,7 @@ router.post('/addVideoByadmin', function (req, res) {
                 // overview: obj.overview,
                 // information: obj.information,
                 created_at: moment().format('YYYY-MM-DD'),
-                role: obj.user_role,
+                role: (obj.user_role.length > 0) ? obj.user_role : '',
                 tag: obj.tag,
                 purchase_type: obj.purchase_type,
                 cost: obj.cost,
@@ -619,7 +619,7 @@ router.get('/draftvideoList', function (req, res) {
                         var final_response = [];
                         Promise.all(result.map(function (item) {
                             var temparray = new Promise(function (resolve, reject) {
-                                Video.getVideoRoleName(item.video_id, function (err, data) {
+                                Video.getVideoRoleName(item.video_id, item.role,  function (err, data) {
                                     if (data && data.length > 0) {
                                         item.role = data[0].string_agg
                                     }
@@ -635,8 +635,10 @@ router.get('/draftvideoList', function (req, res) {
                                     retObj['title'] = data.title;
                                     retObj['description'] = data.description;
                                     retObj['created_on'] = moment(data.created_at).format('YYYY-MM-DD');
-                                    retObj['role'] = data.role;
+                                    retObj['role'] = (data.role) ? data.role : '';
                                     retObj['status'] = data.status;
+                                    retObj['purchase_type'] = data.purchase_type;
+                                    retObj['cost'] = data.cost;
                                     return retObj;
                                 }).sort(function (a, b) {
                                     return a.video_id - b.video_id;

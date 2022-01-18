@@ -41,18 +41,24 @@ function Video() {
         });
     };
 
-    this.getVideoRoleName = function (id, callback) {
+    this.getVideoRoleName = function (id, role, callback) {
         connection.acquire(function (err, con) {
-            var sql = "select string_agg(user_role.role, ',') from (select video_id, unnest(string_to_array(role, ',')):: INT as name_id from video) s1 join user_role on s1.name_id = user_role.role_id where s1.video_id = $1";
-            con.query(sql, [id], function (err, result) {
+
+            if (role){
+                var sql = "select string_agg(user_role.role, ',') from (select video_id, unnest(string_to_array(role, ',')):: INT as name_id from video) s1 join user_role on s1.name_id = user_role.role_id where s1.video_id = $1";
+                con.query(sql, [id], function (err, result) {
+                    con.release()
+                    if (err) {
+                        if (env.DEBUG) { console.log(err); }
+                        callback(err, null);
+                    } else {
+                        callback(null, result.rows);
+                    }
+                });
+            }else{
                 con.release()
-                if (err) {
-                    if (env.DEBUG) { console.log(err); }
-                    callback(err, null);
-                } else {
-                    callback(null, result.rows);
-                }
-            });
+                callback(null, null);
+            }
         });
     }
 

@@ -4,7 +4,7 @@ import axios from 'axios';
 import api_url from '../../components/Apiurl';
 import Swal from "sweetalert2";
 import ForumSubReply from "./ForumSubReply";
-
+import TextareaAutosize from 'react-textarea-autosize';
 
 function ForumReply(props) {
 
@@ -83,7 +83,7 @@ function ForumReply(props) {
                         <p onClick={(e) => reply(replydata.reply_comment_id)}><img src="images/reply.png" alt="reply" /> <span>Reply</span></p>
 
                         <div className="reply-box" id={replydata.reply_comment_id} style={{ display: 'none' }}>
-                            <textarea maxlength="1500" className="form-control" type="text" id={"input" + replydata.reply_comment_id} name="comment" />
+                            <TextareaAutosize maxRows="4" maxlength="1500" className="form-control" type="text" id={"input" + replydata.reply_comment_id} name="comment" />
                             <small id={"error" + replydata.reply_comment_id} style={{ display: 'none' }} className="error">Comment is required.</small>
                             <button type="submit" onClick={(e) => replySubmit(replydata.reply_comment_id, index)}>Reply</button>
                         </div>

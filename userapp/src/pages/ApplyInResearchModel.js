@@ -21,7 +21,8 @@ function ApplyInResearchModel(props) {
         formState: { errors },
     } = useForm();
 
-    useEffect(() => {        
+    useEffect(() => {   
+        console.log(props);
         setResearchTitle(props.researchtitle);
         setResearchID(props.apply);
         axios.get(api_url + "/researches/getResearchesDataById", {})

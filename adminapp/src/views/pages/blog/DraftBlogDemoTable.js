@@ -36,21 +36,17 @@ const DraftBlogDemoTable = () => {
     }
   ]
 
-
-  const updateItemStatus = (item, status) => {
-
+  const updateItemFun = (item) => {
     Swal.fire({
       title: "Are you sure?",
       icon: 'warning',
-      //text: "You will not be able to recover this resume!",
       confirmButtonText: `Publish`,
       showCancelButton: true,
       cancelButtonText: 'No',
       cancelButtonColor: '#e57979',
     }).then((results) => {
 
-      if (results.isConfirmed) { 
-
+      if (results.isConfirmed) {
         var obj = {
           blog_id: item.blog_id,
           draft_status: 0,
@@ -66,18 +62,28 @@ const DraftBlogDemoTable = () => {
           })
           .catch((err) => {
             console.log(err);
-            //Swal.fire('Oops...', err, 'error')
           });
       }
-
-    });  
-        
-
-
-    
-
+    });
   }
 
+  const updateItemStatus = (item, status) => {
+    if (item.title && item.role) {
+      if (item.purchase_type == "paid") {
+        if (item.cost) {
+          updateItemFun(item);
+        } else {
+          Swal.fire("Oops...", "Some of the mandatory data is missing", "error");
+          history.push("/blogedit/" + item.blog_id);
+        }
+      } else {
+        updateItemFun(item);
+      }
+    } else {
+      Swal.fire("Oops...", "Some of the mandatory data is missing", "error");
+      history.push("/blogedit/" + item.blog_id);
+    }
+  }  
 
   const getNewList = () => {
     axios.get(api_url + '/blog/draftblogList', {}).then((result) => {

@@ -11,6 +11,7 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { CSVLink } from "react-csv";
+import DeactiveUser from "../DeactiveUser";
 
 const DemoTable = () => {
 
@@ -18,7 +19,19 @@ const DemoTable = () => {
   const history = useHistory()
  // const [details, setDetails] = useState([])
   const [items, setItems] = useState([])
-  const [csvData, setCsvData] = useState([["Name", "Email", "Phone"]]);
+  const [csvData, setCsvData] = useState([["S.No","Name", "Email", "City", "Organization", "Academic Discipline", "Interestarea"]]);
+  const [modal, setModal] = useState();
+  const [selectedItem, setSelectedItem] = useState();
+
+  const headers = [
+    { label: "S.No", key: "no" },
+    { label: "Name", key: "name" },
+    { label: "Email", key: "email" },
+    { label: "City", key: "city" },
+    { label: "Organization", key: "organization" },
+    { label: "Academic Discipline", key: "academicdisciplinename" },
+    { label: "Interestarea", key: "pinterestarea" },
+  ];  
 
   React.useEffect(() => {
     getNewList('');
@@ -53,39 +66,43 @@ const DemoTable = () => {
   }
   
   const updateItemStatus = (item, status) => {
-    if (status == 1) {
-      var message = 'Are you sure you want to activate the user ?'
-    } else {
-      var message = 'Are you sure you want to deactivate the user ?'
-    }
-    Swal.fire({
-      //title: 'warning!',
-      icon: 'warning',
-      text: message,
-      confirmButtonText: `Yes`,
-      showCancelButton: true,
-      cancelButtonText: 'No',
-      cancelButtonColor: '#e57979',
-    }).then((result) => {      
-      if (result.isConfirmed) {         
-        var obj = {
-          id: item.id,
-          status: status,
-        };
-        axios.post(api_url + "/user/changeuserStatus", obj)
-          .then((result) => {
-            if (result.data.status) {
-              getNewListWrap('');
-              ref.current.value = "";
-            } else {
-              Swal.fire("Oops...", result.data.response.msg, "error");
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+
+    if (status == 1){
+      if (status == 1) {
+        var message = 'Are you sure you want to activate the user ?'
+      } else {
+        var message = 'Are you sure you want to deactivate the user ?'
       }
-    });    
+      Swal.fire({
+        //title: 'warning!',
+        icon: 'warning',
+        text: message,
+        confirmButtonText: `Yes`,
+        showCancelButton: true,
+        cancelButtonText: 'No',
+        cancelButtonColor: '#e57979',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          var obj = {
+            id: item.id,
+            status: status,
+          };
+          axios.post(api_url + "/user/changeuserStatus", obj)
+            .then((result) => {
+              if (result.data.status) {
+                getNewListWrap('');
+                ref.current.value = "";
+              } else {
+                Swal.fire("Oops...", result.data.response.msg, "error");
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+      });
+    }
+       
   }
 
   
@@ -141,7 +158,7 @@ const DemoTable = () => {
                     <option key="2" value="0">Inactive</option>
                   </select>
 
-                   <CSVLink className="d-inline-block" data={csvData}>Export User</CSVLink> &nbsp;
+                    <CSVLink headers={headers} className="d-inline-block" data={csvData}>Export User</CSVLink> &nbsp;
                       {/* <CButton
                         color="primary"
                         variant="outline"
@@ -177,12 +194,14 @@ const DemoTable = () => {
                   scopedSlots={{
                     status: (item) => (
                       <td class="tooltip-box">
-                        {item.email_verification_token !== null ? 'Pending' : ''}
-                        {(item.email_verification_token == null) ? item.status === 1 ? (
+                        {item.email_verification_token && item.email_verification_token !== null ? 'Pending' : ''}
+                        {(item.email_verification_token == null || item.email_verification_token == '') ? item.status === 1 ? (
                           <a
                             href
                             style={{ cursor: "pointer", textDecoration: "underline" }}
                             onClick={() => {
+                              setSelectedItem(item);
+                              setModal(true);
                               updateItemStatus(
                                 item,
                                 0,
@@ -267,6 +286,14 @@ const DemoTable = () => {
                   }}
                 />
               </CCardBody>
+
+              <DeactiveUser
+                modal={modal}
+                selectedItem={selectedItem}
+                setSelectedItem={setSelectedItem}
+                setModal={setModal}
+                updateListing={getNewListWrap}
+              />
         </div>
   )
 }

@@ -146,7 +146,7 @@ const DemoTable = () => {
             <option key="2" value="0">Inactive</option>
           </select>
 
-          <CSVLink className="d-inline-block" data={csvData}>Export User</CSVLink> &nbsp;
+          {/* <CSVLink className="d-inline-block" data={csvData}>Export User</CSVLink> &nbsp; */}
                       {/* <CButton
                         color="primary"
                         variant="outline"
@@ -183,8 +183,8 @@ const DemoTable = () => {
         scopedSlots = {{
           status: (item) => (
             <td class="tooltip-box">
-              {item.email_verification_token !== null ? 'Pending' : ''}
-              {(item.email_verification_token == null) ? item.status === 1 ? (
+              {item.email_verification_token && item.email_verification_token !== null ? 'Pending' : ''}
+              {(item.email_verification_token == null || item.email_verification_token == '') ? item.status === 1 ? (
                 <a
                   href
                   style={{ cursor: "pointer", textDecoration: "underline" }}

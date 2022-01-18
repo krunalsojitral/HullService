@@ -39,11 +39,10 @@ const FutureParticipateDetail = ({ match }) => {
                 <tr><td>DOB :</td><td><strong>{details.dob}</strong></td></tr>
                 <tr><td>No of Kids :</td><td><strong>{(details.child && details.child.length > 0) ? details.child.length :0}</strong></td></tr>                
                 <tr><td>Age of kids:</td>
-                </tr>
-                
+                </tr>                
                 {details.child && details.child.length > 0 && details.child.map((item, index) => (
                   <tr> <td>Child {index + 1}  :</td> <td>  {item.child_dob}</td></tr>
-                ))}                               
+                ))}                              
 
               </tbody>
             </table>

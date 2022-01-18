@@ -20,7 +20,7 @@ const FutureParticipantsDemoTable = () => {
   const history = useHistory()
   const [details, setDetails] = useState([])
   const [items, setItems] = useState([])
-  const [csvData, setCsvData] = useState([["Name", "Email", "DOB", "No of Kids", "Age of kids"]]);
+  const [csvData, setCsvData] = useState([["S.No","Name", "Email", "DOB", "No of Kids", "Age of kids"]]);
 
   React.useEffect(() => {
     getNewList();
@@ -29,6 +29,7 @@ const FutureParticipantsDemoTable = () => {
   }, [])
 
   const headers = [
+    { label: "S.No", key: "S.No" },
     { label: "Name", key: "Name" },
     { label: "Email", key: "Email" },
     { label: "DOB", key: "DOB" },

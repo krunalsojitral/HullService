@@ -24,6 +24,23 @@ function User() {
     };
 
 
+    this.getCSVAdminUser = function (role, callback) {
+        connection.acquire(function (err, con) {
+            var sql = 'SELECT *, sector.name as sectorname, occupation.name as occupationname, academic_discipline.name as academicdisciplinename FROM users inner join user_role on users.role = user_role.role_id left join sector on users.sector = sector.sector_id left join occupation on users.occupation = occupation.occupation_id left join academic_discipline on users.academic_discipline = academic_discipline.academic_discipline_id where users.role = $1 order by UPPER(first_name) ASC';
+            var array = [role];
+            con.query(sql, array, function (err, result) {
+                con.release();
+                if (result.rows.length === 0) {
+                    msg = 'User does not exist.';
+                    callback(msg, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    }
+
+
     this.adduserByadmin = function (record, callback) {
         connection.acquire(function (err, con) {
 

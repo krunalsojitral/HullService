@@ -12,10 +12,10 @@ function Researches() {
             var sql = '';
             var array = [];
             if (status) {                
-                sql = 'SELECT * FROM researches where user_status = $1 and status = $2 order by researches_id desc'
+                sql = 'SELECT * FROM researches as c left join users on users.id = c.created_by where c.user_status = $1 and c.status = $2 order by c.researches_id desc'
                 array = [1, status];
             } else {
-                sql = 'SELECT * FROM researches where user_status = $1 order by researches_id desc'
+                sql = 'SELECT * FROM researches as c left join users on users.id = c.created_by where c.user_status = $1 order by c.researches_id desc'
                 array = [1];
             }
 

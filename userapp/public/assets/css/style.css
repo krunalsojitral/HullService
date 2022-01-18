@@ -4215,6 +4215,7 @@ color: #276e80 !important;
     font-size: 16px;
     font-weight: 500;
     float: right;
+    cursor: pointer;
 }
 .ytplayer {
     pointer-events: none;
@@ -4443,7 +4444,7 @@ color: #276e80 !important;
     line-height: 42px;
     font-weight: 700;      
     border: none;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     font-size: 16px !important;
 }
 .message-card {

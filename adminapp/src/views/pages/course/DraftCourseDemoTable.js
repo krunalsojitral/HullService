@@ -36,8 +36,7 @@ const DraftCourseDemoTable = () => {
     }
   ]
 
-
-  const updateItemStatus = (item, status) => {
+  const updateItemFun = (item) => {
 
     Swal.fire({
       title: "Are you sure?",
@@ -49,7 +48,7 @@ const DraftCourseDemoTable = () => {
       cancelButtonColor: '#e57979',
     }).then((results) => {
 
-      if (results.isConfirmed) { 
+      if (results.isConfirmed) {
 
         var obj = {
           course_id: item.course_id,
@@ -70,14 +69,26 @@ const DraftCourseDemoTable = () => {
           });
       }
 
-    });  
-        
-
-
-    
-
+    });
   }
 
+  const updateItemStatus = (item, status) => {
+    if (item.title && item.role) {
+      if (item.purchase_type == "paid") {
+        if (item.cost) {
+          updateItemFun(item);
+        } else {
+          Swal.fire("Oops...", "Some of the mandatory data is missing", "error");
+          history.push("/courseedit/" + item.course_id);
+        }
+      } else {
+        updateItemFun(item);
+      }
+    } else {
+      Swal.fire("Oops...", "Some of the mandatory data is missing", "error");
+      history.push("/courseedit/" + item.course_id);
+    }
+  }
 
   const getNewList = () => {
     axios.get(api_url + '/course/draftcourseList', {}).then((result) => {

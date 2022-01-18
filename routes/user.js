@@ -325,7 +325,7 @@ router.post('/userList', function (req, res) {
             var userList = result.map(data => {
                 let retObj = {};
                 retObj['id'] = data.id;
-                retObj['name'] = (data.first_name) ? data.first_name : '' + ' ' + (data.last_name) ? data.last_name:'';
+                retObj['name'] = data.first_name + ' ' + data.last_name;
                 retObj['phone'] = data.phone;
                 retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
                 retObj['joining_date'] = moment(data.created_at).format('YYYY-MM-DD');
@@ -340,21 +340,45 @@ router.post('/userList', function (req, res) {
     });
 });
 
+
 router.post('/csvuserList', function (req, res) {
     loggerData(req);
     var role = req.body.role;
-    User.getAllAdminUsers(role,'', function (err, result) {
+    User.getCSVAdminUser(role, function (err, result) {
         if (err) {
             return res.json({ status: 0, 'response': { msg: err } });
         } else {
-            var userList = result.map(data => {
-                let retObj = {};
-                retObj['name'] = data.name;
-                retObj['email'] = data.email;
-                retObj['phone'] = data.phone;
-                return retObj;
+            let temparray = new Promise(async (resolve, reject) => {
+                for (let userdata of result) {
+                    await User.getUserInterestAreaById(userdata.id, userdata.role_id, function (err, interestresult) {                        
+                        if (interestresult && interestresult.length > 0) {
+                            userdata.csvString = Array.from(interestresult.values(), v => v.name).join(", ");
+                        } else {
+                            userdata.csvString = '';
+                        }
+                    });
+                }
+                setTimeout(() => resolve(result), 40)
             });
-            return res.json({ status: 1, 'response': { data: userList } });
+            temparray.then(result => {
+                var participateList = result.map((data, index) => {
+                    let retObj = {};
+                    retObj['id'] = data.id;
+                    retObj['no'] = index+1;
+                    retObj['name'] = data.first_name + ' ' + data.last_name;
+                    retObj['email'] = data.email;
+                    retObj['city'] = data.city;
+                    retObj['organization'] = data.organization;
+                    retObj['rinterestarea'] = data.rinterestarea;
+                    retObj['sectorname'] = data.sectorname;
+                    retObj['occupationname'] = data.occupationname;
+                    retObj['academicdisciplinename'] = data.academicdisciplinename;
+                    retObj['level_of_education'] = data.level_of_education;
+                    retObj['pinterestarea'] = data.csvString;
+                    return retObj;
+                });
+                return res.json({ status: 1, 'response': { data: participateList } });
+            })
         }
     });
 });
@@ -588,8 +612,70 @@ router.get('/getuserDetail', passport.authenticate('jwt', { session: false }), f
     });
 });
 
+router.post('/added_deactivate_reason', [    
+    check('user_id', 'user id is required').notEmpty(),
+    check('deactive_reason', 'reason is required').notEmpty(),
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
 
-    
+        var user_id = req.body.user_id;
+        let update_value = [req.body.title, req.body.deactive_reason]
+        let record = {
+            deactive_title: (req.body.title) ? req.body.title: '',
+            deactive_reason: (req.body.deactive_reason) ? req.body.deactive_reason : ''
+        };
+        var reason = req.body.deactive_reason;
+        var name = req.body.name;        
+        var email = req.body.email;
+        User.updateuserByadmin(record, user_id, update_value, function (err, data) { 
+            if (err) {
+                return res.json({ status: 0, 'msg': err, 'response': { msg: err } });
+            } else {
+                var logo;
+                var home_url;
+                var hostname = req.headers.host;
+                if (hostname == env.LIVE_HOST_USER_APP) {
+                    home_url = env.APP_URL
+                    logo = env.APP_URL + '/assets/img/brand_logo.png';
+                } else {
+                    home_url = env.APP_URL
+                    logo = env.APP_URL + '/assets/img/brand_logo.png';
+                }
+                var htmlUser = fs.readFileSync(__dirname + '/templates/userRegistration/deactiveUser.html', 'utf8');
+                var dynamicHtml = {
+                    logo: logo,
+                    home_url: home_url,
+                    reason: reason,
+                    fullName: name,
+                }
+                var view = { data: dynamicHtml };
+                var finalHtmlUser = mustache.render(htmlUser, view);
+
+                let transporter = nodemailer.createTransport(nodeMailerCredential); // node mailer credentials
+                let mailOptions = {
+                    from: env.MAIL_FROM,
+                    to: email,
+                    subject: 'Your Hull Services account has been de-activated.',
+                    html: finalHtmlUser.replace(/&#x2F;/g, '/')
+                };
+
+                transporter.sendMail(mailOptions, (error, info) => {
+                    if (error) {
+                        console.log(error);
+                    } else {
+                    }
+                });
+                return res.json({ status: 1, 'msg': 'User deactivate successfully.', 'response': { data: data } });
+            }
+        });
+        
+    }
+});
+
 
 
 

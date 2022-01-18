@@ -61,7 +61,7 @@ router.get('/blogList', function (req, res) {
                         var final_response = [];
                         Promise.all(result.map(function (item) {
                             var temparray = new Promise(function (resolve, reject) {
-                                Blog.getBlogRoleName(item.blog_id, function (err, data) {
+                                Blog.getBlogRoleName(item.blog_id, item.role, function (err, data) {
                                     if (data && data.length > 0) {
                                         item.role = data[0].string_agg
                                     }
@@ -276,12 +276,13 @@ router.post('/addBlogByadmin', function (req, res) {
 
             var json = fields.data;
             let obj = JSON.parse(json);
+           
             let record = {
                 title: obj.title,
                 tag: obj.tag,
                 description: obj.description,
                 created_at: moment().format('YYYY-MM-DD'),
-                role: obj.user_role,
+                role: (obj.user_role.length > 0) ? obj.user_role : '',
                 purchase_type: obj.purchase_type,
                 cost: obj.cost,
                 draft: (obj.draft) ? obj.draft: 0
@@ -317,7 +318,7 @@ router.post('/addBlogByadmin', function (req, res) {
                 },
                 function (overview, done1) {
                     if (overview.image != '') { record.image = overview.image; }
-
+                    
                     if (record.role.length > 0) {                        
                         record.role = record.role.map(data => {
                             return data.value
@@ -645,9 +646,11 @@ router.get('/draftblogList', function (req, res) {
                         var final_response = [];
                         Promise.all(result.map(function (item) {
                             var temparray = new Promise(function (resolve, reject) {
-                                Blog.getBlogRoleName(item.blog_id, function (err, data) {
-                                    if (data && data.length > 0) {
+                                Blog.getBlogRoleName(item.blog_id, item.role, function (err, data) {                                    
+                                    if (data && data.length > 0) {                                        
                                         item.role = data[0].string_agg
+                                    }else{
+                                        item.role = ''
                                     }
                                     setTimeout(() => resolve(item), 50)
                                 });
@@ -660,8 +663,10 @@ router.get('/draftblogList', function (req, res) {
                                     retObj['title'] = data.title;
                                     retObj['description'] = data.description;
                                     retObj['created_on'] = moment(data.created_at).format('YYYY-MM-DD');
-                                    retObj['role'] = data.role;
+                                    retObj['role'] = (data.role) ? data.role : '';
                                     retObj['status'] = data.status;
+                                    retObj['purchase_type'] = data.purchase_type;
+                                    retObj['cost'] = data.cost;
                                     return retObj;
                                 }).sort(function (a, b) {
                                     return a.blog_id - b.blog_id;

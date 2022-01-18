@@ -285,7 +285,7 @@ router.post('/addcourseByadmin', function (req, res) {
                 content_description_five: obj.content_description_five,
                 trainer: obj.trainer,
                 created_at: moment().format('YYYY-MM-DD'),
-                role: obj.user_role,
+                role: (obj.user_role.length > 0) ? obj.user_role : '',
                 purchase_type: obj.purchase_type,
                 main_cost: obj.main_cost,
                 sale_cost: obj.sale_cost,
@@ -814,6 +814,8 @@ router.get('/draftcourseList', function (req, res) {
                 retObj['created_on'] = moment(data.created_at).format('YYYY-MM-DD');
                 retObj['role'] = data.role;
                 retObj['status'] = data.status;
+                retObj['purchase_type'] = data.purchase_type;
+                retObj['cost'] = data.cost;
                 return retObj;
             });
             return res.json({ status: 1, 'response': { data: courseList } });

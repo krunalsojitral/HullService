@@ -80,6 +80,7 @@ function UserRequest({
                             </div>
                         </td></tr>
                         <tr><td>Created by</td><td><strong>{selectedItem && selectedItem.created_by}</strong></td></tr>
+                        <tr><td>Researcher's email</td><td><strong>{selectedItem && selectedItem.email}</strong></td></tr>
                         <tr><td>Created Date</td><td><strong>{selectedItem && selectedItem.created_on}</strong></td></tr>
 
                         {selectedItem && selectedItem.user_status == 2 && <tr><td>Admin Comment</td><td>

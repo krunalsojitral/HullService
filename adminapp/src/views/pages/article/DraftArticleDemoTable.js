@@ -36,9 +36,7 @@ const DraftArticleDemoTable = () => {
     }
   ]
 
-
-  const updateItemStatus = (item, status) => {
-
+  const updateItemFun = (item) => {
     Swal.fire({
       title: "Are you sure?",
       icon: 'warning',
@@ -49,7 +47,7 @@ const DraftArticleDemoTable = () => {
       cancelButtonColor: '#e57979',
     }).then((results) => {
 
-      if (results.isConfirmed) { 
+      if (results.isConfirmed) {
         var obj = {
           article_id: item.article_id,
           draft_status: 0,
@@ -71,6 +69,26 @@ const DraftArticleDemoTable = () => {
     });
   }
 
+  const updateItemStatus = (item, status) => {
+    if (item.title && item.role) {
+      if (item.purchase_type == "paid") {
+        if (item.cost) {
+          updateItemFun(item);
+        } else {
+          Swal.fire("Oops...", "Some of the mandatory data is missing", "error");
+          history.push("/articleedit/" + item.article_id);
+        }
+      } else {
+        updateItemFun(item);
+      }
+    } else {
+      Swal.fire("Oops...", "Some of the mandatory data is missing", "error");
+      history.push("/articleedit/" + item.article_id);
+    }
+  }
+
+
+ 
 
   const getNewList = () => {
     axios.get(api_url + '/article/draftarticleList', {}).then((result) => {

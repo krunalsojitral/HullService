@@ -16,6 +16,7 @@ export default function ParticipateInResearch() {
     const [researchesDetail, setResearchesDetail] = React.useState({})
     const [data, setData] = useState([]);
     const [researchID, setResearchID] = React.useState('');
+    const [researchTitle, setResearchTitle] = React.useState('');
     const [currentData, setCurrentData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     
@@ -40,8 +41,9 @@ export default function ParticipateInResearch() {
     }, []);
 
     const [Modal, open, close] = useModal('root', {});
-    const applybutton = (id) => { 
+    const applybutton = (id, title) => {
         setResearchID(id);
+        setResearchTitle(title)
         open(); 
     }
 
@@ -112,13 +114,12 @@ export default function ParticipateInResearch() {
                                 <ProfileItem {...profile} />
                             ))} */}
 
+                            <Modal>
+                                <ApplyInResearchModel close={close} researchtitle={researchTitle} apply={researchID}></ApplyInResearchModel>
+                            </Modal>
+
                             {currentData.map((row, index) => (
                             <div class="studies-card" key={index}>
-                                    {/* <ProfileItem {...row} /> */}
-                                <Modal>
-                                    <ApplyInResearchModel close={close} researchtitle={row.topic} apply={researchID}></ApplyInResearchModel>
-                                </Modal>
-                                
                                 <div class="row">
                                     <div class="col-md-8">
                                         <div class="studies-list">
@@ -132,7 +133,7 @@ export default function ParticipateInResearch() {
                                                 <h3>{row.user_name}</h3>
                                                 <small>{row.name}</small>
                                             </div>
-                                                <button class="btn-apply" onClick={(e) => applybutton(row.researches_id)}>Participate</button>
+                                            <button class="btn-apply" onClick={(e) => applybutton(row.researches_id, row.topic)}>Participate</button>
                                         </div>
                                     </div>
                                 </div>

@@ -25,7 +25,9 @@ const ResearchesDemoTable = () => {
   }, [])
 
   const fields = [
-    { key: 'topic', _style: { width: '20%'} },
+    { key: 'research_title', _style: { width: '20%'} },
+    { key: 'researcher_name', _style: { width: '20%' } },
+    { key: 'email', _style: { width: '20%' } },
     { key: 'start_date', _style: { width: '20%' } },    
     { key: 'status', _style: { width: '20%'} },
     {
@@ -38,11 +40,10 @@ const ResearchesDemoTable = () => {
 
 
   const updateItemStatus = (item, status) => {
-
     if (status == 1){
-      var message = 'Are you sure you want to activate the research and which gets display from the front end ?'
+      var message = 'Activating the research will display it on the front end. Are you sure you want to deactivate the selected research? '
     }else{
-      var message = 'Are you sure you want to inactivate the research and which gets removed from the front end ?'
+      var message = 'De-activating the research will remove it from the front end. Are you sure you want to deactivate the selected research? '
     }
     Swal.fire({
       //title: 'warning!',
@@ -54,8 +55,7 @@ const ResearchesDemoTable = () => {
       cancelButtonColor: '#e57979',
     }).then((result) => {
       
-      if (result.isDismissed) {}
-      
+      if (result.isDismissed) {}      
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {        
         var obj = {
@@ -77,7 +77,6 @@ const ResearchesDemoTable = () => {
       } 
     })
   }
-
 
   const getNewList = (status) => {
     axios.get(api_url + '/researches/researchesList?status=' + status, {}).then((result) => {

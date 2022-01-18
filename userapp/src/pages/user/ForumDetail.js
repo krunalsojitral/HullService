@@ -434,7 +434,7 @@ export default function ForumDetail() {
                                             </div>                                            */}
 
                                             <div className="reply-box" id={data.forum_comment_id} style={{ display: 'none' }}>
-                                                <textarea maxlength="1500" className="form-control" type="text" id={"input" + data.forum_comment_id} name="comment" />
+                                                <TextareaAutosize maxRows="4" maxlength="1500" className="form-control" type="text" id={"input" + data.forum_comment_id} name="comment" />
                                                 <small id={"error" + data.forum_comment_id} style={{ display: 'none' }} className="error">Comment is required.</small>
                                                 <button type="submit" onClick={(e) => replySubmit(data.forum_comment_id, index)}>Reply</button>
                                             </div>

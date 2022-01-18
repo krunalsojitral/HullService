@@ -39,8 +39,10 @@ router.get('/researchesList', function (req, res) {
             var researchList = result.map(data => {
                 let retObj = {};
                 retObj['researches_id'] = data.researches_id;
-                retObj['topic'] = data.topic;
+                retObj['research_title'] = data.topic;
                 retObj['created_by'] = data.created_by;
+                retObj['researcher_name'] = data.first_name + ' ' + data.last_name;
+                retObj['email'] = data.email;
                 retObj['start_date'] = moment(data.start_date).format('YYYY-MM-DD');                
                 retObj['status'] = data.status;
                 return retObj;
@@ -322,8 +324,9 @@ router.post('/csvParticipateList', [
             if (err) {
                 return res.json({ status: 0, 'response': { msg: err } });
             } else {
-                var participateList = result.map(data => {
+                var participateList = result.map((data,index) => {
                     let retObj = {};
+                    retObj['S.No'] = index + 1;
                     retObj['Name'] = data.name;
                     retObj['Email'] = data.email;
                     retObj['DOB'] = moment(data.dob).format('YYYY-MM-DD');
@@ -385,8 +388,9 @@ router.get('/getCSVFutureResearchList', (req, res) => {
                 setTimeout(() => resolve(result), 40)
             });
             temparray.then(result => {
-                var participateList = result.map(data => {
-                    let retObj = {};
+                var participateList = result.map((data,index) => {
+                    let retObj = {};                    
+                    retObj['S.No'] = index+1;
                     retObj['Name'] = data.name;
                     retObj['Email'] = data.email;
                     retObj['DOB'] = moment(data.dob).format('YYYY-MM-DD');
@@ -467,6 +471,7 @@ router.get('/researchRequestList', function (req, res) {
                 retObj['status'] = data.researches_status;                
                 retObj['comment'] = data.comment;
                 retObj['user_status'] = data.user_status;
+                retObj['email'] = data.email;
                 retObj['created_by'] = (data.first_name) ? data.first_name + ' ' + data.last_name : 'Admin';
                 return retObj;
             });

@@ -445,7 +445,7 @@ const AddEditForm = ({ match }) => {
     axios.post(api_url + "/course/addcourseByadmin", formData, {}).then((result) => {
       if (result.data.status) {
         Swal.fire("Success!", 'Draft added successfully.', "success");
-        history.push("/draft-course");
+        history.push("/draft-courses");
       } else {
         Swal.fire("Oops...", result.data.response.msg, "error");
       }

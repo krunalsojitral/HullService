@@ -35,7 +35,7 @@ const ResearchDetail = ({ match }) => {
             <table className="table table-striped table-hover">
               <tbody>                
                  
-                <tr><td>Research Topic :</td><td><strong>{details.topic}</strong></td></tr>
+                <tr><td>Research Title :</td><td><strong>{details.topic}</strong></td></tr>
 
 
                 {/* {details.description && <tr><td>Research Description : </td><td>

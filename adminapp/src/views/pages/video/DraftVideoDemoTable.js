@@ -34,9 +34,7 @@ const DraftVideoDemoTable = () => {
     }
   ]
 
-
-  const updateItemStatus = (item, status) => {
-
+  const updateItemFun = (item) => { 
     Swal.fire({
       title: "Are you sure?",
       icon: 'warning',
@@ -47,7 +45,7 @@ const DraftVideoDemoTable = () => {
       cancelButtonColor: '#e57979',
     }).then((results) => {
 
-      if (results.isConfirmed) { 
+      if (results.isConfirmed) {
         var obj = {
           video_id: item.video_id,
           draft_status: 0,
@@ -66,7 +64,26 @@ const DraftVideoDemoTable = () => {
             //Swal.fire('Oops...', err, 'error')
           });
       }
-    });  
+    });
+  }
+
+
+  const updateItemStatus = (item, status) => {
+    if (item.title && item.role) { 
+      if (item.purchase_type == "paid"){
+        if (item.cost) { 
+          updateItemFun(item);
+        }else{
+          Swal.fire("Oops...", "Some of the mandatory data is missing", "error");
+          history.push("/videoedit/" + item.video_id);
+        }
+      }else{
+        updateItemFun(item);
+      }
+    }else{
+      Swal.fire("Oops...", "Some of the mandatory data is missing", "error");
+      history.push("/videoedit/" + item.video_id);
+    }
   }
 
 

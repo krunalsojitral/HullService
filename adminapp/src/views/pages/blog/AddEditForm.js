@@ -39,6 +39,7 @@ const AddEditForm = ({ match }) => {
   const [selectedTag, setSelectedTag] = React.useState([])
   const [selectedRole, setSelectedRole] = React.useState([])
   const [draftStatus, setDraftStatus] = React.useState(0)
+  const [errorRole, setErrorRole] = React.useState('');
 
   const [contentEditor, setContentEditor] = useState();
   const handleEditorChange = (content, editor) => {
@@ -128,48 +129,65 @@ const AddEditForm = ({ match }) => {
   }, []);
 
   const updateInformationAct = (data) => {
-    data.blog_id = match.params.id;
-    data.description = contentEditor;
-    data.user_role = selectedRole;
-    data.tag = selectedTag;
-    const formData = new FormData();
-    formData.append("data", JSON.stringify(data));
-    if (selectedFile) {
-      formData.append("image", selectedFile, selectedFile.name);
-    }
-    axios.post(api_url + "/blog/updateBlogByadmin", formData, {}).then((result) => {
-      if (result.data.status) {
-        Swal.fire("Success!", result.data.response.msg, "success");
-        if (draftStatus == 1) {
-          history.push("/draft-blog");
-        } else {
-          history.push("/blog");
-        }
-      } else {
-        Swal.fire("Oops...", result.data.response.msg, "error");
+
+    console.log(selectedRole);
+
+    if (selectedRole.length > 0){
+      data.blog_id = match.params.id;
+      data.description = contentEditor;
+      data.user_role = selectedRole;
+      data.tag = selectedTag;
+      const formData = new FormData();
+      formData.append("data", JSON.stringify(data));
+      if (selectedFile) {
+        formData.append("image", selectedFile, selectedFile.name);
       }
-    }).catch((err) => { console.log(err); });
+      axios.post(api_url + "/blog/updateBlogByadmin", formData, {}).then((result) => {
+        if (result.data.status) {
+          Swal.fire("Success!", result.data.response.msg, "success");
+          if (draftStatus == 1) {
+            history.push("/draft-blog");
+          } else {
+            history.push("/blog");
+          }
+        } else {
+          Swal.fire("Oops...", result.data.response.msg, "error");
+        }
+      }).catch((err) => { console.log(err); });
+    }else{
+      setErrorRole('User Role is required')
+    }
+
+   
 
   };
 
 
   const addInformationAct = (data) => {
-    data.description = contentEditor;
-    data.tag = selectedTag;
-    data.user_role = selectedRole;
-    const formData = new FormData();
-    formData.append("data", JSON.stringify(data));
-    if (selectedFile) {
-      formData.append("image", selectedFile, selectedFile.name);
-    }
-    axios.post(api_url + "/blog/addBlogByadmin", formData, {}).then((result) => {
-      if (result.data.status) {
-        Swal.fire("Success!", result.data.response.msg, "success");
-        history.push("/blog");
-      } else {
-        Swal.fire("Oops...", result.data.response.msg, "error");
+
+    console.log(selectedRole);
+
+    if (selectedRole.length > 0) {
+      data.description = contentEditor;
+      data.tag = selectedTag;
+      data.user_role = selectedRole;
+      const formData = new FormData();
+      formData.append("data", JSON.stringify(data));
+      if (selectedFile) {
+        formData.append("image", selectedFile, selectedFile.name);
       }
-    }).catch((err) => { console.log(err); });
+      axios.post(api_url + "/blog/addBlogByadmin", formData, {}).then((result) => {
+        if (result.data.status) {
+          Swal.fire("Success!", result.data.response.msg, "success");
+          history.push("/blog");
+        } else {
+          Swal.fire("Oops...", result.data.response.msg, "error");
+        }
+      }).catch((err) => { console.log(err); });
+    }else{
+      setErrorRole('User Role is required')
+    } 
+    
   };
 
   // const [text, setText] = React.useState(initialText)
@@ -212,11 +230,13 @@ const AddEditForm = ({ match }) => {
   }
 
   const draft_blog = () => {
+
+
     var obj = {
       cost: (control._fields.cost && control._fields.cost._f.value) ? control._fields.cost._f.value : '',
       purchase_type: (control._fields.purchase_type && control._fields.purchase_type._f.value) ? control._fields.purchase_type._f.value : '',
       title: (control._fields.title && control._fields.title._f.value) ? control._fields.title._f.value : '',
-      user_role: selectedRole,
+      user_role:  (selectedRole.length > 0) ? selectedRole: [],
       description: (contentEditor) ? contentEditor : '',
       tag: selectedTag,
       draft: 1
@@ -235,6 +255,10 @@ const AddEditForm = ({ match }) => {
         Swal.fire("Oops...", result.data.response.msg, "error");
       }
     }).catch((err) => { console.log(err); });
+  }
+
+  const changeSelectedRole = () => { 
+    setErrorRole('');
   }
 
 
@@ -352,13 +376,21 @@ const AddEditForm = ({ match }) => {
                       value={selectedRole}
                       selectionLimit="2"
                       hasSelectAll={true}
-                      onChange={setSelectedRole}
+                     // onChange={setSelectedRole}
+                      onChange={(e) => {
+                        changeSelectedRole(e);
+                        setSelectedRole(e);
+                      }}
                       labelledBy="Select"
                     />
                   </CFormGroup>
+                  {errorRole && (
+                    <p style={{ color: "red", fontSize: "12px" }}>User role is required.</p>
+                  )}
                   {selectedRole.map(item => (
                     <span className="skill-name">{item.label} &nbsp;<i onClick={(e) => removeRole(item.value)} className="fa fa-times">X</i></span>
                   ))}
+
                 </CCol>
               </CRow>
               <br />

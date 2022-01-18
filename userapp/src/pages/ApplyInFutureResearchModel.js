@@ -182,6 +182,12 @@ function ApplyInFutureResearchModel(props) {
                                 </div>
                             ))} 
 
+                            <div className="row">
+                                <div className="col-md-12 text-right">
+                                    <button type="button" className="child-btn" onClick={() => append({ value: "" })}>Add Child</button>
+                                </div>
+                            </div>
+
                             {researchesDetail.participate_text &&
                                 
                                     <div className="form-group">
@@ -210,10 +216,7 @@ function ApplyInFutureResearchModel(props) {
                                 
                                 </div>}
 
-                            <div className="row">
-                                <div className="col-md-12 text-right">
-                                    <button type="button" className="child-btn" onClick={() => append({ value: "" })}>Add Child</button>
-                                </div>
+                            <div className="row">                               
                                 <div className="col-md-12 text-center">
                                     <button className="submit-btn" type="submit">Submit</button>
                                 </div>
