@@ -38,25 +38,7 @@ const Serviceprovider = () => {
   return (
     <CRow>
       <CCol sm="12">
-        <CCard>
-          <CCardHeader>
-            <div className="header-left">
-              <CIcon name="cil-grid" /> Professionals
-            </div>
-            <div className="header-right">
-              <CSVLink data={csvData}>Export User</CSVLink> &nbsp;
-              {/* <CButton
-                color="primary"
-                variant="outline"
-                shape="square"
-                size="sm"
-                onClick={() => history.push(`/serviceprovideradd`)}
-              >
-                Add
-            </CButton> */}
-            </div>
-            
-          </CCardHeader>
+        <CCard>         
           <DemoTable />
         </CCard>
       </CCol>

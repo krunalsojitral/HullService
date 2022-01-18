@@ -19,9 +19,17 @@ function Video() {
         });
     }
 
-    this.getAllAdminVideo = function (callback) {
+    this.getAllAdminVideo = function (status, callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM video where draft_status IS NULL order by video_id desc', function (err, result) {
+            var sql = '';
+            var array = [];
+            if (status) {
+                sql = 'SELECT * FROM video where status = $1 and draft_status IS NULL order by video_id DESC';
+                array = [status];
+            } else {
+                sql = 'SELECT * FROM video where draft_status IS NULL order by video_id desc';
+            }
+            con.query(sql, array, function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }

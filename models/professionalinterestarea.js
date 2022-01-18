@@ -6,9 +6,18 @@ var env = require('../config/env');
 function Professionalinterestarea() {
     connection.init();
 
-    this.getAllAdminprofessionalinterestarea = function (callback) {
+    this.getAllAdminprofessionalinterestarea = function (status, callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM professional_interest_area order by UPPER(name) ASC', function (err, result) {
+
+            var sql = '';
+            var array = [];
+            if (status) {
+                sql = 'SELECT * FROM professional_interest_area where status = $1 order by UPPER(name) ASC';
+                array = [status];
+            } else {
+                sql = 'SELECT * FROM professional_interest_area order by UPPER(name) ASC';
+            }
+            con.query(sql, array, function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }

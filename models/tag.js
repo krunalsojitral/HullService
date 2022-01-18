@@ -21,9 +21,19 @@ function Tag() {
         });
     }
 
-    this.getAllAdmintag = function (callback) {
+    this.getAllAdmintag = function (status, callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM tag order by tag_id desc', function (err, result) {
+
+            var sql = '';
+            var array = [];
+            if (status) {
+                sql = 'SELECT * FROM tag where status = $1 order by UPPER(tag_name) ASC';
+                array = [status];
+            } else {
+                sql = 'SELECT * FROM tag order by UPPER(tag_name) ASC';
+            }
+
+            con.query(sql, array, function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }

@@ -6,7 +6,7 @@ import {
   CCol,
   CRow,
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
+
 import DemoTable from './DemoTable'
 import { useHistory } from 'react-router-dom'
 
@@ -15,21 +15,7 @@ const Course = () => {
   return (
     <CRow>
       <CCol sm="12">
-        <CCard>
-          <CCardHeader className="custom-table-header">
-            <div>
-              <CIcon name="cil-grid" /> Course
-            </div>
-            <CButton
-              color="primary"
-              variant="outline"
-              shape="square"
-              size="sm"
-              onClick={() => history.push(`/courseadd`)}
-            >
-              Add
-            </CButton>
-          </CCardHeader>
+        <CCard>         
           <DemoTable />
         </CCard>
       </CCol>

@@ -317,7 +317,8 @@ router.post('/checkEmail', [
 router.post('/userList', function (req, res) {
     loggerData(req);
     var role = req.body.role;
-    User.getAllAdminUsers(role,function (err, result) {
+    var status = req.body.status;
+    User.getAllAdminUsers(role,status, function (err, result) {
         if (err) {
             return res.json({ status: 0, 'response': { msg: err } });
         } else {
@@ -329,6 +330,7 @@ router.post('/userList', function (req, res) {
                 retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
                 retObj['joining_date'] = moment(data.created_at).format('YYYY-MM-DD');
                 retObj['role'] = data.role;
+                retObj['email_verification_token'] = data.email_verification_token;                
                 retObj['email'] = data.email;                
                 retObj['status'] = data.status;
                 return retObj;
@@ -341,7 +343,7 @@ router.post('/userList', function (req, res) {
 router.post('/csvuserList', function (req, res) {
     loggerData(req);
     var role = req.body.role;
-    User.getAllAdminUsers(role, function (err, result) {
+    User.getAllAdminUsers(role,'', function (err, result) {
         if (err) {
             return res.json({ status: 0, 'response': { msg: err } });
         } else {

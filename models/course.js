@@ -21,9 +21,18 @@ function Course() {
         });
     }
 
-    this.getAllAdminCourse = function (callback) {
+    this.getAllAdminCourse = function (status, callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM course where draft_status IS NULL order by course_id desc', function (err, result) {
+
+            var sql = '';
+            var array = [];
+            if (status) {
+                sql = 'SELECT * FROM course where status = $1 and draft_status IS NULL order by course_id DESC';
+                array = [status];
+            } else {
+                sql = 'SELECT * FROM course where draft_status IS NULL order by course_id DESC';
+            }
+            con.query(sql, array, function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }

@@ -31,7 +31,8 @@ function loggerData(req) {
 //passport.authenticate('jwt', { session: false }), 
 router.get('/researchesList', function (req, res) {
     loggerData(req);
-    Researches.getAllAdminResearches(function (err, result) {
+    var status = req.query.status;
+    Researches.getAllAdminResearches(status, function (err, result) {
         if (err) {
             return res.json({ status: 0, 'response': { msg: err } });
         } else {

@@ -28,7 +28,8 @@ function loggerData(req) {
 //passport.authenticate('jwt', { session: false }), 
 router.get('/academicdisciplineList', function (req, res) {
     loggerData(req);
-    academicdiscipline.getAllAdminacademicdiscipline(function (err, result) {
+    var status = req.query.status;
+    academicdiscipline.getAllAdminacademicdiscipline(status, function (err, result) {
         if (err) {
             return res.json({ status: 0, 'response': { msg: err } });
         } else {

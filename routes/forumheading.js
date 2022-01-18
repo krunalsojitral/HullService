@@ -28,7 +28,8 @@ function loggerData(req) {
 //passport.authenticate('jwt', { session: false }), 
 router.get('/forumheadingList', function (req, res) {
     loggerData(req);
-    Forumheading.getAllAdminforumheading(function (err, result) {
+    var status = req.query.status;
+    Forumheading.getAllAdminforumheading(status, function (err, result) {
         if (err) {
             return res.json({ status: 0, 'response': { msg: err } });
         } else {

@@ -6,9 +6,20 @@ var asyn = require('async');
 function Researches() {
     connection.init();
 
-    this.getAllAdminResearches = function (callback) {
+    this.getAllAdminResearches = function (status, callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM researches where user_status = $1 order by researches_id desc',[1], function (err, result) {
+
+            var sql = '';
+            var array = [];
+            if (status) {                
+                sql = 'SELECT * FROM researches where user_status = $1 and status = $2 order by researches_id desc'
+                array = [1, status];
+            } else {
+                sql = 'SELECT * FROM researches where user_status = $1 order by researches_id desc'
+                array = [1];
+            }
+
+            con.query(sql, array, function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }

@@ -6,9 +6,17 @@ var env = require('../config/env');
 function Forumheading() {
     connection.init();
 
-    this.getAllAdminforumheading = function (callback) {
+    this.getAllAdminforumheading = function (status, callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM forumheading order by UPPER(forumheading_name) ASC', function (err, result) {
+            var sql = '';
+            var array = [];
+            if (status) {
+                sql = 'SELECT * FROM forumheading where status = $1 order by UPPER(forumheading_name) ASC';
+                array = [status];
+            } else {
+                sql = 'SELECT * FROM forumheading order by UPPER(forumheading_name) ASC';
+            }
+            con.query(sql, array, function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }

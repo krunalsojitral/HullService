@@ -46,6 +46,9 @@
     padding: 7px 9px;
     margin: 10px 4px 0 0;
 }
+.skill-name .fa-times{
+    cursor: pointer;
+}
 .suggestion {
     position: inherit;
     margin: 0px;
@@ -102,4 +105,10 @@
 }
 .table{
     margin-bottom:2rem !important;
+}
+.d-inline-block {
+    display: inline-block !important;
+    width: auto;
+    vertical-align: text-top;
+    margin-left: 10px;
 }

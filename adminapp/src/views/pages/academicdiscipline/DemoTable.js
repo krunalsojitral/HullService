@@ -7,19 +7,21 @@ import {
   CCardBody,  
   CButton,
   CCollapse,
-  CDataTable
+  CDataTable,
+  CCardHeader
 } from '@coreui/react'
-
+import CIcon from '@coreui/icons-react'
 
 const DemoTable = () => {
 
   const history = useHistory()
   const [details, setDetails] = useState([])
   const [items, setItems] = useState([])
+  const ref = React.useRef();
 
   React.useEffect(() => {
-    getNewList();
-    getNewListWrap();
+    getNewList('');
+    getNewListWrap('');
   }, [])
 
   const fields = [
@@ -59,7 +61,8 @@ const DemoTable = () => {
         axios.post(api_url + "/academicdiscipline/changeacademicdisciplineStatus", obj)
           .then((result) => {
             if (result.data.status) {
-              getNewListWrap();
+              getNewListWrap('');
+              ref.current.value = "";
             } else {
               Swal.fire("Oops...", result.data.response.msg, "error");
             }
@@ -72,8 +75,8 @@ const DemoTable = () => {
     });
   }
   
-  const getNewList = () => { 
-    axios.get(api_url + '/academicdiscipline/academicdisciplineList', {}).then((result) => {
+  const getNewList = (status) => {
+    axios.get(api_url + '/academicdiscipline/academicdisciplineList?status=' + status, {}).then((result) => {
       if (result.data.status) {
         var usersdatas = result.data.response.data;
         setItems(usersdatas);
@@ -85,76 +88,110 @@ const DemoTable = () => {
     })
   }
 
-  const getNewListWrap = () => {
-    getNewList(setItems);
+  const getNewListWrap = (status) => {
+    getNewList(status);
   };
+
+  const handleAddrTypeChange = (e) => {
+    console.clear();
+    if (e.target.value == '0') {
+      getNewListWrap(e.target.value);
+    } else if (e.target.value == '1') {
+      getNewListWrap(e.target.value);
+    } else {
+      getNewListWrap('');
+    }
+
+  }
 
 
 
   return (
-    <CCardBody>
-      <CDataTable
-        items={items}
-        fields={fields}
-        columnFilter
-        tableFilter
-        cleaner
-        itemsPerPageSelect
-        itemsPerPage={10}
-        hover
-        sorter
-        pagination
-        // loading
-        // onRowClick={(item,index,col,e) => console.log(item,index,col,e)}
-        // onPageChange={(val) => console.log('new page:', val)}
-        // onPagesChange={(val) => console.log('new pages:', val)}
-        // onPaginationChange={(val) => console.log('new pagination:', val)}
-        // onFilteredItemsChange={(val) => console.log('new filtered items:', val)}
-        // onSorterValueChange={(val) => console.log('new sorter value:', val)}
-        // onTableFilterChange={(val) => console.log('new table filter:', val)}
-        // onColumnFilterChange={(val) => console.log('new column filter:', val)}
-        scopedSlots = {{
-          status: (item) => (
-            <td class="tooltip-box">
-              {item.status === 1 ? (
-                <a
-                  href
-                  style={{ cursor: "pointer", textDecoration: "underline" }}
-                  onClick={() => {
-                    updateItemStatus(
-                      item,
-                      0,
-                      getNewListWrap
-                    );
-                  }}
-                >
-                  Active{" "}
-                  <span class="tooltip-title">De-activating the academic discipline will remove the academic discipline from the front end.</span>
-                </a>
-              ) : (
-                <a
-                  href
-                  style={{ cursor: "pointer", textDecoration: "underline" }}
-                  onClick={() => {
-                    updateItemStatus(
-                      item,
-                      1,
-                      getNewListWrap
-                    );
-                  }}
-                >
+    <div>
+      <CCardHeader className="custom-table-header">
+            <div>
+              <CIcon name="cil-grid" /> Academic Discipline
+            </div>
+            <div>
+              <select ref={ref} onChange={e => handleAddrTypeChange(e)} className="form-control d-inline-block" >
+                <option key="0" value="">Select Option</option>
+                <option key="1" value="1">Active</option>
+                <option key="2" value="0">Inactive</option>
+              </select>
+
+              <CButton
+                color="primary"
+                variant="outline"
+                shape="square"
+                size="sm"
+                className="d-inline-block"
+                onClick={() => history.push(`/academicdisciplineadd`)}
+              >Add</CButton>
+            </div>          
+          </CCardHeader>
+      <CCardBody>
+        <CDataTable
+          items={items}
+          fields={fields}
+          columnFilter
+          tableFilter
+          cleaner
+          itemsPerPageSelect
+          itemsPerPage={10}
+          hover
+          sorter
+          pagination
+          // loading
+          // onRowClick={(item,index,col,e) => console.log(item,index,col,e)}
+          // onPageChange={(val) => console.log('new page:', val)}
+          // onPagesChange={(val) => console.log('new pages:', val)}
+          // onPaginationChange={(val) => console.log('new pagination:', val)}
+          // onFilteredItemsChange={(val) => console.log('new filtered items:', val)}
+          // onSorterValueChange={(val) => console.log('new sorter value:', val)}
+          // onTableFilterChange={(val) => console.log('new table filter:', val)}
+          // onColumnFilterChange={(val) => console.log('new column filter:', val)}
+          scopedSlots={{
+            status: (item) => (
+              <td class="tooltip-box">
+                {item.status === 1 ? (
+                  <a
+                    href
+                    style={{ cursor: "pointer", textDecoration: "underline" }}
+                    onClick={() => {
+                      updateItemStatus(
+                        item,
+                        0,
+                        getNewListWrap
+                      );
+                    }}
+                  >
+                    Active{" "}
+                    <span class="tooltip-title">De-activating the academic discipline will remove the academic discipline from the front end.</span>
+                  </a>
+                ) : (
+                  <a
+                    href
+                    style={{ cursor: "pointer", textDecoration: "underline" }}
+                    onClick={() => {
+                      updateItemStatus(
+                        item,
+                        1,
+                        getNewListWrap
+                      );
+                    }}
+                  >
                     Inactive
                     <span class="tooltip-title">Activating the academic discipline will add the academic discipline back on the front end.</span>
-                </a>
-              )}
-              {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}
-            </td>
-          ),
-          'show_details':
-            item => {
-              return (
-                <td className="py-2">
-                  {/* <CButton
+                  </a>
+                )}
+                {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}
+              </td>
+            ),
+            'show_details':
+              item => {
+                return (
+                  <td className="py-2">
+                    {/* <CButton
                     color="primary"
                     variant="outline"
                     shape="square"
@@ -164,41 +201,43 @@ const DemoTable = () => {
                     Show
                   </CButton> */}
 
-                  <CButton
-                    color="primary"
-                    variant="outline"
-                    shape="square"
-                    size="sm"
-                    onClick={() => history.push(`/academicdisciplineedit/${item.academicdiscipline_id}`)}
-                    className="mr-1"
-                  > Edit
+                    <CButton
+                      color="primary"
+                      variant="outline"
+                      shape="square"
+                      size="sm"
+                      onClick={() => history.push(`/academicdisciplineedit/${item.academicdiscipline_id}`)}
+                      className="mr-1"
+                    > Edit
                   </CButton>
 
-                </td>
-              )
-            },
-          'details':
+                  </td>
+                )
+              },
+            'details':
               item => {
                 return (
-                <CCollapse show={details.includes(item.id)}>
-                  <CCardBody>
-                    <h4>
-                      {item.username}
-                    </h4>
+                  <CCollapse show={details.includes(item.id)}>
+                    <CCardBody>
+                      <h4>
+                        {item.username}
+                      </h4>
                       <p className="text-muted">User since: {item.created_at}</p>
-                    <CButton size="sm" color="info">
-                      User Settings
+                      <CButton size="sm" color="info">
+                        User Settings
                     </CButton>
-                    <CButton size="sm" color="danger" className="ml-1">
-                      Delete
+                      <CButton size="sm" color="danger" className="ml-1">
+                        Delete
                     </CButton>
-                  </CCardBody>
-                </CCollapse>
-              )
-            }
-        }}
-      />
-    </CCardBody>
+                    </CCardBody>
+                  </CCollapse>
+                )
+              }
+          }}
+        />
+      </CCardBody>
+    </div>
+    
   )
 }
 

@@ -28,7 +28,8 @@ function loggerData(req) {
 //passport.authenticate('jwt', { session: false }), 
 router.get('/occupationList', function (req, res) {
     loggerData(req);
-    Occupation.getAllAdminoccupation(function (err, result) {
+    var status = req.query.status;
+    Occupation.getAllAdminoccupation(status, function (err, result) {
         if (err) {
             return res.json({ status: 0, 'response': { msg: err } });
         } else {

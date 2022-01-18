@@ -3,26 +3,42 @@ import { useHistory } from 'react-router-dom'
 import axios from 'axios';
 import api_url from './../../../Apiurl';
 import Swal from "sweetalert2";
-
 import {
-  CCardBody,  
-  CButton,  
-  CDataTable
+  CCardBody,
+  CButton,
+  CDataTable,
+  CCardHeader
 } from '@coreui/react'
+import CIcon from '@coreui/icons-react'
+import { CSVLink } from "react-csv";
 
 
 const DemoTable = () => {
-
+  const ref = React.useRef();
   const history = useHistory()
  // const [details, setDetails] = useState([])
   const [items, setItems] = useState([])
+  const [csvData, setCsvData] = useState([["Name", "Email", "Phone"]]);
 
   React.useEffect(() => {
-    getNewList();
-    getNewListWrap();
+    getNewList('');
+    getNewListWrap('');
+    getCSVNewList();
   }, [])
 
- 
+  const getCSVNewList = () => {
+    axios.post(api_url + '/user/csvuserList', { role: 4 }).then((result) => {
+      if (result.data.status) {
+        var usersdatas = result.data.response.data;
+        setCsvData(usersdatas);
+      } else {
+        Swal.fire('Oops...', result.data.response.msg, 'error')
+      }
+    }).catch((err) => {
+      console.log(err);
+    })
+  }
+
 
   const fields = [
     { key: 'name', _style: { width: '20%' } },
@@ -63,6 +79,7 @@ const DemoTable = () => {
           .then((result) => {
             if (result.data.status) {
               getNewListWrap();
+              ref.current.value = "";
             } else {
               Swal.fire("Oops...", result.data.response.msg, "error");
             }
@@ -75,12 +92,10 @@ const DemoTable = () => {
   }
 
   
-  const getNewList = () => { 
-    axios.post(api_url + '/user/userList', { role : 4 }).then((result) => {
+  const getNewList = (status) => {
+    axios.post(api_url + '/user/userList', { role: 4, status: status }).then((result) => {
       if (result.data.status) {
         var usersdatas = result.data.response.data;
-
-       
         setItems(usersdatas);
       } else {
         Swal.fire('Oops...', result.data.response.msg, 'error')
@@ -90,8 +105,8 @@ const DemoTable = () => {
     })
   }
 
-  const getNewListWrap = () => {
-    getNewList(setItems);
+  const getNewListWrap = (status) => {
+    getNewList(status);
   };
 
   const getBadge = (status)=>{
@@ -104,9 +119,45 @@ const DemoTable = () => {
     }
   }
 
+
+  const handleAddrTypeChange = (e) => {
+
+    if (e.target.value == '0') {
+      getNewListWrap(e.target.value);
+    } else if (e.target.value == '1') {
+      getNewListWrap(e.target.value);
+    } else {
+      getNewListWrap('');
+    }
+
+  }
+
   return (
     <CCardBody>
 
+      <CCardHeader className="custom-table-header">
+        <div className="header-left">
+          <CIcon name="cil-grid" /> General Public
+                </div>
+        <div className="header-right">
+          <select ref={ref} onChange={e => handleAddrTypeChange(e)} className="form-control d-inline-block" >
+            <option key="0" value="">Select Option</option>
+            <option key="1" value="1">Active</option>
+            <option key="2" value="0">Inactive</option>
+          </select>
+
+          <CSVLink className="d-inline-block" data={csvData}>Export User</CSVLink> &nbsp;
+                      {/* <CButton
+                        color="primary"
+                        variant="outline"
+                        shape="square"
+                        size="sm"
+                        onClick={() => history.push(`/researchersadd`)}
+                      >
+                        Add
+                    </CButton> */}
+        </div>
+      </CCardHeader>
     
 
       <CDataTable
@@ -132,7 +183,8 @@ const DemoTable = () => {
         scopedSlots = {{
           status: (item) => (
             <td class="tooltip-box">
-              {item.status === 1 ? (
+              {item.email_verification_token !== null ? 'Pending' : ''}
+              {(item.email_verification_token == null) ? item.status === 1 ? (
                 <a
                   href
                   style={{ cursor: "pointer", textDecoration: "underline" }}
@@ -162,8 +214,7 @@ const DemoTable = () => {
                     Inactive
                     <span class="tooltip-title">Activating the user will add the user back on the front end.</span>
                 </a>
-              )}
-              {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}
+              ) : ''}              
             </td>
           ),
           'role':

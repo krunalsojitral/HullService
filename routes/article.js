@@ -29,9 +29,10 @@ function loggerData(req) {
 //passport.authenticate('jwt', { session: false }), 
 
 router.get('/articleList', function (req, res) {
+    var status = req.query.status;
     asyn.waterfall([
-        function (done) {
-            Article.getAllAdminArticle(function (err, result) {
+        function (done) {            
+            Article.getAllAdminArticle(status, function (err, result) {
                 if (err) {
                     return res.json({ status: 0, 'response': { msg: err } });
                 } else {
@@ -55,7 +56,7 @@ router.get('/articleList', function (req, res) {
                                     retObj['article_id'] = data.article_id;
                                     retObj['title'] = data.title;
                                     retObj['description'] = data.description;
-                                    retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
+                                    retObj['created_on'] = moment(data.created_at).format('YYYY-MM-DD');
                                     retObj['role'] = data.role;
                                     retObj['status'] = data.status;
                                     return retObj;
@@ -111,7 +112,7 @@ router.get('/draftarticleList', function (req, res) {
                                     retObj['article_id'] = data.article_id;
                                     retObj['title'] = data.title;
                                     retObj['description'] = data.description;
-                                    retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
+                                    retObj['created_on'] = moment(data.created_at).format('YYYY-MM-DD');
                                     retObj['role'] = data.role;
                                     retObj['status'] = data.status;
                                     return retObj;

@@ -28,7 +28,8 @@ function loggerData(req) {
 //passport.authenticate('jwt', { session: false }), 
 router.get('/researcherinterestareaList', function (req, res) {
     loggerData(req);
-    Researcherinterestarea.getAllAdminresearcherinterestarea(function (err, result) {
+    var status = req.query.status;
+    Researcherinterestarea.getAllAdminresearcherinterestarea(status, function (err, result) {
         if (err) {
             return res.json({ status: 0, 'response': { msg: err } });
         } else {

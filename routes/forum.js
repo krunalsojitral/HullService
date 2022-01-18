@@ -31,7 +31,8 @@ function loggerData(req) {
 //passport.authenticate('jwt', { session: false }), 
 router.get('/forumList', function (req, res) {
     loggerData(req);
-    Forum.getAllAdminforum(function (err, result) {
+    var status = req.query.status;
+    Forum.getAllAdminforum(status, function (err, result) {
         if (err) {
             return res.json({ status: 0, 'response': { msg: err } });
         } else {

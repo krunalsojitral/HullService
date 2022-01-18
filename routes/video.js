@@ -28,10 +28,10 @@ function loggerData(req) {
 //passport.authenticate('jwt', { session: false }), 
 router.get('/videoList', function (req, res) {
     loggerData(req);
-
+    var status = req.query.status;
     asyn.waterfall([
         function (done) {
-            Video.getAllAdminVideo(function (err, result) {
+            Video.getAllAdminVideo(status, function (err, result) {
                 if (err) {
                     return res.json({ status: 0, 'response': { msg: err } });
                 } else {
@@ -55,7 +55,7 @@ router.get('/videoList', function (req, res) {
                                     retObj['video_embeded_id'] = data.video_embeded_id;
                                     retObj['title'] = data.title;
                                     retObj['description'] = data.description;
-                                    retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
+                                    retObj['created_on'] = moment(data.created_at).format('YYYY-MM-DD');
                                     retObj['role'] = data.role;
                                     retObj['status'] = data.status;
                                     return retObj;
@@ -634,7 +634,7 @@ router.get('/draftvideoList', function (req, res) {
                                     retObj['video_embeded_id'] = data.video_embeded_id;
                                     retObj['title'] = data.title;
                                     retObj['description'] = data.description;
-                                    retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
+                                    retObj['created_on'] = moment(data.created_at).format('YYYY-MM-DD');
                                     retObj['role'] = data.role;
                                     retObj['status'] = data.status;
                                     return retObj;

@@ -151,9 +151,17 @@ function User() {
         });
     }
 
-    this.getAllAdminUsers = function (role,callback) {
+    this.getAllAdminUsers = function (role, status, callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM users where users.role = $1 order by UPPER(first_name) ASC', [role], function (err, result) {
+            var sql = '';
+            var array = [role];
+            if (status) {
+                sql = 'SELECT * FROM users where users.role = $1 and users.status = $2 order by UPPER(first_name) ASC';
+                array = [role, status];
+            } else {
+                sql = 'SELECT * FROM users where users.role = $1 order by UPPER(first_name) ASC';
+            }
+            con.query(sql, array, function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }
@@ -183,9 +191,14 @@ function User() {
                         msg = 'User does not exist.';
                         callback(msg, null);
                     } else {
-                        if (results.rows[0].status == 0) {
-                            var msg = 'Your account has not been activated. Please verify your account by clicking on the verification link in the email you received from us.';
-                            callback(msg, null);
+                        if (results.rows[0].status == 0) {                            
+                            if (results.rows[0].email_verification_token !== null) {
+                                var msg = 'Your account has not been activated. Please verify your account by clicking on the verification link in the email you received from us.';
+                                callback(msg, null);
+                            }else{
+                                var msg = 'Your account has been deactivated. Please contact system Administrator.';
+                                callback(msg, null);
+                            }
                         } else {
                             callback(null, results.rows);
                         }

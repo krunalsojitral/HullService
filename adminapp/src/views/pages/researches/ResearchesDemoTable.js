@@ -7,19 +7,21 @@ import {
   CCardBody,  
   CButton,
   CCollapse,
-  CDataTable
+  CDataTable,
+  CCardHeader
 } from '@coreui/react'
-
+import CIcon from '@coreui/icons-react'
 
 const ResearchesDemoTable = () => {
 
   const history = useHistory()
   const [details, setDetails] = useState([])
   const [items, setItems] = useState([])
+  const ref = React.useRef();
 
   React.useEffect(() => {
-    getNewList();
-    getNewListWrap();
+    getNewList('');
+    getNewListWrap('');
   }, [])
 
   const fields = [
@@ -63,7 +65,7 @@ const ResearchesDemoTable = () => {
         axios.post(api_url + "/researches/changeResearchesStatus", obj)
           .then((results) => {
             if (results.data.status) {
-              getNewListWrap();
+              getNewListWrap('');
             } else {
               Swal.fire("Oops...", results.data.response.msg, "error");
             }
@@ -77,8 +79,8 @@ const ResearchesDemoTable = () => {
   }
 
 
-  const getNewList = () => {
-    axios.get(api_url + '/researches/researchesList', {}).then((result) => {
+  const getNewList = (status) => {
+    axios.get(api_url + '/researches/researchesList?status=' + status, {}).then((result) => {
       if (result.data.status) {
         var usersdatas = result.data.response.data;
         setItems(usersdatas);
@@ -90,8 +92,8 @@ const ResearchesDemoTable = () => {
     })
   }
 
-  const getNewListWrap = () => {
-    getNewList(setItems);
+  const getNewListWrap = (status) => {
+    getNewList(status);
   };
 
   const getBadge = (status)=>{
@@ -104,8 +106,32 @@ const ResearchesDemoTable = () => {
     }
   }
 
+  const handleAddrTypeChange = (e) => {
+    if (e.target.value == '0') {
+      getNewListWrap(e.target.value);
+    } else if (e.target.value == '1') {
+      getNewListWrap(e.target.value);
+    } else {
+      getNewListWrap('');
+    }
+
+  }
+
   return (
     <div className="card">
+      <CCardHeader className="custom-table-header">
+        <div>
+          <CIcon name="cil-grid" /> Researches
+        </div>
+
+        <div>
+          <select ref={ref} onChange={e => handleAddrTypeChange(e)} className="form-control d-inline-block" >
+            <option key="0" value="">Select Option</option>
+            <option key="1" value="1">Active</option>
+            <option key="2" value="0">Inactive</option>
+          </select>         
+        </div>       
+      </CCardHeader>
     <CCardBody>
       <CDataTable
         items={items}

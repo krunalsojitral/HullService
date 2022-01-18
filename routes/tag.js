@@ -28,7 +28,8 @@ function loggerData(req) {
 //passport.authenticate('jwt', { session: false }), 
 router.get('/tagList', function (req, res) {
     loggerData(req);
-    Tag.getAllAdmintag(function (err, result) {
+    var status = req.query.status;
+    Tag.getAllAdmintag(status, function (err, result) {
         if (err) {
             return res.json({ status: 0, 'response': { msg: err } });
         } else {

@@ -6,9 +6,18 @@ var env = require('../config/env');
 function Occupation() {
     connection.init();
 
-    this.getAllAdminoccupation = function (callback) {
+    this.getAllAdminoccupation = function (status, callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM occupation order by UPPER(name) ASC', function (err, result) {
+
+            var sql = '';
+            var array = [];
+            if (status) {
+                sql = 'SELECT * FROM occupation where status = $1 order by UPPER(name) ASC';
+                array = [status];
+            } else {
+                sql = 'SELECT * FROM occupation order by UPPER(name) ASC';
+            }
+            con.query(sql, array, function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }

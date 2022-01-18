@@ -21,17 +21,22 @@ function User() {
         });
     }
 
-    this.getAllAdminArticle = function (callback) {
+    this.getAllAdminArticle = function (status, callback) {
         connection.acquire(function (err, con) {
-            var sql = 'SELECT * FROM article where draft_status IS NULL order by article_id desc';
-            con.query(sql, function (err, result) {
+            var sql = '';
+            var array = [];
+            if (status) {
+                sql = 'SELECT * FROM article where status = $1 and draft_status IS NULL order by article_id DESC';
+                array = [status];
+            } else {
+                sql = 'SELECT * FROM article where draft_status IS NULL order by article_id desc';
+            }
+            con.query(sql, array, function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }
                     callback(err, null);
                 } else {
-
-                    console.log(result.rows);
                     callback(null, result.rows);
                 }
             });

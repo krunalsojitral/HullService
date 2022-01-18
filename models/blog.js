@@ -19,9 +19,18 @@ function User() {
         });
     }        
 
-    this.getAllAdminBlog = function (callback) {
+    this.getAllAdminBlog = function (status, callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM blog where draft_status IS NULL order by blog_id DESC', function (err, result) {
+            
+            var sql = '';
+            var array = [];
+            if (status) {                
+                sql = 'SELECT * FROM blog where status = $1 and draft_status IS NULL order by blog_id DESC';
+                array = [status];                
+            }else{                
+                sql = 'SELECT * FROM blog where draft_status IS NULL order by blog_id DESC';                
+            }
+            con.query(sql, array, function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }

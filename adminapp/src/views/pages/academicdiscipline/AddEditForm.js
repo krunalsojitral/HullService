@@ -24,13 +24,9 @@ const AddEditForm = ({ match }) => {
     setValue,
     control, 
     formState: { errors },
-  } = useForm();
-  
+  } = useForm();  
   
   const [isEditMode, setisEditMode] = React.useState(0);
- 
-
- 
 
   React.useEffect(() => {   
 
@@ -39,8 +35,7 @@ const AddEditForm = ({ match }) => {
       axios.post(api_url + "/academicdiscipline/getacademicdisciplineDataById", { academicdiscipline_id: match.params.id }, {})
         .then((result) => {
           if (result.data.status) {
-            var usersdata = result.data.response.data;
-            console.log(usersdata);
+            var usersdata = result.data.response.data;            
             setValue("academicdiscipline_name", usersdata.academicdiscipline_name);
           } else {
             Swal.fire("Oops...", result.data.response.msg, "error");

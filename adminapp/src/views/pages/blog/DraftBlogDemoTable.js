@@ -26,7 +26,7 @@ const DraftBlogDemoTable = () => {
   const fields = [
     { key: 'title', _style: { width: '20%'} },
     { key: 'role', _style: { width: '20%' } },
-    { key: 'created_at', _style: { width: '20%' } },
+    { key: 'created_on', _style: { width: '20%' } },
     { key: 'status', _style: { width: '20%'} },
     {
       key: 'show_details',

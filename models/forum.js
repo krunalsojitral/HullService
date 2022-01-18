@@ -20,9 +20,19 @@ function forum() {
         });
     }
 
-    this.getAllAdminforum = function (callback) {
+    this.getAllAdminforum = function (status, callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT *, forum.status as forum_status, forum.created_at as forum_date FROM forum inner join forumheading on forumheading.forumheading_id = forum.heading left join users on users.id = forum.created_by where (forum.user_status = $1 or forum.user_status IS NULL) order by forum_id desc', [1], function (err, result) {
+
+            var sql = '';
+            var array = [];
+            if (status) {               
+                sql = 'SELECT *, forum.status as forum_status, forum.created_at as forum_date FROM forum inner join forumheading on forumheading.forumheading_id = forum.heading left join users on users.id = forum.created_by where forum.status = $1 and (forum.user_status = $2 or forum.user_status IS NULL) order by forum_id desc'
+                array = [status, 1];
+            } else {
+                sql = 'SELECT *, forum.status as forum_status, forum.created_at as forum_date FROM forum inner join forumheading on forumheading.forumheading_id = forum.heading left join users on users.id = forum.created_by where (forum.user_status = $1 or forum.user_status IS NULL) order by forum_id desc';
+                array = [1];
+            }
+            con.query(sql, array, function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }

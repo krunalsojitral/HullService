@@ -48,10 +48,11 @@ function loggerData(req) {
 //     });
 // });
 
-router.get('/blogList', function (req, res) {
+router.get('/blogList', function (req, res) {    
+    var status = req.query.status;
     asyn.waterfall([
         function (done) {
-            Blog.getAllAdminBlog(function (err, result) {
+            Blog.getAllAdminBlog(status, function (err, result) {
                 if (err) {
                     return res.json({ status: 0, 'response': { msg: err } });
                 } else {
@@ -74,7 +75,7 @@ router.get('/blogList', function (req, res) {
                                     retObj['blog_id'] = data.blog_id;
                                     retObj['title'] = data.title;
                                     retObj['description'] = data.description;
-                                    retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
+                                    retObj['created_on'] = moment(data.created_at).format('YYYY-MM-DD');
                                     retObj['role'] = data.role;
                                     retObj['status'] = data.status;
                                     return retObj;
@@ -658,7 +659,7 @@ router.get('/draftblogList', function (req, res) {
                                     retObj['blog_id'] = data.blog_id;
                                     retObj['title'] = data.title;
                                     retObj['description'] = data.description;
-                                    retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
+                                    retObj['created_on'] = moment(data.created_at).format('YYYY-MM-DD');
                                     retObj['role'] = data.role;
                                     retObj['status'] = data.status;
                                     return retObj;
