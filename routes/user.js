@@ -222,7 +222,12 @@ router.post('/register', (req, res) => {
                                     email_verification_token: shortid.generate() + Date.now(),
                                     created_at: moment.utc().format('YYYY-MM-DD'),
                                     professional_interest_of_area: req.body.professional_interest_of_area,
-                                    researcher_interest_of_area: req.body.researcher_interest_of_area
+                                    researcher_interest_of_area: req.body.researcher_interest_of_area,
+                                    other_sector: (req.body.other_sector) ? req.body.other_sector: '',
+                                    other_academic_discipline: (req.body.other_academic_discipline) ? req.body.other_academic_discipline: '',
+                                    other_occupation: req.body.other_occupation,
+                                    other_professional_interest_area: req.body.other_professional_interest_area,
+                                    other_research_interest_area: req.body.other_research_interest_area,
                                 };
                                 
                                 overview['data'] = record;
@@ -232,7 +237,20 @@ router.post('/register', (req, res) => {
                     }
                 });
             },
-            function (overview, done1) {
+            function (overview, done1) { 
+                var organization = overview.data.organization;
+                User.checkUserOrganization(organization, function (err, data) {
+                    let org_record = data;
+                    if (org_record) {
+                        overview.data.organization = org_record[0].organization_id;
+                        done1(err, overview);
+                    } else {
+                        overview.data.organization = '';
+                        done1(err, overview);
+                    }
+                });
+            },
+            function (overview, done2) {                
                 User.addUser(overview.data, async function (err, data) {
                     var hostname = req.headers.host;
                     var user_id = data[0].id;
@@ -473,12 +491,17 @@ router.post('/getAdminUserById', [
                         userList['last_name'] = result[0].last_name;
                         userList['email'] = result[0].email;
                         userList['city'] = result[0].city;
-                        userList['organization'] = result[0].organization;
+                        userList['organization'] = result[0].organization_name;
                         userList['rinterestarea'] = result[0].rinterestarea;
                         userList['sectorname'] = result[0].sectorname;
                         userList['occupationname'] = result[0].occupationname;
                         userList['academicdisciplinename'] = result[0].academicdisciplinename;
                         userList['level_of_education'] = result[0].level_of_education;
+                        userList['other_sector'] = result[0].other_sector;
+                        userList['other_academic_discipline'] = result[0].other_academic_discipline;
+                        userList['other_occupation'] = result[0].other_occupation;
+                        userList['other_professional_interest_area'] = result[0].other_professional_interest_area;
+                        userList['other_research_interest_area'] = result[0].other_research_interest_area;
                         userList['pinterestarea'] = csvString;
                         return res.json({ 'status': 1, 'response': { 'data': userList, 'msg': 'data found' } });
                     });                    

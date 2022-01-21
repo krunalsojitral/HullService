@@ -102,7 +102,9 @@ p {
 } */
 .error {
     color: red !important;
-    float: left;
+    /* float: left; */
+    text-align: left;
+    display: block;
 }
 
 .section-title {
@@ -1065,6 +1067,37 @@ section.banner-card .banner-text .banner-btn {
     border-radius: 0px;
     padding: 13px 0px;
     height: 50px;
+}
+
+
+.login-section .login-box .login-details ul.react-autosuggest__suggestions-list{
+    border: 1px solid gray;
+    border-top: 0px;
+    border-bottom: none;
+    padding: 2px 0px 2px 4px;
+    text-align: left;
+    border-right: none;
+}
+.login-section .login-box .login-details .react-autosuggest__section-container:last-child{
+    border-bottom: 1px solid gray;
+}
+
+
+.login-section .login-box .login-details .form-group input.react-autosuggest__input {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 18px;
+    /* identical to box height */
+    color: #000;
+    border: none;
+    box-shadow: none;
+    border-bottom: #A0A0A0 solid 1px;
+    border-radius: 0px;
+    padding: 13px 0px;
+    height: 50px;
+    width: 100%;
 }
 
 .login-section .login-box .login-details .form-group select.form-control {
@@ -4634,3 +4667,124 @@ input[type=number]::-webkit-outer-spin-button {
   opacity: 0;
   animation: spinner-grow .75s linear infinite;
 }
+
+.forum-comment-textarea {
+    display: inline-block;
+    width: 86%;
+    margin-right: 14px;
+}
+
+.forum-comment-textarea textarea {
+    width: 100%;
+}
+
+.forum-comment-button {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.autosuggestion .react-autosuggest__suggestions-container--open {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+    background: #fff;
+    height: auto;
+    /* overflow: auto; */
+}
+
+.autosuggestion {
+    position: relative;
+}
+
+.autosuggestion .react-autosuggest__input:focus-visible{
+    border: none;
+    outline: none;
+}
+
+
+.google-serach .suggestion {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    z-index: 99999;
+    height: 160px !important;
+    border: solid 1px #ddd;
+    display: inline-table;
+}
+
+.google-serach .suggestion li {
+    color: #A0A0A0;
+    font-size: 14px;
+}
+
+.google-serach .suggestion li p {
+    color: #A0A0A0;
+}
+
+.form-group.google-serach {
+    position: relative;
+}
+input.react-autosuggest__input::placeholder {
+    color: #A0A0A0;
+}
+
+
+
+
+ #pswd_info {
+      position: absolute;
+      bottom: 70px;
+      left: 800px;
+      width: 144px;
+      padding: 5px;
+      background: #fefefe;
+      font-size: .750em;
+      border-radius: 5px;
+      box-shadow: 0 1px 3px #ccc;
+      border: 1px solid #ddd;
+      height: 165px;
+    }
+    #pswd_info h4 {
+        margin:0 0 10px 0;
+        padding:0;
+        font-weight:normal;
+    }
+    #pswd_info::before {
+        content: "\25b6";
+        position:absolute;
+        top:62px;
+        right:95%;
+        font-size:30px;
+        line-height:14px;
+        color:white;
+        text-shadow:none;
+        display:block;
+    }
+    .invalid {
+        background:url('http://159.89.167.87/famics/resources/assets/img/invalid.png') no-repeat 0 50%;
+        padding-left:22px;
+        line-height:24px;
+        color:black;
+    }
+    .valid {
+        background:url('http://159.89.167.87/famics/resources/assets/img/valid.png') no-repeat 0 50%;
+        padding-left:22px;
+        line-height:24px;
+
+
+    }
+    #pswd_info {
+        display:none;
+    }
+    .pp{
+      font-size: 12px;
+      font-style: bold;
+    }
+    #pswd_info ul{
+      padding: 0px;
+    }
+    #pswd_info li{
+        list-style: none;
+    }

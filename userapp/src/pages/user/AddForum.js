@@ -187,7 +187,7 @@ export default function AddForum() {
                                                             )}
                                                         ></Controller>
                                                         {errors.heading && errors.heading.type === "required" && (
-                                                            <small className="error">Heading is required.<div><br /></div></small>
+                                                            <small className="error">Heading is required.</small>
                                                         )}
                                                     </div>
 
@@ -236,7 +236,7 @@ export default function AddForum() {
                                                         )} */}
                                                     </div>
 
-                                                    {errors.topic && errors.topic.type === "required" && (<div><br /></div>)}
+                                                    {/* {errors.topic && errors.topic.type === "required" && (<div><br /></div>)} */}
 
                                                     <div className="form-group">
                                                         <MultiSelect

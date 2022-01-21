@@ -40,13 +40,16 @@ const UserDetail = ({ match }) => {
                 <tr><td>City :</td><td><strong>{details.city}</strong></td></tr>
                 <tr><td>Organization :</td><td><strong>{details.organization}</strong></td></tr>
                 {details.sectorname && <tr><td>Sector :</td><td><strong>{details.sectorname}</strong></td></tr>}
+                {details.other_sector && <tr><td>Other Sector :</td><td><strong>{details.other_sector}</strong></td></tr>}
                 {details.level_of_education && <tr><td>Level Of Education :</td><td><strong>{details.level_of_education}</strong></td></tr>}
                 {details.occupationname && <tr><td>Occupation :</td><td><strong>{details.occupationname}</strong></td></tr>}
+                {details.other_occupation && <tr><td>Other Occupation :</td><td><strong>{details.other_occupation}</strong></td></tr>}
                 {details.academicdisciplinename && <tr><td>Academic Discipline :</td><td><strong>{details.academicdisciplinename}</strong></td></tr>}
+                {details.other_academic_discipline && <tr><td>Other Academic Discipline :</td><td><strong>{details.other_academic_discipline}</strong></td></tr>}
                 {details.rinterestarea && <tr><td>Interest Area :</td><td><strong>{details.rinterestarea}</strong></td></tr>}
+                {details.other_research_interest_area && <tr><td>Other Interest Area :</td><td><strong>{details.other_research_interest_area}</strong></td></tr>}
                 {details.pinterestarea && <tr><td>Interest Area :</td><td><strong>{details.pinterestarea}</strong></td></tr>}
-
-              </tbody>
+                {details.other_professional_interest_area && <tr><td>Other Interest Area :</td><td><strong>{details.other_professional_interest_area}</strong></td></tr>}              </tbody>
             </table>
           </CCardBody>
         </CCard>

@@ -23,7 +23,10 @@ export default function MyVideo() {
     //const { user, isLoading } = useContext(UserContext);
 
     React.useEffect(() => {
+        getVideoData();        
+    }, [])
 
+    const getVideoData = () => { 
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
         const config = {
@@ -35,7 +38,7 @@ export default function MyVideo() {
                 if (coursedata.length > 0) {
                     setData(coursedata);
                     setNoresult(false);
-                }else{
+                } else {
                     setNoresult(true);
                 }
             } else {
@@ -45,8 +48,7 @@ export default function MyVideo() {
             console.log(err);
             //Swal.fire('Oops...', err, 'error')
         })
-
-    }, [])
+    }
 
     React.useEffect(() => {
         if (offset > 0) {
@@ -56,6 +58,34 @@ export default function MyVideo() {
         }
         setCurrentData(data.slice(offset, offset + pageLimit));
     }, [offset, data]);
+
+    const bookmarkClick = (id) => {
+        const tokenString = localStorage.getItem('token');
+        var token = JSON.parse(tokenString);
+        const config = {
+            headers: { Authorization: `${token}` }
+        };
+        axios.post(api_url + '/video/videoBookmark', { "video_id": id }, config).then((result) => {
+            if (result.data.status) {
+                //var blogdata = result.data.response.data;
+                var videodata = result.data.response.data.type;
+                if (videodata == 'remove') {
+                    Swal.fire("Success!", 'Video removed from your dashboard', "success");
+                } else {
+                    Swal.fire("Success!", 'Video added to your dashboard', "success");
+                }
+                getVideoDataWrap();
+            } else {
+                Swal.fire('Oops...', result.data.response.msg, 'error')
+            }
+        }).catch((err) => {
+            console.log(err);
+        })
+    }
+
+    const getVideoDataWrap = () => {
+        getVideoData(setData);
+    };
 
    
 
@@ -96,7 +126,12 @@ export default function MyVideo() {
                                                                 <iframe width="100%" height="195px" title="YouTube video player" src={`https://www.youtube.com/embed/${data.video_embeded_id}?rel=0&modestbranding=1&showinfo=0`} allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>
                                                             </div>
                                                         }
-                                                        <div className="blog-text">                                                         
+                                                        <div className="blog-text">  
+
+                                                            <div className="blog-tags" onClick={(e) => bookmarkClick(data.video_id)}>
+                                                                <img className="bookmark-fill" src="images/bookmark-fill.png" alt="bookmark-fill" />
+                                                            </div>
+
                                                             <h3 className="tooltip-box">
                                                                 <Link to={{ pathname: "/video-detail", search: "?id=" + data.video_id }}>
                                                                     {data.title.slice(0, 30)}

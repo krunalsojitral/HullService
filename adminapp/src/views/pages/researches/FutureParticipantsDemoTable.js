@@ -21,11 +21,20 @@ const FutureParticipantsDemoTable = () => {
   const [details, setDetails] = useState([])
   const [items, setItems] = useState([])
   const [csvData, setCsvData] = useState([["S.No","Name", "Email", "DOB", "No of Kids", "Age of kids"]]);
+  const [filedate, setFiledate] = useState();
 
   React.useEffect(() => {
     getNewList();
     getNewListWrap();
     getCSVList();
+
+    let newDate = new Date()
+    let date = newDate.getDate();
+    let month = newDate.getMonth() + 1;
+    let year = newDate.getFullYear();
+    let current_date = month + '/' + date + '/' + year;
+    setFiledate('Future_Participants_' + current_date);
+
   }, [])
 
   const headers = [
@@ -102,7 +111,7 @@ const FutureParticipantsDemoTable = () => {
             <CIcon name="cil-grid" /> Future Participants
             </div>
           <div className="header-right">
-            <CSVLink headers={headers} data={csvData}>Download</CSVLink> &nbsp;
+            <CSVLink filename={filedate + ".csv"} headers={headers} data={csvData}>Download</CSVLink> &nbsp;
             </div>
         </CCardHeader>
 

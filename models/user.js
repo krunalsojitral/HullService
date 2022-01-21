@@ -60,14 +60,47 @@ function User() {
         });
     };
 
+    this.checkUserOrganization = function (organization, callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM organization where LOWER(organization_name) = $1', [organization.toLowerCase()], function (err, results) {
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    con.release()
+                    callback(err, null);
+                } else {
+                    if (results.rows.length > 0){
+                        con.release()
+                        callback(null, results.rows);
+                    }else{
+                        const sql = 'INSERT INTO organization(organization_name,status) VALUES($1,$2) RETURNING *'
+                        const values = [organization,1]
+                        con.query(sql, values, function (err, result) {
+                            con.release()
+                            if (err) {
+                                if (env.DEBUG) {
+                                    console.log(err);
+                                }
+                                callback(err, null);
+                            } else {
+                                callback(null, result.rows);
+                            }
+                        });
+                    }
+                }
+            });
+        });
+    };
+
     this.addUser = function (record, callback) {
         connection.acquire(function (err, con) {
             if (record.role == 3){
-                var sql = 'INSERT INTO users("first_name","last_name","email","city","lat","long","country","academic_discipline","password","status","role","email_verification_token","created_at","organization") VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14) RETURNING *'
-                var values = [record.first_name, record.last_name, record.email, record.city, record.lat, record.long, record.country, record.academic_discipline, record.password, record.status, record.role, record.email_verification_token, record.created_at, record.organization]
+                var sql = 'INSERT INTO users("first_name","last_name","email","city","lat","long","country","academic_discipline","password","status","role","email_verification_token","created_at","organization","other_sector","other_academic_discipline","other_occupation","other_professional_interest_area","other_research_interest_area") VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19) RETURNING *'
+                var values = [record.first_name, record.last_name, record.email, record.city, record.lat, record.long, record.country, record.academic_discipline, record.password, record.status, record.role, record.email_verification_token, record.created_at, record.organization, record.other_sector, record.other_academic_discipline, record.other_occupation, record.other_professional_interest_area, record.other_research_interest_area]
             }else{
-                var sql = 'INSERT INTO users("first_name","last_name","email","city","lat","long","country", "level_of_education","occupation","sector","password","status","role","email_verification_token","created_at","organization") VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16) RETURNING *'
-                var values = [record.first_name, record.last_name, record.email, record.city, record.lat, record.long, record.country, record.level_of_education, record.occupation, record.sector, record.password, record.status, record.role, record.email_verification_token, record.created_at, record.organization]
+                var sql = 'INSERT INTO users("first_name","last_name","email","city","lat","long","country", "level_of_education","occupation","sector","password","status","role","email_verification_token","created_at","organization","other_sector","other_academic_discipline","other_occupation","other_professional_interest_area","other_research_interest_area") VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21) RETURNING *'
+                var values = [record.first_name, record.last_name, record.email, record.city, record.lat, record.long, record.country, record.level_of_education, record.occupation, record.sector, record.password, record.status, record.role, record.email_verification_token, record.created_at, record.organization, record.other_sector, record.other_academic_discipline, record.other_occupation, record.other_professional_interest_area, record.other_research_interest_area]
             }
             
             
@@ -83,21 +116,25 @@ function User() {
                     if (record.role == 2) {                         
                         if (record.professional_interest_of_area && record.professional_interest_of_area.length > 0) {
                             record.professional_interest_of_area.map(data => {
-                                var sql = 'INSERT INTO user_professional_interest_area("user_id","professional_interest_area_id") VALUES($1,$2) RETURNING *'
-                                var values = [result.rows[0].id, data.value]
-                                con.query(sql, values, function (err, result) {
-                                    console.log(err);
-                                });
+                                if (data.value !== 0){
+                                    var sql = 'INSERT INTO user_professional_interest_area("user_id","professional_interest_area_id") VALUES($1,$2) RETURNING *'
+                                    var values = [result.rows[0].id, data.value]
+                                    con.query(sql, values, function (err, result) {
+                                        console.log(err);
+                                    });
+                                }
                             });
                         } 
                     }else{                        
                         if (record.researcher_interest_of_area && record.researcher_interest_of_area.length > 0) {
                             record.researcher_interest_of_area.map(data => {
-                                var sql = 'INSERT INTO user_researcher_interest_area("user_id","researcher_interest_area_id") VALUES($1,$2) RETURNING *'
-                                var values = [result.rows[0].id, data.value]
-                                con.query(sql, values, function (err, result) {                                
-                                    console.log(err);
-                                });
+                                if (data.value !== 0) { 
+                                    var sql = 'INSERT INTO user_researcher_interest_area("user_id","researcher_interest_area_id") VALUES($1,$2) RETURNING *'
+                                    var values = [result.rows[0].id, data.value]
+                                    con.query(sql, values, function (err, result) {
+                                        console.log(err);
+                                    });
+                                }
                             });
                         } 
                     }
@@ -227,15 +264,22 @@ function User() {
 
     this.getAdminUserById = function (id, callback) {
         connection.acquire(function (err, con) {
-            var sql = 'SELECT *, sector.name as sectorname, occupation.name as occupationname, academic_discipline.name as academicdisciplinename FROM users inner join user_role on users.role = user_role.role_id left join sector on users.sector = sector.sector_id left join occupation on users.occupation = occupation.occupation_id left join academic_discipline on users.academic_discipline = academic_discipline.academic_discipline_id where users.id = $1';
+            var sql = 'SELECT *, sector.name as sectorname, occupation.name as occupationname, academic_discipline.name as academicdisciplinename FROM users inner join user_role on users.role = user_role.role_id left join organization on users.organization = organization.organization_id left join sector on users.sector = sector.sector_id left join occupation on users.occupation = occupation.occupation_id left join academic_discipline on users.academic_discipline = academic_discipline.academic_discipline_id where users.id = $1';
             con.query(sql, [id], function (err, result) {
                 con.release();
-                if (result.rows.length === 0) {
-                    msg = 'User does not exist.';
-                    callback(msg, null);
-                }else{
-                    callback(null, result.rows);
-                }                
+                if (err){
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                }else{                                        
+                    if (result.rows.length === 0) {
+                        msg = 'User does not exist.';
+                        callback(msg, null);
+                    } else {
+                        callback(null, result.rows);
+                    }
+                }
             });
         });
     }

@@ -34,6 +34,21 @@ function Common() {
         });
     }
 
+    
+    this.getOrganizationList = function (callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM organization where status = $1 order by UPPER(organization_name) ASC', [1], function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
     this.getTagList = function (callback) {
         connection.acquire(function (err, con) {
             con.query('SELECT * FROM tag where status = $1 order by UPPER(tag_name) ASC', [1], function (err, result) {

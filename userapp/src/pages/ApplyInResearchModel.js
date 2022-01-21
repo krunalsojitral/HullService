@@ -135,7 +135,6 @@ function ApplyInResearchModel(props) {
                                         ></Controller>
                                         {errors?.email?.type === "required" && <small className="error">Email is required.</small>}
                                         {errors?.email?.type === "pattern" && <small className="error">Invalid email address.</small>}
-                                        {(errors?.email?.type === "required" || errors?.email?.type === "pattern") && <br/>}
                                     </div>
                                 </div>
 

@@ -22,20 +22,20 @@ export default function MyArticle() {
     //const { user, isLoading } = useContext(UserContext);
 
     React.useEffect(() => {
+        getArticleData();        
+    }, [])
 
+    const getArticleData = () => { 
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
-        const config = {
-            headers: { Authorization: `${token}` }
-        };
-
+        const config = { headers: { Authorization: `${token}` } };
         axios.post(api_url + '/article/getBookMarkArticle', {}, config).then((result) => {
             if (result.data.status) {
                 var coursedata = result.data.response.data;
                 if (coursedata.length > 0) {
                     setData(coursedata);
                     setNoresult(false)
-                }else{
+                } else {
                     setNoresult(true)
                 }
             } else {
@@ -46,8 +46,7 @@ export default function MyArticle() {
             console.log(err);
             //Swal.fire('Oops...', err, 'error')
         })
-
-    }, [])
+    }
 
     React.useEffect(() => {
         if (offset > 0) {
@@ -57,7 +56,33 @@ export default function MyArticle() {
         }
         setCurrentData(data.slice(offset, offset + pageLimit));
     }, [offset, data]);
-    
+
+    const bookmarkClick = (id) => {
+        const tokenString = localStorage.getItem('token');
+        var token = JSON.parse(tokenString);
+        const config = {
+            headers: { Authorization: `${token}` }
+        };
+        axios.post(api_url + '/article/articleBookmark', { "article_id": id }, config).then((result) => {
+            if (result.data.status) {
+                var articledata = result.data.response.data.type;
+                if (articledata == 'remove') {
+                    Swal.fire("Success!", 'Article removed from your dashboard', "success");
+                } else {
+                    Swal.fire("Success!", 'Article added to your dashboard', "success");
+                }
+                getArticleDataWrap();
+            } else {
+                Swal.fire('Oops...', result.data.response.msg, 'error')
+            }
+        }).catch((err) => {
+            console.log(err);
+        })
+    }
+
+    const getArticleDataWrap = () => {
+        getArticleData(setData);
+    };
 
     return(
         <div>
@@ -66,7 +91,7 @@ export default function MyArticle() {
                 <div className="container">
                     <div className="row">
                         <div className="col-md-12">
-                            <h2>My Article</h2>
+                            <h2>My Articles</h2>
                         </div>
                     </div>
                 </div>
@@ -90,7 +115,9 @@ export default function MyArticle() {
                                             </Link>
                                         </div>
                                         <div className="blog-text">
-                                            <br />
+                                            <div className="blog-tags" onClick={(e) => bookmarkClick(data.article_id)}>
+                                                <img className="bookmark-fill" src="images/bookmark-fill.png" alt="bookmark-fill" />
+                                            </div>
                                             <h3 className="tooltip-box">
                                                 <Link to={{ pathname: "/article-detail", search: "?id=" + data.article_id }}>
                                                     {data.title.slice(0, 30)}

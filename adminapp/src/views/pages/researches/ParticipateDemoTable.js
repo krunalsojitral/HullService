@@ -14,6 +14,7 @@ const ParticipateDemoTable = ({ match }) => {
   
   const [items, setItems] = useState([])
   const [csvData, setCsvData] = useState([["S.No","Name", "Email", "DOB"]]);
+  const [filedate, setFiledate] = useState();
 
   const getCSVList = () => {
     axios.post(api_url + '/researches/csvParticipateList', { researches_id: match.params.id }).then((result) => {
@@ -32,6 +33,14 @@ const ParticipateDemoTable = ({ match }) => {
     getCSVList();
     getNewList();
     getNewListWrap();
+
+    let newDate = new Date()
+    let date = newDate.getDate();
+    let month = newDate.getMonth() + 1;
+    let year = newDate.getFullYear();
+    let current_date = month + '/' + date + '/' + year;
+    setFiledate('Participants_' + current_date);
+
   }, [])
 
   const fields = [
@@ -62,7 +71,7 @@ const ParticipateDemoTable = ({ match }) => {
           <CIcon name="cil-grid" /> Participants
             </div>
         <div className="header-right">
-          <CSVLink data={csvData}>Download</CSVLink> &nbsp;
+          <CSVLink filename={filedate + ".csv"} data={csvData}>Download</CSVLink> &nbsp;
             </div>
       </CCardHeader>
       <CCardBody>

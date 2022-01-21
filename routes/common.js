@@ -192,6 +192,29 @@ router.get('/getResearcherInterestAreaList', function (req, res) {
     });
 });
 
+router.get('/getOrganizationList', function (req, res) {
+    loggerData(req);
+    Common.getOrganizationList(function (err, result) {
+        if (err) {
+            return res.json({ status: 0, 'response': { msg: err } });
+        } else {       
+            if (result.length > 0){
+                var list = result.map(data => {
+                    let finalretObj = { organization: [] };
+                    let retObj = {};
+                    retObj['organization_id'] = data.organization_id;
+                    retObj['organization_name'] = data.organization_name;
+                    finalretObj.organization.push(retObj)
+                    return finalretObj;
+                });
+                return res.json({ status: 1, 'response': { data: list } });
+            }else{
+                return res.json({ status: 1, 'response': { data: [] } });
+            }
+        }
+    });
+});
+
 
 router.post('/addPreview', function (req, res) {    
     loggerData(req);

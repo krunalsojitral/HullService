@@ -329,29 +329,34 @@ export default function ForumDetail() {
                                 }
                                 {forumCommentDetail.retire == 1 && <br/>}
                                 {forumCommentDetail.retire == 0 &&  <div className="row comment-box">
+                                   
                                     <form onSubmit={handleSubmit(onSubmit)}>
-                                        <Controller
-                                            name={"comment"}
-                                            control={control}
-                                            rules={{ required: true }}
-                                            render={({ field: { onChange, value } }) => (
-                                                <TextareaAutosize
-                                                    maxRows="4"
-                                                    type="text"                                                    
-                                                    name="comment"
-                                                    id="main-comment"
-                                                    onChange={onChange}
-                                                    value={value}
-                                                    className="form-control"
-                                                    placeholder={`Add Comment`}
-                                                    maxlength="1500"
-                                                />
+                                        <div className="forum-comment-textarea">
+                                            <Controller
+                                                name={"comment"}
+                                                control={control}
+                                                rules={{ required: true }}
+                                                render={({ field: { onChange, value } }) => (
+                                                    <TextareaAutosize
+                                                        maxRows="4"
+                                                        type="text"
+                                                        name="comment"
+                                                        id="main-comment"
+                                                        onChange={onChange}
+                                                        value={value}
+                                                        className="form-control"
+                                                        placeholder={`Add Comment`}
+                                                        maxlength="1500"
+                                                    />
+                                                )}
+                                            ></Controller>
+                                            {errors.comment && errors.comment.type === "required" && (
+                                                <small className="error">Comment is required.</small>
                                             )}
-                                        ></Controller>
-                                        {errors.comment && errors.comment.type === "required" && (
-                                            <small className="error">Comment is required.</small>
-                                        )}                                        
-                                        <button type="submit" className="add-comment">Add Comment</button>
+                                        </div>
+                                        <div className="forum-comment-button">
+                                            <button type="submit" className="add-comment">Add Comment</button>
+                                        </div>
                                     </form>
                                 </div>}
 

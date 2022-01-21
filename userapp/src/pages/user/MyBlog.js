@@ -22,7 +22,10 @@ export default function MyBlog() {
    // const { user, isLoading } = useContext(UserContext);
    
     React.useEffect(() => {
+        getBlogData();        
+    }, [])
 
+    const getBlogData = () => { 
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
         const config = {
@@ -34,7 +37,7 @@ export default function MyBlog() {
                 if (coursedata.length > 0) {
                     setData(coursedata);
                     setNoresult(false);
-                }else{
+                } else {
                     setNoresult(true);
                 }
             } else {
@@ -45,7 +48,7 @@ export default function MyBlog() {
             console.log(err);
             //Swal.fire('Oops...', err, 'error')
         })
-    }, [])
+    }
 
     React.useEffect(() => {
         if (offset > 0) {
@@ -56,6 +59,36 @@ export default function MyBlog() {
         setCurrentData(data.slice(offset, offset + pageLimit));
     }, [offset, data]);
 
+
+    const bookmarkClick = (id) => {
+
+        const tokenString = localStorage.getItem('token');
+        var token = JSON.parse(tokenString);
+
+        const config = {
+            headers: { Authorization: `${token}` }
+        };
+        axios.post(api_url + '/blog/blogBookmark', { "blog_id": id }, config).then((result) => {
+            if (result.data.status) {
+                var blogdata = result.data.response.data.type;
+                if (blogdata == 'remove') {
+                    Swal.fire("Success!", 'Blog removed from your dashboard', "success");
+                } else {
+                    Swal.fire("Success!", 'Blog added to your dashboard', "success");
+                }
+                getBlogDataWrap();
+            } else {
+                Swal.fire('Oops...', result.data.response.msg, 'error')
+            }
+        }).catch((err) => {
+            console.log(err);
+        })
+    }
+
+
+    const getBlogDataWrap = () => {
+        getBlogData(setData);
+    };
    
 
     return (
@@ -68,7 +101,7 @@ export default function MyBlog() {
                 <div className="container">
                     <div className="row">
                         <div className="col-md-12">
-                            <h2>My Blog</h2>
+                            <h2>My Blogs</h2>
                         </div>
                     </div>
                 </div>
@@ -92,7 +125,11 @@ export default function MyBlog() {
                                             </Link>
                                         </div>
                                         <div className="blog-text">
-                                            <br/>
+
+                                            <div className="blog-tags" onClick={(e) => bookmarkClick(data.blog_id)}>
+                                                <img className="bookmark-fill" src="images/bookmark-fill.png" alt="bookmark-fill" />
+                                            </div>
+                                                                                        
                                             <h3 className="tooltip-box">
                                                 <Link to={{ pathname: "/blog-detail", search: "?id=" + data.blog_id }}>
                                                     {data.title.slice(0, 30)}

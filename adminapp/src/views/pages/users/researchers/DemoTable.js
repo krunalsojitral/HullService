@@ -22,6 +22,8 @@ const DemoTable = () => {
   const [csvData, setCsvData] = useState([["S.No","Name", "Email", "City", "Organization", "Academic Discipline", "Interestarea"]]);
   const [modal, setModal] = useState();
   const [selectedItem, setSelectedItem] = useState();
+  const [filedate, setFiledate] = useState();
+
 
   const headers = [
     { label: "S.No", key: "no" },
@@ -37,6 +39,14 @@ const DemoTable = () => {
     getNewList('');
     getNewListWrap('');
     getCSVNewList();
+    
+    let newDate = new Date()
+    let date = newDate.getDate();
+    let month = newDate.getMonth() + 1;
+    let year = newDate.getFullYear();
+    let current_date = month + '/' + date + '/' + year;
+    setFiledate('Researchers_'+current_date);
+
   }, [])
 
   const fields = [
@@ -158,7 +168,7 @@ const DemoTable = () => {
                     <option key="2" value="0">Inactive</option>
                   </select>
 
-                    <CSVLink headers={headers} className="d-inline-block" data={csvData}>Export User</CSVLink> &nbsp;
+                  <CSVLink filename={filedate+".csv"} headers={headers} className="d-inline-block" data={csvData}>Export User</CSVLink> &nbsp;
                       {/* <CButton
                         color="primary"
                         variant="outline"
