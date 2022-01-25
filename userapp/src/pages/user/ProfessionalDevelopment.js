@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import api_url from '../../components/Apiurl';
 import './../dev.css';
 import { useForm } from "react-hook-form";
+import $ from 'jquery';
 
 export default function ProfessionalDevelopment() {
 
@@ -68,9 +69,9 @@ export default function ProfessionalDevelopment() {
 
     React.useEffect(() => {
         if (offset > 0) {
-            // $('html, body').animate({
-            //     scrollTop: $("#scrolltop").offset().top
-            // }, 2);
+            $('html, body').animate({
+                scrollTop: $("#scrolltop").offset().top
+            }, 2);
         }
         setCurrentData(data.slice(offset, offset + pageLimit));
     }, [offset, data]);
@@ -151,7 +152,7 @@ export default function ProfessionalDevelopment() {
                         <div className="col-md-8">
                             <div className="row">
                                 <div className="col-md-12">
-                                    <div className="personal-courses">
+                                    <div className="personal-courses" id="scrolltop">
 
 
                                         <div className="row">

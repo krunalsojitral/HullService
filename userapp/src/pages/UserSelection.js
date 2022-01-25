@@ -55,6 +55,14 @@ export default function UserSelection() {
                                         <button onClick={(e) => handleSelectUser('researcher')} className="btn-research">Researcher</button>
                                         </div>
                                     </div>
+
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <div className="register-general-public-text">
+                                            If you do not fall into any of the above categories click here to <b className="signup-text" onClick={(e) => handleSelectUser('general')}><u>sign-up</u></b>
+                                        </div>                                        
+                                    </div>                                    
+                                </div>    
                                 </div>
                             </div>
                         </div>

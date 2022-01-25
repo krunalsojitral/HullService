@@ -9,7 +9,6 @@ import $ from 'jquery';
 export default function Sidebar() {
 
     const [users, setUsers] = useState({});
-
     const { pathname } = useLocation();
 
     React.useEffect(() => {
@@ -22,14 +21,10 @@ export default function Sidebar() {
 
     React.useEffect(() => {
         return history.listen((location) => {
-
-            if (location.pathname == "/my-studies"){
-                
+            if (location.pathname == "/my-studies"){                
                 submenu();
             }
-
-            if (location.pathname == "/participants-in-my-studies") {
-                
+            if (location.pathname == "/participants-in-my-studies") {                
                 submenu();
             }
         })
@@ -135,7 +130,7 @@ export default function Sidebar() {
 
             </svg>
             <ul>
-                {users && (users.role == 3 || users.role == 2) &&     <li>
+                {users && (users.role == 3 || users.role == 2) && <li>
                     <NavLink activeClassName="active" to="/dashboard" isActive={() => ['/my-blog', '/my-professional-development', '/my-forum', '/my-article','/my-video'].includes(pathname)}>
                         <svg className="icon icon-tag">
                             <use xlinkHref="#icon-dashboard"></use>
@@ -182,14 +177,14 @@ export default function Sidebar() {
                         <InlineButton name={"Informational Videos"} />
                     </NavLink>
                 </li>
-                <li>
+                {users && (users.role == 3 || users.role == 2) && <li>
                     <NavLink activeClassName="active" to="/group-session">
                         <svg className="icon icon-tag">
                             <use xlinkHref="#icon-group"></use>
                         </svg>
                         <InlineButton name={"Group Sessions"} />
                     </NavLink>
-                </li>
+                </li>}
                 <li>
                     <NavLink activeClassName="active" to="/professional-development" isActive={() => ['/professional-development', '/professional-development-detail', '/course-payment'].includes(pathname)}>
                         <svg className="icon icon-tag">

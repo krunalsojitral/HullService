@@ -111,13 +111,12 @@ export default function Register() {
         if (value == 0) {
             setOtherResearcherInterestArea(false);
         }
-    };
-
-    
+    };    
 
     const [userTypeList, setUserTypeList] = React.useState('researcher');
 
-    React.useEffect(() => {
+    React.useEffect(() => { 
+        $("#pswd_info").hide();
 
         setTimeout(() => {
             $(".dropdown-heading-value .gray").text("Interest area");
@@ -237,40 +236,42 @@ export default function Register() {
     
 
     const onSubmit = (data) => {
+        console.log(data);
 
-        if (!city){
-            setCityError('City is required.');
-        } else if (!latitude && !longitude){
-            setCityError('Please enter proper address.');
-        }else{
-            data.city = city;
-            data.latitude = latitude;
-            data.longitude = longitude;
-            data.country = country;
-            data.professional_interest_of_area = selectedProfessionalInterestArea;
-            data.researcher_interest_of_area = selectedResearcherInterestArea;
-
-            if (userTypeList == 'researcher'){
+        if (userTypeList == 'general') {
+            if (userTypeList == 'researcher') {
                 data.role = 3;
-            }else{
+            } else if (userTypeList == 'professional') {
                 data.role = 2;
-            }     
-
-           
-
+            } else {
+                data.role = 4;
+            }
             registerUser(data);
+        }else{
+            if (!city) {
+                setCityError('City is required.');
+            } else if (!latitude && !longitude) {
+                setCityError('Please enter proper address.');
+            } else {
+                data.city = city;
+                data.latitude = latitude;
+                data.longitude = longitude;
+                data.country = country;
+                data.professional_interest_of_area = selectedProfessionalInterestArea;
+                data.researcher_interest_of_area = selectedResearcherInterestArea;
 
-            // axios.post(api_url + '/user/checkEmail', { email : data.email }).then((result) => {
-            //     if (result.data.status) {
-            //         localStorage.setItem('registerdata', JSON.stringify(data));
-            //         history.push("/payment");
-            //     } else {
-            //         Swal.fire('Oops...', result.data.response.msg, 'error')
-            //     }
-            // }).catch((err) => {
-            //     console.log(err);
-            // })
+                if (userTypeList == 'researcher') {
+                    data.role = 3;
+                } else if (userTypeList == 'professional') {
+                    data.role = 2;
+                } else {
+                    data.role = 4;
+                }
+                registerUser(data);
+            }
         }
+
+        
     }
 
     const {
@@ -370,8 +371,121 @@ export default function Register() {
         } else {
             setOtherResearcherInterestArea(false);
         }
+    }   
+   
+
+    const onKeyUpPassword = (e) => {
+        $('#password_error').hide();   
+        $("#confirm_pswd_info").hide();
+        // keyup code here
+        var pswd = e.target.value;
+        if (pswd){
+            $('#pswd_info').show();
+            //validate the length
+            if (pswd.length < 8) {                
+                $('#length').removeClass('valid').addClass('invalid');
+            } else {                
+                $('#length').removeClass('invalid').addClass('valid');
+            }
+
+            //validate letter
+            if (pswd.match(/[a-z]/)) {
+                $('#letter').removeClass('invalid').addClass('valid');
+            } else {
+                $('#letter').removeClass('valid').addClass('invalid');
+            }
+
+            //validate capital letter
+            if (pswd.match(/[A-Z]/)) {
+                $('#capital').removeClass('invalid').addClass('valid');
+            } else {
+                $('#capital').removeClass('valid').addClass('invalid');
+            }
+
+            //validate number
+            if (pswd.match(/\d/)) {
+                $('#number').removeClass('invalid').addClass('valid');
+            } else {
+                $('#number').removeClass('valid').addClass('invalid');
+            }
+            if (/^[a-zA-Z0-9- ]*$/.test(pswd) == false) {
+                $('#special').removeClass('invalid').addClass('valid');
+            } else {
+                $('#special').removeClass('valid').addClass('invalid');
+            }
+        }else{
+            $('#pswd_info').hide();
+        }        
     }
 
+    const onBlurPassword = (e) => {        
+        $("#pswd_info").hide();
+        $("#confirm_pswd_info").hide();
+        $('#password_error').show();
+    }
+
+    const onFocusPassword = (e) => {        
+        $("#pswd_info").hide();
+        $("#confirm_pswd_info").hide();
+        $('#password_error').show();
+    }
+
+
+    const onKeyUpConfirmPassword = (e) => {
+        $('#pswd_info').hide();
+        $('#confirm_password_error').hide();
+        // keyup code here
+        var pswd = e.target.value;
+        if (pswd) {
+            $('#confirm_pswd_info').show();
+            //validate the length
+            if (pswd.length < 8) {
+                $('#confirm_length').removeClass('valid').addClass('invalid');
+            } else {
+                $('#confirm_length').removeClass('invalid').addClass('valid');
+            }
+
+            //validate letter
+            if (pswd.match(/[a-z]/)) {
+                $('#confirm_letter').removeClass('invalid').addClass('valid');
+            } else {
+                $('#confirm_letter').removeClass('valid').addClass('invalid');
+            }
+
+            //validate capital letter
+            if (pswd.match(/[A-Z]/)) {
+                $('#confirm_capital').removeClass('invalid').addClass('valid');
+            } else {
+                $('#confirm_capital').removeClass('valid').addClass('invalid');
+            }
+
+            //validate number
+            if (pswd.match(/\d/)) {
+                $('#confirm_number').removeClass('invalid').addClass('valid');
+            } else {
+                $('#confirm_number').removeClass('valid').addClass('invalid');
+            }
+            if (/^[a-zA-Z0-9- ]*$/.test(pswd) == false) {
+                $('#confirm_special').removeClass('invalid').addClass('valid');
+            } else {
+                $('#confirm_special').removeClass('valid').addClass('invalid');
+            }
+        } else {
+            $('#confirm_pswd_info').hide();
+        }
+    }
+
+    const onBlurConfirmPassword = (e) => {
+        $('#pswd_info').hide();
+        $("#confirm_pswd_info").hide();
+        $('#confirm_password_error').show();
+    }
+
+    const onFocusConfirmPassword = (e) => {
+        $('#pswd_info').hide();
+        $("#confirm_pswd_info").hide();
+        $('#confirm_password_error').show();
+    }
 
     const passwordClick = async (e) => {
         $('.toggle-password').toggleClass("fa-eye fa-eye-slash");
@@ -403,14 +517,13 @@ export default function Register() {
                 <div className="container">
                     <div className="row">
                         <div className="col-md-12">
-                            <div className="login-box">
+                            <div className="login-box">                                
                                 <form onSubmit={handleSubmit(onSubmit)}>
                                     <div className="login-details">
                                         <h2>Welcome to the Virtual Centre for the Study and Prevention of Developmental Trauma</h2>
                                         <div className="sub-title">Please Tell Us About Yourself</div>
 
                                         <div className="form-group">
-
                                             <Controller
                                                 name={"first_name"}
                                                 control={control}
@@ -472,8 +585,10 @@ export default function Register() {
                                             {errors?.email?.type === "pattern" && (<small className="error">Invalid email address</small>)}
 
                                         </div>
-                                        <div className="form-group">
 
+
+                                        
+                                        <div className="form-group">
                                             <Controller
                                                 name={"password"}
                                                 control={control}
@@ -487,7 +602,11 @@ export default function Register() {
                                                 }}
                                                 render={({ field: { onChange, value } }) => (
                                                     <input
-                                                        type="password"
+                                                        id="new_password"
+                                                        type="password"                                                                                                                
+                                                        onKeyUp={(e) => onKeyUpPassword(e)}
+                                                        onBlur={(e) => onBlurPassword(e)}
+                                                        onFocus={(e) => onFocusPassword(e)}                                                        
                                                         onChange={onChange}
                                                         className="form-control"
                                                         value={value}
@@ -495,10 +614,21 @@ export default function Register() {
                                                     />
                                                 )}
                                             ></Controller>
-                                          
-                                            {(errors.password?.type === "required" && <small className="error">Password is required</small>)}
-                                            {(errors.password?.type === "minLength" && <small className="error">Password is at least 8 characters </small>)}
-                                            {(errors.password?.type === "pattern" && <small className="error">Please enter at least 8 characters, 1 numeric, 1 lowercase letter, 1 uppercase letter and 1 special character.</small>)}
+                                            <div id="password_error">
+                                                {(errors.password?.type === "required" && <small className="error">Password is required</small>)}
+                                                {(errors.password?.type === "minLength" && <small className="error">Password is at least 8 characters </small>)}
+                                                {(errors.password?.type === "pattern" && <small className="error">Please enter at least 8 characters, 1 numeric, 1 lowercase letter, 1 uppercase letter and 1 special character.</small>)}
+                                            </div>
+
+                                            <div id="pswd_info" className="password_error_list" style={{'display':'none'}}>
+                                                <ul>
+                                                    <li id="length" className="invalid">Must be atleast 8 characters!</li>
+                                                    <li id="letter" className="invalid">Must contain atleast 1 letter in small case!</li>
+                                                    <li id="capital" className="invalid">Must contain atleast 1 letter in capital case!</li>
+                                                    <li id="number" className="invalid">Must contain atleast 1 number!</li>
+                                                    <li id="special" className="invalid">Must contain atleast 1 special character!</li>
+                                                </ul>
+                                            </div>
                                         </div>
                                         <div className="form-group">
 
@@ -506,28 +636,50 @@ export default function Register() {
                                                 name={"confirmpassword"}
                                                 control={control}
                                                 rules={{
-                                                    validate: value => value === password.current || "The passwords do not match",
+                                                    validate: value => value === password.current || "Passwords do not match",
                                                     required: true,
-                                                    pattern: { value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/ },
-                                                    minLength: {
-                                                        value: 8,
-                                                        message: "Password must have at least 8 characters",
-                                                    }
+                                                    // pattern: { value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/ },
+                                                    // minLength: {
+                                                    //     value: 8,
+                                                    //     message: "Password must have at least 8 characters",
+                                                    // }
                                                 }}
                                                 render={({ field: { onChange, value } }) => (
                                                     <input
+                                                        id="confirm_password"
                                                         type="password"
                                                         onChange={onChange}
+                                                        onKeyUp={(e) => onKeyUpConfirmPassword(e)}
+                                                        onBlur={(e) => onBlurConfirmPassword(e)}
+                                                        onFocus={(e) => onFocusConfirmPassword(e)}
                                                         className="form-control"
                                                         value={value}
                                                         placeholder={`Confirm password *`}
                                                     />
                                                 )}
                                             ></Controller>
-                                            {(errors.confirmpassword?.type === "required" && <small className="error">Confirm password is required</small>)}
-                                            {errors.confirmpassword && <small className="error">{errors.confirmpassword.message}</small>}
+
+                                            <div id="confirm_password_error">
+                                                {(errors.confirmpassword?.type === "required" && <small className="error">Confirm password is required</small>)}
+                                                {errors.confirmpassword && <small className="error">{errors.confirmpassword.message}</small>}
+                                            </div>
+                                            
+
+                                            <div id="confirm_pswd_info" className="password_error_list" style={{ 'display': 'none' }}>
+                                                <ul>
+                                                    <li id="confirm_length" className="invalid">Must be atleast 8 characters!</li>
+                                                    <li id="confirm_letter" className="invalid">Must contain atleast 1 letter in small case!</li>
+                                                    <li id="confirm_capital" className="invalid">Must contain atleast 1 letter in capital case!</li>
+                                                    <li id="confirm_number" className="invalid">Must contain atleast 1 number!</li>
+                                                    <li id="confirm_special" className="invalid">Must contain atleast 1 special character!</li>
+                                                </ul>
+                                            </div>
+
                                         </div>
-                                        <div className="form-group google-serach">
+
+
+
+                                        {userTypeList !== 'general' && <div className="form-group google-serach">
                                             <div ref={ref}>
                                                 <input
                                                     value={cityValue}
@@ -537,11 +689,11 @@ export default function Register() {
                                                     className="form-control input"
                                                 />
                                                 {status === "OK" && <ul className="suggestion">{renderSuggestions()}</ul>}
-                                                {cityError && <small className="error">{cityError}<div><br /></div></small>}
+                                                {cityError && <small className="error">{cityError}</small>}
                                             </div>
-                                        </div>
+                                        </div>}
 
-                                        <div className="form-group autosuggestion">
+                                        {userTypeList !== 'general' && <div className="form-group autosuggestion">
                                             <Controller
                                                 name={"organization"}
                                                 control={control}
@@ -564,27 +716,7 @@ export default function Register() {
                                             {errors.suggestion && errors.suggestion.type === "required" && (
                                                 <small className="error">suggestion is required.</small>
                                             )}
-                                        
-
-
-                                            {/* <Controller
-                                                name={"organization"}
-                                                control={control}
-                                                //rules={{ required: true }}
-                                                render={({ field: { onChange, value } }) => (
-                                                    <input
-                                                        type="text"
-                                                        onChange={onChange}
-                                                        value={value}
-                                                        className="form-control"
-                                                        placeholder={`Organization`}
-                                                    />
-                                                )}
-                                            ></Controller> */}
-                                            {/* {errors.first_name && errors.first_name.type === "required" && (
-                                                <small className="error">First Name is required.</small>
-                                            )} */}
-                                        </div>
+                                        </div>}
                                         
 
                                         {userTypeList == 'researcher' &&
@@ -643,7 +775,7 @@ export default function Register() {
                                                         }}
                                                         labelledBy="Interest area"
                                                     /> 
-                                                    {selectedResearcherInterestArea.map(item => (
+                                                    {selectedResearcherInterestArea.filter(item => item.label !== 'Other').map(item => (
                                                         <span className="interest-area">{item.label}<i onClick={(e) => removeResearcherInterest(item.value)} className="fa fa-times"></i></span>
                                                     ))} 
                                                 </div>
@@ -792,7 +924,7 @@ export default function Register() {
                                                     }}
                                                     labelledBy="Interest area"
                                                 />
-                                                {selectedProfessionalInterestArea.map(item => (
+                                                {selectedProfessionalInterestArea.filter(item => item.label !== 'Other').map(item => (
                                                     <span className="interest-area">{item.label}<i onClick={(e) => removeProfessionalInterest(item.value)} className="fa fa-times"></i></span>
                                                 ))}
                                             </div>
@@ -831,13 +963,12 @@ export default function Register() {
                                         <div className="col-md-6">
                                             <Link className="forgot-btn" to='/forgotpassword'>
                                                 Forgot your password?
-                                        </Link>
+                                            </Link>
                                         </div>
                                         <div className="col-md-6 text-right">
                                             <Link className="signup-btn" to='/login'>
                                                 Sign in
-                                        </Link>
-
+                                            </Link>
                                         </div>
                                     </div>
                                 </form>

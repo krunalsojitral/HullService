@@ -225,9 +225,9 @@ router.post('/register', (req, res) => {
                                     researcher_interest_of_area: req.body.researcher_interest_of_area,
                                     other_sector: (req.body.other_sector) ? req.body.other_sector: '',
                                     other_academic_discipline: (req.body.other_academic_discipline) ? req.body.other_academic_discipline: '',
-                                    other_occupation: req.body.other_occupation,
-                                    other_professional_interest_area: req.body.other_professional_interest_area,
-                                    other_research_interest_area: req.body.other_research_interest_area,
+                                    other_occupation: (req.body.other_occupation) ? req.body.other_occupation: '',
+                                    other_professional_interest_area: (req.body.other_professional_interest_area) ? req.body.other_professional_interest_area: '',
+                                    other_research_interest_area: (req.body.other_research_interest_area) ? req.body.other_research_interest_area: '',
                                 };
                                 
                                 overview['data'] = record;
@@ -341,9 +341,15 @@ router.post('/userList', function (req, res) {
             return res.json({ status: 0, 'response': { msg: err } });
         } else {
             var userList = result.map(data => {
+
+                var first_name = ''
+                if (data.first_name){ first_name = data.first_name }
+                var last_name = ''
+                if (data.last_name) { last_name = data.last_name }
+
                 let retObj = {};
                 retObj['id'] = data.id;
-                retObj['name'] = data.first_name + ' ' + data.last_name;
+                retObj['name'] = first_name + ' ' + last_name;
                 retObj['phone'] = data.phone;
                 retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
                 retObj['joining_date'] = moment(data.created_at).format('YYYY-MM-DD');
@@ -379,10 +385,11 @@ router.post('/csvuserList', function (req, res) {
                 setTimeout(() => resolve(result), 40)
             });
             temparray.then(result => {
+
                 var participateList = result.map((data, index) => {
                     let retObj = {};
                     retObj['id'] = data.id;
-                    retObj['no'] = index+1;
+                    retObj['no'] = index + 1;
                     retObj['name'] = data.first_name + ' ' + data.last_name;
                     retObj['email'] = data.email;
                     retObj['city'] = data.city;
@@ -396,6 +403,7 @@ router.post('/csvuserList', function (req, res) {
                     return retObj;
                 });
                 return res.json({ status: 1, 'response': { data: participateList } });
+                
             })
         }
     });
@@ -692,7 +700,7 @@ router.post('/added_deactivate_reason', [
                     } else {
                     }
                 });
-                return res.json({ status: 1, 'msg': 'User deactivate successfully.', 'response': { data: data } });
+                return res.json({ status: 1, 'msg': 'User deactivated successfully.', 'response': { data: data } });
             }
         });
         

@@ -52,7 +52,12 @@ export default function Events() {
 
     }
 
-    React.useEffect(() => {        
+    React.useEffect(() => {    
+        if (offset > 0) {
+            $('html, body').animate({
+                scrollTop: $("#scrolltop").offset().top
+            }, 2);
+        }
         setCurrentData(data.slice(offset, offset + pageLimit));
     }, [offset, data]);
    
@@ -80,41 +85,41 @@ export default function Events() {
                         <div className="col-md-2 side-col">
                             <Sidebar />
                         </div>
-                        <div class="col-md-10">
-                            <div class="studies-research">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="studies-title">
+                        <div className="col-md-10">
+                            <div className="studies-research">
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <div className="studies-title">
                                             <h2>Current Studies & Research</h2>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="studies-Btn">
+                                    <div className="col-md-6">
+                                        <div className="studies-Btn">
                                             <Link className="book-apoint" to={{ pathname: "/add-research" }}>
                                                 Add Research
                                             </Link>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-12 articlebox">
+                                <div className="row">
+                                    <div className="col-md-12 articlebox" id="scrolltop">
 
                                         {!noresult && currentData.map((data, index) => (
-                                            <div class="studies-card" key={index}>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="studies-list">
+                                            <div className="studies-card" key={index}>
+                                                <div className="row">
+                                                    <div className="col-md-12">
+                                                        <div className="studies-list">
                                                             <h3>{data.topic}</h3>
                                                             <p>{data.description}</p>
                                                         </div>
                                                     </div>
-                                                    {/* <div class="col-md-4">
-                                                    <div class="studies-box">
-                                                        <div class="studies-header">
+                                                    {/* <div className="col-md-4">
+                                                    <div className="studies-box">
+                                                        <div className="studies-header">
                                                             <h3>Dr. Andrew Santino</h3>
                                                             <small>Doctor’s Field</small>
                                                         </div>
-                                                        <a href="#" class="btn-apply">Apply</a>
+                                                        <a href="#" className="btn-apply">Apply</a>
                                                     </div>
                                                 </div> */}
                                                 </div>

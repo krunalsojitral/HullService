@@ -40,7 +40,9 @@ export default function ParticipateInResearch() {
             .catch((err) => { console.log(err); });
     }, []);
 
-    const [Modal, open, close] = useModal('root', {});
+    const [Modal, open, close] = useModal('root', {
+        preventScroll: true,
+    });
     const applybutton = (id, title) => {
         setResearchID(id);
         setResearchTitle(title)
@@ -69,10 +71,10 @@ export default function ParticipateInResearch() {
         <div>
             <Header/>
 
-            <section class="research-banner-title">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
+            <section className="research-banner-title">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-md-12">
                             {researchesDetail.main_title && <h1>{researchesDetail.main_title}</h1>}
                             {researchesDetail.sub_title && <h4>{researchesDetail.sub_title}</h4>}
                         </div>
@@ -80,35 +82,35 @@ export default function ParticipateInResearch() {
                 </div>
             </section>
 
-            {researchesDetail.image && <section class="research-banner-img">
+            {researchesDetail.image && <section className="research-banner-img">
                 <img src={researchesDetail.image} />
             </section>}
 
-            {researchesDetail.description && <section class="callout-section">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="section-title">                                
+            {researchesDetail.description && <section className="callout-section">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-md-12">
+                            <div className="section-title">                                
                                 <p dangerouslySetInnerHTML={{ __html: researchesDetail.description }}></p>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>}
-            <section class="studies-research">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="studies-title">
+            <section className="studies-research">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-md-6">
+                            <div className="studies-title">
                                 <h2>Current Studies & Research</h2>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div className="col-md-6">
                             <ApplyInResearchPage></ApplyInResearchPage>                            
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
+                    <div className="row">
+                        <div className="col-md-12">
 
                             {/* {currentData.map((profile, _) => (
                                 <ProfileItem {...profile} />
@@ -119,21 +121,21 @@ export default function ParticipateInResearch() {
                             </Modal>
 
                             {currentData.map((row, index) => (
-                            <div class="studies-card" key={index}>
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <div class="studies-list">
+                            <div className="studies-card" key={index}>
+                                <div className="row">
+                                    <div className="col-md-8">
+                                        <div className="studies-list">
                                             <h3 className="tooltip-box">{row.topic}</h3>
                                                 <ParticipateInResearchDescription description={row.description}></ParticipateInResearchDescription>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="studies-box">
-                                            <div class="studies-header">
+                                    <div className="col-md-4">
+                                        <div className="studies-box">
+                                            <div className="studies-header">
                                                 <h3>{row.user_name}</h3>
                                                 <small>{row.name}</small>
                                             </div>
-                                            <button class="btn-apply" onClick={(e) => applybutton(row.researches_id, row.topic)}>Participate</button>
+                                            <button className="btn-apply" onClick={(e) => applybutton(row.researches_id, row.topic)}>Participate</button>
                                         </div>
                                     </div>
                                 </div>

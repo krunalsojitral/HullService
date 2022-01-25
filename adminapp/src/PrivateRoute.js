@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { CContainer, CFade } from '@coreui/react'
+import { CContainer } from '@coreui/react'
 import useAutoLogout from "./useAutoLogout";
 
 export default function PrivateRoute(props) {   

@@ -85,7 +85,6 @@ const AddEditForm = ({ match }) => {
           </CCardHeader> */}
           <CCardBody>
 
-
             <form onSubmit={handleSubmit((isEditMode === 1) ? updateInformationAct : addInformationAct)}>
 
               <CRow>
@@ -196,8 +195,7 @@ const AddEditForm = ({ match }) => {
                   {(errors.password?.type === "minLength" && <p style={{ color: "red", fontSize: "12px" }}>Password is at least 8 characters </p>)}
                   {(errors.password?.type === "pattern" && <p style={{ color: "red", fontSize: "12px" }}>Please enter at least 8 characters, 1 numeric, 1 lowercase letter, 1 uppercase letter and 1 special character.</p>)}
                 </CCol>
-              </CRow>}
-             
+              </CRow>}             
 
               <CRow>
                 <CCol xs="12">
@@ -229,8 +227,6 @@ const AddEditForm = ({ match }) => {
                   {(errors.phone?.type === "pattern" && <p style={{ color: "red", fontSize: "12px" }}>Phone must be only numeric.</p>)}
                 </CCol>
               </CRow>
-
-
 
               <button type="submit" className="btn btn-outline-primary btn-sm btn-square"> {(isEditMode === 1) ? 'Update' : 'Add'}</button>
 

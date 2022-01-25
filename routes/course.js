@@ -289,7 +289,7 @@ router.post('/addcourseByadmin', function (req, res) {
                 purchase_type: obj.purchase_type,
                 main_cost: obj.main_cost,
                 sale_cost: obj.sale_cost,
-                draft: (obj.draft) ? obj.draft : 0
+                draft: obj.draft
             };
 
             if (obj.user_role.length > 0) {

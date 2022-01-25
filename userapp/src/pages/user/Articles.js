@@ -8,6 +8,7 @@ import axios from 'axios';
 import Swal from "sweetalert2";
 import api_url from '../../components/Apiurl';
 import './../dev.css';
+import $ from 'jquery';
 
 
 export default function Articles() {
@@ -79,9 +80,9 @@ export default function Articles() {
 
     React.useEffect(() => {
         if (offset > 0) {
-            // $('html, body').animate({
-            //     scrollTop: $("#scrolltop").offset().top
-            // }, 2);
+            $('html, body').animate({
+                scrollTop: $("#scrolltop").offset().top
+            }, 2);
         }
         setCurrentData(data.slice(offset, offset + pageLimit));
     }, [offset, data]);
@@ -135,7 +136,7 @@ export default function Articles() {
                             <Sidebar />
                         </div>
 
-                        <div className="col-md-8 articlebox">
+                        <div className="col-md-8 articlebox" id="scrolltop">
                             <div className="row">
 
                                 {!noresult && currentData.map((data, index) => (<div key={index} className="col-md-4">

@@ -21,6 +21,14 @@ export default function Dashboard() {
 //         await loginUser(obj);
 //     }
 
+    const [users, setUsers] = useState({});
+
+    React.useEffect(() => {
+        const userString = localStorage.getItem('userdata');
+        var user = JSON.parse(userString);
+        setUsers(user);
+    }, [])
+
     return(
         <div>
             <Header/>
@@ -52,14 +60,14 @@ export default function Dashboard() {
                                                     </div>
                                                 </Link>
                                             </div>
-                                            <div className="col-md-4">
+                                            {users && (users.role == 3 || users.role == 2) && <div className="col-md-4">
                                                 <Link to='/group-session' className="Support-card">
                                                     <h3>My Meetings </h3>
                                                     <div className="support-img">
                                                         <img alt="support" src="images/support02.png"/>
                                                     </div>
                                                 </Link>
-                                            </div>
+                                            </div>}
                                             <div className="col-md-4">
                                                 <Link to='/my-professional-development' className="Support-card">
                                                     <h3>My Professional Development Courses </h3>
@@ -68,22 +76,22 @@ export default function Dashboard() {
                                                     </div>
                                                 </Link>
                                             </div>
-                                            <div className="col-md-4">
+                                            {users && (users.role == 3 || users.role == 2) && <div className="col-md-4">
                                                 <Link to='/my-forum' className="Support-card">
                                                     <h3>My Threads</h3>
                                                     <div className="support-img">
                                                             <img alt="support" src="images/support04.png"/>
                                                     </div>
                                                 </Link>
-                                            </div>
-                                            <div className="col-md-4">
+                                            </div>}
+                                            {users && (users.role == 3) && <div className="col-md-4">
                                                 <Link to='/my-studies' className="Support-card">
                                                     <h3>My Studies</h3>
                                                     <div className="support-img">
                                                         <img alt="support" src="images/support05.png"/>
                                                     </div>
                                                 </Link>
-                                            </div>
+                                            </div>}
                                             <div className="col-md-4">
                                                 <Link to='/my-blog' className="Support-card">                                                                    
                                                     <h3>My Blogs</h3>

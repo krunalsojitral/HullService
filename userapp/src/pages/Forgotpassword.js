@@ -39,7 +39,7 @@ export default function Forgotpassword() {
                                         </div>                                        
 
                                         <button disabled={isSubmitting} color="info" type="submit" className="sign-btn">
-                                            {isSubmitting && <span class="spinner-border spinner-border-sm"></span>}
+                                            {isSubmitting && <span className="spinner-border spinner-border-sm"></span>}
                                         Submit</button>                                       
                                        
                                     </div>

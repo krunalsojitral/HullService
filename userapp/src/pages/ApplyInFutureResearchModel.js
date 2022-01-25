@@ -56,7 +56,7 @@ function ApplyInFutureResearchModel(props) {
 
 
     return (
-        <div className="popup" style={{ width: '450px', background: '#fff', padding: '19px', display: 'block', maxHeight:'640px', overflowY : 'scroll' }}>
+        <div className="popup" style={{ width: '450px', background: '#fff', padding: '19px', display: 'block', maxHeight: '640px', overflowY: 'scroll', scrollBehavior: 'smooth' }}>
             <div><button className="modelclose" onClick={props.close}>x</button></div>
             <div className="participate-modal">
                 <div className="modal-body">
@@ -176,7 +176,7 @@ function ApplyInFutureResearchModel(props) {
                                         </div>
                                     </div>
                                     <div className="col-md-2">
-                                        <div className="delete-icon" onClick={() => remove(index)}><i class="fa fa-times" aria-hidden="true"></i></div>
+                                        <div className="delete-icon" onClick={() => remove(index)}><i className="fa fa-times" aria-hidden="true"></i></div>
                                     </div>
                                 </div>
                             ))} 

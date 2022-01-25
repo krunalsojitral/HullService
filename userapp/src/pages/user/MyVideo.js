@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 import api_url from '../../components/Apiurl';
 import './../dev.css';
 //import { UserContext } from './../../hooks/UserContext';
+import $ from 'jquery';
 
 
 export default function MyVideo() {
@@ -52,9 +53,9 @@ export default function MyVideo() {
 
     React.useEffect(() => {
         if (offset > 0) {
-            // $('html, body').animate({
-            //     scrollTop: $("#scrolltop").offset().top
-            // }, 2);
+            $('html, body').animate({
+                scrollTop: $("#scrolltop").offset().top
+            }, 2);
         }
         setCurrentData(data.slice(offset, offset + pageLimit));
     }, [offset, data]);
@@ -111,7 +112,7 @@ export default function MyVideo() {
                         <div className="col-md-8">
                             <div className="row">
                                 <div className="col-md-12">
-                                    <div className="dashboard-content">                                      
+                                    <div className="dashboard-content" id="scrolltop">
                                         <div className="row">
                                             {!noresult && currentData.map((data, index) => (
                                                 <div key={index} className="col-md-6 col-lg-4">

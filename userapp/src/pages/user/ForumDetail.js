@@ -11,6 +11,7 @@ import $ from 'jquery';
 import { useModal } from 'react-hooks-use-modal';
 import { useForm, Controller } from "react-hook-form";
 import ForumReply from "./ForumReply";
+import ForumDescription from "./ForumDescription";
 
 
 export default function ForumDetail() {
@@ -168,41 +169,41 @@ export default function ForumDetail() {
             }).catch((err) => { console.log(err); });
     }
 
-    const forumlikeClick = () => {
-        const tokenString = localStorage.getItem('token');
-        var token = JSON.parse(tokenString);
-        const config = {
-            headers: { Authorization: `${token}` }
-        };
-        var obj = {
-            "forumid": forumId,
-            "action_type": 'like'
-        }
-        axios.post(api_url + '/forum/forumLike', obj, config).then(response => {
-            var res = response.data;
-            if (res.status) {
-                getCommentDetailWrap(forumId);
-            }
-        }).catch(function (error) { console.log(error); });
-    };
+    // const forumlikeClick = () => {
+    //     const tokenString = localStorage.getItem('token');
+    //     var token = JSON.parse(tokenString);
+    //     const config = {
+    //         headers: { Authorization: `${token}` }
+    //     };
+    //     var obj = {
+    //         "forumid": forumId,
+    //         "action_type": 'like'
+    //     }
+    //     axios.post(api_url + '/forum/forumLike', obj, config).then(response => {
+    //         var res = response.data;
+    //         if (res.status) {
+    //             getCommentDetailWrap(forumId);
+    //         }
+    //     }).catch(function (error) { console.log(error); });
+    // };
 
-    const forumdislikeClick = () => {
-        const tokenString = localStorage.getItem('token');
-        var token = JSON.parse(tokenString);
-        const config = {
-            headers: { Authorization: `${token}` }
-        };
-        var obj = {
-            "forumid": forumId,
-            "action_type": 'unlike'
-        }
-        axios.post(api_url + '/forum/forumLike', obj, config).then(response => {
-            var res = response.data;
-            if (res.status) {
-                getCommentDetailWrap(forumId);
-            }
-        }).catch(function (error) { console.log(error); });
-    };
+    // const forumdislikeClick = () => {
+    //     const tokenString = localStorage.getItem('token');
+    //     var token = JSON.parse(tokenString);
+    //     const config = {
+    //         headers: { Authorization: `${token}` }
+    //     };
+    //     var obj = {
+    //         "forumid": forumId,
+    //         "action_type": 'unlike'
+    //     }
+    //     axios.post(api_url + '/forum/forumLike', obj, config).then(response => {
+    //         var res = response.data;
+    //         if (res.status) {
+    //             getCommentDetailWrap(forumId);
+    //         }
+    //     }).catch(function (error) { console.log(error); });
+    // };
 
     const getCommentDetailWrap = (forum_id) => {
         getCommentDetail(forum_id, setForumCommentDetail);
@@ -228,61 +229,61 @@ export default function ForumDetail() {
         setVisible((prevValue) => prevValue + 3);
     }
 
-    const forumCommentLikeClick = (comment_id, index) => {
-        const tokenString = localStorage.getItem('token');
-        var token = JSON.parse(tokenString);
-        const config = { headers: { Authorization: `${token}` } };
-        var obj = {
-            "comment_id": comment_id,
-            "action_type": 'like'
-        }
-        axios.post(api_url + '/forum/forumCommentLike', obj, config).then(response => {
-            var res = response.data;
-            if (res.status) {
-                let tempColl = [...forumCommentList];
-                if (res.response.data == 'like') {
+    // const forumCommentLikeClick = (comment_id, index) => {
+    //     const tokenString = localStorage.getItem('token');
+    //     var token = JSON.parse(tokenString);
+    //     const config = { headers: { Authorization: `${token}` } };
+    //     var obj = {
+    //         "comment_id": comment_id,
+    //         "action_type": 'like'
+    //     }
+    //     axios.post(api_url + '/forum/forumCommentLike', obj, config).then(response => {
+    //         var res = response.data;
+    //         if (res.status) {
+    //             let tempColl = [...forumCommentList];
+    //             if (res.response.data == 'like') {
 
-                    tempColl[index].like_comment_count = parseInt(tempColl[index].like_comment_count) + parseInt(1);
-                    tempColl[index].comment_like_id = 1;
-                    if (tempColl[index].comment_dislike_id > 0) {
-                        tempColl[index].unlike_comment_count = (parseInt(tempColl[index].unlike_comment_count) > 0) ? parseInt(tempColl[index].unlike_comment_count) - parseInt(1) : parseInt(tempColl[index].unlike_comment_count);
-                        tempColl[index].comment_dislike_id = '';
-                    }
+    //                 tempColl[index].like_comment_count = parseInt(tempColl[index].like_comment_count) + parseInt(1);
+    //                 tempColl[index].comment_like_id = 1;
+    //                 if (tempColl[index].comment_dislike_id > 0) {
+    //                     tempColl[index].unlike_comment_count = (parseInt(tempColl[index].unlike_comment_count) > 0) ? parseInt(tempColl[index].unlike_comment_count) - parseInt(1) : parseInt(tempColl[index].unlike_comment_count);
+    //                     tempColl[index].comment_dislike_id = '';
+    //                 }
 
-                } else {
-                    tempColl[index].like_comment_count = (parseInt(tempColl[index].like_comment_count) > 0) ? parseInt(tempColl[index].like_comment_count) - parseInt(1) : parseInt(tempColl[index].like_comment_count);
-                    tempColl[index].comment_like_id = '';
-                }
-                setForumCommentList(tempColl);
-            }
-        }).catch(function (error) { console.log(error); });
-    }
+    //             } else {
+    //                 tempColl[index].like_comment_count = (parseInt(tempColl[index].like_comment_count) > 0) ? parseInt(tempColl[index].like_comment_count) - parseInt(1) : parseInt(tempColl[index].like_comment_count);
+    //                 tempColl[index].comment_like_id = '';
+    //             }
+    //             setForumCommentList(tempColl);
+    //         }
+    //     }).catch(function (error) { console.log(error); });
+    // }
 
-    const forumCommentDisLikeClick = (comment_id, index) => {
-        const tokenString = localStorage.getItem('token');
-        var token = JSON.parse(tokenString);
-        const config = { headers: { Authorization: `${token}` } };
-        var obj = { "comment_id": comment_id, "action_type": 'unlike' }
-        axios.post(api_url + '/forum/forumCommentLike', obj, config).then(response => {
-            var res = response.data;
-            if (res.status) {
-                let tempColl = [...forumCommentList];
-                if (res.response.data == 'like') {
-                    tempColl[index].unlike_comment_count = parseInt(tempColl[index].unlike_comment_count) + parseInt(1);
-                    tempColl[index].comment_dislike_id = 1;
+    // const forumCommentDisLikeClick = (comment_id, index) => {
+    //     const tokenString = localStorage.getItem('token');
+    //     var token = JSON.parse(tokenString);
+    //     const config = { headers: { Authorization: `${token}` } };
+    //     var obj = { "comment_id": comment_id, "action_type": 'unlike' }
+    //     axios.post(api_url + '/forum/forumCommentLike', obj, config).then(response => {
+    //         var res = response.data;
+    //         if (res.status) {
+    //             let tempColl = [...forumCommentList];
+    //             if (res.response.data == 'like') {
+    //                 tempColl[index].unlike_comment_count = parseInt(tempColl[index].unlike_comment_count) + parseInt(1);
+    //                 tempColl[index].comment_dislike_id = 1;
 
-                    if (tempColl[index].comment_like_id > 0) {
-                        tempColl[index].like_comment_count = (parseInt(tempColl[index].like_comment_count) > 0) ? parseInt(tempColl[index].like_comment_count) - parseInt(1) : parseInt(tempColl[index].like_comment_count);
-                        tempColl[index].comment_like_id = '';
-                    }
-                } else {
-                    tempColl[index].unlike_comment_count = (parseInt(tempColl[index].unlike_comment_count) > 0) ? parseInt(tempColl[index].unlike_comment_count) - parseInt(1) : parseInt(tempColl[index].unlike_comment_count);
-                    tempColl[index].comment_dislike_id = '';
-                }
-                setForumCommentList(tempColl);
-            }
-        }).catch(function (error) { console.log(error); });
-    }
+    //                 if (tempColl[index].comment_like_id > 0) {
+    //                     tempColl[index].like_comment_count = (parseInt(tempColl[index].like_comment_count) > 0) ? parseInt(tempColl[index].like_comment_count) - parseInt(1) : parseInt(tempColl[index].like_comment_count);
+    //                     tempColl[index].comment_like_id = '';
+    //                 }
+    //             } else {
+    //                 tempColl[index].unlike_comment_count = (parseInt(tempColl[index].unlike_comment_count) > 0) ? parseInt(tempColl[index].unlike_comment_count) - parseInt(1) : parseInt(tempColl[index].unlike_comment_count);
+    //                 tempColl[index].comment_dislike_id = '';
+    //             }
+    //             setForumCommentList(tempColl);
+    //         }
+    //     }).catch(function (error) { console.log(error); });
+    // }
 
 
 
@@ -313,16 +314,17 @@ export default function ForumDetail() {
                                 <div className="cat-title">
                                     <div>
                                         <h2 className="mb-0"> {forumCommentDetail.forum_title && forumCommentDetail.forum_title} </h2>
-                                        {forumCommentDetail.forum_description && <p dangerouslySetInnerHTML={{ __html: forumCommentDetail.forum_description }}></p>}
+                                        {forumCommentDetail.forum_description && <p dangerouslySetInnerHTML={{ __html: forumCommentDetail.forum_description }}></p>}                                        
+                                        {forumCommentDetail.started && <p className="forum-date">{forumCommentDetail.started}</p>}
                                     </div>
                                 </div>
                                 {forumCommentDetail.retire == 1 && 
-                                    <div class="message-card">
-                                        <div class="message-icon">
-                                            <i class="fa fa-lock" aria-hidden="true"></i>
+                                    <div className="message-card">
+                                    <div className="message-icon">
+                                        <i className="fa fa-lock" aria-hidden="true"></i>
                                         </div>
-                                        <div class="message-text">
-                                            <h2>This thread has been locked by the moderators of hull services</h2>
+                                    <div className="message-text">
+                                         <h2>This thread has been closed by the moderators of hull services</h2>
                                             <p>New comments cannot be posted</p>
                                         </div>
                                     </div>
@@ -346,7 +348,6 @@ export default function ForumDetail() {
                                                         value={value}
                                                         className="form-control"
                                                         placeholder={`Add Comment`}
-                                                        maxlength="1500"
                                                     />
                                                 )}
                                             ></Controller>
@@ -362,7 +363,13 @@ export default function ForumDetail() {
 
                                 <div className="row">
                                     <div className="col-md-8">
-                                        {forumCommentDetail.retire == 1 && <div className="dislike-like">
+                                        <div className="dislike-like">
+                                            <ul>
+                                                <li> <i className="fa fa-comment"></i> <span>{forumCommentDetail.replies}</span> </li>
+                                            </ul>
+                                        </div>                                        
+
+                                        {/* {forumCommentDetail.retire == 1 && <div className="dislike-like">
                                             <ul>
                                                 <li className={forumCommentDetail.user_like === 1 ? 'liked' : ''}> <i className="fa fa-thumbs-o-up"></i> <span>{forumCommentDetail.likes}</span> </li>
                                                 <li className={forumCommentDetail.user_dislike === 1 ? 'liked' : ''}> <i className="fa fa-thumbs-o-down"></i> <span>{forumCommentDetail.unlikes}</span> </li>
@@ -375,7 +382,7 @@ export default function ForumDetail() {
                                                 <li className={forumCommentDetail.user_dislike === 1 ? 'liked' : ''} onClick={() => forumdislikeClick()}> <i className="fa fa-thumbs-o-down"></i> <span>{forumCommentDetail.unlikes}</span> </li>
                                                 <li> <i className="fa fa-comment"></i> <span>{forumCommentDetail.replies}</span> </li>
                                             </ul>
-                                        </div>}
+                                        </div>} */}
                                     </div>
                                     <div className="col-md-4">
                                         <div className="follow">
@@ -402,31 +409,36 @@ export default function ForumDetail() {
                                         </div>
                                         <div className="forum-text">
 
-                                            {forumCommentDetail.retire == 1 && <div className="forum-comments">
-                                                <p className={(data.comment_like_id && data.comment_like_id > 0) ? 'comment-liked' : ''}>
+                                            {forumCommentDetail.retire == 1 && 
+                                            <div className="forum-comments">
+                                                {/* <p className={(data.comment_like_id && data.comment_like_id > 0) ? 'comment-liked' : ''}>
                                                     <i className="fa fa-thumbs-up" aria-hidden="true"></i>
                                                     <span>+{data.like_comment_count}</span>
                                                 </p>
                                                 <p className={(data.comment_dislike_id && data.comment_dislike_id > 0) ? 'comment-liked' : ''}>
                                                     <i className="fa fa-thumbs-down" aria-hidden="true"></i>
                                                     <span>+{data.unlike_comment_count}</span>
-                                                </p>
+                                                </p> */}
                                                 <p><img src="images/reply.png" alt="reply" /> <span>Reply</span></p>
                                             </div>}
 
-                                            {forumCommentDetail.retire == 0 && <div className="forum-comments">
-                                                <p className={(data.comment_like_id && data.comment_like_id > 0) ? 'comment-liked' : ''} onClick={() => forumCommentLikeClick(data.forum_comment_id, index)}>
+                                            {forumCommentDetail.retire == 0 && 
+                                            <div className="forum-comments">
+                                                {/* <p className={(data.comment_like_id && data.comment_like_id > 0) ? 'comment-liked' : ''} onClick={() => forumCommentLikeClick(data.forum_comment_id, index)}>
                                                     <i className="fa fa-thumbs-up" aria-hidden="true"></i>
                                                     <span>{data.like_comment_count}</span>
                                                 </p>
                                                 <p className={(data.comment_dislike_id && data.comment_dislike_id > 0) ? 'comment-liked' : ''} onClick={() => forumCommentDisLikeClick(data.forum_comment_id, index)}>
                                                     <i className="fa fa-thumbs-down" aria-hidden="true"></i>
                                                     <span>{data.unlike_comment_count}</span>
-                                                </p>
+                                                </p> */}
                                                 <p onClick={(e) => reply(data.forum_comment_id)}><img src="images/reply.png" alt="reply" /> <span>Reply</span></p>
-                                            </div>}
+                                            </div>} 
 
-                                            <p dangerouslySetInnerHTML={{ __html: data.comment }}></p>
+
+                                            <ForumDescription description={data.comment}></ForumDescription>
+
+                                            {/* <p dangerouslySetInnerHTML={{ __html: data.comment }}></p> */}
 
                                             {/* <div className="reply-list">
                                                 {data.reply && data.reply.slice(0, visible).map((replydata, index) => (
@@ -439,7 +451,7 @@ export default function ForumDetail() {
                                             </div>                                            */}
 
                                             <div className="reply-box" id={data.forum_comment_id} style={{ display: 'none' }}>
-                                                <TextareaAutosize maxRows="4" maxlength="1500" className="form-control" type="text" id={"input" + data.forum_comment_id} name="comment" />
+                                                <TextareaAutosize maxRows="4" className="form-control" type="text" id={"input" + data.forum_comment_id} name="comment" />
                                                 <small id={"error" + data.forum_comment_id} style={{ display: 'none' }} className="error">Comment is required.</small>
                                                 <button type="submit" onClick={(e) => replySubmit(data.forum_comment_id, index)}>Reply</button>
                                             </div>

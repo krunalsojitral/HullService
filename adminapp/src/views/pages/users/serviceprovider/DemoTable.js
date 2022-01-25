@@ -151,6 +151,8 @@ const DemoTable = () => {
       getNewListWrap(e.target.value);
     } else if (e.target.value == '1') {
       getNewListWrap(e.target.value);
+    } else if (e.target.value == '2') {
+      getNewListWrap(e.target.value);
     } else {
       getNewListWrap('');
     }
@@ -168,6 +170,7 @@ const DemoTable = () => {
         <div className="header-right">
           <select ref={ref} onChange={e => handleAddrTypeChange(e)} className="form-control d-inline-block" >
             <option key="0" value="">Select Option</option>
+            <option key="3" value="2">Pending</option>
             <option key="1" value="1">Active</option>
             <option key="2" value="0">Inactive</option>
           </select>

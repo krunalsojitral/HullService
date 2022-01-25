@@ -98,9 +98,12 @@ function User() {
             if (record.role == 3){
                 var sql = 'INSERT INTO users("first_name","last_name","email","city","lat","long","country","academic_discipline","password","status","role","email_verification_token","created_at","organization","other_sector","other_academic_discipline","other_occupation","other_professional_interest_area","other_research_interest_area") VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19) RETURNING *'
                 var values = [record.first_name, record.last_name, record.email, record.city, record.lat, record.long, record.country, record.academic_discipline, record.password, record.status, record.role, record.email_verification_token, record.created_at, record.organization, record.other_sector, record.other_academic_discipline, record.other_occupation, record.other_professional_interest_area, record.other_research_interest_area]
-            }else{
+            } else if (record.role == 2) {
                 var sql = 'INSERT INTO users("first_name","last_name","email","city","lat","long","country", "level_of_education","occupation","sector","password","status","role","email_verification_token","created_at","organization","other_sector","other_academic_discipline","other_occupation","other_professional_interest_area","other_research_interest_area") VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21) RETURNING *'
                 var values = [record.first_name, record.last_name, record.email, record.city, record.lat, record.long, record.country, record.level_of_education, record.occupation, record.sector, record.password, record.status, record.role, record.email_verification_token, record.created_at, record.organization, record.other_sector, record.other_academic_discipline, record.other_occupation, record.other_professional_interest_area, record.other_research_interest_area]
+            }else{
+                var sql = 'INSERT INTO users("first_name","last_name","email","password","status","role","email_verification_token","created_at") VALUES($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *'
+                var values = [record.first_name, record.last_name, record.email, record.password, record.status, record.role, record.email_verification_token, record.created_at]
             }
             
             
@@ -210,9 +213,14 @@ function User() {
             var sql = '';
             var array = [role];
             if (status) {
-                sql = 'SELECT * FROM users where users.role = $1 and users.status = $2 order by UPPER(first_name) ASC';
-                array = [role, status];
-            } else {
+                if (status == 2){
+                    sql = "SELECT * FROM users where users.role = $1 and (users.email_verification_token IS NOT NULL and length(users.email_verification_token) > 0) order by UPPER(first_name) ASC";
+                    array = [role];
+                }else{                   
+                    sql = 'SELECT * FROM users where users.role = $1 and users.status = $2 and (users.email_verification_token IS NULL or length(users.email_verification_token) = 0) order by UPPER(first_name) ASC';
+                    array = [role, status];
+                }                
+            } else {                
                 sql = 'SELECT * FROM users where users.role = $1 order by UPPER(first_name) ASC';
             }
             con.query(sql, array, function (err, result) {
@@ -245,8 +253,8 @@ function User() {
                         msg = 'User does not exist.';
                         callback(msg, null);
                     } else {
-                        if (results.rows[0].status == 0) {                            
-                            if (results.rows[0].email_verification_token !== null) {
+                        if (results.rows[0].status == 0) {                                    
+                            if (results.rows[0].email_verification_token) {
                                 var msg = 'Your account has not been activated. Please verify your account by clicking on the verification link in the email you received from us.';
                                 callback(msg, null);
                             }else{

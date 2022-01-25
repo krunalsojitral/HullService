@@ -321,7 +321,7 @@ router.post('/addarticleByadmin', function (req, res) {
                 cost: obj.cost,
                 purchase_type: obj.purchase_type,
                 image:'',
-                draft: (obj.draft) ? obj.draft : 0
+                draft: obj.draft
             };
             asyn.waterfall([
                 function (done) {

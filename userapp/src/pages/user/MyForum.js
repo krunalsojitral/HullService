@@ -49,8 +49,7 @@ export default function ForumSub() {
                 if (forumdata && forumdata.length > 0){
                     setData(forumdata);
                     setNoresult(false);
-                }else{
-                    console.log('in');
+                }else{                    
                     setNoresult(true);
                 }
             } else {

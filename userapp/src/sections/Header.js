@@ -52,40 +52,53 @@ export default function Header() {
     return(
 
         <div>
-            {!token && <div className="top-header">
+            <div className="top-header">
                 <div className="container">
                     <div className="row">
-                        <div className="col-md-12">
-                            <div className="top-header-icon">
-                                <div className="social-icon">
-                                    <ul>                                        
-                                        <li><a href="https://twitter.com"><i className="fa fa-twitter"></i></a></li>
-                                        <li><a href="https://www.facebook.com"><i className="fa fa-facebook"></i></a></li>
-                                        <li><a href="https://www.linkedin.com"><i className="fa fa-linkedin"></i></a></li>
-                                        <li><a href="https://www.youtube.com"><i className="fa fa-youtube-play"></i></a></li>
-                                    </ul>
+                        <div className="col-md-12">                           
+                                {!token && 
+                                 <div className="top-header-icon">
+                                    <div className="social-icon">
+                                        <ul>                                        
+                                            <li><a href="https://twitter.com"><i className="fa fa-twitter"></i></a></li>
+                                            <li><a href="https://www.facebook.com"><i className="fa fa-facebook"></i></a></li>
+                                            <li><a href="https://www.linkedin.com"><i className="fa fa-linkedin"></i></a></li>
+                                            <li><a href="https://www.youtube.com"><i className="fa fa-youtube-play"></i></a></li>
+                                        </ul>
+                                    </div> 
+                                    <div className="Member-login">
+                                        <Link to='/login'>
+                                                Member Sign In
+                                        </Link>                                    
+                                    </div>
+                                    <div className="cta-header">
+                                        <NavLink activeClassName="active" to='/participate-in-research'>
+                                                PARTICIPATE IN RESEARCH
+                                        </NavLink>
+                                        <NavLink activeClassName="active" to='/membership-benefit'>
+                                                BECOME A MEMBER
+                                        </NavLink>                                    
+                                    </div>
                                 </div>
-
-                                <div className="Member-login">
-                                    <Link to='/login'>
-                                        Member Sign In
-                                    </Link>                                    
-                                </div>
-
-                                <div className="cta-header">
-                                    <NavLink activeClassName="active" to='/participate-in-research'>
-                                        PARTICIPATE IN RESEARCH
-                                    </NavLink>
-                                    <NavLink activeClassName="active" to='/membership-benefit'>
-                                        BECOME A MEMBER
-                                    </NavLink>                                    
-                                </div>
-
-                            </div>
+                                }
+                                {token &&
+                                    <div className="top-header-icon">                                                                            
+                                        <div className="Member-login">
+                                            <Link to='/dashboard'>
+                                                My Dashboard
+                                            </Link>
+                                        </div>
+                                        <div className="cta-header">
+                                            <NavLink activeClassName="active" to='/participate-in-research'>
+                                                    PARTICIPATE IN RESEARCH
+                                            </NavLink>                                           
+                                        </div>
+                                    </div>
+                                }                           
                         </div>
                     </div>
                 </div>
-            </div>}
+            </div>
             
 
             <header>

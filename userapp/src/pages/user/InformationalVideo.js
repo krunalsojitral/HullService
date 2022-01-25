@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
 import api_url from '../../components/Apiurl';
 import './../dev.css';
+import $ from 'jquery';
 
 export default function Video() {
 
@@ -33,9 +34,9 @@ export default function Video() {
 
     React.useEffect(() => {
         if (offset > 0) {
-            // $('html, body').animate({
-            //     scrollTop: $("#scrolltop").offset().top
-            // }, 2);
+            $('html, body').animate({
+                scrollTop: $("#scrolltop").offset().top
+            }, 2);
         }
         setCurrentData(data.slice(offset, offset + pageLimit));
     }, [offset, data]);
@@ -196,7 +197,7 @@ export default function Video() {
                         <div className="col-md-8">
                             <div className="row">
                                 <div className="col-md-12">
-                                    <div className="dashboard-content">
+                                    <div className="dashboard-content" id="scrolltop">
                                         <div className="row">
                                             <div className="col-md-12">
                                                 <form onSubmit={handleSubmit(search)}>

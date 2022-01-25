@@ -285,7 +285,7 @@ router.post('/addBlogByadmin', function (req, res) {
                 role: (obj.user_role.length > 0) ? obj.user_role : '',
                 purchase_type: obj.purchase_type,
                 cost: obj.cost,
-                draft: (obj.draft) ? obj.draft: 0
+                draft: obj.draft
             };
             asyn.waterfall([
                 function (done) {

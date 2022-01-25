@@ -86,6 +86,7 @@ function UserRequest({
             <CCardBody>
                 <table className="table table-striped table-hover">
                     <tbody>                            
+                        <tr><td>Full Name :</td><td><strong>{selectedItem && selectedItem.name}</strong></td></tr>
                         <tr><td>Email :</td><td><strong>{selectedItem && selectedItem.email}</strong></td></tr>                        
                     </tbody>
                 </table>

@@ -5,6 +5,7 @@ import api_url from '../../components/Apiurl';
 import Swal from "sweetalert2";
 import ForumSubReply from "./ForumSubReply";
 import TextareaAutosize from 'react-textarea-autosize';
+import ForumDescription from "./ForumDescription";
 
 function ForumReply(props) {
 
@@ -78,12 +79,13 @@ function ForumReply(props) {
                     <div className="reply-card">
                         <h3>{replydata.first_name} {replydata.last_name} <span>({replydata.role})</span></h3>
                         <small>{replydata.created_at}</small>
-                        <p dangerouslySetInnerHTML={{ __html: replydata.comment }}></p>
+                        {/* <p dangerouslySetInnerHTML={{ __html: replydata.comment }}></p> */}
+                        <ForumDescription description={replydata.comment}></ForumDescription>
 
                         <p onClick={(e) => reply(replydata.reply_comment_id)}><img src="images/reply.png" alt="reply" /> <span>Reply</span></p>
 
                         <div className="reply-box" id={replydata.reply_comment_id} style={{ display: 'none' }}>
-                            <TextareaAutosize maxRows="4" maxlength="1500" className="form-control" type="text" id={"input" + replydata.reply_comment_id} name="comment" />
+                            <TextareaAutosize maxRows="4" className="form-control" type="text" id={"input" + replydata.reply_comment_id} name="comment" />
                             <small id={"error" + replydata.reply_comment_id} style={{ display: 'none' }} className="error">Comment is required.</small>
                             <button type="submit" onClick={(e) => replySubmit(replydata.reply_comment_id, index)}>Reply</button>
                         </div>

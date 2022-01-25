@@ -19,6 +19,7 @@ export default function ProfessionalDevelopmentDetail() {
     //let history = useHistory();
 
     const [courseDetail, setcourseDetail] = React.useState({})
+    const [token, setToken] = React.useState('');
     //const [relatedcourseDetail, setRelatedcourseDetail] = React.useState([])
 
     React.useEffect(() => {
@@ -27,6 +28,7 @@ export default function ProfessionalDevelopmentDetail() {
 
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
+        setToken(token);
         // const config = {
         //     headers: { Authorization: `${token}` }
         // };
@@ -37,11 +39,12 @@ export default function ProfessionalDevelopmentDetail() {
                 if (coursedata.purchase_type == "unpaid") {
                     setcourseDetail(coursedata);
                 } else {
-                    if (!token) {
-                        open()
-                    } else {
-                        setcourseDetail(coursedata);
-                    }
+                    setcourseDetail(coursedata);
+                    // if (!token) {
+                    //     open()
+                    // } else {
+                    //     setcourseDetail(coursedata);
+                    // }
                 }
             } else {
                 Swal.fire('Oops...', result.data.response.msg, 'error')
@@ -75,6 +78,7 @@ export default function ProfessionalDevelopmentDetail() {
 
     return (
         <div>
+            
             <Header />
             <section className="inner-header">
                 <div className="container">
@@ -369,10 +373,13 @@ export default function ProfessionalDevelopmentDetail() {
                                             <li><img src="images/check.png" alt="check" /> Full lifetime access</li>
                                             <li><img src="images/check.png" alt="check" /> Access on mobile and tv</li>
                                         </ul>
-                                        <label>30 days money back guarantee</label> */}                                        
-                                        <Link to={{ pathname: "/course-payment", search: "?id=" + courseDetail.course_id }}>
-                                            Purchase Course
-                                        </Link>                                       
+                                        <label>30 days money back guarantee</label> */}      
+                                    {token && <Link to={{ pathname: "/course-payment", search: "?id=" + courseDetail.course_id }}>
+                                        Purchase Course
+                                        </Link>}
+                                    {!token && <Link to={{ pathname: "/login" }}>
+                                        Purchase Course
+                                        </Link>}
                                         
                                         {/* <a href="javascript:;" className="outline-btn">Buy Now</a> */}
                                     </div>

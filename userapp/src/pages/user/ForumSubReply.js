@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import $ from 'jquery';
-import axios from 'axios';
-import api_url from '../../components/Apiurl';
-import Swal from "sweetalert2";
+import ForumDescription from "./ForumDescription";
+// import $ from 'jquery';
+// import axios from 'axios';
+// import api_url from '../../components/Apiurl';
+// import Swal from "sweetalert2";
 
 function ForumSubReply(props) {
 
@@ -34,7 +35,8 @@ function ForumSubReply(props) {
                     <div className="sub-reply">
                         <h3>{subdata.first_name} {subdata.last_name} <span>({subdata.role})</span></h3>
                         <small>{subdata.created_at}</small>
-                        <p dangerouslySetInnerHTML={{ __html: subdata.comment }}></p>
+                        {/* <p dangerouslySetInnerHTML={{ __html: subdata.comment }}></p> */}
+                        <ForumDescription description={subdata.comment}></ForumDescription>
                     </div>
                 </div>
             ))}

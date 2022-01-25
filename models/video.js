@@ -197,12 +197,14 @@ function Video() {
         connection.acquire(function (err, con) {
             if (search) {
 
+                //var sql = 'SELECT *,video.video_id as videoid,video.created_at as video_date FROM video left join bookmark_video on video.video_id = bookmark_video.video_id and bookmark_video.user_id = $1 where video.draft_status IS NULL and video.status = $2 and (role ILIKE $3 or role ILIKE $4) and ( title ILIKE $5) order by video.video_id asc';
+
                 if (sortby == "ascending"){
-                    var sql = 'SELECT *,video.video_id as videoid,video.created_at as video_date FROM video left join bookmark_video on video.video_id = bookmark_video.video_id and bookmark_video.user_id = $1 where video.draft_status IS NULL and video.status = $2 and (role ILIKE $3 or role ILIKE $4) and ( title ILIKE $5) order by video.video_id asc';
+                    var sql = 'SELECT *,video.video_id as videoid,video.created_at as video_date FROM video left join bookmark_video on video.video_id = bookmark_video.video_id and bookmark_video.user_id = $1 where video.draft_status IS NULL and video.status = $2 and (role ILIKE $3) and ( title ILIKE $4) order by video.video_id asc';
                 }else{
-                    var sql = 'SELECT *,video.video_id as videoid,video.created_at as video_date FROM video left join bookmark_video on video.video_id = bookmark_video.video_id and bookmark_video.user_id = $1 where video.draft_status IS NULL and video.status = $2 and (role ILIKE $3 or role ILIKE $4) and ( title ILIKE $5) order by video.video_id desc';
+                    var sql = 'SELECT *,video.video_id as videoid,video.created_at as video_date FROM video left join bookmark_video on video.video_id = bookmark_video.video_id and bookmark_video.user_id = $1 where video.draft_status IS NULL and video.status = $2 and (role ILIKE $3) and ( title ILIKE $4) order by video.video_id desc';
                 }
-                var values = [id, 1, '%' + role + '%', '%4%', '%' + search + '%'];
+                var values = [id, 1, '%' + role + '%', '%' + search + '%'];
 
             }else{   
                 

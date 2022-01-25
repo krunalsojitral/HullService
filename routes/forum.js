@@ -572,7 +572,8 @@ router.post('/approveRejectedRequest', [
                     id: forum_id,
                     user_status: status,
                     status: 1,
-                    admin_comment: comment
+                    admin_comment: comment,
+                    created_at: moment().format('YYYY-MM-DD')
                 }
                 
                 Forum.updateComment(obj, function (err, updateresult) {
@@ -700,9 +701,10 @@ router.post('/getForumCommentDetail', passport.authenticate('jwt', { session: fa
                     done(err, null)
                 } else {     
                     if (result.length > 0){
-                        if (result[0].forum_date) {
-                            comment.started = helper.timeCountSince(result[0].forum_date);
-                        }
+                        // if (result[0].forum_date) {
+                        //     comment.started = helper.timeCountSince(result[0].forum_date);
+                        // }
+                        comment.started = moment(result[0].forum_date).format('MMMM Do, YYYY');
                         comment.forum_title = result[0].topic;
                         comment.retire = result[0].retire;
                         comment.forum_description = result[0].description;

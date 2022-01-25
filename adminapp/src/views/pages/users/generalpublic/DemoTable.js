@@ -11,19 +11,36 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { CSVLink } from "react-csv";
-
+import DeactiveUser from "../DeactiveUser";
 
 const DemoTable = () => {
   const ref = React.useRef();
   const history = useHistory()
  // const [details, setDetails] = useState([])
   const [items, setItems] = useState([])
-  const [csvData, setCsvData] = useState([["Name", "Email", "Phone"]]);
+  const [csvData, setCsvData] = useState([["S.No","Name", "Email"]]);
+  const [filedate, setFiledate] = useState();
+  const [modal, setModal] = useState();
+  const [selectedItem, setSelectedItem] = useState();
+
+  const headers = [
+    { label: "S.No", key: "no" },
+    { label: "Name", key: "name" },
+    { label: "Email", key: "email" }
+  ];
 
   React.useEffect(() => {
     getNewList('');
     getNewListWrap('');
     getCSVNewList();
+
+    let newDate = new Date()
+    let date = newDate.getDate();
+    let month = newDate.getMonth() + 1;
+    let year = newDate.getFullYear();
+    let current_date = month + '/' + date + '/' + year;
+    setFiledate('General_' + current_date);
+
   }, [])
 
   const getCSVNewList = () => {
@@ -32,7 +49,7 @@ const DemoTable = () => {
         var usersdatas = result.data.response.data;
         setCsvData(usersdatas);
       } else {
-        Swal.fire('Oops...', result.data.response.msg, 'error')
+      //  Swal.fire('Oops...', result.data.response.msg, 'error')
       }
     }).catch((err) => {
       console.log(err);
@@ -55,40 +72,42 @@ const DemoTable = () => {
   
 
   const updateItemStatus = (item, status) => {
-
-    if (status == 1) {
-      var message = 'Are you sure you want to activate the user ?'
-    } else {
-      var message = 'Are you sure you want to deactivate the user ?'
-    }
-    Swal.fire({
-      //title: 'warning!',
-      icon: 'warning',
-      text: message,
-      confirmButtonText: `Yes`,
-      showCancelButton: true,
-      cancelButtonText: 'No',
-      cancelButtonColor: '#e57979',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        var obj = {
-          id: item.id,
-          status: status,
-        };
-        axios.post(api_url + "/user/changeuserStatus", obj)
-          .then((result) => {
-            if (result.data.status) {
-              getNewListWrap();
-              ref.current.value = "";
-            } else {
-              Swal.fire("Oops...", result.data.response.msg, "error");
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+    if (status == 1) { 
+      if (status == 1) {
+        var message = 'Are you sure you want to activate the user ?'
+      } else {
+        var message = 'Are you sure you want to deactivate the user ?'
       }
-    });
+      Swal.fire({
+        //title: 'warning!',
+        icon: 'warning',
+        text: message,
+        confirmButtonText: `Yes`,
+        showCancelButton: true,
+        cancelButtonText: 'No',
+        cancelButtonColor: '#e57979',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          var obj = {
+            id: item.id,
+            status: status,
+          };
+          axios.post(api_url + "/user/changeuserStatus", obj)
+            .then((result) => {
+              if (result.data.status) {
+                getNewListWrap();
+                ref.current.value = "";
+              } else {
+                Swal.fire("Oops...", result.data.response.msg, "error");
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+      });
+    }
+    
   }
 
   
@@ -98,7 +117,7 @@ const DemoTable = () => {
         var usersdatas = result.data.response.data;
         setItems(usersdatas);
       } else {
-        Swal.fire('Oops...', result.data.response.msg, 'error')
+       // Swal.fire('Oops...', result.data.response.msg, 'error')
       }
     }).catch((err) => {
       console.log(err);
@@ -126,6 +145,8 @@ const DemoTable = () => {
       getNewListWrap(e.target.value);
     } else if (e.target.value == '1') {
       getNewListWrap(e.target.value);
+    } else if (e.target.value == '2') {
+      getNewListWrap(e.target.value);
     } else {
       getNewListWrap('');
     }
@@ -142,11 +163,12 @@ const DemoTable = () => {
         <div className="header-right">
           <select ref={ref} onChange={e => handleAddrTypeChange(e)} className="form-control d-inline-block" >
             <option key="0" value="">Select Option</option>
+            <option key="3" value="2">Pending</option>
             <option key="1" value="1">Active</option>
             <option key="2" value="0">Inactive</option>
           </select>
 
-          {/* <CSVLink className="d-inline-block" data={csvData}>Export User</CSVLink> &nbsp; */}
+          <CSVLink filename={filedate + ".csv"} headers={headers} className="d-inline-block" data={csvData}>Export User</CSVLink> &nbsp;
                       {/* <CButton
                         color="primary"
                         variant="outline"
@@ -189,6 +211,8 @@ const DemoTable = () => {
                   href
                   style={{ cursor: "pointer", textDecoration: "underline" }}
                   onClick={() => {
+                    setSelectedItem(item);
+                    setModal(true);
                     updateItemStatus(
                       item,
                       0,
@@ -271,7 +295,16 @@ const DemoTable = () => {
           //   }
         }}
       />
+      <DeactiveUser
+        modal={modal}
+        selectedItem={selectedItem}
+        setSelectedItem={setSelectedItem}
+        setModal={setModal}
+        updateListing={getNewListWrap}
+      />
+
     </CCardBody>
+    
   )
 }
 

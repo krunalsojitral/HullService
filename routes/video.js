@@ -262,7 +262,7 @@ router.post('/addVideoByadmin', function (req, res) {
                 tag: obj.tag,
                 purchase_type: obj.purchase_type,
                 cost: obj.cost,
-                draft: (obj.draft) ? obj.draft : 0
+                draft: obj.draft
             };
 
             if (obj.user_role.length > 0) {

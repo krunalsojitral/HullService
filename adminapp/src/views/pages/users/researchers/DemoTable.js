@@ -4,8 +4,8 @@ import axios from 'axios';
 import api_url from './../../../Apiurl';
 import Swal from "sweetalert2";
 import {
-  CCardBody,  
-  CButton,  
+  CCardBody,
+  CButton,
   CDataTable,
   CCardHeader
 } from '@coreui/react'
@@ -17,9 +17,9 @@ const DemoTable = () => {
 
   const ref = React.useRef();
   const history = useHistory()
- // const [details, setDetails] = useState([])
+  // const [details, setDetails] = useState([])
   const [items, setItems] = useState([])
-  const [csvData, setCsvData] = useState([["S.No","Name", "Email", "City", "Organization", "Academic Discipline", "Interestarea"]]);
+  const [csvData, setCsvData] = useState([["S.No", "Name", "Email", "City", "Organization", "Academic Discipline", "Interestarea"]]);
   const [modal, setModal] = useState();
   const [selectedItem, setSelectedItem] = useState();
   const [filedate, setFiledate] = useState();
@@ -33,27 +33,27 @@ const DemoTable = () => {
     { label: "Organization", key: "organization" },
     { label: "Academic Discipline", key: "academicdisciplinename" },
     { label: "Interestarea", key: "pinterestarea" },
-  ];  
+  ];
 
   React.useEffect(() => {
     getNewList('');
     getNewListWrap('');
     getCSVNewList();
-    
+
     let newDate = new Date()
     let date = newDate.getDate();
     let month = newDate.getMonth() + 1;
     let year = newDate.getFullYear();
     let current_date = month + '/' + date + '/' + year;
-    setFiledate('Researchers_'+current_date);
+    setFiledate('Researchers_' + current_date);
 
   }, [])
 
   const fields = [
-    { key: 'name', _style: { width: '20%'} },
+    { key: 'name', _style: { width: '20%' } },
     { key: 'email', _style: { width: '20%' } },
     { key: 'joining_date', _style: { width: '20%' } },
-    { key: 'status', _style: { width: '20%'} },
+    { key: 'status', _style: { width: '20%' } },
     {
       key: 'show_details',
       label: '',
@@ -74,10 +74,10 @@ const DemoTable = () => {
       console.log(err);
     })
   }
-  
+
   const updateItemStatus = (item, status) => {
 
-    if (status == 1){
+    if (status == 1) {
       if (status == 1) {
         var message = 'Are you sure you want to activate the user ?'
       } else {
@@ -112,10 +112,10 @@ const DemoTable = () => {
         }
       });
     }
-       
+
   }
 
-  
+
   const getNewList = (status) => {
     axios.post(api_url + '/user/userList', { role: 3, status: status }).then((result) => {
       if (result.data.status) {
@@ -133,7 +133,7 @@ const DemoTable = () => {
     getNewList(status);
   };
 
-  const getBadge = (status)=>{
+  const getBadge = (status) => {
     switch (status) {
       case '2': return 'Service Provider'
       case '3': return 'Researchers'
@@ -143,32 +143,35 @@ const DemoTable = () => {
     }
   }
 
-  const handleAddrTypeChange = (e) => {    
+  const handleAddrTypeChange = (e) => {
 
     if (e.target.value == '0') {
       getNewListWrap(e.target.value);
     } else if (e.target.value == '1') {
       getNewListWrap(e.target.value);
-    } else {
+    } else if (e.target.value == '2') { 
+      getNewListWrap(e.target.value);
+    }else {
       getNewListWrap('');
     }
 
   }
 
   return (
-        <div>
-              <CCardHeader className="custom-table-header">
-                <div className="header-left">
-                  <CIcon name="cil-grid" /> Researchers
+    <div>
+      <CCardHeader className="custom-table-header">
+        <div className="header-left">
+          <CIcon name="cil-grid" /> Researchers
                 </div>
-                <div className="header-right">
-                  <select ref={ref} onChange={e => handleAddrTypeChange(e)} className="form-control d-inline-block" >
-                    <option key="0" value="">Select Option</option>
-                    <option key="1" value="1">Active</option>
-                    <option key="2" value="0">Inactive</option>
-                  </select>
+        <div className="header-right">
+          <select ref={ref} onChange={e => handleAddrTypeChange(e)} className="form-control d-inline-block" >
+            <option key="0" value="">Select Option</option>
+            <option key="3" value="2">Pending</option>
+            <option key="1" value="1">Active</option>
+            <option key="2" value="0">Inactive</option>
+          </select>
 
-                  <CSVLink filename={filedate+".csv"} headers={headers} className="d-inline-block" data={csvData}>Export User</CSVLink> &nbsp;
+          <CSVLink filename={filedate + ".csv"} headers={headers} className="d-inline-block" data={csvData}>Export User</CSVLink> &nbsp;
                       {/* <CButton
                         color="primary"
                         variant="outline"
@@ -178,90 +181,90 @@ const DemoTable = () => {
                       >
                         Add
                     </CButton> */}
-                </div>
-              </CCardHeader>
-              <CCardBody>
-                <CDataTable
-                  items={items}
-                  fields={fields}
-                  columnFilter
-                  tableFilter
-                  cleaner
-                  itemsPerPageSelect
-                  itemsPerPage={10}
-                  hover
-                  sorter
-                  pagination
-                  // loading
-                  // onRowClick={(item,index,col,e) => console.log(item,index,col,e)}
-                  // onPageChange={(val) => console.log('new page:', val)}
-                  // onPagesChange={(val) => console.log('new pages:', val)}
-                  // onPaginationChange={(val) => console.log('new pagination:', val)}
-                  // onFilteredItemsChange={(val) => console.log('new filtered items:', val)}
-                  // onSorterValueChange={(val) => console.log('new sorter value:', val)}
-                  // onTableFilterChange={(val) => console.log('new table filter:', val)}
-                  // onColumnFilterChange={(val) => console.log('new column filter:', val)}
-                  scopedSlots={{
-                    status: (item) => (
-                      <td class="tooltip-box">
-                        {item.email_verification_token && item.email_verification_token !== null ? 'Pending' : ''}
-                        {(item.email_verification_token == null || item.email_verification_token == '') ? item.status === 1 ? (
-                          <a
-                            href
-                            style={{ cursor: "pointer", textDecoration: "underline" }}
-                            onClick={() => {
-                              setSelectedItem(item);
-                              setModal(true);
-                              updateItemStatus(
-                                item,
-                                0,
-                                getNewListWrap
-                              );
-                            }}
-                          >
-                            Active{" "}
-                            <span class="tooltip-title">De-activating the user will remove the user from the front end.</span>
-                          </a>
-                        ) : (
-                          <a
-                            href
-                            style={{ cursor: "pointer", textDecoration: "underline" }}
-                            onClick={() => {
-                              updateItemStatus(
-                                item,
-                                1,
-                                getNewListWrap
-                              );
-                            }}
-                          >
-                            Inactive
-                            <span class="tooltip-title">Activating the user will add the user back on the front end.</span>
-                          </a>
-                        ) : ''}
-                        
-                      </td>
-                    ),
-                    'role':
-                      (item) => (
-                        <td>
-                          {getBadge(item.role)}
-                        </td>
-                      ),
-                    'show_details':
-                      item => {
-                        return (
-                          <td className="py-2">
-                            <CButton
-                              color="primary"
-                              variant="outline"
-                              shape="square"
-                              size="sm"
-                              onClick={() => history.push(`/userdetail/${item.id}`)}
-                            >
-                              View
+        </div>
+      </CCardHeader>
+      <CCardBody>
+        <CDataTable
+          items={items}
+          fields={fields}
+          columnFilter
+          tableFilter
+          cleaner
+          itemsPerPageSelect
+          itemsPerPage={10}
+          hover
+          sorter
+          pagination
+          // loading
+          // onRowClick={(item,index,col,e) => console.log(item,index,col,e)}
+          // onPageChange={(val) => console.log('new page:', val)}
+          // onPagesChange={(val) => console.log('new pages:', val)}
+          // onPaginationChange={(val) => console.log('new pagination:', val)}
+          // onFilteredItemsChange={(val) => console.log('new filtered items:', val)}
+          // onSorterValueChange={(val) => console.log('new sorter value:', val)}
+          // onTableFilterChange={(val) => console.log('new table filter:', val)}
+          // onColumnFilterChange={(val) => console.log('new column filter:', val)}
+          scopedSlots={{
+            status: (item) => (
+              <td class="tooltip-box">
+                {item.email_verification_token && item.email_verification_token !== null ? 'Pending' : ''}
+                {(item.email_verification_token == null || item.email_verification_token == '') ? item.status === 1 ? (
+                  <a
+                    href
+                    style={{ cursor: "pointer", textDecoration: "underline" }}
+                    onClick={() => {
+                      setSelectedItem(item);
+                      setModal(true);
+                      updateItemStatus(
+                        item,
+                        0,
+                        getNewListWrap
+                      );
+                    }}
+                  >
+                    Active{" "}
+                    <span class="tooltip-title">De-activating the user will remove the user from the front end.</span>
+                  </a>
+                ) : (
+                  <a
+                    href
+                    style={{ cursor: "pointer", textDecoration: "underline" }}
+                    onClick={() => {
+                      updateItemStatus(
+                        item,
+                        1,
+                        getNewListWrap
+                      );
+                    }}
+                  >
+                    Inactive
+                    <span class="tooltip-title">Activating the user will add the user back on the front end.</span>
+                  </a>
+                ) : ''}
+
+              </td>
+            ),
+            'role':
+              (item) => (
+                <td>
+                  {getBadge(item.role)}
+                </td>
+              ),
+            'show_details':
+              item => {
+                return (
+                  <td className="py-2">
+                    <CButton
+                      color="primary"
+                      variant="outline"
+                      shape="square"
+                      size="sm"
+                      onClick={() => history.push(`/userdetail/${item.id}`)}
+                    >
+                      View
                           </CButton>
 
-                            {/* <CButton
+                    {/* <CButton
                             color="primary"
                             variant="outline"
                             shape="square"
@@ -271,40 +274,40 @@ const DemoTable = () => {
                           > Edit
                           </CButton> */}
 
-                          </td>
-                        )
-                      },
-                    // 'details':
-                    //     item => {
-                    //       return (
-                    //       <CCollapse show={details.includes(item.id)}>
-                    //         <CCardBody>
-                    //           <h4>
-                    //             {item.username}
-                    //           </h4>
-                    //             <p className="text-muted">User since: {item.created_at}</p>
-                    //           <CButton size="sm" color="info">
-                    //             User Settings
-                    //           </CButton>
-                    //           <CButton size="sm" color="danger" className="ml-1">
-                    //             Delete
-                    //           </CButton>
-                    //         </CCardBody>
-                    //       </CCollapse>
-                    //     )
-                    //   }
-                  }}
-                />
-              </CCardBody>
+                  </td>
+                )
+              },
+            // 'details':
+            //     item => {
+            //       return (
+            //       <CCollapse show={details.includes(item.id)}>
+            //         <CCardBody>
+            //           <h4>
+            //             {item.username}
+            //           </h4>
+            //             <p className="text-muted">User since: {item.created_at}</p>
+            //           <CButton size="sm" color="info">
+            //             User Settings
+            //           </CButton>
+            //           <CButton size="sm" color="danger" className="ml-1">
+            //             Delete
+            //           </CButton>
+            //         </CCardBody>
+            //       </CCollapse>
+            //     )
+            //   }
+          }}
+        />
+      </CCardBody>
 
-              <DeactiveUser
-                modal={modal}
-                selectedItem={selectedItem}
-                setSelectedItem={setSelectedItem}
-                setModal={setModal}
-                updateListing={getNewListWrap}
-              />
-        </div>
+      <DeactiveUser
+        modal={modal}
+        selectedItem={selectedItem}
+        setSelectedItem={setSelectedItem}
+        setModal={setModal}
+        updateListing={getNewListWrap}
+      />
+    </div>
   )
 }
 
