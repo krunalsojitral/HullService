@@ -170,16 +170,33 @@ const DemoTable = ({ moduleConfigUrls }) => {
     });
 
     if (filteredThatArray.length > 0) {
-      axios.post(api_url + '/forum/deleteMultipleForum', { forum: filteredThatArray }).then((result) => {
-        if (result.data.status) {
-          getNewListWrap('');
-          Swal.fire('Success', result.data.response.msg, 'success')
-        } else {
-          Swal.fire('Oops...', result.data.response.msg, 'error')
+
+      Swal.fire({
+        //title: 'warning!',
+        icon: 'warning',
+        text: 'Are you sure you want to delete the threads ?',
+        confirmButtonText: `Yes`,
+        showCancelButton: true,
+        cancelButtonText: 'No',
+        cancelButtonColor: '#e57979',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios.post(api_url + '/forum/deleteMultipleForum', { forum: filteredThatArray }).then((result) => {
+            if (result.data.status) {
+              getNewListWrap('');
+              Swal.fire('Success', result.data.response.msg, 'success')
+            } else {
+              Swal.fire('Oops...', result.data.response.msg, 'error')
+            }
+          }).catch((err) => {
+            console.log(err);
+          })
         }
-      }).catch((err) => {
-        console.log(err);
-      })
+      });
+
+      
+    } else {
+      Swal.fire('Oops...', 'Please select forum', 'error')
     }
   }
 
@@ -187,7 +204,7 @@ const DemoTable = ({ moduleConfigUrls }) => {
     <div>
       <CCardHeader className="custom-table-header">
         <div>
-          &nbsp;&nbsp; Forum
+          &nbsp;&nbsp; Threads
         </div>
 
         <div>

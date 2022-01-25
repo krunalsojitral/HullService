@@ -113,7 +113,18 @@ const DemoTable = () => {
     });
 
     if (filteredThatArray.length > 0) {
-      // axios.post(api_url + '/blog/deleteBlog', { blog: filteredThatArray }).then((result) => {
+
+      Swal.fire({
+        //title: 'warning!',
+        icon: 'warning',
+        text: 'Are you sure you want to delete the forum topic ?',
+        confirmButtonText: `Yes`,
+        showCancelButton: true,
+        cancelButtonText: 'No',
+        cancelButtonColor: '#e57979',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // axios.post(api_url + '/blog/deleteBlog', { blog: filteredThatArray }).then((result) => {
       //   if (result.data.status) {
       //     getNewListWrap('');
       //     Swal.fire('Success', result.data.response.msg, 'success')
@@ -123,6 +134,10 @@ const DemoTable = () => {
       // }).catch((err) => {
       //   console.log(err);
       // })
+        }
+      });
+
+      
     }
   }
 
@@ -130,7 +145,7 @@ const DemoTable = () => {
 
     <div>
       <CCardHeader className="custom-table-header">
-          <div>&nbsp;&nbsp; Forum Heading</div>
+          <div>&nbsp;&nbsp; Forum Topic</div>
           <div>
             <CButton
               color="primary"

@@ -1,13 +1,15 @@
 import React from 'react'
 import {
-  CCard,  
+  CCard,
+  CCardHeader,
+  CButton,
   CCol,
   CRow,
 } from '@coreui/react'
 
 import DemoTable from './DemoTable'
 
-const Occupation = () => {  
+const Organization = () => {
   return (
     <CRow>
       <CCol sm="12">
@@ -19,4 +21,4 @@ const Occupation = () => {
   )
 }
 
-export default Occupation
+export default Organization

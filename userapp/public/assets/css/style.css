@@ -3518,7 +3518,7 @@ div#swal2-html-container{
 }
 .category-table .category-title h2~a {
     font-weight: normal;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 120%;
     text-align: center;
     letter-spacing: 0.005em;
@@ -4452,4 +4452,8 @@ input.react-autosuggest__input::placeholder {
         list-style: none;
         text-align: left;
         font-size: 13px;
+    }
+
+    .login-box.user-selection-box{
+        width: 900px;
     }

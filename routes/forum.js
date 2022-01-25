@@ -1242,14 +1242,12 @@ router.post('/deleteMultipleForum', [
         res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
     } else {
         loggerData(req);
-        let forum = req.body.forum;
-        console.log('============');
-        console.log(forum);
+        let forum = req.body.forum;        
         Forum.deleteMultipleForum(forum, function (err, result) {
             if (err) {
                 return res.json({ status: 0, 'response': { msg: err } });
             } else {
-                return res.json({ status: 1, 'response': { msg: 'Forum deleted successfully', data: result } });
+                return res.json({ status: 1, 'response': { msg: 'Thread deleted successfully', data: result } });
             }
         });
     }

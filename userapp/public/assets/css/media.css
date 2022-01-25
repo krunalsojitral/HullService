@@ -455,6 +455,26 @@
         width: 750px;
     }
 
+    .selection-img {
+    margin: 0 auto;
+    display: block;
+    width: 210px;
+    }
+
+    .selection-card {
+        margin-bottom: 20px;
+        min-height: inherit;
+    }
+
+    button.btn-research {
+        margin-bottom: 20px;
+    }
+
+    .login-box.user-selection-box {
+        width: auto;
+        min-height: inherit;
+    }
+
 }
 
 @media(max-width: 767px) {
@@ -934,6 +954,27 @@
 
     .table-responsive {
         border: none;
+    }
+
+    .selection-img {
+        margin: 0 auto;
+        display: block;
+        width: auto;
+    }
+
+    .selection-card {
+        margin-bottom: 20px;
+        min-height: inherit;
+    }
+
+    button.btn-research {
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    .login-box.user-selection-box {
+        width: auto;
+        min-height: inherit;
     }
 }
 

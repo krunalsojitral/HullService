@@ -102,16 +102,33 @@ const FutureParticipantsDemoTable = () => {
     });
 
     if (filteredThatArray.length > 0) {
-      axios.post(api_url + '/researches/deleteFutureParticipate', { futureparticipate: filteredThatArray }).then((result) => {
-        if (result.data.status) {
-          getNewListWrap('');
-          Swal.fire('Success', result.data.response.msg, 'success')
-        } else {
-          Swal.fire('Oops...', result.data.response.msg, 'error')
+
+      Swal.fire({
+        //title: 'warning!',
+        icon: 'warning',
+        text: 'Are you sure you want to delete the future participate ?',
+        confirmButtonText: `Yes`,
+        showCancelButton: true,
+        cancelButtonText: 'No',
+        cancelButtonColor: '#e57979',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios.post(api_url + '/researches/deleteFutureParticipate', { futureparticipate: filteredThatArray }).then((result) => {
+            if (result.data.status) {
+              getNewListWrap('');
+              Swal.fire('Success', result.data.response.msg, 'success')
+            } else {
+              Swal.fire('Oops...', result.data.response.msg, 'error')
+            }
+          }).catch((err) => {
+            console.log(err);
+          })
         }
-      }).catch((err) => {
-        console.log(err);
-      })
+      });
+
+      
+    }else{
+      Swal.fire('Oops...', 'Please select future participate', 'error')
     }
   }
   
