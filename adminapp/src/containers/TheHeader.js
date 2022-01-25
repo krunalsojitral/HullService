@@ -19,7 +19,7 @@ import routes from '../routes'
 const TheHeader = () => {
   let history = useHistory();
   const dispatch = useDispatch()
-  const asideShow = useSelector(state => state.asideShow)
+ // const asideShow = useSelector(state => state.asideShow)
   const darkMode = useSelector(state => state.darkMode)
   const sidebarShow = useSelector(state => state.sidebarShow)
 

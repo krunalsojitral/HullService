@@ -1,23 +1,20 @@
 import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
 import axios from 'axios';
 import api_url from './../../Apiurl';
 import Swal from "sweetalert2";
 import UserRequest from "./UserRequest";
 
 import {
-  CCardBody,  
-  CButton,
-  CCollapse,
+  CCardHeader,
+  CCardBody,    
   CDataTable,
-  CBadge
+  CBadge,
+  CButton
 } from '@coreui/react'
 
 
 const ForumRequestDemoTable = ({ moduleConfigUrls }) => {
-
-  const history = useHistory()
-  const [details, setDetails] = useState([])
+  
   const [items, setItems] = useState([])
   const [modal, setModal] = useState();
   const [selectedItem, setSelectedItem] = useState();
@@ -28,11 +25,12 @@ const ForumRequestDemoTable = ({ moduleConfigUrls }) => {
   }, [])
 
   const fields = [
+    { key: 'checkbox', label: '', _style: { width: '1%' }, filter: false },
     { key: 'question', _style: { width: '20%'} },
     { key: 'topic', _style: { width: '20%' } },
     { key: 'created_on', _style: { width: '20%' } },
     { key: 'created_by', _style: { width: '20%' } },    
-    { key: 'user_status', _style: { width: '20%' } },    
+    { key: 'user_status', _style: { width: '20%' }, filter: false },
     {
       key: 'show_details',
       label: '',
@@ -68,14 +66,61 @@ const ForumRequestDemoTable = ({ moduleConfigUrls }) => {
       }
   }
 
+  const handleOnChange = (e) => {
+    const index = e.target.name
+    let itemlist = [...items];
+    itemlist[index].isChecked = e.target.checked;
+    setItems(itemlist);
+  };
+
+  const deleteItem = (e) => {
+    const filteredThatArray = items.filter((item) => item.isChecked == true).map(item => {
+      const container = {};
+      container['forum_id'] = item.forum_id;
+      return container;
+    });
+
+    if (filteredThatArray.length > 0) {
+      axios.post(api_url + '/forum/deleteMultipleForum', { forum: filteredThatArray }).then((result) => {
+        if (result.data.status) {
+          getNewListWrap('');
+          Swal.fire('Success', result.data.response.msg, 'success')
+        } else {
+          Swal.fire('Oops...', result.data.response.msg, 'error')
+        }
+      }).catch((err) => {
+        console.log(err);
+      })
+    }
+  }
+
   return (
     <div className="card">
-    <CCardBody>
+      <CCardHeader className="custom-table-header">
+        <div>
+          &nbsp;&nbsp; Forum Request
+        </div>
+
+        <div>
+          <CButton
+            color="primary"
+            variant="outline"
+            shape="square"
+            size="sm"
+            onClick={() => deleteItem()}
+            className="d-inline-block"
+          > Delete
+            </CButton>
+        </div>
+        
+      </CCardHeader>
+      
+      <CCardBody>
       <CDataTable
         items={items}
         fields={fields}
         columnFilter
-        tableFilter
+        tableFilter={{ 'placeholder': 'Type something...' }}
         cleaner
         itemsPerPageSelect
         itemsPerPage={10}
@@ -91,7 +136,18 @@ const ForumRequestDemoTable = ({ moduleConfigUrls }) => {
         // onSorterValueChange={(val) => console.log('new sorter value:', val)}
         // onTableFilterChange={(val) => console.log('new table filter:', val)}
         // onColumnFilterChange={(val) => console.log('new column filter:', val)}
-        scopedSlots = {{                    
+        scopedSlots = {{    
+          checkbox: (item, index) => (
+            <td>
+              <input
+                key={index}
+                name={index}
+                type="checkbox"
+                checked={item.isChecked}
+                onChange={handleOnChange}
+              />
+            </td>
+          ),
           user_status: (item) => (
             <td>
               {item.user_status === 1 && <CBadge color={getBadge(item.user_status)}>Approved</CBadge> }
@@ -121,25 +177,25 @@ const ForumRequestDemoTable = ({ moduleConfigUrls }) => {
                 </td>
               )
             },
-          'details':
-              item => {
-                return (
-                <CCollapse show={details.includes(item.id)}>
-                  <CCardBody>
-                    <h4>
-                      {item.username}
-                    </h4>
-                      <p className="text-muted">User since: {item.created_at}</p>
-                    <CButton size="sm" color="info">
-                      User Settings
-                    </CButton>
-                    <CButton size="sm" color="danger" className="ml-1">
-                      Delete
-                    </CButton>
-                  </CCardBody>
-                </CCollapse>
-              )
-            }
+          // 'details':
+          //     item => {
+          //       return (
+          //       <CCollapse show={details.includes(item.id)}>
+          //         <CCardBody>
+          //           <h4>
+          //             {item.username}
+          //           </h4>
+          //             <p className="text-muted">User since: {item.created_at}</p>
+          //           <CButton size="sm" color="info">
+          //             User Settings
+          //           </CButton>
+          //           <CButton size="sm" color="danger" className="ml-1">
+          //             Delete
+          //           </CButton>
+          //         </CCardBody>
+          //       </CCollapse>
+          //     )
+          //   }
         }}
       />
     </CCardBody>

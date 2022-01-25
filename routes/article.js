@@ -703,4 +703,24 @@ router.post('/getBookMarkArticle', passport.authenticate('jwt', { session: false
     });
 });
 
+router.post('/deleteArticle', [
+    check('article', 'Article is required').notEmpty(),
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else { 
+        loggerData(req);
+        let article = req.body.article;
+        Article.deleteArticle(article, function (err, result) {
+            if (err) {
+                return res.json({ status: 0, 'response': { msg: err } });
+            } else {
+                return res.json({ status: 1, 'response': { msg: 'Article deleted successfully', data: result } });
+            }
+        });
+    }    
+});
+
 module.exports = router;

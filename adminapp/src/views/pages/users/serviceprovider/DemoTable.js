@@ -213,7 +213,7 @@ const DemoTable = () => {
 
 
               
-              <td class="tooltip-box">
+              <td className="tooltip-box">
 
                 {item.email_verification_token && item.email_verification_token !== null ? 'Pending' :''}
                 {(item.email_verification_token == null || item.email_verification_token == '') ?
@@ -232,7 +232,7 @@ const DemoTable = () => {
                     }}
                   >
                     Active{" "}
-                    <span class="tooltip-title">De-activating the user will remove the user from the front end.</span>
+                    <span className="tooltip-title">De-activating the user will remove the user from the front end.</span>
                   </a>
                 ) : (
                   <a
@@ -247,7 +247,7 @@ const DemoTable = () => {
                     }}
                   >
                     Inactive
-                    <span class="tooltip-title">Activating the user will add the user back on the front end.</span>
+                    <span className="tooltip-title">Activating the user will add the user back on the front end.</span>
                   </a>
                 ) :''}
                 

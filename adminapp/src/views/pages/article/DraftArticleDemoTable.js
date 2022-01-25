@@ -5,9 +5,7 @@ import api_url from './../../Apiurl';
 import Swal from "sweetalert2";
 import {
   CCardBody,
-  CBadge,
   CButton,
-  CCollapse,
   CDataTable
 } from '@coreui/react'
 
@@ -15,7 +13,7 @@ import {
 const DraftArticleDemoTable = () => {
 
   const history = useHistory()
-  const [details, setDetails] = useState([])
+ // const [details, setDetails] = useState([])
   const [items, setItems] = useState([])
 
   React.useEffect(() => {
@@ -107,16 +105,6 @@ const DraftArticleDemoTable = () => {
     getNewList(setItems);
   };
 
-  const getBadge = (status)=>{
-    switch (status) {
-      case '2': return 'Service Provider'
-      case '3': return 'Researchers'
-      case '4': return 'General Public'
-      case 'all': return 'All'
-      default: return 'Service Provider'
-    }
-  }
-
   return (
     <div className="card">
       <CCardBody>
@@ -144,23 +132,7 @@ const DraftArticleDemoTable = () => {
             status: (item) => (
               <td>
                 {item.status === 1 ? (
-                  <a
-                    href
-                    style={{ cursor: "pointer", textDecoration: "underline" }}
-                    onClick={() => {
-                      updateItemStatus(
-                        item,
-                        1,
-                        getNewListWrap
-                      );
-                    }}
-                  >
-                    Publish{" "}
-                  </a>
-                ) : (
-                  <a
-                    href
-                    style={{ cursor: "pointer", textDecoration: "underline" }}
+                  <p
                     onClick={() => {
                       updateItemStatus(
                         item,
@@ -170,7 +142,19 @@ const DraftArticleDemoTable = () => {
                     }}
                   >
                     Publish
-                  </a>
+                  </p>
+                ) : (
+                  <p
+                    onClick={() => {
+                      updateItemStatus(
+                        item,
+                        1,
+                        getNewListWrap
+                      );
+                    }}
+                  >
+                    Publish
+                  </p>
                 )}
                 {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}
               </td>
@@ -208,25 +192,25 @@ const DraftArticleDemoTable = () => {
                   </td>
                 )
               },
-            'details':
-              item => {
-                return (
-                  <CCollapse show={details.includes(item.id)}>
-                    <CCardBody>
-                      <h4>
-                        {item.username}
-                      </h4>
-                      <p className="text-muted">User since: {item.created_at}</p>
-                      <CButton size="sm" color="info">
-                        User Settings
-                    </CButton>
-                      <CButton size="sm" color="danger" className="ml-1">
-                        Delete
-                    </CButton>
-                    </CCardBody>
-                  </CCollapse>
-                )
-              }
+            // 'details':
+            //   item => {
+            //     return (
+            //       <CCollapse show={details.includes(item.id)}>
+            //         <CCardBody>
+            //           <h4>
+            //             {item.username}
+            //           </h4>
+            //           <p className="text-muted">User since: {item.created_at}</p>
+            //           <CButton size="sm" color="info">
+            //             User Settings
+            //         </CButton>
+            //           <CButton size="sm" color="danger" className="ml-1">
+            //             Delete
+            //         </CButton>
+            //         </CCardBody>
+            //       </CCollapse>
+            //     )
+            //   }
           }}
         />
       </CCardBody>

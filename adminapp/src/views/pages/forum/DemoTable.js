@@ -4,7 +4,7 @@ import axios from 'axios';
 import api_url from './../../Apiurl';
 import Swal from "sweetalert2";
 import UserRequest from "./UserRequest";
-import CIcon from '@coreui/icons-react'
+
 import {
   CCardBody,  
   CButton,
@@ -30,11 +30,12 @@ const DemoTable = ({ moduleConfigUrls }) => {
   }, [])
 
   const fields = [
+    { key: 'checkbox', label: '', _style: { width: '1%' }, filter: false },
     { key: 'question', _style: { width: '20%'} },
     { key: 'topic', _style: { width: '20%' } },
     { key: 'created_by', _style: { width: '20%' } },
-    { key: 'status', _style: { width: '20%'} },
-    { key: 'retire', _style: { width: '20%' } },    
+    { key: 'status', _style: { width: '20%' }, filter: false },
+    { key: 'retire', _style: { width: '20%' }, filter: false },
    // { key: 'user_status', _style: { width: '20%' } },    
     {
       key: 'show_details',
@@ -152,17 +153,55 @@ const DemoTable = ({ moduleConfigUrls }) => {
     } else {
       getNewListWrap('');
     }
+  }
 
+  const handleOnChange = (e) => {
+    const index = e.target.name
+    let itemlist = [...items];
+    itemlist[index].isChecked = e.target.checked;
+    setItems(itemlist);
+  };
+
+  const deleteItem = (e) => {
+    const filteredThatArray = items.filter((item) => item.isChecked == true).map(item => {
+      const container = {};
+      container['forum_id'] = item.forum_id;
+      return container;
+    });
+
+    if (filteredThatArray.length > 0) {
+      axios.post(api_url + '/forum/deleteMultipleForum', { forum: filteredThatArray }).then((result) => {
+        if (result.data.status) {
+          getNewListWrap('');
+          Swal.fire('Success', result.data.response.msg, 'success')
+        } else {
+          Swal.fire('Oops...', result.data.response.msg, 'error')
+        }
+      }).catch((err) => {
+        console.log(err);
+      })
+    }
   }
 
   return (
     <div>
       <CCardHeader className="custom-table-header">
         <div>
-          <CIcon name="cil-grid" /> Forum
+          &nbsp;&nbsp; Forum
         </div>
 
         <div>
+
+          <CButton
+            color="primary"
+            variant="outline"
+            shape="square"
+            size="sm"
+            onClick={() => deleteItem()}
+            className="d-inline-block"
+          > Delete
+            </CButton>
+
           <select ref={ref} onChange={e => handleAddrTypeChange(e)} className="form-control d-inline-block" >
             <option key="0" value="">Select Option</option>
             <option key="1" value="1">Active</option>
@@ -186,7 +225,7 @@ const DemoTable = ({ moduleConfigUrls }) => {
           items={items}
           fields={fields}
           columnFilter
-          tableFilter
+          tableFilter={{ 'placeholder': 'Type something...' }}
           cleaner
           itemsPerPageSelect
           itemsPerPage={10}
@@ -203,12 +242,21 @@ const DemoTable = ({ moduleConfigUrls }) => {
           // onTableFilterChange={(val) => console.log('new table filter:', val)}
           // onColumnFilterChange={(val) => console.log('new column filter:', val)}
           scopedSlots = {{
+            checkbox: (item, index) => (
+              <td>
+                <input
+                  key={index}
+                  name={index}
+                  type="checkbox"
+                  checked={item.isChecked}
+                  onChange={handleOnChange}
+                />
+              </td>
+            ),
             status: (item) => (
               <td className="tooltip-box">
                 {item.status === 1 ? (
-                  <a
-                    href
-                    style={{ cursor: "pointer", textDecoration: "underline" }}
+                  <p
                     onClick={() => {
                       updateItemStatus(
                         item,
@@ -218,12 +266,10 @@ const DemoTable = ({ moduleConfigUrls }) => {
                     }}
                   >
                     Active
-                    <span class="tooltip-title">De-activating the forum will remove the forum from the front end.</span>
-                  </a>
+                    <span className="tooltip-title">De-activating the forum will remove the forum from the front end.</span>
+                  </p>
                 ) : (
-                  <a
-                    href
-                    style={{ cursor: "pointer", textDecoration: "underline" }}
+                  <p
                     onClick={() => {
                       updateItemStatus(
                         item,
@@ -233,8 +279,8 @@ const DemoTable = ({ moduleConfigUrls }) => {
                     }}
                   >
                       Inactive
-                      <span class="tooltip-title">Activating the forum will add  the forum back on the front end.</span>
-                  </a>
+                      <span className="tooltip-title">Activating the forum will add  the forum back on the front end.</span>
+                  </p>
                 )
                 }
                 {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}
@@ -243,9 +289,7 @@ const DemoTable = ({ moduleConfigUrls }) => {
             retire: (item) => (
               <td className="tooltip-box">
                 {item.retire === 1 ? (                
-                  <a
-                    href
-                    style={{ cursor: "pointer", textDecoration: "underline" }}
+                  <p
                     onClick={() => {
                       updateItemRetire(
                         item,
@@ -255,12 +299,10 @@ const DemoTable = ({ moduleConfigUrls }) => {
                     }}
                   >
                     <CBadge color={getBadge(2)}>Retired</CBadge>
-                    <span class="tooltip-title">Un-Retiring will un-lock the thread on the Front End and  new Comments can be added.</span>
-                  </a>
+                    <span className="tooltip-title">Un-Retiring will un-lock the thread on the Front End and  new Comments can be added.</span>
+                  </p>
                 ) : (
-                  <a
-                    href
-                    style={{ cursor: "pointer", textDecoration: "underline" }}
+                  <p
                     onClick={() => {
                       updateItemRetire(
                         item,
@@ -270,8 +312,8 @@ const DemoTable = ({ moduleConfigUrls }) => {
                     }}
                   >
                       <CBadge color={getBadge(0)}>Retire</CBadge>
-                      <span class="tooltip-title">Hitting Retire will lock the thread on the Front End and no Comments can be added.</span>
-                  </a>
+                      <span className="tooltip-title">Hitting Retire will lock the thread on the Front End and no Comments can be added.</span>
+                  </p>
                 )
                 }
                 {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}

@@ -414,6 +414,19 @@ function Video() {
             });
         });
     };
+    
+    this.deleteVideo = function (video, callback) {
+        connection.acquire(function (err, con) {
+            video.map(data => {
+                con.query('DELETE FROM video where video_id = $1', [data.video_id], function (err, results) {
+                    con.query('DELETE FROM video_tag where video_id = $1', [data.video_id], function (err, results) {
+                    });
+                });
+            });
+            con.release()
+            callback(null, video);
+        });
+    };
 
 }
 module.exports = new Video();

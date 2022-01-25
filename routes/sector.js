@@ -2,19 +2,9 @@
 
 var express = require('express');
 var { check, validationResult } = require("express-validator");
-
 var router = express.Router();
-var jwt = require('jsonwebtoken');
-var passport = require('passport');
 var env = require('../config/env');
-var sector = require('../models/sector');
-var path = require('path');
-var fs = require('fs');
-var asyn = require('async');
-var helper = require('../config/helper');
-var moment = require('moment');
-var formidable = require('formidable');
-
+var Sector = require('../models/sector');
 
 function loggerData(req) {
     if (env.DEBUG) {
@@ -23,13 +13,12 @@ function loggerData(req) {
     }
 }
 
-
 // sector list
 //passport.authenticate('jwt', { session: false }), 
 router.get('/sectorList', function (req, res) {
     loggerData(req);
     var status = req.query.status;
-    sector.getAllAdminsector(status, function (err, result) {
+    Sector.getAllAdminsector(status, function (err, result) {
         if (err) {
             return res.json({ status: 0, 'response': { msg: err } });
         } else {
@@ -53,7 +42,7 @@ router.post('/getsectorDataById', [check('sector_id', 'sector is required').notE
         res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
     } else {
         let sector_id = req.body.sector_id;
-        sector.getsectorDataById(sector_id, function (err, result) {
+        Sector.getsectorDataById(sector_id, function (err, result) {
             if (err) {
                 return res.json({ 'status': 0, 'response': { 'msg': err } });
             } else {
@@ -87,7 +76,7 @@ router.post('/changesectorStatus', [
         let record = {
             status: req.body.status
         }
-        sector.changesectorStatus(record, sector_id, function (err, result) {
+        Sector.changesectorStatus(record, sector_id, function (err, result) {
             if (err) {
                 return res.json({ 'status': 0, 'response': { 'msg': 'Error Occured.' } });
             } else {
@@ -113,7 +102,7 @@ router.post('/addsectorByadmin', [
         let record = {
             sector_name: req.body.sector_name
         };
-        sector.addsectorByadmin(record, function (err, data) {
+        Sector.addsectorByadmin(record, function (err, data) {
             if (err) {
                 return res.json({ 'status': 0, 'response': { 'msg': err } });
             } else {
@@ -137,11 +126,32 @@ router.post('/updatesectorByadmin', [
         };
         let update_value = [req.body.sector_name]
         let sector_id = req.body.sector_id
-        sector.updatesectorByadmin(record, sector_id, update_value, function (err, data) {
+        Sector.updatesectorByadmin(record, sector_id, update_value, function (err, data) {
             if (err) {
                 return res.json({ 'status': 0, 'response': { 'msg': err } });
             } else {
                 return res.json({ 'status': 1, 'response': { 'msg': 'Sector updated successfully.', data: data } });
+            }
+        });
+    }
+});
+
+
+router.post('/deleteSector', [
+    check('sector', 'Sector is required').notEmpty(),
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        loggerData(req);
+        let sector = req.body.sector;
+        Sector.deleteSector(sector, function (err, result) {
+            if (err) {
+                return res.json({ status: 0, 'response': { msg: err } });
+            } else {
+                return res.json({ status: 1, 'response': { msg: 'Sector deleted successfully', data: result } });
             }
         });
     }

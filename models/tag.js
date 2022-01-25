@@ -153,6 +153,21 @@ function Tag() {
     }
 
     
+    this.deleteTag = function (tag, callback) {
+        connection.acquire(function (err, con) {
+            tag.map(data => {
+                con.query('DELETE FROM tag where tag_id = $1', [data.tag_id], function (err, results) { });
+                con.query('DELETE FROM video_tag where tag_id = $1', [data.tag_id], function (err, results) { });
+                con.query('DELETE FROM blog_tag where tag_id = $1', [data.tag_id], function (err, results) { });
+                con.query('DELETE FROM article_tag where tag_id = $1', [data.tag_id], function (err, results) { });
+                con.query('DELETE FROM forum_tag where tag_id = $1', [data.tag_id], function (err, results) { });
+            });
+            con.release()
+            callback(null, tag);
+        });
+    };
+
+    
 
 }
 module.exports = new Tag();

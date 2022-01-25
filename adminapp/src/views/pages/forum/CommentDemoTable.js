@@ -5,13 +5,12 @@ import Swal from "sweetalert2";
 import {
   CCardBody,  
   CButton,
-  CCollapse,
   CDataTable
 } from '@coreui/react'
 
 const CommentDemoTable = ({ match }) => {
  
-  const [details, setDetails] = useState([])
+//  const [details, setDetails] = useState([])
   const [items, setItems] = useState([])
 
   React.useEffect(() => {
@@ -119,25 +118,25 @@ const CommentDemoTable = ({ match }) => {
                 </td>
               )
             },
-          'details':
-              item => {
-                return (
-                <CCollapse show={details.includes(item.id)}>
-                  <CCardBody>
-                    <h4>
-                      {item.username}
-                    </h4>
-                      <p className="text-muted">User since: {item.created_at}</p>
-                    <CButton size="sm" color="info">
-                      User Settings
-                    </CButton>
-                    <CButton size="sm" color="danger" className="ml-1">
-                      Delete
-                    </CButton>
-                  </CCardBody>
-                </CCollapse>
-              )
-            }
+          // 'details':
+          //     item => {
+          //       return (
+          //       <CCollapse show={details.includes(item.id)}>
+          //         <CCardBody>
+          //           <h4>
+          //             {item.username}
+          //           </h4>
+          //             <p className="text-muted">User since: {item.created_at}</p>
+          //           <CButton size="sm" color="info">
+          //             User Settings
+          //           </CButton>
+          //           <CButton size="sm" color="danger" className="ml-1">
+          //             Delete
+          //           </CButton>
+          //         </CCardBody>
+          //       </CCollapse>
+          //     )
+          //   }
         }}
       />
     </CCardBody>

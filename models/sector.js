@@ -134,7 +134,19 @@ function Sector() {
             });
         });
     }
-
+    
+    this.deleteSector = function (sector, callback) {
+        connection.acquire(function (err, con) {
+            sector.map(data => {
+                con.query('DELETE FROM sector where sector_id = $1', [data.sector_id], function (err, results) {
+                    con.query("UPDATE users SET sector = NULL WHERE sector = $1", [data.sector_id], function (err, result) {
+                    });
+                });
+            });
+            con.release()
+            callback(null, sector);
+        });
+    };
     
     
 }

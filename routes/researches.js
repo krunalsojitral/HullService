@@ -358,6 +358,7 @@ router.get('/getFutureResearchList', function (req, res) {
             temparray.then(result => {
                 var participateList = result.map(data => {
                     let retObj = {};
+                    retObj['future_research_id'] = data.future_research_id;
                     retObj['name'] = data.name;
                     retObj['email'] = data.email;
                     retObj['dob'] = moment(data.dob).format('YYYY-MM-DD');
@@ -686,5 +687,48 @@ router.post('/getFutureParticipateById',[
         });
     }
 });
+
+
+router.post('/deleteResearches', [
+    check('researches', 'researches is required').notEmpty(),
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        loggerData(req);
+        let researches = req.body.researches;
+        Researches.deleteResearches(researches, function (err, result) {
+            if (err) {
+                return res.json({ status: 0, 'response': { msg: err } });
+            } else {
+                return res.json({ status: 1, 'response': { msg: 'Researches deleted successfully', data: result } });
+            }
+        });
+    }
+});
+
+router.post('/deleteFutureParticipate', [
+    check('futureparticipate', 'futureparticipate is required').notEmpty(),
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        loggerData(req);
+        let futureparticipate = req.body.futureparticipate;
+        Researches.deleteFutureParticipate(futureparticipate, function (err, result) {
+            if (err) {
+                return res.json({ status: 0, 'response': { msg: err } });
+            } else {
+                return res.json({ status: 1, 'response': { msg: 'Future participants deleted successfully', data: result } });
+            }
+        });
+    }
+});
+
+
 
 module.exports = router;

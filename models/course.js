@@ -389,5 +389,15 @@ function Course() {
             });
         });
     }
+    
+    this.deleteCourse = function (course, callback) {
+        connection.acquire(function (err, con) {
+            course.map(data => {
+                con.query('DELETE FROM course where course_id = $1', [data.course_id], function (err, results) {});
+            });
+            con.release()
+            callback(null, course);
+        });
+    };
 }
 module.exports = new Course();

@@ -6,16 +6,13 @@ import Swal from "sweetalert2";
 import {
   CCardBody,  
   CButton,
-  CCollapse,
   CDataTable,
   CCardHeader
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
 
 const DemoTable = () => {
 
-  const history = useHistory()
-  const [details, setDetails] = useState([])
+  const history = useHistory()  
   const [items, setItems] = useState([])
   const ref = React.useRef();
 
@@ -25,8 +22,9 @@ const DemoTable = () => {
   }, [])
 
   const fields = [
+    { key: 'checkbox', label: '', _style: { width: '1%' }, filter: false },
     { key: 'academic_discipline_name', _style: { width: '20%'} },
-    { key: 'status', _style: { width: '20%'} },
+    { key: 'status', _style: { width: '20%' }, filter: false },
     {
       key: 'show_details',
       label: '',
@@ -37,11 +35,11 @@ const DemoTable = () => {
   
 
   const updateItemStatus = (item, status) => {
-
+    var message = '';
     if (status == 1) {
-      var message = 'Are you sure you want to activate an academic discipline ?'
+      message = 'Are you sure you want to activate an academic discipline ?'
     } else {
-      var message = 'Are you sure you want to deactivate an academic discipline ?'
+      message = 'Are you sure you want to deactivate an academic discipline ?'
     }
     
     Swal.fire({
@@ -104,15 +102,52 @@ const DemoTable = () => {
 
   }
 
+  const handleOnChange = (e) => {
+    const index = e.target.name
+    let itemlist = [...items];
+    itemlist[index].isChecked = e.target.checked;
+    setItems(itemlist);
+  };
+
+  const deleteItem = (e) => {
+    const filteredThatArray = items.filter((item) => item.isChecked == true).map(item => {
+      const container = {};
+      container['academicdiscipline_id'] = item.academicdiscipline_id;
+      return container;
+    });
+
+    if (filteredThatArray.length > 0) {
+      axios.post(api_url + '/academicdiscipline/deleteAcademicdiscipline', { academicdiscipline: filteredThatArray }).then((result) => {
+        if (result.data.status) {
+          getNewListWrap('');
+          Swal.fire('Success', result.data.response.msg, 'success')
+        } else {
+          Swal.fire('Oops...', result.data.response.msg, 'error')
+        }
+      }).catch((err) => {
+        console.log(err);
+      })
+    }
+  }
+
 
 
   return (
     <div>
       <CCardHeader className="custom-table-header">
+            <div>&nbsp;&nbsp; Academic Discipline</div>
             <div>
-              <CIcon name="cil-grid" /> Academic Discipline
-            </div>
-            <div>
+
+              <CButton
+                color="primary"
+                variant="outline"
+                shape="square"
+                size="sm"
+                onClick={() => deleteItem()}
+                className="d-inline-block"
+              > Delete
+              </CButton>
+
               <select ref={ref} onChange={e => handleAddrTypeChange(e)} className="form-control d-inline-block" >
                 <option key="0" value="">Select Option</option>
                 <option key="1" value="1">Active</option>
@@ -134,7 +169,7 @@ const DemoTable = () => {
           items={items}
           fields={fields}
           columnFilter
-          tableFilter
+          tableFilter={{ 'placeholder': 'Type something...' }}
           cleaner
           itemsPerPageSelect
           itemsPerPage={10}
@@ -151,12 +186,21 @@ const DemoTable = () => {
           // onTableFilterChange={(val) => console.log('new table filter:', val)}
           // onColumnFilterChange={(val) => console.log('new column filter:', val)}
           scopedSlots={{
+            checkbox: (item, index) => (
+              <td>
+                <input
+                  key={index}
+                  name={index}
+                  type="checkbox"
+                  checked={item.isChecked}
+                  onChange={handleOnChange}
+                />
+              </td>
+            ),
             status: (item) => (
-              <td class="tooltip-box">
+              <td className="tooltip-box">
                 {item.status === 1 ? (
-                  <a
-                    href
-                    style={{ cursor: "pointer", textDecoration: "underline" }}
+                  <p
                     onClick={() => {
                       updateItemStatus(
                         item,
@@ -165,13 +209,11 @@ const DemoTable = () => {
                       );
                     }}
                   >
-                    Active{" "}
-                    <span class="tooltip-title">De-activating the academic discipline will remove the academic discipline from the front end.</span>
-                  </a>
+                    Active
+                    <span className="tooltip-title">De-activating the academic discipline will remove the academic discipline from the front end.</span>
+                  </p>
                 ) : (
-                  <a
-                    href
-                    style={{ cursor: "pointer", textDecoration: "underline" }}
+                  <p
                     onClick={() => {
                       updateItemStatus(
                         item,
@@ -180,27 +222,16 @@ const DemoTable = () => {
                       );
                     }}
                   >
-                    Inactive
-                    <span class="tooltip-title">Activating the academic discipline will add the academic discipline back on the front end.</span>
-                  </a>
+                      Inactive
+                      <span className="tooltip-title">Activating the academic discipline will add the academic discipline back on the front end.</span>
+                  </p>
                 )}
-                {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}
               </td>
             ),
             'show_details':
               item => {
                 return (
                   <td className="py-2">
-                    {/* <CButton
-                    color="primary"
-                    variant="outline"
-                    shape="square"
-                    size="sm"
-                    onClick={() => history.push(`/academicdisciplinedetail/${item.id}`)}
-                  >
-                    Show
-                  </CButton> */}
-
                     <CButton
                       color="primary"
                       variant="outline"
@@ -210,29 +241,28 @@ const DemoTable = () => {
                       className="mr-1"
                     > Edit
                   </CButton>
-
                   </td>
                 )
               },
-            'details':
-              item => {
-                return (
-                  <CCollapse show={details.includes(item.id)}>
-                    <CCardBody>
-                      <h4>
-                        {item.username}
-                      </h4>
-                      <p className="text-muted">User since: {item.created_at}</p>
-                      <CButton size="sm" color="info">
-                        User Settings
-                    </CButton>
-                      <CButton size="sm" color="danger" className="ml-1">
-                        Delete
-                    </CButton>
-                    </CCardBody>
-                  </CCollapse>
-                )
-              }
+            // 'details':
+            //   item => {
+            //     return (
+            //       <CCollapse show={details.includes(item.id)}>
+            //         <CCardBody>
+            //           <h4>
+            //             {item.username}
+            //           </h4>
+            //           <p className="text-muted">User since: {item.created_at}</p>
+            //           <CButton size="sm" color="info">
+            //             User Settings
+            //         </CButton>
+            //           <CButton size="sm" color="danger" className="ml-1">
+            //             Delete
+            //         </CButton>
+            //         </CCardBody>
+            //       </CCollapse>
+            //     )
+            //   }
           }}
         />
       </CCardBody>

@@ -6,6 +6,8 @@ import {
   cilApplicationsSettings,
   cilSpeedometer,
   cilSun,
+  cilList,
+  cilCalculator,  
   cilMoon
 } from '@coreui/icons'
 
@@ -17,5 +19,7 @@ export const icons = Object.assign({}, {
   cilApplicationsSettings,
   cilSpeedometer,
   cilSun,
+  cilList,
+  cilCalculator,  
   cilMoon
 })

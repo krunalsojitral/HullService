@@ -366,5 +366,18 @@ function User() {
         });
     };
 
+    this.deleteBlog = function (blog, callback) {
+        connection.acquire(function (err, con) {
+            blog.map(data => {                                
+                con.query('DELETE FROM blog where blog_id = $1', [data.blog_id], function (err, results) {                  
+                    con.query('DELETE FROM blog_tag where blog_id = $1', [data.blog_id], function (err, results) {
+                    });
+                });
+            });
+            con.release()
+            callback(null, blog);
+        });
+    };
+
 }
 module.exports = new User();

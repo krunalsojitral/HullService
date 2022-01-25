@@ -80,14 +80,16 @@
 .badge-primary {
     cursor: pointer;
 }
-.tooltip-box a {
+.tooltip-box p {
     display: block;
     position: relative;
+    text-decoration: underline;
+    cursor: pointer;
 }
-.tooltip-box a:hover .tooltip-title {
+.tooltip-box p:hover .tooltip-title {
     display: block;
 }
-.tooltip-box a .tooltip-title{
+.tooltip-box p .tooltip-title{
     display: none;
     position: absolute;
     left: 0;

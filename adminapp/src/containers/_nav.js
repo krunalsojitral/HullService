@@ -269,7 +269,7 @@ const _nav = [
     name: "Tag",
     route: "/#",
     to: "/tag",
-    icon: "cil-calculator",
+    icon: "cil-list",
     badge: {
       color: "info",
       text: "",
@@ -280,7 +280,7 @@ const _nav = [
     name: "Media",
     route: "/#",
     to: "/media",
-    icon: "cil-calculator",
+    icon: "cil-list",
     badge: {
       color: "info",
       text: "",

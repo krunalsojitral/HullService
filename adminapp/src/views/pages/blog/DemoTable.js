@@ -1,36 +1,32 @@
 import React, { useState } from 'react'
-import CIcon from '@coreui/icons-react'
 import { useHistory } from 'react-router-dom'
 import axios from 'axios';
 import api_url from './../../Apiurl';
 import Swal from "sweetalert2";
 import {  
-  CCardBody,
-  CBadge,
+  CCardBody,  
   CCardHeader,
-  CButton,
-  CCollapse,
+  CButton,  
   CDataTable
 } from '@coreui/react'
 
-
 const DemoTable = () => {
 
-  const history = useHistory()
-  const [details, setDetails] = useState([])
+  const history = useHistory() 
   const [items, setItems] = useState([])
   const ref = React.useRef();
 
   React.useEffect(() => {
     getNewList('');
     getNewListWrap('');
-  }, [])
+  }, [])  
 
   const fields = [
+    { key: 'checkbox',label: '',_style: { width: '1%' },filter: false},    
     { key: 'title', _style: { width: '20%'} },
     { key: 'role', _style: { width: '20%' } },
     { key: 'created_on', _style: { width: '20%' } },
-    { key: 'status', _style: { width: '20%'} },
+    { key: 'status', _style: { width: '20%' }, filter: false },
     {
       key: 'show_details',
       label: '',
@@ -41,7 +37,6 @@ const DemoTable = () => {
 
 
   const updateItemStatus = (item, status) => {
-
     if (status == 1) {
       var message = 'Are you sure you want to activate the blog ?'
     } else {
@@ -96,50 +91,58 @@ const DemoTable = () => {
     getNewList(status);
   };
 
-  const getBadge = (status)=>{
-    switch (status) {
-      case '2': return 'Service Provider'
-      case '3': return 'Researchers'
-      case '4': return 'General Public'
-      case 'all': return 'All'
-      default: return 'Service Provider'
-    }
-  }
-
-  const handleAddrTypeChange = (e) => {
-    console.clear();  
-
+  const handleAddrTypeChange = (e) => {    
     if (e.target.value == '0') {
       getNewListWrap(e.target.value);
     } else if (e.target.value == '1') { 
       getNewListWrap(e.target.value);
     }else{
       getNewListWrap('');
+    }     
+  }  
+
+  const handleOnChange = (e) => {
+    const index = e.target.name    
+    let itemlist = [...items];
+    itemlist[index].isChecked = e.target.checked;
+    setItems(itemlist);
+  };
+
+  const deleteItem = (e) => {
+    const filteredThatArray = items.filter((item) => item.isChecked == true).map(item => {
+      const container = {};
+      container['blog_id'] = item.blog_id;
+      return container;
+    });
+    
+    if (filteredThatArray.length > 0){            
+      axios.post(api_url + '/blog/deleteBlog', {blog: filteredThatArray}).then((result) => {
+        if (result.data.status) {
+          getNewListWrap('');       
+          Swal.fire('Success', result.data.response.msg, 'success')
+        } else {
+          Swal.fire('Oops...', result.data.response.msg, 'error')
+        }
+      }).catch((err) => {
+        console.log(err);
+      })
     }    
-    // axios.get(api_url + '/blog/blogList', {}).then((result) => {
-    //   if (result.data.status) {
-    //     var usersdatas = result.data.response.data;
-    //     setItems(usersdatas);
-    //     if (e.target.value == 'inactive') {
-    //       setItems(items => items.filter(data => data.status !== 1))
-    //     } else if (e.target.value == 'active') { 
-    //       setItems(items => items.filter(data => data.status !== 0))
-    //     }
-    //   } else {
-    //     Swal.fire('Oops...', result.data.response.msg, 'error')
-    //   }
-    // }).catch((err) => {
-    //   console.log(err);
-    // })
   }
 
   return (
     <div>    
       <CCardHeader className="custom-table-header">
-        <div>
-          <CIcon name="cil-grid" /> Blog
-        </div>
-        <div>        
+        <div> &nbsp;&nbsp; Blog </div>
+        <div>   
+          <CButton
+            color="primary"
+            variant="outline"
+            shape="square"
+            size="sm"
+            onClick={() => deleteItem()}
+            className="d-inline-block"
+          > Delete
+          </CButton>
           <select ref={ref} onChange={e => handleAddrTypeChange(e)} className="form-control d-inline-block" >
             <option key="0" value="">Select Option</option>
             <option key="1" value="1">Active</option>
@@ -156,12 +159,12 @@ const DemoTable = () => {
           </CButton>                
         </div>             
       </CCardHeader>
-      <CCardBody>
+      <CCardBody>       
         <CDataTable
           items={items}
           fields={fields}
           columnFilter
-          tableFilter
+          tableFilter={{ 'placeholder': 'Type something...' }}
           cleaner
           itemsPerPageSelect
           itemsPerPage={10}
@@ -178,12 +181,21 @@ const DemoTable = () => {
           // onTableFilterChange={(val) => console.log('new table filter:', val)}
           // onColumnFilterChange={(val) => console.log('new column filter:', val)}
           scopedSlots = {{
+            checkbox: (item, index) => (
+              <td>
+                <input
+                  key={index}
+                  name={index}
+                  type="checkbox"
+                  checked={item.isChecked}
+                  onChange={handleOnChange}
+                />                
+              </td>
+            ),
             status: (item) => (
-              <td class="tooltip-box">
+              <td className="tooltip-box">
                 {item.status === 1 ? (
-                  <a
-                    href
-                    style={{ cursor: "pointer", textDecoration: "underline" }}
+                  <p
                     onClick={() => {
                       updateItemStatus(
                         item,
@@ -192,13 +204,11 @@ const DemoTable = () => {
                       );
                     }}
                   >
-                    Active{" "}
-                    <span class="tooltip-title">De-activating the blog will remove the blog from the front end.</span>
-                  </a>
+                    Active
+                    <span className="tooltip-title">De-activating the blog will remove the blog from the front end.</span>
+                  </p>
                 ) : (
-                  <a
-                    href
-                    style={{ cursor: "pointer", textDecoration: "underline" }}
+                  <p
                     onClick={() => {
                       updateItemStatus(
                         item,
@@ -208,32 +218,15 @@ const DemoTable = () => {
                     }}
                   >
                       Inactive
-                      <span class="tooltip-title">Activating the blog will add the blog back on the front end.</span>
-                  </a>
-                )}
-                {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}
+                      <span className="tooltip-title">Activating the blog will add the blog back on the front end.</span>
+                  </p>
+                )}                
               </td>
-            ),
-            // 'role':
-            //   (item) => (
-            //     <td>
-            //       {getBadge(item.role)}
-            //     </td>
-            //   ),
+            ),            
             'show_details':
               item => {
                 return (
-                  <td className="py-2">
-                    {/* <CButton
-                      color="primary"
-                      variant="outline"
-                      shape="square"
-                      size="sm"
-                      onClick={() => history.push(`/blogdetail/${item.id}`)}
-                    >
-                      Show
-                    </CButton> */}
-
+                  <td className="py-2">  
                     <CButton
                       color="primary"
                       variant="outline"
@@ -245,25 +238,6 @@ const DemoTable = () => {
                     </CButton>
 
                   </td>
-                )
-              },
-            'details':
-                item => {
-                  return (
-                  <CCollapse show={details.includes(item.id)}>
-                    <CCardBody>
-                      <h4>
-                        {item.username}
-                      </h4>
-                        <p className="text-muted">User since: {item.created_at}</p>
-                      <CButton size="sm" color="info">
-                        User Settings
-                      </CButton>
-                      <CButton size="sm" color="danger" className="ml-1">
-                        Delete
-                      </CButton>
-                    </CCardBody>
-                  </CCollapse>
                 )
               }
           }}

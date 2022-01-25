@@ -5,9 +5,9 @@ import api_url from './../../Apiurl';
 import Swal from "sweetalert2";
 import UserRequest from "./UserRequest";
 import {
+  CCardHeader,
   CCardBody,
-  CButton,
-  CCollapse,
+  CButton,  
   CDataTable,
   CBadge
 } from '@coreui/react'
@@ -16,7 +16,7 @@ import {
 const ResearchesDemoTable = ({ moduleConfigUrls }) => {
 
  // const history = useHistory()
-  const [details, setDetails] = useState([])
+ // const [details, setDetails] = useState([])
   const [items, setItems] = useState([])
   const [modal, setModal] = useState();
   const [selectedItem, setSelectedItem] = useState();
@@ -27,10 +27,11 @@ const ResearchesDemoTable = ({ moduleConfigUrls }) => {
   }, [])
 
   const fields = [    
+    { key: 'checkbox', label: '', _style: { width: '1%' }, filter: false },
     { key: 'topic', _style: { width: '20%' } },
     { key: 'created_on', _style: { width: '20%' } },
     { key: 'created_by', _style: { width: '20%' } },
-    { key: 'user_status', _style: { width: '20%' } },
+    { key: 'user_status', _style: { width: '20%' }, filter: false },
     // { key: 'status', _style: { width: '20%' } },
     {
       key: 'show_details',
@@ -66,17 +67,60 @@ const ResearchesDemoTable = ({ moduleConfigUrls }) => {
       return 'warning'
     }
   }
+  const handleOnChange = (e) => {
+    const index = e.target.name
+    let itemlist = [...items];
+    itemlist[index].isChecked = e.target.checked;
+    setItems(itemlist);
+  };
+
+  const deleteItem = (e) => {
+    const filteredThatArray = items.filter((item) => item.isChecked == true).map(item => {
+      const container = {};
+      container['researches_id'] = item.researches_id;
+      return container;
+    });
+
+    if (filteredThatArray.length > 0) {
+      axios.post(api_url + '/researches/deleteResearches', { researches: filteredThatArray }).then((result) => {
+        if (result.data.status) {
+          getNewListWrap('');
+          Swal.fire('Success', result.data.response.msg, 'success')
+        } else {
+          Swal.fire('Oops...', result.data.response.msg, 'error')
+        }
+      }).catch((err) => {
+        console.log(err);
+      })
+    }
+  }
+
+  
 
   return (
     <div className="card">
+      <CCardHeader className="custom-table-header">
+        <div>
+          &nbsp;&nbsp; Researches Requests
+        </div>
+        <div>
+          <CButton
+            color="primary"
+            variant="outline"
+            shape="square"
+            size="sm"
+            onClick={() => deleteItem()}
+            className="d-inline-block"
+          > Delete
+              </CButton>          
+        </div>
+      </CCardHeader>
       <CCardBody>
-
-        
         <CDataTable
           items={items}
           fields={fields}
           columnFilter
-          tableFilter
+          tableFilter={{ 'placeholder': 'Type something...' }}
           cleaner
           itemsPerPageSelect
           itemsPerPage={10}
@@ -93,6 +137,17 @@ const ResearchesDemoTable = ({ moduleConfigUrls }) => {
           // onTableFilterChange={(val) => console.log('new table filter:', val)}
           // onColumnFilterChange={(val) => console.log('new column filter:', val)}
           scopedSlots={{
+            checkbox: (item, index) => (
+              <td>
+                <input
+                  key={index}
+                  name={index}
+                  type="checkbox"
+                  checked={item.isChecked}
+                  onChange={handleOnChange}
+                />
+              </td>
+            ),
             user_status: (item) => (
               <td>
                 {item.user_status === 1 && <CBadge color={getBadge(item.user_status)}>Approved</CBadge>}
@@ -120,25 +175,25 @@ const ResearchesDemoTable = ({ moduleConfigUrls }) => {
                   </td>
                 )
               },
-            'details':
-              item => {
-                return (
-                  <CCollapse show={details.includes(item.id)}>
-                    <CCardBody>
-                      <h4>
-                        {item.username}
-                      </h4>
-                      <p className="text-muted">User since: {item.created_at}</p>
-                      <CButton size="sm" color="info">
-                        User Settings
-                    </CButton>
-                      <CButton size="sm" color="danger" className="ml-1">
-                        Delete
-                    </CButton>
-                    </CCardBody>
-                  </CCollapse>
-                )
-              }
+            // 'details':
+            //   item => {
+            //     return (
+            //       <CCollapse show={details.includes(item.id)}>
+            //         <CCardBody>
+            //           <h4>
+            //             {item.username}
+            //           </h4>
+            //           <p className="text-muted">User since: {item.created_at}</p>
+            //           <CButton size="sm" color="info">
+            //             User Settings
+            //         </CButton>
+            //           <CButton size="sm" color="danger" className="ml-1">
+            //             Delete
+            //         </CButton>
+            //         </CCardBody>
+            //       </CCollapse>
+            //     )
+            //   }
           }}
         />
       </CCardBody>

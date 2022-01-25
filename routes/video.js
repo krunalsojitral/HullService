@@ -768,4 +768,25 @@ router.post('/getBookMarkVideo', passport.authenticate('jwt', { session: false }
     });
 });
 
+router.post('/deleteVideo', [
+    check('video', 'Video is required').notEmpty(),
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else { 
+        loggerData(req);
+        let video = req.body.video;
+        Video.deleteVideo(video, function (err, result) {
+            if (err) {
+                return res.json({ status: 0, 'response': { msg: err } });
+            } else {
+                return res.json({ status: 1, 'response': { msg: 'Video deleted successfully', data: result } });
+            }
+        });
+    }    
+});
+
+
 module.exports = router;

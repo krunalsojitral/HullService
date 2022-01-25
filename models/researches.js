@@ -343,7 +343,31 @@ function Researches() {
                 }
             });
         });
-    };   
-   
+    };
+    
+    this.deleteResearches = function (researches, callback) {
+        connection.acquire(function (err, con) {
+            researches.map(data => {
+                con.query('DELETE FROM researches where researches_id = $1', [data.researches_id], function (err, results) {
+                    con.query('DELETE FROM researches_participate where researches_id = $1', [data.researches_id], function (err, results) {});
+                });
+            });
+            con.release()
+            callback(null, researches);
+        });
+    };
+
+    this.deleteFutureParticipate = function (researches, callback) {
+        connection.acquire(function (err, con) {
+            researches.map(data => {
+                con.query('DELETE FROM future_research where future_research_id = $1', [data.future_research_id], function (err, results) {});
+                con.query('DELETE FROM future_research_child where future_research_id = $1', [data.future_research_id], function (err, results) { });
+            });
+            con.release()
+            callback(null, researches);
+        });
+    };
+
+    
 }
 module.exports = new Researches();

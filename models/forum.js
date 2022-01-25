@@ -1059,12 +1059,22 @@ function forum() {
                 }
             });
         });
-        
-
     }
 
     
-
-   
+    this.deleteMultipleForum = function (forum, callback) {
+        connection.acquire(function (err, con) {
+            console.log(forum);
+            forum.map(data => {
+                con.query('DELETE FROM forum where forum_id = $1', [data.forum_id], function (err, results) {});
+                con.query('DELETE FROM forum_like where forum_id = $1', [data.forum_id], function (err, results) { });
+                con.query('DELETE FROM forum_tag where forum_id = $1', [data.forum_id], function (err, results) { });
+                con.query('DELETE FROM forum_follow where forum_id = $1', [data.forum_id], function (err, results) { });
+                con.query('DELETE FROM forum_comment where forum_id = $1', [data.forum_id], function (err, results) { });
+            });
+            con.release()
+            callback(null, forum);
+        });
+    };
 }
 module.exports = new forum();

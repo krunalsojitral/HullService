@@ -5,20 +5,16 @@ import api_url from './../../Apiurl';
 import Swal from "sweetalert2";
 import {
   CCardBody,
-  CBadge,
   CCardHeader,
-  CButton,
-  CCollapse,
+  CButton,  
   CDataTable
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
 import { CSVLink, CSVDownload } from "react-csv";
 
 
 const FutureParticipantsDemoTable = () => {
 
-  const history = useHistory()
-  const [details, setDetails] = useState([])
+  const history = useHistory()  
   const [items, setItems] = useState([])
   const [csvData, setCsvData] = useState([["S.No","Name", "Email", "DOB", "No of Kids", "Age of kids"]]);
   const [filedate, setFiledate] = useState();
@@ -60,6 +56,7 @@ const FutureParticipantsDemoTable = () => {
   }
 
   const fields = [
+    { key: 'checkbox', label: '', _style: { width: '1%' }, filter: false },
     { key: 'name', _style: { width: '20%'} },
     { key: 'dob', _style: { width: '20%' } },
     { key: 'email', _style: { width: '20%' } },    
@@ -90,17 +87,34 @@ const FutureParticipantsDemoTable = () => {
       getNewList(setItems);
   };
 
-  
+  const handleOnChange = (e) => {
+    const index = e.target.name
+    let itemlist = [...items];
+    itemlist[index].isChecked = e.target.checked;
+    setItems(itemlist);
+  };
 
-  const getBadge = (status)=>{
-    switch (status) {
-      case '2': return 'Service Provider'
-      case '3': return 'Researchers'
-      case '4': return 'General Public'
-      case 'all': return 'All'
-      default: return 'Service Provider'
+  const deleteItem = (e) => {
+    const filteredThatArray = items.filter((item) => item.isChecked == true).map(item => {
+      const container = {};
+      container['future_research_id'] = item.future_research_id;
+      return container;
+    });
+
+    if (filteredThatArray.length > 0) {
+      axios.post(api_url + '/researches/deleteFutureParticipate', { futureparticipate: filteredThatArray }).then((result) => {
+        if (result.data.status) {
+          getNewListWrap('');
+          Swal.fire('Success', result.data.response.msg, 'success')
+        } else {
+          Swal.fire('Oops...', result.data.response.msg, 'error')
+        }
+      }).catch((err) => {
+        console.log(err);
+      })
     }
   }
+  
 
   return (
     <div className="card">
@@ -108,9 +122,18 @@ const FutureParticipantsDemoTable = () => {
 
         <CCardHeader className="custom-table-header">
           <div className="header-left">
-            <CIcon name="cil-grid" /> Future Participants
+            &nbsp; Future Participants
             </div>
           <div className="header-right">
+            <CButton
+              color="primary"
+              variant="outline"
+              shape="square"
+              size="sm"
+              onClick={() => deleteItem()}
+              className="d-inline-block"
+            > Delete
+              </CButton>
             <CSVLink filename={filedate + ".csv"} headers={headers} data={csvData}>Download</CSVLink> &nbsp;
             </div>
         </CCardHeader>
@@ -119,7 +142,7 @@ const FutureParticipantsDemoTable = () => {
           items={items}
           fields={fields}
           columnFilter
-          tableFilter
+          tableFilter={{ 'placeholder': 'Type something...' }}
           cleaner
           itemsPerPageSelect
           itemsPerPage={10}
@@ -135,42 +158,53 @@ const FutureParticipantsDemoTable = () => {
           // onSorterValueChange={(val) => console.log('new sorter value:', val)}
           // onTableFilterChange={(val) => console.log('new table filter:', val)}
           // onColumnFilterChange={(val) => console.log('new column filter:', val)}
-          scopedSlots={{                     
-            'show_details':
-              item => {
-                return (
-                  <td className="py-2">
-                    <CButton
-                    color="primary"
-                    variant="outline"
-                    shape="square"
-                    size="sm"
-                      onClick={() => history.push(`/futureresearchdetail/${item.future_research_id}`)}
-                  >
-                    View
-                  </CButton>
-                  </td>
-                )
-              },
-            'details':
-              item => {
-                return (
-                  <CCollapse show={details.includes(item.id)}>
-                    <CCardBody>
-                      <h4>
-                        {item.username}
-                      </h4>
-                      <p className="text-muted">User since: {item.created_at}</p>
-                      <CButton size="sm" color="info">
-                        User Settings
-                    </CButton>
-                      <CButton size="sm" color="danger" className="ml-1">
-                        Delete
-                    </CButton>
-                    </CCardBody>
-                  </CCollapse>
-                )
-              }
+          scopedSlots={{   
+            checkbox: (item, index) => (
+              <td>
+                <input
+                  key={index}
+                  name={index}
+                  type="checkbox"
+                  checked={item.isChecked}
+                  onChange={handleOnChange}
+                />
+              </td>
+            ),
+            // 'show_details':
+            //   item => {
+            //     return (
+            //       <td className="py-2">
+            //         <CButton
+            //         color="primary"
+            //         variant="outline"
+            //         shape="square"
+            //         size="sm"
+            //           onClick={() => history.push(`/futureresearchdetail/${item.future_research_id}`)}
+            //       >
+            //         View
+            //       </CButton>
+            //       </td>
+            //     )
+            //   },
+            // 'details':
+            //   item => {
+            //     return (
+            //       <CCollapse show={details.includes(item.id)}>
+            //         <CCardBody>
+            //           <h4>
+            //             {item.username}
+            //           </h4>
+            //           <p className="text-muted">User since: {item.created_at}</p>
+            //           <CButton size="sm" color="info">
+            //             User Settings
+            //         </CButton>
+            //           <CButton size="sm" color="danger" className="ml-1">
+            //             Delete
+            //         </CButton>
+            //         </CCardBody>
+            //       </CCollapse>
+            //     )
+            //   }
           }}
         />
       </CCardBody>

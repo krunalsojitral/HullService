@@ -1,5 +1,5 @@
 import React from 'react'
-import { CFooter, CLink } from '@coreui/react'
+import { CFooter } from '@coreui/react'
 
 const TheFooter = () => {
   return (

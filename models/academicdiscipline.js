@@ -136,6 +136,20 @@ function Academicdiscipline() {
     }
 
     
+    this.deleteAcademicdiscipline = function (academicdiscipline, callback) {
+        connection.acquire(function (err, con) {
+            academicdiscipline.map(data => {
+                con.query('DELETE FROM academic_discipline where academic_discipline_id = $1', [data.academicdiscipline_id], function (err, results) {
+                    con.query("UPDATE users SET academic_discipline = NULL WHERE academic_discipline = $1", [data.academicdiscipline_id], function (err, result) {
+                    });
+                });
+            });
+            con.release()
+            callback(null, academicdiscipline);
+        });
+    };
+
+    
 
 }
 module.exports = new Academicdiscipline();

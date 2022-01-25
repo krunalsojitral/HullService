@@ -148,4 +148,25 @@ router.post('/updateprofessionalinterestareaByadmin', [
 });
 
 
+router.post('/deleteProfessionalinterestarea', [
+    check('professionalinterestarea', 'Checkbox selection is required').notEmpty(),
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        loggerData(req);
+        let professionalinterestarea = req.body.professionalinterestarea;
+        Professionalinterestarea.deleteProfessionalinterestarea(professionalinterestarea, function (err, result) {
+            if (err) {
+                return res.json({ status: 0, 'response': { msg: err } });
+            } else {
+                return res.json({ status: 1, 'response': { msg: 'Professional interest area deleted successfully', data: result } });
+            }
+        });
+    }
+});
+
+
 module.exports = router;

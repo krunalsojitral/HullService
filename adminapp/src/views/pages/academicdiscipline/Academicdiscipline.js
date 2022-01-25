@@ -1,16 +1,15 @@
 import React from 'react'
 import {
   CCard,  
-  CButton,
   CCol,
   CRow,
 } from '@coreui/react'
 
 import DemoTable from './DemoTable'
-import { useHistory } from 'react-router-dom'
+
 
 const Academicdiscipline = () => {
-  const history = useHistory()
+  
   return (
     <CRow>
       <CCol sm="12">

@@ -823,9 +823,6 @@ router.get('/draftcourseList', function (req, res) {
     });
 });
 
-
-
-
 router.post('/changeDraftCourseStatus', [
     check('course_id', 'Course id is required').notEmpty(),
     check('draft_status', 'Please enter status').notEmpty(),
@@ -851,6 +848,26 @@ router.post('/changeDraftCourseStatus', [
             }
         });
     }
+});
+
+router.post('/deleteCourse', [
+    check('course', 'Course is required').notEmpty(),
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else { 
+        loggerData(req);
+        let course = req.body.course;
+        Course.deleteCourse(course, function (err, result) {
+            if (err) {
+                return res.json({ status: 0, 'response': { msg: err } });
+            } else {
+                return res.json({ status: 1, 'response': { msg: 'Course deleted successfully', data: result } });
+            }
+        });
+    }    
 });
 
 module.exports = router;

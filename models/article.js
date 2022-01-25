@@ -381,5 +381,19 @@ function User() {
         });
     };
 
+    
+    this.deleteArticle = function (article, callback) {
+        connection.acquire(function (err, con) {
+            article.map(data => {
+                con.query('DELETE FROM article where article_id = $1', [data.article_id], function (err, results) {
+                    con.query('DELETE FROM article_tag where article_id = $1', [data.article_id], function (err, results) {
+                    });
+                });
+            });
+            con.release()
+            callback(null, article);
+        });
+    };
+
 }
 module.exports = new User();

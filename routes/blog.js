@@ -77,6 +77,7 @@ router.get('/blogList', function (req, res) {
                                     retObj['description'] = data.description;
                                     retObj['created_on'] = moment(data.created_at).format('YYYY-MM-DD');
                                     retObj['role'] = data.role;
+                                    retObj['isChecked'] = false;
                                     retObj['status'] = data.status;
                                     return retObj;
                                 }).sort(function (a, b) {
@@ -690,6 +691,26 @@ router.get('/draftblogList', function (req, res) {
             return res.json({ 'status': 1, 'response': { 'data': finalData, 'msg': 'data found' } });
         }
     });
+});
+
+router.post('/deleteBlog', [
+    check('blog', 'Blog is required').notEmpty(),
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else { 
+        loggerData(req);
+        let blog = req.body.blog;
+        Blog.deleteBlog(blog, function (err, result) {
+            if (err) {
+                return res.json({ status: 0, 'response': { msg: err } });
+            } else {
+                return res.json({ status: 1, 'response': { msg: 'Blog deleted successfully', data: result } });
+            }
+        });
+    }    
 });
 
 module.exports = router;

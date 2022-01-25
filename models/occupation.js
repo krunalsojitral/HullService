@@ -136,6 +136,19 @@ function Occupation() {
         });
     }
 
+    this.deleteOccupation = function (occupation, callback) {
+        connection.acquire(function (err, con) {
+            occupation.map(data => {
+                con.query('DELETE FROM occupation where occupation_id = $1', [data.occupation_id], function (err, results) {
+                    con.query("UPDATE users SET occupation = NULL WHERE occupation = $1", [data.occupation_id], function (err, result) {
+                    });
+                });
+            });
+            con.release()
+            callback(null, occupation);
+        });
+    };
+
     
 
 }

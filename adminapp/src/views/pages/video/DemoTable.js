@@ -9,12 +9,11 @@ import {
   CDataTable,
   CCardHeader
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
+
 
 const DemoTable = () => {
 
   const history = useHistory()
- // const [details, setDetails] = useState([])
   const [items, setItems] = useState([])
   const ref = React.useRef();
 
@@ -24,10 +23,11 @@ const DemoTable = () => {
   }, [])
 
   const fields = [
+    { key: 'checkbox', label: '', _style: { width: '1%' }, filter: false },
     { key: 'title', _style: { width: '20%'} },
     { key: 'role', _style: { width: '20%' } },
     { key: 'created_on', _style: { width: '20%' } },
-    { key: 'status', _style: { width: '20%'} },
+    { key: 'status', _style: { width: '20%' }, filter: false },
     {
       key: 'show_details',
       label: '',
@@ -35,16 +35,6 @@ const DemoTable = () => {
       filter: false
     }
   ]
-
-  // const getBadge = (status) => {
-  //   switch (status) {
-  //     case '2': return 'Service Provider'
-  //     case '3': return 'Researchers'
-  //     case '4': return 'General Public'
-  //     case 'all': return 'All'
-  //     default: return 'Service Provider'
-  //   }
-  // }
 
   const updateItemStatus = (item, status) => {
     
@@ -98,7 +88,6 @@ const DemoTable = () => {
 
   const handleAddrTypeChange = (e) => {
     console.clear();
-
     if (e.target.value == '0') {
       getNewListWrap(e.target.value);
     } else if (e.target.value == '1') {
@@ -106,7 +95,34 @@ const DemoTable = () => {
     } else {
       getNewListWrap('');
     }
+  }
 
+  const handleOnChange = (e) => {
+    const index = e.target.name
+    let itemlist = [...items];
+    itemlist[index].isChecked = e.target.checked;
+    setItems(itemlist);
+  };
+
+  const deleteItem = (e) => {
+    const filteredThatArray = items.filter((item) => item.isChecked == true).map(item => {
+      const container = {};
+      container['video_id'] = item.video_id;
+      return container;
+    });
+
+    if (filteredThatArray.length > 0) {
+      axios.post(api_url + '/video/deleteVideo', { video: filteredThatArray }).then((result) => {
+        if (result.data.status) {
+          getNewListWrap('');
+          Swal.fire('Success', result.data.response.msg, 'success')
+        } else {
+          Swal.fire('Oops...', result.data.response.msg, 'error')
+        }
+      }).catch((err) => {
+        console.log(err);
+      })
+    }
   }
 
   return (
@@ -114,10 +130,19 @@ const DemoTable = () => {
 
       <CCardHeader className="custom-table-header">
         <div>
-          <CIcon name="cil-grid" /> Video
-            </div>
+          &nbsp;&nbsp; Video
+        </div>
 
         <div>
+          <CButton
+            color="primary"
+            variant="outline"
+            shape="square"
+            size="sm"
+            onClick={() => deleteItem()}
+            className="d-inline-block"
+          > Delete
+          </CButton>
           <select ref={ref} onChange={e => handleAddrTypeChange(e)} className="form-control d-inline-block" >
             <option key="0" value="">Select Option</option>
             <option key="1" value="1">Active</option>
@@ -144,7 +169,7 @@ const DemoTable = () => {
                 items={items}
                 fields={fields}
                 columnFilter
-                tableFilter
+                tableFilter={{ 'placeholder': 'Type something...' }}
                 cleaner
                 itemsPerPageSelect
                 itemsPerPage={10}
@@ -161,12 +186,21 @@ const DemoTable = () => {
                 // onTableFilterChange={(val) => console.log('new table filter:', val)}
                 // onColumnFilterChange={(val) => console.log('new column filter:', val)}
                 scopedSlots={{
+                  checkbox: (item, index) => (
+                    <td>
+                      <input
+                        key={index}
+                        name={index}
+                        type="checkbox"
+                        checked={item.isChecked}
+                        onChange={handleOnChange}
+                      />
+                    </td>
+                  ),
                   status: (item) => (
-                    <td class="tooltip-box">
+                    <td className="tooltip-box">
                       {item.status === 1 ? (
-                        <a
-                          href
-                          style={{ cursor: "pointer", textDecoration: "underline" }}
+                        <p
                           onClick={() => {
                             updateItemStatus(
                               item,
@@ -175,13 +209,11 @@ const DemoTable = () => {
                             );
                           }}
                         >
-                          Active{" "}
-                          <span class="tooltip-title">De-activating the video will remove the video from the front end.</span>
-                        </a>
+                          Active
+                          <span className="tooltip-title">De-activating the video will remove the video from the front end.</span>
+                        </p>
                       ) : (
-                        <a
-                          href
-                          style={{ cursor: "pointer", textDecoration: "underline" }}
+                        <p
                           onClick={() => {
                             updateItemStatus(
                               item,
@@ -191,32 +223,15 @@ const DemoTable = () => {
                           }}
                         >
                           Inactive
-                          <span class="tooltip-title">Activating the video will add the video back on the front end.</span>
-                        </a>
+                          <span className="tooltip-title">Activating the video will add the video back on the front end.</span>
+                        </p>
                       )}
-                      {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}
                     </td>
-                  ),
-                  // 'role':
-                  //   (item) => (
-                  //     <td>
-                  //       {getBadge(item.role)}
-                  //     </td>
-                  //   ),
+                  ),                  
                   'show_details':
                     item => {
                       return (
                         <td className="py-2">
-                          {/* <CButton
-                          color="primary"
-                          variant="outline"
-                          shape="square"
-                          size="sm"
-                          onClick={() => history.push(`/videodetail/${item.id}`)}
-                        >
-                          Show
-                        </CButton> */}
-
                           <CButton
                             color="primary"
                             variant="outline"

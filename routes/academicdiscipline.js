@@ -2,19 +2,9 @@
 
 var express = require('express');
 var { check, validationResult } = require("express-validator");
-
 var router = express.Router();
-var jwt = require('jsonwebtoken');
-var passport = require('passport');
 var env = require('../config/env');
-var academicdiscipline = require('../models/academicdiscipline');
-var path = require('path');
-var fs = require('fs');
-var asyn = require('async');
-var helper = require('../config/helper');
-var moment = require('moment');
-var formidable = require('formidable');
-
+var Academicdiscipline = require('../models/academicdiscipline');
 
 function loggerData(req) {
     if (env.DEBUG) {
@@ -29,7 +19,7 @@ function loggerData(req) {
 router.get('/academicdisciplineList', function (req, res) {
     loggerData(req);
     var status = req.query.status;
-    academicdiscipline.getAllAdminacademicdiscipline(status, function (err, result) {
+    Academicdiscipline.getAllAdminacademicdiscipline(status, function (err, result) {
         if (err) {
             return res.json({ status: 0, 'response': { msg: err } });
         } else {
@@ -53,7 +43,7 @@ router.post('/getacademicdisciplineDataById', [check('academicdiscipline_id', 'a
         res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
     } else {
         let academicdiscipline_id = req.body.academicdiscipline_id;
-        academicdiscipline.getacademicdisciplineDataById(academicdiscipline_id, function (err, result) {
+        Academicdiscipline.getacademicdisciplineDataById(academicdiscipline_id, function (err, result) {
             if (err) {
                 return res.json({ 'status': 0, 'response': { 'msg': err } });
             } else {
@@ -87,7 +77,7 @@ router.post('/changeacademicdisciplineStatus', [
         let record = {
             status: req.body.status
         }
-        academicdiscipline.changeacademicdisciplineStatus(record, academicdiscipline_id, function (err, result) {
+        Academicdiscipline.changeacademicdisciplineStatus(record, academicdiscipline_id, function (err, result) {
             if (err) {
                 return res.json({ 'status': 0, 'response': { 'msg': 'Error Occured.' } });
             } else {
@@ -113,7 +103,7 @@ router.post('/addacademicdisciplineByadmin', [
         let record = {
             academicdiscipline_name: req.body.academicdiscipline_name
         };
-        academicdiscipline.addacademicdisciplineByadmin(record, function (err, data) {
+        Academicdiscipline.addacademicdisciplineByadmin(record, function (err, data) {
             if (err) {
                 return res.json({ 'status': 0, 'response': { 'msg': err } });
             } else {
@@ -137,11 +127,31 @@ router.post('/updateacademicdisciplineByadmin', [
         };
         let update_value = [req.body.academicdiscipline_name]
         let academicdiscipline_id = req.body.academicdiscipline_id
-        academicdiscipline.updateacademicdisciplineByadmin(record, academicdiscipline_id, update_value, function (err, data) {
+        Academicdiscipline.updateacademicdisciplineByadmin(record, academicdiscipline_id, update_value, function (err, data) {
             if (err) {
                 return res.json({ 'status': 0, 'response': { 'msg': err } });
             } else {
                 return res.json({ 'status': 1, 'response': { 'msg': 'Academic Discipline updated successfully.', data: data } });
+            }
+        });
+    }
+});
+
+router.post('/deleteAcademicdiscipline', [
+    check('academicdiscipline', 'Academic Discipline is required').notEmpty(),
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        loggerData(req);
+        let academicdiscipline = req.body.academicdiscipline;
+        Academicdiscipline.deleteAcademicdiscipline(academicdiscipline, function (err, result) {
+            if (err) {
+                return res.json({ status: 0, 'response': { msg: err } });
+            } else {
+                return res.json({ status: 1, 'response': { msg: 'Academic Discipline deleted successfully', data: result } });
             }
         });
     }

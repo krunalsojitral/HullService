@@ -137,6 +137,19 @@ function Professionalinterestarea() {
     }
 
     
+    this.deleteProfessionalinterestarea = function (professional_interest_area, callback) {
+        connection.acquire(function (err, con) {
+            professional_interest_area.map(data => {
+                con.query('DELETE FROM professional_interest_area where professional_interest_area_id = $1', [data.professional_interest_area_id], function (err, results) {
+                    con.query('DELETE FROM user_professional_interest_area where professional_interest_area_id = $1', [data.professional_interest_area_id], function (err, results) {
+                    });
+                });
+            });
+            con.release()
+            callback(null, professional_interest_area);
+        });
+    };
+    
 
 }
 module.exports = new Professionalinterestarea();

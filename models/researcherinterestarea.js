@@ -135,6 +135,19 @@ function Researcherinterestarea() {
         });
     }
 
+    this.deleteResearcherinterestarea = function (researcher_interest_area, callback) {
+        connection.acquire(function (err, con) {
+            researcher_interest_area.map(data => {
+                con.query('DELETE FROM researcher_interest_area where researcher_interest_area_id = $1', [data.researcherinterestarea_id], function (err, results) {
+                    con.query('DELETE FROM user_researcher_interest_area where researcher_interest_area_id = $1', [data.researcherinterestarea_id], function (err, results) {
+                    });
+                });
+            });
+            con.release()
+            callback(null, researcher_interest_area);
+        });
+    };
+
     
 
 }
