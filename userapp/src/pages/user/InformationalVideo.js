@@ -242,23 +242,40 @@ export default function Video() {
                                                         }
 
                                                         <div className="blog-text">
-                                                            {token && <div className="blog-tags" onClick={(e) => bookmarkClick(data.video_id)}>                                                                
+                                                            {token && 
+                                                            <div className="blog-tags" onClick={(e) => bookmarkClick(data.video_id)}>                                                                
                                                                 {data.bookmark_video_id && <img className="bookmark-fill" src="images/bookmark-fill.png" alt="bookmark-fill" />}
                                                                 {!data.bookmark_video_id && <img className="bookmark-outline" src="images/bookmark-outline.png" alt="bookmark-fill" />}
                                                             </div>}
+
+                                                           
+
                                                             {!token && <br />}
+
                                                             <h3 className="tooltip-box">
                                                                 <Link to={{ pathname: "/video-detail", search: "?id=" + data.video_id }}>
                                                                 {data.title.slice(0, 30)}
                                                                 <span className="tooltip-title">{data.title}</span>
                                                                 </Link>
                                                             </h3>
-                                                            <div className="video-bottom">
+
+                                                            <div className="blog-post">
+                                                                <div className="blog-author">
+                                                                    <img src="images/favicon.png" alt="author" />
+                                                                    <p>Hull Service</p>
+                                                                </div>                                                                
+                                                                <div className="date">
+                                                                    {data.purchase_type == 'paid' && <p className="price">${data.cost}</p>}
+                                                                    {data.purchase_type == 'unpaid' && <p className="price">Free</p>}
+                                                                    {/* {data.created_at} */}
+                                                                </div>
+                                                            </div>
+
+                                                            {/* <div className="video-bottom">
                                                                 <p><img src="images/favicon.png" alt="author" />Hull Service</p>
                                                                 {data.purchase_type == 'paid' && <p className="price">${data.cost}</p>}
-                                                                {data.purchase_type == 'unpaid' && <p className="price">Free</p>}
-                                                                {/* <Link to={{ pathname: "/video-detail", search: "?id=" + data.video_id }}><img src="images/video.png" alt="video" /></Link> */}
-                                                            </div>
+                                                                {data.purchase_type == 'unpaid' && <p className="price">Free</p>}                                                                
+                                                            </div> */}
 
                                                         </div>
 

@@ -368,7 +368,8 @@ router.post('/userList', function (req, res) {
 router.post('/csvuserList', function (req, res) {
     loggerData(req);
     var role = req.body.role;
-    User.getCSVAdminUser(role, function (err, result) {
+    var status = req.body.status;
+    User.getCSVAdminUser(role, status, function (err, result) {
         if (err) {
             return res.json({ status: 0, 'response': { msg: err } });
         } else {
@@ -393,7 +394,7 @@ router.post('/csvuserList', function (req, res) {
                     retObj['name'] = data.first_name + ' ' + data.last_name;
                     retObj['email'] = data.email;
                     retObj['city'] = data.city;
-                    retObj['organization'] = data.organization;
+                    retObj['organization'] = data.organizationname;
                     retObj['rinterestarea'] = data.rinterestarea;
                     retObj['sectorname'] = data.sectorname;
                     retObj['occupationname'] = data.occupationname;
@@ -402,8 +403,11 @@ router.post('/csvuserList', function (req, res) {
                     retObj['pinterestarea'] = data.csvString;
                     return retObj;
                 });
-                return res.json({ status: 1, 'response': { data: participateList } });
-                
+                if (participateList.length > 0){
+                    return res.json({ status: 1, 'response': { data: participateList } });
+                }else{
+                    return res.json({ status: 1, 'response': { data: [] } });
+                }
             })
         }
     });
@@ -463,7 +467,7 @@ router.post('/getuserData', [
                     userList['password'] = result[0].password;
                     return res.json({ 'status': 1, 'response': { 'data': userList, 'msg': 'data found' } });
                 } else {
-                    return res.json({ 'status': 1, 'response': { 'data': userList, 'msg': 'data found' } });
+                    return res.json({ 'status': 1, 'response': { 'data': {}, 'msg': 'data found' } });
                 }
             }
         });
@@ -514,7 +518,7 @@ router.post('/getAdminUserById', [
                         return res.json({ 'status': 1, 'response': { 'data': userList, 'msg': 'data found' } });
                     });                    
                 } else {
-                    return res.json({ 'status': 1, 'response': { 'data': userList, 'msg': 'data found' } });
+                    return res.json({ 'status': 1, 'response': { 'data': {}, 'msg': 'data found' } });
                 }
             }
         });

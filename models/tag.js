@@ -4,22 +4,7 @@ var env = require('../config/env');
 
 
 function Tag() {
-    connection.init();
-
-    
-    this.getUserById = function (id, callback) {
-        connection.acquire(function (err, con) {
-            con.query('SELECT * FROM users where id = $1', [id], function (err, result) {
-                con.release();
-                if (result.rows.length === 0) {
-                    msg = 'User does not exist.';
-                    callback(msg, null);
-                }else{
-                    callback(null, result.rows);
-                }                
-            });
-        });
-    }
+    connection.init();   
 
     this.getAllAdmintag = function (status, callback) {
         connection.acquire(function (err, con) {
@@ -143,7 +128,7 @@ function Tag() {
             con.query('SELECT * FROM tag where tag_id = $1', [id], function (err, result) {
                 con.release();
                 if (result.rows.length === 0) {
-                    msg = 'User does not exist.';
+                    msg = 'Tag does not exist.';
                     callback(msg, null);
                 } else {
                     callback(null, result.rows);

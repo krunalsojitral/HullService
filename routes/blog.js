@@ -99,7 +99,11 @@ router.get('/blogList', function (req, res) {
         if (error) {
             return res.json({ 'status': 0, 'response': { 'msg': error } });
         } else {
-            return res.json({ 'status': 1, 'response': { 'data': finalData, 'msg': 'data found' } });
+            if (finalData){
+                return res.json({ 'status': 1, 'response': { 'data': finalData, 'msg': 'data found' } });
+            }else{
+                return res.json({ 'status': 1, 'response': { 'data': [], 'msg': 'data found' } });
+            }
         }
     });
 });
@@ -136,6 +140,7 @@ router.post('/getBlogDataById', [check('blog_id', 'Blog is required').notEmpty()
                         blog['image'] = (result[0].image) ? imageLink + env.BLOG_VIEW_PATH + result[0].image : '';
                         blog['role'] = result[0].role;
                         blog['status'] = result[0].status;
+                        blog['blog_order'] = '';
                         blog['tag'] = [];
                         blog['draft_status'] = result[0].draft_status;
                         done(err, blog)
@@ -209,6 +214,115 @@ router.post('/getBlogDataById', [check('blog_id', 'Blog is required').notEmpty()
                     return res.json({ 'status': 1, 'response': { 'data': blog, 'msg': 'data found' } });
                 }
         });
+
+    }
+});
+
+router.post('/getBlogDataByIdAfterLogin', passport.authenticate('jwt', { session: false }), [check('blog_id', 'Blog is required').notEmpty()], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        let blog_id = req.body.blog_id;
+        let user_id = req.user.id;
+        asyn.waterfall([
+            function (done) {
+
+                Blog.getBlogDataByIdAfterLogin(blog_id, user_id, function (err, result) {
+                    if (err) {
+                        done({ 'status': 0, 'response': { 'msg': 'Something went wrong.' } });
+                    } else {
+                        var imageLink;
+                        if (req.headers.host == env.ADMIN_LIVE_URL) {
+                            imageLink = env.ADMIN_LIVE_URL;
+                        } else {
+                            imageLink = env.ADMIN_LIVE_URL;
+                        }
+                        let blog = {};
+                        blog['blog_id'] = result[0].b_id;
+                        blog['title'] = result[0].title;
+                        blog['description'] = result[0].description;
+                        blog['created_at'] = moment(result[0].blog_date).format('MMMM DD, YYYY');
+                        blog['cost'] = result[0].cost;
+                        blog['purchase_type'] = result[0].purchase_type;
+                        blog['image'] = (result[0].image) ? imageLink + env.BLOG_VIEW_PATH + result[0].image : '';
+                        blog['role'] = result[0].role;
+                        blog['status'] = result[0].status;
+                        blog['blog_order'] = result[0].blog_order_id;
+                        blog['tag'] = [];
+                        blog['draft_status'] = result[0].draft_status;
+                        done(err, blog)
+                    }
+                });
+            },
+            function (blog, done1) {
+                if (blog['blog_id'] != '') {
+                    Blog.getTagByBlogId(blog['blog_id'], function (err, result) {
+                        if (result && result.length > 0) {
+                            var obj = result.map((data, index) => {
+                                let retObj = {};
+                                retObj['id'] = (index + 1);
+                                retObj['label'] = data.tag_name;
+                                retObj['value'] = data.tag_id;
+                                return retObj;
+                            });
+                            blog['tag'] = obj;
+                            done1(null, blog)
+                        } else {
+                            done1(null, blog)
+                        }
+                    });
+                } else {
+                    done1(null, blog)
+                }
+            },
+            function (blog, done2) {
+                if (blog['role']) {
+                    var role = blog['role'];
+                    Common.getRoleAllList(function (err, result) {
+                        if (result && result.length > 0) {
+                            var array = [];
+                            result.find((o, i) => {
+                                if (role.includes(o.role_id)) {
+                                    array.push(o);
+                                }
+                            });
+                            blog['selected_role'] = array;
+                            done2(null, blog)
+                        } else {
+                            blog['selected_role'] = [];
+                            done2(null, blog)
+                        }
+                    });
+                } else {
+                    blog['selected_role'] = [];
+                    done2(null, blog)
+                }
+            }, function (blog, done2) {
+
+                if (blog['selected_role'].length > 0) {
+                    blog['selected_role'] = blog['selected_role'].map((data, index) => {
+                        let retObj = {};
+                        retObj['id'] = (index + 1);
+                        retObj['label'] = data.role;
+                        retObj['value'] = data.role_id;
+                        return retObj;
+                    });
+                    done2(null, blog)
+                } else {
+                    done2(null, blog)
+                }
+            }
+
+        ],
+            function (error, blog) {
+                if (error) {
+                    return res.json({ 'status': 0, 'response': { 'msg': error } });
+                } else {
+                    return res.json({ 'status': 1, 'response': { 'data': blog, 'msg': 'data found' } });
+                }
+            });
 
     }
 });

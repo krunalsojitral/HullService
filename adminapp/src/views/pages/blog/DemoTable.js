@@ -14,6 +14,7 @@ const DemoTable = () => {
 
   const history = useHistory() 
   const [items, setItems] = useState([])
+  const [deleteButtonDisable, setDeleteButtonDisable] = useState(true)
   const ref = React.useRef();
 
   React.useEffect(() => {
@@ -77,8 +78,13 @@ const DemoTable = () => {
     
     axios.get(api_url + '/blog/blogList?status=' + status, {}).then((result) => {
       if (result.data.status) {
-        var usersdatas = result.data.response.data;
-        setItems(usersdatas);
+        if (result.data.response.data.length > 0){
+          var usersdatas = result.data.response.data;
+          setItems(usersdatas);
+        }else{
+          setItems([]);
+        }
+        
       } else {
         Swal.fire('Oops...', result.data.response.msg, 'error')
       }
@@ -106,6 +112,13 @@ const DemoTable = () => {
     let itemlist = [...items];
     itemlist[index].isChecked = e.target.checked;
     setItems(itemlist);
+    
+    const filteredThatArray = items.filter((item) => item.isChecked == true)
+    if (filteredThatArray.length > 0) {
+      setDeleteButtonDisable('');
+    } else {
+      setDeleteButtonDisable(true);
+    }
   };
 
   const deleteItem = (e) => {
@@ -120,7 +133,7 @@ const DemoTable = () => {
       Swal.fire({
         //title: 'warning!',
         icon: 'warning',
-        text: 'Are you sure you want to delete the blog ?',
+        text: 'Are you sure you want to delete the selected blogs ?',
         confirmButtonText: `Yes`,
         showCancelButton: true,
         cancelButtonText: 'No',
@@ -154,8 +167,9 @@ const DemoTable = () => {
             color="primary"
             variant="outline"
             shape="square"
-            size="sm"
+            size="sm"            
             onClick={() => deleteItem()}
+            disabled={deleteButtonDisable}
             className="d-inline-block"
           > Delete
           </CButton>

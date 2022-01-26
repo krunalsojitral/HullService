@@ -4,22 +4,7 @@ var env = require('../config/env');
 var asyn = require('async');
 
 function User() {
-    connection.init();
-
-    
-    this.getUserById = function (id, callback) {
-        connection.acquire(function (err, con) {
-            con.query('SELECT * FROM users where id = $1', [id], function (err, result) {
-                con.release();
-                if (result.rows.length === 0) {
-                    msg = 'User does not exist.';
-                    callback(msg, null);
-                }else{
-                    callback(null, result.rows);
-                }                
-            });
-        });
-    }
+    connection.init();  
 
     this.getAllAdminArticle = function (status, callback) {
         connection.acquire(function (err, con) {
@@ -386,8 +371,8 @@ function User() {
         connection.acquire(function (err, con) {
             article.map(data => {
                 con.query('DELETE FROM article where article_id = $1', [data.article_id], function (err, results) {
-                    con.query('DELETE FROM article_tag where article_id = $1', [data.article_id], function (err, results) {
-                    });
+                    con.query('DELETE FROM article_tag where article_id = $1', [data.article_id], function (err, results) {});
+                    con.query('DELETE FROM bookmark_article where article_id = $1', [data.article_id], function (err, results) { });
                 });
             });
             con.release()

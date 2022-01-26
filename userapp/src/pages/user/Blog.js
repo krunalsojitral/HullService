@@ -98,9 +98,9 @@ export default function Blog() {
             if (result.data.status) {
                 var blogdata = result.data.response.data.type;
                 if (blogdata == 'remove') {
-                    Swal.fire("Success!", 'Blog removed from your dashboard', "success");
+                    Swal.fire("Success!", 'Blog removed from your bookmark list', "success");
                 } else {
-                    Swal.fire("Success!", 'Blog added to your dashboard', "success");
+                    Swal.fire("Success!", 'Blog added to your bookmark list', "success");
                 }
                 getBlogDataWrap();
             } else {

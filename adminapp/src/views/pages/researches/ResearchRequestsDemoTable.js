@@ -20,6 +20,7 @@ const ResearchesDemoTable = ({ moduleConfigUrls }) => {
   const [items, setItems] = useState([])
   const [modal, setModal] = useState();
   const [selectedItem, setSelectedItem] = useState();
+  const [deleteButtonDisable, setDeleteButtonDisable] = useState(true)
 
   React.useEffect(() => {
     getNewList(moduleConfigUrls, setItems);
@@ -72,6 +73,13 @@ const ResearchesDemoTable = ({ moduleConfigUrls }) => {
     let itemlist = [...items];
     itemlist[index].isChecked = e.target.checked;
     setItems(itemlist);
+
+    const filteredThatArray = items.filter((item) => item.isChecked == true)
+    if (filteredThatArray.length > 0) {
+      setDeleteButtonDisable('');
+    } else {
+      setDeleteButtonDisable(true);
+    }
   };
 
   const deleteItem = (e) => {
@@ -86,7 +94,7 @@ const ResearchesDemoTable = ({ moduleConfigUrls }) => {
       Swal.fire({
         //title: 'warning!',
         icon: 'warning',
-        text: 'Are you sure you want to delete the research request ?',
+        text: 'Are you sure you want to delete the selected research requests ?',
         confirmButtonText: `Yes`,
         showCancelButton: true,
         cancelButtonText: 'No',
@@ -126,6 +134,7 @@ const ResearchesDemoTable = ({ moduleConfigUrls }) => {
             variant="outline"
             shape="square"
             size="sm"
+            disabled={deleteButtonDisable}
             onClick={() => deleteItem()}
             className="d-inline-block"
           > Delete

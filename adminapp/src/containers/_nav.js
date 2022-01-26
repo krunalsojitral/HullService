@@ -163,6 +163,12 @@ const _nav = [
             to: "/researcher-interest-area",
           }
         ]
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "Organization",
+        to: "/organization",
+        icon: "cil-list",
       }
     ]
   },

@@ -12,10 +12,10 @@ function Researches() {
             var sql = '';
             var array = [];
             if (status) {                
-                sql = 'SELECT * FROM researches as c left join users on users.id = c.created_by where c.user_status = $1 and c.status = $2 order by c.researches_id desc'
+                sql = 'SELECT *,c.status as research_status FROM researches as c left join users on users.id = c.created_by where c.user_status = $1 and c.status = $2 order by c.researches_id desc'
                 array = [1, status];
             } else {
-                sql = 'SELECT * FROM researches as c left join users on users.id = c.created_by where c.user_status = $1 order by c.researches_id desc'
+                sql = 'SELECT *,c.status as research_status FROM researches as c left join users on users.id = c.created_by where c.user_status = $1 order by c.researches_id desc'
                 array = [1];
             }
 
@@ -253,21 +253,7 @@ function Researches() {
     };
 
 
-    this.changeResearchesStatus = function (record, researches_id, callback) {
-        connection.acquire(function (err, con) {
-            con.query("UPDATE researches SET status =$1 WHERE researches_id = $2", [record.status, researches_id], function (err, result) {
-                con.release()
-                if (err) {
-                    if (env.DEBUG) {
-                        console.log(err);
-                    }
-                    callback(err, null);
-                } else {
-                    callback(null, record);
-                }
-            });
-        });
-    }
+    
 
      
     this.addFutureResearchByuser = function (record, callback) {

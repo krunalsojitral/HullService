@@ -127,7 +127,7 @@ function Occupation() {
             con.query('SELECT * FROM occupation where occupation_id = $1', [id], function (err, result) {
                 con.release();
                 if (result.rows.length === 0) {
-                    msg = 'User does not exist.';
+                    msg = 'occupation does not exist.';
                     callback(msg, null);
                 } else {
                     callback(null, result.rows);

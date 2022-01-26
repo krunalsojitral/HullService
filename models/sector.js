@@ -106,8 +106,8 @@ function Sector() {
     }
 
     this.changesectorStatus = function (record, sector_id, callback) {
-        connection.acquire(function (err, con) {
-            con.query("UPDATE sector SET status =$1 WHERE sector_id = $2", [record.status, sector_id], function (err, result) {
+        connection.acquire(function (err, con) {            
+            con.query("UPDATE sector SET status = $1 WHERE sector_id = $2", [record.status, sector_id], function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) {
@@ -126,7 +126,7 @@ function Sector() {
             con.query('SELECT * FROM sector where sector_id = $1', [id], function (err, result) {
                 con.release();
                 if (result.rows.length === 0) {
-                    msg = 'User does not exist.';
+                    msg = 'Sector does not exist.';
                     callback(msg, null);
                 } else {
                     callback(null, result.rows);

@@ -1,8 +1,6 @@
 import React from 'react'
 import {
   CCard,
-  CCardHeader,
-  CButton,
   CCol,
   CRow,
 } from '@coreui/react'

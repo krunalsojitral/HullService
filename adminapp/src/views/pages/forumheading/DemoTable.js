@@ -14,6 +14,7 @@ const DemoTable = () => {
 
   const history = useHistory()
   const [items, setItems] = useState([])
+  const [deleteButtonDisable, setDeleteButtonDisable] = useState(true)
   const ref = React.useRef();
 
   React.useEffect(() => {
@@ -103,12 +104,19 @@ const DemoTable = () => {
     let itemlist = [...items];
     itemlist[index].isChecked = e.target.checked;
     setItems(itemlist);
+
+    const filteredThatArray = items.filter((item) => item.isChecked == true)
+    if (filteredThatArray.length > 0) {
+      setDeleteButtonDisable('');
+    } else {
+      setDeleteButtonDisable(true);
+    }
   };
 
   const deleteItem = (e) => {
     const filteredThatArray = items.filter((item) => item.isChecked == true).map(item => {
       const container = {};
-      container['blog_id'] = item.blog_id;
+      container['forumheading_id'] = item.forumheading_id;
       return container;
     });
 
@@ -117,23 +125,23 @@ const DemoTable = () => {
       Swal.fire({
         //title: 'warning!',
         icon: 'warning',
-        text: 'Are you sure you want to delete the forum topic ?',
+        text: 'Are you sure you want to delete the selected topics ?',
         confirmButtonText: `Yes`,
         showCancelButton: true,
         cancelButtonText: 'No',
         cancelButtonColor: '#e57979',
       }).then((result) => {
         if (result.isConfirmed) {
-          // axios.post(api_url + '/blog/deleteBlog', { blog: filteredThatArray }).then((result) => {
-      //   if (result.data.status) {
-      //     getNewListWrap('');
-      //     Swal.fire('Success', result.data.response.msg, 'success')
-      //   } else {
-      //     Swal.fire('Oops...', result.data.response.msg, 'error')
-      //   }
-      // }).catch((err) => {
-      //   console.log(err);
-      // })
+          axios.post(api_url + '/forumheading/deleteForumheading', { forumheading: filteredThatArray }).then((result) => {
+            if (result.data.status) {
+              getNewListWrap('');
+              Swal.fire('Success', result.data.response.msg, 'success')
+            } else {
+              Swal.fire('Oops...', result.data.response.msg, 'error')
+            }
+          }).catch((err) => {
+            console.log(err);
+          })
         }
       });
 
@@ -152,6 +160,7 @@ const DemoTable = () => {
               variant="outline"
               shape="square"
               size="sm"
+              disabled={deleteButtonDisable}
               onClick={() => deleteItem()}
               className="d-inline-block"
             > Delete

@@ -1,21 +1,53 @@
 import React,{ useEffect } from 'react'
 import { useHistory } from 'react-router-dom';
-import $ from 'jquery';
 import { Link } from 'react-router-dom';
+
 
 function DirectionModel(props) {  
     const [token, setToken] = React.useState('')
+    const [resourceType, setResourceType] = React.useState('')
+    const [resourceId, setResourceId] = React.useState('')
    
     let history = useHistory();
     useEffect(() => {
-
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
         setToken(token);
 
         console.log(props);
-
+        if (props.blogDetail){
+            setResourceType('Blog');
+            setResourceId(props.blogDetail);
+        } else if (props.articleDetail) {
+            setResourceType('Article');
+            setResourceId(props.articleDetail);
+        } else if (props.videoDetail) {
+            setResourceType('Video');
+            setResourceId(props.videoDetail);
+        } else if (props.courseDetail) {
+            setResourceType('Course');
+            setResourceId(props.courseDetail);
+        }
     }, []);
+
+    
+    const selectionButton = (type) => {
+        if (resourceType == 'Blog') {            
+            localStorage.setItem('last_visit_url', '/blog-detail?id=' + resourceId);
+        } else if (resourceType == 'Article') {            
+            localStorage.setItem('last_visit_url', '/article-detail?id=' + resourceId);
+        } else if (resourceType == 'Video') {            
+            localStorage.setItem('last_visit_url', '/video-detail?id=' + resourceId);
+        } else if (resourceType == 'Course') {
+            localStorage.setItem('last_visit_url', '/professional-development-detail?id='+resourceId);
+        }
+       
+        if (type == 'signin'){
+            history.push('/login');
+        }else{
+            history.push('/userSelection');
+        }
+    }
 
  
 
@@ -30,34 +62,41 @@ function DirectionModel(props) {
 
             <div className="article-modal">
                 <div className="modal-body">
-                    <a href="#"><img src="images/logo.png" alt="logo" /></a>
-                    <h3>Please Unlock to Continue Reading</h3>
-                    <p>You’ll need to purchase the article or upgrade
-                    your account to continue reading. Upgrading
-                    your account gives you unlimited
-                        access to all articles. </p>
+                    <Link to={{ pathname: "/" }}>
+                        <img src="images/logo.png" alt="logo" />
+                    </Link>
 
-                    {token && props.blogDetail && <Link to={{ pathname: "/blog-payment", search: "?id=" + props.blogDetail }}>
+
+                    <h3>Please Unlock to Continue Reading</h3>
+                    {!token && <p>Selected {resourceType} is paid. Please log in to buy the {resourceType}</p>}
+
+                    {token && <div className="puchase-price">${props.cost}</div>}
+
+                    {token && props.blogDetail && <Link className="puchase-btn" to={{ pathname: "/blog-payment", search: "?id=" + props.blogDetail }}>
                         Purchase Blog
                     </Link>} 
 
-                    {token && props.articleDetail && <Link to={{ pathname: "/article-payment", search: "?id=" + props.articleDetail }}>
+                    {token && props.articleDetail && <Link className="puchase-btn" to={{ pathname: "/article-payment", search: "?id=" + props.articleDetail }}>
                         Purchase Article
                     </Link>}
 
-                    {token && props.videoDetail && <Link to={{ pathname: "/video-payment", search: "?id=" + props.videoDetail }}>
-                        Purchase Article
+                    {token && props.videoDetail && <Link className="puchase-btn" to={{ pathname: "/video-payment", search: "?id=" + props.videoDetail }}>
+                        Purchase Video
                     </Link>}
-
                     
-
-                    {/* <Link to='/userSelection' className="thm-btn">
-                        Purchase Article
-                    </Link> */}
                     
-                    {!token && <Link to='/userSelection' className="thm-btn">
-                        Upgrade Account
-                    </Link>}
+                    {!token && 
+                    <div>
+                        <button className="puchase-btn" onClick={() => selectionButton('signin')}>Sign-in</button>
+                        <button className="puchase-btn" onClick={() => selectionButton('signup')}>Sign-up</button>
+                        {/* <Link to='/login' onClick={() => history.goBack()} className="thm-btn">
+                            Sign-in
+                        </Link>
+                        <Link to='/userSelection' className="thm-btn">
+                            Sign-up
+                        </Link> */}
+                    </div>
+                    }
                     <br/>
                     {/* <a href="javascript:;" onClick={props.close}>Go back</a> */}
                     <button onClick={() => history.goBack()}>Go back</button>

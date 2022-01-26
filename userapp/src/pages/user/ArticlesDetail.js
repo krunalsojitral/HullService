@@ -15,6 +15,7 @@ export default function ArticlesDetail() {
     let history = useHistory();
     const [articleId, setArticleId] = React.useState(0)
     const [articleDetail, setArticleDetail] = React.useState({})
+    const [articleCost, setArticleCost] = React.useState({})
     const [relatedArticleDetail, setRelatedArticleDetail] = React.useState([])
     //const [showModal, setShowModal] = useState(false);
 
@@ -72,6 +73,7 @@ export default function ArticlesDetail() {
                     if (articledata.purchase_type == "unpaid") { 
                         setArticleDetail(articledata);
                     }else{
+                        setArticleCost(articledata.cost);
                         open()
                     }
 
@@ -117,7 +119,7 @@ export default function ArticlesDetail() {
         <div>
             <Header />
             <Modal>
-                <DirectionModel close={close} articleDetail={articleId}></DirectionModel>
+                <DirectionModel close={close} cost={articleCost} articleDetail={articleId}></DirectionModel>
             </Modal>
             <section className="inner-header">
                 <div className="container">

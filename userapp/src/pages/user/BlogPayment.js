@@ -20,6 +20,7 @@ export default function BlogPayment() {
     let payPalRef = useRef()
 
     useEffect(() => {
+        
 
         const params = new URLSearchParams(window.location.search) // id=123
         let blog_id = params.get('id')
@@ -87,7 +88,10 @@ export default function BlogPayment() {
                 Swal.fire({
                     title: 'Success!',
                     icon: 'success',
-                    text: result.data.response.msg,
+                    html:
+                        'Please visit the ' +
+                        '<a href="/blog-detail?id=' + blogId +'">link</a> ' +
+                        'to read the blog',
                     confirmButtonText: `ok`,
                 }).then((result) => {
                     /* Read more about isConfirmed, isDenied below */

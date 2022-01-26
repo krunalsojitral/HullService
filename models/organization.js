@@ -3,19 +3,19 @@ var connection = require('../config/database');
 var env = require('../config/env');
 
 
-function Occupation() {
+function Organization() {
     connection.init();
 
-    this.getAllAdminoccupation = function (status, callback) {
+    this.getAllAdminorganization = function (status, callback) {
         connection.acquire(function (err, con) {
 
             var sql = '';
             var array = [];
             if (status) {
-                sql = 'SELECT * FROM occupation where status = $1 order by UPPER(name) ASC';
+                sql = 'SELECT * FROM organization where status = $1 order by UPPER(organization_name) ASC';
                 array = [status];
             } else {
-                sql = 'SELECT * FROM occupation order by UPPER(name) ASC';
+                sql = 'SELECT * FROM organization order by UPPER(organization_name) ASC';
             }
             con.query(sql, array, function (err, result) {
                 con.release()
@@ -30,12 +30,12 @@ function Occupation() {
     };
 
     
-    this.addoccupationByadmin = function (record, callback) {
+    this.addorganizationByadmin = function (record, callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM occupation where name=$1', [record.occupation_name], function (err, result) {
+            con.query('SELECT * FROM organization where organization_name=$1', [record.organization_name], function (err, result) {
                 if (result.rows.length === 0) { 
-                    const sql = 'INSERT INTO occupation(name,status) VALUES($1,$2) RETURNING *'
-                    const values = [record.occupation_name, 1]
+                    const sql = 'INSERT INTO organization(organization_name,status) VALUES($1,$2) RETURNING *'
+                    const values = [record.organization_name, 1]
                     con.query(sql, values, function (err, result) {
                         con.release()
                         if (err) {
@@ -49,16 +49,16 @@ function Occupation() {
                     });
                 }else{
                     con.release()
-                    callback('occupation name is already exist.', null);
+                    callback('organization name is already exist.', null);
                 }
             });
             
         });
     };
 
-    function updateProductByID(occupation_id, cols) {
+    function updateProductByID(organization_id, cols) {
         // Setup static beginning of query
-        var query = ['UPDATE occupation'];
+        var query = ['UPDATE organization'];
         query.push('SET');
 
         // Create another array storing each set command
@@ -71,16 +71,16 @@ function Occupation() {
         query.push(set.join(', '));
         
         // Add the WHERE statement to look up by id
-        query.push('WHERE occupation_id = ' + occupation_id);
+        query.push('WHERE organization_id = ' + organization_id);
 
         // Return a complete query string
         return query.join(' ');
     }
 
-    this.updateoccupationByadmin = function (record, occupation_id, update_value, callback) {
+    this.updateorganizationByadmin = function (record, organization_id, update_value, callback) {
         connection.acquire(function (err, con) {
 
-            var query = updateProductByID(occupation_id, record);
+            var query = updateProductByID(organization_id, record);
             con.query(query, update_value, function (err, result) {
                 con.release()
                 if (err) {
@@ -93,7 +93,7 @@ function Occupation() {
                 }
             });
 
-            // con.query("UPDATE occupation SET title =$1,description =$2,role =$3,purchase_type =$4,image =$5 WHERE occupation_id = $6", [record.title, record.description, record.role, record.purchase_type, record.image, occupation_id], function (err, result) {
+            // con.query("UPDATE organization SET title =$1,description =$2,role =$3,purchase_type =$4,image =$5 WHERE organization_id = $6", [record.title, record.description, record.role, record.purchase_type, record.image, organization_id], function (err, result) {
             //     if (err) {
             //         if (env.DEBUG) {
             //             console.log(err);
@@ -106,9 +106,9 @@ function Occupation() {
         });
     }
 
-    this.changeoccupationStatus = function (record, occupation_id, callback) {
+    this.changeorganizationStatus = function (record, organization_id, callback) {
         connection.acquire(function (err, con) {
-            con.query("UPDATE occupation SET status =$1 WHERE occupation_id = $2", [record.status, occupation_id], function (err, result) {
+            con.query("UPDATE organization SET status =$1 WHERE organization_id = $2", [record.status, organization_id], function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) {
@@ -122,12 +122,12 @@ function Occupation() {
         });
     }
 
-    this.getoccupationDataById = function (id, callback) {
+    this.getorganizationDataById = function (id, callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM occupation where occupation_id = $1', [id], function (err, result) {
+            con.query('SELECT * FROM organization where organization_id = $1', [id], function (err, result) {
                 con.release();
                 if (result.rows.length === 0) {
-                    msg = 'User does not exist.';
+                    msg = 'organization does not exist.';
                     callback(msg, null);
                 } else {
                     callback(null, result.rows);
@@ -136,20 +136,20 @@ function Occupation() {
         });
     }
 
-    this.deleteOccupation = function (occupation, callback) {
+    this.deleteorganization = function (organization, callback) {
         connection.acquire(function (err, con) {
-            occupation.map(data => {
-                con.query('DELETE FROM occupation where occupation_id = $1', [data.occupation_id], function (err, results) {
-                    con.query("UPDATE users SET occupation = NULL WHERE occupation = $1", [data.occupation_id], function (err, result) {
+            organization.map(data => {
+                con.query('DELETE FROM organization where organization_id = $1', [data.organization_id], function (err, results) {
+                    con.query("UPDATE users SET organization = NULL WHERE organization = $1", [data.organization_id], function (err, result) {
                     });
                 });
             });
             con.release()
-            callback(null, occupation);
+            callback(null, organization);
         });
     };
 
     
 
 }
-module.exports = new Occupation();
+module.exports = new Organization();

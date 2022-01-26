@@ -130,7 +130,7 @@ export default function Sidebar() {
 
             </svg>
             <ul>
-                {users && (users.role == 3 || users.role == 2) && <li>
+                {users && (users.role == 4 || users.role == 3 || users.role == 2) && <li>
                     <NavLink activeClassName="active" to="/dashboard" isActive={() => ['/my-blog', '/my-professional-development', '/my-forum', '/my-article','/my-video'].includes(pathname)}>
                         <svg className="icon icon-tag">
                             <use xlinkHref="#icon-dashboard"></use>

@@ -16,6 +16,7 @@ const DemoTable = () => {
   const history = useHistory()
   
   const [items, setItems] = useState([])
+  const [deleteButtonDisable, setDeleteButtonDisable] = useState(true)
   const ref = React.useRef();
 
   React.useEffect(() => {
@@ -118,7 +119,7 @@ const DemoTable = () => {
       Swal.fire({
         //title: 'warning!',
         icon: 'warning',
-        text: 'Are you sure you want to delete the article ?',
+        text: 'Are you sure you want to delete the selected articles ?',
         confirmButtonText: `Yes`,
         showCancelButton: true,
         cancelButtonText: 'No',
@@ -143,10 +144,18 @@ const DemoTable = () => {
   }
 
   const handleOnChange = (e) => {
+    
     const index = e.target.name
     let itemlist = [...items];
     itemlist[index].isChecked = e.target.checked;
     setItems(itemlist);
+
+    const filteredThatArray = items.filter((item) => item.isChecked == true)
+    if (filteredThatArray.length > 0){
+      setDeleteButtonDisable('');
+    }else{
+      setDeleteButtonDisable(true);
+    }
   };
 
   return (
@@ -157,16 +166,21 @@ const DemoTable = () => {
         <div>
           &nbsp;&nbsp; Article
         </div>
-        <div>
+        <div>  
+
           <CButton
             color="primary"
             variant="outline"
             shape="square"
             size="sm"
             onClick={() => deleteItem()}
+            disabled={deleteButtonDisable}           
             className="d-inline-block"
           > Delete
           </CButton>
+
+         
+
           <select ref={ref} onChange={e => handleAddrTypeChange(e)} className="form-control d-inline-block" >
             <option key="0" value="">Select Option</option>
             <option key="1" value="1">Active</option>

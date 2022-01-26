@@ -65,7 +65,7 @@ function Common() {
 
     this.getHeadingList = function (callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM forumheading where status = $1 order by UPPER(forumheading_name) ASC', [1], function (err, result) {
+            con.query('SELECT * FROM forumheading where status = $1 and forumheading_id != 1 order by UPPER(forumheading_name) ASC', [1], function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }

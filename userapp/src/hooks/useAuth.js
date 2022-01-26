@@ -22,7 +22,19 @@ export default function useAuth() {
                 localStorage.setItem('token', JSON.stringify(data.token));
                 localStorage.setItem('userdata', JSON.stringify(result.data.response.data));
                 setUser(result.data.response.data);
-                history.push('/dashboard');
+
+
+                const Url = localStorage.getItem('last_visit_url');      
+                console.log(Url);
+
+                if (Url){                    
+                    history.push(Url);
+                }else{
+                    history.push('/dashboard');
+                }
+
+
+                
                 
                 // if (result.data.response.data.user_role === 2){
                 //     localStorage.setItem('token', JSON.stringify(data.token));
@@ -49,7 +61,7 @@ export default function useAuth() {
             
             })
             .catch((err) => {
-            setError(err.response.data);
+            setError(err);
         })
     }
 

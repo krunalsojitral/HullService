@@ -24,6 +24,13 @@ export default function Header() {
 
         const tokenString = localStorage.getItem('token');
         var tokens = JSON.parse(tokenString);
+
+        if (tokens){
+            localStorage.removeItem('last_visit_url');
+        }
+
+        
+
         setToken(tokens);
 
         window.scrollTo(0, 0)

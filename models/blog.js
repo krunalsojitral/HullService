@@ -210,9 +210,21 @@ function User() {
         });
     }
 
+    this.getBlogDataByIdAfterLogin = function (id,user_id, callback) {
+        connection.acquire(function (err, con) {            
+            con.query('SELECT *,blog.blog_id as b_id,blog.created_at as blog_date FROM blog left join blog_order on blog.blog_id = blog_order.blog_id and blog_order.user_id = $1 where blog.blog_id = $2', [user_id, id], function (err, result) {
+                con.release();
+                if (err) {
+                    callback(err, null);
+                } else {                    
+                    callback(null, result.rows);
+                }
+            });
+        });
+    }
+
     this.getPaidBlogList = function (role, user_id, callback) {
-        connection.acquire(function (err, con) {
-            console.log(role);
+        connection.acquire(function (err, con) {            
             //con.query('SELECT *,blog.blog_id as b_id, blog.created_at as blog_date FROM blog left join bookmark_blog on blog.blog_id = bookmark_blog.blog_id and bookmark_blog.user_id = $1 where blog.draft_status IS NULL and blog.status = $2 and (blog.role ILIKE $3 or blog.role ILIKE $4) order by blog.blog_id desc', [user_id, 1, '%' + role + '%', '%4%'], function (err, result) {
             con.query('SELECT *,blog.blog_id as b_id, blog.created_at as blog_date FROM blog left join bookmark_blog on blog.blog_id = bookmark_blog.blog_id and bookmark_blog.user_id = $1 where blog.draft_status IS NULL and blog.status = $2 and (blog.role ILIKE $3) order by blog.blog_id desc', [user_id, 1, '%' + role + '%'], function (err, result) {
                 con.release()
@@ -337,14 +349,15 @@ function User() {
     
 
     this.getBookMarkBlog = function (user_id, role, callback) {
-        connection.acquire(function (err, con) {
-            console.log(role);
-            con.query('SELECT *,blog.blog_id as b_id, blog.created_at as blog_date FROM bookmark_blog inner join blog on blog.blog_id = bookmark_blog.blog_id where bookmark_blog.user_id = $1 and blog.status = $2 order by blog.blog_id desc', [user_id, 1], function (err, result) {
+        connection.acquire(function (err, con) {            
+            //SELECT *,blog.blog_id as b_id, blog.created_at as blog_date FROM bookmark_blog inner join blog on blog.blog_id = bookmark_blog.blog_id where bookmark_blog.user_id = $1 and blog.status = $2 order by blog.blog_id desc
+            var sql = '(SELECT blog.*,blog.blog_id as b_id, blog.created_at as blog_date,bookmark_blog.bookmark_blog_id as bookmark_blog_id FROM bookmark_blog inner join blog on blog.blog_id = bookmark_blog.blog_id where bookmark_blog.user_id = $2 and blog.status = $3 UNION SELECT blog.*,blog.blog_id as b_id, blog.created_at as blog_date,bookmark_blog.bookmark_blog_id as bookmark_blog_id FROM blog_order inner join blog on blog.blog_id = blog_order.blog_id left join bookmark_blog on blog.blog_id = bookmark_blog.blog_id and bookmark_blog.user_id = $1 where blog_order.user_id = $2 and blog.status = $3)';
+            con.query(sql, [user_id,user_id, 1], function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }
                     callback(err, null);
-                } else {
+                } else {                    
                     callback(null, result.rows);
                 }
             });
@@ -370,8 +383,8 @@ function User() {
         connection.acquire(function (err, con) {
             blog.map(data => {                                
                 con.query('DELETE FROM blog where blog_id = $1', [data.blog_id], function (err, results) {                  
-                    con.query('DELETE FROM blog_tag where blog_id = $1', [data.blog_id], function (err, results) {
-                    });
+                    con.query('DELETE FROM blog_tag where blog_id = $1', [data.blog_id], function (err, results) {});
+                    con.query('DELETE FROM bookmark_blog where blog_id = $1', [data.blog_id], function (err, results) { });
                 });
             });
             con.release()

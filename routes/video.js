@@ -78,7 +78,11 @@ router.get('/videoList', function (req, res) {
         if (error) {
             return res.json({ 'status': 0, 'response': { 'msg': error } });
         } else {
-            return res.json({ 'status': 1, 'response': { 'data': finalData, 'msg': 'data found' } });
+            if (finalData) {
+                return res.json({ 'status': 1, 'response': { 'data': finalData, 'msg': 'data found' } });
+            } else {
+                return res.json({ 'status': 1, 'response': { 'data': [], 'msg': 'data found' } });
+            }
         }
     });
     

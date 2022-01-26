@@ -15,6 +15,7 @@ const DemoTable = () => {
 
   const history = useHistory()
   const [items, setItems] = useState([])
+  const [deleteButtonDisable, setDeleteButtonDisable] = useState(true)
   const ref = React.useRef();
 
 
@@ -25,7 +26,7 @@ const DemoTable = () => {
 
   const fields = [
     { key: 'checkbox', label: '', _style: { width: '1%' }, filter: false },
-    { key: 'occupation_name', _style: { width: '20%'} },
+    { key: 'organization_name', _style: { width: '20%'} },
     { key: 'status', _style: { width: '20%' }, filter: false },
     {
       key: 'show_details',
@@ -38,9 +39,9 @@ const DemoTable = () => {
 
   const updateItemStatus = (item, status) => {
     if (status == 1) {
-      var message = 'Are you sure you want to activate an occupation ?'
+      var message = 'Are you sure you want to activate an organization ?'
     } else {
-      var message = 'Are you sure you want to deactivate an occupation ?'
+      var message = 'Are you sure you want to deactivate an organization ?'
     }
     Swal.fire({
       //title: 'warning!',
@@ -53,10 +54,10 @@ const DemoTable = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         var obj = {
-          occupation_id: item.occupation_id,
+          organization_id: item.organization_id,
           status: status,
         };
-        axios.post(api_url + "/occupation/changeOccupationStatus", obj)
+        axios.post(api_url + "/organization/changeOrganizationStatus", obj)
           .then((result) => {
             if (result.data.status) {
               getNewListWrap('');
@@ -74,7 +75,7 @@ const DemoTable = () => {
   }
   
   const getNewList = (status) => {
-    axios.get(api_url + '/occupation/occupationList?status=' + status, {}).then((result) => {
+    axios.get(api_url + '/organization/organizationList?status=' + status, {}).then((result) => {
       if (result.data.status) {
         var usersdatas = result.data.response.data;
         setItems(usersdatas);
@@ -107,12 +108,20 @@ const DemoTable = () => {
     let itemlist = [...items];
     itemlist[index].isChecked = e.target.checked;
     setItems(itemlist);
+
+    const filteredThatArray = items.filter((item) => item.isChecked == true)
+    if (filteredThatArray.length > 0) {
+      setDeleteButtonDisable('');
+    } else {
+      setDeleteButtonDisable(true);
+    }
+
   };
 
   const deleteItem = (e) => {
     const filteredThatArray = items.filter((item) => item.isChecked == true).map(item => {
       const container = {};
-      container['occupation_id'] = item.occupation_id;
+      container['organization_id'] = item.organization_id;
       return container;
     });
 
@@ -121,14 +130,14 @@ const DemoTable = () => {
       Swal.fire({
         //title: 'warning!',
         icon: 'warning',
-        text: 'Are you sure you want to delete the occupation ?',
+        text: 'Are you sure you want to delete the selected organizations ?',
         confirmButtonText: `Yes`,
         showCancelButton: true,
         cancelButtonText: 'No',
         cancelButtonColor: '#e57979',
       }).then((result) => {
         if (result.isConfirmed) {
-          axios.post(api_url + '/occupation/deleteOccupation', { occupation: filteredThatArray }).then((result) => {
+          axios.post(api_url + '/organization/deleteorganization', { organization: filteredThatArray }).then((result) => {
             if (result.data.status) {
               getNewListWrap('');
               Swal.fire('Success', result.data.response.msg, 'success')
@@ -144,7 +153,7 @@ const DemoTable = () => {
 
       
     } else {
-      Swal.fire('Oops...', 'Please select occupation', 'error')
+      Swal.fire('Oops...', 'Please select organization', 'error')
     }
   }
 
@@ -153,7 +162,7 @@ const DemoTable = () => {
     <div>
       <CCardHeader className="custom-table-header">
         <div>
-          &nbsp;&nbsp; Occupation
+          &nbsp;&nbsp; Organization
             </div>
 
         <div>
@@ -162,6 +171,7 @@ const DemoTable = () => {
             variant="outline"
             shape="square"
             size="sm"
+            disabled={deleteButtonDisable}
             onClick={() => deleteItem()}
             className="d-inline-block"
           > Delete
@@ -179,7 +189,7 @@ const DemoTable = () => {
             shape="square"
             size="sm"
             className="d-inline-block"
-            onClick={() => history.push(`/occupationadd`)}
+            onClick={() => history.push(`/organizationadd`)}
           >Add</CButton>
         </div>
 
@@ -230,7 +240,7 @@ const DemoTable = () => {
                     }}
                   >
                     Active{" "}
-                    <span className="tooltip-title">De-activating the occupation will remove the occupation from the front end.</span>
+                    <span className="tooltip-title">De-activating the organization will remove the organization from the front end.</span>
                   </p>
                 ) : (
                   <p
@@ -243,7 +253,7 @@ const DemoTable = () => {
                     }}
                   >
                     Inactive
-                    <span className="tooltip-title">Activating the occupation will add the occupation back on the front end.</span>
+                    <span className="tooltip-title">Activating the organization will add the organization back on the front end.</span>
                   </p>
                 )}
               </td>
@@ -257,7 +267,7 @@ const DemoTable = () => {
                       variant="outline"
                       shape="square"
                       size="sm"
-                      onClick={() => history.push(`/occupationedit/${item.occupation_id}`)}
+                      onClick={() => history.push(`/organizationedit/${item.organization_id}`)}
                       className="mr-1"
                     > Edit
                   </CButton>

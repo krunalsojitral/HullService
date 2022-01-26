@@ -183,7 +183,7 @@ function Video() {
             con.query('SELECT * FROM video where video_id = $1', [id], function (err, result) {
                 con.release();
                 if (result.rows.length === 0) {
-                    msg = 'User does not exist.';
+                    msg = 'Video does not exist.';
                     callback(msg, null);
                 } else {
                     callback(null, result.rows);
@@ -419,8 +419,8 @@ function Video() {
         connection.acquire(function (err, con) {
             video.map(data => {
                 con.query('DELETE FROM video where video_id = $1', [data.video_id], function (err, results) {
-                    con.query('DELETE FROM video_tag where video_id = $1', [data.video_id], function (err, results) {
-                    });
+                    con.query('DELETE FROM video_tag where video_id = $1', [data.video_id], function (err, results) {});
+                    con.query('DELETE FROM bookmark_video where video_id = $1', [data.video_id], function (err, results) { });
                 });
             });
             con.release()

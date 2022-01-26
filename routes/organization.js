@@ -2,19 +2,9 @@
 
 var express = require('express');
 var { check, validationResult } = require("express-validator");
-
 var router = express.Router();
-var jwt = require('jsonwebtoken');
-var passport = require('passport');
 var env = require('../config/env');
-var Occupation = require('../models/occupation');
-var path = require('path');
-var fs = require('fs');
-var asyn = require('async');
-var helper = require('../config/helper');
-var moment = require('moment');
-var formidable = require('formidable');
-
+var Organization = require('../models/organization');
 
 function loggerData(req) {
     if (env.DEBUG) {
@@ -24,36 +14,36 @@ function loggerData(req) {
 }
 
 
-// occupation list
+// organization list
 //passport.authenticate('jwt', { session: false }), 
-router.get('/occupationList', function (req, res) {
+router.get('/organizationList', function (req, res) {
     loggerData(req);
     var status = req.query.status;
-    Occupation.getAllAdminoccupation(status, function (err, result) {
+    Organization.getAllAdminorganization(status, function (err, result) {
         if (err) {
             return res.json({ status: 0, 'response': { msg: err } });
         } else {
-            var occupationList = result.map(data => {
+            var organizationList = result.map(data => {
                 let retObj = {};
-                retObj['occupation_id'] = data.occupation_id;
-                retObj['occupation_name'] = data.name;
+                retObj['organization_id'] = data.organization_id;
+                retObj['organization_name'] = data.organization_name;
                 retObj['status'] = data.status;
                 return retObj;
             });
-            return res.json({ status: 1, 'response': { data: occupationList } });
+            return res.json({ status: 1, 'response': { data: organizationList } });
         }
     });
 });
 
-//get occupation data - adminside
-router.post('/getoccupationDataById', [check('occupation_id', 'occupation is required').notEmpty()], (req, res, next) => {
+//get organization data - adminside
+router.post('/getorganizationDataById', [check('organization_id', 'organization is required').notEmpty()], (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         var error = errors.array();
         res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
     } else {
-        let occupation_id = req.body.occupation_id;
-        Occupation.getoccupationDataById(occupation_id, function (err, result) {
+        let organization_id = req.body.organization_id;
+        Organization.getorganizationDataById(organization_id, function (err, result) {
             if (err) {
                 return res.json({ 'status': 0, 'response': { 'msg': err } });
             } else {
@@ -63,19 +53,19 @@ router.post('/getoccupationDataById', [check('occupation_id', 'occupation is req
                 } else {
                     imageLink = env.ADMIN_LIVE_URL;
                 }
-                let occupation = {};
-                occupation['occupation_id'] = result[0].occupation_id;
-                occupation['occupation_name'] = result[0].name;                
-                occupation['status'] = result[0].status;
-                return res.json({ 'status': 1, 'response': { 'data': occupation, 'msg': 'data found' } });
+                let organization = {};
+                organization['organization_id'] = result[0].organization_id;
+                organization['organization_name'] = result[0].organization_name;
+                organization['status'] = result[0].status;
+                return res.json({ 'status': 1, 'response': { 'data': organization, 'msg': 'data found' } });
             }
         });
     }
 });
 
 
-router.post('/changeoccupationStatus', [
-    check('occupation_id', 'occupation id is required').notEmpty(),
+router.post('/changeOrganizationStatus', [
+    check('organization_id', 'organization id is required').notEmpty(),
     check('status', 'Please enter status').notEmpty(),
 ], (req, res) => {
     const errors = validationResult(req);
@@ -83,11 +73,11 @@ router.post('/changeoccupationStatus', [
         var error = errors.array();
         res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
     } else {
-        let occupation_id = req.body.occupation_id;
+        let organization_id = req.body.organization_id;
         let record = {
             status: req.body.status
         }
-        Occupation.changeoccupationStatus(record, occupation_id, function (err, result) {
+        Organization.changeorganizationStatus(record, organization_id, function (err, result) {
             if (err) {
                 return res.json({ 'status': 0, 'response': { 'msg': 'Error Occured.' } });
             } else {
@@ -102,8 +92,8 @@ router.post('/changeoccupationStatus', [
 
 });
 
-router.post('/addoccupationByadmin', [
-    check('occupation_name', 'occupation name is required').notEmpty()
+router.post('/addorganizationByadmin', [
+    check('organization_name', 'organization name is required').notEmpty()
 ], (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -111,21 +101,21 @@ router.post('/addoccupationByadmin', [
         res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
     } else { 
         let record = {
-            occupation_name: req.body.occupation_name
+            organization_name: req.body.organization_name
         };
-        Occupation.addoccupationByadmin(record, function (err, data) {
+        Organization.addorganizationByadmin(record, function (err, data) {
             if (err) {
                 return res.json({ 'status': 0, 'response': { 'msg': err } });
             } else {
-                return res.json({ 'status': 1, 'response': { 'msg': 'Occupation added successfully.', data: data } });
+                return res.json({ 'status': 1, 'response': { 'msg': 'Organization added successfully.', data: data } });
             }
         });
     }
 });
 
-router.post('/updateoccupationByadmin', [
-    check('occupation_name', 'occupation name is required').notEmpty(),
-    check('occupation_id', 'occupation id is required').notEmpty()
+router.post('/updateorganizationByadmin', [
+    check('organization_name', 'organization name is required').notEmpty(),
+    check('organization_id', 'organization id is required').notEmpty()
 ], (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -133,22 +123,22 @@ router.post('/updateoccupationByadmin', [
         res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
     } else {
         let record = {
-            name: req.body.occupation_name
+            organization_name: req.body.organization_name
         };
-        let update_value = [req.body.occupation_name]
-        let occupation_id = req.body.occupation_id
-        Occupation.updateoccupationByadmin(record, occupation_id, update_value, function (err, data) {
+        let update_value = [req.body.organization_name]
+        let organization_id = req.body.organization_id
+        Organization.updateorganizationByadmin(record, organization_id, update_value, function (err, data) {
             if (err) {
                 return res.json({ 'status': 0, 'response': { 'msg': err } });
             } else {
-                return res.json({ 'status': 1, 'response': { 'msg': 'Occupation updated successfully.', data: data } });
+                return res.json({ 'status': 1, 'response': { 'msg': 'Organization updated successfully.', data: data } });
             }
         });
     }
 });
 
-router.post('/deleteOccupation', [
-    check('occupation', 'Occupation is required').notEmpty(),
+router.post('/deleteorganization', [
+    check('organization', 'organization is required').notEmpty(),
 ], (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -156,12 +146,12 @@ router.post('/deleteOccupation', [
         res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
     } else {
         loggerData(req);
-        let occupation = req.body.occupation;
-        Occupation.deleteOccupation(occupation, function (err, result) {
+        let organization = req.body.organization;
+        Organization.deleteorganization(organization, function (err, result) {
             if (err) {
                 return res.json({ status: 0, 'response': { msg: err } });
             } else {
-                return res.json({ status: 1, 'response': { msg: 'Occupation deleted successfully', data: result } });
+                return res.json({ status: 1, 'response': { msg: 'Organization deleted successfully', data: result } });
             }
         });
     }

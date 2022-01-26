@@ -60,6 +60,9 @@ const BecomeMemberContent = React.lazy(() => import('./views/pages/becomemember/
 const DynamicPages = React.lazy(() => import('./views/pages/dynamicpages/DynamicPages'))
 const DynamicPagesAddEditForm = React.lazy(() => import('./views/pages/dynamicpages/AddEditForm'))
 
+const Organization = React.lazy(() => import('./views/pages/organization/Organization'))
+const OrganizationAddEditForm = React.lazy(() => import('./views/pages/organization/AddEditForm'))
+
 
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
@@ -136,6 +139,9 @@ const routes = [
   { path: '/dynamicPages', name: 'Dynamic Pages', component: DynamicPages },
   { path: '/dynamicPagesadd', name: 'Dynamic Pages', component: DynamicPagesAddEditForm },
   { path: '/become-member-content', name: 'Become Member Content', component: BecomeMemberContent },
+  { path: '/organization', name: 'Organization', component: Organization },
+  { path: '/organizationadd', name: 'Organization Add', component: OrganizationAddEditForm },
+  { path: '/organizationedit/:id', name: 'Organization Edit', component: OrganizationAddEditForm },
 ]
 
 

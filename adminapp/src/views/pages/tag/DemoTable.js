@@ -15,6 +15,7 @@ const DemoTable = () => {
 
   const history = useHistory() 
   const [items, setItems] = useState([])
+  const [deleteButtonDisable, setDeleteButtonDisable] = useState(true)
   const ref = React.useRef();
 
   React.useEffect(() => {
@@ -107,6 +108,14 @@ const DemoTable = () => {
     let itemlist = [...items];
     itemlist[index].isChecked = e.target.checked;
     setItems(itemlist);
+
+    const filteredThatArray = items.filter((item) => item.isChecked == true)
+    if (filteredThatArray.length > 0) {
+      setDeleteButtonDisable('');
+    } else {
+      setDeleteButtonDisable(true);
+    }
+
   };
 
   const deleteItem = (e) => {
@@ -121,7 +130,7 @@ const DemoTable = () => {
       Swal.fire({
         //title: 'warning!',
         icon: 'warning',
-        text: 'Are you sure you want to delete the tag ?',
+        text: 'Are you sure you want to delete the selected tags ?',
         confirmButtonText: `Yes`,
         showCancelButton: true,
         cancelButtonText: 'No',
@@ -161,6 +170,7 @@ const DemoTable = () => {
             variant="outline"
             shape="square"
             size="sm"
+            disabled={deleteButtonDisable}
             onClick={() => deleteItem()}
             className="d-inline-block"
           > Delete

@@ -118,7 +118,7 @@ function Category() {
             con.query('SELECT * FROM category where category_id = $1', [id], function (err, result) {
                 con.release();
                 if (result.rows.length === 0) {
-                    msg = 'User does not exist.';
+                    msg = 'category does not exist.';
                     callback(msg, null);
                 } else {
                     callback(null, result.rows);

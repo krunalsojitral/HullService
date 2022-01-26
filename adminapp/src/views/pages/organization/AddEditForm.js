@@ -36,12 +36,12 @@ const AddEditForm = ({ match }) => {
 
     if (match.params.id) {
       setisEditMode(1);
-      axios.post(api_url + "/occupation/getoccupationDataById", { occupation_id: match.params.id }, {})
+      axios.post(api_url + "/organization/getorganizationDataById", { organization_id: match.params.id }, {})
         .then((result) => {
           if (result.data.status) {
             var usersdata = result.data.response.data;
             console.log(usersdata);
-            setValue("occupation_name", usersdata.occupation_name);
+            setValue("organization_name", usersdata.organization_name);
           } else {
             Swal.fire("Oops...", result.data.response.msg, "error");
           }
@@ -51,12 +51,12 @@ const AddEditForm = ({ match }) => {
   }, []);
 
   const updateInformationAct = (data) => {
-    data.occupation_id = match.params.id;
-    axios.post(api_url + "/occupation/updateoccupationByadmin", data, {})
+    data.organization_id = match.params.id;
+    axios.post(api_url + "/organization/updateorganizationByadmin", data, {})
       .then((result) => {
         if (result.data.status) {
           Swal.fire("Success!", result.data.response.msg, "success");
-          history.push("/occupation");
+          history.push("/organization");
         } else {
           Swal.fire("Oops...", result.data.response.msg, "error");
         }
@@ -66,11 +66,11 @@ const AddEditForm = ({ match }) => {
 
 
   const addInformationAct = (data) => {    
-    axios.post(api_url + "/occupation/addoccupationByadmin", data, {})
+    axios.post(api_url + "/organization/addorganizationByadmin", data, {})
       .then((result) => {
         if (result.data.status) {
           Swal.fire("Success!", result.data.response.msg, "success");
-          history.push("/occupation");
+          history.push("/organization");
         } else {
           Swal.fire("Oops...", result.data.response.msg, "error");
         }
@@ -98,23 +98,23 @@ const AddEditForm = ({ match }) => {
               <CRow>
                 <CCol xs="12">
                   <CFormGroup>
-                    <CLabel htmlFor="Name">Occupation Name <span className="label-validation">*</span></CLabel>
+                    <CLabel htmlFor="Name">Organization Name <span className="label-validation">*</span></CLabel>
                     <Controller
-                      name={"occupation_name"}
+                      name={"organization_name"}
                       control={control}
                       rules={{ required: true }}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="occupation_name"
+                          type="organization_name"
                           onChange={onChange}
                           value={value}
-                          placeholder={`Enter your occupation name`}
+                          placeholder={`Enter your organization name`}
                         />
                       )}
                     ></Controller>
                   </CFormGroup>
-                  {errors.occupation_name && errors.occupation_name.type === "required" && (
-                    <p style={{ color: "red", fontSize: "12px" }}>occupation name is required.</p>
+                  {errors.organization_name && errors.organization_name.type === "required" && (
+                    <p style={{ color: "red", fontSize: "12px" }}>organization name is required.</p>
                   )}
                 </CCol>
               </CRow>

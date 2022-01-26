@@ -15,6 +15,7 @@ export default function VideoDetail() {
     let history = useHistory();
     const [videoId, setVideoId] = React.useState(0);
     const [videoDetail, setVideoDetail] = React.useState({})
+    const [videoCost, setVideoCost] = React.useState({})
     const [relatedVideoDetail, setRelatedVideoDetail] = React.useState([])
 
     React.useEffect(() => {
@@ -35,6 +36,7 @@ export default function VideoDetail() {
                     if (videodata.purchase_type == "unpaid") {
                         setVideoDetail(videodata);
                     }else{
+                        setVideoCost(videodata.cost)
                         open()
                     }
                     
@@ -81,7 +83,7 @@ export default function VideoDetail() {
             <Header/>
 
             <Modal>
-                <DirectionModel close={close} videoDetail={videoId}></DirectionModel>
+                <DirectionModel close={close} videoDetail={videoId} cost={videoCost}></DirectionModel>
             </Modal>
 
             <section className="inner-header">

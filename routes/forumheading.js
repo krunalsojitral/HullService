@@ -117,7 +117,7 @@ router.post('/addforumheadingByadmin', [
             if (err) {
                 return res.json({ 'status': 0, 'response': { 'msg': err } });
             } else {
-                return res.json({ 'status': 1, 'response': { 'msg': 'Forum heading added successfully.', data: data } });
+                return res.json({ 'status': 1, 'response': { 'msg': 'Topic added successfully.', data: data } });
             }
         });
     }
@@ -141,11 +141,32 @@ router.post('/updateforumheadingByadmin', [
             if (err) {
                 return res.json({ 'status': 0, 'response': { 'msg': err } });
             } else {
-                return res.json({ 'status': 1, 'response': { 'msg': 'Thread topic updated successfully.', data: data } });
+                return res.json({ 'status': 1, 'response': { 'msg': 'Topic updated successfully.', data: data } });
             }
         });
     }
 });
 
+
+
+router.post('/deleteForumheading', [
+    check('forumheading', 'forumheading is required').notEmpty(),
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        loggerData(req);
+        let forumheading = req.body.forumheading;
+        Forumheading.deleteForumheading(forumheading, function (err, result) {
+            if (err) {
+                return res.json({ status: 0, 'response': { msg: err } });
+            } else {
+                return res.json({ status: 1, 'response': { msg: 'Topic deleted successfully', data: result } });
+            }
+        });
+    }
+});
 
 module.exports = router;

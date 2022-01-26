@@ -11,10 +11,10 @@ function Forumheading() {
             var sql = '';
             var array = [];
             if (status) {
-                sql = 'SELECT * FROM forumheading where status = $1 order by UPPER(forumheading_name) ASC';
+                sql = 'SELECT * FROM forumheading where status = $1 and forumheading_id != 1 order by UPPER(forumheading_name) ASC';
                 array = [status];
             } else {
-                sql = 'SELECT * FROM forumheading order by UPPER(forumheading_name) ASC';
+                sql = 'SELECT * FROM forumheading where forumheading_id != 1 order by UPPER(forumheading_name) ASC';
             }
             con.query(sql, array, function (err, result) {
                 con.release()
@@ -48,7 +48,7 @@ function Forumheading() {
                     });
                 }else{
                     con.release()
-                    callback('forumheading name is already exist.', null);
+                    callback('Topic name is already exist.', null);
                 }
             });
             
@@ -126,7 +126,7 @@ function Forumheading() {
             con.query('SELECT * FROM forumheading where forumheading_id = $1', [id], function (err, result) {
                 con.release();
                 if (result.rows.length === 0) {
-                    msg = 'User does not exist.';
+                    msg = 'forum heading does not exist.';
                     callback(msg, null);
                 } else {
                     callback(null, result.rows);
@@ -134,6 +134,19 @@ function Forumheading() {
             });
         });
     }
+
+    
+    this.deleteForumheading = function (forumheading, callback) {
+        connection.acquire(function (err, con) {
+            console.log(forumheading);
+            forumheading.map(data => {
+                con.query('DELETE FROM forumheading where forumheading_id = $1', [data.forumheading_id], function (err, results) { });
+                con.query("UPDATE forum SET heading =$1 WHERE heading = $2", [1, data.forumheading_id], function (err, result) {});
+            });
+            con.release()
+            callback(null, forumheading);
+        });
+    };
 
     
 

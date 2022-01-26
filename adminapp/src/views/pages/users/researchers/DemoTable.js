@@ -37,8 +37,9 @@ const DemoTable = () => {
 
   React.useEffect(() => {
     getNewList('');
-    getNewListWrap('');
-    getCSVNewList();
+    getNewListWrap('');    
+    getCSVNewList('');
+    getCSVNewListWrap('');
 
     let newDate = new Date()
     let date = newDate.getDate();
@@ -62,13 +63,17 @@ const DemoTable = () => {
     }
   ]
 
-  const getCSVNewList = () => {
-    axios.post(api_url + '/user/csvuserList', { role: 3 }).then((result) => {
+  const getCSVNewList = (status) => {
+    axios.post(api_url + '/user/csvuserList', { role: 3, status: status }).then((result) => {
       if (result.data.status) {
-        var usersdatas = result.data.response.data;
-        setCsvData(usersdatas);
+        if (result.data.response.data.length > 0) {
+          var usersdatas = result.data.response.data;
+          setCsvData(usersdatas);
+        } else {
+          setCsvData([]);
+        }
       } else {
-        Swal.fire('Oops...', result.data.response.msg, 'error')
+       // Swal.fire('Oops...', result.data.response.msg, 'error')
       }
     }).catch((err) => {
       console.log(err);
@@ -119,10 +124,14 @@ const DemoTable = () => {
   const getNewList = (status) => {
     axios.post(api_url + '/user/userList', { role: 3, status: status }).then((result) => {
       if (result.data.status) {
-        var usersdatas = result.data.response.data;
-        setItems(usersdatas);
+        if (result.data.response.data.length > 0) {
+          var usersdatas = result.data.response.data;
+          setItems(usersdatas);
+        } else {
+          setItems([]);
+        }        
       } else {
-        Swal.fire('Oops...', result.data.response.msg, 'error')
+        //Swal.fire('Oops...', result.data.response.msg, 'error')
       }
     }).catch((err) => {
       console.log(err);
@@ -131,6 +140,9 @@ const DemoTable = () => {
 
   const getNewListWrap = (status) => {
     getNewList(status);
+  };
+  const getCSVNewListWrap = (status) => {
+    getCSVNewList(status);
   };
 
   const getBadge = (status) => {
@@ -147,12 +159,16 @@ const DemoTable = () => {
 
     if (e.target.value == '0') {
       getNewListWrap(e.target.value);
+      getCSVNewListWrap(e.target.value);
     } else if (e.target.value == '1') {
       getNewListWrap(e.target.value);
+      getCSVNewListWrap(e.target.value);
     } else if (e.target.value == '2') { 
       getNewListWrap(e.target.value);
+      getCSVNewListWrap(e.target.value);
     }else {
       getNewListWrap('');
+      getCSVNewListWrap('');
     }
 
   }
@@ -209,9 +225,7 @@ const DemoTable = () => {
               <td className="tooltip-box">
                 {item.email_verification_token && item.email_verification_token !== null ? 'Pending' : ''}
                 {(item.email_verification_token == null || item.email_verification_token == '') ? item.status === 1 ? (
-                  <a
-                    href
-                    style={{ cursor: "pointer", textDecoration: "underline" }}
+                  <p
                     onClick={() => {
                       setSelectedItem(item);
                       setModal(true);
@@ -224,11 +238,9 @@ const DemoTable = () => {
                   >
                     Active{" "}
                     <span className="tooltip-title">De-activating the user will remove the user from the front end.</span>
-                  </a>
+                  </p>
                 ) : (
-                  <a
-                    href
-                    style={{ cursor: "pointer", textDecoration: "underline" }}
+                  <p
                     onClick={() => {
                       updateItemStatus(
                         item,
@@ -239,7 +251,7 @@ const DemoTable = () => {
                   >
                     Inactive
                     <span className="tooltip-title">Activating the user will add the user back on the front end.</span>
-                  </a>
+                  </p>
                 ) : ''}
 
               </td>

@@ -126,7 +126,7 @@ function Researcherinterestarea() {
             con.query('SELECT * FROM researcher_interest_area where researcher_interest_area_id = $1', [id], function (err, result) {
                 con.release();
                 if (result.rows.length === 0) {
-                    msg = 'User does not exist.';
+                    msg = 'Interest area does not exist.';
                     callback(msg, null);
                 } else {
                     callback(null, result.rows);

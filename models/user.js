@@ -24,18 +24,36 @@ function User() {
     };
 
 
-    this.getCSVAdminUser = function (role, callback) {
+    this.getCSVAdminUser = function (role, status, callback) {
         connection.acquire(function (err, con) {
-            var sql = 'SELECT *, sector.name as sectorname, occupation.name as occupationname, academic_discipline.name as academicdisciplinename FROM users inner join user_role on users.role = user_role.role_id left join sector on users.sector = sector.sector_id left join occupation on users.occupation = occupation.occupation_id left join academic_discipline on users.academic_discipline = academic_discipline.academic_discipline_id where users.role = $1 order by UPPER(first_name) ASC';
+
+            var sql = '';
             var array = [role];
+            if (status) {
+                if (status == 2) {
+                    sql = 'SELECT *, sector.name as sectorname,organization.organization_name as organizationname, occupation.name as occupationname, academic_discipline.name as academicdisciplinename FROM users inner join user_role on users.role = user_role.role_id left join organization on users.organization = organization.organization_id left join sector on users.sector = sector.sector_id left join occupation on users.occupation = occupation.occupation_id left join academic_discipline on users.academic_discipline = academic_discipline.academic_discipline_id where users.role = $1 and (users.email_verification_token IS NOT NULL and length(users.email_verification_token) > 0) order by UPPER(users.first_name) ASC';
+                    //sql = "SELECT * FROM users where users.role = $1 and (users.email_verification_token IS NOT NULL and length(users.email_verification_token) > 0) order by UPPER(first_name) ASC";
+                    array = [role];
+                } else {
+                    sql = 'SELECT *, sector.name as sectorname,organization.organization_name as organizationname, occupation.name as occupationname, academic_discipline.name as academicdisciplinename FROM users inner join user_role on users.role = user_role.role_id left join organization on users.organization = organization.organization_id left join sector on users.sector = sector.sector_id left join occupation on users.occupation = occupation.occupation_id left join academic_discipline on users.academic_discipline = academic_discipline.academic_discipline_id where users.role = $1 and users.status = $2 and (users.email_verification_token IS NULL or length(users.email_verification_token) = 0) order by UPPER(users.first_name) ASC';
+                    //sql = 'SELECT * FROM users where users.role = $1 and users.status = $2 and (users.email_verification_token IS NULL or length(users.email_verification_token) = 0) order by UPPER(first_name) ASC';
+                    array = [role, status];
+                }
+            } else {
+                sql = 'SELECT *, sector.name as sectorname,organization.organization_name as organizationname, occupation.name as occupationname, academic_discipline.name as academicdisciplinename FROM users inner join user_role on users.role = user_role.role_id left join organization on users.organization = organization.organization_id left join sector on users.sector = sector.sector_id left join occupation on users.occupation = occupation.occupation_id left join academic_discipline on users.academic_discipline = academic_discipline.academic_discipline_id where users.role = $1 order by UPPER(users.first_name) ASC';
+                //sql = 'SELECT * FROM users where users.role = $1 order by UPPER(first_name) ASC';
+            }
+
+            //var sql = 'SELECT *, sector.name as sectorname, organization.organization_name as organizationname, occupation.name as occupationname, academic_discipline.name as academicdisciplinename FROM users inner join user_role on users.role = user_role.role_id left join organization on users.organization = organization.organization_id left join sector on users.sector = sector.sector_id left join occupation on users.occupation = occupation.occupation_id left join academic_discipline on users.academic_discipline = academic_discipline.academic_discipline_id where users.role = $1 order by UPPER(first_name) ASC';
+            
             con.query(sql, array, function (err, result) {
                 con.release();
-                if (result.rows.length === 0) {
-                    msg = 'User does not exist.';
-                    callback(msg, null);
-                } else {
+                if (err){
+                    console.log(err);
+                    callback(err, null);
+                }else{
                     callback(null, result.rows);
-                }
+                }                
             });
         });
     }
@@ -303,7 +321,7 @@ function User() {
             con.query(sql, [id], function (err, result) {
                 con.release();
                 if (result.rows.length === 0) {
-                    msg = 'User does not exist.';
+                    msg = 'Interest area does not exist.';
                     callback(msg, null);
                 } else {
                     callback(null, result.rows);

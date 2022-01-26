@@ -127,7 +127,8 @@ export default function MyBlog() {
                                         <div className="blog-text">
 
                                             <div className="blog-tags" onClick={(e) => bookmarkClick(data.blog_id)}>
-                                                <img className="bookmark-fill" src="images/bookmark-fill.png" alt="bookmark-fill" />
+                                                {data.bookmark_blog_id && <img className="bookmark-fill" src="images/bookmark-fill.png" alt="bookmark-fill" />}
+                                                {!data.bookmark_blog_id && <img className="bookmark-outline" src="images/bookmark-outline.png" alt="bookmark-fill" />}                                                
                                             </div>
                                                                                         
                                             <h3 className="tooltip-box">

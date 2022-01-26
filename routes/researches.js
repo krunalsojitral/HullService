@@ -44,7 +44,7 @@ router.get('/researchesList', function (req, res) {
                 retObj['researcher_name'] = data.first_name + ' ' + data.last_name;
                 retObj['email'] = data.email;
                 retObj['start_date'] = moment(data.start_date).format('YYYY-MM-DD');                
-                retObj['status'] = data.status;
+                retObj['status'] = data.research_status;
                 return retObj;
             });
             return res.json({ status: 1, 'response': { data: researchList } });

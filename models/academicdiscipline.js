@@ -126,7 +126,7 @@ function Academicdiscipline() {
             con.query('SELECT * FROM academic_discipline where academic_discipline_id = $1', [id], function (err, result) {
                 con.release();
                 if (result.rows.length === 0) {
-                    msg = 'User does not exist.';
+                    msg = 'academic discipline does not exist.';
                     callback(msg, null);
                 } else {
                     callback(null, result.rows);

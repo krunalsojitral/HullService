@@ -16,6 +16,8 @@ export default function BlogDetail() {
 
     const [blogId, setBlogId] = React.useState(0)
     const [blogDetail, setBlogDetail] = React.useState({})
+    const [blogCost, setBlogCost] = React.useState({})
+  //  const [blogPaid, setBlogPaid] = React.useState(false)
     const [relatedBlogDetail, setRelatedBlogDetail] = React.useState([])
 
     React.useEffect(() => {
@@ -29,32 +31,36 @@ export default function BlogDetail() {
             headers: { Authorization: `${token}` }
         };
 
-        axios.post(api_url + '/blog/getBlogDataById', { blog_id }).then((result) => {
-            if (result.data.status) {
-                var blogdata = result.data.response.data;
-                if (blogdata.purchase_type == "unpaid") {
-                    setBlogDetail(blogdata);
-                } else {
-
-                    if (blogdata.purchase_type == "unpaid") { 
-                        setBlogDetail(blogdata);
-                    }else{
-                        open()
-                    }
-                    // if (!token) {
-                    //     open()
-                    // }else{
-                    //     setBlogDetail(blogdata);
-                    // }
-                }
-            } else {
-                Swal.fire('Oops...', result.data.response.msg, 'error')
-            }
-        }).catch((err) => {
-            console.log(err);
-        })
-
         if (token) {
+            axios.post(api_url + '/blog/getBlogDataByIdAfterLogin', { blog_id }, config).then((result) => {
+                if (result.data.status) {
+                    var blogdata = result.data.response.data;
+                    if (blogdata.purchase_type == "unpaid") {
+                        setBlogDetail(blogdata);
+                    } else {
+                        if (blogdata.purchase_type == "unpaid") {
+                            setBlogDetail(blogdata);
+                        } else {
+                            setBlogCost(blogdata.cost);
+                            if (!token) {
+                                open()
+                            } else {                                
+                                if (blogdata.blog_order){
+                                  //  setBlogPaid(false);
+                                    setBlogDetail(blogdata);
+                                }else{                                    
+                                    open()
+                                }                                
+                                
+                            }
+                        }
+                    }
+                } else {
+                    Swal.fire('Oops...', result.data.response.msg, 'error')
+                }
+            }).catch((err) => {
+                console.log(err);
+            })
             axios.post(api_url + '/blog/getRelatedPaidBlogList', { "blog_id": blog_id }, config).then((result) => {
                 if (result.data.status) {
                     var blogdata = result.data.response.data;
@@ -62,6 +68,31 @@ export default function BlogDetail() {
                 }
             }).catch((err) => { console.log(err); })
         } else {
+            axios.post(api_url + '/blog/getBlogDataById', { blog_id }).then((result) => {
+                if (result.data.status) {
+                    var blogdata = result.data.response.data;
+                    if (blogdata.purchase_type == "unpaid") {
+                        setBlogDetail(blogdata);
+                    } else {
+                        if (blogdata.purchase_type == "unpaid") {
+                            setBlogDetail(blogdata);
+                        } else {                            
+                            open();
+                            // if (!token) {
+                            //     open()
+                            // } else {
+                            //     console.log(blogdata);
+                            //    // setBlogPaid(true);
+                            //     setBlogDetail(blogdata);
+                            // }
+                        }
+                    }
+                } else {
+                    Swal.fire('Oops...', result.data.response.msg, 'error')
+                }
+            }).catch((err) => {
+                console.log(err);
+            })
             axios.post(api_url + '/blog/getRelatedUnpaidBlogList', { "blog_id": blog_id }).then((result) => {
                 if (result.data.status) {
                     var blogdata = result.data.response.data;
@@ -85,7 +116,7 @@ export default function BlogDetail() {
             <Header />
 
             <Modal>
-                <DirectionModel close={close} blogDetail={blogId}></DirectionModel>
+                <DirectionModel close={close} blogDetail={blogId} cost={blogCost}></DirectionModel>
             </Modal>
 
             <section className="inner-header">
@@ -116,6 +147,11 @@ export default function BlogDetail() {
                                     </div>
                                         <div className="research-date">
                                         <label>{blogDetail.created_at}</label>
+                                        </div>
+                                        <div>
+                                        {/* {blogPaid && <Link to={{ pathname: "/blog-payment", search: "?id=" + blogDetail.blog_id }}>
+                                            Purchase Blog</Link>
+                                        } */}
                                         </div>
                                     </div>
                                 {blogDetail.image && <div className="video-image"><img src={blogDetail.image} alt="author" /></div>}
