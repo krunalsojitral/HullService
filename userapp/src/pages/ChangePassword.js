@@ -34,6 +34,7 @@ export default function Changepassword() {
 
     const onKeyUpPassword = (e) => {
         $('#password_error').hide();
+        $("#confirm_pswd_info").hide();
         // keyup code here
         var pswd = e.target.value;
 
@@ -79,12 +80,70 @@ export default function Changepassword() {
 
     const onBlurPassword = (e) => {
         $("#pswd_info").hide();
+        $("#confirm_pswd_info").hide();
         $('#password_error').show();
     }
 
     const onFocusPassword = (e) => {
         $("#pswd_info").hide();
+        $("#confirm_pswd_info").hide();
         $('#password_error').show();
+    }
+
+    const onKeyUpConfirmPassword = (e) => {
+        $('#pswd_info').hide();
+        $('#confirm_password_error').hide();
+        // keyup code here
+        var pswd = e.target.value;
+        if (pswd) {
+            $('#confirm_pswd_info').show();
+            //validate the length
+            if (pswd.length < 8) {
+                $('#confirm_length').removeClass('valid').addClass('invalid');
+            } else {
+                $('#confirm_length').removeClass('invalid').addClass('valid');
+            }
+
+            //validate letter
+            if (pswd.match(/[a-z]/)) {
+                $('#confirm_letter').removeClass('invalid').addClass('valid');
+            } else {
+                $('#confirm_letter').removeClass('valid').addClass('invalid');
+            }
+
+            //validate capital letter
+            if (pswd.match(/[A-Z]/)) {
+                $('#confirm_capital').removeClass('invalid').addClass('valid');
+            } else {
+                $('#confirm_capital').removeClass('valid').addClass('invalid');
+            }
+
+            //validate number
+            if (pswd.match(/\d/)) {
+                $('#confirm_number').removeClass('invalid').addClass('valid');
+            } else {
+                $('#confirm_number').removeClass('valid').addClass('invalid');
+            }
+            if (/^[a-zA-Z0-9- ]*$/.test(pswd) == false) {
+                $('#confirm_special').removeClass('invalid').addClass('valid');
+            } else {
+                $('#confirm_special').removeClass('valid').addClass('invalid');
+            }
+        } else {
+            $('#confirm_pswd_info').hide();
+        }
+    }
+
+    const onBlurConfirmPassword = (e) => {
+        $('#pswd_info').hide();
+        $("#confirm_pswd_info").hide();
+        $('#confirm_password_error').show();
+    }
+
+    const onFocusConfirmPassword = (e) => {
+        $('#pswd_info').hide();
+        $("#confirm_pswd_info").hide();
+        $('#confirm_password_error').show();
     }
 
 
@@ -140,7 +199,7 @@ export default function Changepassword() {
                                                 {(errors.password?.type === "minLength" && <small className="error">Password is at least 8 characters </small>)}
                                                 {(errors.password?.type === "pattern" && <small className="error">Please enter at least 8 characters, 1 numeric, 1 lowercase letter, 1 uppercase letter and 1 special character.</small>)}
                                             </div> 
-                                            <div id="pswd_info">
+                                            <div id="pswd_info" className="password_error_list" style={{ 'display': 'none' }}>
                                                 <ul>
                                                     <li id="length" className="invalid">Must be atleast 8 characters!</li>
                                                     <li id="letter" className="invalid">Must contain atleast 1 letter in small case!</li>
@@ -166,16 +225,32 @@ export default function Changepassword() {
                                                 }}
                                                 render={({ field: { onChange, value } }) => (
                                                     <input
+                                                        id="confirm_password"
                                                         type="password"
                                                         onChange={onChange}
+                                                        onKeyUp={(e) => onKeyUpConfirmPassword(e)}
+                                                        onBlur={(e) => onBlurConfirmPassword(e)}
+                                                        onFocus={(e) => onFocusConfirmPassword(e)}
                                                         className="form-control"
                                                         value={value}
                                                         placeholder={`Confirm password *`}
                                                     />
                                                 )}
                                             ></Controller>
-                                            {(errors.confirmpassword?.type === "required" && <small className="error">Confirm password is required</small>)}
-                                            {errors.confirmpassword && <small className="error">{errors.confirmpassword.message}</small>}
+                                            <div id="confirm_password_error">
+                                                {(errors.confirmpassword?.type === "required" && <small className="error">Confirm password is required</small>)}
+                                                {errors.confirmpassword && <small className="error">{errors.confirmpassword.message}</small>}
+                                            </div>
+                                            <div id="confirm_pswd_info" className="password_error_list" style={{ 'display': 'none' }}>
+                                                <ul>
+                                                    <li id="confirm_length" className="invalid">Must be atleast 8 characters!</li>
+                                                    <li id="confirm_letter" className="invalid">Must contain atleast 1 letter in small case!</li>
+                                                    <li id="confirm_capital" className="invalid">Must contain atleast 1 letter in capital case!</li>
+                                                    <li id="confirm_number" className="invalid">Must contain atleast 1 number!</li>
+                                                    <li id="confirm_special" className="invalid">Must contain atleast 1 special character!</li>
+                                                </ul>
+                                            </div>
+
                                         </div>                                        
                                         <button type="submit" className="sign-btn">Submit</button>
 

@@ -18,42 +18,51 @@ const Forgotpassword = lazy(() => import("./pages/Forgotpassword"));
 const Changepassword = lazy(() => import("./pages/ChangePassword"));
 const MembershipBenefit = lazy(() => import("./pages/MembershipBenefit"));
 const About = lazy(() => import("./pages/About"));
-const Events = lazy(() => import("./pages/user/Events"));
 const Members = lazy(() => import("./pages/user/Members"));
 const Partners = lazy(() => import("./pages/user/Partners"));
-// const Video = lazy(() => import("./pages/user/Video"));
-const VideoDetail = lazy(() => import("./pages/user/VideoDetail"));
-const Blog = lazy(() => import("./pages/user/Blog"));
-const BlogDetail = lazy(() => import("./pages/user/BlogDetail"));
-const ArticlesDetail = lazy(() => import("./pages/user/ArticlesDetail"));
-const AddForum = lazy(() => import("./pages/user/AddForum"));
-const Forum = lazy(() => import("./pages/user/Forum"));
-const MyForum = lazy(() => import("./pages/user/MyForum"));
-const ForumDetail = lazy(() => import("./pages/user/ForumDetail"));
-const ForumSub = lazy(() => import("./pages/user/ForumSub"));
-const Articles = lazy(() => import("./pages/user/Articles"));
 const Dashboard = lazy(() => import("./pages/user/Dashboard"));
 const Landing = lazy(() => import("./pages/Landing"));
 const Contact = lazy(() => import("./pages/Contact"));
 const ParticipateInResearch = lazy(() => import("./pages/ParticipateInResearch"));
-const InformationalVideo = lazy(() => import("./pages/user/InformationalVideo"));
-const GroupSession = lazy(() => import("./pages/user/GroupSession"));
-const ProfessionalDevelopment = lazy(() => import("./pages/user/ProfessionalDevelopment"));
-const MyProfessionalDevelopment = lazy(() => import("./pages/user/MyProfessionalDevelopment"));
-const MyProfessionalDevelopmentDetail = lazy(() => import("./pages/user/MyProfessionalDevelopmentDetail"));
-const ProfessionalDevelopmentDetail = lazy(() => import("./pages/user/ProfessionalDevelopmentDetail"));
-const ParticipantsInMyStudies = lazy(() => import("./pages/user/ParticipantsInMyStudies"));
-const MyStudies = lazy(() => import("./pages/user/MyStudies"));
-const CoursePayment = lazy(() => import("./pages/user/CoursePayment"));
-const ArticlePayment = lazy(() => import("./pages/user/ArticlePayment"));
-const BlogPayment = lazy(() => import("./pages/user/BlogPayment"));
-const VideoPayment = lazy(() => import("./pages/user/VideoPayment"));
-const MyBlog = lazy(() => import("./pages/user/MyBlog"));
-const MyArticle = lazy(() => import("./pages/user/MyArticle"));
-const MyVideo = lazy(() => import("./pages/user/MyVideo"));
 const Preview = lazy(() => import("./pages/Preview"));
 const DynamicPage = lazy(() => import("./pages/DynamicPage"));
-const AddResearch = lazy(() => import("./pages/user/AddResearch"));
+const AddResearch = lazy(() => import("./pages/user/research/AddResearch"));
+
+//user page
+
+const Events = lazy(() => import("./pages/user/event/Events"));
+
+const GroupSession = lazy(() => import("./pages/user/groupsession/GroupSession"));
+
+const Blog = lazy(() => import("./pages/user/blog/Blog"));
+const BlogDetail = lazy(() => import("./pages/user/blog/BlogDetail"));
+const MyBlog = lazy(() => import("./pages/user/blog/MyBlog"));
+const BlogPayment = lazy(() => import("./pages/user/blog/BlogPayment"));
+
+const ArticlesDetail = lazy(() => import("./pages/user/article/ArticlesDetail"));
+const MyArticle = lazy(() => import("./pages/user/article/MyArticle"));
+const ArticlePayment = lazy(() => import("./pages/user/article/ArticlePayment"));
+const Articles = lazy(() => import("./pages/user/article/Articles"));
+
+const AddForum = lazy(() => import("./pages/user/forum/AddForum"));
+const Forum = lazy(() => import("./pages/user/forum/Forum"));
+const MyForum = lazy(() => import("./pages/user/forum/MyForum"));
+const ForumDetail = lazy(() => import("./pages/user/forum/ForumDetail"));
+const ForumSub = lazy(() => import("./pages/user/forum/ForumSub"));
+
+const InformationalVideo = lazy(() => import("./pages/user/video/InformationalVideo"));
+const VideoDetail = lazy(() => import("./pages/user/video/VideoDetail"));
+const VideoPayment = lazy(() => import("./pages/user/video/VideoPayment"));
+const MyVideo = lazy(() => import("./pages/user/video/MyVideo"));
+
+const ProfessionalDevelopment = lazy(() => import("./pages/user/course/ProfessionalDevelopment"));
+const MyProfessionalDevelopment = lazy(() => import("./pages/user/course/MyProfessionalDevelopment"));
+const MyProfessionalDevelopmentDetail = lazy(() => import("./pages/user/course/MyProfessionalDevelopmentDetail"));
+const ProfessionalDevelopmentDetail = lazy(() => import("./pages/user/course/ProfessionalDevelopmentDetail"));
+const CoursePayment = lazy(() => import("./pages/user/course/CoursePayment"));
+
+const ParticipantsInMyStudies = lazy(() => import("./pages/user/research/ParticipantsInMyStudies"));
+const MyStudies = lazy(() => import("./pages/user/research/MyStudies"));
 
 
 function App() {

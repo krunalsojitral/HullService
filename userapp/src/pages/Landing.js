@@ -1,7 +1,7 @@
 import React from 'react';
 
 // import { useModal } from 'react-hooks-use-modal';
-// import DirectionModel from "./DirectionModel";
+// import PurchaseModel from "./PurchaseModel";
 // import RegisterPopup from "./RegisterPopup";
 
 // import { useHistory, Redirect } from 'react-router-dom';

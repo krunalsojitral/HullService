@@ -226,7 +226,7 @@ function User() {
     this.getPaidBlogList = function (role, user_id, callback) {
         connection.acquire(function (err, con) {            
             //con.query('SELECT *,blog.blog_id as b_id, blog.created_at as blog_date FROM blog left join bookmark_blog on blog.blog_id = bookmark_blog.blog_id and bookmark_blog.user_id = $1 where blog.draft_status IS NULL and blog.status = $2 and (blog.role ILIKE $3 or blog.role ILIKE $4) order by blog.blog_id desc', [user_id, 1, '%' + role + '%', '%4%'], function (err, result) {
-            con.query('SELECT *,blog.blog_id as b_id, blog.created_at as blog_date FROM blog left join bookmark_blog on blog.blog_id = bookmark_blog.blog_id and bookmark_blog.user_id = $1 where blog.draft_status IS NULL and blog.status = $2 and (blog.role ILIKE $3) order by blog.blog_id desc', [user_id, 1, '%' + role + '%'], function (err, result) {
+            con.query('SELECT *,blog.blog_id as b_id, blog.created_at as blog_date FROM blog left join bookmark_blog on blog.blog_id = bookmark_blog.blog_id and bookmark_blog.user_id = $1 where blog.draft_status IS NULL and blog.status = $2 and (blog.role ILIKE $3 or blog.role ILIKE $4) order by blog.blog_id desc', [user_id, 1, '%' + role + '%', '%4%'], function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }
