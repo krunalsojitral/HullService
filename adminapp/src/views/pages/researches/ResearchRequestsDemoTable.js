@@ -25,6 +25,7 @@ const ResearchesDemoTable = ({ moduleConfigUrls }) => {
   React.useEffect(() => {
     getNewList(moduleConfigUrls, setItems);
     getNewListWrap();
+    updateResearchRequestCount();
   }, [])
 
   const fields = [    
@@ -41,6 +42,10 @@ const ResearchesDemoTable = ({ moduleConfigUrls }) => {
       filter: false
     }
   ]
+
+  const updateResearchRequestCount = () => {
+    axios.get(api_url + '/researches/updateResearchRequestCount').then((result) => {}).catch((err) => {console.log(err);})
+  }
 
   const getNewList = () => {
     axios.get(api_url + '/researches/researchRequestList', {}).then((result) => {

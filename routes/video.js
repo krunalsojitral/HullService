@@ -208,6 +208,126 @@ router.post('/getvideoDataById', [check('video_id', 'video is required').notEmpt
     }
 });
 
+router.post('/getvideoDataByIdAfterLogin', passport.authenticate('jwt', { session: false }), [check('video_id', 'video is required').notEmpty()], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        let video_id = req.body.video_id;
+        let user_id = req.user.id;
+        asyn.waterfall([
+            function (done) {
+                Video.getvideoDataByIdAfterLogin(video_id, user_id, function (err, result) {
+                    if (err) {
+                        done({ 'status': 0, 'response': { 'msg': 'Something went wrong.' } });
+                    } else {
+                        if (result != '') {
+                            var videoLink;
+                            if (req.headers.host == env.ADMIN_LIVE_URL) {
+                                videoLink = env.ADMIN_LIVE_URL;
+                            } else {
+                                videoLink = env.ADMIN_LIVE_URL;
+                            }
+                            let video = {};
+                            video['video_id'] = video_id;
+                            video['title'] = result[0].title;
+                            video['description'] = result[0].description;
+                            video['created_at'] = result[0].created_at;
+                            video['video_url'] = result[0].video_url;
+                            video['video_embeded_id'] = result[0].video_embeded_id;
+                            // video['overview'] = result[0].overview;
+                            // video['qna'] = result[0].qna;
+                            // video['notes'] = result[0].notes;
+                            // video['information'] = result[0].information;
+                            video['purchase_type'] = result[0].purchase_type;
+                            video['video'] = (result[0].video) ? videoLink + env.VIDEO_VIEW_PATH + result[0].video : '';
+                            video['role'] = result[0].role;
+                            video['cost'] = result[0].cost;
+                            video['status'] = result[0].status;
+                            video['video_order'] = result[0].video_order_id;
+                            video['tag'] = [];
+                            video['draft_status'] = result[0].draft_status;
+                            done(err, video)
+                        } else {
+                            done('data not found', null);
+                        }
+                    }
+                });
+            },
+            function (video, done) {
+                if (video['video_id'] != '') {
+                    Video.getTagByVideoId(video['video_id'], function (err, result) {
+
+                        if (result && result.length > 0) {
+                            var obj = result.map((data, index) => {
+                                let retObj = {};
+                                retObj['id'] = (index + 1);
+                                retObj['label'] = data.tag_name;
+                                retObj['value'] = data.tag_id;
+                                return retObj;
+                            });
+                            video['tag'] = obj;
+                            done(null, video)
+                        } else {
+                            done(null, video)
+                        }
+                    });
+                } else {
+                    done(null, video)
+                }
+            },
+            function (video, done2) {
+                if (video['role']) {
+                    var role = video['role'];
+                    Common.getRoleAllList(function (err, result) {
+                        if (result && result.length > 0) {
+
+                            var array = [];
+                            result.find((o, i) => {
+                                if (role.includes(o.role_id)) {
+                                    array.push(o);
+                                }
+                            });
+
+                            video['selected_role'] = array;
+                            done2(null, video)
+                        } else {
+                            video['selected_role'] = [];
+                            done2(null, video)
+                        }
+                    });
+                } else {
+                    video['selected_role'] = [];
+                    done2(null, video)
+                }
+            }, function (video, done2) {
+
+                if (video['selected_role'].length > 0) {
+                    video['selected_role'] = video['selected_role'].map((data, index) => {
+                        let retObj = {};
+                        retObj['id'] = (index + 1);
+                        retObj['label'] = data.role;
+                        retObj['value'] = data.role_id;
+                        return retObj;
+                    });
+                    done2(null, video)
+                } else {
+                    done2(null, video)
+                }
+            }
+        ],
+            function (error, video) {
+                if (error) {
+                    return res.json({ 'status': 0, 'response': { 'msg': err } });
+                } else {
+                    return res.json({ 'status': 1, 'response': { 'data': video, 'msg': 'data found' } });
+                }
+            });
+
+    }
+});
+
 
 router.post('/changevideoStatus', [
     check('video_id', 'video id is required').notEmpty(),

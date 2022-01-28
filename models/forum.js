@@ -108,8 +108,8 @@ function forum() {
     this.addforumByuser = function (record, tag, callback) {
         connection.acquire(function (err, con) {
 
-            const sql = 'INSERT INTO forum(topic,heading,status,created_at,total_view, created_by,user_status, description,retire) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *'
-            const values = [record.topic, record.heading, 0, record.created_at, 0, record.created_by, 0, record.description,0]
+            const sql = 'INSERT INTO forum(topic,heading,status,created_at,total_view, created_by,user_status, description,retire,read) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *'
+            const values = [record.topic, record.heading, 0, record.created_at, 0, record.created_by, 0, record.description,0,0]
             con.query(sql, values, function (err, result) {
                 con.release()
                 if (err) {
@@ -1074,6 +1074,39 @@ function forum() {
             });
             con.release()
             callback(null, forum);
+        });
+    };
+
+    this.updateForumRequestCount = function (callback) {
+        connection.acquire(function (err, con) {
+            con.query("UPDATE forum SET read =$1", [1], function (err, result) {
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, result);
+                }
+            });
+        });
+    };
+
+
+    this.getForumNotificationCount = function (callback) {
+        connection.acquire(function (err, con) {
+            var sql = 'SELECT count(*) as cnt FROM forum where read = $1';
+            con.query(sql, [0], function (err, result) {
+                con.release();
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
         });
     };
 }

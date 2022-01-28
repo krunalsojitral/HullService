@@ -2,13 +2,11 @@ import React, { useState, useRef, useEffect } from 'react'
 import useAuth from '../../../hooks/useAuth';
 import Header from '../../../sections/Header';
 import Footer from '../../../sections/Footer';
-import LoadSpinner from '../../LoadSpinner/LoadSpinner';
 import Swal from "sweetalert2";
 import axios from 'axios';
 import api_url from '../../../components/Apiurl';
 import { useHistory } from "react-router-dom";
 import Sidebar from './../Sidebar';
-const gm = require('gm');
 
 export default function BlogPayment() {
 

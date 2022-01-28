@@ -354,7 +354,9 @@ function User() {
     this.getBookMarkArticle = function (user_id, role, callback) {
         connection.acquire(function (err, con) {
             console.log(role);
-            con.query('SELECT *,article.article_id as b_id, article.created_at as article_date FROM bookmark_article inner join article on article.article_id = bookmark_article.article_id where bookmark_article.user_id = $1 and article.status = $2 order by article.article_id desc', [user_id, 1], function (err, result) {
+            //var sql = 'SELECT *,article.article_id as b_id, article.created_at as article_date FROM bookmark_article inner join article on article.article_id = bookmark_article.article_id where bookmark_article.user_id = $1 and article.status = $2 order by article.article_id desc';
+            var sql = '(SELECT article.*,article.article_id as b_id, article.created_at as article_date,bookmark_article.bookmark_article_id as bookmark_article_id FROM bookmark_article inner join article on article.article_id = bookmark_article.article_id where bookmark_article.user_id = $2 and article.status = $3 UNION SELECT article.*,article.article_id as b_id, article.created_at as article_date,bookmark_article.bookmark_article_id as bookmark_article_id FROM article_order inner join article on article.article_id = article_order.article_id left join bookmark_article on article.article_id = bookmark_article.article_id and bookmark_article.user_id = $1 where article_order.user_id = $2 and article.status = $3)';
+            con.query(sql, [user_id, user_id, 1], function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }
@@ -365,6 +367,19 @@ function User() {
             });
         });
     };
+
+    this.getarticleDataByIdAfterLogin = function (id, user_id, callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT *,article.article_id as b_id,article.created_at as article_date FROM article left join article_order on article.article_id = article_order.article_id and article_order.user_id = $1 where article.article_id = $2', [user_id, id], function (err, result) {
+                con.release();
+                if (err) {
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    }
 
     
     this.deleteArticle = function (article, callback) {

@@ -21,6 +21,20 @@ function Course() {
         });
     }
 
+    this.getcourseDataByIdAfterLogin = function (id, user_id, callback) {
+        connection.acquire(function (err, con) {            
+            con.query('SELECT * FROM course left join course_order on course.course_id = course_order.course_id and course_order.user_id = $1 where course.course_id = $2', [user_id,id], function (err, result) {
+                con.release();
+                if (result.rows.length === 0) {
+                    msg = 'course does not exist.';
+                    callback(msg, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    }    
+
     this.getAllAdminCourse = function (status, callback) {
         connection.acquire(function (err, con) {
 

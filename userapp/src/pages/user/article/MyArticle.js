@@ -67,9 +67,9 @@ export default function MyArticle() {
             if (result.data.status) {
                 var articledata = result.data.response.data.type;
                 if (articledata == 'remove') {
-                    Swal.fire("Success!", 'Article removed from your dashboard', "success");
+                    Swal.fire("Success!", 'Article removed from your bookmark list', "success");
                 } else {
-                    Swal.fire("Success!", 'Article added to your dashboard', "success");
+                    Swal.fire("Success!", 'Article added to your bookmark list', "success");
                 }
                 getArticleDataWrap();
             } else {

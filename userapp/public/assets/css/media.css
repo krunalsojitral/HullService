@@ -552,12 +552,12 @@
         grid-template-columns: 1fr;
     }
 
-    .content-grid a {
+    .content-grid .course-title {
         margin-bottom: 8px;
         padding-left: 30px;
     }
 
-    .content-grid .course-play a {
+    .content-grid .course-play .course-title {
         padding-left: 0;
     }
 

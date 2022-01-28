@@ -15,6 +15,10 @@ import CIcon from '@coreui/icons-react'
 import { useHistory } from "react-router-dom";
 // routes config
 import routes from '../routes'
+import {  
+  TheHeaderDropdownNotif,  
+  TheHeaderDropdownTasks
+} from './index'
 
 const TheHeader = () => {
   let history = useHistory();
@@ -70,6 +74,8 @@ const TheHeader = () => {
           <CIcon name="cil-moon" className="c-d-dark-none" alt="CoreUI Icons Moon" />
           <CIcon name="cil-sun" className="c-d-default-none" alt="CoreUI Icons Sun" />
         </CToggler>
+        <TheHeaderDropdownNotif />
+        <TheHeaderDropdownTasks />
         {/* <CToggler
           inHeader
           className="d-md-down-none"

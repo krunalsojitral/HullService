@@ -176,12 +176,12 @@ const _nav = [
     _tag: "CSidebarNavDropdown",
     name: "Forums",
     route: "/forum",
-    icon: "cil-list",
+    icon: "cil-list",    
     _children: [      
       {
         _tag: "CSidebarNavItem",
         name: "Add Topics",
-        to: "/forumheading",
+        to: "/forumheading",        
       },
       {
         _tag: "CSidebarNavItem",
@@ -191,7 +191,7 @@ const _nav = [
       {
         _tag: "CSidebarNavItem",
         name: "Thread Requests",
-        to: "/forum-request",
+        to: "/forum-request",        
       },
     ],
   }, 
@@ -209,7 +209,7 @@ const _nav = [
       {
         _tag: "CSidebarNavItem",
         name: "Research Requests",
-        to: "/research-requests",
+        to: "/research-requests",        
       },
       {
         _tag: "CSidebarNavItem",

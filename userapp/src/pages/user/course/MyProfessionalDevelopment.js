@@ -155,33 +155,39 @@ export default function MyProfessionalDevelopment() {
 
                                             {!noresult && currentData.length > 0 && currentData.map((data, index) => (
                                                 <div key={index} className="col-md-6 col-lg-4">
-                                                    <div className="video-card">
-                                                        <div className="video-img">
+                                                    <div className="blog-box">
+                                                        <div className="blog-image">
                                                             <Link to={{ pathname: "/professional-development-detail", search: "?id=" + data.course_id }}>
                                                                 {data.image_thumb && <img src={data.image_thumb} alt="blog" />}
                                                                 {!data.image && <img src="images/blog.jpg" alt="blog" />}
                                                             </Link>
                                                         </div>
-                                                        <h3 className="tooltip-box">
-                                                            <Link to={{ pathname: "/professional-development-detail", search: "?id=" + data.course_id }}>
-                                                                {data.title.slice(0, 30)}
-                                                                <span className="tooltip-title">{data.title}</span>
-                                                            </Link>
-                                                        </h3>
-                                                        <div className="video-bottom">
-                                                            <p><img src="images/hull-icon.png" alt="author" />Hull Service</p>
-                                                        </div>
-                                                        {/* <div className="star-ratting">
-                                                            <p>687 Review)</p>
-                                                        </div> */}
-                                                        <div className="add-to-cart">
-                                                            <div className="price">
-                                                                <p>${data.sale_cost}</p><label>${data.main_cost}</label>
-                                                            </div>
-                                                            <div className="cart-btn">
-                                                                <Link to={{ pathname: "/my-professional-development-detail", search: "?id=" + data.course_id }}>View Detail</Link>
-                                                            </div>
-                                                        </div>
+                                                        <div className="blog-text">
+                                                            <br />
+                                                            <h3 className="tooltip-box">
+                                                                <Link to={{ pathname: "/professional-development-detail", search: "?id=" + data.course_id }}>
+                                                                    {data.title.slice(0, 30)}
+                                                                    <span className="tooltip-title">{data.title}</span>
+                                                                </Link>
+                                                            </h3>
+                                                            <div className="blog-post">
+                                                                <div className="blog-author">
+                                                                    <img src="images/favicon.png" alt="author" />
+                                                                    <p>Hull Service</p>
+                                                                </div>
+                                                                <div className="date">{data.created_at}</div>
+                                                            </div>     
+                                                            <div className="video-card">
+                                                                <div className="add-to-cart">
+                                                                    <div className="price">
+                                                                        <p>${data.sale_cost}</p><label>${data.main_cost}</label>
+                                                                    </div>
+                                                                    <div className="cart-btn">
+                                                                        <Link to={{ pathname: "/professional-development-detail", search: "?id=" + data.course_id }}>View Detail</Link>
+                                                                    </div>
+                                                                </div>
+                                                            </div>                                                            
+                                                        </div>                                                           
                                                     </div>
                                                 </div>
                                             ))}

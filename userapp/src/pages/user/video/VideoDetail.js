@@ -26,32 +26,44 @@ export default function VideoDetail() {
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
         const config = { headers: { Authorization: `${token}` } };
-        axios.post(api_url + '/video/getVideoDataById', { video_id }).then((result) => {
-            if (result.data.status) {
-                var videodata = result.data.response.data;
-                if (videodata.purchase_type == "unpaid") {
-                    setVideoDetail(videodata);
-                } else {
-
-                    if (videodata.purchase_type == "unpaid") {
-                        setVideoDetail(videodata);
-                    }else{
-                        setVideoCost(videodata.cost)
-                        open()
-                    }
-                    
-                    // if (!token) {
-                    //     open()
-                    // } else {
-                    //     setVideoDetail(videodata);
-                    // }
-                }
-            } else {
-                Swal.fire('Oops...', result.data.response.msg, 'error')
-            }
-        }).catch((err) => { console.log(err); })
+       
 
         if (token) { 
+            
+            axios.post(api_url + '/video/getvideoDataByIdAfterLogin', { video_id }, config).then((result) => {
+                if (result.data.status) {
+                    var videodata = result.data.response.data;
+                    if (videodata.purchase_type == "unpaid") {
+                        setVideoDetail(videodata);
+                    } else {
+
+                        if (videodata.purchase_type == "unpaid") {
+                            setVideoDetail(videodata);
+                        } else {
+
+                            setVideoCost(videodata.cost);
+                            if (!token) {
+                                open()
+                            } else {
+                                if (videodata.video_order) {
+                                    setVideoDetail(videodata);
+                                } else {
+                                    open()
+                                }
+                            }                           
+                        }
+
+                        // if (!token) {
+                        //     open()
+                        // } else {
+                        //     setVideoDetail(videodata);
+                        // }
+                    }
+                } else {
+                    Swal.fire('Oops...', result.data.response.msg, 'error')
+                }
+            }).catch((err) => { console.log(err); })
+
             axios.post(api_url + '/video/getRelatedPaidVideoList', { "video_id" : video_id }, config).then((result) => {
                 if (result.data.status) {
                     var videodata = result.data.response.data;
@@ -59,6 +71,32 @@ export default function VideoDetail() {
                 } 
             }).catch((err) => { console.log(err); })
         }else{
+
+            axios.post(api_url + '/video/getVideoDataById', { video_id }).then((result) => {
+                if (result.data.status) {
+                    var videodata = result.data.response.data;
+                    if (videodata.purchase_type == "unpaid") {
+                        setVideoDetail(videodata);
+                    } else {
+
+                        if (videodata.purchase_type == "unpaid") {
+                            setVideoDetail(videodata);
+                        } else {
+                            setVideoCost(videodata.cost)
+                            open()
+                        }
+
+                        // if (!token) {
+                        //     open()
+                        // } else {
+                        //     setVideoDetail(videodata);
+                        // }
+                    }
+                } else {
+                    Swal.fire('Oops...', result.data.response.msg, 'error')
+                }
+            }).catch((err) => { console.log(err); })
+
             axios.post(api_url + '/video/getRelatedUnpaidVideoList', { "video_id": video_id }).then((result) => {
                 if (result.data.status) {
                     var videodata = result.data.response.data;

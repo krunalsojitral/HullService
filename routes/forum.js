@@ -539,7 +539,8 @@ router.post('/addforumByuser', passport.authenticate('jwt', { session: false }),
             heading: (req.body.heading) ? req.body.heading : '',
             description: (req.body.description) ? req.body.description : '',            
             created_at: moment().format('YYYY-MM-DD'),
-            created_by: req.user.id
+            created_by: req.user.id,
+            read:0
         };
         let tag = (req.body.tag) ? req.body.tag : [];
         Forum.addforumByuser(record, tag, function (err, data) {
@@ -1251,6 +1252,32 @@ router.post('/deleteMultipleForum', [
             }
         });
     }
+});
+
+router.get('/getForumNotificationCount', function (req, res) {
+    loggerData(req);    
+    Forum.getForumNotificationCount(function (err, notificationCount) {
+        if (err) {
+            return res.json({ 'status': 0, 'response': { 'msg': err } });
+        } else {
+            if (notificationCount) {
+                return res.json({ 'status': 1, 'response': { 'data': notificationCount, 'msg': 'data found' } });
+            } else {
+                return res.json({ 'status': 0, 'response': { 'msg': error } });
+            }
+        }
+    });
+});
+
+router.get('/updateForumRequestCount', function (req, res) {
+    loggerData(req);
+    Forum.updateForumRequestCount(function (err, count) {
+        if (err) {
+            return res.json({ 'status': 0, 'response': { 'msg': err } });
+        } else {
+            return res.json({ 'status': 1, 'response': { 'msg': 'updated successfully' } });
+        }
+    });
 });
 
 module.exports = router;

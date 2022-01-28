@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import axios from 'axios';
 import api_url from './../../Apiurl';
 import Swal from "sweetalert2";
+import { useHistory } from 'react-router-dom'
 import {
   CCardBody,
   CCardHeader,
@@ -12,6 +13,8 @@ import { CSVLink, CSVDownload } from "react-csv";
 
 
 const FutureParticipantsDemoTable = () => {
+
+  const history = useHistory()
 
   const [deleteButtonDisable, setDeleteButtonDisable] = useState(true)
   const [items, setItems] = useState([])
@@ -59,14 +62,14 @@ const FutureParticipantsDemoTable = () => {
     { key: 'name', _style: { width: '20%'} },
     { key: 'dob', _style: { width: '20%' } },
     { key: 'email', _style: { width: '20%' } },    
-    { key: 'no_of_kids', _style: { width: '20%' } },
-    { key: 'age_of_kids', _style: { width: '20%' } },
-    // {
-    //   key: 'show_details',
-    //   label: '',
-    //   _style: { width: '1%' },
-    //   filter: false
-    // }
+   // { key: 'no_of_kids', _style: { width: '20%' } },
+   // { key: 'age_of_kids', _style: { width: '20%' } },
+    {
+      key: 'show_details',
+      label: '',
+      _style: { width: '1%' },
+      filter: false
+    }
   ]
 
   const getNewList = () => {
@@ -195,22 +198,22 @@ const FutureParticipantsDemoTable = () => {
                 />
               </td>
             ),
-            // 'show_details':
-            //   item => {
-            //     return (
-            //       <td className="py-2">
-            //         <CButton
-            //         color="primary"
-            //         variant="outline"
-            //         shape="square"
-            //         size="sm"
-            //           onClick={() => history.push(`/futureresearchdetail/${item.future_research_id}`)}
-            //       >
-            //         View
-            //       </CButton>
-            //       </td>
-            //     )
-            //   },
+            'show_details':
+              item => {
+                return (
+                  <td className="py-2">
+                    <CButton
+                    color="primary"
+                    variant="outline"
+                    shape="square"
+                    size="sm"
+                      onClick={() => history.push(`/futureresearchdetail/${item.future_research_id}`)}
+                  >
+                    View
+                  </CButton>
+                  </td>
+                )
+              },
             // 'details':
             //   item => {
             //     return (

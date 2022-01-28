@@ -194,6 +194,150 @@ router.post('/getcourseDataById', [check('course_id', 'Course is required').notE
     }
 });
 
+router.post('/getcourseDataByIdAfterLogin', passport.authenticate('jwt', { session: false }), [check('course_id', 'Course is required').notEmpty()], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        let course_id = req.body.course_id;
+        let user_id = req.user.id;
+        asyn.waterfall([
+            function (done) {
+                Course.getcourseDataByIdAfterLogin(course_id, user_id, function (err, result) {
+                    if (err) {
+                        return res.json({ 'status': 0, 'response': { 'msg': err } });
+                    } else {
+                        if (result != '') {
+                            var courseLink;
+                            if (req.headers.host == env.ADMIN_LIVE_URL) {
+                                courseLink = env.ADMIN_LIVE_URL;
+                            } else {
+                                courseLink = env.ADMIN_LIVE_URL;
+                            }
+                            let course = {};
+                            course['course_order'] = result[0].course_order_id;
+                            course['course_id'] = course_id;
+                            course['title'] = result[0].title;
+                            course['description'] = result[0].description;
+                            course['created_at'] = result[0].created_at;
+                            course['image'] = (result[0].image) ? courseLink + env.COURSE_VIEW_PATH + result[0].image : '';
+                            course['image_thumb'] = (result[0].image) ? courseLink + env.COURSE_VIEW_PATH_THUMB + result[0].image : '';
+                            course['role'] = result[0].role;
+                            course['status'] = result[0].status;
+                            course['learn_description'] = result[0].learn_description;
+                            course['prerequisites_description'] = result[0].prerequisites_description;
+                            course['session_type'] = result[0].session_type;
+                            course['video_content_title'] = result[0].video_content_title;
+                            course['video_title_first'] = result[0].video_title_first;
+                            course['video_url_first'] = result[0].video_url_first;
+                            course['video_time_first'] = result[0].video_time_first;
+                            course['video_title_second'] = result[0].video_title_second;
+                            course['video_url_second'] = result[0].video_url_second;
+                            course['video_time_second'] = result[0].video_time_second;
+                            course['video_title_third'] = result[0].video_title_third;
+                            course['video_url_third'] = result[0].video_url_third;
+                            course['video_time_third'] = result[0].video_time_third;
+                            course['video_title_fourth'] = result[0].video_title_fourth;
+                            course['video_url_fourth'] = result[0].video_url_fourth;
+                            course['video_time_fourth'] = result[0].video_time_fourth;
+                            course['video_title_five'] = result[0].video_title_five;
+                            course['video_url_five'] = result[0].video_url_five;
+                            course['video_time_five'] = result[0].video_time_five;
+                            course['video_title_six'] = result[0].video_title_six;
+                            course['video_url_six'] = result[0].video_url_six;
+                            course['video_time_six'] = result[0].video_time_six;
+                            course['video_title_seven'] = result[0].video_title_seven;
+                            course['video_url_seven'] = result[0].video_url_seven;
+                            course['video_time_seven'] = result[0].video_time_seven;
+                            course['video_title_eight'] = result[0].video_title_eight;
+                            course['video_url_eight'] = result[0].video_url_eight;
+                            course['video_time_eight'] = result[0].video_time_eight;
+                            course['video_title_nine'] = result[0].video_title_nine;
+                            course['video_url_nine'] = result[0].video_url_nine;
+                            course['video_time_nine'] = result[0].video_time_nine;
+                            course['video_title_ten'] = result[0].video_title_ten;
+                            course['video_url_ten'] = result[0].video_url_ten;
+                            course['video_time_ten'] = result[0].video_time_ten;
+                            course['content_title_one'] = result[0].content_title_one;
+                            course['content_description_one'] = result[0].content_description_one;
+                            course['content_title_two'] = result[0].content_title_two;
+                            course['content_description_two'] = result[0].content_description_two;
+                            course['content_title_third'] = result[0].content_title_third;
+                            course['content_description_third'] = result[0].content_description_third;
+                            course['content_title_four'] = result[0].content_title_four;
+                            course['content_description_four'] = result[0].content_description_four;
+                            course['content_title_five'] = result[0].content_title_five;
+                            course['content_description_five'] = result[0].content_description_five;
+                            course['trainer'] = result[0].trainer;
+                            course['purchase_type'] = result[0].purchase_type;
+                            course['main_cost'] = result[0].main_cost;
+                            course['sale_cost'] = result[0].sale_cost;
+                            course['live_session_url'] = result[0].live_session_url;
+                            course['live_session_date'] = result[0].live_session_date;
+                            course['live_session_time'] = result[0].live_session_time;
+                            course['live_session_minute'] = result[0].live_session_minute;
+                            course['update_at'] = (result[0].update_at) ? moment(result[0].update_at).format('MM/YYYY') : '';
+                            course['course_purchase'] = 0;
+                            course['draft_status'] = result[0].draft_status;
+                            done(err, course)
+                        } else {
+                            done(err, null)
+                        }
+                    }
+                });
+            },
+            function (course, done2) {
+                if (course['role']) {
+                    var role = course['role'];
+                    Common.getRoleAllList(function (err, result) {
+                        if (result && result.length > 0) {
+
+                            var array = [];
+                            result.find((o, i) => {
+                                if (role.includes(o.role_id)) {
+                                    array.push(o);
+                                }
+                            });
+
+                            course['selected_role'] = array;
+                            done2(null, course)
+                        } else {
+                            course['selected_role'] = [];
+                            done2(null, course)
+                        }
+                    });
+                } else {
+                    course['selected_role'] = [];
+                    done2(null, course)
+                }
+            }, function (course, done2) {
+
+                if (course['selected_role'].length > 0) {
+                    course['selected_role'] = course['selected_role'].map((data, index) => {
+                        let retObj = {};
+                        retObj['id'] = (index + 1);
+                        retObj['label'] = data.role;
+                        retObj['value'] = data.role_id;
+                        return retObj;
+                    });
+                    done2(null, course)
+                } else {
+                    done2(null, course)
+                }
+            }
+        ],
+            function (error, coursedata) {
+                if (error) {
+                    return res.json({ 'status': 0, 'response': { 'msg': error } });
+                } else {
+                    return res.json({ 'status': 1, 'response': { 'msg': 'Media added successfully.', data: coursedata } });
+                }
+            });
+
+    }
+});
+
 
 router.post('/changecourseStatus', [
     check('course_id', 'course id is required').notEmpty(),

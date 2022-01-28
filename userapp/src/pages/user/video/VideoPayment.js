@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react'
 import useAuth from '../../../hooks/useAuth';
 import Header from './../../../sections/Header';
 import Footer from './../../../sections/Footer';
-import LoadSpinner from '../../LoadSpinner/LoadSpinner';
 import Swal from "sweetalert2";
 import axios from 'axios';
 import api_url from '../../../components/Apiurl';
@@ -32,7 +31,7 @@ export default function VideoPayment() {
         axios.post(api_url + '/video/getvideoDataById', { video_id },  config).then((result) => {
             if (result.data.status) {
                 var videodata = result.data.response.data;                
-                setPrice(videodata.sale_cost);
+                setPrice(videodata.cost);
                 setDescription(videodata.title);
             } else {
                 Swal.fire('Oops...', result.data.response.msg, 'error')
@@ -77,8 +76,10 @@ export default function VideoPayment() {
     }, [ price, description])
 
     const videoPayment = (paymentDetail) => {
+
         const registerData = localStorage.getItem('userdata');
-        var data = JSON.parse(registerData);        
+        var data = JSON.parse(registerData);
+
         var obj = {
             user_id: data.id,
             order_id: paymentDetail.id,
@@ -89,14 +90,17 @@ export default function VideoPayment() {
                 Swal.fire({
                     title: 'Success!',
                     icon: 'success',
-                    text: result.data.response.msg,
+                    html:
+                        'Please visit the ' +
+                        '<a href="/video-detail?id=' + videoId + '">link</a> ' +
+                        'to view the video',
                     confirmButtonText: `ok`,
                 }).then((result) => {
                     /* Read more about isConfirmed, isDenied below */
                     if (result.isConfirmed) {
                         history.push("/my-video");
                     } else {
-                        Swal.fire('Changes are not saved', '', 'info')
+                        history.push("/my-video");
                     }
                 })
             } else {
@@ -105,7 +109,7 @@ export default function VideoPayment() {
             //history.push('/login');
         })
         .catch((err) => {
-            
+
         })
     }
 

@@ -8,8 +8,8 @@ import api_url from '../../../components/Apiurl';
 import './../../dev.css';
 import { useForm, Controller } from "react-hook-form";
 import { useHistory } from "react-router-dom";
-import { MultiSelect } from "react-multi-select-component";
-import $ from 'jquery';
+// import { MultiSelect } from "react-multi-select-component";
+// import $ from 'jquery';
 
 export default function AddResearch() {
 

@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react'
 import useAuth from '../../../hooks/useAuth';
 import Header from './../../../sections/Header';
 import Footer from './../../../sections/Footer';
-import LoadSpinner from '../../LoadSpinner/LoadSpinner';
 import Swal from "sweetalert2";
 import axios from 'axios';
 import api_url from '../../../components/Apiurl';
@@ -31,8 +30,7 @@ export default function CoursePayment() {
 
         axios.post(api_url + '/course/getCoursePaymentDataById', { course_id },  config).then((result) => {
             if (result.data.status) {
-                var coursedata = result.data.response.data;
-                console.log(coursedata);
+                var coursedata = result.data.response.data;                
                 setPrice(coursedata.sale_cost);
                 setDescription(coursedata.title);
             } else {
@@ -91,14 +89,17 @@ export default function CoursePayment() {
                 Swal.fire({
                     title: 'Success!',
                     icon: 'success',
-                    text: result.data.response.msg,
+                    html:
+                        'Please visit the ' +
+                        '<a href="/professional-development-detail?id=' + courseId + '">link</a> ' +
+                        'to read the course',
                     confirmButtonText: `ok`,
                 }).then((result) => {
                     /* Read more about isConfirmed, isDenied below */
                     if (result.isConfirmed) {
                         history.push("/my-professional-development");
                     } else {
-                        Swal.fire('Changes are not saved', '', 'info')
+                        history.push("/my-professional-development");
                     }
                 })
             } else {

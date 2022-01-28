@@ -71,9 +71,9 @@ export default function MyVideo() {
                 //var blogdata = result.data.response.data;
                 var videodata = result.data.response.data.type;
                 if (videodata == 'remove') {
-                    Swal.fire("Success!", 'Video removed from your dashboard', "success");
+                    Swal.fire("Success!", 'Video removed from your bookmark list', "success");
                 } else {
-                    Swal.fire("Success!", 'Video added to your dashboard', "success");
+                    Swal.fire("Success!", 'Video added to your bookmark list', "success");
                 }
                 getVideoDataWrap();
             } else {

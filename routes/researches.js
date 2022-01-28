@@ -444,7 +444,8 @@ router.post('/addResearchByuser', passport.authenticate('jwt', { session: false 
             start_date: moment().format('YYYY-MM-DD'),
             created_at: moment().format('YYYY-MM-DD'),
             created_by: user_id,
-            status:0
+            status:0,
+            read:0
         };
         Researches.addResearchByuser(record, function (err, data) {
             if (err) {
@@ -648,7 +649,12 @@ router.post('/addFutureResearchByuser', [
             email: req.body.email,
             dob: req.body.dob,            
             child: req.body.child,
-            child_first: req.body.child_first,
+            gender: req.body.gender,
+            childGender: req.body.childGender,
+            childName: req.body.childName,
+            child_name_first: req.body.child_name_first,
+            child_gender_first: req.body.child_gender_first,
+            child_age_first: req.body.child_age_first,            
             created_at: moment().format('YYYY-MM-DD')
         };
         Researches.addFutureResearchByuser(record, function (err, data) {
@@ -677,10 +683,21 @@ router.post('/getFutureParticipateById',[
             } else {
                 Researches.getResearchesChildDataById(result[0].future_research_id, function (err, childresult) {
                     let researches = {};
+
+                    if (childresult.length > 0){
+                        var childresults = childresult.map(data => {
+                            let retObj = {};
+                            retObj['child_gender'] = (data.child_gender) ? data.child_gender.replace("-", " "):'';
+                            retObj['child_name'] = data.child_name;
+                            retObj['child_dob'] = (data.child_dob) ? moment(data.child_dob).format('YYYY-MM-DD') : '';
+                            return retObj;
+                        });
+                    }
+
                     researches['name'] = result[0].name;
                     researches['dob'] = (result[0].dob) ? moment(result[0].dob).format('YYYY-MM-DD') : '';
                     researches['email'] = result[0].email;
-                    researches['child'] = childresult;
+                    researches['child'] = (childresult.length > 0) ? childresults : [];
                     return res.json({ 'status': 1, 'response': { 'data': researches, 'msg': 'data found' } });
                 });
             }
@@ -729,6 +746,33 @@ router.post('/deleteFutureParticipate', [
     }
 });
 
+
+router.get('/updateResearchRequestCount', function (req, res) {
+    loggerData(req);
+    Researches.updateResearchRequestCount(function (err, count) {
+        if (err) {
+            return res.json({ 'status': 0, 'response': { 'msg': err } });
+        } else {
+            return res.json({ 'status': 1, 'response': { 'msg': 'updated successfully' } });
+        }
+    });
+});
+
+
+router.get('/getResearchNotificationCount', function (req, res) {
+    loggerData(req);
+    Researches.getResearchNotificationCount(function (err, notificationCount) {
+        if (err) {
+            return res.json({ 'status': 0, 'response': { 'msg': err } });
+        } else {
+            if (notificationCount) {
+                return res.json({ 'status': 1, 'response': { 'data': notificationCount, 'msg': 'data found' } });
+            } else {
+                return res.json({ 'status': 0, 'response': { 'msg': error } });
+            }
+        }
+    });
+});
 
 
 module.exports = router;

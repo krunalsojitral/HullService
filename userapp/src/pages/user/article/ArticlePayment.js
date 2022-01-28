@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react'
 import useAuth from '../../../hooks/useAuth';
 import Header from './../../../sections/Header';
 import Footer from './../../../sections/Footer';
-import LoadSpinner from '../../LoadSpinner/LoadSpinner';
 import Swal from "sweetalert2";
 import axios from 'axios';
 import api_url from '../../../components/Apiurl';
@@ -32,8 +31,7 @@ export default function ArticlePayment() {
         axios.post(api_url + '/article/getarticleDataById', { article_id },  config).then((result) => {
             if (result.data.status) {
                 var articledata = result.data.response.data;
-                console.log(articledata);
-                setPrice(articledata.sale_cost);
+                setPrice(articledata.cost);
                 setDescription(articledata.title);
             } else {
                 Swal.fire('Oops...', result.data.response.msg, 'error')
@@ -91,7 +89,10 @@ export default function ArticlePayment() {
                 Swal.fire({
                     title: 'Success!',
                     icon: 'success',
-                    text: result.data.response.msg,
+                    html:
+                        'Please visit the ' +
+                        '<a href="/article-detail?id=' + articleId + '">link</a> ' +
+                        'to read the article',
                     confirmButtonText: `ok`,
                 }).then((result) => {
                     /* Read more about isConfirmed, isDenied below */

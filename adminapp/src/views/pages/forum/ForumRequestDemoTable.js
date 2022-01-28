@@ -23,7 +23,12 @@ const ForumRequestDemoTable = ({ moduleConfigUrls }) => {
   React.useEffect(() => {
     getNewList(moduleConfigUrls, setItems);
     getNewListWrap();
+    updateForumRequestCount();
   }, [])
+
+  const updateForumRequestCount = () => {
+    axios.get(api_url + '/forum/updateForumRequestCount').then((result) => { }).catch((err) => { console.log(err); })
+  }
 
   const fields = [
     { key: 'checkbox', label: '', _style: { width: '1%' }, filter: false },

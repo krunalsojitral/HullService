@@ -2078,7 +2078,7 @@ min-height: 258px;
 .article-modal .modal-body .puchase-btn {
     background: linear-gradient(135deg, #036E80 30.73%, #5EA5C7 100%);
     border-radius: 25px;
-    width: 150px;
+    width: 160px;
     height: 42px;
     color: #fff;
     line-height: 42px;
@@ -2590,7 +2590,7 @@ min-height: 258px;
     margin-bottom: 14px;
 }
 
-.content-grid a {
+.content-grid .course-title {
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
@@ -4031,24 +4031,24 @@ div#swal2-html-container{
 }
 .participate-modal .modal-body h3 {
     font-size: 22px;
-    line-height: 31px;
+    line-height: 13px;
     text-align: center;
     font-weight: 200;
     color: #036E80;
     margin: 15px ​0 12px 0;
 }
 .participate-modal .modal-body p {
-    font-size: 17px;
+   font-size: 17px;
     max-width: 380px;
     width: 100%;
     display: block;
     margin: 0 auto;
-    line-height: 25px;
+    line-height: 19px;
     text-align: center;
-    margin-bottom: 25px;
+    margin-bottom: 14px;
     font-weight: normal;
     color: #A0A0A0;
-    margin-top: 12px;
+    margin-top: 14px;
 }
 .participate-modal .modal-body a.thm-btn {
     background: linear-gradient(135deg, #036E80 30.73%, #5EA5C7 100%);

@@ -8,7 +8,8 @@ import {
   cilSun,
   cilList,
   cilCalculator,  
-  cilMoon
+  cilMoon,
+  cilBell
 } from '@coreui/icons'
 
 export const icons = Object.assign({}, {
@@ -21,5 +22,6 @@ export const icons = Object.assign({}, {
   cilSun,
   cilList,
   cilCalculator,  
-  cilMoon
+  cilMoon,
+  cilBell
 })

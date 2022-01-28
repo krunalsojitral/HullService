@@ -7,7 +7,7 @@ import axios from 'axios';
 import Swal from "sweetalert2";
 import api_url from '../../../components/Apiurl';
 import './../../dev.css';
-import { useModal } from 'react-hooks-use-modal';
+
 // import PurchaseModel from "./../PurchaseModel";
 // import { useHistory } from "react-router-dom";
 
@@ -20,7 +20,8 @@ export default function ProfessionalDevelopmentDetail() {
 
     const [courseDetail, setcourseDetail] = React.useState({})
     const [token, setToken] = React.useState('');
-    //const [relatedcourseDetail, setRelatedcourseDetail] = React.useState([])
+    const [showDetail, setShowDetail] = React.useState(true)
+    const [showPurchaseButton, setShowPurchaseButton] = React.useState(true)
 
     React.useEffect(() => {
         const params = new URLSearchParams(window.location.search) // id=123
@@ -28,51 +29,70 @@ export default function ProfessionalDevelopmentDetail() {
 
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
-        setToken(token);
-        // const config = {
-        //     headers: { Authorization: `${token}` }
-        // };
+        setToken(token);       
 
-        axios.post(api_url + '/course/getcourseDataById', { course_id }).then((result) => {
-            if (result.data.status) {
-                var coursedata = result.data.response.data;
-                if (coursedata.purchase_type == "unpaid") {
+        if (token){
+            const config = {
+                headers: { Authorization: `${token}` }
+            };
+            axios.post(api_url + '/course/getcourseDataByIdAfterLogin', { course_id }, config).then((result) => {
+                if (result.data.status) {
+                    var coursedata = result.data.response.data;
                     setcourseDetail(coursedata);
+                    if (coursedata.purchase_type == "unpaid") {
+                        setShowDetail(true)
+                        setShowPurchaseButton(false);
+                    } else {
+                        if (coursedata.course_order) {
+                            setShowDetail(true)
+                            setShowPurchaseButton(false);
+                        } else {
+                            setShowDetail(false);
+                            setShowPurchaseButton(true);
+                        }
+                    }
                 } else {
-                    setcourseDetail(coursedata);
-                    // if (!token) {
-                    //     open()
-                    // } else {
-                    //     setcourseDetail(coursedata);
-                    // }
+                    Swal.fire('Oops...', result.data.response.msg, 'error')
                 }
-            } else {
-                Swal.fire('Oops...', result.data.response.msg, 'error')
-            }
-        }).catch((err) => {
-            console.log(err);
-        })
-
-        // if (token) {
-        //     axios.post(api_url + '/course/getRelatedPaidcourseList', { "course_id": course_id }, config).then((result) => {
-        //         if (result.data.status) {
-        //             var coursedata = result.data.response.data;
-        //             setRelatedcourseDetail(coursedata);
-        //         }
-        //     }).catch((err) => { console.log(err); })
-        // } else {
-        //     axios.post(api_url + '/course/getRelatedUnpaidcourseList', { "course_id": course_id }).then((result) => {
-        //         if (result.data.status) {
-        //             var coursedata = result.data.response.data;
-        //             setRelatedcourseDetail(coursedata);
-        //         }
-        //     }).catch((err) => { console.log(err); })
-        // }
-
+            }).catch((err) => {
+                console.log(err);
+            })
+        }else{
+            axios.post(api_url + '/course/getcourseDataById', { course_id }).then((result) => {
+                if (result.data.status) {
+                    var coursedata = result.data.response.data;
+                    setcourseDetail(coursedata);
+                    if (coursedata.purchase_type == "unpaid") {
+                        setShowDetail(true)
+                        setShowPurchaseButton(false);
+                    } else {
+                        setShowDetail(false)
+                        setShowPurchaseButton(true);
+                    }
+                } else {
+                    Swal.fire('Oops...', result.data.response.msg, 'error')
+                }
+            }).catch((err) => {
+                console.log(err);
+            })
+        }
 
     }, [])
 
-    const [Modal, open, close] = useModal('root', {});
+    const openCourseUrl = (url) => {
+
+        if (showDetail){
+            console.log("doing something");
+            const win = window.open(url, "_blank");
+           
+        }else{
+
+        }
+        
+        
+    }
+
+  
 
    
 
@@ -173,103 +193,93 @@ export default function ProfessionalDevelopmentDetail() {
                                                                     <div className="panel-body">                                                                        
 
                                                                         {courseDetail.video_title_first && <div className="content-grid">
-                                                                            <div className="course-play">                                                                                
-                                                                               <a target="_blank" href={(courseDetail.purchase_type == 'unpaid')?courseDetail.video_url_first:'javascript:;'}>
-                                                                                   <img src="images/play.png" alt="play" /><span>{courseDetail.video_title_first}</span>
-                                                                                </a>
+                                                                            <div className="course-play">                                                                                                                                              
+                                                                            {(showDetail) && <span className="course-title" onClick={() => window.open(courseDetail.video_url_first, "_blank")}><img src="images/play.png" alt="play" /><span>{courseDetail.video_title_first}</span></span>}
+                                                                            {(!showDetail) && <span className="course-title"><img src="images/play.png" alt="play" /><span>{courseDetail.video_title_first}</span></span>}
                                                                             </div>
-                                                                                <a href="javascript:;">Preview</a>
-                                                                                <a href="javascript:;">{courseDetail.video_time_first}</a>
+                                                                            <span className="course-title">Preview</span>
+                                                                            <span className="course-title">{courseDetail.video_time_first}</span>
                                                                         </div>}
 
-                                                                    {courseDetail.video_title_second &&  <div className="content-grid">
+                                                                        {courseDetail.video_title_second &&  <div className="content-grid">
                                                                             <div className="course-play">
-                                                                            <a target="_blank" href={(courseDetail.purchase_type == 'unpaid')?courseDetail.video_url_second:'javascript:;'}>
-                                                                                <img src="images/play.png" alt="play" /><span>{courseDetail.video_title_second}</span>
-                                                                                </a>
+                                                                            {(showDetail) && <span className="course-title" onClick={() => window.open(courseDetail.video_url_second, "_blank")}><img src="images/play.png" alt="play" /><span>{courseDetail.video_title_second}</span></span>}
+                                                                            {(!showDetail) && <span className="course-title"><img src="images/play.png" alt="play" /><span>{courseDetail.video_title_second}</span></span>}                                                                            
                                                                             </div>
-                                                                            <a href="javascript:;">Preview</a>
-                                                                            <a href="javascript:;">{courseDetail.video_time_second}</a>
+                                                                            <span className="course-title">Preview</span>
+                                                                            <span className="course-title">{courseDetail.video_time_second}</span>
                                                                         </div>}
 
-                                                                    {courseDetail.video_title_third &&  <div className="content-grid">
+                                                                        {courseDetail.video_title_third &&  <div className="content-grid">
                                                                             <div className="course-play">
-                                                                            <a target="_blank" href={(courseDetail.purchase_type == 'unpaid')?courseDetail.video_url_third:'javascript:;'}>
-                                                                                <img src="images/play.png" alt="play" /><span>{courseDetail.video_title_third}</span>
-                                                                                </a>
+                                                                            {(showDetail) && <span className="course-title" onClick={() => window.open(courseDetail.video_url_third, "_blank")}><img src="images/play.png" alt="play" /><span>{courseDetail.video_title_third}</span></span>}
+                                                                            {(!showDetail) && <span className="course-title"><img src="images/play.png" alt="play" /><span>{courseDetail.video_title_third}</span></span>}                                                                            
                                                                             </div>
-                                                                            <a href="javascript:;">Preview</a>
-                                                                        <a href="javascript:;">{courseDetail.video_time_third}</a>
+                                                                            <span className="course-title">Preview</span>
+                                                                            <span className="course-title">{courseDetail.video_time_third}</span>
                                                                         </div>}
 
-                                                                    {courseDetail.video_title_fourth &&  <div className="content-grid">
+                                                                        {courseDetail.video_title_fourth &&  <div className="content-grid">
                                                                             <div className="course-play">
-                                                                            <a target="_blank" href={(courseDetail.purchase_type == 'unpaid')?courseDetail.video_url_fourth:'javascript:;'}>
-                                                                                <img src="images/play.png" alt="play" /><span>{courseDetail.video_title_fourth}</span>
-                                                                                </a>
+                                                                            {(showDetail) && <span className="course-title" onClick={() => window.open(courseDetail.video_url_fourth, "_blank")}><img src="images/play.png" alt="play" /><span>{courseDetail.video_title_fourth}</span></span>}
+                                                                            {(!showDetail) && <span className="course-title"><img src="images/play.png" alt="play" /><span>{courseDetail.video_title_fourth}</span></span>}
                                                                             </div>
-                                                                            <a href="javascript:;">Preview</a>
-                                                                        <a href="javascript:;">{courseDetail.video_time_fourth}</a>
+                                                                            <span className="course-title">Preview</span>
+                                                                            <span className="course-title">{courseDetail.video_time_fourth}</span>
                                                                         </div>}
 
-                                                                    {courseDetail.video_title_five &&  <div className="content-grid">
+                                                                        {courseDetail.video_title_five &&  <div className="content-grid">
                                                                             <div className="course-play">
-                                                                            <a target="_blank" href={(courseDetail.purchase_type == 'unpaid') ? courseDetail.video_url_five : 'javascript:;'}>
-                                                                                <img src="images/play.png" alt="play" /><span>{courseDetail.video_title_five}</span>
-                                                                                </a>
+                                                                            {(showDetail) && <span className="course-title" onClick={() => window.open(courseDetail.video_url_five, "_blank")}><img src="images/play.png" alt="play" /><span>{courseDetail.video_title_five}</span></span>}
+                                                                            {(!showDetail) && <span className="course-title"><img src="images/play.png" alt="play" /><span>{courseDetail.video_title_five}</span></span>}                                                                            
                                                                             </div>
-                                                                            <a href="javascript:;">Preview</a>
-                                                                        <a href="javascript:;">{courseDetail.video_time_five}</a>
+                                                                            <span className="course-title">Preview</span>
+                                                                            <span className="course-title">{courseDetail.video_time_five}</span>
                                                                         </div>}
 
-                                                                    {courseDetail.video_title_six &&  <div className="content-grid">
+                                                                        {courseDetail.video_title_six &&  <div className="content-grid">
                                                                             <div className="course-play">
-                                                                            <a target="_blank" href={(courseDetail.purchase_type == 'unpaid') ? courseDetail.video_url_six : 'javascript:;'}>
-                                                                                <img src="images/play.png" alt="play" /><span>{courseDetail.video_title_six}</span>
-                                                                                </a>
+                                                                            {(showDetail) && <span className="course-title" onClick={() => window.open(courseDetail.video_url_six, "_blank")}><img src="images/play.png" alt="play" /><span>{courseDetail.video_title_six}</span></span>}
+                                                                            {(!showDetail) && <span className="course-title"><img src="images/play.png" alt="play" /><span>{courseDetail.video_title_six}</span></span>}                                                                            
                                                                             </div>
-                                                                            <a href="javascript:;">Preview</a>
-                                                                        <a href="javascript:;">{courseDetail.video_time_six}</a>
+                                                                            <span className="course-title">Preview</span>
+                                                                            <span className="course-title">{courseDetail.video_time_six}</span>
                                                                         </div>}
 
-                                                                    {courseDetail.video_title_seven &&  <div className="content-grid">
+                                                                        {courseDetail.video_title_seven &&  <div className="content-grid">
                                                                             <div className="course-play">
-                                                                            <a target="_blank" href={(courseDetail.purchase_type == 'unpaid') ? courseDetail.video_url_seven : 'javascript:;'}>
-                                                                                <img src="images/play.png" alt="play" /><span>{courseDetail.video_title_seven}</span>
-                                                                                </a>
+                                                                            {(showDetail) && <span className="course-title" onClick={() => window.open(courseDetail.video_url_seven, "_blank")}><img src="images/play.png" alt="play" /><span>{courseDetail.video_title_seven}</span></span>}
+                                                                            {(!showDetail) && <span className="course-title"><img src="images/play.png" alt="play" /><span>{courseDetail.video_title_seven}</span></span>}                                                                            
                                                                             </div>
-                                                                            <a href="javascript:;">Preview</a>
-                                                                        <a href="javascript:;">{courseDetail.video_time_seven}</a>
+                                                                            <span className="course-title">Preview</span>
+                                                                            <span className="course-title">{courseDetail.video_time_seven}</span>
                                                                         </div>}
 
-                                                                    {courseDetail.video_title_eight &&  <div className="content-grid">
+                                                                        {courseDetail.video_title_eight &&  <div className="content-grid">
                                                                             <div className="course-play">
-                                                                            <a target="_blank" href={(courseDetail.purchase_type == 'unpaid') ? courseDetail.video_url_eight : 'javascript:;'}>
-                                                                                <img src="images/play.png" alt="play" /><span>{courseDetail.video_title_eight}</span>
-                                                                                </a>
+                                                                            {(showDetail) && <span className="course-title" onClick={() => window.open(courseDetail.video_url_eight, "_blank")}><img src="images/play.png" alt="play" /><span>{courseDetail.video_title_eight}</span></span>}
+                                                                            {(!showDetail) && <span className="course-title"><img src="images/play.png" alt="play" /><span>{courseDetail.video_title_eight}</span></span>}                                                                            
                                                                             </div>
-                                                                            <a href="javascript:;">Preview</a>
-                                                                        <a href="javascript:;">{courseDetail.video_time_eight}</a>
+                                                                            <span className="course-title">Preview</span>
+                                                                            <span className="course-title">{courseDetail.video_time_eight}</span>
                                                                         </div>}
 
-                                                                    {courseDetail.video_title_nine &&  <div className="content-grid">
+                                                                        {courseDetail.video_title_nine &&  <div className="content-grid">
                                                                             <div className="course-play">
-                                                                            <a target="_blank" href={(courseDetail.purchase_type == 'unpaid') ? courseDetail.video_url_nine : 'javascript:;'}>
-                                                                                <img src="images/play.png" alt="play" /><span>{courseDetail.video_title_nine}</span>
-                                                                                </a>
+                                                                            {(showDetail) && <span className="course-title" onClick={() => window.open(courseDetail.video_url_nine, "_blank")}><img src="images/play.png" alt="play" /><span>{courseDetail.video_title_nine}</span></span>}
+                                                                            {(!showDetail) && <span className="course-title"><img src="images/play.png" alt="play" /><span>{courseDetail.video_title_nine}</span></span>}                                                                            
                                                                             </div>
-                                                                            <a href="javascript:;">Preview</a>
-                                                                        <a href="javascript:;">{courseDetail.video_time_nine}</a>
+                                                                            <span className="course-title">Preview</span>
+                                                                            <span className="course-title">{courseDetail.video_time_nine}</span>
                                                                         </div>}
 
-                                                                    {courseDetail.video_title_ten &&  <div className="content-grid">
+                                                                        {courseDetail.video_title_ten &&  <div className="content-grid">
                                                                             <div className="course-play">
-                                                                            <a target="_blank" href={(courseDetail.purchase_type == 'unpaid') ? courseDetail.video_url_ten : 'javascript:;'}>
-                                                                                <img src="images/play.png" alt="play" /><span>{courseDetail.video_title_ten}</span>
-                                                                                </a>
+                                                                            {(showDetail) && <span className="course-title" onClick={() => window.open(courseDetail.video_url_ten, "_blank")}><img src="images/play.png" alt="play" /><span>{courseDetail.video_title_ten}</span></span>}
+                                                                            {(!showDetail) && <span className="course-title"><img src="images/play.png" alt="play" /><span>{courseDetail.video_title_ten}</span></span>}                                                                            
                                                                             </div>
-                                                                            <a href="javascript:;">Preview</a>
-                                                                           <a href="javascript:;">{courseDetail.video_time_ten}</a>
+                                                                            <span className="course-title">Preview</span>
+                                                                            <span className="course-title">{courseDetail.video_time_ten}</span>
                                                                         </div>}
                                                                         
                                                                     </div>
@@ -359,7 +369,7 @@ export default function ProfessionalDevelopmentDetail() {
                                 </div>
                             </div>
 
-                        {courseDetail.purchase_type == 'paid' && <div className="col-md-3">
+                        {showPurchaseButton && <div className="col-md-3">
                                 <div className="course-prices">
                                     <div className="price-detail">
                                     <p>${courseDetail.sale_cost} <label>${courseDetail.main_cost}</label></p>

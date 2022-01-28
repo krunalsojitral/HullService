@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 import Header from './../../../sections/Header';
 import Footer from './../../../sections/Footer';
 import Sidebar from './../Sidebar';
@@ -45,8 +45,7 @@ export default function BlogDetail() {
                             if (!token) {
                                 open()
                             } else {                                
-                                if (blogdata.blog_order){
-                                  //  setBlogPaid(false);
+                                if (blogdata.blog_order){                                  
                                     setBlogDetail(blogdata);
                                 }else{                                    
                                     open()

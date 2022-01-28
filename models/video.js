@@ -414,6 +414,19 @@ function Video() {
             });
         });
     };
+
+    this.getvideoDataByIdAfterLogin = function (id, user_id, callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT *,video.video_id as b_id,video.created_at as video_date FROM video left join video_order on video.video_id = video_order.video_id and video_order.user_id = $1 where video.video_id = $2', [user_id, id], function (err, result) {
+                con.release();
+                if (err) {
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    }
     
     this.deleteVideo = function (video, callback) {
         connection.acquire(function (err, con) {

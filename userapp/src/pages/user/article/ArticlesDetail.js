@@ -62,36 +62,44 @@ export default function ArticlesDetail() {
         var token = JSON.parse(tokenString);
         const config = {
             headers: { Authorization: `${token}` }
-        };
-
-        axios.post(api_url + '/article/getArticleDataById', { article_id }).then((result) => {
-            if (result.data.status) {
-                var articledata = result.data.response.data;
-                if (articledata.purchase_type == "unpaid"){
-                    setArticleDetail(articledata);
-                }else{
-                    if (articledata.purchase_type == "unpaid") { 
-                        setArticleDetail(articledata);
-                    }else{
-                        setArticleCost(articledata.cost);
-                        open()
-                    }
-
-                    // if (!token){
-                    //     open()
-                    // }else{
-                    //     setArticleDetail(articledata);
-                    // }
-                    
-                }
-            } else {
-                Swal.fire('Oops...', result.data.response.msg, 'error')
-            }
-        }).catch((err) => {
-            console.log(err);
-        })
+        };       
 
         if (token) {
+            axios.post(api_url + '/article/getArticleDataByIdAfterLogin', { article_id }, config).then((result) => {
+                if (result.data.status) {
+                    var articledata = result.data.response.data;
+                    if (articledata.purchase_type == "unpaid") {
+                        setArticleDetail(articledata);
+                    } else {
+                        if (articledata.purchase_type == "unpaid") {
+                            setArticleDetail(articledata);
+                        } else {
+
+                            setArticleCost(articledata.cost);
+                            if (!token) {
+                                open()
+                            } else {
+                                if (articledata.article_order) {
+                                    setArticleDetail(articledata);
+                                } else {
+                                    open()
+                                }
+                            }
+                        }
+
+                        // if (!token){
+                        //     open()
+                        // }else{
+                        //     setArticleDetail(articledata);
+                        // }
+
+                    }
+                } else {
+                    Swal.fire('Oops...', result.data.response.msg, 'error')
+                }
+            }).catch((err) => {
+                console.log(err);
+            })
             axios.post(api_url + '/article/getRelatedPaidArticleList', { "article_id": article_id }, config).then((result) => {
                 if (result.data.status) {
                     var articledata = result.data.response.data;
@@ -99,6 +107,30 @@ export default function ArticlesDetail() {
                 }
             }).catch((err) => { console.log(err); })
         } else {
+            axios.post(api_url + '/article/getArticleDataById', { article_id }).then((result) => {
+                if (result.data.status) {
+                    var articledata = result.data.response.data;
+                    if (articledata.purchase_type == "unpaid") {
+                        setArticleDetail(articledata);
+                    } else {
+                        if (articledata.purchase_type == "unpaid") {
+                            setArticleDetail(articledata);
+                        } else {
+                            setArticleCost(articledata.cost);
+                            open()
+                        }
+                        // if (!token){
+                        //     open()
+                        // }else{
+                        //     setArticleDetail(articledata);
+                        // }
+                    }
+                } else {
+                    Swal.fire('Oops...', result.data.response.msg, 'error')
+                }
+            }).catch((err) => {
+                console.log(err);
+            })
             axios.post(api_url + '/article/getRelatedUnpaidArticleList', { "article_id": article_id }).then((result) => {
                 if (result.data.status) {
                     var articledata = result.data.response.data;

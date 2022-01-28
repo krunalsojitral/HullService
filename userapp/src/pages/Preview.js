@@ -156,102 +156,92 @@ export default function Preview() {
 
                                                                     {detail.video_title_first && <div className="content-grid">
                                                                         <div className="course-play">
-                                                                            <a target="_blank" href={(detail.purchase_type == 'unpaid') ? detail.video_url_first : 'javascript:;'}>
-                                                                                <img src="images/play.png" alt="play" /><span>{detail.video_title_first}</span>
-                                                                            </a>
+                                                                            {(detail.purchase_type == 'unpaid') && <span className="course-title" onClick={() => window.open(detail.video_url_first, "_blank")}><img src="images/play.png" alt="play" /><span>{detail.video_title_first}</span></span>}
+                                                                            {(detail.purchase_type == 'paid') && <span className="course-title"><img src="images/play.png" alt="play" /><span>{detail.video_title_first}</span></span>}                                                                            
                                                                         </div>
-                                                                        <a href="javascript:;">Preview</a>
-                                                                        <a href="javascript:;">{detail.video_time_first}</a>
+                                                                        <span className="course-title">Preview</span>
+                                                                        <span className="course-title">{detail.video_time_first}</span>
                                                                     </div>}
 
                                                                     {detail.video_title_second && <div className="content-grid">
                                                                         <div className="course-play">
-                                                                            <a target="_blank" href={(detail.purchase_type == 'unpaid') ? detail.video_url_second : 'javascript:;'}>
-                                                                                <img src="images/play.png" alt="play" /><span>{detail.video_title_second}</span>
-                                                                            </a>
+                                                                            {(detail.purchase_type == 'unpaid') && <span className="course-title" onClick={() => window.open(detail.video_url_second, "_blank")}><img src="images/play.png" alt="play" /><span>{detail.video_title_second}</span></span>}
+                                                                            {(detail.purchase_type == 'paid') && <span className="course-title"><img src="images/play.png" alt="play" /><span>{detail.video_title_second}</span></span>}
                                                                         </div>
-                                                                        <a href="javascript:;">Preview</a>
-                                                                        <a href="javascript:;">{detail.video_time_second}</a>
+                                                                        <span className="course-title">Preview</span>
+                                                                        <span className="course-title">{detail.video_time_second}</span>
                                                                     </div>}
 
                                                                     {detail.video_title_third && <div className="content-grid">
                                                                         <div className="course-play">
-                                                                            <a target="_blank" href={(detail.purchase_type == 'unpaid') ? detail.video_url_third : 'javascript:;'}>
-                                                                                <img src="images/play.png" alt="play" /><span>{detail.video_title_third}</span>
-                                                                            </a>
+                                                                            {(detail.purchase_type == 'unpaid') && <span className="course-title" onClick={() => window.open(detail.video_url_third, "_blank")}><img src="images/play.png" alt="play" /><span>{detail.video_title_third}</span></span>}
+                                                                            {(detail.purchase_type == 'paid') && <span className="course-title"><img src="images/play.png" alt="play" /><span>{detail.video_title_third}</span></span>}
                                                                         </div>
-                                                                        <a href="javascript:;">Preview</a>
-                                                                        <a href="javascript:;">{detail.video_time_third}</a>
+                                                                        <span className="course-title">Preview</span>
+                                                                        <span className="course-title">{detail.video_time_third}</span>
                                                                     </div>}
 
                                                                     {detail.video_title_fourth && <div className="content-grid">
                                                                         <div className="course-play">
-                                                                            <a target="_blank" href={(detail.purchase_type == 'unpaid') ? detail.video_url_fourth : 'javascript:;'}>
-                                                                                <img src="images/play.png" alt="play" /><span>{detail.video_title_fourth}</span>
-                                                                            </a>
+                                                                            {(detail.purchase_type == 'unpaid') && <span className="course-title" onClick={() => window.open(detail.video_url_fourth, "_blank")}><img src="images/play.png" alt="play" /><span>{detail.video_title_fourth}</span></span>}
+                                                                            {(detail.purchase_type == 'paid') && <span className="course-title"><img src="images/play.png" alt="play" /><span>{detail.video_title_fourth}</span></span>}
                                                                         </div>
-                                                                        <a href="javascript:;">Preview</a>
-                                                                        <a href="javascript:;">{detail.video_time_fourth}</a>
+                                                                        <span className="course-title">Preview</span>
+                                                                        <span className="course-title">{detail.video_time_fourth}</span>
                                                                     </div>}
 
                                                                     {detail.video_title_five && <div className="content-grid">
                                                                         <div className="course-play">
-                                                                            <a target="_blank" href={(detail.purchase_type == 'unpaid') ? detail.video_url_five : 'javascript:;'}>
-                                                                                <img src="images/play.png" alt="play" /><span>{detail.video_title_five}</span>
-                                                                            </a>
+                                                                            {(detail.purchase_type == 'unpaid') && <span className="course-title" onClick={() => window.open(detail.video_url_five, "_blank")}><img src="images/play.png" alt="play" /><span>{detail.video_title_five}</span></span>}
+                                                                            {(detail.purchase_type == 'paid') && <span className="course-title"><img src="images/play.png" alt="play" /><span>{detail.video_title_five}</span></span>}
                                                                         </div>
-                                                                        <a href="javascript:;">Preview</a>
-                                                                        <a href="javascript:;">{detail.video_time_five}</a>
+                                                                        <span className="course-title">Preview</span>
+                                                                        <span className="course-title">{detail.video_time_five}</span>
                                                                     </div>}
 
                                                                     {detail.video_title_six && <div className="content-grid">
                                                                         <div className="course-play">
-                                                                            <a target="_blank" href={(detail.purchase_type == 'unpaid') ? detail.video_url_six : 'javascript:;'}>
-                                                                                <img src="images/play.png" alt="play" /><span>{detail.video_title_six}</span>
-                                                                            </a>
+                                                                            {(detail.purchase_type == 'unpaid') && <span className="course-title" onClick={() => window.open(detail.video_url_six, "_blank")}><img src="images/play.png" alt="play" /><span>{detail.video_title_six}</span></span>}
+                                                                            {(detail.purchase_type == 'paid') && <span className="course-title"><img src="images/play.png" alt="play" /><span>{detail.video_title_six}</span></span>}
                                                                         </div>
-                                                                        <a href="javascript:;">Preview</a>
-                                                                        <a href="javascript:;">{detail.video_time_six}</a>
+                                                                        <span className="course-title">Preview</span>
+                                                                        <span className="course-title">{detail.video_time_six}</span>
                                                                     </div>}
 
                                                                     {detail.video_title_seven && <div className="content-grid">
                                                                         <div className="course-play">
-                                                                            <a target="_blank" href={(detail.purchase_type == 'unpaid') ? detail.video_url_seven : 'javascript:;'}>
-                                                                                <img src="images/play.png" alt="play" /><span>{detail.video_title_seven}</span>
-                                                                            </a>
+                                                                            {(detail.purchase_type == 'unpaid') && <span className="course-title" onClick={() => window.open(detail.video_url_seven, "_blank")}><img src="images/play.png" alt="play" /><span>{detail.video_title_seven}</span></span>}
+                                                                            {(detail.purchase_type == 'paid') && <span className="course-title"><img src="images/play.png" alt="play" /><span>{detail.video_title_seven}</span></span>}
                                                                         </div>
-                                                                        <a href="javascript:;">Preview</a>
-                                                                        <a href="javascript:;">{detail.video_time_seven}</a>
+                                                                        <span className="course-title">Preview</span>
+                                                                        <span className="course-title">{detail.video_time_seven}</span>
                                                                     </div>}
 
                                                                     {detail.video_title_eight && <div className="content-grid">
                                                                         <div className="course-play">
-                                                                            <a target="_blank" href={(detail.purchase_type == 'unpaid') ? detail.video_url_eight : 'javascript:;'}>
-                                                                                <img src="images/play.png" alt="play" /><span>{detail.video_title_eight}</span>
-                                                                            </a>
+                                                                            {(detail.purchase_type == 'unpaid') && <span className="course-title" onClick={() => window.open(detail.video_url_eight, "_blank")}><img src="images/play.png" alt="play" /><span>{detail.video_title_eight}</span></span>}
+                                                                            {(detail.purchase_type == 'paid') && <span className="course-title"><img src="images/play.png" alt="play" /><span>{detail.video_title_eight}</span></span>}
                                                                         </div>
-                                                                        <a href="javascript:;">Preview</a>
-                                                                        <a href="javascript:;">{detail.video_time_eight}</a>
+                                                                        <span className="course-title">Preview</span>
+                                                                        <span className="course-title">{detail.video_time_eight}</span>
                                                                     </div>}
 
                                                                     {detail.video_title_nine && <div className="content-grid">
                                                                         <div className="course-play">
-                                                                            <a target="_blank" href={(detail.purchase_type == 'unpaid') ? detail.video_url_nine : 'javascript:;'}>
-                                                                                <img src="images/play.png" alt="play" /><span>{detail.video_title_nine}</span>
-                                                                            </a>
+                                                                            {(detail.purchase_type == 'unpaid') && <span className="course-title" onClick={() => window.open(detail.video_url_nine, "_blank")}><img src="images/play.png" alt="play" /><span>{detail.video_title_nine}</span></span>}
+                                                                            {(detail.purchase_type == 'paid') && <span className="course-title"><img src="images/play.png" alt="play" /><span>{detail.video_title_nine}</span></span>}
                                                                         </div>
-                                                                        <a href="javascript:;">Preview</a>
-                                                                        <a href="javascript:;">{detail.video_time_nine}</a>
+                                                                        <span className="course-title">Preview</span>
+                                                                        <span className="course-title">{detail.video_time_nine}</span>
                                                                     </div>}
 
                                                                     {detail.video_title_ten && <div className="content-grid">
                                                                         <div className="course-play">
-                                                                            <a target="_blank" href={(detail.purchase_type == 'unpaid') ? detail.video_url_ten : 'javascript:;'}>
-                                                                                <img src="images/play.png" alt="play" /><span>{detail.video_title_ten}</span>
-                                                                            </a>
+                                                                            {(detail.purchase_type == 'unpaid') && <span className="course-title" onClick={() => window.open(detail.video_url_ten, "_blank")}><img src="images/play.png" alt="play" /><span>{detail.video_title_ten}</span></span>}
+                                                                            {(detail.purchase_type == 'paid') && <span className="course-title"><img src="images/play.png" alt="play" /><span>{detail.video_title_ten}</span></span>}
                                                                         </div>
-                                                                        <a href="javascript:;">Preview</a>
-                                                                        <a href="javascript:;">{detail.video_time_ten}</a>
+                                                                        <span className="course-title">Preview</span>
+                                                                        <span className="course-title">{detail.video_time_ten}</span>
                                                                     </div>}
 
                                                                 </div>

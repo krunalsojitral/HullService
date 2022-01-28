@@ -38,11 +38,16 @@ const FutureParticipateDetail = ({ match }) => {
                 <tr><td>Email :</td><td><strong>{details.email}</strong></td></tr>
                 <tr><td>DOB :</td><td><strong>{details.dob}</strong></td></tr>
                 <tr><td>No of Kids :</td><td><strong>{(details.child && details.child.length > 0) ? details.child.length :0}</strong></td></tr>                
-                <tr><td>Age of kids:</td>
-                </tr>                
-                {details.child && details.child.length > 0 && details.child.map((item, index) => (
-                  <tr> <td>Child {index + 1}  :</td> <td>  {item.child_dob}</td></tr>
-                ))}                              
+                {details.child && details.child.length > 0 && <tr><td>kids Detail:</td>
+                <td>
+                    <table>
+                      {details.child && details.child.length > 0 && details.child.map((item, index) => (
+                        <tr> <td>Child {index + 1}  :</td> <td> <b>Name:</b> {item.child_name}</td> <td> <b>Gender:</b> {item.child_gender}</td>                                                                                                                                                                                                                                                                                                                                                                                                <td> <b>DOB:</b> {item.child_dob}</td></tr>
+                      ))}
+                    </table>
+                </td>
+                </tr>}                
+                                           
 
               </tbody>
             </table>

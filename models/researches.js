@@ -205,8 +205,8 @@ function Researches() {
     
     this.addResearchByuser = function (record, callback) {
         connection.acquire(function (err, con) {
-            const sql = 'INSERT INTO researches(topic,start_date,created_by,status,created_at,description,user_status) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING *'
-            const values = [record.topic, record.start_date, record.created_by, record.status, record.created_at, record.description,0]
+            const sql = 'INSERT INTO researches(topic,start_date,created_by,status,created_at,description,user_status,read) VALUES($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *'
+            const values = [record.topic, record.start_date, record.created_by, record.status, record.created_at, record.description,0,0]
             con.query(sql, values, function (err, result) {
                 con.release()
                 if (err) {
@@ -252,14 +252,26 @@ function Researches() {
         });
     };
 
-
-    
+    this.updateResearchRequestCount = function (callback) {
+        connection.acquire(function (err, con) {            
+            con.query("UPDATE researches SET read =$1", [1], function (err, result) {
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, result);
+                }
+            });
+        });
+    };
 
      
     this.addFutureResearchByuser = function (record, callback) {
         connection.acquire(function (err, con) {
-            const sql = 'INSERT INTO future_research(name,dob,email,created_at) VALUES($1,$2,$3,$4) RETURNING *'
-            const values = [record.name, record.dob, record.email, record.created_at]
+            const sql = 'INSERT INTO future_research(name,dob,email,gender,created_at) VALUES($1,$2,$3,$4,$5) RETURNING *'
+            const values = [record.name, record.dob, record.email, record.gender, record.created_at]
             con.query(sql, values, function (err, result) {                
                 if (err) {
                     if (env.DEBUG) {
@@ -269,15 +281,15 @@ function Researches() {
                     callback(err, null);
                 } else {
                     var research_id = result.rows[0].future_research_id
-                    if (record.child_first){
-                        const sql = 'INSERT INTO future_research_child(future_research_id,child_dob) VALUES($1,$2) RETURNING *'
-                        const values = [research_id, record.child_first]
+                    if (record.child_name_first){
+                        const sql = 'INSERT INTO future_research_child(future_research_id,child_dob,child_gender,child_name) VALUES($1,$2,$3,$4) RETURNING *'
+                        const values = [research_id, record.child_age_first, record.child_gender_first, record.child_name_first]
                         con.query(sql, values, function (err, result) { });
                     }
-                    if (record.child && record.child.length > 0) {
-                        record.child.forEach(function (value) {
-                            const sql = 'INSERT INTO future_research_child(future_research_id,child_dob) VALUES($1,$2) RETURNING *'
-                            const values = [research_id, value.value]
+                    if (record.childName && record.childName.length > 0) {                        
+                        record.childName.forEach(function (value,index) {
+                            const sql = 'INSERT INTO future_research_child(future_research_id,child_name,child_gender,child_dob) VALUES($1,$2,$3,$4) RETURNING *'
+                            const values = [research_id, value.value, (record.childGender[index] && record.childGender[index].value) ? record.childGender[index].value : '', (record.child[index] && record.child[index].value) ? record.child[index].value:'']
                             con.query(sql, values, function (err, result) { });
                         });                        
                     }
@@ -351,6 +363,23 @@ function Researches() {
             });
             con.release()
             callback(null, researches);
+        });
+    };
+
+    this.getResearchNotificationCount = function (callback) {
+        connection.acquire(function (err, con) {
+            var sql = 'SELECT count(*) as cnt FROM researches where read = $1';
+            con.query(sql,[0], function (err, result) {
+                con.release();
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
         });
     };
 

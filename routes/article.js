@@ -278,6 +278,119 @@ router.post('/getarticleDataById', [check('article_id', 'article is required').n
     }
 });
 
+router.post('/getarticleDataByIdAfterLogin', passport.authenticate('jwt', { session: false }), [check('article_id', 'article is required').notEmpty()], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        let article_id = req.body.article_id;
+        let user_id = req.user.id;
+        asyn.waterfall([
+            function (done) {
+
+                Article.getarticleDataByIdAfterLogin(article_id, user_id, function (err, result) {
+                    if (err) {
+                        done({ 'status': 0, 'response': { 'msg': 'Something went wrong.' } });
+                    } else {
+                        var imageLink;
+                        if (req.headers.host == env.ADMIN_LIVE_URL) {
+                            imageLink = env.ADMIN_LIVE_URL;
+                        } else {
+                            imageLink = env.ADMIN_LIVE_URL;
+                        }
+                        let article = {};
+                        article['article_id'] = article_id;
+                        article['title'] = result[0].title;
+                        article['description'] = result[0].description;
+                        article['created_at'] = moment(result[0].created_at).format('MMMM DD, YYYY');
+                        article['purchase_type'] = result[0].purchase_type;
+                        article['image'] = (result[0].image) ? imageLink + env.ARTICLE_VIEW_PATH + result[0].image : '';
+                        article['role'] = result[0].role;
+                        article['cost'] = result[0].cost;
+                        article['status'] = result[0].status;
+                        article['article_order'] = result[0].article_order_id;
+                        article['tag'] = [];
+                        article['draft_status'] = result[0].draft_status;
+                        done(err, article)
+                    }
+                });
+
+            },
+            function (article, done) {
+                if (article['article_id'] != '') {
+                    Article.getTagByArticleId(article['article_id'], function (err, result) {
+
+                        if (result && result.length > 0) {
+                            var obj = result.map((data, index) => {
+                                let retObj = {};
+                                retObj['id'] = (index + 1);
+                                retObj['label'] = data.tag_name;
+                                retObj['value'] = data.tag_id;
+                                return retObj;
+                            });
+                            article['tag'] = obj;
+                            done(null, article)
+                        } else {
+                            done(null, article)
+                        }
+                    });
+                } else {
+                    done(null, article)
+                }
+            },
+            function (article, done2) {
+                if (article['role']) {
+                    var role = article['role'];
+                    Common.getRoleAllList(function (err, result) {
+                        if (result && result.length > 0) {
+
+                            var array = [];
+                            result.find((o, i) => {
+                                if (role.includes(o.role_id)) {
+                                    array.push(o);
+                                }
+                            });
+                            article['selected_role'] = array;
+                            done2(null, article)
+                        } else {
+                            article['selected_role'] = [];
+                            done2(null, article)
+                        }
+                    });
+                } else {
+                    article['selected_role'] = [];
+                    done2(null, article)
+                }
+            }, function (article, done2) {
+
+                if (article['selected_role'].length > 0) {
+                    article['selected_role'] = article['selected_role'].map((data, index) => {
+                        let retObj = {};
+                        retObj['id'] = (index + 1);
+                        retObj['label'] = data.role;
+                        retObj['value'] = data.role_id;
+                        return retObj;
+                    });
+                    done2(null, article)
+                } else {
+                    done2(null, article)
+                }
+            }
+        ],
+            function (error, article) {
+                if (error) {
+                    return res.json({ 'status': 0, 'response': { 'msg': err } });
+                } else {
+                    return res.json({ 'status': 1, 'response': { 'data': article, 'msg': 'data found' } });
+                }
+            });
+
+    }
+});
+
+
+
 
 router.post('/changearticleStatus', [
     check('article_id', 'article id is required').notEmpty(),
@@ -365,6 +478,13 @@ router.post('/addarticleByadmin', function (req, res) {
                 },
                 function (overview, done1) {
                     if (overview.image != '') { record.image = overview.image; }
+
+                    if (record.role.length > 0) {
+                        record.role = record.role.map(data => {
+                            return data.value
+                        }).join(',');
+                    }
+                    
                     Article.addarticleByadmin(record, function (err, data) {
                         if (err) {
                             done1(err, overview)

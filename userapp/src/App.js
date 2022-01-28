@@ -57,7 +57,6 @@ const MyVideo = lazy(() => import("./pages/user/video/MyVideo"));
 
 const ProfessionalDevelopment = lazy(() => import("./pages/user/course/ProfessionalDevelopment"));
 const MyProfessionalDevelopment = lazy(() => import("./pages/user/course/MyProfessionalDevelopment"));
-const MyProfessionalDevelopmentDetail = lazy(() => import("./pages/user/course/MyProfessionalDevelopmentDetail"));
 const ProfessionalDevelopmentDetail = lazy(() => import("./pages/user/course/ProfessionalDevelopmentDetail"));
 const CoursePayment = lazy(() => import("./pages/user/course/CoursePayment"));
 
@@ -117,8 +116,7 @@ function App() {
           <Route path="/group-session" component={GroupSession} />
           <Route path="/informational-video" component={InformationalVideo} />
           <Route path="/professional-development" component={ProfessionalDevelopment} />
-          <PrivateRoute path="/my-professional-development" component={MyProfessionalDevelopment} />
-          <PrivateRoute path="/my-professional-development-detail" component={MyProfessionalDevelopmentDetail} />          
+          <PrivateRoute path="/my-professional-development" component={MyProfessionalDevelopment} />          
           <Route path="/professional-development-detail" component={ProfessionalDevelopmentDetail} />
           <Route path="/participants-in-my-studies" component={ParticipantsInMyStudies} />
           <Route path="/participate-in-research" component={ParticipateInResearch} />
