@@ -572,6 +572,7 @@ router.post('/getPaidBlogList', passport.authenticate('jwt', { session: false })
                 let retObj = {};
                 retObj['blog_id'] = data.b_id;
                 retObj['title'] = data.title;
+                retObj['blog_order_id'] = data.blog_order_id;                
                 retObj['description'] = data.description;
                 retObj['created_at'] = moment(data.blog_date).format('MMMM DD, YYYY');
                 retObj['role'] = data.role;

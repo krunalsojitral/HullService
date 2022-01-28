@@ -147,12 +147,16 @@ export default function Articles() {
                                             {!data.image && <img src="images/blog.jpg" alt="article" />}
                                         </Link>
                                         </div>
-                                        <div className="blog-text">                                            
+                                        <div className="blog-text">    
+                                            <div className="blog-icon">
+                                                {token && <div className="blog-tags" onClick={(e) => bookmarkClick(data.article_id)}>
+                                                    {data.bookmark_article_id && <img className="bookmark-fill" src="images/bookmark-fill.png" alt="bookmark-fill" />}
+                                                    {!data.bookmark_article_id && <img className="bookmark-outline" src="images/bookmark-outline.png" alt="bookmark-fill" />}
+                                                </div>}
+                                                {token && data.article_order_id && <div><img src="images/buy.png" alt="buy" /></div>}
+                                            </div>
 
-                                            {token && <div className="blog-tags" onClick={(e) => bookmarkClick(data.article_id)}>
-                                                {data.bookmark_article_id && <img className="bookmark-fill" src="images/bookmark-fill.png" alt="bookmark-fill" />}
-                                                {!data.bookmark_article_id && <img className="bookmark-outline" src="images/bookmark-outline.png" alt="bookmark-fill" />}
-                                            </div>}
+                                            
                                             {!token && <br />}
                                             <h3 className="tooltip-box">
                                                 <Link data-toggle="tooltip" title={data.title} data-placement="bottom" to={{ pathname: "/article-detail", search: "?id=" + data.article_id }}> 

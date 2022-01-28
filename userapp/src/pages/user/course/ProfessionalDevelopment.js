@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import api_url from '../../../components/Apiurl';
 import './../../dev.css';
 import { useForm } from "react-hook-form";
+import Paginator from 'react-hooks-paginator';
 import $ from 'jquery';
 
 export default function ProfessionalDevelopment() {
@@ -21,11 +22,13 @@ export default function ProfessionalDevelopment() {
     const { handleSubmit, formState } = useForm();
     const [selectedFilter, setSelectedFilter] = useState("");
     const [noresult, setNoresult] = React.useState(false)
+    const [token, setToken] = useState('');
 
     React.useEffect(() => {
 
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
+        setToken(token)
         const config = {
             headers: { Authorization: `${token}` }
         };
@@ -196,7 +199,7 @@ export default function ProfessionalDevelopment() {
                                                                 {!data.image && <img src="images/blog.jpg" alt="course" />}
                                                             </Link>                                                                                                                       
                                                         </div>
-                                                        <div className="blog-text">
+                                                        <div className="blog-text">                                                           
                                                             <br/>
                                                             <h3 className="tooltip-box">
                                                                 <Link to={{ pathname: "/professional-development-detail", search: "?id=" + data.course_id }}>
@@ -217,6 +220,10 @@ export default function ProfessionalDevelopment() {
                                                                         <p>${data.sale_cost}</p><label>${data.main_cost}</label>
                                                                     </div>
                                                                     <div className="cart-btn">
+                                                                        {/* <div className="blog-icon">
+                                                                            {token && data.course_order_id && <div><img src="images/buy.png" alt="buy" /></div>}
+                                                                        </div> */}
+                                                                        {token && data.course_order_id && <img style={{"marginRight":"5px"}} src="images/buy.png" alt="buy" />}
                                                                         <Link to={{ pathname: "/professional-development-detail", search: "?id=" + data.course_id }}>View Detail</Link>
                                                                     </div>
                                                                 </div>
@@ -238,6 +245,17 @@ export default function ProfessionalDevelopment() {
                                                     </center>                                                    
                                                 </div>
                                             }
+                                        </div>
+                                        <div className="row">
+                                            {!noresult && currentData.length > 0 && <Paginator
+                                                totalRecords={data.length}
+                                                pageLimit={pageLimit}
+                                                pageNeighbours={2}
+                                                setOffset={setOffset}
+                                                currentPage={currentPage}
+                                                setCurrentPage={setCurrentPage}
+
+                                            />}
                                         </div>
                                     </div>
                                 </div>

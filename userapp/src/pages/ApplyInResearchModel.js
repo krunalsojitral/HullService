@@ -88,8 +88,27 @@ function ApplyInResearchModel(props) {
                                             <small className="error">Name is required.</small>
                                         )}
                                     </div>
-                                </div>
-                                <div className="col-md-12">
+                                    <div className="form-group">
+                                        <Controller
+                                            name="gender"
+                                            control={control}
+                                            rules={{ required: true }}
+                                            render={({ field: { onChange, value } }) => (
+                                                <select className="form-control" onChange={onChange} value={value}>
+                                                    <option key="0" value="">Your Gender</option>
+                                                    <option key="1" value="Male">Male</option>
+                                                    <option key="2" value="Female">Female</option>
+                                                    <option key="3" value="Transgender">Transgender</option>
+                                                    <option key="4" value="Non-Binary">Non-Binary</option>
+                                                    <option key="5" value="Gender-Non-Conforming">Gender Non-Conforming</option>
+                                                    <option key="6" value="Decline-to-State">Decline to State</option>
+                                                </select>
+                                            )}
+                                        ></Controller>
+                                        {errors.gender && errors.gender.type === "required" && (
+                                            <small className="error">Gender is required.</small>
+                                        )}
+                                    </div>
                                     <div className="form-group">
                                         <Controller
                                             name={"dob"}
@@ -102,7 +121,7 @@ function ApplyInResearchModel(props) {
                                                     onChange={onChange}
                                                     dateFormat="yyyy/MM/dd"
                                                     dateFormatCalendar="yyyy/MM/dd"
-                                                    isClearable   
+                                                    isClearable
                                                     placeholderText="Your DOB"
                                                 />
                                             )}
@@ -111,8 +130,6 @@ function ApplyInResearchModel(props) {
                                             <small className="error">DOB is required.</small>
                                         )}
                                     </div>
-                                </div>
-                                <div className="col-md-12">
                                     <div className="form-group">
                                         <Controller
                                             name={"email"}
@@ -136,8 +153,8 @@ function ApplyInResearchModel(props) {
                                         {errors?.email?.type === "required" && <small className="error">Email is required.</small>}
                                         {errors?.email?.type === "pattern" && <small className="error">Invalid email address.</small>}
                                     </div>
-                                </div>
-
+                                </div>                                
+                                
                                 {researchesDetail.participate_text && 
                                 <div className="col-md-12">
                                     <div className="form-group">

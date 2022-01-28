@@ -196,7 +196,7 @@ function User() {
     this.getPaidArticleList = function (user_id, role, callback) {
         connection.acquire(function (err, con) {
             console.log(role);
-            con.query('SELECT *,article.article_id as art_id, article.created_at as article_date FROM article left join bookmark_article on article.article_id = bookmark_article.article_id and bookmark_article.user_id = $1 where article.draft_status IS NULL and article.status = $2 and (role ILIKE $3 or role ILIKE $4) order by article.article_id desc', [user_id, 1, '%' + role + '%', '%4%'], function (err, result) {
+            con.query('SELECT *,article.article_id as art_id, article.created_at as article_date FROM article left join bookmark_article on article.article_id = bookmark_article.article_id and bookmark_article.user_id = $1 left join article_order on article.article_id = article_order.article_id and article_order.user_id = $2 where article.draft_status IS NULL and article.status = $3 and (role ILIKE $4 or role ILIKE $5) order by article.article_id desc', [user_id, user_id, 1, '%' + role + '%', '%4%'], function (err, result) {
             //con.query('SELECT *,article.article_id as art_id, article.created_at as article_date FROM article left join bookmark_article on article.article_id = bookmark_article.article_id and bookmark_article.user_id = $1 where article.draft_status IS NULL and article.status = $2 and (role ILIKE $3 or role ILIKE $4) order by article.article_id desc', [user_id, 1, '%' + role + '%', '%4%'], function (err, result) {
                 con.release()
                 if (err) {

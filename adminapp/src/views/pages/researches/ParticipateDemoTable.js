@@ -13,7 +13,7 @@ import { CSVLink, CSVDownload } from "react-csv";
 const ParticipateDemoTable = ({ match }) => {
   
   const [items, setItems] = useState([])
-  const [csvData, setCsvData] = useState([["S.No","Name", "Email", "DOB"]]);
+  const [csvData, setCsvData] = useState([["S.No","Name", "Email", "DOB","Gender"]]);
   const [filedate, setFiledate] = useState();
 
   const getCSVList = () => {
@@ -46,7 +46,8 @@ const ParticipateDemoTable = ({ match }) => {
   const fields = [
     { key: 'name', _style: { width: '20%'} },
     { key: 'email', _style: { width: '20%' } },
-    { key: 'dob', _style: { width: '20%'} }
+    { key: 'dob', _style: { width: '20%'} },
+    { key: 'gender', _style: { width: '20%'} }
   ]
   
   const getNewList = () => {

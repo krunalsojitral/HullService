@@ -38,15 +38,11 @@ const ResearchDetail = ({ match }) => {
                 <tr><td>Research Title :</td><td><strong>{details.topic}</strong></td></tr>
 
 
-                {/* {details.description && <tr><td>Research Description : </td><td>
+                {details.description && <tr><td>Research Description : </td><td>
                   <div className={details.description && details.description.length > 380 ? "overflow-description" : ""}>
                     {details.description && details.description && <strong dangerouslySetInnerHTML={{ __html: details.description }}></strong>}
                   </div>
-                </td></tr>} */}
-
-
-                <tr><td>Research Description  :</td><td><strong>{details.description}</strong></td></tr> 
-
+                </td></tr>} 
 
 
                 <tr><td>Created By :</td><td><strong>{details.name}</strong></td></tr>

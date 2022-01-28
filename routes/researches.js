@@ -267,6 +267,7 @@ router.post('/addParticipate', [
         let record = {
             name: req.body.name,
             email: req.body.email,
+            gender: req.body.gender,
             dob: (req.body.dob) ? moment(req.body.dob).format('YYYY-MM-DD') : '',
             created_at: moment().format('YYYY-MM-DD'),
             researches_id: req.body.researches_id
@@ -299,6 +300,7 @@ router.post('/participateList', [
                     let retObj = {};
                     retObj['researches_id'] = data.researches_id;
                     retObj['name'] = data.name;
+                    retObj['gender'] = (data.gender) ? data.gender.replace("-", " ") : '';
                     retObj['email'] = data.email;
                     retObj['dob'] = moment(data.dob).format('YYYY-MM-DD');
                     retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
@@ -330,6 +332,7 @@ router.post('/csvParticipateList', [
                     retObj['Name'] = data.name;
                     retObj['Email'] = data.email;
                     retObj['DOB'] = moment(data.dob).format('YYYY-MM-DD');
+                    retObj['gender'] = (data.gender) ? data.gender.replace("-", " ") : '';
                     return retObj;
                 });
                 return res.json({ status: 1, 'response': { data: participateList } });
@@ -382,13 +385,22 @@ router.get('/getCSVFutureResearchList', (req, res) => {
                     await Researches.getResearchesChildDataById(research.future_research_id, function (err, childresult) {
                         if (childresult && childresult.length > 0) {
                             research.child_number = childresult.length;
-                            research.child = Array.from(childresult.values(), v => v.child_dob).join(", ");
+
+                            research.child = childresult.map(function (elem, index) {
+                                var DOB = (elem.child_dob) ? moment(elem.child_dob).format('YYYY-MM-DD') : '';
+                                var gender = (elem.child_gender) ? elem.child_gender.replace("-", " ") : '';
+                                var name = (elem.child_name) ? elem.child_name : '';
+                                return index + 1 + ')' + 'Child Name: ' + name + ' ,Child Gender: ' + gender + ' ,Child DOB: ' + DOB + '\n';
+                            }).join(""); 
+
+                            //research.child = Array.from(childresult.values(), v => v.child_dob).join(", ");
                         }
                     });
                 }
                 setTimeout(() => resolve(result), 40)
             });
             temparray.then(result => {
+
                 var participateList = result.map((data,index) => {
                     let retObj = {};                    
                     retObj['S.No'] = index+1;
@@ -396,7 +408,7 @@ router.get('/getCSVFutureResearchList', (req, res) => {
                     retObj['Email'] = data.email;
                     retObj['DOB'] = moment(data.dob).format('YYYY-MM-DD');
                     retObj['No_of_Kids'] = data.child_number;
-                    retObj['Age_of_kids'] = data.child;
+                    retObj['Kids_detail'] = data.child;
                     return retObj;
                 });
                 return res.json({ status: 1, 'response': { data: participateList } });

@@ -152,8 +152,8 @@ function Researches() {
                     callback(err, null);
                 } else {
                     if (results.rows.length === 0) {
-                        const sql = 'INSERT INTO researches_participate(name,dob,email,created_at,researches_id) VALUES($1,$2,$3,$4,$5) RETURNING *'
-                        const values = [record.name, record.dob, record.email, record.created_at, record.researches_id]
+                        const sql = 'INSERT INTO researches_participate(name,gender,dob,email,created_at,researches_id) VALUES($1,$2,$3,$4,$5,$6) RETURNING *'
+                        const values = [record.name, record.gender, record.dob, record.email, record.created_at, record.researches_id]
                         con.query(sql, values, function (err, result) {
                             con.release()
                             if (err) {

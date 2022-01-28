@@ -10,15 +10,14 @@ function ParticipateInResearchDescription(props) {
         // console.log('in in ');
     }, []);
     return (
-        <div>    
-            {props.description && <p>
-                {" "}
-                {isShow ? props.description : props.description.substring(0, truncLength)} {" "} 
-            </p>}
-            {props.description.length > 499 && <span className="read-more-des" onClick={() => setShowHide((previous) => !previous)}>
-                {isShow ? "Read Less" : "Read more"}
-            </span>}
-           
+        <div>  
+                {props.description && <p>
+                    {isShow ? <p dangerouslySetInnerHTML={{ __html: props.description }}></p> : <p dangerouslySetInnerHTML={{ __html: props.description.substring(0, truncLength) }}></p>}
+                </p>}
+                {props.description.length > 499 &&
+                <span className="read-more-des" onClick={() => setShowHide((previous) => !previous)}>
+                        {isShow ? "Read Less" : "Read more"}
+                </span>}
         </div>
     )
 }

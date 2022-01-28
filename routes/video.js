@@ -577,6 +577,7 @@ router.post('/getPaidVideoList', passport.authenticate('jwt', { session: false }
                 retObj['created_at'] = moment(data.video_date).format('MMMM DD, YYYY');
                 retObj['role'] = data.role;
                 retObj['video'] = data.video_url;
+                retObj['video_order_id'] = data.video_order_id;
                 retObj['video_embeded_id'] = data.video_embeded_id;
                 retObj['bookmark_video_id'] = data.bookmark_video_id;
                 retObj['cost'] = data.cost;

@@ -145,12 +145,19 @@ export default function Blog() {
                                             </Link>
                                         </div>
                                         <div className="blog-text">
-                                            {token && <div className="blog-tags" onClick={(e) => bookmarkClick(data.blog_id)}>
-                                                {/* <p>Telemedicine</p> */}                                                
-                                                {data.bookmark_blog_id && <img className="bookmark-fill" src="images/bookmark-fill.png" alt="bookmark-fill" />}
-                                                {!data.bookmark_blog_id && <img className="bookmark-outline" src="images/bookmark-outline.png" alt="bookmark-fill" />}
-                                                
-                                            </div>}
+                                            <div className="blog-icon">
+
+                                                {token && <div className="blog-tags" onClick={(e) => bookmarkClick(data.blog_id)}>
+                                                    {/* <p>Telemedicine</p> */}
+                                                    {data.bookmark_blog_id && <img className="bookmark-fill" src="images/bookmark-fill.png" alt="bookmark-fill" />}
+                                                    {!data.bookmark_blog_id && <img className="bookmark-outline" src="images/bookmark-outline.png" alt="bookmark-fill" />}
+
+                                                </div>}
+                                                {token && data.blog_order_id && <div><img src="images/buy.png" alt="buy" /></div>}
+
+                                            </div>
+                                            
+                                            
                                             {!token && <br/>}
                                             <h3 className="tooltip-box">
                                                 <Link to={{ pathname: "/blog-detail", search: "?id=" + data.blog_id }}> 

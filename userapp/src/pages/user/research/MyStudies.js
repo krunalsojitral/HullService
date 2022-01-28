@@ -9,6 +9,7 @@ import $ from 'jquery';
 import axios from 'axios';
 import Swal from "sweetalert2";
 import api_url from '../../../components/Apiurl';
+import ParticipateInResearchDescription from "../../ParticipateInResearchDescription";
 
 export default function Events() {
    
@@ -110,7 +111,7 @@ export default function Events() {
                                                     <div className="col-md-12">
                                                         <div className="studies-list">
                                                             <h3>{data.topic}</h3>
-                                                            <p>{data.description}</p>
+                                                            <ParticipateInResearchDescription description={data.description}></ParticipateInResearchDescription>                                                            
                                                         </div>
                                                     </div>
                                                     {/* <div className="col-md-4">

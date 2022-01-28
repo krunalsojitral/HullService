@@ -4031,7 +4031,7 @@ div#swal2-html-container{
 }
 .participate-modal .modal-body h3 {
     font-size: 22px;
-    line-height: 13px;
+    line-height: 27px;
     text-align: center;
     font-weight: 200;
     color: #036E80;
@@ -4244,5 +4244,12 @@ input.react-autosuggest__input::placeholder { color: #A0A0A0;}
 .login-box.user-selection-box{
     width: 900px;
 }
+
+.blog-icon {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 
    

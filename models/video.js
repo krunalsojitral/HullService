@@ -200,20 +200,20 @@ function Video() {
                 //var sql = 'SELECT *,video.video_id as videoid,video.created_at as video_date FROM video left join bookmark_video on video.video_id = bookmark_video.video_id and bookmark_video.user_id = $1 where video.draft_status IS NULL and video.status = $2 and (role ILIKE $3 or role ILIKE $4) and ( title ILIKE $5) order by video.video_id asc';
 
                 if (sortby == "ascending"){
-                    var sql = 'SELECT *,video.video_id as videoid,video.created_at as video_date FROM video left join bookmark_video on video.video_id = bookmark_video.video_id and bookmark_video.user_id = $1 where video.draft_status IS NULL and video.status = $2 and (role ILIKE $3 or role ILIKE $4) and ( title ILIKE $5) order by video.video_id asc';
+                    var sql = 'SELECT *,video.video_id as videoid,video.created_at as video_date FROM video left join bookmark_video on video.video_id = bookmark_video.video_id and bookmark_video.user_id = $1 left join video_order on video.video_id = video_order.video_id and video_order.user_id = $2 where video.draft_status IS NULL and video.status = $3 and (role ILIKE $4 or role ILIKE $5) and ( title ILIKE $6) order by video.video_id asc';
                 }else{
-                    var sql = 'SELECT *,video.video_id as videoid,video.created_at as video_date FROM video left join bookmark_video on video.video_id = bookmark_video.video_id and bookmark_video.user_id = $1 where video.draft_status IS NULL and video.status = $2 and (role ILIKE $3 or role ILIKE $4) and ( title ILIKE $5) order by video.video_id desc';
+                    var sql = 'SELECT *,video.video_id as videoid,video.created_at as video_date FROM video left join bookmark_video on video.video_id = bookmark_video.video_id and bookmark_video.user_id = $1 left join video_order on video.video_id = video_order.video_id and video_order.user_id = $2 where video.draft_status IS NULL and video.status = $3 and (role ILIKE $4 or role ILIKE $5) and ( title ILIKE $6) order by video.video_id desc';
                 }
-                var values = [id, 1, '%' + role + '%', '%4%', '%' + search + '%' ];
+                var values = [id, id, 1, '%' + role + '%', '%4%', '%' + search + '%' ];
 
             }else{   
                 
                 if (sortby == "ascending") {
-                    var sql = 'SELECT *,video.video_id as videoid,video.created_at as video_date FROM video left join bookmark_video on video.video_id = bookmark_video.video_id and bookmark_video.user_id = $1 where video.draft_status IS NULL and video.status = $2 and (role ILIKE $3 or role ILIKE $4) order by video.video_id asc';
+                    var sql = 'SELECT *,video.video_id as videoid,video.created_at as video_date FROM video left join bookmark_video on video.video_id = bookmark_video.video_id and bookmark_video.user_id = $1 left join video_order on video.video_id = video_order.video_id and video_order.user_id = $2 where video.draft_status IS NULL and video.status = $3 and (role ILIKE $4 or role ILIKE $5) order by video.video_id asc';
                 } else {
-                    var sql = 'SELECT *,video.video_id as videoid,video.created_at as video_date FROM video left join bookmark_video on video.video_id = bookmark_video.video_id and bookmark_video.user_id = $1 where video.draft_status IS NULL and video.status = $2 and (role ILIKE $3 or role ILIKE $4) order by video.video_id desc';
+                    var sql = 'SELECT *,video.video_id as videoid,video.created_at as video_date FROM video left join bookmark_video on video.video_id = bookmark_video.video_id and bookmark_video.user_id = $1 left join video_order on video.video_id = video_order.video_id and video_order.user_id = $2 where video.draft_status IS NULL and video.status = $3 and (role ILIKE $4 or role ILIKE $5) order by video.video_id desc';
                 }
-                var values = [id, 1, '%' + role + '%', '%4%'];
+                var values = [id, id, 1, '%' + role + '%', '%4%'];
             }
             con.query(sql, values, function (err, result) {
                 con.release()

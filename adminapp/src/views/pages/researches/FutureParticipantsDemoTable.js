@@ -18,7 +18,7 @@ const FutureParticipantsDemoTable = () => {
 
   const [deleteButtonDisable, setDeleteButtonDisable] = useState(true)
   const [items, setItems] = useState([])
-  const [csvData, setCsvData] = useState([["S.No","Name", "Email", "DOB", "No of Kids", "Age of kids"]]);
+  const [csvData, setCsvData] = useState([["S.No", "Name", "Email", "DOB", "No of Kids", "Kids Detail"]]);
   const [filedate, setFiledate] = useState();
 
   React.useEffect(() => {
@@ -41,7 +41,7 @@ const FutureParticipantsDemoTable = () => {
     { label: "Email", key: "Email" },
     { label: "DOB", key: "DOB" },
     { label: "No of Kids", key: "No_of_Kids" },
-    { label: "Age of kids", key: "Age_of_kids" }
+    { label: "Kids Detail", key: "Kids_detail" }
   ];
 
   const getCSVList = () => {

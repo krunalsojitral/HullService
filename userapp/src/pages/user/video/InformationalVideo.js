@@ -242,13 +242,14 @@ export default function Video() {
                                                         }
 
                                                         <div className="blog-text">
-                                                            {token && 
-                                                            <div className="blog-tags" onClick={(e) => bookmarkClick(data.video_id)}>                                                                
-                                                                {data.bookmark_video_id && <img className="bookmark-fill" src="images/bookmark-fill.png" alt="bookmark-fill" />}
-                                                                {!data.bookmark_video_id && <img className="bookmark-outline" src="images/bookmark-outline.png" alt="bookmark-fill" />}
-                                                            </div>}
-
-                                                           
+                                                            <div className="blog-icon">
+                                                                {token &&
+                                                                    <div className="blog-tags" onClick={(e) => bookmarkClick(data.video_id)}>
+                                                                        {data.bookmark_video_id && <img className="bookmark-fill" src="images/bookmark-fill.png" alt="bookmark-fill" />}
+                                                                        {!data.bookmark_video_id && <img className="bookmark-outline" src="images/bookmark-outline.png" alt="bookmark-fill" />}
+                                                                    </div>}
+                                                                {token && data.video_order_id && <div><img src="images/buy.png" alt="buy" /></div>}
+                                                            </div>
 
                                                             {!token && <br />}
 

@@ -662,7 +662,7 @@ router.post('/added_deactivate_reason', [
         let record = {
             deactive_title: (req.body.title) ? req.body.title: '',
             deactive_reason: (req.body.deactive_reason) ? req.body.deactive_reason : ''
-        };
+        };        
         var reason = req.body.deactive_reason;
         var name = req.body.name;        
         var email = req.body.email;
@@ -689,13 +689,12 @@ router.post('/added_deactivate_reason', [
                 }
                 var view = { data: dynamicHtml };
                 var finalHtmlUser = mustache.render(htmlUser, view);
-
                 let transporter = nodemailer.createTransport(nodeMailerCredential); // node mailer credentials
                 let mailOptions = {
                     from: env.MAIL_FROM,
                     to: email,
                     subject: 'Your Hull Services account has been de-activated.',
-                    html: finalHtmlUser.replace(/&#x2F;/g, '/')
+                    html: finalHtmlUser.replace(/&#x2F;/g, '/')                   
                 };
 
                 transporter.sendMail(mailOptions, (error, info) => {
