@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { CCard, CButton, CCardBody, CCardHeader, CCol, CRow } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
 import axios from 'axios';
 import api_url from '../../Apiurl';
 import Swal from "sweetalert2";

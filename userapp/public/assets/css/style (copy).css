@@ -1869,9 +1869,9 @@ min-height: 258px;
 }
 
 .research-profile img {
-    width: 30px;
-    height: 30px;
-    border-radius: 0px;
+    width: 65px;
+    hyphens: 65px;
+    border-radius: 50px;
     margin-right: 5px;
 }
 
@@ -2025,7 +2025,7 @@ min-height: 258px;
     text-align: center;
     font-weight: 200;
     color: #036E80;
-    margin: 15px â€‹0 12px 0;
+    margin: 15px ​0 12px 0;
 }
 
 .article-modal .modal-body p {
@@ -3068,7 +3068,44 @@ min-height: 258px;
     margin-right: 5px;
 }
 
+.forum-text {
+    background: #fff;
+    padding: 3px 10px 0px 0px;
+}
 
+.forum-text p {
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 1.2;
+    letter-spacing: 0.005em;
+    color: #11142D;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.forum-comments p span {
+    font-style: italic;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 120%;
+    text-align: center;
+    letter-spacing: 0.005em;
+    color: #7F7F7F;
+}
+
+.forum-comments {
+    display: flex;
+    justify-content: space-between;
+}
+.reply-forum a:last-of-type { margin-left: 24px;}
+.replied-text {
+    background: #FFEFC4;
+    margin-left: 0;
+    padding: 8px;
+    margin-bottom: 10px;
+    display: block;
+}
+.replied-text p { margin: 0;}
 .forum-post {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -3415,62 +3452,112 @@ div#swal2-html-container{
     font-weight: bold;
 }
 .forumadd { overflow: inherit; }
-.view-btn a {       
-    font-size: 16px;        
-    line-height: 120%;      
-    text-align: center;     
-    letter-spacing: 0.005em;        
-    color: #038EA6;     
-    display: block;     
-    margin: 10px 0;     
-    text-align: left;       
-    font-weight: bold;      
-    padding-left: 10px;     
+.view-btn a {		
+    font-size: 16px;		
+    line-height: 120%;		
+    text-align: center;		
+    letter-spacing: 0.005em;		
+    color: #038EA6;		
+    display: block;		
+    margin: 10px 0;		
+    text-align: left;		
+    font-weight: bold;		
+    padding-left: 10px;		
 }
-.research-date {    
-    display: flex;  
-    gap: 50px;  
-    font-size: 16px;    
-}   
-.research-main {    
-    background: #fff;   
-    padding: 10px;  
-    border-radius: 8px; 
-    margin: 15px 0; 
-}   
-.category-table .research-box { 
-    justify-content: flex-start;    
-    align-items: flex-start;    
-    margin-bottom: 0;   
-}   
-.breadcrumbs-main { 
-    display: block; 
-    margin: 30px 0; 
-    background: #fff;   
-    padding: 10px;  
-    border-radius: 8px; 
-}   
-
-.research-date label {  
-    font-size: 13px;    
-}   
-.research-detail p {    
-    display: block; 
-    font-style: normal; 
-    font-weight: 600;   
-    font-size: 18px;    
-    line-height: 25px;  
-    text-align: left;   
-    color: rgba(0, 0, 0, 0.75); 
-}   
-.researcher {       
-    font-weight: 300;   
-    font-size: 15px;    
-    color: rgb(88 88 88 / 75%); 
-    line-height: 25px;  
-    text-align: left;   
-    margin: 3px 0;  
-}   
+.research-date {	
+    display: flex;	
+    gap: 50px;	
+    font-size: 16px;	
+}	
+.research-main {	
+    background: #fff;	
+    padding: 10px;	
+    border-radius: 8px;	
+    margin: 15px 0;	
+}	
+.category-table .research-box {	
+    justify-content: flex-start;	
+    align-items: flex-start;	
+    margin-bottom: 0;	
+}	
+.breadcrumbs-main {	
+    display: block;	
+    margin: 30px 0;	
+    background: #fff;	
+    padding: 10px;	
+    border-radius: 8px;	
+}	
+.category-table .forum-comments {	
+    display: flex;	
+    justify-content: flex-start;	
+    gap: 30px;	
+    margin-bottom: 8px;
+}	
+.forum-comments p {	
+    display: flex;	
+    align-items: center;
+    margin: 0;	
+    cursor: pointer;
+    font-size: 21px;
+}	
+.forum-comments p:first-child{
+    margin-right: -19px;
+    display: inline-block;
+}
+.category-table .cat-title {	
+    display: flex;	
+    justify-content: space-between;	
+    align-items: center;	
+    margin: 25px 0px 0px 0px;	
+}	
+.category-table .forum-date{
+    color: gray;
+    margin-top: 6px;
+}
+.category-table .cat-title h2 {	
+    font-weight: bold;	
+    font-size: 24px;	
+    line-height: 120%;	
+    letter-spacing: 0.005em;	
+    color: #11142D;	
+    margin: 0 0 8px !important;
+    font-family: 'Mulish', sans-serif;	
+}	
+.cat-title a.add-comment {	
+    background: #036E80;	
+    border-radius: 8px;	
+    padding: 15px 24px;	
+    color: #fff;	
+    text-align: center;	
+    text-decoration: none;	
+    font-weight: bold;	
+    font-size: 16px;	
+    text-align: center;	
+    letter-spacing: 0.005em;	
+    margin: 0;	
+}	
+.research-date label {	
+    font-size: 13px;	
+}	
+.research-detail p {	
+    display: block;	
+    font-style: normal;	
+    font-weight: 600;	
+    font-size: 18px;	
+    line-height: 25px;	
+    text-align: left;	
+    color: rgba(0, 0, 0, 0.75);	
+    /* mix-blend-mode: normal; */	
+    /* opacity: 0.75; */	
+}	
+.researcher {	    
+    font-weight: 300;	
+    font-size: 15px;	
+    color: rgb(88 88 88 / 75%);	
+    line-height: 25px;	
+    text-align: left;	
+    margin: 3px 0;	
+}	
 .select-dropdown { position: relative;}
 .select-dropdown:after {
     content: '\f107';
@@ -3481,7 +3568,164 @@ div#swal2-html-container{
     font-size: 22px;
     color: #aaa;
  }
+.dislike-like ul li {
+    display: inline-block;
+    margin-right: 20px;
+    color: #3f3f3f;
+}
+.dislike-like ul li i {
+    display: inline-block;
+    cursor: pointer;
+    font-size: 20px;
+}
+.dislike-like ul li span {
+    display: inline-flex;
+    cursor: pointer;
+}
+.dislike-like ul li:first-child { margin-right: 8px;}
+.liked{ color: #276e80 !important;}
+.follow { text-align: right;margin-right: 10px;}
+.follow span {
+    font-size: 14px;
+    color: #276e80;
+    border: solid 1px;
+    padding: 4px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #fff;
+}
+.comment-box {     
+    padding: 0px;
+    border-radius: 5px;
+    margin: 17px 0;
+    position: relative;    
+}
+.comment-box textarea {
+    width: 87%;
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+    border: solid 1px #ddd;
+    box-shadow: none;
+    float: left;
+    margin-right: 8px;
+    line-height: 26px;
+}
+.comment-box button {
+    width: 124px;
+    border: none;
+    height: 40px;    
+    right: 8px;
+    background: #276E80;
+    color: #fff;
+    font-weight: 600;
+    top: 3px;
+    right: 2px;
+    border-radius: 5px;
+}
+.reply-box {
+    width: 70%;   
+    padding: 0px;
+    border-radius: 5px;
+    margin: 20px 0;
+    position: relative;    
+    margin-left: 39px;
+}
+.reply-box textarea {
+    width: 83%;
+    height: 40px;    
+    border-radius: 5px;    
+    margin-right: 13px;
+}
+.reply-box button {
+    width: 100px;
+    border: none;
+    height: 40px;
+    position: absolute;
+    right: 8px;
+    background: #276E80;
+    color: #fff;
+    font-weight: 600;    
+    right: 2px;
+    border-radius: 5px;
+    top:0px;
+}
+.reply-list {
+    margin: 21px 0px;
+    /* background: #f1f1f1; */
+    /* border: solid 1px #ddd; */
+    width: 93%;
+    margin-left: 37px;
+}
+.reply-list .reply-card {
+        padding: 7px 15px;
+    background: #f1f1f1;
+    border-left: 4px solid #276e80;
+    margin-bottom: 10px;
+    border-radius: 3px;
+    overflow: hidden;
+}
 
+.reply-list .reply-card h3 {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 22px;
+    display: block;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: left;
+    color: rgba(0, 0, 0, 0.75);
+    /* mix-blend-mode: normal; */
+    /* opacity: 0.75; */
+}
+
+.reply-list .reply-card span {
+    font-weight: 600;
+    font-weight: normal;
+    font-size: 15px;
+    color: rgb(88 88 88 / 75%);
+    line-height: 20px;
+    text-align: left;
+    margin:0;
+    cursor: pointer;
+}
+
+.reply-list .reply-card  p {
+    font-size: 13px;
+    color: #333;
+    margin: 0;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 1.2;
+    letter-spacing: 0.005em;
+    color: #11142D;
+    display: block;
+    padding: 8px 0px 4px 0px;
+}
+.reply-list .reply-card .reply-box .error{
+    letter-spacing:0.3px;
+    text-transform:inherit;
+    font-weight: 400;
+    font-size: 11px;
+}
+.sub-reply {border-left: 2px #ddd solid;padding: 8px 10px;margin-left: 46px;margin-top: 9px;}
+.sub-reply p { font-style: italic;}
+.reply-list .reply-card small {
+    font-size: 12px;
+    color: #777;
+    font-size: 12px;
+    line-height: normal;
+    text-align: right;
+    letter-spacing: 1.5px;
+    text-transform: capitalize;
+    color: rgba(0, 0, 0, 0.75);
+    font-weight: 300;
+}
+.reply-list .reply-card:last-child { border-bottom: none;}
+.comment-liked i.fa.fa-thumbs-up { color: #276E80;}
+.comment-liked i.fa.fa-thumbs-down {color: #276E80;}
 .loadmore {
     width: 250px;
     text-align: center;
@@ -3501,9 +3745,16 @@ div#swal2-html-container{
     background: #fff;
 }
 
+.reply-loadmore{
+    color: #276E80;
+    font-size: 15px;
+    cursor: pointer;
+}
 
-
-
+.subreply-list .reply-subloadmore{
+    margin-left: 47px !important;
+    margin-top: 8px !important;
+}
 .delete-icon {
     margin-top: 5px;
     color: #276e80;
@@ -3634,7 +3885,49 @@ div#swal2-html-container{
     letter-spacing: 0.005em;
     color: #92929D;
 }
+.studies-box {
+    background: #FFFFFF;
+    border: 1px solid #D2D2D2;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.151033);
+    border-radius: 6px;
+}
+.studies-box .studies-header { padding: 15px; }
+.studies-box .studies-header h3 {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 17px;
+    line-height: 18px;
+    color: #303030;
+    font-family: 'Mulish', sans-serif;
+    margin-bottom: 9px;
+}
+.studies-box .studies-header  small {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 16px;
+    color: #303030;
+    mix-blend-mode: normal;
+    opacity: 0.5;
+}
 
+.studies-box .btn-apply {
+    border: none;
+    display: block;
+    background: #036E80;
+    border-radius: 6px;
+    height: 47px;
+    color: #fff;
+    text-align: center;
+    line-height: 47px;
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+    width: 100%;
+}
 .research-banner-title {
     text-align: center;
     padding: 30px 0;
@@ -3689,7 +3982,6 @@ div#swal2-html-container{
     border-left: solid 10px #FEBD2B;
     background: #fff;
     margin-top: 13px;
-    margin-bottom: 13px;
 }
 .message-card .message-icon {
     width: 50px;
@@ -3743,7 +4035,7 @@ div#swal2-html-container{
     text-align: center;
     font-weight: 200;
     color: #036E80;
-    margin: 15px â€‹0 12px 0;
+    margin: 15px ​0 12px 0;
 }
 .participate-modal .modal-body p {
    font-size: 17px;
@@ -3961,741 +4253,3 @@ input.react-autosuggest__input::placeholder { color: #A0A0A0;}
 
 
    
-/*
-    31 Jan
-*/
-
-.new-forums-card {
-    background: #FFFFFF;
-    border-radius: 5px;
-    padding: 30px;
-    margin: 30px 0;
-}
-
-.new-forums-card .new-forums-blog {}
-
-.new-forums-card .new-forums-blog small {
-    font-family: Open Sans;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 26px;
-/* identical to box height, or 186% */
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: #000000;
-}
-
-.new-forums-card .new-forums-blog h3 {
-    font-family: Open Sans;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 24px;
-    line-height: 26px;
-/* identical to box height, or 108% */
-    letter-spacing: 0.1px;
-    color: #000000;
-    margin: 15px 0;
-}
-
-.new-forums-card .new-forums-blog p {
-    font-family: Open Sans;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 16px;
-    line-height: 26px;
-/* or 162% */
-    letter-spacing: 0.1px;
-    color: #000000;
-}
-
-.new-forums-card .new-forums-input {
-    position: relative;
-    margin: 30px 0;
-}
-
-.new-forums-card .new-forums-input textarea.form-control {
-    background: #FFFFFF;
-    border: 1px solid #979797;
-    box-sizing: border-box;
-    border-radius: 5px;
-    box-shadow: none;
-    width: calc(100% - 206px);
-}
-
-.new-forums-card .new-forums-input .add-comment-btn {
-    background: #036E80;
-    border-radius: 5px;
-    font-family: Open Sans;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 14px;
-    line-height: 26px;
-    letter-spacing: 1px;
-    text-transform: capitalize;
-    color: #FFFFFF;
-    border: none;
-    height: 53px;
-    width: 200px;
-    position: absolute;
-    top: 0;
-    right: 0;
-}
-
-.new-forums-card .new-forums-count {}
-
-.new-forums-card .new-forums-count span {
-    position: relative;
-    font-family: Open Sans;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 16px;
-    line-height: 26px;
-/* or 162% */
-    letter-spacing: 0.1px;
-    color: #000000;
-    background: #E1E1E1;
-    padding: 12px 25px;
-    border-radius: 5px;
-}
-
-.new-forums-card .new-forums-follow-btn {
-    text-align: right;
-}
-
-.new-forums-card .new-forums-follow-btn .btn-follow {
-    background: #98D3DD;
-    border-radius: 100px;
-    border: none;
-    font-family: Open Sans;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 14px;
-    line-height: 26px;
-/* identical to box height, or 186% */
-    letter-spacing: 1px;
-    text-transform: capitalize;
-    color: #242323;
-    width: 200px;
-    height: 51px;
-    text-align: center;
-    line-height: 51px;
-}
-
-.new-forums-card .new-forums-count span:before {
-    color: #e1e1e1;
-    content: '\f0d7';
-    position: absolute;
-    font-family: FontAwesome;
-    left: 0;
-    right: 0;
-    display: block;
-    text-align: center;
-    bottom: -14px;
-    font-size: 48px;
-}
-
-.new-forums-reply {
-    background: #FFFFFF;
-    border-radius: 5px;
-    padding: 30px;
-    margin: 30px 0;
-}
-
-.new-forums-reply .forums-reply-card {
-    position: relative;
-}
-
-.new-forums-reply .forums-reply-card .forums-reply-icon {
-    float: left;
-    width: 55px;
-    height: 55px;
-    margin-right: 10px;
-    position: relative;
-    z-index: 3;
-    border-radius: 100px;
-    overflow: hidden;
-    background: #e1e1e1;
-}
-
-
-.new-forums-reply .forums-reply-card .forums-reply-icon img {
-    width: 100%;
-}
-
-.new-forums-reply .forums-reply-card .forums-reply-text {
-    overflow: hidden;
-}
-
-.new-forums-reply .forums-reply-card .forums-reply-text h3 {
-    font-family: Open Sans;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 16px;
-    line-height: 22px;
-/* identical to box height, or 162% */
-    text-transform: capitalize;
-    color: #036E80;
-}
-
-.new-forums-reply .forums-reply-card .forums-reply-text h3 span {
-    font-family: Open Sans;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 16px;
-    line-height: 22px;
-/* identical to box height, or 162% */
-    text-transform: capitalize;
-    color: #000;
-    margin-left: 5px;
-}
-
-.new-forums-reply .forums-reply-card .forums-reply-text span {
-    font-family: Open Sans;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 13px;
-    line-height: 26px;
-/* identical to box height, or 200% */
-    text-transform: capitalize;
-    color: #7B7B7B;
-}
-
-.new-forums-reply .forums-reply-card .forums-reply-text p {
-    font-family: Open Sans;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 16px;
-    line-height: 26px;
-/* or 162% */
-    color: #000000;
-    margin-bottom: 0px;
-    display: inline-block;
-}
-.new-forums-reply .forums-reply-card .forums-reply-text p span{
-    font-family: Open Sans;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 13px;
-    line-height: 26px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: #2B75E5;   
-    display: inline-block;
-}
-
-.new-forums-reply .forums-reply-card .forums-reply-text .Reply-Btn-New {
-    border: 1px solid #969696;
-    box-sizing: border-box;
-    border-radius: 100px;
-    width: 130px;
-    height: 45px;
-    margin: 15px 0;
-    font-family: Open Sans;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 13px;
-    
-/* or 200% */
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: #000000;
-    text-align: center;
-    line-height: 45px;
-}
-.new-forums-reply .forums-reply-card:before {
-    content: '';
-    height: 100%;
-    position: absolute;
-    left: 26px;
-    z-index: 1;
-    top: 4px;
-    border: 1px dashed #036E80;
-}
-
-.new-forums-card .new-forums-follow-btn .btn-follow img {
-    display: inline-block;
-    margin-right: 5px;
-}
-
-
-.new-forums-input {
-    position: relative;
-    margin: 0 0 30px 0;
-}
-
-.new-forums-input textarea.form-control {
-    background: #FFFFFF;
-    border: 1px solid #979797;
-    box-sizing: border-box;
-    border-radius: 5px;
-    width: calc(100% - 206px);
-    box-shadow: none;
-}
-
-.new-forums-input .add-comment-btn {
-    background: #036E80;
-    border-radius: 5px;
-    font-family: Open Sans;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 14px;
-    line-height: 26px;
-    letter-spacing: 1px;
-    text-transform: capitalize;
-    color: #FFFFFF;
-    border: none;
-    height: 53px;
-    width: 200px;
-    position: absolute;
-    top: 0;
-    right: 0;
-}
-.forums-reply-text .reply-subloadmore{
-    color: #f1b326 !important;
-    font-weight: 500 !important;
-    font-size: 14px !important;
-    margin: 10px 30px;
-}
-.new-forums-reply .forums-reply-card:last-child{
-        margin-bottom: 20px;
-}
-
-.studies-title-card {
-    position: relative;
-    background: #FFFFFF;
-    border-radius: 5px;
-    overflow: hidden;
-}
-.studies-title-card h2 {
-    font-size: 14px;
-    padding: 13px 28px;
-}
-
-.studies-research .studies-Btn {
-    text-align: right;
-}
-
-.studies-title-card .study-btn {
-    border-radius: 0 !important;
-    font-size: 14px !important;
-    text-align: left !important;
-    padding: 15px 26px !important;
-}
-
-.studies-title-card span {
-    font-size: 14px !important;
-}
-
-.studies-card {
-    background: #FFFFFF;
-    border-radius: 8px;
-    padding: 0px;
-    margin: 25px 0;
-}
-
-.studies-card .studies-list {
-    padding: 30px;
-}
-
-.studies-card .studies-list h3 {
-    font-family: Open Sans;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 22px;
-    line-height: 42px;
-    letter-spacing: 0.005em;
-    color: #036E80;
-}
-
-.studies-box {
-    min-height: 227px;
-    text-align: center;
-    background: #DCEEF1;
-    border-radius: 0px 5px 5px 0px;
-}
-
-.studies-box .studies-header {
-    padding: 38px;
-    margin-bottom: 0;
-}
-
-.studies-box .studies-header .studies-icon {
-    float: left;
-    width: 80px;
-    height: 80px;
-    margin-right: 10px;
-}
-
-.studies-box .studies-header .studies-text {
-    overflow: hidden;
-    text-align: left;
-}
-
-.studies-box .studies-header h3 {
-    font-family: Open Sans;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 16px;
-    line-height: 22px;
-    color: #000000;
-}
-
-.studies-box .studies-header  small {
-    mix-blend-mode: normal;
-    opacity: 0.5;
-    display: block;
-    font-family: Open Sans;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 19px;
-    color: #000000;
-}
-
-.studies-box .studies-header .studies-text span {
-    display: block;
-    font-family: Open Sans;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 12px;
-    line-height: 22px;
-    text-transform: uppercase;
-    color: #595959;
-}
-
-.studies-box .btn-apply {
-    border: none;
-    display: block;
-    background: #036E80;
-    border-radius: 6px;
-    height: 47px;
-    color: #fff;
-    line-height: 47px;
-    font-family: Open Sans;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 16px;
-    text-align: center;
-    width: 80%;
-    margin: 0 auto;
-}
-
-.studies-card .studies-list  p a {
-    font-family: Open Sans;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 13px;
-    line-height: 26px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: #2B75E5;
-}
-
-.studies-card .studies-list  p {
-    font-family: Open Sans;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 22px;
-    color: #000000;
-}
-
-/*forum */
-/* 
-.subreply-list .reply-subloadmore{
-    margin-left: 47px !important;
-    margin-top: 8px !important;
-}
-.category-table .cat-title {    
-    display: flex;  
-    justify-content: space-between; 
-    align-items: center;    
-    margin: 25px 0px 0px 0px;   
-}   
-.category-table .forum-date{
-    color: gray;
-    margin-top: 6px;
-}
-.category-table .cat-title h2 { 
-    font-weight: bold;  
-    font-size: 24px;    
-    line-height: 120%;  
-    letter-spacing: 0.005em;    
-    color: #11142D; 
-    margin: 0 0 8px !important;
-    font-family: 'Mulish', sans-serif;  
-}  
-.dislike-like ul li {
-    display: inline-block;
-    margin-right: 20px;
-    color: #3f3f3f;
-}
-.dislike-like ul li i {
-    display: inline-block;
-    cursor: pointer;
-    font-size: 20px;
-}
-.dislike-like ul li span {
-    display: inline-flex;
-    cursor: pointer;
-}
-.dislike-like ul li:first-child { margin-right: 8px;}
-.liked{ color: #276e80 !important;}
-.follow { text-align: right;margin-right: 10px;}
-.follow span {
-    font-size: 14px;
-    color: #276e80;
-    border: solid 1px;
-    padding: 4px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: #fff;
-}
-.comment-box {     
-    padding: 0px;
-    border-radius: 5px;
-    margin: 17px 0;
-    position: relative;    
-}
-.comment-box textarea {
-    width: 87%;
-    height: 40px;
-    border: none;
-    border-radius: 5px;
-    border: solid 1px #ddd;
-    box-shadow: none;
-    float: left;
-    margin-right: 8px;
-    line-height: 26px;
-}
-.comment-box button {
-    width: 124px;
-    border: none;
-    height: 40px;    
-    right: 8px;
-    background: #276E80;
-    color: #fff;
-    font-weight: 600;
-    top: 3px;
-    right: 2px;
-    border-radius: 5px;
-}
-.reply-box {
-    width: 70%;   
-    padding: 0px;
-    border-radius: 5px;
-    margin: 20px 0;
-    position: relative;    
-    margin-left: 39px;
-}
-.reply-box textarea {
-    width: 83%;
-    height: 40px;    
-    border-radius: 5px;    
-    margin-right: 13px;
-}
-.reply-box button {
-    width: 100px;
-    border: none;
-    height: 40px;
-    position: absolute;
-    right: 8px;
-    background: #276E80;
-    color: #fff;
-    font-weight: 600;    
-    right: 2px;
-    border-radius: 5px;
-    top:0px;
-}
-.reply-list {
-    margin: 21px 0px;    
-    width: 93%;
-    margin-left: 37px;
-}
-.reply-list .reply-card {
-        padding: 7px 15px;
-    background: #f1f1f1;
-    border-left: 4px solid #276e80;
-    margin-bottom: 10px;
-    border-radius: 3px;
-    overflow: hidden;
-}
-
-.reply-list .reply-card h3 {
-    font-size: 15px;
-    font-weight: 600;
-    line-height: 22px;
-    display: block;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 20px;
-    text-align: left;
-    color: rgba(0, 0, 0, 0.75);
-   
-}
-
-.reply-list .reply-card span {
-    font-weight: 600;
-    font-weight: normal;
-    font-size: 15px;
-    color: rgb(88 88 88 / 75%);
-    line-height: 20px;
-    text-align: left;
-    margin:0;
-    cursor: pointer;
-}
-
-.reply-list .reply-card  p {
-    font-size: 13px;
-    color: #333;
-    margin: 0;
-    font-weight: normal;
-    font-size: 16px;
-    line-height: 1.2;
-    letter-spacing: 0.005em;
-    color: #11142D;
-    display: block;
-    padding: 8px 0px 4px 0px;
-}
-.reply-list .reply-card .reply-box .error{
-    letter-spacing:0.3px;
-    text-transform:inherit;
-    font-weight: 400;
-    font-size: 11px;
-}
-.sub-reply {border-left: 2px #ddd solid;padding: 8px 10px;margin-left: 46px;margin-top: 9px;}
-.sub-reply p { font-style: italic;}
-.reply-list .reply-card small {
-    font-size: 12px;
-    color: #777;
-    font-size: 12px;
-    line-height: normal;
-    text-align: right;
-    letter-spacing: 1.5px;
-    text-transform: capitalize;
-    color: rgba(0, 0, 0, 0.75);
-    font-weight: 300;
-}
-.reply-list .reply-card:last-child { border-bottom: none;}
-.comment-liked i.fa.fa-thumbs-up { color: #276E80;}
-.comment-liked i.fa.fa-thumbs-down {color: #276E80;}
-.forum-text {
-    background: #fff;
-    padding: 3px 10px 0px 0px;
-}
-
-.forum-text p {
-    font-weight: normal;
-    font-size: 16px;
-    line-height: 1.2;
-    letter-spacing: 0.005em;
-    color: #11142D;
-    margin-bottom: 15px;
-    display: block;
-}
-
-.forum-comments p span {
-    font-style: italic;
-    font-weight: normal;
-    font-size: 16px;
-    line-height: 120%;
-    text-align: center;
-    letter-spacing: 0.005em;
-    color: #7F7F7F;
-}
-
-.forum-comments {
-    display: flex;
-    justify-content: space-between;
-}
-.reply-forum a:last-of-type { margin-left: 24px;}
-.replied-text {
-    background: #FFEFC4;
-    margin-left: 0;
-    padding: 8px;
-    margin-bottom: 10px;
-    display: block;
-}
-.replied-text p { margin: 0;}
-.category-table .forum-comments {   
-    display: flex;  
-    justify-content: flex-start;    
-    gap: 30px;  
-    margin-bottom: 8px;
-}   
-.forum-comments p { 
-    display: flex;  
-    align-items: center;
-    margin: 0;  
-    cursor: pointer;
-    font-size: 21px;
-}   
-.forum-comments p:first-child{
-    margin-right: -19px;
-    display: inline-block;
-}
- 
-.cat-title a.add-comment {  
-    background: #036E80;    
-    border-radius: 8px; 
-    padding: 15px 24px; 
-    color: #fff;    
-    text-align: center; 
-    text-decoration: none;  
-    font-weight: bold;  
-    font-size: 16px;    
-    text-align: center; 
-    letter-spacing: 0.005em;    
-    margin: 0;  
-} 
-.reply-loadmore{
-    color: #276E80;
-    font-size: 15px;
-    cursor: pointer;
-}   */
-
-/* .studies-box {
-    background: #FFFFFF;
-    border: 1px solid #D2D2D2;
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.151033);
-    border-radius: 6px;
-}
-.studies-box .studies-header { padding: 15px; }
-.studies-box .studies-header h3 {
-    font-style: normal;
-    font-weight: normal;
-    font-size: 17px;
-    line-height: 18px;
-    color: #303030;
-    font-family: 'Mulish', sans-serif;
-    margin-bottom: 9px;
-}
-.studies-box .studies-header  small {
-    font-family: Open Sans;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 15px;
-    line-height: 16px;
-    color: #303030;
-    mix-blend-mode: normal;
-    opacity: 0.5;
-}
-
-.studies-box .btn-apply {
-    border: none;
-    display: block;
-    background: #036E80;
-    border-radius: 6px;
-    height: 47px;
-    color: #fff;
-    text-align: center;
-    line-height: 47px;
-    font-family: Open Sans;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 16px;
-    text-align: center;
-    width: 100%;
-} */

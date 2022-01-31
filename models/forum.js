@@ -80,12 +80,12 @@ function forum() {
            
             const sql = 'INSERT INTO forum(topic,description, heading,status,created_at,total_view,retire) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING *'
             const values = [record.topic, record.description, record.heading, 1, record.created_at,0,0]
-            con.query(sql, values, function (err, result) {
-                con.release()
+            con.query(sql, values, function (err, result) {                
                 if (err) {
                     if (env.DEBUG) {
                         console.log(err);
                     }
+                    con.release()
                     callback(err, null);
                 } else {
                     if (tag.length > 0) {
@@ -99,6 +99,7 @@ function forum() {
                             con.query(sql, values, function (err, result) { });
                         });
                     }
+                    con.release()
                     callback(null, result.rows[0]);
                 }
             });
@@ -110,12 +111,12 @@ function forum() {
 
             const sql = 'INSERT INTO forum(topic,heading,status,created_at,total_view, created_by,user_status, description,retire,read) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *'
             const values = [record.topic, record.heading, 0, record.created_at, 0, record.created_by, 0, record.description,0,0]
-            con.query(sql, values, function (err, result) {
-                con.release()
+            con.query(sql, values, function (err, result) {                
                 if (err) {
                     if (env.DEBUG) {
                         console.log(err);
                     }
+                    con.release()
                     callback(err, null);
                 } else {
                     if (tag.length > 0) {
@@ -129,6 +130,7 @@ function forum() {
                             con.query(sql, values, function (err, result) { });
                         });
                     }
+                    con.release()
                     callback(null, result.rows[0]);
                 }
             });
@@ -468,6 +470,7 @@ function forum() {
         connection.acquire(function (err, con) {
             const values = [record.status, record.user_status, record.admin_comment, record.created_at, record.id]
             con.query("UPDATE forum SET status =$1, user_status =$2,comment =$3,created_at=$4 WHERE forum_id = $5", values, function (err, result) {
+                con.release()
                 if (err) {
                     if (env.DEBUG) {
                         console.log(err);
@@ -697,6 +700,7 @@ function forum() {
         connection.acquire(function (err, con) { 
             var sql = 'SELECT ur.role,u.first_name,u.last_name,c.comment,c.created_at,c.forum_comment_id as reply_comment_id FROM forum_comment as c inner join users as u on u.id = c.user_id inner join user_role as ur on ur.role_id = u.role where c.parent_comment_id = $1 order by c.forum_comment_id DESC';
             con.query(sql, [id], function (err, results) {
+                con.release()
                 if (err) {
                     callback(err, null);
                 } else {
@@ -731,12 +735,12 @@ function forum() {
                 function (done) {                      
                     
                     var sql = 'SELECT ur.role,u.first_name,u.last_name,c.comment,c.created_at,c.forum_comment_id as reply_comment_id FROM forum_comment as c inner join users as u on u.id = c.user_id inner join user_role as ur on ur.role_id = u.role where c.parent_comment_id = $1 order by c.forum_comment_id DESC';
-                    con.query(sql, [id], function (err, result) {
+                    con.query(sql, [id], function (err, result) {                        
                         var response = [];                        
                         Promise.all(result.rows.map(function (item) {
                             var temparray = new Promise(function (resolve, reject) {
                                 var sql = 'SELECT ur.role,u.first_name,u.last_name,c.comment,c.created_at,c.forum_comment_id as reply_comment_id FROM forum_comment as c inner join users as u on u.id = c.user_id inner join user_role as ur on ur.role_id = u.role where c.parent_comment_id = $1 order by c.forum_comment_id DESC';
-                                con.query(sql, [item.reply_comment_id], function (err, results) {                                    
+                                con.query(sql, [item.reply_comment_id], function (err, results) {                                       
                                     if (results && results.rows.length > 0) {
                                         item.reply = results.rows.map(data => {
                                                 let retObj = {};
@@ -786,7 +790,7 @@ function forum() {
                 },
                 function (obj, done2) {
                     var sql = 'SELECT count(*) as cnt FROM forum_comment as c inner join comment_like as cl on cl.comment_id = c.forum_comment_id and action_type = $1 where c.forum_comment_id = $2';
-                    con.query(sql, ["like", id], function (err, result) {
+                    con.query(sql, ["like", id], function (err, result) {                       
                         if (err) {
                             done2(err, null);
                         } else {
@@ -905,7 +909,7 @@ function forum() {
                                 if (err) {
                                     if (env.DEBUG) {
                                         console.log(err);
-                                    }
+                                    }                                    
                                     callback(err, null);
                                 } else {
                                     const sql = 'INSERT INTO forum_like(user_id,forum_id,action_type) VALUES($1,$2,$3) RETURNING *'
@@ -927,6 +931,7 @@ function forum() {
                             const sql = 'DELETE FROM forum_like WHERE user_id = $1 and forum_id = $2'
                             const values = [record.user_id, record.forum_id]
                             con.query(sql, values, function (err, result) {
+                                con.release()
                                 if (err) {
                                     if (env.DEBUG) { console.log(err); }
                                     callback(err, null);
@@ -998,6 +1003,7 @@ function forum() {
                             const sql = 'DELETE FROM comment_like WHERE user_id = $1 and comment_id = $2'
                             const values = [record.user_id, record.comment_id]
                             con.query(sql, values, function (err, result) {
+                                con.release()
                                 if (err) {
                                     if (env.DEBUG) {
                                         console.log(err);
@@ -1033,6 +1039,7 @@ function forum() {
     this.getforumContent = function (callback) {
         connection.acquire(function (err, con) {
             con.query("SELECT * FROM forum_content WHERE forum_content_id = 1", function (err, result) {
+                con.release()
                 if (err) {
                     if (env.DEBUG) {
                         console.log(err);
@@ -1049,6 +1056,7 @@ function forum() {
     this.updateForumContent = function (record, callback) {
         connection.acquire(function (err, con) { 
             con.query("UPDATE forum_content SET description =$1 WHERE forum_content_id = 1", [record.description], function (err, result) {
+                con.release()
                 if (err) {
                     if (env.DEBUG) {
                         console.log(err);
@@ -1080,6 +1088,7 @@ function forum() {
     this.updateForumRequestCount = function (callback) {
         connection.acquire(function (err, con) {
             con.query("UPDATE forum SET read =$1", [1], function (err, result) {
+                con.release()
                 if (err) {
                     if (env.DEBUG) {
                         console.log(err);

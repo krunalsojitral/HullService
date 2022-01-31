@@ -5,7 +5,6 @@ import {
   CCardBody,
   CCol,
   CCardHeader, 
-  CLabel,
   CRow,
 } from '@coreui/react'
 

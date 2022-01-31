@@ -35,11 +35,11 @@ const DemoTable = () => {
   ]
   
   const updateItemStatus = (item, status) => {
-
+    var message = '';
     if (status == 1) {
-      var message = 'Are you sure you want to activate the forum heading ?'
+      message = 'Are you sure you want to activate the forum heading ?'
     } else {
-      var message = 'Are you sure you want to deactivate the forum heading ?'
+      message = 'Are you sure you want to deactivate the forum heading ?'
     }
     Swal.fire({
       //title: 'warning!',

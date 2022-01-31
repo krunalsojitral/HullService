@@ -166,6 +166,7 @@ function Video() {
     this.changevideoStatus = function (record, video_id, callback) {
         connection.acquire(function (err, con) {
             con.query("UPDATE video SET status =$1 WHERE video_id = $2", [record.status, video_id], function (err, result) {
+                con.release()
                 if (err) {
                     if (env.DEBUG) {
                         console.log(err);

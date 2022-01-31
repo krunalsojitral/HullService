@@ -8,7 +8,6 @@ import {
   CContainer,
   CRow
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
 import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";

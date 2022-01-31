@@ -4,10 +4,8 @@ import axios from 'axios';
 import api_url from './../../Apiurl';
 import Swal from "sweetalert2";
 import {
-  CCardBody,
-  CBadge,
-  CButton,
-  CCollapse,
+  CCardBody,  
+  CButton,  
   CDataTable
 } from '@coreui/react'
 
@@ -15,7 +13,7 @@ import {
 const DraftCourseDemoTable = () => {
 
   const history = useHistory()
-  const [details, setDetails] = useState([])
+  //const [details, setDetails] = useState([])
   const [items, setItems] = useState([])
 
   React.useEffect(() => {
@@ -208,25 +206,25 @@ const DraftCourseDemoTable = () => {
                   </td>
                 )
               },
-            'details':
-              item => {
-                return (
-                  <CCollapse show={details.includes(item.id)}>
-                    <CCardBody>
-                      <h4>
-                        {item.username}
-                      </h4>
-                      <p className="text-muted">User since: {item.created_at}</p>
-                      <CButton size="sm" color="info">
-                        User Settings
-                    </CButton>
-                      <CButton size="sm" color="danger" className="ml-1">
-                        Delete
-                    </CButton>
-                    </CCardBody>
-                  </CCollapse>
-                )
-              }
+            // 'details':
+            //   item => {
+            //     return (
+            //       <CCollapse show={details.includes(item.id)}>
+            //         <CCardBody>
+            //           <h4>
+            //             {item.username}
+            //           </h4>
+            //           <p className="text-muted">User since: {item.created_at}</p>
+            //           <CButton size="sm" color="info">
+            //             User Settings
+            //         </CButton>
+            //           <CButton size="sm" color="danger" className="ml-1">
+            //             Delete
+            //         </CButton>
+            //         </CCardBody>
+            //       </CCollapse>
+            //     )
+            //   }
           }}
         />
       </CCardBody>

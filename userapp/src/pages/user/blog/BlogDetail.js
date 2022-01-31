@@ -141,7 +141,7 @@ export default function BlogDetail() {
                                 </div>                                
                                 <div className="research-box">                                    
                                     <div className="research-profile">
-                                        <img src="images/hull-icon.png" alt="author" />
+                                        <img src="images/favicon.png" alt="author" />
                                         <p>Hull Service</p>
                                     </div>
                                         <div className="research-date">

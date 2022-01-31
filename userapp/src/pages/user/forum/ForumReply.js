@@ -74,12 +74,52 @@ function ForumReply(props) {
 
     return (
         <div>
-            <div className="reply-list">
                 {forumReplyCommentList && forumReplyCommentList.slice(0, visible).map((replydata, index) => (
+
+                <div class="forums-reply-card">
+                    <div class="forums-reply-icon">
+                        <img src="images/user.png" />
+                    </div>
+                    <div class="forums-reply-text">
+
+                        <h3>{replydata.first_name} {replydata.last_name}<span>({replydata.role})</span></h3>
+                        <span>{replydata.created_at}</span>
+                        <ForumDescription description={replydata.comment}></ForumDescription>
+                        <span onClick={(e) => reply(replydata.reply_comment_id)} class="Reply-Btn-New">Reply <img src="images/reply_btn.png" /></span>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="new-forums-input" id={replydata.reply_comment_id} style={{ display: 'none' }}>
+                                        <TextareaAutosize maxRows="4" minRows="2" className="form-control" type="text" id={"input" + replydata.reply_comment_id} name="comment" />
+                                    <small id={"error" + replydata.reply_comment_id} style={{ display: 'none' }} className="error">Comment is required.</small>
+                                    <button type="submit" class="add-comment-btn" onClick={(e) => replySubmit(replydata.reply_comment_id, index)}>Reply</button>
+                                </div>
+
+                                    {replydata && replydata.reply && replydata.reply.length > 0 && <ForumSubReply subReplyDetail={replydata.reply}></ForumSubReply>}
+
+                                {/* 
+                                {replydata && replydata.reply && replydata.reply.length > 0 && replydata.reply.slice(0, replyVisible).map((subdata, index) => (
+                                    <div>
+                                        <div className="sub-reply">
+                                            <h3>{subdata.first_name} {subdata.last_name} <span>({subdata.role})</span></h3>
+                                            <small>{subdata.created_at}</small>
+                                            <p dangerouslySetInnerHTML={{ __html: subdata.comment }}></p>
+                                        </div>                                
+                                    </div>                            
+                                ))}
+
+                                <span className="reply-loadmore" onClick={showMoreReplyCommentItems}>View more comments</span> */}
+                            </div>
+                        </div>
+
+                    </div>
+                 </div>   
+         
+                ))}
+
+                {/* {forumReplyCommentList && forumReplyCommentList.slice(0, visible).map((replydata, index) => (
                     <div className="reply-card">
                         <h3>{replydata.first_name} {replydata.last_name} <span>({replydata.role})</span></h3>
-                        <small>{replydata.created_at}</small>
-                        {/* <p dangerouslySetInnerHTML={{ __html: replydata.comment }}></p> */}
+                        <small>{replydata.created_at}</small>                       
                         <ForumDescription description={replydata.comment}></ForumDescription>
 
                         <p onClick={(e) => reply(replydata.reply_comment_id)}><img src="images/reply.png" alt="reply" /> <span>Reply</span></p>
@@ -89,26 +129,14 @@ function ForumReply(props) {
                             <small id={"error" + replydata.reply_comment_id} style={{ display: 'none' }} className="error">Comment is required.</small>
                             <button type="submit" onClick={(e) => replySubmit(replydata.reply_comment_id, index)}>Reply</button>
                         </div>
-{/* 
-                        {replydata && replydata.reply && replydata.reply.length > 0 && replydata.reply.slice(0, replyVisible).map((subdata, index) => (
-                            <div>
-                                <div className="sub-reply">
-                                    <h3>{subdata.first_name} {subdata.last_name} <span>({subdata.role})</span></h3>
-                                    <small>{subdata.created_at}</small>
-                                    <p dangerouslySetInnerHTML={{ __html: subdata.comment }}></p>
-                                </div>                                
-                            </div>                            
-                        ))}
-
-                         <span className="reply-loadmore" onClick={showMoreReplyCommentItems}>View more comments</span> */}
 
                         {replydata && replydata.reply && replydata.reply.length > 0 && <ForumSubReply subReplyDetail={replydata.reply}></ForumSubReply>}
 
                     </div>
-                ))}
+                ))} */}
 
-                {hideLoad && <span className="reply-loadmore" onClick={showMoreCommentItems}>View more comments</span>}
-            </div>
+            {hideLoad && <span className="reply-subloadmore" onClick={showMoreCommentItems}>View more comments</span>}
+           
         </div>
     )
 }

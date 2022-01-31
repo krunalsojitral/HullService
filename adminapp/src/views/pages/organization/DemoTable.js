@@ -38,10 +38,11 @@ const DemoTable = () => {
   
 
   const updateItemStatus = (item, status) => {
+    var message = '';
     if (status == 1) {
-      var message = 'Are you sure you want to activate an organization ?'
+      message = 'Are you sure you want to activate an organization ?'
     } else {
-      var message = 'Are you sure you want to deactivate an organization ?'
+      message = 'Are you sure you want to deactivate an organization ?'
     }
     Swal.fire({
       //title: 'warning!',

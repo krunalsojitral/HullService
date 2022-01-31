@@ -78,10 +78,11 @@ const DemoTable = () => {
 
   const updateItemStatus = (item, status) => {
     if (status == 1) { 
+      var message = '';
       if (status == 1) {
-        var message = 'Are you sure you want to activate the user ?'
+        message = 'Are you sure you want to activate the user ?'
       } else {
-        var message = 'Are you sure you want to deactivate the user ?'
+        message = 'Are you sure you want to deactivate the user ?'
       }
       Swal.fire({
         //title: 'warning!',

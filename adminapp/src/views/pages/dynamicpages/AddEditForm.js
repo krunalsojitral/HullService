@@ -10,8 +10,8 @@ import {
   CLabel,
   CRow,
 } from '@coreui/react'
-import { MultiSelect } from "react-multi-select-component";
-import './TextEditors.scss'
+//import { MultiSelect } from "react-multi-select-component";
+import '../TextEditors.scss'
 import { useForm, Controller } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import api_url from './../../Apiurl';
@@ -25,8 +25,7 @@ const AddEditForm = ({ match }) => {
   const {
     handleSubmit,
     setValue,
-    control,
-    watch,
+    control,    
     formState: { errors },
   } = useForm();
 

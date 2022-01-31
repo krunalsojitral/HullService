@@ -76,7 +76,7 @@ export default function MembershipBenefit() {
             </section> */}
 
             {becomeMemberDetail.image && <section className="research-banner-img">
-                <img src={becomeMemberDetail.image} />
+                <img alt="image" src={becomeMemberDetail.image} />
             </section>}
 
             <section className="page-section">

@@ -40,10 +40,11 @@ const ResearchesDemoTable = () => {
 
 
   const updateItemStatus = (item, status) => {
+    var message = '';
     if (status == 1){
-      var message = 'Activating the research will display it on the front end. Are you sure you want to deactivate the selected research? '
+      message = 'Activating the research will display it on the front end. Are you sure you want to deactivate the selected research? '
     }else{
-      var message = 'De-activating the research will remove it from the front end. Are you sure you want to deactivate the selected research? '
+      message = 'De-activating the research will remove it from the front end. Are you sure you want to deactivate the selected research? '
     }
     Swal.fire({
       //title: 'warning!',

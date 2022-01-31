@@ -131,7 +131,7 @@ function Researches() {
 
     this.getFutureParticipateResearchesList = function (callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT *,academic_discipline.name as academic FROM researches inner join users on users.id = researches.created_by inner join user_role on user_role.role_id = users.role left join academic_discipline on academic_discipline.academic_discipline_id = users.academic_discipline where researches.status = $1 and researches.user_status = $2 order by researches_id DESC',[1,1], function (err, result) {
+            con.query('SELECT *,academic_discipline.name as academic FROM researches inner join users on users.id = researches.created_by inner join organization on users.organization = organization.organization_id inner join user_role on user_role.role_id = users.role left join academic_discipline on academic_discipline.academic_discipline_id = users.academic_discipline where researches.status = $1 and researches.user_status = $2 order by researches_id DESC',[1,1], function (err, result) {
                 con.release();
                 if (err) {
                     callback(err, null);
@@ -149,6 +149,7 @@ function Researches() {
                     if (env.DEBUG) {
                         console.log(err);
                     }
+                    con.release()
                     callback(err, null);
                 } else {
                     if (results.rows.length === 0) {
@@ -240,6 +241,7 @@ function Researches() {
             const values = [record.status, record.user_status, record.admin_comment, record.id]
             console.log(values);
             con.query("UPDATE researches SET status =$1, user_status =$2,comment =$3 WHERE researches_id = $4", values, function (err, result) {
+                con.release()
                 if (err) {
                     if (env.DEBUG) {
                         console.log(err);
@@ -255,6 +257,7 @@ function Researches() {
     this.updateResearchRequestCount = function (callback) {
         connection.acquire(function (err, con) {            
             con.query("UPDATE researches SET read =$1", [1], function (err, result) {
+                con.release()
                 if (err) {
                     if (env.DEBUG) {
                         console.log(err);

@@ -97,7 +97,82 @@ export default function ParticipateInResearch() {
                     </div>
                 </div>
             </section>}
-            <section className="studies-research">
+
+
+
+            <section class="studies-research">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="studies-title-card">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="studies-title">
+                                            <h2>Current Studies & Research</h2>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="studies-Btn">
+                                            <ApplyInResearchPage></ApplyInResearchPage>
+                                            {/* <a href="#" class="study-btn">
+                                                Click Here to Participate in Future Research
+											<span>Be notified of studies you qualify for</span>
+                                            </a> */}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <Modal>
+                                <ApplyInResearchModel close={close} researchtitle={researchTitle} apply={researchID}></ApplyInResearchModel>
+                            </Modal>
+                            {currentData.map((row, index) => (
+                                <div key={index} class="studies-card">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="studies-list">
+                                            <h3>{row.topic}</h3>
+                                            <ParticipateInResearchDescription description={row.description}></ParticipateInResearchDescription>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="studies-box">
+                                            <div class="studies-header">
+                                                <div class="studies-icon">
+                                                    <img src="images/user.png" />
+                                                </div>
+                                                <div class="studies-text">
+                                                    <h3>{row.user_name}</h3>
+                                                    <small>{row.name}</small>
+                                                    <span>{row.organization}</span>
+                                                </div>
+                                            </div>
+                                            <button class="btn-apply" onClick={(e) => applybutton(row.researches_id, row.topic)}>Participate</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                                
+                            ))}
+                           
+                        </div>
+                    </div>
+                    <div className="row">
+                        {currentData.length > 0 && <Paginator
+                            totalRecords={data.length}
+                            pageLimit={pageLimit}
+                            pageNeighbours={2}
+                            setOffset={setOffset}
+                            currentPage={currentPage}
+                            setCurrentPage={setCurrentPage}
+                        />}
+                    </div>
+                </div>
+            </section>
+
+            {/* <section className="studies-research">
                 <div className="container">
                     <div className="row">
                         <div className="col-md-6">
@@ -112,9 +187,7 @@ export default function ParticipateInResearch() {
                     <div className="row">
                         <div className="col-md-12">
 
-                            {/* {currentData.map((profile, _) => (
-                                <ProfileItem {...profile} />
-                            ))} */}
+                           
 
                             <Modal>
                                 <ApplyInResearchModel close={close} researchtitle={researchTitle} apply={researchID}></ApplyInResearchModel>
@@ -134,6 +207,7 @@ export default function ParticipateInResearch() {
                                             <div className="studies-header">
                                                 <h3>{row.user_name}</h3>
                                                 <small>{row.name}</small>
+                                                <small>{row.organization}</small>                                                
                                             </div>
                                             <button className="btn-apply" onClick={(e) => applybutton(row.researches_id, row.topic)}>Participate</button>
                                         </div>
@@ -155,7 +229,7 @@ export default function ParticipateInResearch() {
                         />}
                     </div>
                 </div>
-            </section>
+            </section> */}
 
           
             <Footer />

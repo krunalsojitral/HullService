@@ -161,15 +161,15 @@ function Course() {
 
                 if (sortby == "paid") {
 
-                    var sql = 'SELECT *,course.created_at as course_date FROM course left join course_order on course.course_id = course_order.course_id and course_order.user_id = $1 where course.draft_status IS NULL and course.status = $2 and course.purchase_type = $3 and (role ILIKE $4 or role ILIKE $5) and ( title ILIKE $6) ' + order_by;
+                    var sql = 'SELECT *,course.course_id as c_id, course.created_at as course_date FROM course left join course_order on course.course_id = course_order.course_id and course_order.user_id = $1 where course.draft_status IS NULL and course.status = $2 and course.purchase_type = $3 and (role ILIKE $4 or role ILIKE $5) and ( title ILIKE $6) ' + order_by;
                     var values = [user_id,1, 'paid', '%' + role + '%', '%4%', '%' + search + '%'];
                 } else if (sortby == "unpaid") {
 
-                    var sql = 'SELECT *,course.created_at as course_date FROM course left join course_order on course.course_id = course_order.course_id and course_order.user_id = $1 where course.draft_status IS NULL and course.status = $2 and course.purchase_type = $3 and (role ILIKE $4 or role ILIKE $5) and ( title ILIKE $6) ' + order_by;
+                    var sql = 'SELECT *,course.course_id as c_id,course.created_at as course_date FROM course left join course_order on course.course_id = course_order.course_id and course_order.user_id = $1 where course.draft_status IS NULL and course.status = $2 and course.purchase_type = $3 and (role ILIKE $4 or role ILIKE $5) and ( title ILIKE $6) ' + order_by;
                     var values = [user_id,1, 'unpaid', '%' + role + '%', '%4%', '%' + search + '%'];
                 } else {
 
-                    var sql = 'SELECT *,course.created_at as course_date FROM course left join course_order on course.course_id = course_order.course_id and course_order.user_id = $1 where course.draft_status IS NULL and course.status = $2 and (role ILIKE $3 or role ILIKE $4) and ( title ILIKE $5) ' + order_by;
+                    var sql = 'SELECT *,course.course_id as c_id,course.created_at as course_date FROM course left join course_order on course.course_id = course_order.course_id and course_order.user_id = $1 where course.draft_status IS NULL and course.status = $2 and (role ILIKE $3 or role ILIKE $4) and ( title ILIKE $5) ' + order_by;
                     var values = [user_id,1, '%' + role + '%', '%4%', '%' + search + '%'];
                 }
 
@@ -187,13 +187,13 @@ function Course() {
 
 
                 if (sortby == "paid") {
-                    var sql = 'SELECT *,course.created_at as course_date FROM course left join course_order on course.course_id = course_order.course_id and course_order.user_id = $1 where course.draft_status IS NULL and course.status = $2 and course.purchase_type = $3 and (role ILIKE $4 or role ILIKE $5) ' + order_by;
+                    var sql = 'SELECT *,course.course_id as c_id,course.created_at as course_date FROM course left join course_order on course.course_id = course_order.course_id and course_order.user_id = $1 where course.draft_status IS NULL and course.status = $2 and course.purchase_type = $3 and (role ILIKE $4 or role ILIKE $5) ' + order_by;
                     var values = [user_id,1, 'paid', '%' + role + '%', '%4%'];
                 } else if (sortby == "unpaid") {
-                    var sql = 'SELECT *,course.created_at as course_date FROM course left join course_order on course.course_id = course_order.course_id and course_order.user_id = $1 where course.draft_status IS NULL and course.status = $2 and course.purchase_type = $3 and (role ILIKE $4 or role ILIKE $5) ' + order_by;
+                    var sql = 'SELECT *,course.course_id as c_id,course.created_at as course_date FROM course left join course_order on course.course_id = course_order.course_id and course_order.user_id = $1 where course.draft_status IS NULL and course.status = $2 and course.purchase_type = $3 and (role ILIKE $4 or role ILIKE $5) ' + order_by;
                     var values = [user_id,1, 'unpaid', '%' + role + '%', '%4%'];
                 } else {
-                    var sql = 'SELECT *,course.created_at as course_date FROM course left join course_order on course.course_id = course_order.course_id and course_order.user_id = $1 where course.draft_status IS NULL and course.status = $2 and (role ILIKE $3 or role ILIKE $4) ' + order_by;
+                    var sql = 'SELECT *,course.course_id as c_id,course.created_at as course_date FROM course left join course_order on course.course_id = course_order.course_id and course_order.user_id = $1 where course.draft_status IS NULL and course.status = $2 and (role ILIKE $3 or role ILIKE $4) ' + order_by;
                     var values = [user_id,1, '%' + role + '%', '%4%'];
                 }                
 
@@ -226,15 +226,15 @@ function Course() {
 
                 if (sortby == "paid") {
 
-                    var sql = 'SELECT *,course.created_at as course_date FROM course where course.draft_status IS NULL and course.status = $1 and course.purchase_type = $2 and (role ILIKE $3) and ( title ILIKE $4) ' + order_by;
+                    var sql = 'SELECT *,course.course_id as c_id,course.created_at as course_date FROM course where course.draft_status IS NULL and course.status = $1 and course.purchase_type = $2 and (role ILIKE $3) and ( title ILIKE $4) ' + order_by;
                     var values = [1,'paid','%4%', '%' + search + '%'];
                 } else if (sortby == "unpaid") {
 
-                    var sql = 'SELECT *,course.created_at as course_date FROM course where course.draft_status IS NULL and course.status = $1 and course.purchase_type = $2 and (role ILIKE $3) and ( title ILIKE $4) ' + order_by;
+                    var sql = 'SELECT *,course.course_id as c_id,course.created_at as course_date FROM course where course.draft_status IS NULL and course.status = $1 and course.purchase_type = $2 and (role ILIKE $3) and ( title ILIKE $4) ' + order_by;
                     var values = [1, 'unpaid','%4%', '%' + search + '%'];
                 } else {
 
-                    var sql = 'SELECT *,course.created_at as course_date FROM course where course.draft_status IS NULL and course.status = $1 and (role ILIKE $2) and ( title ILIKE $3) ' + order_by;                    
+                    var sql = 'SELECT *,course.course_id as c_id,course.created_at as course_date FROM course where course.draft_status IS NULL and course.status = $1 and (role ILIKE $2) and ( title ILIKE $3) ' + order_by;
                     var values = [1, '%4%', '%' + search + '%'];
                 }
                 
@@ -254,13 +254,13 @@ function Course() {
                 }
 
                 if (sortby == "paid") {
-                    var sql = 'SELECT *,course.created_at as course_date FROM course where course.draft_status IS NULL and course.status = $1 and course.purchase_type = $2 and (role ILIKE $3) ' + order_by;
+                    var sql = 'SELECT *,course.course_id as c_id,course.created_at as course_date FROM course where course.draft_status IS NULL and course.status = $1 and course.purchase_type = $2 and (role ILIKE $3) ' + order_by;
                     var values = [1,'paid', '%4%'];
                 } else if (sortby == "unpaid") {
-                    var sql = 'SELECT *,course.created_at as course_date FROM course where course.draft_status IS NULL and course.status = $1 and course.purchase_type = $2 and (role ILIKE $3) ' + order_by;
+                    var sql = 'SELECT *,course.course_id as c_id,course.created_at as course_date FROM course where course.draft_status IS NULL and course.status = $1 and course.purchase_type = $2 and (role ILIKE $3) ' + order_by;
                     var values = [1, 'unpaid', '%4%'];
                 } else {
-                    var sql = 'SELECT *,course.created_at as course_date FROM course where course.draft_status IS NULL and course.status = $1 and (role ILIKE $2) ' + order_by;
+                    var sql = 'SELECT *,course.course_id as c_id,course.created_at as course_date FROM course where course.draft_status IS NULL and course.status = $1 and (role ILIKE $2) ' + order_by;
                     var values = [1, '%4%'];
                 }
             }

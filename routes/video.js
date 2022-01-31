@@ -199,7 +199,7 @@ router.post('/getvideoDataById', [check('video_id', 'video is required').notEmpt
         ],
         function (error, video) {
             if (error) {
-                return res.json({ 'status': 0, 'response': { 'msg': err } });
+                return res.json({ 'status': 0, 'response': { 'msg': error } });
             } else {
                 return res.json({ 'status': 1, 'response': { 'data': video, 'msg': 'data found' } });
             }
@@ -319,7 +319,7 @@ router.post('/getvideoDataByIdAfterLogin', passport.authenticate('jwt', { sessio
         ],
             function (error, video) {
                 if (error) {
-                    return res.json({ 'status': 0, 'response': { 'msg': err } });
+                    return res.json({ 'status': 0, 'response': { 'msg': error } });
                 } else {
                     return res.json({ 'status': 1, 'response': { 'data': video, 'msg': 'data found' } });
                 }

@@ -681,7 +681,7 @@ router.post('/getPaidCourseList', passport.authenticate('jwt', { session: false 
             }
             var courseList = result.map(data => {
                 let retObj = {};
-                retObj['course_id'] = data.course_id;
+                retObj['course_id'] = data.c_id;
                 retObj['title'] = data.title;
                 retObj['course_order_id'] = data.course_order_id;
                 retObj['created_at'] = moment(data.course_date).format('MMMM DD, YYYY');
@@ -715,7 +715,7 @@ router.post('/getUnpaidCourseList', function (req, res) {
             }
             var courseList = result.map(data => {
                 let retObj = {};
-                retObj['course_id'] = data.course_id;
+                retObj['course_id'] = data.c_id;
                 retObj['title'] = data.title;
                 retObj['image'] = (data.image) ? imageLink + env.COURSE_VIEW_PATH + data.image : '';
                 retObj['image_thumb'] = (data.image) ? imageLink + env.COURSE_VIEW_PATH_THUMB + data.image : '';

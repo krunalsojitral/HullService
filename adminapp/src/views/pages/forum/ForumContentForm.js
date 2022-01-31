@@ -14,7 +14,7 @@ import { useForm } from "react-hook-form";
 import api_url from './../../Apiurl';
 import axios from "axios";
 import Swal from "sweetalert2";
-import './TextEditors.scss'
+import '../TextEditors.scss'
 
 const ForumContentForm = () => {
 

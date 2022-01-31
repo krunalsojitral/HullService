@@ -147,9 +147,9 @@ export default function ProfessionalDevelopmentDetail() {
                                                                 </li>}
                                                             </ul>
                                                         </div>
-                                                        <div className="course-share">
+                                                        {/* <div className="course-share">
                                                             <a href="javascript:;"><img src="images/share.png" alt="share" /></a>
-                                                        </div>
+                                                        </div> */}
                                                     </div>
                                                 </div>
 

@@ -5,7 +5,6 @@ import Swal from "sweetalert2";
 import {
   CCardBody,  
   CButton,
-  CCollapse,
   CDataTable,
   CCard,  
   CCol,
@@ -13,13 +12,13 @@ import {
   CLabel,
   CRow,
 } from '@coreui/react'
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import $ from 'jquery';
 
 const DemoTable = () => {
   const ref = React.useRef();
   
-  const [details, setDetails] = useState([])
+ // const [details, setDetails] = useState([])
   const [items, setItems] = useState([])
   const [selectedFile, setSelectedFile] = useState('');
   const [isUploaded, setIsUploaded] = useState(false);
@@ -216,25 +215,25 @@ const DemoTable = () => {
                 </td>
               )
             },
-          'details':
-              item => {
-                return (
-                <CCollapse show={details.includes(item.id)}>
-                  <CCardBody>
-                    <h4>
-                      {item.username}
-                    </h4>
-                      <p className="text-muted">User since: {item.created_at}</p>
-                    <CButton size="sm" color="info">
-                      User Settings
-                    </CButton>
-                    <CButton size="sm" color="danger" className="ml-1">
-                      Delete
-                    </CButton>
-                  </CCardBody>
-                </CCollapse>
-              )
-            }
+          // 'details':
+          //     item => {
+          //       return (
+          //       <CCollapse show={details.includes(item.id)}>
+          //         <CCardBody>
+          //           <h4>
+          //             {item.username}
+          //           </h4>
+          //             <p className="text-muted">User since: {item.created_at}</p>
+          //           <CButton size="sm" color="info">
+          //             User Settings
+          //           </CButton>
+          //           <CButton size="sm" color="danger" className="ml-1">
+          //             Delete
+          //           </CButton>
+          //         </CCardBody>
+          //       </CCollapse>
+          //     )
+          //   }
         }}
       />
     </CCardBody>

@@ -2,10 +2,10 @@ import React from 'react'
 import {
   CBadge,
   CDropdown,
-  CDropdownItem,
-  CDropdownMenu,
+  // CDropdownItem,
+  // CDropdownMenu,
   CDropdownToggle,
-  CProgress
+  //CProgress
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import api_url from '../views/Apiurl';

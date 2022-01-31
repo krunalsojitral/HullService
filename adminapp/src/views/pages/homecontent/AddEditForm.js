@@ -9,7 +9,7 @@ import {
   CLabel,
   CRow,
 } from '@coreui/react'
-import './TextEditors.scss'
+import '../TextEditors.scss'
 import { useForm, Controller } from "react-hook-form";
 //import { useHistory } from "react-router-dom";
 import api_url from './../../Apiurl';

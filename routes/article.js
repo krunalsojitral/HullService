@@ -269,7 +269,7 @@ router.post('/getarticleDataById', [check('article_id', 'article is required').n
         ],
             function (error, article) {
                 if (error) {
-                    return res.json({ 'status': 0, 'response': { 'msg': err } });
+                    return res.json({ 'status': 0, 'response': { 'msg': error } });
                 } else {
                     return res.json({ 'status': 1, 'response': { 'data': article, 'msg': 'data found' } });
                 }
@@ -380,7 +380,7 @@ router.post('/getarticleDataByIdAfterLogin', passport.authenticate('jwt', { sess
         ],
             function (error, article) {
                 if (error) {
-                    return res.json({ 'status': 0, 'response': { 'msg': err } });
+                    return res.json({ 'status': 0, 'response': { 'msg': error } });
                 } else {
                     return res.json({ 'status': 1, 'response': { 'data': article, 'msg': 'data found' } });
                 }

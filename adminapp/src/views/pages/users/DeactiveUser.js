@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
     CModalBody,
     CModal,
@@ -10,8 +10,7 @@ import {
     CButton,
     CLabel,
     CRow,
-    CCol,
-    CCard
+    CCol
 } from "@coreui/react";
 import { useForm, Controller } from "react-hook-form";
 

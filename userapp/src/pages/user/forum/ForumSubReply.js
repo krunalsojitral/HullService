@@ -29,20 +29,40 @@ function ForumSubReply(props) {
     }
 
     return (
-        <div className="subreply-list">
+        <div>
             {forumSubReplyCommentList && forumSubReplyCommentList.slice(0, replyVisible).map((subdata, index) => (
-                <div>
-                    <div className="sub-reply">
-                        <h3>{subdata.first_name} {subdata.last_name} <span>({subdata.role})</span></h3>
-                        <small>{subdata.created_at}</small>
-                        {/* <p dangerouslySetInnerHTML={{ __html: subdata.comment }}></p> */}
+                 <div class="forums-reply-card">
+                    <div class="forums-reply-icon">
+                        <img src="images/user.png"/>
+                    </div>
+                    <div class="forums-reply-text">
+                        <h3>{subdata.first_name} {subdata.last_name}<span>({subdata.role})</span></h3>
+                        <span>{subdata.created_at}</span>
                         <ForumDescription description={subdata.comment}></ForumDescription>
+                        <br/>
                     </div>
                 </div>
             ))}
-
             {hideLoad && <span className="reply-subloadmore" onClick={showMoreReplyCommentItems}>View more comments</span>}
         </div>
+
+        
+                                       
+
+        // <div className="subreply-list">
+        //     {forumSubReplyCommentList && forumSubReplyCommentList.slice(0, replyVisible).map((subdata, index) => (
+        //         <div>
+        //             <div className="sub-reply">
+        //                 <h3>{subdata.first_name} {subdata.last_name} <span>({subdata.role})</span></h3>
+        //                 <small>{subdata.created_at}</small>
+        //                 {/* <p dangerouslySetInnerHTML={{ __html: subdata.comment }}></p> */}
+        //                 <ForumDescription description={subdata.comment}></ForumDescription>
+        //             </div>
+        //         </div>
+        //     ))}
+
+        //     {hideLoad && <span className="reply-subloadmore" onClick={showMoreReplyCommentItems}>View more comments</span>}
+        // </div>
     )
 }
 

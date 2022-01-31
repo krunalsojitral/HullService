@@ -137,7 +137,7 @@ router.post('/getforumDataById', [check('forum_id', 'forum is required').notEmpt
         ],
         function (error, video) {
             if (error) {
-                return res.json({ 'status': 0, 'response': { 'msg': err } });
+                return res.json({ 'status': 0, 'response': { 'msg': error } });
             } else {
                 return res.json({ 'status': 1, 'response': { 'data': video, 'msg': 'data found' } });
             }
@@ -204,7 +204,7 @@ router.post('/getforumViewDataById', [check('forum_id', 'forum is required').not
         ],
             function (error, video) {
                 if (error) {
-                    return res.json({ 'status': 0, 'response': { 'msg': err } });
+                    return res.json({ 'status': 0, 'response': { 'msg': error } });
                 } else {
                     return res.json({ 'status': 1, 'response': { 'data': video, 'msg': 'data found' } });
                 }
@@ -286,7 +286,7 @@ router.post('/addforumByadmin', [
             let tag = (req.body.tag) ? req.body.tag : [];
             Forum.addforumByadmin(record, tag, function (err, data) {
                 if (err) {
-                    return res.json({ 'status': 0, 'response': { 'msg': error } });
+                    return res.json({ 'status': 0, 'response': { 'msg': err } });
                 } else {
                     return res.json({ 'status': 1, 'response': { 'msg': 'Forum added successfully.', data: data } });
                 }
@@ -545,7 +545,7 @@ router.post('/addforumByuser', passport.authenticate('jwt', { session: false }),
         let tag = (req.body.tag) ? req.body.tag : [];
         Forum.addforumByuser(record, tag, function (err, data) {
             if (err) {
-                return res.json({ 'status': 0, 'response': { 'msg': error } });
+                return res.json({ 'status': 0, 'response': { 'msg': err } });
             } else {
                 return res.json({ 'status': 1, 'response': { 'msg': 'Forum added successfully.', data: data } });
             }
@@ -1263,7 +1263,7 @@ router.get('/getForumNotificationCount', function (req, res) {
             if (notificationCount) {
                 return res.json({ 'status': 1, 'response': { 'data': notificationCount, 'msg': 'data found' } });
             } else {
-                return res.json({ 'status': 0, 'response': { 'msg': error } });
+                return res.json({ 'status': 0, 'response': { 'msg': 'Something went wrong' } });
             }
         }
     });

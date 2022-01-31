@@ -131,6 +131,7 @@ function User() {
                     if (env.DEBUG) {                        
                         console.log(err);
                     }
+                    con.release()
                     callback(err, null);
                 } else {
 
@@ -360,6 +361,7 @@ function User() {
                     if (results.rows.length) {
                         const values = [record.reset_password_token, user_id]
                         con.query("UPDATE users SET reset_password_token =$1 WHERE id = $2", values, function (err, result) {
+                            con.release()
                             if (err) {
                                 if (env.DEBUG) {
                                     console.log(err);
@@ -411,6 +413,7 @@ function User() {
                     let user_id = results.rows[0].id;
                     const values = [1, '', user_id]
                     con.query("UPDATE users SET status = $1 , email_verification_token = $2 WHERE id = $3", values, function (err, result) {
+                        con.release()
                         if (err) {
                             if (env.DEBUG) {
                                 console.log(err);
@@ -459,6 +462,7 @@ function User() {
                     let user_id = results.rows[0].id;
                     const values = [record.password,'', user_id]
                     con.query("UPDATE users SET password = $1, reset_password_token = $2 WHERE id = $3", values, function (err, result) {
+                        con.release()
                         if (err) {
                             if (env.DEBUG) {
                                 console.log(err);
@@ -477,6 +481,7 @@ function User() {
         connection.acquire(function (err, con) {
             const values = [record.status, user_id]
             con.query("UPDATE users SET status = $1 WHERE id = $2", values, function (err, result) {
+                con.release()
                 if (err) {
                     if (env.DEBUG) {
                         console.log(err);

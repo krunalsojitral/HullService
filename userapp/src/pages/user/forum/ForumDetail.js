@@ -307,10 +307,125 @@ export default function ForumDetail() {
                             <Sidebar />
                         </div>
 
-                        <div className="col-md-10">
+                        <div class="col-md-10">
+                            <div class="new-forums-card">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="new-forums-blog">
+                                            {forumCommentDetail.started && <small>{forumCommentDetail.started}</small>}
+                                            <h3>{forumCommentDetail.forum_title && forumCommentDetail.forum_title}</h3>
+                                            {forumCommentDetail.forum_description && <p dangerouslySetInnerHTML={{ __html: forumCommentDetail.forum_description }}></p>}
+                                        </div>
+                                        {forumCommentDetail.retire == 1 &&
+                                            <div className="message-card">
+                                                <div className="message-icon">
+                                                    <i className="fa fa-lock" aria-hidden="true"></i>
+                                                </div>
+                                                <div className="message-text">
+                                                    <h2>This thread has been closed by the moderators of hull services</h2>
+                                                    <p>New comments cannot be posted</p>
+                                                </div>
+                                            </div>
+                                        }
+
+                                    </div>
+
+                                   
+
+                                    {forumCommentDetail.retire == 0 &&
+
+                                        <div class="col-md-12">
+                                            <div class="new-forums-input">
+                                                <form onSubmit={handleSubmit(onSubmit)}>
+                                                    <Controller
+                                                        name={"comment"}
+                                                        control={control}
+                                                        rules={{ required: true }}
+                                                        render={({ field: { onChange, value } }) => (
+                                                            <TextareaAutosize
+                                                                maxRows="4"
+                                                                minRows="2"
+                                                                type="text"
+                                                                name="comment"
+                                                                id="main-comment"
+                                                                onChange={onChange}
+                                                                value={value}
+                                                                className="form-control"
+                                                                placeholder={`Add Comment`}
+                                                            />
+                                                        )}
+                                                    ></Controller>
+                                                    {errors.comment && errors.comment.type === "required" && (
+                                                        <small className="error">Comment is required.</small>
+                                                    )}
+                                                    <button type="submit" class="add-comment-btn">Add Comment</button>
+                                                </form>
+                                            </div>
+                                        </div>
+
+                                    }
+
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="new-forums-count">
+                                            <span>{forumCommentDetail.replies}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="new-forums-follow-btn">
+
+                                            {forumCommentDetail.follow == 0 && <span class="btn-follow" onClick={(e) => handleFollow()} >
+                                                <img src="images/add-user.png" /> Follow
+                                            </span>}
+                                            {forumCommentDetail.follow == 1 && <span class="btn-follow" onClick={(e) => handleUnFollow()} >
+                                                <img src="images/add-user.png" /> Following
+                                            </span>}
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            {forumCommentList && forumCommentList.slice(0, visible).map((data, index) => (
+                                    <div key={index} class="new-forums-reply">
+                                        <div class="forums-reply-card">
+                                            <div class="forums-reply-icon">
+                                                <img src="images/user.png" />
+                                            </div>
+                                            <div class="forums-reply-text">
+                                                <h3>{data.first_name} {data.last_name}<span>({data.role})</span></h3>
+                                                <span>{data.created_on}</span>
+                                                <ForumDescription description={data.comment}></ForumDescription>
+                                                {forumCommentDetail.retire == 1 && <span class="Reply-Btn-New">Reply <img src="images/reply_btn.png" /></span>}
+                                                {forumCommentDetail.retire == 0 && <span onClick={(e) => reply(data.forum_comment_id)} class="Reply-Btn-New">Reply <img src="images/reply_btn.png" /></span>}
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="new-forums-input" id={data.forum_comment_id} style={{ display: 'none' }}>
+                                                            <TextareaAutosize minRows="2" maxRows="4" className="form-control" type="text" id={"input" + data.forum_comment_id} name="comment" />
+                                                            <button type="submit" onClick={(e) => replySubmit(data.forum_comment_id, index)} class="add-comment-btn">Reply</button>
+                                                            <small id={"error" + data.forum_comment_id} style={{ display: 'none' }} className="error">Comment is required.</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {data.reply && <ForumReply close={close} replyDetail={data.reply} replyForumId={forumId}></ForumReply>}
+                                            </div>
+                                        </div>
+                                    </div>
+                            ))}
+
+                            <div className="loadmore">
+                                {(hideLoad) && <span onClick={showMoreItems}>View more comments</span>}
+                            </div>
+
+                        </div>
+
+                        {/* <div className="col-md-10">
                             <div className="category-table">
-                                {/* <div className="breadcrumbs-main"> <a href="javascript:;">
-                                {"<<"} Back to Forum Categories</a> </div>  */}
+                                <div className="breadcrumbs-main"> <a href="javascript:;">{"<<"} Back to Forum Categories</a> </div>  
                                 <div className="cat-title">
                                     <div>
                                         <h2 className="mb-0"> {forumCommentDetail.forum_title && forumCommentDetail.forum_title} </h2>
@@ -367,22 +482,7 @@ export default function ForumDetail() {
                                             <ul>
                                                 <li> <i className="fa fa-comment"></i> <span>{forumCommentDetail.replies}</span> </li>
                                             </ul>
-                                        </div>                                        
-
-                                        {/* {forumCommentDetail.retire == 1 && <div className="dislike-like">
-                                            <ul>
-                                                <li className={forumCommentDetail.user_like === 1 ? 'liked' : ''}> <i className="fa fa-thumbs-o-up"></i> <span>{forumCommentDetail.likes}</span> </li>
-                                                <li className={forumCommentDetail.user_dislike === 1 ? 'liked' : ''}> <i className="fa fa-thumbs-o-down"></i> <span>{forumCommentDetail.unlikes}</span> </li>
-                                                <li> <i className="fa fa-comment"></i> <span>{forumCommentDetail.replies}</span> </li>
-                                            </ul>
-                                        </div>}
-                                        {forumCommentDetail.retire == 0 && <div className="dislike-like">
-                                            <ul>
-                                                <li className={forumCommentDetail.user_like === 1 ? 'liked' : ''} onClick={() => forumlikeClick()}> <i className="fa fa-thumbs-o-up"></i> <span>{forumCommentDetail.likes}</span> </li>
-                                                <li className={forumCommentDetail.user_dislike === 1 ? 'liked' : ''} onClick={() => forumdislikeClick()}> <i className="fa fa-thumbs-o-down"></i> <span>{forumCommentDetail.unlikes}</span> </li>
-                                                <li> <i className="fa fa-comment"></i> <span>{forumCommentDetail.replies}</span> </li>
-                                            </ul>
-                                        </div>} */}
+                                        </div>   
                                     </div>
                                     <div className="col-md-4">
                                         <div className="follow">
@@ -395,8 +495,6 @@ export default function ForumDetail() {
                                         </div>
                                     </div>
                                 </div>
-
-
                                 {forumCommentList && forumCommentList.slice(0, visible).map((data, index) => (
                                     <div key={index} className="research-main">
                                         <div className="research-box">
@@ -411,45 +509,17 @@ export default function ForumDetail() {
 
                                             {forumCommentDetail.retire == 1 && 
                                             <div className="forum-comments">
-                                                {/* <p className={(data.comment_like_id && data.comment_like_id > 0) ? 'comment-liked' : ''}>
-                                                    <i className="fa fa-thumbs-up" aria-hidden="true"></i>
-                                                    <span>+{data.like_comment_count}</span>
-                                                </p>
-                                                <p className={(data.comment_dislike_id && data.comment_dislike_id > 0) ? 'comment-liked' : ''}>
-                                                    <i className="fa fa-thumbs-down" aria-hidden="true"></i>
-                                                    <span>+{data.unlike_comment_count}</span>
-                                                </p> */}
+                                                
                                                 <p><img src="images/reply.png" alt="reply" /> <span>Reply</span></p>
                                             </div>}
 
                                             {forumCommentDetail.retire == 0 && 
                                             <div className="forum-comments">
-                                                {/* <p className={(data.comment_like_id && data.comment_like_id > 0) ? 'comment-liked' : ''} onClick={() => forumCommentLikeClick(data.forum_comment_id, index)}>
-                                                    <i className="fa fa-thumbs-up" aria-hidden="true"></i>
-                                                    <span>{data.like_comment_count}</span>
-                                                </p>
-                                                <p className={(data.comment_dislike_id && data.comment_dislike_id > 0) ? 'comment-liked' : ''} onClick={() => forumCommentDisLikeClick(data.forum_comment_id, index)}>
-                                                    <i className="fa fa-thumbs-down" aria-hidden="true"></i>
-                                                    <span>{data.unlike_comment_count}</span>
-                                                </p> */}
+                                                
                                                 <p onClick={(e) => reply(data.forum_comment_id)}><img src="images/reply.png" alt="reply" /> <span>Reply</span></p>
                                             </div>} 
 
-
-                                            <ForumDescription description={data.comment}></ForumDescription>
-
-                                            {/* <p dangerouslySetInnerHTML={{ __html: data.comment }}></p> */}
-
-                                            {/* <div className="reply-list">
-                                                {data.reply && data.reply.slice(0, visible).map((replydata, index) => (
-                                                    <div className="reply-card">
-                                                        <h3>{replydata.first_name} {replydata.last_name} <span>({replydata.role})</span></h3>
-                                                        <small>{replydata.created_on}</small>
-                                                        <p dangerouslySetInnerHTML={{ __html: replydata.comment }}></p>
-                                                    </div>
-                                                ))}
-                                            </div>                                            */}
-
+                                            <ForumDescription description={data.comment}></ForumDescription>                                            
                                             <div className="reply-box" id={data.forum_comment_id} style={{ display: 'none' }}>
                                                 <TextareaAutosize maxRows="4" className="form-control" type="text" id={"input" + data.forum_comment_id} name="comment" />
                                                 <small id={"error" + data.forum_comment_id} style={{ display: 'none' }} className="error">Comment is required.</small>
@@ -465,7 +535,7 @@ export default function ForumDetail() {
                             <div className="loadmore">
                                 {(hideLoad) && <span onClick={showMoreItems}>View more comments</span>}
                             </div>
-                        </div>
+                        </div> */}
 
                     </div>
                 </div>

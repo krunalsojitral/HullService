@@ -10,7 +10,7 @@ import {
   CLabel,
   CRow,
 } from '@coreui/react'
-import './TextEditors.scss'
+import '../TextEditors.scss'
 import { useForm, Controller } from "react-hook-form";
 import api_url from './../../Apiurl';
 import axios from "axios";

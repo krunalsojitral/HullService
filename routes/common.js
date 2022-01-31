@@ -656,7 +656,7 @@ router.post('/getDynamicPageDataByMenu', [check('menu', 'menu is required').notE
         ],
         function (error, page) {
             if (error) {
-                return res.json({ 'status': 0, 'response': { 'msg': err } });
+                return res.json({ 'status': 0, 'response': { 'msg': error } });
             } else {
                 return res.json({ 'status': 1, 'response': { 'data': page, 'msg': 'data found' } });
             }

@@ -242,12 +242,14 @@ router.get('/getFutureParticipateResearchesList', function (req, res) {
                 let retObj = {};
                 retObj['researches_id'] = data.researches_id;
                 retObj['topic'] = data.topic;
+                retObj['avatar'] = data.avatar;
                 retObj['description'] = data.description;                
                 retObj['user_name'] = data.first_name + ' ' + data.last_name;
                 retObj['user_role'] = data.role;
                 retObj['start_date'] = moment(data.start_date).format('YYYY-MM-DD');
                 retObj['status'] = data.status;
                 retObj['name'] = data.academic;
+                retObj['organization'] = data.organization_name;
                 return retObj;
             });
             return res.json({ status: 1, 'response': { data: researchList } });

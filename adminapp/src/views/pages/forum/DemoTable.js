@@ -84,10 +84,11 @@ const DemoTable = ({ moduleConfigUrls }) => {
   }
 
   const updateItemRetire = (item, status) => {
+    var message = '';
     if (status == 1) {
-      var message = 'Are you sure you want to Retire this forum ?'
+      message = 'Are you sure you want to Retire this forum ?'
     } else {
-      var message = 'Are you sure you want to Unretire this Forum ?'
+      message = 'Are you sure you want to Unretire this Forum ?'
     }
     Swal.fire({
       //title: 'warning!',

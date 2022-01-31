@@ -1,17 +1,14 @@
 import React from 'react'
 import {
-  CCard,
-  CCardHeader,
-  CButton,
+  CCard,  
   CCol,
   CRow,
 } from '@coreui/react'
 
 import DemoTable from './DemoTable'
-import { useHistory } from 'react-router-dom'
 
 const Course = () => {
-  const history = useHistory()
+  
   return (
     <CRow>
       <CCol sm="12">

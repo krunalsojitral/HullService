@@ -56,12 +56,12 @@ function User() {
         connection.acquire(function (err, con) {
             const sql = 'INSERT INTO article(title,description,created_at,role,purchase_type,image,draft_status,cost,status) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *'
             const values = [record.title, record.description, record.created_at, record.role, record.purchase_type, record.image, record.draft, record.cost, 1]
-            con.query(sql, values, function (err, result) {
-                con.release()
+            con.query(sql, values, function (err, result) {                
                 if (err) {
                     if (env.DEBUG) {
                         console.log(err);
                     }
+                    con.release()
                     callback(err, null);
                 } else {
                     if (record.tag.length > 0) {
@@ -75,6 +75,7 @@ function User() {
                             con.query(sql, values, function (err, result) { });
                         });
                     }
+                    con.release()
                     callback(null, result.rows[0]);
                 }
             });

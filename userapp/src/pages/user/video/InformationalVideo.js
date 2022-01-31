@@ -249,9 +249,7 @@ export default function Video() {
                                                                         {!data.bookmark_video_id && <img className="bookmark-outline" src="images/bookmark-outline.png" alt="bookmark-fill" />}
                                                                     </div>}
                                                                 {token && data.video_order_id && <div><img src="images/buy.png" alt="buy" /></div>}
-                                                            </div>
-
-                                                            {!token && <br />}
+                                                            </div>                                                        
 
                                                             <h3 className="tooltip-box">
                                                                 <Link to={{ pathname: "/video-detail", search: "?id=" + data.video_id }}>
