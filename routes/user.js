@@ -630,15 +630,25 @@ router.post('/updateuserByadmin', function (req, res) {
         if (err) return res.json({ status: 1, 'response': { msg: err } });
         var validationErrors = false;
 
-        let first_name = (obj.first_name !== undefined) ? obj.first_name : "";
-        let last_name = (obj.last_name !== undefined) ? obj.last_name : "";
-        let email = (obj.email !== undefined) ? obj.email : "";
-        let organization = (obj.organization !== undefined) ? obj.organization : "";
-        let level_of_education = (obj.level_of_education !== undefined) ? obj.level_of_education : "";
-        let occupation = (obj.occupation !== undefined) ? obj.occupation : "";
-        let sector = (obj.sector !== undefined) ? obj.sector : "";
-        let academic_discipline = (obj.academic_discipline !== undefined) ? obj.academic_discipline : "";
-        let sector = (obj.sector !== undefined) ? obj.sector : "";
+        var json = fields.data;
+        let obj = JSON.parse(json);
+
+        var user_id = obj.user_id;
+        var first_name = obj.first_name;
+        var last_name = obj.last_name;
+        var email = (obj.email) ? obj.email : '';
+        var organization = (obj.organization) ? obj.organization : '';
+        var level_of_education = (obj.level_of_education) ? obj.level_of_education : '';
+        var occupation = (obj.occupation) ? obj.occupation : '';
+        var sector = (obj.sector) ? obj.sector : '';
+        var academic_discipline = (obj.academic_discipline) ? obj.academic_discipline : '';
+        var professional_interest_of_area = obj.professional_interest_of_area;
+        var researcher_interest_of_area = obj.researcher_interest_of_area;
+        var other_sector = (obj.other_sector) ? obj.other_sector : '';
+        var other_academic_discipline = (obj.other_academic_discipline) ? obj.other_academic_discipline : '';
+        var other_occupation = (obj.other_occupation) ? obj.other_occupation : '';
+        var other_professional_interest_area = (obj.other_professional_interest_area) ? obj.other_professional_interest_area : '';
+        var other_research_interest_area = (obj.other_research_interest_area) ? obj.other_research_interest_area : '';        
 
         if (first_name == "") {
             return res.json({ status: 0, response: { msg: 'First name is required' } });
@@ -661,26 +671,6 @@ router.post('/updateuserByadmin', function (req, res) {
         }
 
         if (validationErrors == false) {
-
-            var json = fields.data;                 
-            let obj = JSON.parse(json);
-            
-            var user_id = obj.user_id;
-            var first_name = obj.first_name;            
-            var last_name = obj.last_name;
-            var email = (obj.email) ? obj.email : '';
-            var organization = (obj.organization) ? obj.organization : '';
-            var level_of_education = (obj.level_of_education) ? obj.level_of_education : '';
-            var occupation = (obj.occupation) ? obj.occupation : '';
-            var sector = (obj.sector) ? obj.sector : '';
-            var academic_discipline = (obj.academic_discipline) ? obj.academic_discipline : '';
-            var professional_interest_of_area = obj.professional_interest_of_area;
-            var researcher_interest_of_area = obj.researcher_interest_of_area;
-            var other_sector = (obj.other_sector) ? obj.other_sector : '';
-            var other_academic_discipline = (obj.other_academic_discipline) ? obj.other_academic_discipline : '';
-            var other_occupation = (obj.other_occupation) ? obj.other_occupation : '';
-            var other_professional_interest_area = (obj.other_professional_interest_area) ? obj.other_professional_interest_area : '';
-            var other_research_interest_area = (obj.other_research_interest_area) ? obj.other_research_interest_area : '';
 
             var update_value = [];
             var overview = {
