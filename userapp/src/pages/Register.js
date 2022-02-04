@@ -76,7 +76,7 @@ export default function Register() {
         onChange: onChange
     };
 
-    
+    const [selectedFile, setSelectedFile] = useState();
 
     const [sectorList, setSectorList] = React.useState([]);
     const [academicDisciplineList, setAcademicDisciplineList] = React.useState([]);
@@ -236,7 +236,30 @@ export default function Register() {
     
 
     const onSubmit = (data) => {
-        console.log(data);
+        // console.log(data);
+       
+        // if (userTypeList == 'researcher') {
+        //     data.role = 3;
+        // } else if (userTypeList == 'professional') {
+        //     data.role = 2;
+        // } else {
+        //     data.role = 4;
+        // }
+        // data.user_id = 27;
+      
+        // const formData = new FormData();
+        // formData.append("data", JSON.stringify(data));
+        // if (selectedFile) {
+        //     formData.append("image", selectedFile, selectedFile.name);
+        // }
+
+        // axios.post(api_url + '/user/updateuserByadmin', formData).then(async (result) => {
+            
+        // })
+        // .catch((err) => {
+            
+        // })
+        // return;
 
         if (userTypeList == 'general') {
             if (userTypeList == 'researcher') {

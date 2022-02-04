@@ -993,6 +993,38 @@
     .cat-title a.add-comment {	
         margin-top: 15px;	
     }	
+
+    .new-forums-card .new-forums-input textarea.form-control {
+        width: 100%;
+        }
+
+        .new-forums-card .new-forums-input .add-comment-btn {
+        width: 100%;
+        position: relative;
+        top: inherit;
+        right: inherit;
+        margin: 10px 0 0;
+        }
+
+        .new-forums-card .new-forums-follow-btn {
+        text-align: center;
+        }
+
+        .new-forums-input textarea.form-control {
+        width: 100%;
+        }
+
+        .new-forums-input .add-comment-btn {
+        position: relative;
+        width: 100%;
+        margin: 10px 0;
+        }
+        .new-forums-reply .forums-reply-card .forums-reply-text h3 span {
+            word-break: break-all;
+        }
+        .new-forums-reply .forums-reply-card .forums-reply-text p{
+            word-break: break-word;
+        }
 }
 
 @media (max-width: 480px) {

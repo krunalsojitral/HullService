@@ -23,6 +23,22 @@ function User() {
         });
     };
 
+    this.checkUserEditProfile = function (email,user_id, callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM users where LOWER(email) = $1 and (id NOT IN ($2::int))', [email.toLowerCase(), user_id], function (err, results) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {                    
+                    callback(null, results.rows);
+                }
+            });
+        });
+    };
+
 
     this.getCSVAdminUser = function (role, status, callback) {
         connection.acquire(function (err, con) {
@@ -80,6 +96,7 @@ function User() {
 
     this.checkUserOrganization = function (organization, callback) {
         connection.acquire(function (err, con) {
+            console.log(organization.toLowerCase());
             con.query('SELECT * FROM organization where LOWER(organization_name) = $1', [organization.toLowerCase()], function (err, results) {
                 if (err) {
                     if (env.DEBUG) {
@@ -209,9 +226,12 @@ function User() {
         return query.join(' ');
     }
 
-    this.updateuserByadmin = function (record, user_id, update_value, callback) {
+    this.updateuserByadmin = function (record, user_id, update_value, professional_interest_of_area, researcher_interest_of_area, callback) {
         connection.acquire(function (err, con) {
             var query = updateProductByID(user_id, record);
+            console.log(record);
+            console.log('===============');
+            console.log(update_value);
             con.query(query, update_value, function (err, result) {
                 if (err) {
                     if (env.DEBUG) {
@@ -219,7 +239,34 @@ function User() {
                     }
                     con.release()
                     callback(err, null);
-                } else {                   
+                } else {     
+                    
+                    if (record.role == 2) {
+                        if (professional_interest_of_area && professional_interest_of_area.length > 0) {
+                            professional_interest_of_area.map(data => {
+                                if (data.value !== 0) {
+                                    var sql = 'INSERT INTO user_professional_interest_area("user_id","professional_interest_area_id") VALUES($1,$2) RETURNING *'
+                                    var values = [result.rows[0].id, data.value]
+                                    con.query(sql, values, function (err, result) {
+                                        console.log(err);
+                                    });
+                                }
+                            });
+                        }
+                    } else {
+                        if (researcher_interest_of_area && researcher_interest_of_area.length > 0) {
+                            researcher_interest_of_area.map(data => {
+                                if (data.value !== 0) {
+                                    var sql = 'INSERT INTO user_researcher_interest_area("user_id","researcher_interest_area_id") VALUES($1,$2) RETURNING *'
+                                    var values = [result.rows[0].id, data.value]
+                                    con.query(sql, values, function (err, result) {
+                                        console.log(err);
+                                    });
+                                }
+                            });
+                        }
+                    }
+
                     con.release()
                     callback(null, record);
                 }

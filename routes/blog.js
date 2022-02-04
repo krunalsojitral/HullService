@@ -555,7 +555,7 @@ router.post('/updateBlogByadmin', function (req, res) {
 });
 
 router.post('/getPaidBlogList', passport.authenticate('jwt', { session: false }),  function (req, res) {
-    loggerData(req);
+    loggerData(req);    
     var user_role = req.user.userrole;
     var user_id = req.user.id;
     Blog.getPaidBlogList(user_role, user_id, function (err, result) {

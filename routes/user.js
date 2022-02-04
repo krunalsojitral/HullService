@@ -13,11 +13,12 @@ var bcrypt = require('bcryptjs');
 var nodemailer = require('nodemailer');
 const nodeMailerCredential = require('./../EmailCredential');
 var shortid = require('shortid');
+var path = require('path');
 var fs = require('fs');
 var asyn = require('async');
 var helper = require('../config/helper');
 var moment = require('moment');
-
+var formidable = require('formidable');
 
 
 function loggerData(req) {
@@ -606,22 +607,227 @@ router.post('/adduserByadmin', [
     }
 });
 
+// router.post('/updateuserByadmin', function (req, res) {
+//     var user_id = req.body.user_id;
+//     let update_value = [req.body.name, req.body.phone]
+//     let record = {
+//         name: req.body.name,
+//         phone: (req.body.phone) ? req.body.phone : ''
+//     };
+//     User.updateuserByadmin(record, user_id, update_value, function (err, data) {
+//         if (err) {
+//             return res.json({ 'status': 0, 'response': { 'msg': err } });
+//         } else {
+//             return res.json({ 'status': 1, 'response': { 'msg': 'User updated successfully.', data: data } });
+//         }
+//     });
+// });
+
 router.post('/updateuserByadmin', function (req, res) {
-    var user_id = req.body.user_id;
-    let update_value = [req.body.name, req.body.phone]
-    let record = {
-        name: req.body.name,
-        phone: (req.body.phone) ? req.body.phone : ''
-    };
-    User.updateuserByadmin(record, user_id, update_value, function (err, data) {
-        if (err) {
-            return res.json({ 'status': 0, 'response': { 'msg': err } });
-        } else {
-            return res.json({ 'status': 1, 'response': { 'msg': 'User updated successfully.', data: data } });
+    var form = new formidable.IncomingForm();
+    form.parse(req, function (err, fields, files) {
+        
+        if (err) return res.json({ status: 1, 'response': { msg: err } });
+        var validationErrors = false;
+
+        let first_name = (obj.first_name !== undefined) ? obj.first_name : "";
+        let last_name = (obj.last_name !== undefined) ? obj.last_name : "";
+        let email = (obj.email !== undefined) ? obj.email : "";
+        let organization = (obj.organization !== undefined) ? obj.organization : "";
+        let level_of_education = (obj.level_of_education !== undefined) ? obj.level_of_education : "";
+        let occupation = (obj.occupation !== undefined) ? obj.occupation : "";
+        let sector = (obj.sector !== undefined) ? obj.sector : "";
+        let academic_discipline = (obj.academic_discipline !== undefined) ? obj.academic_discipline : "";
+        let sector = (obj.sector !== undefined) ? obj.sector : "";
+
+        if (first_name == "") {
+            return res.json({ status: 0, response: { msg: 'First name is required' } });
+            validationErrors = true;
+        }
+
+        if (last_name == "") {
+            return res.json({ status: 0, response: { msg: 'Last name is required' } });
+            validationErrors = true;
+        }
+
+        if (email == "") {
+            return res.json({ status: 0, response: { msg: 'Email is required' } });
+            validationErrors = true;
+        }
+
+        if (organization == "") {
+            return res.json({ status: 0, response: { msg: 'Organization is required' } });
+            validationErrors = true;
+        }
+
+        if (validationErrors == false) {
+
+            var json = fields.data;                 
+            let obj = JSON.parse(json);
+            
+            var user_id = obj.user_id;
+            var first_name = obj.first_name;            
+            var last_name = obj.last_name;
+            var email = (obj.email) ? obj.email : '';
+            var organization = (obj.organization) ? obj.organization : '';
+            var level_of_education = (obj.level_of_education) ? obj.level_of_education : '';
+            var occupation = (obj.occupation) ? obj.occupation : '';
+            var sector = (obj.sector) ? obj.sector : '';
+            var academic_discipline = (obj.academic_discipline) ? obj.academic_discipline : '';
+            var professional_interest_of_area = obj.professional_interest_of_area;
+            var researcher_interest_of_area = obj.researcher_interest_of_area;
+            var other_sector = (obj.other_sector) ? obj.other_sector : '';
+            var other_academic_discipline = (obj.other_academic_discipline) ? obj.other_academic_discipline : '';
+            var other_occupation = (obj.other_occupation) ? obj.other_occupation : '';
+            var other_professional_interest_area = (obj.other_professional_interest_area) ? obj.other_professional_interest_area : '';
+            var other_research_interest_area = (obj.other_research_interest_area) ? obj.other_research_interest_area : '';
+
+            var update_value = [];
+            var overview = {
+                first_name: first_name,
+                last_name: last_name,
+                email: email,
+                organization: organization,
+                level_of_education: level_of_education,
+                occupation: occupation,
+                sector: sector,
+                other_sector: other_sector,
+                other_occupation: other_occupation,
+                other_professional_interest_area: other_professional_interest_area,                
+                user_image: ''
+            }        
+            var final_obj = {}
+            asyn.waterfall([
+                function (done) {
+                    if (typeof files.image !== 'undefined') {
+                        let file_ext = files.image.name.split('.').pop();
+                        let filename = Date.now() + '-' + files.image.name.split(" ").join("");
+                        let tmp_path = files.image.path;
+                        if (file_ext == 'png' || file_ext == 'PNG' || file_ext == 'jpg' || file_ext == 'JPG' || file_ext == 'jpeg' || file_ext == 'JPEG') {
+                            fs.rename(tmp_path, path.join(__dirname, env.USER_PATH + filename), function (err) {
+                                if (err) {
+                                    done("Image upload error", overview)
+                                } else {
+                                    overview.user_image = filename;                                    
+                                    done(err, overview)
+                                }
+                            });
+
+                        } else {
+                            return res.json({ status: 0, response: { msg: 'Only image with jpg, jpeg and png format are allowed', } });
+                        }
+                    } else {                        
+                        overview.user_image = '';
+                        done(err, overview);
+                    }
+                },
+                function (overview, done1) {
+                    if (email){                        
+                        User.checkUserEditProfile(email, user_id, function (err, data) {                            
+                            if (data.length > 0) {
+                                done1('Email already exists.', null);
+                            } else {                                
+                                done1(err, overview);
+                            }
+                        });
+                    }else{                        
+                        done1(err, overview);
+                    }
+                },
+                function (overview, done1) {
+                    var organization = overview.organization;                    
+                    User.checkUserOrganization(organization, function (err, data) {
+                        let org_record = data;
+                        if (org_record) {
+                            overview.organization = parseInt(org_record[0].organization_id);
+                            done1(err, overview);
+                        } else {
+                            overview.organization = '';
+                            done1(err, overview);
+                        }
+                    });
+                },
+                function (overview, done2) {
+                    if (obj.role == 2) {
+                        update_value = [first_name, last_name, email, overview.organization, level_of_education, occupation, sector, other_sector, other_occupation, other_professional_interest_area]
+                        final_obj = {
+                            first_name: first_name,
+                            last_name: last_name,
+                            email: email,
+                            organization: overview.organization,
+                            level_of_education: level_of_education,
+                            occupation: occupation,
+                            sector: sector,
+                            other_sector: other_sector,
+                            other_occupation: other_occupation,
+                            other_professional_interest_area: other_professional_interest_area
+                        };
+                        if (overview.user_image){
+                            update_value.push(overview.user_image)
+                            final_obj.user_image = overview.user_image;
+                        }                        
+                    } else if (obj.role == 3) {
+                        update_value = [first_name, last_name, email, overview.organization, academic_discipline, other_academic_discipline, other_research_interest_area]
+                        final_obj = {
+                            first_name: first_name,
+                            last_name: last_name,
+                            email: email,
+                            organization: overview.organization,
+                            academic_discipline: academic_discipline,
+                            other_academic_discipline: other_academic_discipline,
+                            other_research_interest_area: other_research_interest_area
+                        };
+                        if (overview.user_image) {
+                            update_value.push(overview.user_image)
+                            final_obj.user_image = overview.user_image;
+                        }
+                    } else if (obj.role == 4) {
+                        update_value = [first_name, last_name, email]
+                        final_obj = {
+                            first_name: first_name,
+                            last_name: last_name,
+                            email: email
+                        };
+                        if (overview.user_image) {
+                            update_value.push(overview.user_image)
+                            final_obj.user_image = overview.user_image;
+                        }
+                    } else {
+                        update_value = [first_name, last_name, email]
+                        final_obj = {
+                            first_name: first_name,
+                            last_name: last_name,
+                            email: email
+                        };
+                        if (overview.user_image) {
+                            update_value.push(overview.user_image)
+                            final_obj.user_image = overview.user_image;
+                        }
+                    }
+                    User.updateuserByadmin(final_obj, user_id, update_value, professional_interest_of_area, researcher_interest_of_area, async function (err, data) {
+                        User.getUserById(user_id, function (err, data) {
+                            if (err){
+                                done2(err, null);
+                            }else{
+                                done2(err, overview);
+                            }
+                        });
+                    });
+                }
+            ],function (error, finalData) {
+                if (error) {
+                    return res.json({ 'status': 0, 'response': { 'msg': error } });
+                } else {
+                    if (finalData) {
+                        return res.json({ 'status': 1, 'response': { 'data': finalData, 'msg': 'data found' } });
+                    } else {
+                        return res.json({ 'status': 1, 'response': { 'data': [], 'msg': 'data found' } });
+                    }
+                }
+            });
         }
     });
 });
-
 
 //get user data - userSide
 router.get('/getuserDetail', passport.authenticate('jwt', { session: false }), function (req, res) {
