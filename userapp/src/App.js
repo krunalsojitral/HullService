@@ -63,6 +63,9 @@ const CoursePayment = lazy(() => import("./pages/user/course/CoursePayment"));
 const ParticipantsInMyStudies = lazy(() => import("./pages/user/research/ParticipantsInMyStudies"));
 const MyStudies = lazy(() => import("./pages/user/research/MyStudies"));
 
+const ViewProfile = lazy(() => import("./pages/user/ViewProfile"));
+const EditProfile = lazy(() => import("./pages/user/EditProfile"));
+
 
 function App() {
 
@@ -131,6 +134,8 @@ function App() {
           <Route path="/preview-module" component={Preview} />
           <Route path="/dynamic-page" component={DynamicPage} />
           <Route path="/add-research" component={AddResearch} />
+          <Route path="/view-profile" component={ViewProfile} />
+            <Route path="/edit-profile" component={EditProfile} />
         </Switch>
         </Suspense>
       </UserContext.Provider>

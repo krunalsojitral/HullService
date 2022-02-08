@@ -9,6 +9,7 @@ import ParticipateInResearchDescription from "./ParticipateInResearchDescription
 import { useModal } from 'react-hooks-use-modal';
 import './dev.css';
 import Paginator from 'react-hooks-paginator';
+import { Link } from 'react-router-dom';
 
 export default function ParticipateInResearch() {
     const pageLimit = 10;
@@ -141,11 +142,12 @@ export default function ParticipateInResearch() {
                                     <div class="col-md-4">
                                         <div class="studies-box">
                                             <div class="studies-header">
-                                                <div class="studies-icon">
-                                                    <img src="images/user.png" />
+                                                <div class="studies-icon">                                                    
+                                                    {!row.avatar && <img src="images/user.png" />}
+                                                    {row.avatar && <img src={row.avatar} />}
                                                 </div>
                                                 <div class="studies-text">
-                                                    <h3>{row.user_name}</h3>
+                                                    <h3><Link className="btn-edit" to={{ pathname: "/view-profile", search: "?id=" + row.user_id }}>{row.user_name}</Link></h3>
                                                     <small>{row.name}</small>
                                                     <span>{row.organization}</span>
                                                 </div>

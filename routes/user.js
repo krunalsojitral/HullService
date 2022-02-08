@@ -460,12 +460,19 @@ router.post('/getuserData', [
                 return res.json({ 'status': 0, 'response': { 'msg': err } });
             } else {
                 if (result != '') {
+                    var imageLink;
+                    if (req.headers.host == env.ADMIN_LIVE_URL) {
+                        imageLink = env.ADMIN_LIVE_URL;
+                    } else {
+                        imageLink = env.ADMIN_LIVE_URL;
+                    }
                     let userList = {};
                     userList['id'] = result[0].id;
                     userList['name'] = result[0].name;
                     userList['phone'] = result[0].phone;
                     userList['email'] = result[0].email;
                     userList['password'] = result[0].password;
+                    userList['avatar'] = (result[0].user_image) ? imageLink + env.USER_VIEW_PATH + result[0].user_image : '';
                     return res.json({ 'status': 1, 'response': { 'data': userList, 'msg': 'data found' } });
                 } else {
                     return res.json({ 'status': 1, 'response': { 'data': {}, 'msg': 'data found' } });
@@ -498,16 +505,25 @@ router.post('/getAdminUserById', [
                             csvString = '';
                         }
 
+                        var imageLink;
+                        if (req.headers.host == env.ADMIN_LIVE_URL) {
+                            imageLink = env.ADMIN_LIVE_URL;
+                        } else {
+                            imageLink = env.ADMIN_LIVE_URL;
+                        }
+
                         let userList = {};
                         userList['id'] = result[0].id;
                         userList['first_name'] = result[0].first_name;
                         userList['last_name'] = result[0].last_name;
+                        userList['role'] = result[0].role_id;
                         userList['email'] = result[0].email;
                         userList['city'] = result[0].city;
                         userList['organization'] = result[0].organization_name;
-                        userList['rinterestarea'] = result[0].rinterestarea;
+                        userList['rinterestarea'] = result[0].rinterestarea;                        
                         userList['sectorname'] = result[0].sectorname;
                         userList['occupationname'] = result[0].occupationname;
+                        userList['avatar'] = (result[0].user_image) ? imageLink + env.USER_VIEW_PATH + result[0].user_image : '';
                         userList['academicdisciplinename'] = result[0].academicdisciplinename;
                         userList['level_of_education'] = result[0].level_of_education;
                         userList['other_sector'] = result[0].other_sector;
@@ -516,6 +532,7 @@ router.post('/getAdminUserById', [
                         userList['other_professional_interest_area'] = result[0].other_professional_interest_area;
                         userList['other_research_interest_area'] = result[0].other_research_interest_area;
                         userList['pinterestarea'] = csvString;
+                        userList['about_us'] = result[0].about_us;
                         return res.json({ 'status': 1, 'response': { 'data': userList, 'msg': 'data found' } });
                     });                    
                 } else {
@@ -525,6 +542,74 @@ router.post('/getAdminUserById', [
         });
     }
 });
+
+router.get('/getEditUserById', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+    let user_id = req.user.id;
+    User.getAdminUserById(user_id, function (err, result) {
+        if (err) {
+            return res.json({ 'status': 0, 'response': { 'msg': err } });
+        } else {
+            if (result != '') {
+                console.log(user_id);
+                User.getUserInterestAreaById(user_id, result[0].role_id, function (err, interestresult) {
+
+                    console.log(interestresult);
+                    var imageLink;
+                    if (req.headers.host == env.ADMIN_LIVE_URL) {
+                        imageLink = env.ADMIN_LIVE_URL;
+                    } else {
+                        imageLink = env.ADMIN_LIVE_URL;
+                    }
+
+                    let userList = {};
+                    userList['id'] = result[0].id;
+                    userList['first_name'] = result[0].first_name;
+                    userList['last_name'] = result[0].last_name;
+                    userList['email'] = result[0].email;
+                    userList['city'] = result[0].city;
+                    userList['organization'] = result[0].organization_name;                    
+                    userList['sector'] = result[0].sector;
+                    userList['occupation'] = result[0].occupation;
+                    userList['academic_discipline'] = result[0].academic_discipline;
+                    userList['avatar'] = (result[0].user_image) ? imageLink + env.USER_VIEW_PATH + result[0].user_image : '';
+                    userList['sectorname'] = result[0].sectorname;
+                    userList['occupationname'] = result[0].occupationname;
+                    userList['academicdisciplinename'] = result[0].academicdisciplinename;
+                    userList['level_of_education'] = result[0].level_of_education;
+                    userList['other_sector'] = result[0].other_sector;
+                    userList['other_academic_discipline'] = result[0].other_academic_discipline;
+                    userList['other_occupation'] = result[0].other_occupation;
+                    userList['other_professional_interest_area'] = result[0].other_professional_interest_area;
+                    userList['other_research_interest_area'] = result[0].other_research_interest_area;
+                    userList['about_us'] = result[0].about_us;
+
+                    if (interestresult && interestresult.length > 0) {                        
+                        var obj = interestresult.map((data, index) => {
+                            let retObj = {};
+                            retObj['id'] = (index + 1);
+                            retObj['label'] = data.name;
+                            retObj['value'] = data.p_id;
+                            return retObj;
+                        });
+                        if (result[0].role_id == 2) {
+                            userList['pinterestarea'] = obj;
+                        }else{
+                            userList['rinterestarea'] = obj;
+                        }                        
+                    } else {
+                        userList['pinterestarea'] = [];
+                        userList['rinterestarea'] = [];
+                    }
+                    return res.json({ 'status': 1, 'response': { 'data': userList, 'msg': 'data found' } });
+                });
+            } else {
+                return res.json({ 'status': 1, 'response': { 'data': {}, 'msg': 'data found' } });
+            }
+        }
+    });
+});
+
+
 
 
 router.post('/changeuserStatus', [
@@ -623,25 +708,28 @@ router.post('/adduserByadmin', [
 //     });
 // });
 
-router.post('/updateuserByadmin', function (req, res) {
+router.post('/updateuserByadmin', passport.authenticate('jwt', { session: false }), function (req, res) {
+    var user_id = req.user.id;
+    
     var form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
         
         if (err) return res.json({ status: 1, 'response': { msg: err } });
         var validationErrors = false;
-
+       
         var json = fields.data;
         let obj = JSON.parse(json);
-
-        var user_id = obj.user_id;
+        
         var first_name = obj.first_name;
         var last_name = obj.last_name;
         var email = (obj.email) ? obj.email : '';
+        var city = (obj.city) ? obj.city : '';
+        var about_us = (obj.about_us) ? obj.about_us : '';
         var organization = (obj.organization) ? obj.organization : '';
         var level_of_education = (obj.level_of_education) ? obj.level_of_education : '';
-        var occupation = (obj.occupation) ? obj.occupation : '';
-        var sector = (obj.sector) ? obj.sector : '';
-        var academic_discipline = (obj.academic_discipline) ? obj.academic_discipline : '';
+        var occupation = (obj.occupation && parseInt(obj.occupation) > 0) ? obj.occupation : null;
+        var sector = (obj.sector && parseInt(obj.sector) > 0) ? obj.sector : null;
+        var academic_discipline = (obj.academic_discipline && parseInt(obj.academic_discipline) > 0) ? obj.academic_discipline : null;
         var professional_interest_of_area = obj.professional_interest_of_area;
         var researcher_interest_of_area = obj.researcher_interest_of_area;
         var other_sector = (obj.other_sector) ? obj.other_sector : '';
@@ -665,10 +753,10 @@ router.post('/updateuserByadmin', function (req, res) {
             validationErrors = true;
         }
 
-        if (organization == "") {
-            return res.json({ status: 0, response: { msg: 'Organization is required' } });
-            validationErrors = true;
-        }
+        // if (organization == "") {
+        //     return res.json({ status: 0, response: { msg: 'Organization is required' } });
+        //     validationErrors = true;
+        // }
 
         if (validationErrors == false) {
 
@@ -677,6 +765,7 @@ router.post('/updateuserByadmin', function (req, res) {
                 first_name: first_name,
                 last_name: last_name,
                 email: email,
+                city:city,
                 organization: organization,
                 level_of_education: level_of_education,
                 occupation: occupation,
@@ -738,11 +827,13 @@ router.post('/updateuserByadmin', function (req, res) {
                     });
                 },
                 function (overview, done2) {
-                    if (obj.role == 2) {
-                        update_value = [first_name, last_name, email, overview.organization, level_of_education, occupation, sector, other_sector, other_occupation, other_professional_interest_area]
+                    if (obj.role == 2) {                        
+                        update_value = [first_name, last_name, about_us, city, email, overview.organization, level_of_education, occupation, sector, other_sector, other_occupation, other_professional_interest_area]
                         final_obj = {
                             first_name: first_name,
                             last_name: last_name,
+                            about_us: about_us,
+                            city:city,
                             email: email,
                             organization: overview.organization,
                             level_of_education: level_of_education,
@@ -752,30 +843,38 @@ router.post('/updateuserByadmin', function (req, res) {
                             other_occupation: other_occupation,
                             other_professional_interest_area: other_professional_interest_area
                         };
+                        console.log(researcher_interest_of_area);
+                        console.log(final_obj);
+                        console.log(update_value);
                         if (overview.user_image){
                             update_value.push(overview.user_image)
                             final_obj.user_image = overview.user_image;
                         }                        
                     } else if (obj.role == 3) {
-                        update_value = [first_name, last_name, email, overview.organization, academic_discipline, other_academic_discipline, other_research_interest_area]
+                        
+                        update_value = [first_name, last_name, about_us, city, email, overview.organization, academic_discipline, other_academic_discipline, other_research_interest_area]
                         final_obj = {
                             first_name: first_name,
                             last_name: last_name,
+                            about_us: about_us,
+                            city: city,
                             email: email,
                             organization: overview.organization,
                             academic_discipline: academic_discipline,
                             other_academic_discipline: other_academic_discipline,
                             other_research_interest_area: other_research_interest_area
                         };
+                        
                         if (overview.user_image) {
                             update_value.push(overview.user_image)
                             final_obj.user_image = overview.user_image;
                         }
                     } else if (obj.role == 4) {
-                        update_value = [first_name, last_name, email]
+                        update_value = [first_name, last_name, about_us, email]
                         final_obj = {
                             first_name: first_name,
                             last_name: last_name,
+                            about_us: about_us,
                             email: email
                         };
                         if (overview.user_image) {
@@ -783,18 +882,19 @@ router.post('/updateuserByadmin', function (req, res) {
                             final_obj.user_image = overview.user_image;
                         }
                     } else {
-                        update_value = [first_name, last_name, email]
+                        update_value = [first_name, last_name, about_us, email]
                         final_obj = {
                             first_name: first_name,
                             last_name: last_name,
+                            about_us: about_us,
                             email: email
                         };
                         if (overview.user_image) {
                             update_value.push(overview.user_image)
                             final_obj.user_image = overview.user_image;
                         }
-                    }
-                    User.updateuserByadmin(final_obj, user_id, update_value, professional_interest_of_area, researcher_interest_of_area, async function (err, data) {
+                    } 
+                    User.updateuserByadmin(final_obj, user_id, update_value, professional_interest_of_area, researcher_interest_of_area, obj.role, async function (err, data) {
                         User.getUserById(user_id, function (err, data) {
                             if (err){
                                 done2(err, null);
@@ -809,7 +909,7 @@ router.post('/updateuserByadmin', function (req, res) {
                     return res.json({ 'status': 0, 'response': { 'msg': error } });
                 } else {
                     if (finalData) {
-                        return res.json({ 'status': 1, 'response': { 'data': finalData, 'msg': 'data found' } });
+                        return res.json({ 'status': 1, 'response': { 'data': finalData, 'msg': 'Profile updated successfully' } });
                     } else {
                         return res.json({ 'status': 1, 'response': { 'data': [], 'msg': 'data found' } });
                     }
@@ -828,6 +928,12 @@ router.get('/getuserDetail', passport.authenticate('jwt', { session: false }), f
             return res.json({ 'status': 0, 'response': { 'msg': err } });
         } else {
             if (result != '') {
+                var imageLink;
+                if (req.headers.host == env.ADMIN_LIVE_URL) {
+                    imageLink = env.ADMIN_LIVE_URL;
+                } else {
+                    imageLink = env.ADMIN_LIVE_URL;
+                }
                 let userList = {};
                 userList['id'] = result[0].id;
                 userList['first_name'] = result[0].first_name;
@@ -835,6 +941,7 @@ router.get('/getuserDetail', passport.authenticate('jwt', { session: false }), f
                 userList['email'] = result[0].email;
                 userList['password'] = result[0].password;
                 userList['role'] = result[0].userrole;
+                userList['avatar'] = (result[0].user_image) ? imageLink + env.USER_VIEW_PATH + result[0].user_image : '';
                 return res.json({ 'status': 1, 'response': { 'data': userList, 'msg': 'data found' } });
             } else {
                 return res.json({ 'status': 0, 'response': { 'data': {}, 'msg': 'data found' } });

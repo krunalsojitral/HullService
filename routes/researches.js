@@ -238,6 +238,12 @@ router.get('/getFutureParticipateResearchesList', function (req, res) {
         if (err) {
             return res.json({ status: 0, 'response': { msg: err } });
         } else {
+            var imageLink;
+            if (req.headers.host == env.ADMIN_LIVE_URL) {
+                imageLink = env.ADMIN_LIVE_URL;
+            } else {
+                imageLink = env.ADMIN_LIVE_URL;
+            }
             var researchList = result.map(data => {
                 let retObj = {};
                 retObj['researches_id'] = data.researches_id;
@@ -249,7 +255,9 @@ router.get('/getFutureParticipateResearchesList', function (req, res) {
                 retObj['start_date'] = moment(data.start_date).format('YYYY-MM-DD');
                 retObj['status'] = data.status;
                 retObj['name'] = data.academic;
+                retObj['user_id'] = data.id;
                 retObj['organization'] = data.organization_name;
+                retObj['avatar'] = (data.user_image) ? imageLink + env.USER_VIEW_PATH + data.user_image : '';
                 return retObj;
             });
             return res.json({ status: 1, 'response': { data: researchList } });

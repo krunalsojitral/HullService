@@ -16,6 +16,7 @@ export default function Header() {
     const [menuList, setMenuList] = React.useState([]);
     const { pathname } = useLocation();
     const { logoutUser } = useLogout();
+    const [userTypeList, setUserTypeList] = React.useState('');
 
     React.useEffect(() => {
         const userString = localStorage.getItem('userdata');
@@ -24,15 +25,23 @@ export default function Header() {
 
         const tokenString = localStorage.getItem('token');
         var tokens = JSON.parse(tokenString);
-
+        setToken(tokens);
         if (tokens){
             localStorage.removeItem('last_visit_url');
         }
-
         
-
-        setToken(tokens);
-
+        const typeString = localStorage.getItem('selection');
+        //var userdata = JSON.parse(typeString);
+        if (userdata){
+            if (userdata.role == 2){
+                setUserTypeList('Researcher')
+            } else if (userdata.role == 3) {
+                setUserTypeList('Professional')
+            } else{
+                setUserTypeList('General Public')
+            }
+        }
+        
         window.scrollTo(0, 0)
 
         axios.get(api_url + '/common/getDynamicMenu', {}).then((result) => {
@@ -54,16 +63,22 @@ export default function Header() {
     const handleOpenDirection = () => {
         history.push('/');
     }
+
+    const logoutClick = () => {
+        localStorage.clear();
+        history.push('/');
+        ///window.location.reload();
+    }
  
 
     return(
 
         <div>
-            <div className="top-header">
+            {!token && <div className="top-header">
                 <div className="container">
                     <div className="row">
                         <div className="col-md-12">                           
-                                {!token && 
+                               
                                  <div className="top-header-icon">
                                     <div className="social-icon">
                                         <ul>                                        
@@ -87,8 +102,8 @@ export default function Header() {
                                         </NavLink>                                    
                                     </div>
                                 </div>
-                                }
-                                {token &&
+                                
+                                {/* {token &&
                                     <div className="top-header-icon">                                                                            
                                         <div className="Member-login">
                                             <Link to='/dashboard'>
@@ -101,11 +116,11 @@ export default function Header() {
                                             </NavLink>                                           
                                         </div>
                                     </div>
-                                }                           
+                                }                            */}
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> }
             
 
             <header>
@@ -116,79 +131,13 @@ export default function Header() {
                             <div className="logo" onClick={(e) => handleOpenDirection()}>
                                 <img alt="logo" src="images/logo.png"/>
 							</div>
-
-                                {/* {!token && <div className="hull-links">
-                                    <div className="Sign-header">
-                                    <Link to='/login'>
-                                            Sign in
-                                    </Link>
-                                    <Link to='/userSelection'>
-                                            Sign up
-                                    </Link>                                    
-                                </div>
-                                    <a href="javascript:void(0);" className="mob-btn">
-                                        <i className="fa fa-bars"></i>
-                                    </a>
-                                    <div className="cta-header">
-                                    <Link to='/membership-benefit'>
-                                            BECOME A MEMBER
-                                    </Link>
-                                    </div>
-                            </div> } */}
-
-
-                            {/* {token &&  
-                            <div className="hull-links">
-                                <a href="javascript:void(0);" className="mob-btn">
-                                    <i className="fa fa-bars"></i>
-                                </a>
-                                <div className="hull-menu">
-                                    <ul>
-                                        <li>
-                                            <NavLink activeClassName="active" to="/">
-                                                <InlineButton name={"HOME"} />
-                                            </NavLink>                                            
-                                        </li>
-                                        <li>
-                                            <NavLink activeClassName="active" to="/">
-                                                <InlineButton name={"ABOUT"} />
-                                            </NavLink>
-                                        </li>
-                                        <li>
-                                            <NavLink activeClassName="active" to="/">
-                                                <InlineButton name={"MEMBERS"} />
-                                            </NavLink>
-                                        </li>
-                                        <li>
-                                            <NavLink activeClassName="active" to="/">
-                                                <InlineButton name={"PARTNERS"} />
-                                            </NavLink>
-                                        </li>
-                                        <li>
-                                            <NavLink activeClassName="active" to="/">
-                                                <InlineButton name={"EVENTS"} />
-                                            </NavLink>
-                                        </li>
-                                        <li>
-                                            <NavLink activeClassName="active" to="/">
-                                                <InlineButton name={"BLOG"} />
-                                            </NavLink>
-                                        </li>
-                                        <li>
-                                            <NavLink activeClassName="active" to="/">
-                                                <InlineButton name={"CONTACT US"} />
-                                            </NavLink>
-                                        </li>
-                                    </ul>
-                                </div>                                
-                            </div>}  */}
-
                                 <div className="hull-links">
                                     <a href="javascript:void(0);" className="mob-btn">
                                         <i className="fa fa-bars"></i>
                                     </a>
-                                    <div className="hull-menu">
-                                        <ul>
+
+                                    {!token &&<div className="hull-menu">
+                                         <ul>
                                             <li>
                                                 <NavLink exact={true} activeClassName="active" to="/">
                                                     <InlineButton name={"HOME"} />
@@ -249,15 +198,39 @@ export default function Header() {
                                                     </NavLink>
                                                 </li>
                                             ))}
-
-
-                                            {token && <li>
-                                                <a className="logout">
-                                                    <InlineButton handleClick={logoutUser} name={"LOGOUT"} />
-                                                </a>
-                                            </li>}
                                         </ul>
-                                    </div>
+                                    </div>}
+
+                                    {token && <div className="hull-menu">
+                                        <ul><li>
+                                        <NavLink activeClassName="active" to='/participate-in-research'>
+                                            PARTICIPATE IN RESEARCH
+                                        </NavLink>
+                                        </li></ul></div>}
+
+                                    {token && <div className="user-dropdown">
+                                        <div className="dropdown">
+                                            <a href="#" className="dropdown-toggle loged-user-link" data-toggle="dropdown">
+                                                <div className="loged-user-details">
+                                                    <div className="loged-user-icon">
+                                                        {!userData.avatar && <img src="images/user.png" />}
+                                                        {userData.avatar && <img src={userData.avatar} />}
+                                                    </div>
+                                                    <div className="loged-user-name">
+                                                        <h3 title={userData.first_name + ' ' + userData.last_name}> {(userData.first_name+' '+userData.last_name).substring(0, 15)}</h3>
+                                                        <small>({userTypeList})</small>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            <ul className="dropdown-menu loged-user-menu">
+                                                <li><Link className="btn-edit" to={{ pathname: "/dashboard" }}>My Dashboard</Link></li>                                               
+                                                <li><Link className="btn-edit" to={{ pathname: "/view-profile", search: "?id=" + userData.id }}>View Profile</Link></li>
+                                                <li onClick={(e) => logoutClick()}><a className="logout">
+                                                    <InlineButton  name={"logout"} />
+                                                </a></li>
+                                            </ul>
+                                        </div>
+                                    </div>}
                                     
                                 </div> 
                         </div>

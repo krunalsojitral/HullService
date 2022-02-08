@@ -95,8 +95,7 @@ function User() {
     };
 
     this.checkUserOrganization = function (organization, callback) {
-        connection.acquire(function (err, con) {
-            console.log(organization.toLowerCase());
+        connection.acquire(function (err, con) {            
             con.query('SELECT * FROM organization where LOWER(organization_name) = $1', [organization.toLowerCase()], function (err, results) {
                 if (err) {
                     if (env.DEBUG) {
@@ -226,12 +225,9 @@ function User() {
         return query.join(' ');
     }
 
-    this.updateuserByadmin = function (record, user_id, update_value, professional_interest_of_area, researcher_interest_of_area, callback) {
-        connection.acquire(function (err, con) {
-            var query = updateProductByID(user_id, record);
-            console.log(record);
-            console.log('===============');
-            console.log(update_value);
+    this.updateuserByadmin = function (record, user_id, update_value, professional_interest_of_area, researcher_interest_of_area, role, callback) {
+        connection.acquire(function (err, con) {            
+            var query = updateProductByID(user_id, record);            
             con.query(query, update_value, function (err, result) {
                 if (err) {
                     if (env.DEBUG) {
@@ -240,33 +236,53 @@ function User() {
                     con.release()
                     callback(err, null);
                 } else {     
-                    
-                    if (record.role == 2) {
-                        if (professional_interest_of_area && professional_interest_of_area.length > 0) {
-                            professional_interest_of_area.map(data => {
-                                if (data.value !== 0) {
-                                    var sql = 'INSERT INTO user_professional_interest_area("user_id","professional_interest_area_id") VALUES($1,$2) RETURNING *'
-                                    var values = [result.rows[0].id, data.value]
-                                    con.query(sql, values, function (err, result) {
-                                        console.log(err);
+                    if (role == 2) {
+                        if (professional_interest_of_area && professional_interest_of_area.length > 0) {                            
+                            con.query('SELECT * FROM user_professional_interest_area where user_id = $1', [user_id], function (err, result) {
+                                if (result.rows.length > 0){
+                                    con.query('DELETE FROM user_professional_interest_area where user_id = $1', [user_id], function (err, results) {});
+                                    professional_interest_of_area.map(data => {
+                                        if (data.value !== 0) {
+                                            con.query('INSERT INTO user_professional_interest_area("user_id","professional_interest_area_id") VALUES($1,$2) RETURNING *', [user_id, data.value], function (err, result) {
+                                                //console.log(err);
+                                            });
+                                        }
                                     });
-                                }
+                                }else{
+                                    professional_interest_of_area.map(data => {
+                                        if (data.value !== 0) {                                            
+                                            con.query('INSERT INTO user_professional_interest_area("user_id","professional_interest_area_id") VALUES($1,$2) RETURNING *', [user_id, data.value], function (err, result) {
+                                                //console.log(err);
+                                            });
+                                        }
+                                    });
+                                }                            
                             });
                         }
                     } else {
-                        if (researcher_interest_of_area && researcher_interest_of_area.length > 0) {
-                            researcher_interest_of_area.map(data => {
-                                if (data.value !== 0) {
-                                    var sql = 'INSERT INTO user_researcher_interest_area("user_id","researcher_interest_area_id") VALUES($1,$2) RETURNING *'
-                                    var values = [result.rows[0].id, data.value]
-                                    con.query(sql, values, function (err, result) {
-                                        console.log(err);
+                        if (researcher_interest_of_area && researcher_interest_of_area.length > 0) {                            
+                            con.query('SELECT * FROM user_researcher_interest_area where user_id = $1', [user_id], function (err, result) {
+                                if (result.rows.length > 0) {                                    
+                                    con.query('DELETE FROM user_researcher_interest_area where user_id = $1', [user_id], function (err, results) { });
+                                    researcher_interest_of_area.map(data => {
+                                        if (data.value !== 0) {                                                                                        
+                                            con.query('INSERT INTO user_researcher_interest_area("user_id","researcher_interest_area_id") VALUES($1,$2) RETURNING *', [user_id, data.value], function (err, result) {
+                                                //console.log(err);
+                                            });
+                                        }
+                                    });
+                                } else {
+                                    researcher_interest_of_area.map(data => {
+                                        if (data.value !== 0) {                                            
+                                            con.query('INSERT INTO user_researcher_interest_area("user_id","researcher_interest_area_id") VALUES($1,$2) RETURNING *', [user_id, data.value], function (err, result) {
+                                                //console.log(err);
+                                            });
+                                        }
                                     });
                                 }
                             });
                         }
                     }
-
                     con.release()
                     callback(null, record);
                 }
@@ -315,7 +331,7 @@ function User() {
                     }
                     callback(err, null);
                 } else {
-                    if (results.rows.length === 0) {
+                    if (results && results.rows.length === 0) {
                         msg = 'User does not exist.';
                         callback(msg, null);
                     } else {
@@ -362,21 +378,27 @@ function User() {
         connection.acquire(function (err, con) {            
             var sql = '';            
             if (role == 2){
-                sql = 'SELECT name FROM user_professional_interest_area inner join professional_interest_area on user_professional_interest_area.professional_interest_area_id = professional_interest_area.professional_interest_area_id where user_professional_interest_area.user_id = $1';
+                sql = 'SELECT *,professional_interest_area.professional_interest_area_id as p_id FROM user_professional_interest_area inner join professional_interest_area on user_professional_interest_area.professional_interest_area_id = professional_interest_area.professional_interest_area_id where user_professional_interest_area.user_id = $1';
             }else{
-                sql = 'SELECT name FROM user_researcher_interest_area inner join researcher_interest_area on user_researcher_interest_area.researcher_interest_area_id = researcher_interest_area.researcher_interest_area_id where user_researcher_interest_area.user_id = $1';
+                sql = 'SELECT *,researcher_interest_area.researcher_interest_area_id as p_id FROM user_researcher_interest_area inner join researcher_interest_area on user_researcher_interest_area.researcher_interest_area_id = researcher_interest_area.researcher_interest_area_id where user_researcher_interest_area.user_id = $1';
             }
-            con.query(sql, [id], function (err, result) {
+            con.query(sql, [id], function (err, result) {                
                 con.release();
-                if (result.rows.length === 0) {
-                    msg = 'Interest area does not exist.';
-                    callback(msg, null);
-                } else {
-                    callback(null, result.rows);
+                if (err){
+                    callback(err, null);
+                }else{
+                    if (result && result.rows && result.rows.length === 0) {
+                        msg = 'Interest area does not exist.';
+                        callback(msg, null);
+                    } else {
+                        callback(null, result.rows);
+                    }
                 }
             });
         });
     }
+
+   
 
     this.getUserById = function (id, callback) {
         connection.acquire(function (err, con) {

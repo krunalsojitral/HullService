@@ -4294,10 +4294,7 @@ input.react-autosuggest__input::placeholder { color: #A0A0A0;}
     margin: 25px 0;
 }
 
-.studies-card .studies-list {
-    padding: 30px;
-}
-
+.studies-card .studies-list { padding: 30px;}
 .studies-card .studies-list h3 {
     font-family: Open Sans;
     font-style: normal;
@@ -4324,7 +4321,13 @@ input.react-autosuggest__input::placeholder { color: #A0A0A0;}
     float: left;
     width: 80px;
     height: 80px;
-    margin-right: 10px;
+    margin-right: 10px;    
+    border-radius: 100px;
+    overflow: hidden;    
+}
+.studies-box .studies-header .studies-icon img {
+    width: 100%;
+    height: 100%;
 }
 
 .studies-box .studies-header .studies-text {
@@ -4338,6 +4341,10 @@ input.react-autosuggest__input::placeholder { color: #A0A0A0;}
     font-weight: bold;
     font-size: 16px;
     line-height: 22px;
+    color: #000000;
+}
+
+.studies-box .studies-header h3 a{    
     color: #000000;
 }
 
@@ -4399,6 +4406,307 @@ input.react-autosuggest__input::placeholder { color: #A0A0A0;}
     font-size: 14px;
     line-height: 22px;
     color: #000000;
+}
+
+
+.view-profile-card {
+    margin: 20px 0;
+}
+
+.view-profile-card .view-profile-header {
+    padding: 30px;
+    background: #fff;
+    background: #DBF1F4;
+    border-radius: 5px 0px;
+}
+.view-profile-card .view-profile-header .view-profile-title .view-profile-title-icon {
+    width: 57px;
+    height: 57px;
+    text-align: center;
+    line-height: 57px;
+    background: #1e6e80;
+    border-radius: 100px;
+    overflow: hidden;
+    color: #fff;
+    font-size: 20px;
+    float: left;
+    margin-right: 14px;
+}
+.view-profile-card .view-profile-header .view-profile-title .view-profile-title-text {
+    overflow: hidden;
+    padding: 7px 0;
+}
+
+.view-profile-card .view-profile-header .view-profile-title .view-profile-title-text h3 {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 36px;
+    line-height: 42px;
+    text-transform: capitalize;
+    color: #000000;
+}
+
+.view-profile-card .view-profile-header 
+ .view-profile-button {
+    text-align: right;
+}
+.pofile-view{
+    background: #f1f1f1;
+}
+.view-profile-card .view-profile-header .view-profile-button .btn-edit {
+    background: #036E80;
+    border-radius: 5px;
+    width: 150px;
+    height: 50px;
+    border: none;
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 21px;
+    text-align: center;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    padding-top: 15px;
+}
+
+.view-pro-button {
+    padding: 25px 0 0;
+    border-top: 2px #1e6e80 dotted;
+    margin-top: 20px;
+}
+
+.view-pro-button .view-profile-title-icon {
+    width: 130px;
+    height: 130px;
+    float: left;
+    margin: 0 20px 0 0;
+    background: #f1f1f1;
+    border-radius: 100px;
+    overflow: hidden;
+}
+
+.view-pro-button .view-profile-title-text {
+    overflow: hidden;
+    padding: 15px 0;
+}
+
+.view-pro-button .view-profile-title-text h3 {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 22px;
+/* identical to box height */
+    color: #000000;
+    margin-bottom: 10px;
+}
+
+.view-pro-button .view-profile-title-text p {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 24px;
+/* or 171% */
+    color: #000000;
+}
+
+.view-profile-card .view-profile-body {
+    padding: 30px;
+    background: #fff;
+}
+.view-profile-card .view-profile-body .view-profile-details ul li {
+    border-bottom: 2px #dbf1f4 dotted;
+    padding: 15px 0;
+    
+/* identical to box height */
+    display: inline-block;
+    width: 49%;
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 19px;
+    color: #000000;
+}
+
+.view-profile-card .view-profile-body .view-profile-details ul li i {
+    margin-right: 10px;
+    color: #ababab;
+}
+.view-profile-card .view-profile-body .view-profile-details {
+    width: 774px;
+    margin: 0 auto;
+}
+.edit-profile {
+    position: relative;
+    margin-bottom: 25px;
+}
+.edit-profile input.form-control {
+    background: #FFFFFF;
+    border: 1px solid #B8B8B8;
+    box-sizing: border-box;
+    border-radius: 5px;
+    height: 45px;
+    box-shadow: none;
+    color:#000
+}
+.edit-profile select.form-control {
+    background: #FFFFFF;
+    border: 1px solid #B8B8B8;
+    box-sizing: border-box;
+    border-radius: 5px;
+    height: 45px;
+    box-shadow: none;
+}
+.edit-profile span {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 17px;    
+}
+.edit-profile .user-image { padding: 25px 0 0;   }
+.edit-profile .user-image .user-view {
+    width: 130px;
+    height: 130px;
+    float: left;
+    margin: 0 20px 0 0;
+    background: #f1f1f1;
+    border-radius: 100px;
+}
+
+.edit-profile .interest-area {
+    border: 1px solid #ccc;
+    padding: 3px 6px;
+    border-radius: 10px;
+    margin-top: 6px;
+    margin-right: 7px;
+    font-size: 13px;
+    color: gray;
+}
+.edit-profile.image-section{
+    margin-top: 35px;
+}
+.view-profile-header .user-image {
+    width: 140px;
+    height: 140px;
+    overflow: hidden;
+    border-radius: 100px;
+    background: #fff;
+    margin: 0 auto;
+    display: block;
+}
+
+.view-profile-header .user-image img {
+    width: 100%;
+    height: 100%;
+}
+.view-profile-body .autosuggestion input{
+    background: #FFFFFF;
+    border: 1px solid #B8B8B8;
+    box-sizing: border-box;
+    border-radius: 5px;
+    height: 45px;
+    box-shadow: none;
+    width: 100%;
+    padding: 6px 12px;
+    color: #000;
+
+}
+.view-profile-body .autosuggestion .react-autosuggest__input--focused{
+    border: 1px solid #B8B8B8;
+    outline: 0px solid #B8B8B8;
+}
+.view-profile-body .form-group select.form-control { appearance: none;color: #A0A0A0;}
+.view-profile-body .form-group .dropdown-container{height: 46px;}
+.profile-img {
+    padding: 10px 15px;
+    background: #fff;
+    border: solid 1px #ddd;
+    border-radius: 5px;
+    position: absolute;
+    width: 100%;
+    height: 45px;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+.edit-profile textarea.form-control {
+    height: 100px;
+    resize: none;
+    background: #FFFFFF;
+    border: 1px solid #B8B8B8;
+    box-sizing: border-box;
+    border-radius: 5px;
+    box-shadow: none;
+}
+
+.view-profile-card .view-profile-body hr {
+    border-top: 1px dashed #A9A0A0;
+    margin: 15px  0 30px;
+}
+
+.view-profile-card .view-profile-body .btn-save{
+    background: #036E80;
+    border-radius: 5px;
+    width: 150px;
+    height: 50px;
+    border: none;
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 21px;
+    text-align: center;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #FFFFFF;
+}
+.loged-user-link { display: block;}
+.loged-user-link .loged-user-details .loged-user-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 100px;
+    overflow: hidden;
+    border: solid 1px #f9b92a;
+    float: left;
+    margin-right: 10px;
+}
+.loged-user-link .loged-user-details .loged-user-icon img{
+    width: 100%;
+    height: 100%;
+}
+.user-dropdown { width: 200px;margin-left: 12px;}
+.loged-user-link .loged-user-details .loged-user-name {
+    overflow: hidden;
+    padding-top: 6px;
+}
+.loged-user-link .loged-user-details .loged-user-name h3 {
+    color: #207593;
+    font-size: 17px;
+    line-height: 25px;
+}
+.loged-user-link .loged-user-details .loged-user-name small {
+    display: block;
+    color: #777;
+}
+.user-dropdown .loged-user-menu {
+    top: 63px;
+    border: solid 1px #ddd;
+    background: #fff;
+    min-width: 180px;
+    padding: 0;
+    margin: 0;
+}
+.user-dropdown .loged-user-menu li {border-bottom: solid 1px #f1f1f1;}
+.user-dropdown .loged-user-menu li:last-child { border-bottom: none; cursor: pointer; }
+.user-dropdown .loged-user-menu li a {
+    display: block;
+    padding: 10px 20px;
 }
 
 /*forum */
