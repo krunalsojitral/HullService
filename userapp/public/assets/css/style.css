@@ -829,8 +829,7 @@ section.banner-card .banner-text .banner-btn {
     border-top: 0px;
     border-bottom: none;
     padding: 2px 0px 2px 4px;
-    text-align: left;
-    border-right: none;
+    text-align: left;    
     cursor: pointer;
 }
 .login-section .login-box .login-details .react-autosuggest__section-container:last-child{
@@ -3118,6 +3117,10 @@ min-height: 258px;
     display: block;
 }
 
+.forums-reply-text a.btn-edit {
+    color: #036E80;
+}
+
 .media-main {
     display: flex;
     gap: 15px;
@@ -4447,9 +4450,10 @@ input.react-autosuggest__input::placeholder { color: #A0A0A0;}
     color: #000000;
 }
 
-.view-profile-card .view-profile-header 
- .view-profile-button {
+.view-profile-card .view-profile-header .view-profile-button {
     text-align: right;
+    border-bottom: 2px #1e6e80 dotted;
+    padding-bottom: 25px;
 }
 .pofile-view{
     background: #f1f1f1;
@@ -4473,8 +4477,8 @@ input.react-autosuggest__input::placeholder { color: #A0A0A0;}
 }
 
 .view-pro-button {
-    padding: 25px 0 0;
-    border-top: 2px #1e6e80 dotted;
+    /* padding: 25px 0 0; */
+    /* border-top: 2px #1e6e80 dotted; */
     margin-top: 20px;
 }
 
@@ -4562,12 +4566,37 @@ input.react-autosuggest__input::placeholder { color: #A0A0A0;}
     height: 45px;
     box-shadow: none;
 }
-.edit-profile span {
+.edit-profile span { 
     font-family: Open Sans;
     font-style: normal;
     font-weight: 500;
-    font-size: 17px;    
+    font-size: 17px;
 }
+.edit-profile .react-autosuggest__section-container:last-child{
+    border-bottom: 1px solid gray;
+}
+
+.edit-profile ul.react-autosuggest__suggestions-list {
+    border: 1px solid gray;
+    border-top: 0px;
+    border-bottom: none;
+    padding: 2px 0px 2px 4px;
+    text-align: left;    
+    cursor: pointer;
+}
+.edit-profile .browse-img {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 17px;
+    width: 25px;
+    vertical-align: revert;
+    height: 25px;
+    margin-right: 6px;
+    display: inline-block;   
+}
+.view-profile-header .edit-profile small{word-break: break-all;}
+.view-profile-header .edit-profile img{overflow: hidden;border-radius: 50%; height: 100%; width: 100%; }
 .edit-profile .user-image { padding: 25px 0 0;   }
 .edit-profile .user-image .user-view {
     width: 130px;

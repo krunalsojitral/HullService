@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ForumDescription from "./ForumDescription";
+import { Link } from 'react-router-dom';
 // import $ from 'jquery';
 // import axios from 'axios';
 // import api_url from '../../components/Apiurl';
@@ -12,8 +13,7 @@ function ForumSubReply(props) {
     const [hideLoad, setHideLoad] = useState(true);    
 
     useEffect(() => {
-        setForumSubReplyCommentList(props.subReplyDetail);
-        console.log(parseInt(props.subReplyDetail.length)+"============"+ parseInt(replyVisible));
+        setForumSubReplyCommentList(props.subReplyDetail);        
         if ((parseInt(props.subReplyDetail.length) < parseInt(replyVisible)) || (parseInt(props.subReplyDetail.length) == parseInt(replyVisible))) {
             setHideLoad(false);
         } else {
@@ -31,12 +31,13 @@ function ForumSubReply(props) {
     return (
         <div>
             {forumSubReplyCommentList && forumSubReplyCommentList.slice(0, replyVisible).map((subdata, index) => (
-                 <div class="forums-reply-card">
-                    <div class="forums-reply-icon">
-                        <img src="images/user.png"/>
+                 <div className="forums-reply-card">
+                    <div className="forums-reply-icon">
+                        {!subdata.avatar && <img src="images/user.png" />}
+                        {subdata.avatar && <img src={subdata.avatar} />}
                     </div>
-                    <div class="forums-reply-text">
-                        <h3>{subdata.first_name} {subdata.last_name}<span>({subdata.role})</span></h3>
+                    <div className="forums-reply-text">
+                        <h3><Link className="btn-edit" to={{ pathname: "/view-profile", search: "?id=" + subdata.user_id }}>{subdata.first_name} {subdata.last_name}</Link><span>({subdata.role})</span></h3>
                         <span>{subdata.created_at}</span>
                         <ForumDescription description={subdata.comment}></ForumDescription>
                         <br/>

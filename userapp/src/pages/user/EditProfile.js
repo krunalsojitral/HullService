@@ -261,8 +261,15 @@ export default function EditProfile() {
                     }
                     
 
-                    if (userdata.about_us){
-                        setFormValue('about_us', userdata.about_us.replace("<br />", "\n"));
+                    if (userdata.about_us){ 
+                        // var test = userdata.about_us.split('<br />').map((line, i) => (
+                        //     <span key={i}>
+                        //         {line}
+                        //         "\n"
+                        //     </span>
+                        // ))
+                        // console.log(test);
+                        setFormValue('about_us', userdata.about_us.replace(" <br />", "\n"));
                     }
                     if (userdata.avatar){
                         setSetectavatar(userdata.avatar)
@@ -314,7 +321,7 @@ export default function EditProfile() {
 
                     setTimeout(() => {
                         clearSuggestions();
-                    }, 800);
+                    }, 500);
                 }
             })
             .catch((err) => { console.log(err); });
@@ -525,50 +532,95 @@ export default function EditProfile() {
         <div>
             <Header />
 
-            <section class="inner-header">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
+            <section className="inner-header">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-md-12">
                             <h2>Edit Profile</h2>
                         </div>
                     </div>
                 </div>
             </section>
-            <section class="dashboard-card pofile-view">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <form onSubmit={handleSubmit(onSubmit)}>
-                                <div class="view-profile-card">
-                                    <div class="view-profile-header">
-                                        <div class="row">
+            
+            
 
-                                            <div class="col-md-12">
-                                                <div class="col-md-2">
-                                                    <div class="user-image">
-                                                        <div class="user-view">
+            <section className="dashboard-card pofile-view">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-md-12">
+                            <form onSubmit={handleSubmit(onSubmit)}>
+                                <div className="view-profile-card">
+                                    <div className="view-profile-header">
+
+                                        <div className="row">
+                                            <div className="col-md-9">
+                                                <div className="row">
+                                                    <div className="col-md-6">
+                                                        <div className="form-group edit-profile">
+                                                            <Controller
+                                                                name={"first_name"}
+                                                                control={control}
+                                                                rules={{ required: true }}
+                                                                render={({ field: { onChange, value } }) => (
+                                                                    <input
+                                                                        type="text"
+                                                                        onChange={onChange}
+                                                                        value={value}
+                                                                        className="form-control"
+                                                                        placeholder={`First Name *`}
+                                                                    />
+                                                                )}
+                                                            ></Controller>
+                                                            {errors.first_name && errors.first_name.type === "required" && (
+                                                                <small className="error">First Name is required.</small>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                        <div className="form-group edit-profile">
+                                                            <Controller
+                                                                name={"last_name"}
+                                                                control={control}
+                                                                rules={{ required: true }}
+                                                                render={({ field: { onChange, value } }) => (
+                                                                    <input
+                                                                        type="text"
+                                                                        onChange={onChange}
+                                                                        value={value}
+                                                                        className="form-control"
+                                                                        placeholder={`Last Name *`}
+                                                                    />
+                                                                )}
+                                                            ></Controller>
+                                                            {errors.last_name && errors.last_name.type === "required" && (
+                                                                <small className="error">Last Name is required.</small>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                            <div className="col-md-3">
+                                                <div className="form-group edit-profile">
+
+                                                    <input type="file" style={{ "opacity": 0, "position": "relative", "zIndex": 1 }} className="form-control" name="myfile" accept=".png,.jpg" onChange={changeFileHandler} />
+                                                    <div className="profile-img">
+                                                        <span className="browse-img">
                                                             {!setectavatar && <img alt="avatar" src="images/user.png" />}
                                                             {setectavatar && <img alt="avatar" src={setectavatar} alt="user-image" />}
-                                                            
+                                                        </span>
+                                                            UPLOAD IMAGE
                                                         </div>
-                                                    </div>                                                    
+                                                    <small>{selectedFile && selectedFile.name}</small>
                                                 </div>
-                                                <div class="col-md-10">
-                                                    <div class="form-group edit-profile image-section">                                                        
-                                                        <input type="file" style={{ "opacity": 0, "position": "relative", "zIndex": 1 }} class="form-control" name="myfile" accept=".png,.jpg" onChange={changeFileHandler}/>
-                                                        <div class="profile-img">                                                           
-                                                            <span>UPLOAD IMAGE</span>
-                                                        </div>
-                                                        <small>{selectedFile && selectedFile.name}</small>
-                                                    </div>
-                                                </div>                                                
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="view-profile-body">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group edit-profile">                                                    
+                                    <div className="view-profile-body">
+                                        <div className="row">
+                                            <div className="col-md-12">
+                                                <div className="form-group edit-profile">
                                                     <Controller
                                                         name={"about_us"}
                                                         control={control}
@@ -578,12 +630,12 @@ export default function EditProfile() {
                                                                 onChange={onChange}
                                                                 value={value}
                                                                 className="form-control"
-                                                                placeholder={`Tell something about your self `}
+                                                                placeholder={`Tell us something about yourself `}
                                                             />
                                                         )}
                                                     ></Controller>
                                                 </div>
-                                                <div class="form-group edit-profile">
+                                                <div className="form-group edit-profile">
                                                     <Controller
                                                         name={"email"}
                                                         control={control}
@@ -596,6 +648,7 @@ export default function EditProfile() {
                                                         render={({ field: { onChange, value } }) => (
                                                             <input
                                                                 type="email"
+                                                                disabled
                                                                 onChange={onChange}
                                                                 className="form-control"
                                                                 value={value}
@@ -610,56 +663,9 @@ export default function EditProfile() {
                                         </div>
                                         <hr />
 
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group edit-profile">
-                                                    <Controller
-                                                        name={"first_name"}
-                                                        control={control}
-                                                        rules={{ required: true }}
-                                                        render={({ field: { onChange, value } }) => (
-                                                            <input
-                                                                type="text"
-                                                                onChange={onChange}
-                                                                value={value}
-                                                                className="form-control"
-                                                                placeholder={`First Name *`}
-                                                            />
-                                                        )}
-                                                    ></Controller>
-                                                    {errors.first_name && errors.first_name.type === "required" && (
-                                                        <small className="error">First Name is required.</small>
-                                                    )}
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group edit-profile">
-                                                    <Controller
-                                                        name={"last_name"}
-                                                        control={control}
-                                                        rules={{ required: true }}
-                                                        render={({ field: { onChange, value } }) => (
-                                                            <input
-                                                                type="text"
-                                                                onChange={onChange}
-                                                                value={value}
-                                                                className="form-control"
-                                                                placeholder={`Last Name *`}
-                                                            />
-                                                        )}
-                                                    ></Controller>
-                                                    {errors.last_name && errors.last_name.type === "required" && (
-                                                        <small className="error">Last Name is required.</small>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group edit-profile">
+                                        <div className="row">
+                                            <div className="col-md-6">
+                                                <div className="form-group edit-profile">
                                                     {userTypeList !== 4 && <div className="form-group google-serach">
                                                         <div ref={ref}>
                                                             <input
@@ -675,8 +681,8 @@ export default function EditProfile() {
                                                     </div>}
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group edit-profile autosuggestion">
+                                            <div className="col-md-6">
+                                                <div className="form-group edit-profile autosuggestion">
                                                     {userTypeList !== 4 && <div>
                                                         <Controller
                                                             name={"organization"}
@@ -705,9 +711,9 @@ export default function EditProfile() {
                                                 </div>
                                             </div>
                                         </div>
-                                        {userTypeList == 3 && <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group edit-profile">
+                                        {userTypeList == 3 && <div className="row">
+                                            <div className="col-md-6">
+                                                <div className="form-group edit-profile">
                                                     <Controller
                                                         name="academic_discipline"
                                                         control={control}
@@ -728,7 +734,7 @@ export default function EditProfile() {
                                                         <small className="error">Academic Discipline is required.</small>
                                                     )}
 
-                                                    {academic_discipline_selected == 0 && <div><br/>
+                                                    {academic_discipline_selected == 0 && <div><br />
                                                         <Controller
                                                             name={"other_academic_discipline"}
                                                             control={control}
@@ -750,8 +756,8 @@ export default function EditProfile() {
 
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group edit-profile">
+                                            <div className="col-md-6">
+                                                <div className="form-group edit-profile">
                                                     <MultiSelect
                                                         options={researcherInterestAreaDropdown}
                                                         value={selectedResearcherInterestArea}
@@ -791,9 +797,9 @@ export default function EditProfile() {
 
                                         {userTypeList == 2 && <div>
 
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group edit-profile select-dropdown">
+                                            <div className="row">
+                                                <div className="col-md-6">
+                                                    <div className="form-group edit-profile select-dropdown">
                                                         <Controller
                                                             name="sector"
                                                             control={control}
@@ -815,31 +821,31 @@ export default function EditProfile() {
                                                         )}
 
                                                         {sector_selected == 0 && <div >
-                                                            <br/>
-                                                        <Controller
-                                                            name={"other_sector"}
-                                                            control={control}
-                                                            rules={{ required: true }}
-                                                            render={({ field: { onChange, value } }) => (
-                                                                <input
-                                                                    type="text"
-                                                                    onChange={onChange}
-                                                                    value={value}
-                                                                    className="form-control"
-                                                                    placeholder={`Other Sector *`}
-                                                                />
+                                                            <br />
+                                                            <Controller
+                                                                name={"other_sector"}
+                                                                control={control}
+                                                                rules={{ required: true }}
+                                                                render={({ field: { onChange, value } }) => (
+                                                                    <input
+                                                                        type="text"
+                                                                        onChange={onChange}
+                                                                        value={value}
+                                                                        className="form-control"
+                                                                        placeholder={`Other Sector *`}
+                                                                    />
+                                                                )}
+                                                            ></Controller>
+                                                            {errors.other_sector && errors.other_sector.type === "required" && (
+                                                                <small className="error">Sector is required.</small>
                                                             )}
-                                                        ></Controller>
-                                                        {errors.other_sector && errors.other_sector.type === "required" && (
-                                                            <small className="error">Sector is required.</small>
-                                                        )}
-                                                    </div>}
+                                                        </div>}
 
 
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group edit-profile select-dropdown">
+                                                <div className="col-md-6">
+                                                    <div className="form-group edit-profile select-dropdown">
                                                         <Controller
                                                             name="occupation"
                                                             control={control}
@@ -860,7 +866,7 @@ export default function EditProfile() {
                                                             <small className="error">Occupation is required.</small>
                                                         )}
 
-                                                        {occupation_selected == 0 && <div><br/>
+                                                        {occupation_selected == 0 && <div><br />
                                                             <Controller
                                                                 name={"other_occupation"}
                                                                 control={control}
@@ -884,11 +890,9 @@ export default function EditProfile() {
                                                 </div>
                                             </div>
 
-                                           
-
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group edit-profile select-dropdown">
+                                            <div className="row">
+                                                <div className="col-md-6">
+                                                    <div className="form-group edit-profile select-dropdown">
                                                         <Controller
                                                             name="level_of_education"
                                                             control={control}
@@ -910,8 +914,8 @@ export default function EditProfile() {
                                                         )}
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group edit-profile">
+                                                <div className="col-md-6">
+                                                    <div className="form-group edit-profile">
                                                         <MultiSelect
                                                             options={professionalInterestAreaDropdown}
                                                             value={selectedProfessionalInterestArea}
@@ -928,7 +932,7 @@ export default function EditProfile() {
                                                         ))}
 
                                                         {otherProfessionalInterestArea && <div>
-                                                            <br/>
+                                                            <br />
                                                             <Controller
                                                                 name={"other_professional_interest_area"}
                                                                 control={control}
@@ -949,21 +953,20 @@ export default function EditProfile() {
 
                                         </div>}
 
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="edit-btn">
-                                                    <button type="submit" class="btn-save">Save</button>
+                                        <div className="row">
+                                            <div className="col-md-12">
+                                                <div className="edit-btn">
+                                                    <button type="submit" className="btn-save">Save</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </form>                            
+                            </form>
                         </div>
                     </div>
                 </div>
             </section>
-
             <Footer />
         </div>
     )

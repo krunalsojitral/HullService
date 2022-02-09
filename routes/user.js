@@ -550,10 +550,10 @@ router.get('/getEditUserById', passport.authenticate('jwt', { session: false }),
             return res.json({ 'status': 0, 'response': { 'msg': err } });
         } else {
             if (result != '') {
-                console.log(user_id);
+              
                 User.getUserInterestAreaById(user_id, result[0].role_id, function (err, interestresult) {
 
-                    console.log(interestresult);
+                   
                     var imageLink;
                     if (req.headers.host == env.ADMIN_LIVE_URL) {
                         imageLink = env.ADMIN_LIVE_URL;
@@ -843,9 +843,7 @@ router.post('/updateuserByadmin', passport.authenticate('jwt', { session: false 
                             other_occupation: other_occupation,
                             other_professional_interest_area: other_professional_interest_area
                         };
-                        console.log(researcher_interest_of_area);
-                        console.log(final_obj);
-                        console.log(update_value);
+                        
                         if (overview.user_image){
                             update_value.push(overview.user_image)
                             final_obj.user_image = overview.user_image;

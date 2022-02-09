@@ -101,21 +101,21 @@ export default function ParticipateInResearch() {
 
 
 
-            <section class="studies-research">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="studies-title-card">
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <div class="studies-title">
+            <section className="studies-research">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-md-12">
+                            <div className="studies-title-card">
+                                <div className="row">
+                                    <div className="col-md-8">
+                                        <div className="studies-title">
                                             <h2>Current Studies & Research</h2>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="studies-Btn">
+                                    <div className="col-md-4">
+                                        <div className="studies-Btn">
                                             <ApplyInResearchPage></ApplyInResearchPage>
-                                            {/* <a href="#" class="study-btn">
+                                            {/* <a href="#" className="study-btn">
                                                 Click Here to Participate in Future Research
 											<span>Be notified of studies you qualify for</span>
                                             </a> */}
@@ -125,34 +125,34 @@ export default function ParticipateInResearch() {
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
+                    <div className="row">
+                        <div className="col-md-12">
                             <Modal>
                                 <ApplyInResearchModel close={close} researchtitle={researchTitle} apply={researchID}></ApplyInResearchModel>
                             </Modal>
                             {currentData.map((row, index) => (
-                                <div key={index} class="studies-card">
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <div class="studies-list">
+                                <div key={index} className="studies-card">
+                                <div className="row">
+                                    <div className="col-md-8">
+                                        <div className="studies-list">
                                             <h3>{row.topic}</h3>
                                             <ParticipateInResearchDescription description={row.description}></ParticipateInResearchDescription>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="studies-box">
-                                            <div class="studies-header">
-                                                <div class="studies-icon">                                                    
+                                    <div className="col-md-4">
+                                        <div className="studies-box">
+                                            <div className="studies-header">
+                                                <div className="studies-icon">                                                    
                                                     {!row.avatar && <img src="images/user.png" />}
                                                     {row.avatar && <img src={row.avatar} />}
                                                 </div>
-                                                <div class="studies-text">
+                                                <div className="studies-text">
                                                     <h3><Link className="btn-edit" to={{ pathname: "/view-profile", search: "?id=" + row.user_id }}>{row.user_name}</Link></h3>
                                                     <small>{row.name}</small>
                                                     <span>{row.organization}</span>
                                                 </div>
                                             </div>
-                                            <button class="btn-apply" onClick={(e) => applybutton(row.researches_id, row.topic)}>Participate</button>
+                                            <button className="btn-apply" onClick={(e) => applybutton(row.researches_id, row.topic)}>Participate</button>
                                         </div>
                                     </div>
                                 </div>

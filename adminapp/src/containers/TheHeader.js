@@ -17,7 +17,7 @@ import { useHistory } from "react-router-dom";
 import routes from '../routes'
 import {  
   TheHeaderDropdownNotif,  
-  TheHeaderDropdownTasks
+ // TheHeaderDropdownTasks
 } from './index'
 
 const TheHeader = () => {
@@ -75,7 +75,7 @@ const TheHeader = () => {
           <CIcon name="cil-sun" className="c-d-default-none" alt="CoreUI Icons Sun" />
         </CToggler>
         <TheHeaderDropdownNotif />
-        <TheHeaderDropdownTasks />
+        {/* <TheHeaderDropdownTasks /> */}
         {/* <CToggler
           inHeader
           className="d-md-down-none"

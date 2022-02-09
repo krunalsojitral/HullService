@@ -67,7 +67,7 @@ export default function Header() {
     const logoutClick = () => {
         localStorage.clear();
         history.push('/');
-        ///window.location.reload();
+        window.location.reload();
     }
  
 
@@ -226,7 +226,7 @@ export default function Header() {
                                                 <li><Link className="btn-edit" to={{ pathname: "/dashboard" }}>My Dashboard</Link></li>                                               
                                                 <li><Link className="btn-edit" to={{ pathname: "/view-profile", search: "?id=" + userData.id }}>View Profile</Link></li>
                                                 <li onClick={(e) => logoutClick()}><a className="logout">
-                                                    <InlineButton  name={"logout"} />
+                                                    <InlineButton  name={"Logout"} />
                                                 </a></li>
                                             </ul>
                                         </div>

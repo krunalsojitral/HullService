@@ -20,30 +20,30 @@ const TheHeaderDropdownTasks = () => {
 
   React.useEffect(() => {
 
-    const intervalId = setInterval(() => {  //assign interval to a variable to clear it.
+    // const intervalId = setInterval(() => {  //assign interval to a variable to clear it.
       
-        getNotificationCount();
+    //     getNotificationCount();
       
-    }, 2500)
+    // }, 2500)
 
-    return () => clearInterval(intervalId); //This is important
+    // return () => clearInterval(intervalId); //This is important
 
   }, [])
 
  
 
-  const getNotificationCount = () => {
+  // const getNotificationCount = () => {
 
-    axios.get(api_url + '/researches/getResearchNotificationCount').then((result) => {
-      if (result.data.status) {
-        var data = result.data.response.data;        
-        setNotiCount(data[0].cnt);
-      }
-    }).catch((err) => {
-      console.log(err);
-      //Swal.fire('Oops...', err, 'error')
-    })
-  }
+  //   axios.get(api_url + '/researches/getResearchNotificationCount').then((result) => {
+  //     if (result.data.status) {
+  //       var data = result.data.response.data;        
+  //       setNotiCount(data[0].cnt);
+  //     }
+  //   }).catch((err) => {
+  //     console.log(err);
+  //     //Swal.fire('Oops...', err, 'error')
+  //   })
+  // }
 
 
   return (

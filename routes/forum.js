@@ -18,6 +18,8 @@ var mustache = require('mustache');
 var bcrypt = require('bcryptjs');
 var nodemailer = require('nodemailer');
 const nodeMailerCredential = require('./../EmailCredential');
+var Researches = require('../models/researches');
+var User = require('../models/user');
 
 function loggerData(req) {
     if (env.DEBUG) {
@@ -805,6 +807,12 @@ router.post('/getForumCommentList', passport.authenticate('jwt', { session: fals
     
     var forum_id = req.body.forum_id;
     var user_id = req.user.id;
+    var imageLink;
+    if (req.headers.host == env.ADMIN_LIVE_URL) {
+        imageLink = env.ADMIN_LIVE_URL;
+    } else {
+        imageLink = env.ADMIN_LIVE_URL;
+    }
 
     asyn.waterfall([        
         function (done) {
@@ -861,7 +869,7 @@ router.post('/getForumCommentList', passport.authenticate('jwt', { session: fals
                         var final_response = [];
                         Promise.all(result.map(function (item) {
                             var temparray = new Promise(function (resolve, reject) {
-                                Forum.getForumReplyComment(item.forum_comment_id, function (err, data) {
+                                Forum.getForumReplyComment(item.forum_comment_id, imageLink, function (err, data) {
                                     if (data && data.reply_list.length > 0) {     
                                         item.reply = data.reply_list;
                                     }
@@ -875,6 +883,7 @@ router.post('/getForumCommentList', passport.authenticate('jwt', { session: fals
                                 response.push(result);
                                 var commentList = response.map(data => {    
                                     let retObj = {};
+                                    retObj['user_id'] = data.u_id;
                                     retObj['comment'] = data.comment;
                                     retObj['comment_date'] = data.comment_date;
                                     retObj['first_name'] = data.first_name;
@@ -889,6 +898,7 @@ router.post('/getForumCommentList', passport.authenticate('jwt', { session: fals
                                     retObj['like_comment_count'] = data.like_comment_count;
                                     retObj['unlike_comment_count'] = data.unlike_comment_count;
                                     retObj['role'] = data.role;
+                                    retObj['avatar'] = (data.user_image) ? imageLink + env.USER_VIEW_PATH + data.user_image : '';
                                     return retObj;
                                 }).sort(function (a, b) {                                                                                                         
                                     return a.forum_comment_id - b.forum_comment_id;
@@ -1091,6 +1101,13 @@ router.post('/addComment', passport.authenticate('jwt', { session: false }), [
         var error = errors.array();
         res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
     } else {
+
+        var imageLink;
+        if (req.headers.host == env.ADMIN_LIVE_URL) {
+            imageLink = env.ADMIN_LIVE_URL;
+        } else {
+            imageLink = env.ADMIN_LIVE_URL;
+        }
         
         var userDetail = req.user;
         var obj = {
@@ -1108,7 +1125,7 @@ router.post('/addComment', passport.authenticate('jwt', { session: false }), [
 
                     if (req.body.subcomment && req.body.subcomment == 'subcomment'){
                         
-                        Forum.getForumSubReplyComment(obj.parent_comment_id, function (err, mainresult) {                           
+                        Forum.getForumSubReplyComment(obj.parent_comment_id, imageLink, function (err, mainresult) {
                             return res.json({ 'status': 1, 'response': { 'data': mainresult, 'msg': 'Data found' } });
                         });
 
@@ -1125,24 +1142,29 @@ router.post('/addComment', passport.authenticate('jwt', { session: false }), [
                     }else{
 
                         if (req.body.parent_comment_id) {
-                            Forum.getForumReplyComment(obj.parent_comment_id, function (err, data) {                               
+                            Forum.getForumReplyComment(obj.parent_comment_id, imageLink, function (err, data) {
                                 return res.json({ 'status': 1, 'response': { 'data': data.reply_list, 'msg': 'Data found' } });
                             });
                         } else {
-                            var user_obj = {
-                                comment: obj.comment,
-                                like_comment_count: "0",
-                                comment_like_id: null,
-                                created_on: moment(result[0].created_at).format('MMMM Do, YYYY'),
-                                first_name: userDetail.first_name,
-                                last_name: userDetail.last_name,
-                                role: userDetail.role,
-                                forum_comment_id: result[0].forum_comment_id,
-                                parent_comment_id: null,
-                                reply: [],
-                                unlike_comment_count: "0"
-                            }
-                            return res.json({ 'status': 1, 'response': { 'data': user_obj, 'msg': 'Data found' } });
+                            
+                            User.getUserById(userDetail.id, function (err, userdata) {
+                                var user_obj = {
+                                    user_id: userDetail.id,
+                                    comment: obj.comment,
+                                    like_comment_count: "0",
+                                    comment_like_id: null,
+                                    created_on: moment(result[0].created_at).format('MMMM Do, YYYY'),
+                                    first_name: userDetail.first_name,
+                                    last_name: userDetail.last_name,
+                                    role: userDetail.role,
+                                    forum_comment_id: result[0].forum_comment_id,
+                                    parent_comment_id: null,
+                                    reply: [],
+                                    unlike_comment_count: "0",
+                                    avatar: (userdata[0].user_image) ? imageLink + env.USER_VIEW_PATH + userdata[0].user_image : ''
+                                }
+                                return res.json({ 'status': 1, 'response': { 'data': user_obj, 'msg': 'Data found' } });
+                            });
                         }
                     }
                 } else {
@@ -1256,17 +1278,15 @@ router.post('/deleteMultipleForum', [
 
 router.get('/getForumNotificationCount', function (req, res) {
     loggerData(req);    
-    Forum.getForumNotificationCount(function (err, notificationCount) {
+    Forum.getForumNotificationCount(function (err, Count) {
         if (err) {
             return res.json({ 'status': 0, 'response': { 'msg': err } });
         } else {
-            if (notificationCount) {
-                return res.json({ 'status': 1, 'response': { 'data': notificationCount, 'msg': 'data found' } });
-            } else {
-                return res.json({ 'status': 0, 'response': { 'msg': 'Something went wrong' } });
-            }
+            return res.json({ 'status': 1, 'response': { 'data': Count, 'msg': 'data found' } });
+            
         }
     });
+  
 });
 
 router.get('/updateForumRequestCount', function (req, res) {

@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import ForumSubReply from "./ForumSubReply";
 import TextareaAutosize from 'react-textarea-autosize';
 import ForumDescription from "./ForumDescription";
+import { Link } from 'react-router-dom';
 
 function ForumReply(props) {
 
@@ -76,22 +77,23 @@ function ForumReply(props) {
         <div>
                 {forumReplyCommentList && forumReplyCommentList.slice(0, visible).map((replydata, index) => (
 
-                <div class="forums-reply-card">
-                    <div class="forums-reply-icon">
-                        <img src="images/user.png" />
+                <div className="forums-reply-card">
+                    <div className="forums-reply-icon">
+                        {!replydata.avatar && <img src="images/user.png" />}
+                        {replydata.avatar && <img src={replydata.avatar} />}
                     </div>
-                    <div class="forums-reply-text">
+                    <div className="forums-reply-text">
 
-                        <h3>{replydata.first_name} {replydata.last_name}<span>({replydata.role})</span></h3>
+                            <h3><Link className="btn-edit" to={{ pathname: "/view-profile", search: "?id=" + replydata.user_id }}>{replydata.first_name} {replydata.last_name}</Link><span>({replydata.role})</span></h3>
                         <span>{replydata.created_at}</span>
                         <ForumDescription description={replydata.comment}></ForumDescription>
-                        <span onClick={(e) => reply(replydata.reply_comment_id)} class="Reply-Btn-New">Reply <img src="images/reply_btn.png" /></span>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="new-forums-input" id={replydata.reply_comment_id} style={{ display: 'none' }}>
+                        <span onClick={(e) => reply(replydata.reply_comment_id)} className="Reply-Btn-New">Reply <img src="images/reply_btn.png" /></span>
+                        <div className="row">
+                            <div className="col-md-12">
+                                <div className="new-forums-input" id={replydata.reply_comment_id} style={{ display: 'none' }}>
                                         <TextareaAutosize maxRows="4" minRows="2" className="form-control" type="text" id={"input" + replydata.reply_comment_id} name="comment" />
                                     <small id={"error" + replydata.reply_comment_id} style={{ display: 'none' }} className="error">Comment is required.</small>
-                                    <button type="submit" class="add-comment-btn" onClick={(e) => replySubmit(replydata.reply_comment_id, index)}>Reply</button>
+                                    <button type="submit" className="add-comment-btn" onClick={(e) => replySubmit(replydata.reply_comment_id, index)}>Reply</button>
                                 </div>
 
                                     {replydata && replydata.reply && replydata.reply.length > 0 && <ForumSubReply subReplyDetail={replydata.reply}></ForumSubReply>}

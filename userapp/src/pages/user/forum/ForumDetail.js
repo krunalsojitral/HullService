@@ -307,11 +307,11 @@ export default function ForumDetail() {
                             <Sidebar />
                         </div>
 
-                        <div class="col-md-10">
-                            <div class="new-forums-card">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="new-forums-blog">
+                        <div className="col-md-10">
+                            <div className="new-forums-card">
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <div className="new-forums-blog">
                                             {forumCommentDetail.started && <small>{forumCommentDetail.started}</small>}
                                             <h3>{forumCommentDetail.forum_title && forumCommentDetail.forum_title}</h3>
                                             {forumCommentDetail.forum_description && <p dangerouslySetInnerHTML={{ __html: forumCommentDetail.forum_description }}></p>}
@@ -334,8 +334,8 @@ export default function ForumDetail() {
 
                                     {forumCommentDetail.retire == 0 &&
 
-                                        <div class="col-md-12">
-                                            <div class="new-forums-input">
+                                        <div className="col-md-12">
+                                            <div className="new-forums-input">
                                                 <form onSubmit={handleSubmit(onSubmit)}>
                                                     <Controller
                                                         name={"comment"}
@@ -358,7 +358,7 @@ export default function ForumDetail() {
                                                     {errors.comment && errors.comment.type === "required" && (
                                                         <small className="error">Comment is required.</small>
                                                     )}
-                                                    <button type="submit" class="add-comment-btn">Add Comment</button>
+                                                    <button type="submit" className="add-comment-btn">Add Comment</button>
                                                 </form>
                                             </div>
                                         </div>
@@ -367,19 +367,19 @@ export default function ForumDetail() {
 
 
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="new-forums-count">
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <div className="new-forums-count">
                                             <span>{forumCommentDetail.replies}</span>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="new-forums-follow-btn">
+                                    <div className="col-md-6">
+                                        <div className="new-forums-follow-btn">
 
-                                            {forumCommentDetail.follow == 0 && <span class="btn-follow" onClick={(e) => handleFollow()} >
+                                            {forumCommentDetail.follow == 0 && <span className="btn-follow" onClick={(e) => handleFollow()} >
                                                 <img src="images/add-user.png" /> Follow
                                             </span>}
-                                            {forumCommentDetail.follow == 1 && <span class="btn-follow" onClick={(e) => handleUnFollow()} >
+                                            {forumCommentDetail.follow == 1 && <span className="btn-follow" onClick={(e) => handleUnFollow()} >
                                                 <img src="images/add-user.png" /> Following
                                             </span>}
 
@@ -391,22 +391,24 @@ export default function ForumDetail() {
 
 
                             {forumCommentList && forumCommentList.slice(0, visible).map((data, index) => (
-                                    <div key={index} class="new-forums-reply">
-                                        <div class="forums-reply-card">
-                                            <div class="forums-reply-icon">
+                                    <div key={index} className="new-forums-reply">
+                                        <div className="forums-reply-card">
+                                            <div className="forums-reply-icon">
+                                                {!data.avatar && <img src="images/user.png" />}
+                                                {data.avatar && <img src={data.avatar} />}
                                                 <img src="images/user.png" />
                                             </div>
-                                            <div class="forums-reply-text">
-                                                <h3>{data.first_name} {data.last_name}<span>({data.role})</span></h3>
+                                            <div className="forums-reply-text">
+                                            <h3><Link className="btn-edit" to={{ pathname: "/view-profile", search: "?id=" + data.user_id }}>{data.first_name} {data.last_name}</Link><span>({data.role})</span></h3>
                                                 <span>{data.created_on}</span>
                                                 <ForumDescription description={data.comment}></ForumDescription>
-                                                {forumCommentDetail.retire == 1 && <span class="Reply-Btn-New">Reply <img src="images/reply_btn.png" /></span>}
-                                                {forumCommentDetail.retire == 0 && <span onClick={(e) => reply(data.forum_comment_id)} class="Reply-Btn-New">Reply <img src="images/reply_btn.png" /></span>}
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="new-forums-input" id={data.forum_comment_id} style={{ display: 'none' }}>
+                                                {forumCommentDetail.retire == 1 && <span className="Reply-Btn-New">Reply <img src="images/reply_btn.png" /></span>}
+                                                {forumCommentDetail.retire == 0 && <span onClick={(e) => reply(data.forum_comment_id)} className="Reply-Btn-New">Reply <img src="images/reply_btn.png" /></span>}
+                                                <div className="row">
+                                                    <div className="col-md-12">
+                                                        <div className="new-forums-input" id={data.forum_comment_id} style={{ display: 'none' }}>
                                                             <TextareaAutosize minRows="2" maxRows="4" className="form-control" type="text" id={"input" + data.forum_comment_id} name="comment" />
-                                                            <button type="submit" onClick={(e) => replySubmit(data.forum_comment_id, index)} class="add-comment-btn">Reply</button>
+                                                            <button type="submit" onClick={(e) => replySubmit(data.forum_comment_id, index)} className="add-comment-btn">Reply</button>
                                                             <small id={"error" + data.forum_comment_id} style={{ display: 'none' }} className="error">Comment is required.</small>
                                                         </div>
                                                     </div>
