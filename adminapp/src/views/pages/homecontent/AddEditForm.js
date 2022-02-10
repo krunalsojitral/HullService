@@ -108,7 +108,7 @@ const AddEditForm = ({ match }) => {
                       rules={{ required: true }}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="first_section_title"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your title`}
@@ -129,7 +129,7 @@ const AddEditForm = ({ match }) => {
                       rules={{ required: true }}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="first_section_sub_title"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your sub title`}
@@ -192,7 +192,7 @@ const AddEditForm = ({ match }) => {
                       rules={{ required: true }}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="second_section_title"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your title`}
@@ -213,7 +213,7 @@ const AddEditForm = ({ match }) => {
                       rules={{ required: true }}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="second_section_sub_title"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your sub title`}
@@ -257,7 +257,7 @@ const AddEditForm = ({ match }) => {
                       rules={{ required: true }}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="third_section_title"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your title`}
@@ -278,7 +278,7 @@ const AddEditForm = ({ match }) => {
                       rules={{ required: true }}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="third_section_sub_title"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your sub title`}

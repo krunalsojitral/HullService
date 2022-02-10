@@ -56,6 +56,10 @@ const AddContentForm = React.lazy(() => import('./views/pages/researches/AddCont
 const ResearchRequestsDemoTable = React.lazy(() => import('./views/pages/researches/ResearchRequestsDemoTable'))
 const BecomeMemberContent = React.lazy(() => import('./views/pages/becomemember/BecomeMemberContent'))
 
+//event
+const Events = React.lazy(() => import('./views/pages/events/Events'))
+const EventAddEditForm = React.lazy(() => import('./views/pages/events/AddEditForm'))
+
 
 const DynamicPages = React.lazy(() => import('./views/pages/dynamicpages/DynamicPages'))
 const DynamicPagesAddEditForm = React.lazy(() => import('./views/pages/dynamicpages/AddEditForm'))
@@ -142,6 +146,9 @@ const routes = [
   { path: '/organization', name: 'Organization', component: Organization },
   { path: '/organizationadd', name: 'Organization Add', component: OrganizationAddEditForm },
   { path: '/organizationedit/:id', name: 'Organization Edit', component: OrganizationAddEditForm },
+  { path: '/events', name: 'Event Pages', component: Events },
+  { path: '/eventadd', name: 'Event Add', component: EventAddEditForm },
+  { path: '/eventedit/:id', name: 'Event Edit', component: EventAddEditForm },
 ]
 
 

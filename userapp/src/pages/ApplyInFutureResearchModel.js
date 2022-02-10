@@ -39,9 +39,7 @@ function ApplyInFutureResearchModel(props) {
         name: 'childGender'
     });
 
-    const onSubmit = (data) => { 
-        console.log(data);
-        console.log('------------');
+    const onSubmit = (data) => {         
         axios.post(api_url + "/researches/addFutureResearchByuser", data)
             .then((result) => {
                 if (result.data.status) {
@@ -50,8 +48,7 @@ function ApplyInFutureResearchModel(props) {
                 } else {
                     Swal.fire("Oops...", result.data.response.msg, "error");
                 }
-            }).catch((err) => { console.log(err); });
-        console.log(data);
+            }).catch((err) => { console.log(err); });        
     }
 
     const handleOpenDirection = () => {

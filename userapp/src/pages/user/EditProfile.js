@@ -956,7 +956,7 @@ export default function EditProfile() {
                                         <div className="row">
                                             <div className="col-md-12">
                                                 <div className="edit-btn">
-                                                    <button type="submit" className="btn-save">Save</button>
+                                                    <center><button type="submit" className="btn-save">Save</button></center>
                                                 </div>
                                             </div>
                                         </div>

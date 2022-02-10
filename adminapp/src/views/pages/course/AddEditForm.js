@@ -586,7 +586,7 @@ const AddEditForm = ({ match }) => {
                         control={control}
                         render={({ field: { onChange, value } }) => (
                           <CInput
-                            type="live_session_minute"
+                            type="text"
                             onChange={onChange}
                             value={value}
                             placeholder={`like 1hr,2hrs ...`}
@@ -610,7 +610,7 @@ const AddEditForm = ({ match }) => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="video_content_title"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your course content title`}
@@ -633,7 +633,7 @@ const AddEditForm = ({ match }) => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="video_title_first"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your title`}
@@ -650,7 +650,7 @@ const AddEditForm = ({ match }) => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="video_url_first"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your video url`}
@@ -667,7 +667,7 @@ const AddEditForm = ({ match }) => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="video_time_first"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your time`}
@@ -691,7 +691,7 @@ const AddEditForm = ({ match }) => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="video_title_second"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your title`}
@@ -708,7 +708,7 @@ const AddEditForm = ({ match }) => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="video_url_second"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your video url`}
@@ -725,7 +725,7 @@ const AddEditForm = ({ match }) => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="video_time_second"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your time`}
@@ -748,7 +748,7 @@ const AddEditForm = ({ match }) => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="video_title_third"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your title`}
@@ -765,7 +765,7 @@ const AddEditForm = ({ match }) => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="video_url_third"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your video url`}
@@ -782,7 +782,7 @@ const AddEditForm = ({ match }) => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="video_time_third"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your time`}
@@ -806,7 +806,7 @@ const AddEditForm = ({ match }) => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="video_title_fourth"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your title`}
@@ -823,7 +823,7 @@ const AddEditForm = ({ match }) => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="video_url_fourth"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your video url`}
@@ -840,7 +840,7 @@ const AddEditForm = ({ match }) => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="video_time_fourth"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your time`}
@@ -864,7 +864,7 @@ const AddEditForm = ({ match }) => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="video_title_five"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your title`}
@@ -881,7 +881,7 @@ const AddEditForm = ({ match }) => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="video_url_five"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your video url`}
@@ -898,7 +898,7 @@ const AddEditForm = ({ match }) => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="video_time_five"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your time`}
@@ -922,10 +922,10 @@ const AddEditForm = ({ match }) => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="video_title_six"
+                          type="text"
                           onChange={onChange}
                           value={value}
-                          placeholder={`Enter your title`}
+                          placeholder={`Enter course title`}
                         />
                       )}
                     ></Controller>
@@ -939,7 +939,7 @@ const AddEditForm = ({ match }) => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="video_url_six"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your video url`}
@@ -956,7 +956,7 @@ const AddEditForm = ({ match }) => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="video_time_six"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your time`}
@@ -980,7 +980,7 @@ const AddEditForm = ({ match }) => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="video_title_seven"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your title`}
@@ -997,7 +997,7 @@ const AddEditForm = ({ match }) => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="video_url_seven"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your video url`}
@@ -1014,7 +1014,7 @@ const AddEditForm = ({ match }) => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="video_time_seven"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your time`}
@@ -1038,7 +1038,7 @@ const AddEditForm = ({ match }) => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="video_title_eight"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your title`}
@@ -1055,7 +1055,7 @@ const AddEditForm = ({ match }) => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="video_url_eight"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your video url`}
@@ -1072,7 +1072,7 @@ const AddEditForm = ({ match }) => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="video_time_eight"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your time`}
@@ -1096,7 +1096,7 @@ const AddEditForm = ({ match }) => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="video_title_nine"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your title`}
@@ -1113,7 +1113,7 @@ const AddEditForm = ({ match }) => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="video_url_nine"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your video url`}
@@ -1130,7 +1130,7 @@ const AddEditForm = ({ match }) => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="video_time_nine"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your time`}
@@ -1154,7 +1154,7 @@ const AddEditForm = ({ match }) => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="video_title_ten"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your title`}
@@ -1171,7 +1171,7 @@ const AddEditForm = ({ match }) => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="video_url_ten"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your video url`}
@@ -1188,7 +1188,7 @@ const AddEditForm = ({ match }) => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="video_time_ten"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your time`}
@@ -1209,7 +1209,7 @@ const AddEditForm = ({ match }) => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="content_title_one"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your course content title`}
@@ -1248,7 +1248,7 @@ const AddEditForm = ({ match }) => {
                       control={control}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="content_title_two"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your title`}
@@ -1287,7 +1287,7 @@ const AddEditForm = ({ match }) => {
                       control={control}                      
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="content_title_third"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your title`}
@@ -1326,7 +1326,7 @@ const AddEditForm = ({ match }) => {
                       control={control}                      
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="content_title_four"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your title`}
@@ -1365,7 +1365,7 @@ const AddEditForm = ({ match }) => {
                       control={control}                      
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="content_title_five"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your title`}
@@ -1457,7 +1457,7 @@ const AddEditForm = ({ match }) => {
                       rules={{ required: true }}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="title"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           placeholder={`Enter your title`}

@@ -165,7 +165,7 @@ const AddEditForm = ({ match }) => {
                       rules={{ required: true }}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="title"
+                          type="text"
                           onChange={onChange}
                           value={value}
                           required

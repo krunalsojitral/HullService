@@ -262,10 +262,10 @@ const AddEditForm = ({ match }) => {
                       rules={{ required: true }}
                       render={({ field: { onChange, value } }) => (
                         <CInput
-                          type="title"
+                          type="text"
                           onChange={onChange}
                           value={value}
-                          placeholder={`Enter your title`}
+                          placeholder={`Enter article title`}
                         />
                       )}
                     ></Controller>
@@ -423,7 +423,7 @@ const AddEditForm = ({ match }) => {
                         rules={{ required: true }}
                         render={({ field: { onChange, value } }) => (
                           <CInput
-                            type="cost"
+                            type="text"
                             onChange={onChange}
                             value={value}
                             placeholder={`Enter your cost`}
