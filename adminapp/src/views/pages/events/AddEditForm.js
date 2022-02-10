@@ -507,6 +507,7 @@ const AddEditForm = ({ match }) => {
                   <CTabPane>  
 
                     <CCol>
+                      <br />
                       <CCol xs="12">
                         <CRow>
                           <CLabel htmlFor="title"><b>Resource</b></CLabel>
@@ -557,12 +558,11 @@ const AddEditForm = ({ match }) => {
                         </CCol>
                       </CRow>
                     </CCol>
-                    
+
                     <hr />
 
 
-                    <CCol>
-                      <br />
+                    <CCol>                      
                       <CCol xs="12">
                         <CRow>
                           <CLabel htmlFor="title"><b>Video URL</b></CLabel>
@@ -606,8 +606,7 @@ const AddEditForm = ({ match }) => {
 
                     <hr/>
 
-                    <CCol>
-                      <br />
+                    <CCol>                      
                       <CCol xs="12">
                         <CRow>
                           <CLabel htmlFor="title"><b>Web Page URL</b></CLabel>
