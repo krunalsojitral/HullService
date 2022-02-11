@@ -44,7 +44,7 @@ var academicdisciplineRouter = require('./routes/academicdiscipline');
 var professionalinterestareaRouter = require('./routes/professionalinterestarea');
 var researcherinterestareaRouter = require('./routes/researcherinterestarea');
 var researchesRouter = require('./routes/researches');
-
+var eventRouter = require('./routes/event')
 
 //app.use(express.static('uploads'));
 app.use(express.static('routes/uploads'));
@@ -69,7 +69,7 @@ app.use('/api/academicdiscipline', academicdisciplineRouter);
 app.use('/api/professionalinterestarea', professionalinterestareaRouter);
 app.use('/api/researcherinterestarea', researcherinterestareaRouter);
 app.use('/api/researches', researchesRouter);
-
+app.use('/api/event',eventRouter)
 
 
 app.get('/', (req, res) => {
