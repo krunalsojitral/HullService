@@ -146,7 +146,7 @@ export default function Forum() {
 
                             <div className="category-table">
                                 {!noresult && forumList.map((data, index) => (
-                                    <div>
+                                    <div key={data.forumheading_id}>
                                         <div className="category-title">
                                             <h2>{data.forumheading_name}</h2>
                                             <Link to={{ pathname: "/forum-sub", search: "?id=" + data.forumheading_id }}>View More >></Link>
@@ -162,11 +162,11 @@ export default function Forum() {
                                                 </thead>
                                                 <tbody>
                                                     {data.forum.map((forumdata, index) => (
-                                                        <tr>
+                                                        <tr key={forumdata.forum_id}>
                                                             <td>
                                                                 <div className="forum-tooltip-box">
                                                                     <Link to={{ pathname: "/forum-detail", search: "?id=" + forumdata.forum_id }}>
-                                                                        {forumdata.topic.slice(0, 45)}
+                                                                        {forumdata.topic.slice(0, 45)} {forumdata.topic.length > 45 && '...'}
                                                                         <span className="tooltip-title">{forumdata.topic}</span>
                                                                     </Link>
                                                                 </div>

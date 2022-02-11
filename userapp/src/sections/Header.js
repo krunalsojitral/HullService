@@ -173,11 +173,11 @@ export default function Header() {
                                                             <InlineButton name={"Articles"} />
                                                         </NavLink>
                                                     </li>
-                                                    <li>
+                                                    {/* <li>
                                                         <NavLink isActive={() => ['/blog', '/blog-detail', '/blog-payment', '/my-blog'].includes(pathname)} to="/blog">
                                                             <InlineButton name={"Blogs"} />
                                                         </NavLink>
-                                                    </li>
+                                                    </li> */}
                                                     <li>
                                                         <NavLink activeClassName="active" to="/informational-video" isActive={() => ['/informational-video', '/video-detail', '/video-payment'].includes(pathname)}>
                                                             <InlineButton name={"Informational Videos"} />

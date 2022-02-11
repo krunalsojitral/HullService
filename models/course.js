@@ -413,5 +413,32 @@ function Course() {
             callback(null, course);
         });
     };
+
+    this.addView = function (course_id, callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT total_view FROM course where course_id = $1', [course_id], function (err, result) {
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    var total_view = 1;
+                    if (result.rows[0].total_view && result.rows[0].total_view > 0) {
+                        total_view += result.rows[0].total_view;
+                    }
+                    con.query("UPDATE course SET total_view =$1 WHERE course_id = $2", [total_view, course_id], function (err, record) {
+                        con.release()
+                        if (err) {
+                            if (env.DEBUG) {
+                                console.log(err);
+                            }
+                            callback(err, null);
+                        } else {
+                            callback(null, record);
+                        }
+                    });
+                }
+            });
+        });
+    };
 }
 module.exports = new Course();

@@ -174,7 +174,7 @@ export default function ForumSub() {
                                         </thead>
                                         <tbody>
                                             {currentData.length > 0 && currentData.map((data, index) => (
-                                                <tr>
+                                                <tr key={data.forum_id}>
                                                     <td>
                                                         {/* <Link to={{ pathname: "/forum-detail", search: "?id=" + data.forum_id }}>{data.topic}</Link> */}
                                                         <div className="forum-tooltip-box">

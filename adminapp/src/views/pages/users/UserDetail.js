@@ -32,11 +32,13 @@ const UserDetail = ({ match }) => {
           </CCardHeader>
           <CCardBody>
             <table className="table table-striped table-hover">
-              <tbody>                
-                 
+              <tbody>       
+
+                { details.avatar && <tr><td></td><td className="userimage"><img style={{width:'150px', height:'150px'}} src={details.avatar}/></td></tr>}
                 <tr><td>First Name :</td><td><strong>{details.first_name}</strong></td></tr>
                 <tr><td>Last Name :</td><td><strong>{details.last_name}</strong></td></tr>                
                 <tr><td>Email :</td><td><strong>{details.email}</strong></td></tr>
+                {details.about_us && <tr><td>About US :</td><td><strong>{details.about_us}</strong></td></tr>}
                 {details.city && <tr><td>City :</td><td><strong>{details.city}</strong></td></tr>}
                 {details.organization && <tr><td>Organization :</td><td><strong>{details.organization}</strong></td></tr>}
                 {details.sectorname && <tr><td>Sector :</td><td><strong>{details.sectorname}</strong></td></tr>}

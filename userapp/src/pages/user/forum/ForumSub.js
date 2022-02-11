@@ -134,7 +134,7 @@ export default function ForumSub() {
                                                     <td>
                                                         <div className="forum-tooltip-box">
                                                             <Link to={{ pathname: "/forum-detail", search: "?id=" + data.forum_id }}>
-                                                                {data.topic.slice(0, 45)}
+                                                                {data.topic.slice(0, 45)} {data.topic.length > 45 && '...'}
                                                                 <span className="tooltip-title">{data.topic}</span>
                                                             </Link>
                                                         </div>

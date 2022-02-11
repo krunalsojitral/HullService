@@ -23,6 +23,10 @@ export default function VideoDetail() {
         let video_id = params.get('id')
         setVideoId(video_id);
 
+        axios.post(api_url + '/video/addView', { "video_id": video_id }).then((result) => {
+            if (result.data.status) { }
+        }).catch((err) => { console.log(err); })
+
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
         const config = { headers: { Authorization: `${token}` } };

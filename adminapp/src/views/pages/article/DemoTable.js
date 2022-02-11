@@ -29,6 +29,7 @@ const DemoTable = () => {
     { key: 'title', _style: { width: '20%'} },
     { key: 'role', _style: { width: '20%' } },
     { key: 'created_on', _style: { width: '20%' } },
+    { key: 'total_view', _style: { width: '20%' } },
     { key: 'status', _style: { width: '20%' }, filter: false },
     {
       key: 'show_details',
@@ -222,7 +223,7 @@ const DemoTable = () => {
             checkbox: (item, index) => (
               <td>
                 <input
-                  key={index}
+                  key={item.article_id}
                   name={index}
                   type="checkbox"
                   checked={item.isChecked}

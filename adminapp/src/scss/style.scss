@@ -114,3 +114,15 @@
     vertical-align: text-top;
     margin-left: 10px;
 }
+.userimage{
+    border-radius: 100px;
+    overflow: hidden;
+    height: 150px;
+    width: 150px;
+    display: inline-table;
+    margin: 15px;
+}
+.userimage img{
+    width: 100%;
+    height: 100%;
+}

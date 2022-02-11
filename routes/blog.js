@@ -79,6 +79,7 @@ router.get('/blogList', function (req, res) {
                                     retObj['role'] = data.role;
                                     retObj['isChecked'] = false;
                                     retObj['status'] = data.status;
+                                    retObj['total_view'] = (data.total_view) ? data.total_view : 0;
                                     return retObj;
                                 }).sort(function (a, b) {
                                     return a.blog_id - b.blog_id;
@@ -827,5 +828,27 @@ router.post('/deleteBlog', [
         });
     }    
 });
+
+router.post('/addView', [
+    check('blog_id', 'Blog is required').notEmpty(),
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        loggerData(req);
+        let blog_id = req.body.blog_id;
+        Blog.addView(blog_id, function (err, result) {
+            if (err) {
+                return res.json({ status: 0, 'response': { msg: err } });
+            } else {
+                return res.json({ status: 1, 'response': { msg: 'Blog view successfully', data: result } });
+            }
+        });
+    }
+});
+
+
 
 module.exports = router;

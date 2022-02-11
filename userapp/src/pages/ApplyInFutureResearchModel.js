@@ -119,6 +119,10 @@ function ApplyInFutureResearchModel(props) {
                                                     className="form-control"
                                                     selected={value}
                                                     onChange={onChange}
+                                                    peekNextMonth
+                                                    showMonthDropdown
+                                                    showYearDropdown
+                                                    dropdownMode="select"
                                                     dateFormat="yyyy/MM/dd"
                                                     dateFormatCalendar="yyyy/MM/dd"
                                                     isClearable
@@ -206,6 +210,10 @@ function ApplyInFutureResearchModel(props) {
                                                         className="form-control"
                                                         selected={value}
                                                         onChange={onChange}
+                                                        peekNextMonth
+                                                        showMonthDropdown
+                                                        showYearDropdown
+                                                        dropdownMode="select"
                                                         dateFormat="yyyy/MM/dd"
                                                         dateFormatCalendar="yyyy/MM/dd"
                                                         isClearable
@@ -264,6 +272,10 @@ function ApplyInFutureResearchModel(props) {
                                                             className="form-control"
                                                             selected={value}
                                                             onChange={onChange}
+                                                            peekNextMonth
+                                                            showMonthDropdown
+                                                            showYearDropdown
+                                                            dropdownMode="select"
                                                             dateFormat="yyyy/MM/dd"
                                                             dateFormatCalendar="yyyy/MM/dd"
                                                             isClearable

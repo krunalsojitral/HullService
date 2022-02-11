@@ -145,14 +145,14 @@ export default function Sidebar() {
                         <InlineButton name={"Articles"} />
                     </NavLink>                    
                 </li>
-                <li>
+                {/* <li>
                     <NavLink activeClassName="active" isActive={() => ['/blog', '/blog-detail', '/blog-payment'].includes(pathname)} to="/blog">
                         <svg className="icon icon-tag">
                             <use xlinkHref="#icon-blog"></use>
                         </svg>
                         <InlineButton name={"Blogs"} />
                     </NavLink>                    
-                </li>                
+                </li>                 */}
                 <li>
                     <NavLink activeClassName="active" to="/events">
                         <svg className="icon icon-tag">
@@ -185,14 +185,14 @@ export default function Sidebar() {
                         <InlineButton name={"Group Sessions"} />
                     </NavLink>
                 </li>}
-                <li>
+                {/* <li>
                     <NavLink activeClassName="active" to="/professional-development" isActive={() => ['/professional-development', '/professional-development-detail', '/course-payment'].includes(pathname)}>
                         <svg className="icon icon-tag">
                             <use xlinkHref="#icon-book"></use>
                         </svg>
                         <InlineButton name={"Professional Development"} />
                     </NavLink>
-                </li>
+                </li> */}
 
 
                 {users && users.role == 3 && <li>

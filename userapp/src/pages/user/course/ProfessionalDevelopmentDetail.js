@@ -27,6 +27,10 @@ export default function ProfessionalDevelopmentDetail() {
         const params = new URLSearchParams(window.location.search) // id=123
         let course_id = params.get('id')
 
+        axios.post(api_url + '/course/addView', { "course_id": course_id }).then((result) => {
+            if (result.data.status) { }
+        }).catch((err) => { console.log(err); })
+
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
         setToken(token);       

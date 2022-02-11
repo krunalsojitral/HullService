@@ -68,14 +68,14 @@ export default function Dashboard() {
                                                     </div>
                                                 </Link>
                                             </div>}
-                                            <div className="col-md-4">
+                                            {/* <div className="col-md-4">
                                                 <Link to='/my-professional-development' className="Support-card">
                                                     <h3>My Professional Development Courses </h3>
                                                     <div className="support-img">
                                                          <img alt="support" src="images/support03.png"/>
                                                     </div>
                                                 </Link>
-                                            </div>
+                                            </div> */}
                                             {users && (users.role == 3 || users.role == 2) && <div className="col-md-4">
                                                 <Link to='/my-forum' className="Support-card">
                                                     <h3>My Threads</h3>
@@ -92,14 +92,14 @@ export default function Dashboard() {
                                                     </div>
                                                 </Link>
                                             </div>}
-                                            <div className="col-md-4">
+                                            {/* <div className="col-md-4">
                                                 <Link to='/my-blog' className="Support-card">                                                                    
                                                     <h3>My Blogs</h3>
                                                     <div className="support-img">                                                                            
                                                         <img alt="support" src="images/support06.png" />                                                                            
                                                     </div>                                                                    
                                                 </Link>
-                                            </div>
+                                            </div> */}
                                             <div className="col-md-4">
                                                 <Link to='/my-article' className="Support-card">
                                                     <h3>My Articles</h3>

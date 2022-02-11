@@ -341,6 +341,8 @@ router.post('/userList', function (req, res) {
         if (err) {
             return res.json({ status: 0, 'response': { msg: err } });
         } else {
+            
+
             var userList = result.map(data => {
 
                 var first_name = ''
@@ -358,6 +360,8 @@ router.post('/userList', function (req, res) {
                 retObj['email_verification_token'] = data.email_verification_token;                
                 retObj['email'] = data.email;                
                 retObj['status'] = data.status;
+                
+                
                 return retObj;
             });
             return res.json({ status: 1, 'response': { data: userList } });

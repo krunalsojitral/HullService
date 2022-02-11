@@ -77,7 +77,7 @@ function ForumReply(props) {
         <div>
                 {forumReplyCommentList && forumReplyCommentList.slice(0, visible).map((replydata, index) => (
 
-                <div className="forums-reply-card">
+                <div key={replydata.reply_comment_id} className="forums-reply-card">
                     <div className="forums-reply-icon">
                         {!replydata.avatar && <img src="images/user.png" />}
                         {replydata.avatar && <img src={replydata.avatar} />}

@@ -385,7 +385,7 @@ export default function ForumDetail() {
 
 
                                 {forumCommentList && forumCommentList.slice(0, visible).map((data, index) => (
-                                    <div key={index} className="research-main">
+                                    <div key={data.forum_comment_id} className="research-main">
                                         <div className="research-box">
                                             <div className="research-detail">
                                                 <p>{data.first_name} {data.last_name}  <span className="researcher">( {data.role} )</span>  </p>

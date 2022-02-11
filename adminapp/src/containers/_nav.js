@@ -38,24 +38,24 @@ const _nav = [
     route: "/#",
     icon: "cil-list",
     _children: [
-      {
-        _tag: "CSidebarNavDropdown",
-        name: "Blogs",
-        route: "/#",
-        icon: "cil-list",
-        _children: [
-          {
-            _tag: "CSidebarNavItem",
-            name: "Publish Blogs",
-            to: "/blog",
-          },
-          {
-            _tag: "CSidebarNavItem",
-            name: "Draft Blogs",
-            to: "/draft-blog",
-          }
-        ]
-      },
+      // {
+      //   _tag: "CSidebarNavDropdown",
+      //   name: "Blogs",
+      //   route: "/#",
+      //   icon: "cil-list",
+      //   _children: [
+      //     {
+      //       _tag: "CSidebarNavItem",
+      //       name: "Publish Blogs",
+      //       to: "/blog",
+      //     },
+      //     {
+      //       _tag: "CSidebarNavItem",
+      //       name: "Draft Blogs",
+      //       to: "/draft-blog",
+      //     }
+      //   ]
+      // },
       {
         _tag: "CSidebarNavDropdown",
         name: "Articles",
@@ -92,29 +92,29 @@ const _nav = [
           }
         ],
       },
-      {
-        _tag: "CSidebarNavDropdown",
-        name: "Courses",
-        route: "/#",
-        icon: "cil-list",
-        _children: [
-          {
-            _tag: "CSidebarNavItem",
-            name: "Publish Courses",
-            to: "/course",
-            icon: "cil-calculator",
-            badge: {
-              color: "info",
-              text: "",
-            },
-          },
-          {
-            _tag: "CSidebarNavItem",
-            name: "Draft Courses",
-            to: "/draft-courses",
-          }
-        ],
-      }
+      // {
+      //   _tag: "CSidebarNavDropdown",
+      //   name: "Courses",
+      //   route: "/#",
+      //   icon: "cil-list",
+      //   _children: [
+      //     {
+      //       _tag: "CSidebarNavItem",
+      //       name: "Publish Courses",
+      //       to: "/course",
+      //       icon: "cil-calculator",
+      //       badge: {
+      //         color: "info",
+      //         text: "",
+      //       },
+      //     },
+      //     {
+      //       _tag: "CSidebarNavItem",
+      //       name: "Draft Courses",
+      //       to: "/draft-courses",
+      //     }
+      //   ],
+      // }
     ]
   },
   {

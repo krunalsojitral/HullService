@@ -115,7 +115,7 @@ export default function MyBlog() {
 
                         <div className="col-md-8 articlebox" id="scrolltop">
                             <div className="row">
-                                {!noresult && currentData.map((data, index) => (<div key={index} className="col-md-4">
+                                {!noresult && currentData.map((data, index) => (<div key={data.blog_id} className="col-md-4">
 
                                     <div className="blog-box">
                                         <div className="blog-image">

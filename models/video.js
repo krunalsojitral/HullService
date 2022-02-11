@@ -442,5 +442,32 @@ function Video() {
         });
     };
 
+    this.addView = function (video_id, callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT total_view FROM video where video_id = $1', [video_id], function (err, result) {
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    var total_view = 1;
+                    if (result.rows[0].total_view && result.rows[0].total_view > 0) {
+                        total_view += result.rows[0].total_view;
+                    }
+                    con.query("UPDATE video SET total_view =$1 WHERE video_id = $2", [total_view, video_id], function (err, record) {
+                        con.release()
+                        if (err) {
+                            if (env.DEBUG) {
+                                console.log(err);
+                            }
+                            callback(err, null);
+                        } else {
+                            callback(null, record);
+                        }
+                    });
+                }
+            });
+        });
+    };
+
 }
 module.exports = new Video();

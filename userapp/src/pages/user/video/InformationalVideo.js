@@ -226,7 +226,7 @@ export default function Video() {
                                         </div>
                                         <div className="row">
                                             {!noresult && currentData.length > 0 && currentData.map((data, index) => (
-                                                <div key={index} className="col-md-6 col-lg-4">
+                                                <div key={data.video_id} className="col-md-6 col-lg-4">
                                                     <div className="video-card">
                                                         {data.purchase_type == 'paid' && 
                                                             <div className="video-img tooltip-video">  

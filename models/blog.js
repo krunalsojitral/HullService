@@ -392,5 +392,32 @@ function User() {
         });
     };
 
+    this.addView = function (blog_id, callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT total_view FROM blog where blog_id = $1', [blog_id], function (err, result) {                
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {                    
+                    var total_view = 1;
+                    if (result.rows[0].total_view && result.rows[0].total_view > 0){
+                        total_view += result.rows[0].total_view;
+                    }                    
+                    con.query("UPDATE blog SET total_view =$1 WHERE blog_id = $2", [total_view, blog_id], function (err, record) {
+                        con.release()
+                        if (err) {
+                            if (env.DEBUG) {
+                                console.log(err);
+                            }
+                            callback(err, null);
+                        } else {
+                            callback(null, record);
+                        }
+                    });                    
+                }
+            });
+        });
+    };
+
 }
 module.exports = new User();

@@ -223,7 +223,7 @@ const DemoTable = () => {
             checkbox: (item, index) => (
               <td>
                 <input
-                  key={index}
+                  key={item.professional_interest_area_id}
                   name={index}
                   type="checkbox"
                   checked={item.isChecked}

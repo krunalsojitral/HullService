@@ -58,6 +58,10 @@ export default function ArticlesDetail() {
         let article_id = params.get('id')
         setArticleId(article_id);
 
+        axios.post(api_url + '/article/addView', { "article_id": article_id }).then((result) => {
+            if (result.data.status) { }
+        }).catch((err) => { console.log(err); })
+
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
         const config = {

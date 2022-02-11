@@ -391,7 +391,7 @@ export default function ForumDetail() {
 
 
                             {forumCommentList && forumCommentList.slice(0, visible).map((data, index) => (
-                                    <div key={index} className="new-forums-reply">
+                                    <div key={data.forum_comment_id} className="new-forums-reply">
                                         <div className="forums-reply-card">
                                             <div className="forums-reply-icon">
                                                 {!data.avatar && <img src="images/user.png" />}

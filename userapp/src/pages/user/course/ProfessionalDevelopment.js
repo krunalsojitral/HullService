@@ -191,7 +191,7 @@ export default function ProfessionalDevelopment() {
                                         <div className="row">
 
                                             {!noresult && currentData.length > 0 && currentData.map((data, index) => (
-                                                <div key={index} className="col-md-6 col-lg-4">
+                                                <div key={data.course_id} className="col-md-6 col-lg-4">
                                                     <div className="blog-box">
                                                         <div className="blog-image">
                                                             <Link to={{ pathname: "/professional-development-detail", search: "?id=" + data.course_id }}>

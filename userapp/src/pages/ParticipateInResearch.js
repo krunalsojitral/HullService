@@ -131,7 +131,7 @@ export default function ParticipateInResearch() {
                                 <ApplyInResearchModel close={close} researchtitle={researchTitle} apply={researchID}></ApplyInResearchModel>
                             </Modal>
                             {currentData.map((row, index) => (
-                                <div key={index} className="studies-card">
+                                <div key={row.researches_id} className="studies-card">
                                 <div className="row">
                                     <div className="col-md-8">
                                         <div className="studies-list">

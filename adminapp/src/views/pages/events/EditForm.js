@@ -25,19 +25,18 @@ import { useHistory } from "react-router-dom";
 import api_url from './../../Apiurl';
 import axios from "axios";
 import Swal from "sweetalert2";
-
-
+import $ from 'jquery';
 
 const AddEditForm = ({ match }) => {
   const [active, setActive] = useState(0)
-
-
   let history = useHistory();
   const {
     handleSubmit,
     setValue,
     control,    
     trigger,
+    getValues,
+    reset,
     formState: { errors },
   } = useForm({    
     defaultValues: {
@@ -51,14 +50,8 @@ const AddEditForm = ({ match }) => {
 
  
   const [isEditMode, setisEditMode] = React.useState(0);
- 
-  const [menuList, setMenuList] = React.useState([]);
   const [setectimage, setSetectimage] = React.useState(0);
   const [selectedFile, setSelectedFile] = useState();
-  const [selectedTag, setSelectedTag] = React.useState([])
-  const [selectedRole, setSelectedRole] = React.useState([])
-  const [draftStatus, setDraftStatus] = React.useState(0)
-
   const [contentEditor, setContentEditor] = useState();
   const handleEditorChange = (content, editor) => {
     setContentEditor(content);
@@ -76,119 +69,12 @@ const AddEditForm = ({ match }) => {
   };
 
   //const initialText = ``;
-
-
-  React.useEffect(() => {
-    
-    axios.get(api_url + "/common/menuList", {})
-      .then((result) => {
-        if (result.data.status) {
-          var menudata = result.data.response.data;         
-          setMenuList(menudata);
-        } else {
-          Swal.fire("Oops...", result.data.response.msg, "error");
-        }
-      })
-      .catch((err) => { console.log(err); });
- 
-
-    if (match.params.id) {
-      setisEditMode(1);
-      axios.post(api_url + "/blog/getBlogDataById", { blog_id: match.params.id }, {})
-        .then((result) => {
-          if (result.data.status) {
-            var usersdata = result.data.response.data;
-            if (usersdata.draft_status) {
-              setDraftStatus(usersdata.draft_status);
-            } else {
-              setDraftStatus(0);
-            }
-            setValue("title", usersdata.title);
-            setValue("description", usersdata.description);
-            setValue("purchase_type", usersdata.purchase_type);
-            setSelectedRole(usersdata.selected_role);
-            setValue("cost", usersdata.cost);
-            setSelectedTag(usersdata.tag);
-            setSetectimage(usersdata.image);
-            setContentEditor(usersdata.description);
-          } else {
-            Swal.fire("Oops...", result.data.response.msg, "error");
-          }
-        })
-        .catch((err) => { console.log(err); });
-    }
-  }, []);
-
-  const updateInformationAct = (data) => {
-    data.blog_id = match.params.id;
-    data.description = contentEditor;
-    data.user_role = selectedRole;
-    data.tag = selectedTag;
-    const formData = new FormData();
-    formData.append("data", JSON.stringify(data));
-    if (selectedFile) {
-      formData.append("image", selectedFile, selectedFile.name);
-    }
-    axios.post(api_url + "/blog/updateBlogByadmin", formData, {}).then((result) => {
-      if (result.data.status) {
-        Swal.fire("Success!", result.data.response.msg, "success");
-        if (draftStatus == 1) {
-          history.push("/draft-blog");
-        } else {
-          history.push("/blog");
-        }
-      } else {
-        Swal.fire("Oops...", result.data.response.msg, "error");
-      }
-    }).catch((err) => { console.log(err); });
-
-  };
-
-  
-
-  const addInformationAct = async (data) => {
-    data.description = contentEditor;
-    const formData = new FormData();
-    formData.append("data", JSON.stringify(data));
-    if (selectedFile) {
-      formData.append("image", selectedFile, selectedFile.name);
-    }
-    
-    if (finalFile && finalFile.length > 0) {
-      for (var i = 0; i < finalFile.length; i++) {
-        formData.append("resources[]", finalFile[i], finalFile[i].name);
-      }
-    }
-
-    console.log(formData);
-    axios.post(api_url + "/event/addPageByadmin", formData, {}).then((result) => {
-      if (result.data.status) {
-        Swal.fire("Success!", result.data.response.msg, "success");
-      } else {
-        Swal.fire("Oops...", result.data.response.msg, "error");
-      }
-    }).catch((err) => { console.log(err); });
-
-  
-  };
-  
-  const nextTab = async (tab) => {
-    if (tab == 1){
-      const result = await trigger(["title", "start_date", "end_date"]);
-      if (result){
-        setActive(tab);
-      }
-    }else{
-      setActive(tab);
-    }
-  }
-
-  const { fields: session, append: sessionAppend, remove: sessionRemove } = useFieldArray({
+  const { fields: session, insert:sessionInsert, append: sessionAppend, remove: sessionRemove } = useFieldArray({
     control,
     name: 'sessionTitle',
     name: 'sessionDescription',
     name: 'sessionURL'
-  });  
+  });
 
   const { fields: video, append: videoAppend, remove: videoRemove } = useFieldArray({
     control,
@@ -203,17 +89,17 @@ const AddEditForm = ({ match }) => {
   const [file, setFile] = useState([{ type: '', name: '', file: [] }]);
   const [finalFile, setFinalFile] = useState([]);
 
-  function uploadSingleFile(e) {  
+  function uploadSingleFile(e) {
     setFinalFile([...finalFile, (e.target.files[0])]);
-    var type = '' 
+    var type = ''
     var ext = e.target.files[0].type;
     var arrayExtensions = ['image/jpg', 'image/jpeg', 'image/png', 'image/bmp', 'image/gif'];
     if (arrayExtensions.lastIndexOf(ext.toLowerCase()) == -1) {
       type = 'doc';
     } else {
       type = 'image';
-    }    
-    setFile([...file, { type: type, name: e.target.files[0].name, file: URL.createObjectURL(e.target.files[0]) } ]);
+    }
+    setFile([...file, { type: type, name: e.target.files[0].name, file: URL.createObjectURL(e.target.files[0]) }]);
   }
 
   function upload(e) {
@@ -228,15 +114,133 @@ const AddEditForm = ({ match }) => {
   }
 
 
+  React.useEffect(() => {
+
+    setValue("title", "event title");
+    //setValue("start_date", "2022/02/10");
+    
+    setContentEditor("description");
+    setValue("location", "city");
+    setValue("organization", "organization");
+    setSetectimage("https://blog.logrocket.com/wp-content/uploads/2020/04/react-native-maps-introduction.png");
+
+    var sessionTitle = [{ "name": "default Value", "value": "Group Session 1" }, { "value": "Group Session 2" }];
+    var sessionDescription = [{ "name": "default Value", "value": "Group Description 1" }, { "value": "Group Description 2" }];
+    var sessionURL = [{ "name": "default Value", "value": "Group URL 1" }, { "value": "Group URL 2" }];
+    var videoURL = [{ "name": "default Value", "value": "Url 1 " }, { "value": "Url 2 " }];
+    var webPageUrl = [{ "name": "default Value", "value": "Web Page URL 1" }, { "value": "Web Page URL 2" }];
+
+    sessionTitle.forEach((item, index) => {
+      if (index > 0){
+        sessionAppend({})
+      }
+    });
+    
+    videoURL.forEach((item, index) => {
+      if (index > 0) {
+        videoAppend({})
+      }
+    });
+
+    webPageUrl.forEach((item, index) => {
+      if (index > 0) {
+        webPageAppend({})
+      }
+    });
+
+    setTimeout(() => {
+      sessionTitle.forEach((item, index) => {
+        setValue(`sessionTitle.${index}.value`, item.value);        
+      }); 
+      sessionDescription.forEach((item, index) => {        
+        setValue(`sessionDescription.${index}.value`, item.value);        
+      });
+      sessionURL.forEach((item, index) => {
+        setValue(`sessionURL.${index}.value`, item.value);
+      });
+      videoURL.forEach((item, index) => {
+        setValue(`videoURL.${index}.value`, item.value);
+      });
+      webPageUrl.forEach((item, index) => {
+        setValue(`webPageUrl.${index}.value`, item.value);
+      });
+    }, 500);
+
+    
+
+   
+    // if (match.params.id) {
+    //   setisEditMode(1);
+    //   axios.post(api_url + "/event/getEventDataById", { blog_id: match.params.id }, {})
+    //     .then((result) => {
+    //       if (result.data.status) {
+    //         var eventdata = result.data.response.data;            
+    //         setValue("title", eventdata.title);
+    //         setValue("start_date", eventdata.start_date);
+    //         setValue("end_date", eventdata.end_date);
+    //         setContentEditor(eventdata.description);
+    //         setValue("location", eventdata.location);
+    //         setValue("organization", eventdata.organization);
+    //         setSetectimage(eventdata.event_image);           
+    
+            
+    //       } else {
+    //         Swal.fire("Oops...", result.data.response.msg, "error");
+    //       }
+    //     })
+    //     .catch((err) => { console.log(err); });
+    // }
+  }, []);
+
+  const updateInformationAct = (data) => {
+    data.description = contentEditor;
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(data));
+    if (selectedFile) {
+      formData.append("image", selectedFile, selectedFile.name);
+    }
+    console.log(finalFile);
+    if (finalFile && finalFile.length > 0) {
+      for (var i = 0; i < finalFile.length; i++) {
+        formData.append("resources[]", finalFile[i], finalFile[i].name);
+      }
+    }
+
+    axios.post(api_url + "/event/updateBlogByadmin", formData, {}).then((result) => {
+      if (result.data.status) {
+        //Swal.fire("Success!", result.data.response.msg, "success");
+        
+      } else {
+        //Swal.fire("Oops...", result.data.response.msg, "error");
+      }
+    }).catch((err) => { console.log(err); });
+
+  };
+
+  const nextTab = async (tab) => {
+    if (tab == 1){
+      const result = await trigger(["title", "start_date", "end_date"]);
+      if (result){
+        setActive(tab);
+      }
+    }else{
+      setActive(tab);
+    }
+  }
+
+ 
+
+ 
+
   return (
     <CRow>             
         <CCol xs="12" md="12" className="mb-4">
           <CCard>
           <CCardHeader>
-            Add Event
+            Edit Event
           </CCardHeader>
           <CCardBody>
-            <form onSubmit={handleSubmit((isEditMode === 1) ? updateInformationAct : addInformationAct)}>
+            <form onSubmit={handleSubmit(updateInformationAct)}>
               <CTabs activeTab={active} onActiveTabChange={idx => setActive(idx)}>
                 <CNav variant="tabs">
                   <CNavItem>
@@ -301,11 +305,8 @@ const AddEditForm = ({ match }) => {
                                   onChange={onChange}
                                   dateFormat="yyyy/MM/dd"
                                   dateFormatCalendar="yyyy/MM/dd"
-                                  peekNextMonth
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dropdownMode="select"
                                   isClearable
+                                  id="start_date"
                                   placeholderText="Start date"
                                 />
                               )}
@@ -329,10 +330,6 @@ const AddEditForm = ({ match }) => {
                                   onChange={onChange}
                                   dateFormat="yyyy/MM/dd"
                                   dateFormatCalendar="yyyy/MM/dd"
-                                  peekNextMonth
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dropdownMode="select"
                                   isClearable
                                   placeholderText="End date"
                                 />
@@ -545,7 +542,7 @@ const AddEditForm = ({ match }) => {
                                     <div>
                                       {index > 0 &&
                                         <div>
-                                        <CRow key={item.name}>
+                                          <CRow key={index}>
                                             <CCol xs="4">
                                               {item.type == 'image' && <img style={{ width: '50px', height: '50px' }} src={item.file} alt="" />}
                                               {item.type == 'doc' && item.name}

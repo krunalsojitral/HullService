@@ -20,10 +20,15 @@ export default function BlogDetail() {
   //  const [blogPaid, setBlogPaid] = React.useState(false)
     const [relatedBlogDetail, setRelatedBlogDetail] = React.useState([])
 
-    React.useEffect(() => {
+    React.useEffect(() => {        
+
         const params = new URLSearchParams(window.location.search) // id=123
         let blog_id = params.get('id')
         setBlogId(blog_id);
+
+        axios.post(api_url + '/blog/addView', { "blog_id": blog_id }).then((result) => {
+            if (result.data.status) { }
+        }).catch((err) => { console.log(err); })
 
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
@@ -100,6 +105,7 @@ export default function BlogDetail() {
             }).catch((err) => { console.log(err); })
         }
 
+        
 
     }, [])
 
