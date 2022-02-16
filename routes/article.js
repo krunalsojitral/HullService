@@ -59,7 +59,7 @@ router.get('/articleList', function (req, res) {
                                     retObj['created_on'] = moment(data.created_at).format('YYYY-MM-DD');
                                     retObj['role'] = data.role;
                                     retObj['status'] = data.status;
-                                    retObj['total_view'] = (data.total_view) ? data.total_view: 0;
+                                    retObj['views'] = (data.total_view) ? data.total_view: 0;
                                     return retObj;
                                 }).sort(function (a, b) {
                                     return a.article_id - b.article_id;

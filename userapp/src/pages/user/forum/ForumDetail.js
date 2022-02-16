@@ -229,6 +229,50 @@ export default function ForumDetail() {
         setVisible((prevValue) => prevValue + 3);
     }
 
+    const forumReport = (forum_comment_id, index, report_id) => {        
+        var message = '';
+        if (report_id){
+            message = 'Are you sure you want to unreport this Comment?'
+        }else{
+            message = 'Are you sure you want to report this Comment?'
+        }
+        Swal.fire({
+            //title: 'warning!',
+            icon: 'warning',
+            text: message,
+            confirmButtonText: `Yes`,
+            showCancelButton: true,
+            cancelButtonText: 'No',
+            cancelButtonColor: '#e57979',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const tokenString = localStorage.getItem('token');
+                var token = JSON.parse(tokenString);
+                const config = {
+                    headers: { Authorization: `${token}` }
+                };
+                axios.post(api_url + '/forum/forumReport', { forum_comment_id: forum_comment_id }, config).then((result) => {                   
+                    if (result.data.status) {   
+                        if (result.data.response.data.length > 0){
+                            let tempColl = [...forumCommentList];
+                            tempColl[index].forum_report_id = result.data.response.data[0].forum_report_id;
+                        }else{
+                            let tempColl = [...forumCommentList];
+                            tempColl[index].forum_report_id = '';
+                        }                        
+                        //Swal.fire('Success', result.data.response.msg, 'success')
+                    } else {                        
+                        Swal.fire('Oops...', result.data.response.msg, 'error')
+                    }
+                }).catch((err) => {
+                    console.log(err);
+                })
+            }
+        });
+    }
+
+    
+
     // const forumCommentLikeClick = (comment_id, index) => {
     //     const tokenString = localStorage.getItem('token');
     //     var token = JSON.parse(tokenString);
@@ -402,8 +446,14 @@ export default function ForumDetail() {
                                             <h3><Link className="btn-edit" to={{ pathname: "/view-profile", search: "?id=" + data.user_id }}>{data.first_name} {data.last_name}</Link><span>({data.role})</span></h3>
                                                 <span>{data.created_on}</span>
                                                 <ForumDescription description={data.comment}></ForumDescription>
-                                                {forumCommentDetail.retire == 1 && <span className="Reply-Btn-New">Reply <img src="images/reply_btn.png" /></span>}
-                                                {forumCommentDetail.retire == 0 && <span onClick={(e) => reply(data.forum_comment_id)} className="Reply-Btn-New">Reply <img src="images/reply_btn.png" /></span>}
+                                                <div>
+                                                    {forumCommentDetail.retire == 1 && <span className="Reply-Btn-New">Reply <img src="images/reply_btn.png" /></span>}
+                                                    {forumCommentDetail.retire == 0 && <span onClick={(e) => reply(data.forum_comment_id)} className="Reply-Btn-New">Reply <img src="images/reply_btn.png" /></span>}
+                                                    <span onClick={(e) => forumReport(data.forum_comment_id, index, data.forum_report_id)} className="forum-report">
+                                                        <i className="fa fa-file-text-o" aria-hidden="true"></i>&nbsp;
+                                                        {(data.forum_report_id) ? "Reported" : "Report"}
+                                                    </span>
+                                                </div>                                                
                                                 <div className="row">
                                                     <div className="col-md-12">
                                                         <div className="new-forums-input" id={data.forum_comment_id} style={{ display: 'none' }}>

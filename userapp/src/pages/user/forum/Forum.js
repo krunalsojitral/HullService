@@ -122,18 +122,17 @@ export default function Forum() {
                                 </div>
 
                                 {token &&
-                                    <div className="add-forum">
-                                        <Link className="book-apoint" to={{ pathname: "/add-forum" }}>
-                                            Request a Thread
-                                            </Link>
-                                    </div>}
-
+                                <div className="add-forum">
+                                    <Link className="book-apoint" to={{ pathname: "/add-forum" }}>
+                                        Request a Thread
+                                        </Link>
+                                </div>}
                             </div>
 
                             {forumRule && <div><div dangerouslySetInnerHTML={{ __html: forumRule }}></div><br></br></div> }
 
 
-                            {!noresult && <div className="video-tag">
+                            {/* {!noresult && <div className="video-tag">
                                 <h3>Sort By Tags</h3>
                                 <ul>
                                     {forumTagList.length > 0 && forumTagList.map((data, index) => (
@@ -142,10 +141,62 @@ export default function Forum() {
                                         </li>
                                     ))}
                                 </ul>
-                            </div>}
+                            </div>} */}
+
+                            <br/>
+                            <div className="question-cards">
+                                <table className="question-titles">
+                                    <tr>
+                                        <th>Question</th>
+                                        <th>Replies</th>
+                                        <th>Last Post</th>
+                                    </tr>
+                                </table>
+                            </div>
+                            
+                            <div className="question-list">
+                                <div className="panel-group" id="accordion">
+
+                                    {!noresult && forumList.map((data, index) => (
+                                        <div className="panel panel-default">
+                                            <div className="panel-heading">
+                                                <h4 className="panel-title">
+                                                    <a data-toggle="collapse" className={(index == 0) ? '' : 'collapsed'} data-parent="#accordion" href={"#collapse"+index}>
+                                                        {data.forumheading_name}</a>
+                                                </h4>
+                                            </div>
+                                            <div id={"collapse"+ index} className={(index == 0)?'panel-collapse collapse in':'panel-collapse collapse'} >
+                                                <div className="panel-body">
+                                                    <div className="table-responsive">
+                                                        <table className="question-titles">
+                                                            <tbody>
+                                                                {data.forum.map((forumdata, index) => (                                                                    
+                                                                        <tr>
+                                                                        <td className="tooltip-box"><Link key={forumdata.forum_id} to={{ pathname: "/forum-detail", search: "?id=" + forumdata.forum_id }}>{forumdata.topic.slice(0, 45)} {forumdata.topic.length > 45 && '...'}<span className="tooltip-title">{forumdata.topic}</span></Link></td>
+                                                                        <td><span className="comment">{(forumdata.comment && forumdata.comment[0].forum_comment_count) ? forumdata.comment[0].forum_comment_count : 0}</span></td>
+                                                                        <td>{(forumdata.comment && forumdata.comment[0].created_at) ? forumdata.comment[0].created_at : '-'}</td>
+                                                                        </tr>                                                                                                                                  
+                                                                ))} 
+                                                                <tr>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td><Link className="view-btn" to={{ pathname: "/forum-sub", search: "?id=" + data.forumheading_id }}>View More</Link></td>
+                                                                </tr>
+                                                                
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                   
+                                   
+                                </div>
+                            </div>
 
                             <div className="category-table">
-                                {!noresult && forumList.map((data, index) => (
+                                {/* {!noresult && forumList.map((data, index) => (
                                     <div key={data.forumheading_id}>
                                         <div className="category-title">
                                             <h2>{data.forumheading_name}</h2>
@@ -169,11 +220,7 @@ export default function Forum() {
                                                                         {forumdata.topic.slice(0, 45)} {forumdata.topic.length > 45 && '...'}
                                                                         <span className="tooltip-title">{forumdata.topic}</span>
                                                                     </Link>
-                                                                </div>
-                                                                {/* <Link to={{ pathname: "/forum-detail", search: "?id=" + forumdata.forum_id }}>
-                                                                            {forumdata.topic.slice(0, 45)}
-                                                                            <span className="tooltip-title">{forumdata.topic}</span>
-                                                                        </Link> */}
+                                                                </div>                                                                
                                                             </td>
                                                             <td>{(forumdata.comment && forumdata.comment[0].forum_comment_count) ? forumdata.comment[0].forum_comment_count : 0}</td>
                                                             <td><span>{(forumdata.comment && forumdata.comment[0].created_at) ? forumdata.comment[0].created_at : '-'}</span></td>
@@ -183,7 +230,7 @@ export default function Forum() {
                                             </table>
                                         </div>
                                     </div>
-                                ))}
+                                ))} */}
 
                                 {noresult &&
                                     <div>
@@ -193,7 +240,6 @@ export default function Forum() {
                                         </center>
                                     </div>
                                 }
-
                             </div>
                         </div>
                     </div>

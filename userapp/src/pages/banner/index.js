@@ -10,43 +10,112 @@ import {
     ControlLeft,
     ControlRight
 } from "./styles";
+import api_url from '../../components/Apiurl';
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const Slider = () => {
 
+    const [sliderClick, setSliderClick] = useState(0);
+    const [action, setAction, ref] = useState('plus');
     const [state, dispatch] = useReducer(reducer, {
         currentIndex: 0,
-        items: [
-            { id: 1, name: "1" },
-            { id: 2, name: "2" },
-            { id: 3, name: "3" },
-            // { id: 4, name: "4" },
-            // { id: 5, name: "5" }
-        ]
+        items: []
     });
     const width = useWindowWidth();
 
-    // React.useEffect(() => {
-        
+    // React.useEffect(() => {        
     //     let timer1 = setInterval(function () {
     //         console.log('===========');
-    //         console.log(state);
-        
-    //         if (state.currentIndex < 1) {
-    //             console.log('in');
-    //             $(".fa-angle-right").click()
-    //         }
-
+    //         console.log(state);        
+    //         // if (state.currentIndex < 1) {
+    //         //     console.log('in');
+    //         //     $(".fa-angle-right").click()
+    //         // }
     //     //    if (state.currentIndex < 2){
     //     //     $(".fa-angle-right").click()
     //     //    }else{
     //     //        console.log('in');
     //     //        dispatch("GOTO", 0)
-    //     //    }            
-        
-    //     }, 5000);
-
+    //     //    } 
+    //     }, 1000);
     // }, [state])
 
+    React.useEffect(() => {
+        getNewList();        
+    }, [])
+
+    const getNewList = () => {
+        axios.get(api_url + '/banner/getUserBannerList').then((result) => {
+            if (result.data.status) {
+                var usersdatas = result.data.response.data;                
+                dispatch({ type: "SET", currentIndex: 0, items: usersdatas });               
+            } else {
+                Swal.fire('Oops...', result.data.response.msg, 'error')
+            }
+        }).catch((err) => {
+            console.log(err);
+        })
+    }
+
+    function reducer(state, action) {      
+        switch (action.type) {
+            case "NEXT":
+                return {
+                    ...state,
+                    currentIndex: state.currentIndex + (1 % state.items.length)
+                };
+            case "PREV":
+                return {
+                    ...state,
+                    currentIndex: state.currentIndex - (1 % state.items.length)
+                };
+            case "GOTO":
+                return {
+                    ...state,
+                    currentIndex: action.index
+                };
+            case "SET":
+                return {
+                    ...state,
+                    items: action.items
+                };
+            case "RESET":
+                return { currentIndex: 0, currentPosition: 0 };
+
+            default:
+                return state;
+        }
+    }
+
+
+
+    React.useEffect(() => {
+        const intervalId = setInterval(() => {  //assign interval to a variable to clear it.
+            if (state.items.length > 1){
+                var total_item = (state.items.length - 1)
+                var total_item_plus = (state.items.length + 1)
+                setSliderClick((parseInt(sliderClick) + parseInt(1)))                
+                if (sliderClick == total_item_plus) {
+                    setSliderClick(0)
+                }
+                if (sliderClick == 0) {                    
+                    setAction('plus')
+                }
+                if (sliderClick == total_item) {
+                    setAction('minus')
+                }
+                if (action == 'plus') {
+                    $(".fa-angle-right").click()
+                }
+                if (action == 'minus') {
+                    $(".fa-angle-left").click()
+                }
+            }
+                       
+        }, 8000)
+        return () => clearInterval(intervalId); //This is important
+    }, [state, sliderClick, action])
     
 
     
@@ -66,7 +135,7 @@ const Slider = () => {
                     {state.items.map((i, index) => {
                         return (
                             <Slide
-                                key={i.id}
+                                key={i.banner_id}
                                 last={index === state.items.length - 1}
                                 index={index}
                                 item={i}
@@ -84,7 +153,7 @@ const Slider = () => {
                             <NavigationItem
                                 active={index === state.currentIndex}
                                 onClick={() => dispatch({ type: "GOTO", index })}
-                                key={"nav" + i.id}
+                                key={"nav" + i.banner_id}
                             >
                                 &nbsp;
                             </NavigationItem>
@@ -124,73 +193,29 @@ function useWindowWidth() {
     return width;
 }
 
-function reducer(state, action) {
-    switch (action.type) {
-        case "NEXT":
-            return {
-                ...state,
-                currentIndex: state.currentIndex + (1 % state.items.length)
-            };
-        case "PREV":
-            return {
-                ...state,
-                currentIndex: state.currentIndex - (1 % state.items.length)
-            };
-        case "GOTO":
-            return {
-                ...state,
-                currentIndex: action.index
-            };
-        case "RESET":
-            return { currentIndex: 0, currentPosition: 0 };
 
-        default:
-            return state;
-    }
-}
+
 
 const Slide = ({ item, width }) => {
     return (
         <SliderItem width={width}>
-            {item.id == 1 && <div className="banner-slide">
-                    <div className="col-md-4"></div>
-                    <div className="col-md-8">
-                        <div className="banner-text">
+            {/* style={{ "width": "100%", "background-image": "url(https://daveceddia.com/images/useState-hook.png)" }} */}
+            <div className="banner-slide">
 
-                            <span>Get Involved </span>
-                            <h1>Volunteer Today</h1>
-                        <Link className="banner-btn" to='/userSelection'>
-                                Sign Up Today
-                            </Link>                            
-                        </div>
-                    </div>
-                </div> }
-            {item.id == 2 && <div className="banner-slide">
-                <div className="col-md-4"></div>
-                <div className="col-md-8">
+                <div className="banner-images"><img src={item.image} /></div>
+
+                <div className="col-md-1">                
+                </div>
+                <div className="col-md-10">
                     <div className="banner-text">
-
-                        <span>Get Involved </span>
-                        <h1>Volunteer Today</h1>
-                        <Link className="banner-btn" to='/userSelection'>
-                            Sign Up Today
-                        </Link>
+                        {item.title && <span>{item.title}</span>}
+                        {item.description && <h1>{item.description}</h1>}
+                        {(item.button_text && item.button_url) && <Link className="banner-btn" to={item.button_url}>
+                            {item.button_text}
+                        </Link>}
                     </div>
                 </div>
-            </div>}
-            {item.id == 3 && <div className="banner-slide">
-                <div className="col-md-4"></div>
-                <div className="col-md-8">
-                    <div className="banner-text">
-
-                        <span>Get Involved </span>
-                        <h1>Volunteer Today</h1>
-                        <Link className="banner-btn" to='/userSelection'>
-                            Sign Up Today
-                        </Link>
-                    </div>
-                </div>
-            </div>}          
+            </div>
         </SliderItem>
     );
 };

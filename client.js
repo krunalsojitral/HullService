@@ -39,6 +39,7 @@ var cmsRouter = require('./routes/cms');
 var forumheadingRouter = require('./routes/forumheading');
 var forumRouter = require('./routes/forum');
 var researchesRouter = require('./routes/researches');
+var bannerRouter = require('./routes/banner');
 
 //app.use(express.static('uploads'));
 app.use(express.static('routes/uploads'));
@@ -58,6 +59,7 @@ app.use('/api/forumheading', forumheadingRouter);
 app.use('/api/forum', forumRouter);
 app.use('/api/cms', cmsRouter);
 app.use('/api/researches', researchesRouter);
+app.use('/api/banner', bannerRouter);
 
 
 app.get('/', (req, res) => {

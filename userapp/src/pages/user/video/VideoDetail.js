@@ -23,9 +23,7 @@ export default function VideoDetail() {
         let video_id = params.get('id')
         setVideoId(video_id);
 
-        axios.post(api_url + '/video/addView', { "video_id": video_id }).then((result) => {
-            if (result.data.status) { }
-        }).catch((err) => { console.log(err); })
+        
 
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
@@ -39,10 +37,12 @@ export default function VideoDetail() {
                     var videodata = result.data.response.data;
                     if (videodata.purchase_type == "unpaid") {
                         setVideoDetail(videodata);
+                        addView(video_id)
                     } else {
 
                         if (videodata.purchase_type == "unpaid") {
                             setVideoDetail(videodata);
+                            addView(video_id)
                         } else {
 
                             setVideoCost(videodata.cost);
@@ -51,6 +51,7 @@ export default function VideoDetail() {
                             } else {
                                 if (videodata.video_order) {
                                     setVideoDetail(videodata);
+                                    addView(video_id)
                                 } else {
                                     open()
                                 }
@@ -81,10 +82,12 @@ export default function VideoDetail() {
                     var videodata = result.data.response.data;
                     if (videodata.purchase_type == "unpaid") {
                         setVideoDetail(videodata);
+                        addView(video_id)
                     } else {
 
                         if (videodata.purchase_type == "unpaid") {
                             setVideoDetail(videodata);
+                            addView(video_id)
                         } else {
                             setVideoCost(videodata.cost)
                             open()
@@ -119,6 +122,12 @@ export default function VideoDetail() {
         history.replace("/video-detail?id=" + id);
         window.location.reload();
     };
+
+    const addView = (video_id) => {
+        axios.post(api_url + '/video/addView', { "video_id": video_id }).then((result) => {
+            if (result.data.status) { }
+        }).catch((err) => { console.log(err); })
+    }
 
     return(
         <div>

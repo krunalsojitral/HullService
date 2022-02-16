@@ -38,7 +38,7 @@ const UserDetail = ({ match }) => {
                 <tr><td>First Name :</td><td><strong>{details.first_name}</strong></td></tr>
                 <tr><td>Last Name :</td><td><strong>{details.last_name}</strong></td></tr>                
                 <tr><td>Email :</td><td><strong>{details.email}</strong></td></tr>
-                {details.about_us && <tr><td>About US :</td><td><strong>{details.about_us}</strong></td></tr>}
+                {details.about_us && <tr><td>About US :</td><td><strong dangerouslySetInnerHTML={{ __html: details.about_us }}></strong></td></tr>}
                 {details.city && <tr><td>City :</td><td><strong>{details.city}</strong></td></tr>}
                 {details.organization && <tr><td>Organization :</td><td><strong>{details.organization}</strong></td></tr>}
                 {details.sectorname && <tr><td>Sector :</td><td><strong>{details.sectorname}</strong></td></tr>}
@@ -46,12 +46,10 @@ const UserDetail = ({ match }) => {
                 {details.level_of_education && <tr><td>Level Of Education :</td><td><strong>{details.level_of_education}</strong></td></tr>}
                 {details.occupationname && <tr><td>Occupation :</td><td><strong>{details.occupationname}</strong></td></tr>}
                 {details.other_occupation && <tr><td>Occupation :</td><td><strong>Other; {details.other_occupation}</strong></td></tr>}
-                {details.academicdisciplinename && <tr><td>Academic Discipline :</td><td><strong>{details.academicdisciplinename}</strong></td></tr>}
-                {details.other_academic_discipline && <tr><td>Academic Discipline :</td><td><strong>Other; {details.other_academic_discipline}</strong></td></tr>}
-                {details.rinterestarea && <tr><td>Interest Area :</td><td><strong>{details.rinterestarea}</strong></td></tr>}
-                {details.other_research_interest_area && <tr><td>Interest Area :</td><td><strong>Other; {details.other_research_interest_area}</strong></td></tr>}
-                {details.pinterestarea && <tr><td>Interest Area :</td><td><strong>{details.pinterestarea}</strong></td></tr>}
-                {details.other_professional_interest_area && <tr><td>Interest Area :</td><td><strong>Other; {details.other_professional_interest_area}</strong></td></tr>}              </tbody>
+                {(details.academicdisciplinename || details.other_academic_discipline) && <tr><td>Academic Discipline :</td><td><strong>{details.academicdisciplinename}</strong>{details.other_academic_discipline && <span>,&nbsp;</span>}  {details.other_academic_discipline && <strong>Other; {details.other_academic_discipline}</strong>} </td></tr>}
+                {(details.role == 3 && (details.pinterestarea || details.other_research_interest_area)) && <tr><td>Interest Area :</td><td><strong>{details.pinterestarea}</strong> {details.other_research_interest_area && <span>,&nbsp;</span>} {details.other_research_interest_area && <strong>Other; {details.other_research_interest_area}</strong>}</td></tr>}
+                {(details.role == 2 && (details.pinterestarea || details.other_professional_interest_area)) && <tr><td>Interest Area :</td><td><strong>{details.pinterestarea}</strong> {details.other_professional_interest_area && <span>,&nbsp;</span>} {details.other_professional_interest_area && <strong>Other; {details.other_professional_interest_area}</strong>} </td></tr>}
+                </tbody>
             </table>
           </CCardBody>
         </CCard>

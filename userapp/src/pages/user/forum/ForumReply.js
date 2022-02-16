@@ -18,7 +18,6 @@ function ForumReply(props) {
 
     useEffect(() => {
         setForumReplyCommentList(props.replyDetail);
-        console.log(parseInt(props.replyDetail.length)+"============"+ parseInt(visible));        
         if ((parseInt(props.replyDetail.length) < parseInt(visible)) || (parseInt(props.replyDetail.length) == parseInt(visible))) {
             setHideLoad(false);
         } else {
@@ -73,10 +72,52 @@ function ForumReply(props) {
         }
     }    
 
+    const forumReport = (forum_comment_id, index, report_id) => {
+        var message = '';
+        if (report_id) {
+            message = 'Are you sure you want to unreport this Comment?'
+        } else {
+            message = 'Are you sure you want to report this Comment?'
+        }
+        Swal.fire({
+            //title: 'warning!',
+            icon: 'warning',
+            text: message,
+            confirmButtonText: `Yes`,
+            showCancelButton: true,
+            cancelButtonText: 'No',
+            cancelButtonColor: '#e57979',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const tokenString = localStorage.getItem('token');
+                var token = JSON.parse(tokenString);
+                const config = {
+                    headers: { Authorization: `${token}` }
+                };
+                axios.post(api_url + '/forum/forumReport', { forum_comment_id: forum_comment_id }, config).then((result) => {
+                    if (result.data.status) {
+                        if (result.data.response.data.length > 0) { 
+                            let tempColl = [...forumReplyCommentList];
+                            tempColl[index].forum_report_id = result.data.response.data[0].forum_report_id;
+                        }else{
+                            let tempColl = [...forumReplyCommentList];
+                            tempColl[index].forum_report_id = "";
+                        }
+                       // Swal.fire('Success', result.data.response.msg, 'success')
+                    } else {
+                        Swal.fire('Oops...', result.data.response.msg, 'error')
+                    }
+                }).catch((err) => {
+                    console.log(err);
+                })
+            }
+        });
+    }
+
+
     return (
         <div>
                 {forumReplyCommentList && forumReplyCommentList.slice(0, visible).map((replydata, index) => (
-
                 <div key={replydata.reply_comment_id} className="forums-reply-card">
                     <div className="forums-reply-icon">
                         {!replydata.avatar && <img src="images/user.png" />}
@@ -88,15 +129,19 @@ function ForumReply(props) {
                         <span>{replydata.created_at}</span>
                         <ForumDescription description={replydata.comment}></ForumDescription>
                         <span onClick={(e) => reply(replydata.reply_comment_id)} className="Reply-Btn-New">Reply <img src="images/reply_btn.png" /></span>
+                            <span onClick={(e) => forumReport(replydata.reply_comment_id, index, replydata.forum_report_id)} className="forum-report"><i className="fa fa-file-text-o" aria-hidden="true"></i>&nbsp;
+                            {(replydata.forum_report_id) ? "Reported" : "Report"}
+                            </span>
                         <div className="row">
                             <div className="col-md-12">
                                 <div className="new-forums-input" id={replydata.reply_comment_id} style={{ display: 'none' }}>
-                                        <TextareaAutosize maxRows="4" minRows="2" className="form-control" type="text" id={"input" + replydata.reply_comment_id} name="comment" />
+                                    <TextareaAutosize maxRows="4" minRows="2" className="form-control" type="text" id={"input" + replydata.reply_comment_id} name="comment" />
                                     <small id={"error" + replydata.reply_comment_id} style={{ display: 'none' }} className="error">Comment is required.</small>
                                     <button type="submit" className="add-comment-btn" onClick={(e) => replySubmit(replydata.reply_comment_id, index)}>Reply</button>
                                 </div>
 
-                                    {replydata && replydata.reply && replydata.reply.length > 0 && <ForumSubReply subReplyDetail={replydata.reply}></ForumSubReply>}
+                                {replydata && replydata.reply && replydata.reply.length > 0 && <ForumSubReply subReplyDetail={replydata.reply}></ForumSubReply>}
+                                    
 
                                 {/* 
                                 {replydata && replydata.reply && replydata.reply.length > 0 && replydata.reply.slice(0, replyVisible).map((subdata, index) => (

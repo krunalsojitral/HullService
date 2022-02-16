@@ -119,9 +119,11 @@ function ApplyInFutureResearchModel(props) {
                                                     className="form-control"
                                                     selected={value}
                                                     onChange={onChange}
-                                                    peekNextMonth
-                                                    showMonthDropdown
-                                                    showYearDropdown
+                                                    // peekNextMonth
+                                                    // showMonthDropdown
+                                                    // showYearDropdown                                                    
+                                                    // yearDropdownItemNumber={15}
+                                                    // scrollableYearDropdown                                                    
                                                     dropdownMode="select"
                                                     dateFormat="yyyy/MM/dd"
                                                     dateFormatCalendar="yyyy/MM/dd"
@@ -210,9 +212,9 @@ function ApplyInFutureResearchModel(props) {
                                                         className="form-control"
                                                         selected={value}
                                                         onChange={onChange}
-                                                        peekNextMonth
-                                                        showMonthDropdown
-                                                        showYearDropdown
+                                                        // peekNextMonth
+                                                        // showMonthDropdown
+                                                        // showYearDropdown
                                                         dropdownMode="select"
                                                         dateFormat="yyyy/MM/dd"
                                                         dateFormatCalendar="yyyy/MM/dd"
@@ -272,9 +274,9 @@ function ApplyInFutureResearchModel(props) {
                                                             className="form-control"
                                                             selected={value}
                                                             onChange={onChange}
-                                                            peekNextMonth
-                                                            showMonthDropdown
-                                                            showYearDropdown
+                                                            // peekNextMonth
+                                                            // showMonthDropdown
+                                                            // showYearDropdown
                                                             dropdownMode="select"
                                                             dateFormat="yyyy/MM/dd"
                                                             dateFormatCalendar="yyyy/MM/dd"

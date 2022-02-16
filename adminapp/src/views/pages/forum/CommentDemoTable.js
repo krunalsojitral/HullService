@@ -22,6 +22,7 @@ const CommentDemoTable = ({ match }) => {
     { key: 'comment', _style: { width: '20%'} },
     { key: 'user_name', _style: { width: '20%' } },
     { key: 'created_at', _style: { width: '20%' } },
+    { key: 'no_of_reports', _style: { width: '20%' } },
     {
       key: 'show_details',
       label: '',

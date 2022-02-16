@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import axios from 'axios';
-import api_url from './../../Apiurl';
+import api_url from '../../Apiurl';
 import Swal from "sweetalert2";
 import {
   CCardBody,  
@@ -13,7 +13,8 @@ import {
 
 const DemoTable = () => {
 
-  const history = useHistory()  
+  const history = useHistory()
+  
   const [items, setItems] = useState([])
   const [deleteButtonDisable, setDeleteButtonDisable] = useState(true)
   const ref = React.useRef();
@@ -26,6 +27,7 @@ const DemoTable = () => {
   const fields = [
     { key: 'checkbox', label: '', _style: { width: '1%' }, filter: false },
     { key: 'title', _style: { width: '20%'} },
+    { key: 'role', _style: { width: '20%' } },
     { key: 'created_on', _style: { width: '20%' } },    
     { key: 'status', _style: { width: '20%' }, filter: false },
     { key: 'views', _style: { width: '20%' } },
@@ -35,13 +37,14 @@ const DemoTable = () => {
       _style: { width: '1%' },
       filter: false
     }
-  ]
-  const updateItemStatus = (item, status) => {
+  ] 
 
+
+  const updateItemStatus = (item, status) => {
     if (status == 1) {
-      var message = 'Are you sure you want to activate the course ?'
+      var message = 'Are you sure you want to activate the banner ?'
     } else {
-      var message = 'Are you sure you want to deactivate the course ?'
+      var message = 'Are you sure you want to deactivate the banner ?'
     }
     Swal.fire({
       //title: 'warning!',
@@ -54,10 +57,10 @@ const DemoTable = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         var obj = {
-          course_id: item.course_id,
+          banner_id: item.banner_id,
           status: status,
         };
-        axios.post(api_url + "/course/changecourseStatus", obj)
+        axios.post(api_url + "/banner/changebannerStatus", obj)
           .then((result) => {
             if (result.data.status) {
               getNewListWrap('');
@@ -72,15 +75,14 @@ const DemoTable = () => {
           });
       }
     });
-  } 
+  }
 
   
   const getNewList = (status) => {
-    axios.get(api_url + '/course/courseList?status=' + status, {}).then((result) => {
+    axios.get(api_url + '/banner/bannerList?status=' + status, {}).then((result) => {
       if (result.data.status) {
         var usersdatas = result.data.response.data;
         setItems(usersdatas);
-        
       } else {
         Swal.fire('Oops...', result.data.response.msg, 'error')
       }
@@ -91,7 +93,7 @@ const DemoTable = () => {
 
   const getNewListWrap = (status) => {
     getNewList(status);
-  }; 
+  };
 
   const handleAddrTypeChange = (e) => {
     console.clear();
@@ -103,43 +105,27 @@ const DemoTable = () => {
     } else {
       getNewListWrap('');
     }
-
   }
 
-  const handleOnChange = (e) => {
-    const index = e.target.name
-    let itemlist = [...items];
-    itemlist[index].isChecked = e.target.checked;
-    setItems(itemlist);
-
-    const filteredThatArray = items.filter((item) => item.isChecked == true)
-    if (filteredThatArray.length > 0) {
-      setDeleteButtonDisable('');
-    } else {
-      setDeleteButtonDisable(true);
-    }
-  };
-
-  const deleteItem = (e) => {
+  const deleteItem = (e) => {    
     const filteredThatArray = items.filter((item) => item.isChecked == true).map(item => {
       const container = {};
-      container['course_id'] = item.course_id;
+      container['banner_id'] = item.banner_id;
       return container;
     });
 
-    if (filteredThatArray.length > 0) {
-
+    if (filteredThatArray.length > 0) {      
       Swal.fire({
         //title: 'warning!',
         icon: 'warning',
-        text: 'Are you sure you want to delete the selected courses ?',
+        text: 'Are you sure you want to delete the selected banners ?',
         confirmButtonText: `Yes`,
         showCancelButton: true,
         cancelButtonText: 'No',
         cancelButtonColor: '#e57979',
       }).then((result) => {
         if (result.isConfirmed) {
-          axios.post(api_url + '/course/deleteCourse', { course: filteredThatArray }).then((result) => {
+          axios.post(api_url + '/banner/deletebanner', { banner: filteredThatArray }).then((result) => {
             if (result.data.status) {
               getNewListWrap('');
               Swal.fire('Success', result.data.response.msg, 'success')
@@ -151,46 +137,60 @@ const DemoTable = () => {
           })
         }
       });
-
-      
     }else{
-      Swal.fire('Oops...', 'Please select course', 'error')
+      Swal.fire('Oops...', 'Please select banner', 'error')
     }
   }
+
+  const handleOnChange = (e) => {    
+    const index = e.target.name
+    let itemlist = [...items];
+    itemlist[index].isChecked = e.target.checked;
+    setItems(itemlist);
+
+    const filteredThatArray = items.filter((item) => item.isChecked == true)
+    if (filteredThatArray.length > 0){
+      setDeleteButtonDisable('');
+    }else{
+      setDeleteButtonDisable(true);
+    }
+  };
 
   return (
 
     <div>
-       <CCardHeader className="custom-table-header">
-            <div>&nbsp;&nbsp;Course</div>
 
-            <div>
-              <CButton
-                color="primary"
-                variant="outline"
-                shape="square"
-                size="sm"
-                disabled={deleteButtonDisable}
-                onClick={() => deleteItem()}
-                className="d-inline-block"
-              > Delete
-              </CButton>
-              <select ref={ref} onChange={e => handleAddrTypeChange(e)} className="form-control d-inline-block" >
-                <option key="0" value="">Select Option</option>
-                <option key="1" value="1">Active</option>
-                <option key="2" value="0">Inactive</option>
-              </select>
-              <CButton
-                color="primary"
-                variant="outline"
-                shape="square"
-                size="sm"
-                onClick={() => history.push(`/courseadd`)}
-                className="d-inline-block"
-              >Add</CButton>
-            </div>
+      <CCardHeader className="custom-table-header">
+        <div>
+          &nbsp;&nbsp; banner
+        </div>
+        <div>  
+          <CButton 
+            color="primary"
+            variant="outline"
+            shape="square"
+            size="sm"
+            onClick={() => deleteItem()}
+            disabled={deleteButtonDisable}           
+            className="d-inline-block"
+          > Delete
+          </CButton>   
+          <select ref={ref} onChange={e => handleAddrTypeChange(e)} className="form-control d-inline-block" >
+            <option key="0" value="">Select Option</option>
+            <option key="1" value="1">Active</option>
+            <option key="2" value="0">Inactive</option>
+          </select>
+          <CButton
+            color="primary"
+            variant="outline"
+            shape="square"
+            size="sm"
+            onClick={() => history.push(`/banneradd`)}
+            className="d-inline-block"
+          >Add</CButton>
+        </div>
+      </CCardHeader>
 
-          </CCardHeader>
       <CCardBody>
         <CDataTable
           items={items}
@@ -216,7 +216,7 @@ const DemoTable = () => {
             checkbox: (item, index) => (
               <td>
                 <input
-                  key={item.course_id}
+                  key={item.banner_id}
                   name={index}
                   type="checkbox"
                   checked={item.isChecked}
@@ -237,7 +237,7 @@ const DemoTable = () => {
                     }}
                   >
                     Active
-                    <span className="tooltip-title">De-activating the course will remove the course from the front end.</span>
+                    <span className="tooltip-title">De-activating the banner will remove the banner from the front end.</span>
                   </p>
                 ) : (
                   <p
@@ -249,12 +249,13 @@ const DemoTable = () => {
                       );
                     }}
                   >
-                    Inactive
-                    <span className="tooltip-title">Activating the course will add the course back on the front end.</span>
+                      Inactive
+                      <span className="tooltip-title">Activating the banner will add the banner back on the front end.</span>
                   </p>
                 )}
+                {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}
               </td>
-            ),
+            ),            
             'show_details':
               item => {
                 return (
@@ -264,10 +265,11 @@ const DemoTable = () => {
                       variant="outline"
                       shape="square"
                       size="sm"
-                      onClick={() => history.push(`/courseedit/${item.course_id}`)}
+                      onClick={() => history.push(`/banneredit/${item.banner_id}`)}
                       className="mr-1"
                     > Edit
                   </CButton>
+
                   </td>
                 )
               },
@@ -293,8 +295,10 @@ const DemoTable = () => {
           }}
         />
       </CCardBody>
+
     </div>
-    
+
+     
   )
 }
 

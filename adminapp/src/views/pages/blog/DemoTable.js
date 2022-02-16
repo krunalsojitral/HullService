@@ -26,9 +26,9 @@ const DemoTable = () => {
     { key: 'checkbox',label: '',_style: { width: '1%' },filter: false},    
     { key: 'title', _style: { width: '20%'} },
     { key: 'role', _style: { width: '20%' } },
-    { key: 'created_on', _style: { width: '20%' } },
-    { key: 'total_view', _style: { width: '20%' } },    
+    { key: 'created_on', _style: { width: '20%' } },    
     { key: 'status', _style: { width: '20%' }, filter: false },
+    { key: 'views', _style: { width: '20%' } },
     {
       key: 'show_details',
       label: '',

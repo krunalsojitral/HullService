@@ -19,20 +19,20 @@ export default function Sidebar() {
 
     const history = useHistory()
 
-    React.useEffect(() => {
-        return history.listen((location) => {
-            if (location.pathname == "/my-studies"){                
-                submenu();
-            }
-            if (location.pathname == "/participants-in-my-studies") {                
-                submenu();
-            }
-        })
-    }, [history])
+    // React.useEffect(() => {
+    //     return history.listen((location) => {
+    //         if (location.pathname == "/my-studies"){                
+    //             submenu();
+    //         }
+    //         if (location.pathname == "/participants-in-my-studies") {                
+    //             submenu();
+    //         }
+    //     })
+    // }, [history])
 
-    const submenu = () => {
-        $(".sub-menu").toggleClass('sub-active');
-    }
+    // const submenu = () => {
+    //     $(".sub-menu").toggleClass('sub-active');
+    // }
 
     return(
         <div className="side-bar">

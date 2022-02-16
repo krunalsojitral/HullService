@@ -262,7 +262,12 @@ const _nav = [
         _tag: "CSidebarNavItem",
         name: "Forums Content",
         to: "/forum-content",
-      }      
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "Banner Content",
+        to: "/banner",
+      }
     ],
   },
   // {

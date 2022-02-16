@@ -56,27 +56,78 @@ router.get('/forumList', function (req, res) {
     });
 });
 
-router.post('/forumCommentList', function (req, res) {
-    loggerData(req);
-    var forum_id = req.body.forum_id;
-    Forum.getAllForumComment(forum_id,function (err, result) {
-        if (err) {
-            return res.json({ status: 0, 'response': { msg: err } });
-        } else {
-            var forumCommentList = result.map(data => {
-                let retObj = {};                
-                retObj['forum_comment_id'] = data.forum_comment_id;
-                retObj['forum_id'] = data.forum_id;
-                retObj['comment'] = data.comment;
-                retObj['user_id'] = data.user_id;
-                retObj['user_name'] = data.name;
-                retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
-                return retObj;
+
+router.post('/forumCommentList', (req, res) => {
+    asyn.waterfall([
+        function (done) {
+            var forum_id = req.body.forum_id;
+            Forum.getAllForumComment(forum_id, function (err, data) {
+                if (err) {
+                    done(null, data)
+                } else {
+                    if (data.length > 0) {                        
+                        let temparray = new Promise(async (resolve, reject) => {
+                            for (let datas of data) {
+                                await Forum.getCommentCount(datas.forum_comment_id, function (err, cntdata) {
+                                    if (cntdata.length > 0) {
+                                        datas.report = cntdata[0].cnt;
+                                    }
+                                });
+                            }
+                            setTimeout(() => resolve(data), 50)
+                        });
+                        temparray.then(finalresult => {                            
+                            var forumCommentList = finalresult.map(data => {
+                                let retObj = {};
+                                retObj['forum_comment_id'] = data.forum_comment_id;
+                                retObj['forum_id'] = data.forum_id;
+                                retObj['comment'] = data.comment;
+                                retObj['user_id'] = data.user_id;
+                                retObj['no_of_reports'] = (data.report) ? data.report: 0;
+                                retObj['user_name'] = (data.first_name) ? data.first_name : '' + " " + (data.last_name) ? data.last_name : '';
+                                retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
+                                return retObj;
+                            });                            
+                            done(null, forumCommentList)
+                        })
+                    } else {
+                        done(null, [])
+                    }
+                }
             });
-            return res.json({ status: 1, 'response': { data: forumCommentList } });
+        }
+    ],
+    function (error, finalData) {
+        if (error) {
+            return res.json({ 'status': 0, 'response': { 'msg': error } });
+        } else {
+            return res.json({ 'status': 1, 'response': { 'data': finalData, 'msg': 'data found' } });
         }
     });
 });
+
+
+// router.post('/forumCommentList', function (req, res) {
+//     loggerData(req);
+//     var forum_id = req.body.forum_id;
+//     Forum.getAllForumComment(forum_id,function (err, result) {
+//         if (err) {
+//             return res.json({ status: 0, 'response': { msg: err } });
+//         } else {
+//             var forumCommentList = result.map(data => {
+//                 let retObj = {};                
+//                 retObj['forum_comment_id'] = data.forum_comment_id;
+//                 retObj['forum_id'] = data.forum_id;
+//                 retObj['comment'] = data.comment;
+//                 retObj['user_id'] = data.user_id;
+//                 retObj['user_name'] = (data.first_name) ? data.first_name : '' + " " + (data.last_name) ? data.last_name:'';
+//                 retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
+//                 return retObj;
+//             });
+//             return res.json({ status: 1, 'response': { data: forumCommentList } });
+//         }
+//     });
+// });
 
 
 
@@ -863,46 +914,48 @@ router.post('/getForumCommentList', passport.authenticate('jwt', { session: fals
             Forum.getForumCommentList(forum_id, user_id, function (err, result) {
                 if (err) {
                     return res.json({ status: 0, 'response': { msg: err } });
-                } else {
+                } else {                    
                     if (result.length > 0) {
                         var response = [];
                         var final_response = [];
                         Promise.all(result.map(function (item) {
                             var temparray = new Promise(function (resolve, reject) {
-                                Forum.getForumReplyComment(item.forum_comment_id, imageLink, function (err, data) {
+                                Forum.getForumReplyComment(item.forum_comment_id, imageLink, user_id, function (err, data) {                                    
                                     if (data && data.reply_list.length > 0) {     
                                         item.reply = data.reply_list;
                                     }
-                                    item.like_comment_count = data.like_comment_count[0].cnt;
-                                    item.unlike_comment_count = data.unlike_comment_count[0].cnt;
+                                    // item.like_comment_count = data.like_comment_count[0].cnt;
+                                    // item.unlike_comment_count = data.unlike_comment_count[0].cnt;
                                     setTimeout(() => resolve(item), 50)
                                 });
                               
                             });
                             return temparray.then(result => {
-                                response.push(result);
-                                var commentList = response.map(data => {    
+                                response.push(result);                                
+                                var commentList = response.map(data => {   
+                                    
                                     let retObj = {};
                                     retObj['user_id'] = data.u_id;
                                     retObj['comment'] = data.comment;
                                     retObj['comment_date'] = data.comment_date;
                                     retObj['first_name'] = data.first_name;
                                     retObj['forum_comment_id'] = data.forum_comment_id;
+                                    retObj['forum_report_id'] = data.forum_report_id;
                                     retObj['last_name'] = data.last_name;
                                     //retObj['created_on'] = helper.timeSince(data.comment_date); 
                                     retObj['created_on'] = moment(data.comment_date).format('MMMM Do, YYYY');
                                     retObj['parent_comment_id'] = data.parent_comment_id;
-                                    retObj['comment_like_id'] = (data.action_type == 'like') ? data.comment_like_id :'';
-                                    retObj['comment_dislike_id'] = (data.action_type == 'unlike') ? data.comment_like_id : '';
+                                    // retObj['comment_like_id'] = (data.action_type == 'like') ? data.comment_like_id :'';
+                                    // retObj['comment_dislike_id'] = (data.action_type == 'unlike') ? data.comment_like_id : '';
                                     retObj['reply'] = (data.reply && data.reply.length > 0) ? data.reply: [];
-                                    retObj['like_comment_count'] = data.like_comment_count;
-                                    retObj['unlike_comment_count'] = data.unlike_comment_count;
+                                    // retObj['like_comment_count'] = data.like_comment_count;
+                                    // retObj['unlike_comment_count'] = data.unlike_comment_count;
                                     retObj['role'] = data.role;
                                     retObj['avatar'] = (data.user_image) ? imageLink + env.USER_VIEW_PATH + data.user_image : '';
                                     return retObj;
                                 }).sort(function (a, b) {                                                                                                         
                                     return a.forum_comment_id - b.forum_comment_id;
-                                });
+                                });                                
                                 final_response = commentList.reverse();
                             })
                         })).then(function () {
@@ -938,7 +991,7 @@ router.post('/getForumCommentList', passport.authenticate('jwt', { session: fals
             // })
         }
     ],
-        function (error, finalData) {
+        function (error, finalData) {            
             if (error) {
                 return res.json({ 'status': 0, 'response': { 'msg': error } });
             } else {
@@ -1142,7 +1195,7 @@ router.post('/addComment', passport.authenticate('jwt', { session: false }), [
                     }else{
 
                         if (req.body.parent_comment_id) {
-                            Forum.getForumReplyComment(obj.parent_comment_id, imageLink, function (err, data) {
+                            Forum.getForumReplyComment(obj.parent_comment_id, imageLink, userDetail.id, function (err, data) {
                                 return res.json({ 'status': 1, 'response': { 'data': data.reply_list, 'msg': 'Data found' } });
                             });
                         } else {
@@ -1298,6 +1351,32 @@ router.get('/updateForumRequestCount', function (req, res) {
             return res.json({ 'status': 1, 'response': { 'msg': 'updated successfully' } });
         }
     });
+});
+
+
+router.post('/forumReport', passport.authenticate('jwt', { session: false }), [
+    check('forum_comment_id', 'forum comment id is required').notEmpty(),
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        loggerData(req);
+        let forum_comment_id = req.body.forum_comment_id;
+        let user_id = req.user.id;
+        Forum.forumReport(forum_comment_id, user_id, function (err, result) {
+            if (err) {
+                return res.json({ status: 0, 'response': { msg: err } });
+            } else {
+                if (result.length > 0){
+                    return res.json({ status: 1, 'response': { msg: 'Reported successfully', data: result } });
+                }else{
+                    return res.json({ status: 1, 'response': { msg: 'Unreport successfully', data: result } });
+                }
+            }
+        });
+    }
 });
 
 module.exports = router;

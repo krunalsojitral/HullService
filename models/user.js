@@ -376,7 +376,8 @@ function User() {
 
     this.getUserInterestAreaById = function (id,role, callback) {
         connection.acquire(function (err, con) {            
-            var sql = '';            
+            var sql = '';     
+            console.log(role);
             if (role == 2){
                 sql = 'SELECT *,professional_interest_area.professional_interest_area_id as p_id FROM user_professional_interest_area inner join professional_interest_area on user_professional_interest_area.professional_interest_area_id = professional_interest_area.professional_interest_area_id where user_professional_interest_area.user_id = $1';
             }else{

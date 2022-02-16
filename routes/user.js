@@ -536,7 +536,7 @@ router.post('/getAdminUserById', [
                         userList['other_professional_interest_area'] = result[0].other_professional_interest_area;
                         userList['other_research_interest_area'] = result[0].other_research_interest_area;
                         userList['pinterestarea'] = csvString;
-                        userList['about_us'] = result[0].about_us;
+                        userList['about_us'] = result[0].about_us;                       
                         return res.json({ 'status': 1, 'response': { 'data': userList, 'msg': 'data found' } });
                     });                    
                 } else {
@@ -554,6 +554,8 @@ router.get('/getEditUserById', passport.authenticate('jwt', { session: false }),
             return res.json({ 'status': 0, 'response': { 'msg': err } });
         } else {
             if (result != '') {
+
+                var role = result[0].role_id
               
                 User.getUserInterestAreaById(user_id, result[0].role_id, function (err, interestresult) {
 
@@ -595,7 +597,8 @@ router.get('/getEditUserById', passport.authenticate('jwt', { session: false }),
                             retObj['value'] = data.p_id;
                             return retObj;
                         });
-                        if (result[0].role_id == 2) {
+                       
+                        if (role == 2) {
                             userList['pinterestarea'] = obj;
                         }else{
                             userList['rinterestarea'] = obj;

@@ -79,7 +79,7 @@ router.get('/blogList', function (req, res) {
                                     retObj['role'] = data.role;
                                     retObj['isChecked'] = false;
                                     retObj['status'] = data.status;
-                                    retObj['total_view'] = (data.total_view) ? data.total_view : 0;
+                                    retObj['views'] = (data.total_view) ? data.total_view : 0;
                                     return retObj;
                                 }).sort(function (a, b) {
                                     return a.blog_id - b.blog_id;

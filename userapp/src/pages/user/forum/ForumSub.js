@@ -104,7 +104,7 @@ export default function ForumSub() {
                                 </div>
                                 {token && <div className="add-forum"><Link className="book-apoint" to={{ pathname: "/add-forum" }}>Request a Thread</Link></div>}
                             </div>
-                            {!noresult && <div className="video-tag">
+                            {/* {!noresult && <div className="video-tag">
                                 <h3>Sort By Tags</h3>
                                 <ul>
                                     {forumTagList.length > 0 && forumTagList.map((data, index) => (
@@ -113,13 +113,58 @@ export default function ForumSub() {
                                         </li>
                                     ))}
                                 </ul>
-                            </div>}
+                            </div>} */}
 
                             <br/>
 
+                            <div className="question-cards">
+                                <table className="question-titles">
+                                    <tr>
+                                        <th>Question</th>
+                                        <th>Replies</th>
+                                        <th>Last Post</th>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div className="question-list">
+                                <div className="panel-group" id="accordion">
+
+                                    {!noresult && currentData.length > 0 &&
+                                        <div className="panel panel-default">
+                                            <div className="panel-collapse">
+                                                <div className="panel-body">
+                                                    <div className="table-responsive">
+                                                        <table className="question-titles">
+                                                            <tbody>
+                                                            {currentData.map((data, index) => (
+                                                                <tr key={data.forum_id}>
+                                                                        <td className="tooltip-box">
+                                                                            <Link to={{ pathname: "/forum-detail", search: "?id=" + data.forum_id }}>
+                                                                                {data.topic.slice(0, 45)} {data.topic.length > 45 && '...'}
+                                                                                <span className="tooltip-title">{data.topic}</span>
+                                                                            </Link>
+                                                                        </td>
+                                                                        <td><span className="comment">{(data.comment && data.comment[0].forum_comment_count) ? data.comment[0].forum_comment_count : 0}</span></td>
+                                                                        <td>{(data.comment && data.comment[0].created_at) ? data.comment[0].created_at : '-'}</td>
+                                                                    </tr>
+                                                                ))}                                                                
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+
+
+
+
                             <div className="category-table">
                                 
-                                {!noresult && currentData.length > 0 && <div className="forum-table">
+                                {/* {!noresult && currentData.length > 0 && <div className="forum-table">
                                         <table className="table">
                                             <thead>
                                                 <tr>
@@ -138,7 +183,7 @@ export default function ForumSub() {
                                                                 <span className="tooltip-title">{data.topic}</span>
                                                             </Link>
                                                         </div>
-                                                        {/* <Link to={{ pathname: "/forum-detail", search: "?id=" + data.forum_id }}>{data.topic.slice(0, 45)}</Link> */}
+                                                       
                                                     </td>
                                                     <td>{(data.comment && data.comment[0].forum_comment_count) ? data.comment[0].forum_comment_count : 0}</td>
                                                     <td><span>{(data.comment && data.comment[0].created_at) ? data.comment[0].created_at : '-'}</span></td>
@@ -147,7 +192,7 @@ export default function ForumSub() {
 
                                             </tbody>
                                         </table>
-                                    </div> }
+                                    </div> } */}
                                 
 
                                 {noresult &&

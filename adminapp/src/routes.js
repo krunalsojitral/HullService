@@ -56,6 +56,9 @@ const AddContentForm = React.lazy(() => import('./views/pages/researches/AddCont
 const ResearchRequestsDemoTable = React.lazy(() => import('./views/pages/researches/ResearchRequestsDemoTable'))
 const BecomeMemberContent = React.lazy(() => import('./views/pages/becomemember/BecomeMemberContent'))
 
+const Banner = React.lazy(() => import('./views/pages/banner/Banner'))
+const BannerAddEditForm = React.lazy(() => import('./views/pages/banner/AddEditForm'))
+
 //event
 const Events = React.lazy(() => import('./views/pages/events/Events'))
 const EventAddEditForm = React.lazy(() => import('./views/pages/events/AddEditForm'))
@@ -150,6 +153,10 @@ const routes = [
   { path: '/events', name: 'Event Pages', component: Events },
   { path: '/eventadd', name: 'Event Add', component: EventAddEditForm },
   { path: '/eventedit/:id', name: 'Event Edit', component: EventEditForm },
+  { path: '/banner', name: 'Banner', component: Banner },
+  { path: '/banneradd', name: 'Banner Add', component: BannerAddEditForm },
+  { path: '/banneredit/:id', name: 'Banner Edit', component: BannerAddEditForm },
+  
 ]
 
 

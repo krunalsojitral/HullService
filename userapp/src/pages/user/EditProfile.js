@@ -265,11 +265,12 @@ export default function EditProfile() {
                         // var test = userdata.about_us.split('<br />').map((line, i) => (
                         //     <span key={i}>
                         //         {line}
-                        //         "\n"
+                        //         \n
                         //     </span>
                         // ))
-                        // console.log(test);
-                        setFormValue('about_us', userdata.about_us.replace(" <br />", "\n"));
+
+                        var test = userdata.about_us.replace('<br />', "\n")
+                        setFormValue('about_us', test);
                     }
                     if (userdata.avatar){
                         setSetectavatar(userdata.avatar)
@@ -620,7 +621,7 @@ export default function EditProfile() {
                                     <div className="view-profile-body">
                                         <div className="row">
                                             <div className="col-md-12">
-                                                <div className="form-group edit-profile">
+                                                {(userTypeList == 3 || userTypeList == 2) && <div className="form-group edit-profile">
                                                     <Controller
                                                         name={"about_us"}
                                                         control={control}
@@ -634,7 +635,7 @@ export default function EditProfile() {
                                                             />
                                                         )}
                                                     ></Controller>
-                                                </div>
+                                                </div>}
                                                 <div className="form-group edit-profile">
                                                     <Controller
                                                         name={"email"}

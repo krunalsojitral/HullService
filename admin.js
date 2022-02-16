@@ -44,7 +44,8 @@ var academicdisciplineRouter = require('./routes/academicdiscipline');
 var professionalinterestareaRouter = require('./routes/professionalinterestarea');
 var researcherinterestareaRouter = require('./routes/researcherinterestarea');
 var researchesRouter = require('./routes/researches');
-var eventRouter = require('./routes/event')
+var eventRouter = require('./routes/event');
+var bannerRouter = require('./routes/banner');
 
 //app.use(express.static('uploads'));
 app.use(express.static('routes/uploads'));
@@ -69,8 +70,8 @@ app.use('/api/academicdiscipline', academicdisciplineRouter);
 app.use('/api/professionalinterestarea', professionalinterestareaRouter);
 app.use('/api/researcherinterestarea', researcherinterestareaRouter);
 app.use('/api/researches', researchesRouter);
-app.use('/api/event',eventRouter)
-
+app.use('/api/event',eventRouter);
+app.use('/api/banner', bannerRouter);
 
 app.get('/', (req, res) => {
     res.json({ msg: 'Server started running on ' + port })

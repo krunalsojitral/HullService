@@ -130,8 +130,6 @@ const AddEditForm = ({ match }) => {
 
   const updateInformationAct = (data) => {
 
-    console.log(selectedRole);
-
     if (selectedRole.length > 0){
       data.blog_id = match.params.id;
       data.description = contentEditor;

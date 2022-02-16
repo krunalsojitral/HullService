@@ -301,9 +301,9 @@ const AddEditForm = ({ match }) => {
                                   onChange={onChange}
                                   dateFormat="yyyy/MM/dd"
                                   dateFormatCalendar="yyyy/MM/dd"
-                                  peekNextMonth
-                                  showMonthDropdown
-                                  showYearDropdown
+                                  // peekNextMonth
+                                  // showMonthDropdown
+                                  // showYearDropdown
                                   dropdownMode="select"
                                   isClearable
                                   placeholderText="Start date"
@@ -329,9 +329,9 @@ const AddEditForm = ({ match }) => {
                                   onChange={onChange}
                                   dateFormat="yyyy/MM/dd"
                                   dateFormatCalendar="yyyy/MM/dd"
-                                  peekNextMonth
-                                  showMonthDropdown
-                                  showYearDropdown
+                                  // peekNextMonth
+                                  // showMonthDropdown
+                                  // showYearDropdown
                                   dropdownMode="select"
                                   isClearable
                                   placeholderText="End date"

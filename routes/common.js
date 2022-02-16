@@ -17,6 +17,11 @@ var mustache = require('mustache');
 var bcrypt = require('bcryptjs');
 var nodemailer = require('nodemailer');
 const nodeMailerCredential = require('./../EmailCredential');
+// const { Token, Priviledges } = require('agora-access-token');
+const { RtcTokenBuilder, RtmTokenBuilder, RtcRole, RtmRole } = require('agora-access-token')
+
+
+
 
 function loggerData(req) {
     if (env.DEBUG) {
@@ -82,7 +87,7 @@ router.get('/roleList', function (req, res) {
     Common.getRoleList(function (err, result) {
         if (err) {
             return res.json({ status: 0, 'response': { msg: err } });
-        } else {            
+        } else {
             var roleList = result.map(data => {
                 let retObj = {};
                 retObj['role_id'] = data.role_id;
@@ -201,7 +206,7 @@ router.get('/getOrganizationList', function (req, res) {
     Common.getOrganizationList(function (err, result) {
         if (err) {
             return res.json({ status: 0, 'response': { msg: err } });
-        } else {       
+        } else {
             if (result.length > 0){
                 var list = result.map(data => {
                     let finalretObj = { organization: [] };
@@ -220,7 +225,7 @@ router.get('/getOrganizationList', function (req, res) {
 });
 
 
-router.post('/addPreview', function (req, res) {    
+router.post('/addPreview', function (req, res) {
     loggerData(req);
 
     var form = new formidable.IncomingForm();
@@ -233,12 +238,12 @@ router.post('/addPreview', function (req, res) {
             if (req.headers.host == env.ADMIN_LIVE_URL) {
                 imageLink = env.USER_LIVE_URL;
             } else {
-                imageLink = env.USER_LIVE_URL;                
+                imageLink = env.USER_LIVE_URL;
             }
 
             var json = fields.data;
-            let obj = JSON.parse(json); 
-            
+            let obj = JSON.parse(json);
+
             var videoId = '';
             if (obj.video_url) {
                 videoId = helper.getVideoId(obj.video_url);
@@ -313,7 +318,7 @@ router.post('/addPreview', function (req, res) {
             };
 
             let course_record = {
-                title: obj.title,                               
+                title: obj.title,
                 live_session_url: (obj.live_session_url) ? obj.live_session_url : '',
                 live_session_date: (obj.live_session_date) ? obj.live_session_date : '',
                 live_session_time: (obj.live_session_time) ? obj.live_session_time : '',
@@ -363,7 +368,7 @@ router.post('/addPreview', function (req, res) {
                 content_description_four: obj.content_description_four,
                 content_title_five: obj.content_title_five,
                 content_description_five: obj.content_description_five,
-                trainer: obj.trainer,                                
+                trainer: obj.trainer,
                 purchase_type: obj.purchase_type,
                 main_cost: obj.main_cost,
                 sale_cost: obj.sale_cost,
@@ -391,7 +396,7 @@ router.post('/addPreview', function (req, res) {
             obj.content_title_four, obj.content_description_four,
             obj.content_title_five, obj.content_description_five,
                 obj.trainer, obj.purchase_type, obj.main_cost, obj.sale_cost, moment().format('YYYY-MM-DD'), obj.type]
-            
+
             asyn.waterfall([
                 function (done) {
                     let overview = {};
@@ -401,9 +406,9 @@ router.post('/addPreview', function (req, res) {
                         let tmp_path = files.image.path;
                         if (file_ext == 'png' || file_ext == 'PNG' || file_ext == 'jpg' || file_ext == 'JPG' || file_ext == 'jpeg' || file_ext == 'JPEG') {
                             fs.rename(tmp_path, path.join(__dirname, env.PREVIEW_PATH + ProfileImage), function (err) {
-                                overview['image'] = ProfileImage;                                
+                                overview['image'] = ProfileImage;
                                 fs.unlink(tmp_path, function () {
-                                    if (err) {                                        
+                                    if (err) {
                                         done(err, overview)
                                     }else{
                                         done(err, overview)
@@ -412,7 +417,7 @@ router.post('/addPreview', function (req, res) {
                             });
                         } else {
                             overview['image'] = '';
-                            done('Only image with jpg, jpeg and png format are allowed', overview);                            
+                            done('Only image with jpg, jpeg and png format are allowed', overview);
                         }
                     } else {
                         overview['image'] = '';
@@ -420,7 +425,7 @@ router.post('/addPreview', function (req, res) {
                     }
                 },
                 function (overview, done1) {
-                    if (overview.image != '') { record.image = overview.image; }                    
+                    if (overview.image != '') { record.image = overview.image; }
                     Common.addPreview(record, update_value, course_record, function (err, result) {
                         if (err) {
                             done1(err, overview)
@@ -441,7 +446,7 @@ router.post('/addPreview', function (req, res) {
     });
 
 
-    
+
 });
 
 router.get('/getPreview', function (req, res) {
@@ -528,8 +533,8 @@ router.get('/getPreview', function (req, res) {
             }else{
                 return res.json({ status: 1, 'response': { data: {} } });
             }
-            
-            
+
+
         }
     });
 });
@@ -647,7 +652,7 @@ router.post('/getDynamicPageDataByMenu', [check('menu', 'menu is required').notE
                         page['title'] = result[0].title;
                         page['created_at'] = moment(result[0].created_at).format('MMMM DD, YYYY');
                         page['description'] = result[0].description;
-                        page['image'] = (result[0].image) ? imageLink + env.BLOG_VIEW_PATH + result[0].image : '';                        
+                        page['image'] = (result[0].image) ? imageLink + env.BLOG_VIEW_PATH + result[0].image : '';
                         page['status'] = result[0].status;
                         done(err, page)
                     }
@@ -674,7 +679,7 @@ router.get('/getDynamicMenu', function (req, res) {
             var menuList = result.map(data => {
                 let retObj = {};
                 retObj['dynamic_menu_id'] = data.dynamic_menu_id;
-                retObj['menu_name'] = data.menu_name;                
+                retObj['menu_name'] = data.menu_name;
                 return retObj;
             });
             return res.json({ status: 1, 'response': { data: menuList } });
@@ -841,5 +846,59 @@ router.post('/sendEmail', function (req, res) {
 
 });
 
-module.exports = router;
+router.get('/access_token', function (req, res) {
 
+    const appID = '076cd275e3274e84b0daa2322e5180e4';
+    const appCertificate = 'd4e4ca76b2124b8ea6170c92747d4a7f';
+    const channelName = 'dipika';
+    const uid = 0;
+    const account = "";
+    const role = RtcRole.PUBLISHER;
+
+    const expirationTimeInSeconds = 3600
+
+    const currentTimestamp = Math.floor(Date.now() / 1000)
+
+    const privilegeExpiredTs = currentTimestamp + expirationTimeInSeconds
+
+    // IMPORTANT! Build token with either the uid or with the user account. Comment out the option you do not want to use below.
+
+    // Build token with uid
+    const tokenA = RtcTokenBuilder.buildTokenWithUid(appID, appCertificate, channelName, uid, role, privilegeExpiredTs);
+    console.log("Token With Integer Number Uid: " + tokenA);
+
+    // Build token with user account
+    const tokenB = RtcTokenBuilder.buildTokenWithAccount(appID, appCertificate, channelName, account, role, privilegeExpiredTs);
+    console.log("Token With UserAccount: " + tokenB);
+
+
+    return res.json({ 'status': 0, 'response': { "Token With Integer Number Uid: ": tokenA, "Token With UserAccount:":tokenB } });
+
+
+    // var channel = req.query.channel;
+    // if (!channel) {
+    //     return resp.status(500).json({ 'error': 'channel name is required' });
+    // }
+
+    // var uid = req.query.uid;
+    // if (!uid) {
+    //     uid = 0;
+    // }
+
+    // var expiredTs = req.query.expiredTs;
+    // if (!expiredTs) {
+    //     expiredTs = 0;
+    // }
+
+
+
+    // var token = new Token("076cd275e3274e84b0daa2322e5180e4", "d4e4ca76b2124b8ea6170c92747d4a7f", channel, uid);
+    // console.log('==============');
+    // console.log(token);
+    // // typically you will ONLY need join channel priviledge
+    // token.addPriviledge(Priviledges.kJoinChannel, expiredTs);
+    // return resp.json({ 'token': token.build() });
+});
+
+
+module.exports = router;

@@ -62,7 +62,7 @@ function forum() {
 
     this.getAllForumComment = function (id,callback) {
         connection.acquire(function (err, con) {
-            con.query('SELECT * FROM forum_comment inner join users on users.id= forum_comment.user_id where forum_id = $1', [id], function (err, result) {
+            con.query('SELECT * FROM forum_comment inner join users on users.id = forum_comment.user_id where forum_id = $1', [id], function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }
@@ -73,6 +73,22 @@ function forum() {
             });
         });
     };
+
+    this.getCommentCount = function (id, callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT count(*) as cnt FROM forum_report where forum_comment_id = $1', [id], function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
+    
 
     
     this.addforumByadmin = function (record, tag, callback) {
@@ -541,7 +557,8 @@ function forum() {
         connection.acquire(function (err, con) {                 
             
             //var sql = 'SELECT c.created_at as comment_date,ur.role,c.forum_comment_id,c.comment,c.parent_comment_id, r.comment as reply,u.first_name, u.last_name FROM forum_comment c inner join users as u on u.id = c.user_id inner join user_role as ur on ur.role_id = u.role LEFT JOIN forum_comment r ON c.forum_comment_id = r.parent_comment_id WHERE c.forum_id = $1 order by c.forum_comment_id DESC';
-            var sql = 'SELECT *,u.id as u_id, c.created_at as comment_date FROM forum_comment c inner join users as u on u.id = c.user_id inner join user_role as ur on ur.role_id = u.role left join comment_like as cl on cl.comment_id = c.forum_comment_id and cl.user_id = $1 WHERE c.parent_comment_id IS NULL and c.forum_id = $2 order by c.forum_comment_id DESC';
+            //like query var sql = 'SELECT *,u.id as u_id, c.created_at as comment_date FROM forum_comment c inner join users as u on u.id = c.user_id inner join user_role as ur on ur.role_id = u.role left join comment_like as cl on cl.comment_id = c.forum_comment_id and cl.user_id = $1 left join forum_report as fr on fr.forum_comment_id = c.forum_comment_id and fr.user_id = $2 WHERE c.parent_comment_id IS NULL and c.forum_id = $3 order by c.forum_comment_id DESC';
+            var sql = 'SELECT *,c.forum_comment_id as forum_comment_id, u.id as u_id, c.created_at as comment_date, fr.forum_report_id FROM forum_comment c inner join users as u on u.id = c.user_id inner join user_role as ur on ur.role_id = u.role left join forum_report as fr on fr.forum_comment_id = c.forum_comment_id and fr.user_id = $1 WHERE c.parent_comment_id IS NULL and c.forum_id = $2 order by c.forum_comment_id DESC';
             con.query(sql, [user_id, id], function (err, result) {
                 con.release();
                 if (err) {
@@ -726,9 +743,8 @@ function forum() {
         });       
     }
 
-    this.getForumReplyComment = function (id, imageLink, callback) {
-        connection.acquire(function (err, con) {
-  
+    this.getForumReplyComment = function (id, imageLink, user_id, callback) {
+        connection.acquire(function (err, con) {  
             var obj = {
                 reply_list: [],
                 like_comment_count: 0,
@@ -737,8 +753,8 @@ function forum() {
             asyn.waterfall([
                 function (done) {                      
                     
-                    var sql = 'SELECT u.id as u_id,ur.role,u.user_image,u.first_name,u.last_name,c.comment,c.created_at,c.forum_comment_id as reply_comment_id FROM forum_comment as c inner join users as u on u.id = c.user_id inner join user_role as ur on ur.role_id = u.role where c.parent_comment_id = $1 order by c.forum_comment_id DESC';
-                    con.query(sql, [id], function (err, result) { 
+                    var sql = 'SELECT u.id as u_id,ur.role,u.user_image,u.first_name,u.last_name,c.comment,c.created_at,c.forum_comment_id as reply_comment_id,fr.forum_report_id FROM forum_comment as c inner join users as u on u.id = c.user_id inner join user_role as ur on ur.role_id = u.role left join forum_report as fr on fr.forum_comment_id = c.forum_comment_id and fr.user_id = $1 where c.parent_comment_id = $2 order by c.forum_comment_id DESC';
+                    con.query(sql, [user_id, id], function (err, result) {
                         if (err){
                             console.log(err);
                             done(err, null);
@@ -746,8 +762,8 @@ function forum() {
                             var response = [];
                             Promise.all(result.rows.map(function (item) {
                                 var temparray = new Promise(function (resolve, reject) {
-                                    var sql = 'SELECT u.id as u_id,u.user_image,ur.role,u.first_name,u.last_name,c.comment,c.created_at,c.forum_comment_id as reply_comment_id FROM forum_comment as c inner join users as u on u.id = c.user_id inner join user_role as ur on ur.role_id = u.role where c.parent_comment_id = $1 order by c.forum_comment_id DESC';
-                                    con.query(sql, [item.reply_comment_id], function (err, results) {
+                                    var sql = 'SELECT u.id as u_id,u.user_image,ur.role,u.first_name,u.last_name,c.comment,c.created_at,c.forum_comment_id as reply_comment_id,fr.forum_report_id FROM forum_comment as c inner join users as u on u.id = c.user_id inner join user_role as ur on ur.role_id = u.role left join forum_report as fr on fr.forum_comment_id = c.forum_comment_id and fr.user_id = $1 where c.parent_comment_id = $2 order by c.forum_comment_id DESC';
+                                    con.query(sql, [user_id, item.reply_comment_id], function (err, results) {                                        
                                         if (results && results.rows.length > 0) {
                                             item.reply = results.rows.map(data => {
                                                 let retObj = {};
@@ -759,6 +775,7 @@ function forum() {
                                                 retObj['role'] = data.role;
                                                 retObj['avatar'] = (data.user_image) ? imageLink + env.USER_VIEW_PATH + data.user_image : '';
                                                 retObj['reply_comment_id'] = data.reply_comment_id;
+                                                retObj['forum_report_id'] = data.forum_report_id;
                                                 return retObj;
                                             })
                                         } else {
@@ -781,11 +798,12 @@ function forum() {
                                         retObj['last_name'] = data.last_name;
                                         retObj['created_at'] = moment(data.created_at).format('MMMM Do, YYYY');
                                         retObj['parent_comment_id'] = data.parent_comment_id;
-                                        retObj['comment_like_id'] = (data.action_type == 'like') ? data.comment_like_id : '';
-                                        retObj['comment_dislike_id'] = (data.action_type == 'unlike') ? data.comment_like_id : '';
+                                        // retObj['comment_like_id'] = (data.action_type == 'like') ? data.comment_like_id : '';
+                                        // retObj['comment_dislike_id'] = (data.action_type == 'unlike') ? data.comment_like_id : '';
                                         retObj['reply'] = (data.reply && data.reply.length > 0) ? data.reply : [];
                                         retObj['role'] = data.role;
                                         retObj['avatar'] = (data.user_image) ? imageLink + env.USER_VIEW_PATH + data.user_image : '';
+                                        retObj['forum_report_id'] = data.forum_report_id;
                                         return retObj;
                                     }).sort(function (a, b) {
                                         return a.forum_comment_id - b.forum_comment_id;
@@ -794,6 +812,7 @@ function forum() {
                                     obj.reply_list = commentList;
                                 })
                             })).then(function () {
+                                con.release();
                                 done(null, obj);
                             })
                         }
@@ -801,29 +820,29 @@ function forum() {
                     });
                     
                 },
-                function (obj, done2) {
-                    var sql = 'SELECT count(*) as cnt FROM forum_comment as c inner join comment_like as cl on cl.comment_id = c.forum_comment_id and action_type = $1 where c.forum_comment_id = $2';
-                    con.query(sql, ["like", id], function (err, result) {                       
-                        if (err) {
-                            done2(err, null);
-                        } else {
-                            obj.like_comment_count = result.rows
-                            done2(err, obj);
-                        }
-                    });
-                },
-                function (obj, done2) {
-                    var sql = 'SELECT count(*) as cnt FROM forum_comment as c inner join comment_like as cl on cl.comment_id = c.forum_comment_id and action_type = $1 where c.forum_comment_id = $2';
-                    con.query(sql, ["unlike", id], function (err, result) {
-                        con.release();
-                        if (err) {
-                            done2(err, null);
-                        } else {
-                            obj.unlike_comment_count = result.rows
-                            done2(err, obj);
-                        }
-                    });
-                }
+                // function (obj, done2) {
+                //     var sql = 'SELECT count(*) as cnt FROM forum_comment as c inner join comment_like as cl on cl.comment_id = c.forum_comment_id and action_type = $1 where c.forum_comment_id = $2';
+                //     con.query(sql, ["like", id], function (err, result) {                       
+                //         if (err) {
+                //             done2(err, null);
+                //         } else {
+                //             obj.like_comment_count = result.rows
+                //             done2(err, obj);
+                //         }
+                //     });
+                // },
+                // function (obj, done2) {
+                //     var sql = 'SELECT count(*) as cnt FROM forum_comment as c inner join comment_like as cl on cl.comment_id = c.forum_comment_id and action_type = $1 where c.forum_comment_id = $2';
+                //     con.query(sql, ["unlike", id], function (err, result) {
+                //         con.release();
+                //         if (err) {
+                //             done2(err, null);
+                //         } else {
+                //             obj.unlike_comment_count = result.rows
+                //             done2(err, obj);
+                //         }
+                //     });
+                // }
             ],
             function (err, obj) {
                 callback(null, obj);
@@ -1158,6 +1177,48 @@ function forum() {
                 }else{
                     callback(null, obj);
                 }                
+            });
+        });
+    };
+
+    
+    this.forumReport = function (forum_comment_id, user_id, callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM forum_report where forum_comment_id = $1 and user_id = $2', [forum_comment_id, user_id], function (err, result) {
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    if (result.rows.length > 0) {
+                        const sql = 'DELETE FROM forum_report WHERE user_id = $1 and forum_comment_id = $2'
+                        const values = [user_id, forum_comment_id]
+                        con.query(sql, values, function (err, result) {
+                            con.release()
+                            if (err) {
+                                if (env.DEBUG) {
+                                    console.log(err);
+                                }
+                                callback(err, null);
+                            } else {
+                                callback(null, []);
+                            }
+                        });
+                    }else{
+                        const sql = 'INSERT INTO forum_report(user_id,forum_comment_id) VALUES($1,$2) RETURNING *'
+                        const values = [user_id, forum_comment_id]
+                        con.query(sql, values, function (err, result) {
+                            con.release()
+                            if (err) {
+                                if (env.DEBUG) {
+                                    console.log(err);
+                                }
+                                callback(err, null);
+                            } else {
+                                callback(null, result.rows);
+                            }
+                        });
+                    }                   
+                }
             });
         });
     };

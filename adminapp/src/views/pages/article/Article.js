@@ -7,11 +7,13 @@ import {
 import DemoTable from './DemoTable'
 
 const Article = () => {  
+
+
+
   return (
     <CRow>
       <CCol sm="12">
-        <CCard>
-        
+        <CCard>       
           <DemoTable />
         </CCard>
       </CCol>
