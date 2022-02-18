@@ -17,15 +17,8 @@ const Login = React.lazy(() => import('./views/pages/login/Login'));
 //const Blog = React.lazy(() => import('./views/pages/blog/Blog'));
 
 
-
-
 class App extends Component {
-
-  
-
   render() {
-   
- 
     return (
       <HashRouter>
         <React.Suspense fallback={loading}>

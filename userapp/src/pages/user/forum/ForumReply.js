@@ -15,6 +15,15 @@ function ForumReply(props) {
     const [replyVisible, setReplyVisible] = useState(3);
     const [forumId, setForumId] = useState();
     const [hideLoad, setHideLoad] = useState(true);    
+    const [loginUserID, setLoginUserID] = useState();
+
+    React.useEffect(() => {        
+
+        const typeString = localStorage.getItem('userdata');
+        var usersessiondata = JSON.parse(typeString);
+        setLoginUserID(usersessiondata.id)
+
+    }, []);
 
     useEffect(() => {
         setForumReplyCommentList(props.replyDetail);
@@ -114,6 +123,80 @@ function ForumReply(props) {
         });
     }
 
+    const forumCommentEdit = (forum_comment_id, index, comment) => {
+        var regex = /<br\s*[\/]?>/gi;
+        $("#edit_description" + forum_comment_id).css('display', 'block');
+        $("#show_description" + forum_comment_id).css('display', 'none');
+        $("#edit_input" + forum_comment_id).val(comment.replace(regex, "\n"))
+    }
+
+    const cancelClick = (forum_comment_id, index, comment) => {
+        $("#edit_description" + forum_comment_id).css('display', 'none');
+        $("#show_description" + forum_comment_id).css('display', 'block');
+        $("#edit_error" + forum_comment_id).hide();
+    }
+
+    const replyEdit = (comment_id, index) => {
+
+        if ($("#edit_input" + comment_id).val().trim() == '') {
+            $("#edit_error" + comment_id).show();
+        } else {
+            $("#edit_error" + comment_id).hide();
+
+            var textareaText = $("#edit_input" + comment_id).val();
+            textareaText = textareaText.replace(/\r?\n/g, '<br />');
+            const tokenString = localStorage.getItem('token');
+            var token = JSON.parse(tokenString);
+            const config = { headers: { Authorization: `${token}` } };
+            var obj = {
+                forum_comment_id: comment_id,
+                comment: textareaText
+            }
+            axios.post(api_url + "/forum/updateComment", obj, config)
+                .then((result) => {
+                    if (result.data.status) {
+                        let tempColl = [...forumReplyCommentList];
+                        tempColl[index].comment = textareaText
+                        $("#edit_input" + comment_id).val('')
+                        $("#edit_description" + comment_id).css('display', 'none');
+                        $("#show_description" + comment_id).css('display', 'block');
+                        setForumReplyCommentList(tempColl);
+
+                    } else {
+                        Swal.fire("Oops...", result.data.response.msg, "error");
+                    }
+                }).catch((err) => { console.log(err); });
+        }
+    }
+
+    const forumCommentDelete = (comment_id, index) => {
+
+        Swal.fire({
+            //title: 'warning!',
+            icon: 'warning',
+            text: "Are you sure you want to delete comment ?",
+            confirmButtonText: `Yes`,
+            showCancelButton: true,
+            cancelButtonText: 'No',
+            cancelButtonColor: '#e57979',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var obj = {
+                    forum_comment_id: comment_id
+                }
+                axios.post(api_url + "/forum/deleteComment", obj)
+                    .then((result) => {
+                        if (result.data.status) {
+                              setForumReplyCommentList(forumReplyCommentList.filter(item => item.reply_comment_id !== comment_id));
+                        } else {
+                            Swal.fire("Oops...", result.data.response.msg, "error");
+                        }
+                    }).catch((err) => { console.log(err); });
+            }
+        });
+        
+    }
+
 
     return (
         <div>
@@ -125,13 +208,50 @@ function ForumReply(props) {
                     </div>
                     <div className="forums-reply-text">
 
-                            <h3><Link className="btn-edit" to={{ pathname: "/view-profile", search: "?id=" + replydata.user_id }}>{replydata.first_name} {replydata.last_name}</Link><span>({replydata.role})</span></h3>
-                        <span>{replydata.created_at}</span>
-                        <ForumDescription description={replydata.comment}></ForumDescription>
-                        <span onClick={(e) => reply(replydata.reply_comment_id)} className="Reply-Btn-New">Reply <img src="images/reply_btn.png" /></span>
+                            <div class="comment-dot-btn">
+                                <h3><Link className="btn-edit" to={{ pathname: "/view-profile", search: "?id=" + replydata.user_id }}>{replydata.first_name} {replydata.last_name}</Link><span>({replydata.role})</span></h3>
+                                <div class="Bars-view dropdown">
+                                    <a href="#" class="Bars-Btn-New dropdown-toggle" data-toggle="dropdown"><i class="fa fa-ellipsis-h"></i></a>
+                                    <ul class="dropdown-menu">
+                                        {(loginUserID == replydata.user_id) && <li onClick={(e) => forumCommentEdit(replydata.reply_comment_id, index, replydata.comment)}><span className="forum_action"><i class="fa fa-pencil"></i> Edit</span></li>}
+                                        {(loginUserID == replydata.user_id) && <li onClick={(e) => forumCommentDelete(replydata.reply_comment_id, index)}><span className="forum_action"><i class="fa fa-trash-o"></i> Delete</span></li>}
+                                        <li onClick={(e) => forumReport(replydata.reply_comment_id, index, replydata.forum_report_id)}><span className="forum_action"><i class="fa fa-bug"></i> {(replydata.forum_report_id) ? "Reported" : "Report"}</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            {/* {(loginUserID == replydata.user_id) && <span onClick={(e) => forumCommentEdit(replydata.reply_comment_id, index, replydata.comment)} className="forum-report">Edit</span>}
+                            {(loginUserID == replydata.user_id) && <span onClick={(e) => forumCommentDelete(replydata.reply_comment_id, index)} className="forum-report">Delete</span>}
+
                             <span onClick={(e) => forumReport(replydata.reply_comment_id, index, replydata.forum_report_id)} className="forum-report"><i className="fa fa-file-text-o" aria-hidden="true"></i>&nbsp;
                             {(replydata.forum_report_id) ? "Reported" : "Report"}
-                            </span>
+                            </span> */}
+
+                        
+
+                        <span>{replydata.created_at}</span>
+
+
+                        <div id={"show_description" + replydata.reply_comment_id}><ForumDescription description={replydata.comment}></ForumDescription></div>
+
+                        <div className="row" id={"edit_description" + replydata.reply_comment_id} style={{ display: 'none' }}>
+                            <div className="col-md-12">
+                                <div className="new-forums-input-edit">
+                                    <TextareaAutosize minRows="2" maxRows="4" className="form-control" type="text" id={"edit_input" + replydata.reply_comment_id} name="comment" />
+                                    <div className="comment-update-cancel">
+                                        <button type="submit" onClick={(e) => replyEdit(replydata.reply_comment_id, index)} className="add-comment-btn">Update</button>
+                                        <button type="submit" onClick={(e) => cancelClick(replydata.reply_comment_id, index)} className="add-comment-btn cancel-btn">Cancel</button>
+                                    </div>
+
+                                    <small style={{ display: 'none' }} id={"edit_error" + replydata.reply_comment_id} className="error">Comment is required.</small>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <span onClick={(e) => reply(replydata.reply_comment_id)} className="Reply-Btn-New">Reply <i className="fa fa-reply"></i></span>
+
+                           
                         <div className="row">
                             <div className="col-md-12">
                                 <div className="new-forums-input" id={replydata.reply_comment_id} style={{ display: 'none' }}>

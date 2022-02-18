@@ -15,9 +15,6 @@ function ForumDescription(props) {
                 {isShow ? <p dangerouslySetInnerHTML={{ __html: props.description }}></p> : <p dangerouslySetInnerHTML={{ __html: props.description.substring(0, truncLength) }}></p>}
                 {props.description.length > 495 &&<span onClick={() => setShowHide((previous) => !previous)}>{isShow ? "Read Less" : "Read more"}</span>}
             </p>}
- 
-            
-
         </div>
     )
 }

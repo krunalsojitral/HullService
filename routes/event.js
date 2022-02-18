@@ -19,6 +19,13 @@ Nylas.config({
 });
 var nylas = Nylas.with(env.NYLAS_TOKEN);
 
+function loggerData(req) {
+  if (env.DEBUG) {
+    var URL = "Url:-" + JSON.stringify(req.originalUrl, null, 4) + "\n";
+    //  console.log(moment().format('YYYY-MM-DD h:m:s A') + ": " + URL);
+  }
+}
+
 router.post("/addEventByadmin", function (req, res) {
   var form = new formidable.IncomingForm();
   form.multiples = true;
@@ -175,6 +182,193 @@ router.post("/addEventByadmin", function (req, res) {
       }
     );
   });
+});
+
+router.get('/getEventList', function (req, res) {
+  loggerData(req);
+  var status = req.query.status;
+  Event.getAllAdminEvent(status, function (err, result) {
+    if (err) {
+      return res.json({ status: 0, 'response': { msg: err } });
+    } else {      
+      var eventList = result.map(data => {
+        let retObj = {};
+        retObj['event_id'] = data.event_id;
+        retObj['title'] = data.title;        
+        retObj['start_date'] = (data.start_date) ? moment(data.start_date).format('YYYY-MM-DD') : '';
+        retObj['end_date'] = (data.end_date) ? moment(data.end_date).format('YYYY-MM-DD') : '';
+        retObj['status'] = data.status;
+        return retObj;
+      });
+      return res.json({ status: 1, 'response': { data: eventList } });
+    }
+  });
+});
+
+router.post('/changeEventStatus', [
+  check('event_id', 'Event id is required').notEmpty(),
+  check('status', 'Please enter status').notEmpty(),
+], (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    var error = errors.array();
+    res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+  } else {
+    let event_id = req.body.event_id;
+    let record = {
+      status: req.body.status
+    }
+    Event.changeEventStatus(record, event_id, function (err, result) {
+      if (err) {
+        return res.json({ 'status': 0, 'response': { 'msg': 'Error Occured.' } });
+      } else {
+        if (result) {
+          return res.json({ 'status': 1, 'response': { 'msg': 'Status Changed successfully.' } });
+        } else {
+          return res.json({ 'status': 0, 'response': { 'msg': 'Data not found.' } });
+        }
+      }
+    });
+  }
+});
+
+router.post('/deleteEvent', [
+  check('event', 'Event is required').notEmpty(),
+], (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    var error = errors.array();
+    res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+  } else {
+    loggerData(req);
+    let event = req.body.event;
+    Event.deleteEvent(event, function (err, result) {
+      if (err) {
+        return res.json({ status: 0, 'response': { msg: err } });
+      } else {
+        return res.json({ status: 1, 'response': { msg: 'Event deleted successfully', data: result } });
+      }
+    });
+  }
+});
+
+router.post('/getEventDataById', [check('event_id', 'Event is required').notEmpty()], (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    var error = errors.array();
+    res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+  } else {
+    let event_id = req.body.event_id;
+    asyn.waterfall([
+      function (done) {
+
+        Event.getEventDataById(event_id, function (err, result) {
+          if (err) {
+            done({ 'status': 0, 'response': { 'msg': 'Something went wrong.' } });
+          } else {
+            var imageLink;
+            if (req.headers.host == env.ADMIN_LIVE_URL) {
+              imageLink = env.ADMIN_LIVE_URL;
+            } else {
+              imageLink = env.ADMIN_LIVE_URL;
+            }
+            let event = {};
+            event['event_id'] = result[0].event_id;
+            event['title'] = result[0].title;
+            event['description'] = result[0].description;            
+            event['start_date'] = (result[0].start_date) ? moment(result[0].start_date).format('YYYY/MM/DD') :'';
+            event['end_date'] = (result[0].end_date) ? moment(result[0].end_date).format('YYYY/MM/DD') : '';
+            event['location'] = result[0].location;
+            event['organization'] = result[0].organization;
+            event['image'] = (result[0].image) ? imageLink + env.EVENT_VIEW_PATH + result[0].image : '';
+            event['status'] = result[0].status;  
+            event['group_session'] = [];
+            event['videoURL'] = [];
+            event['webPageUrl'] = [];
+            event['resource'] = [];
+            done(err, event)
+          }
+        });
+      },
+      function (event, done1) {
+        if (event['event_id'] != '') {
+          Event.getGroupSessionByEventId(event['event_id'], function (err, result) {
+            if (result && result.length > 0) {              
+              event['group_session'] = result;
+              done1(null, event)
+            } else {
+              done1(null, event)
+            }
+          });
+        } else {
+          done1(null, event)
+        }
+      },
+      function (event, done2) {
+        if (event['event_id'] != '') {
+          Event.getVideoByEventId(event['event_id'], function (err, result) {
+            if (result && result.length > 0) {              
+              event['videoURL'] = result;
+              done2(null, event)
+            } else {
+              done2(null, event)
+            }
+          });
+        } else {
+          done2(null, event)
+        }
+      },
+      function (event, done3) {
+        if (event['event_id'] != '') {
+          Event.getWebURLByEventId(event['event_id'], function (err, result) {
+            if (result && result.length > 0) {              
+              event['webPageUrl'] = result;
+              done3(null, event)
+            } else {
+              done3(null, event)
+            }
+          });
+        } else {
+          done3(null, event)
+        }
+      },
+      function (event, done4) {
+        if (event['event_id'] != '') {
+          Event.getResourceByEventId(event['event_id'], function (err, result) {
+            if (result && result.length > 0) {
+              var imageLink;
+              if (req.headers.host == env.ADMIN_LIVE_URL) {
+                imageLink = env.ADMIN_LIVE_URL;
+              } else {
+                imageLink = env.ADMIN_LIVE_URL;
+              }
+              var obj = result.map((data, index) => {
+                let retObj = {};
+                retObj['event_resource_id'] = data.event_resource_id;
+                retObj['path'] = (data.path) ? imageLink + env.EVENT_VIEW_PATH + data.path : '';
+                retObj['event_id'] = data.event_id;
+                return retObj;
+              });
+              event['resource'] = obj;
+              done4(null, event)
+            } else {
+              done4(null, event)
+            }
+          });
+        } else {
+          done4(null, event)
+        }
+      }
+    ],
+    function (error, event) {
+      if (error) {
+        return res.json({ 'status': 0, 'response': { 'msg': error } });
+      } else {
+        return res.json({ 'status': 1, 'response': { 'data': event, 'msg': 'data found' } });
+      }
+    });
+
+  }
 });
 
 module.exports = router;

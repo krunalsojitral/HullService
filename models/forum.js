@@ -1222,5 +1222,91 @@ function forum() {
             });
         });
     };
+
+    this.updateComment = function (record, callback) {
+        connection.acquire(function (err, con) {
+            con.query("UPDATE forum_comment SET comment =$1 WHERE forum_comment_id = $2", [record.comment, record.forum_comment_id], function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, record);
+                }
+            });
+        });
+    }
+
+    this.deleteComment = function (comment_id, callback) {
+        connection.acquire(function (err, con) {
+            var forum_comment_list_id = [parseInt(comment_id)];
+            
+            asyn.waterfall([
+                function (done) {
+                    con.query("SELECT forum_comment_id FROM forum_comment WHERE parent_comment_id = $1", [comment_id], function (err, result) {
+                        if (err) {
+                            done(err, null);
+                        } else {
+                            if (result.rows.length > 0) { 
+                                result.rows.forEach(function (val, index) {
+                                    forum_comment_list_id.push(parseInt(val.forum_comment_id));
+                                });
+                                done(err, forum_comment_list_id);
+                            }else{
+                                done(err, forum_comment_list_id);
+                            }
+                        }
+                    }); 
+                },
+                function (obj, done1) {
+                    con.query("SELECT forum_comment_id FROM forum_comment WHERE (parent_comment_id = ANY($1::int[]))", [forum_comment_list_id], function (err, subresult) {
+                        if (err) {
+                            console.log(err);
+                            done1(err, null);
+                        } else {
+                            //console.log(forum_comment_list_id);
+                            if (subresult.rows.length > 0) {
+                                subresult.rows.forEach(function (val, index) {
+                                    forum_comment_list_id.push(val.forum_comment_id);
+                                });
+                                done1(err, forum_comment_list_id);
+                            } else {
+                                done1(err, forum_comment_list_id);
+                            }
+                        }
+                    });
+                },
+                function (obj, done2) {
+                    
+                    uniqueArray = forum_comment_list_id.filter(function (elem, pos) {
+                        return forum_comment_list_id.indexOf(elem) == pos;
+                    })
+                    console.log(uniqueArray);
+                    con.query('DELETE FROM forum_comment where (forum_comment_id = ANY($1::int[]))', [uniqueArray], function (err, results) {
+                        if (err) {
+                            console.log(err);
+                            done2(err, null);
+                        } else {
+                            done2(err, forum_comment_list_id);
+                        }
+                    });
+                }
+            ],
+            function (err, obj) {
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, obj);
+                }
+            });
+        });
+    }
+
+    
 }
 module.exports = new forum();

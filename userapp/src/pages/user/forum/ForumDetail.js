@@ -21,6 +21,7 @@ export default function ForumDetail() {
     const [forumCommentDetail, setForumCommentDetail] = useState([]);
     const [forumId, setForumId] = useState([]);
     const [hideLoad, setHideLoad] = useState(false);
+    const [loginUserID, setLoginUserID] = useState();
     const [Modal, open, close] = useModal('root', {});
 
     React.useEffect(() => {
@@ -31,6 +32,10 @@ export default function ForumDetail() {
         getNewList(forum_id);
         getCommentDetail(forum_id);
         getCommentDetailWrap(forum_id);
+
+        const typeString = localStorage.getItem('userdata');
+        var usersessiondata = JSON.parse(typeString);
+        setLoginUserID(usersessiondata.id)
 
     }, []);
 
@@ -271,6 +276,78 @@ export default function ForumDetail() {
         });
     }
 
+    const forumCommentEdit = (forum_comment_id, index, comment) => { 
+        var regex = /<br\s*[\/]?>/gi;
+        $("#edit_description" + forum_comment_id).css('display', 'block'); 
+        $("#show_description" + forum_comment_id).css('display', 'none');        
+        $("#edit_input" + forum_comment_id).val(comment.replace(regex, "\n"))
+    }
+
+    const cancelClick = (forum_comment_id, index, comment) => {
+        $("#edit_description" + forum_comment_id).css('display', 'none');
+        $("#show_description" + forum_comment_id).css('display', 'block');
+        $("#edit_error" + forum_comment_id).hide();
+    }
+
+    
+    
+    const replyEdit = (comment_id, index) => {
+
+        if ($("#edit_input" + comment_id).val().trim() == '') {
+            $("#edit_error" + comment_id).show();
+        } else {
+            $("#edit_error" + comment_id).hide();
+            var textareaText = $("#edit_input" + comment_id).val();
+            textareaText = textareaText.replace(/\r?\n/g, '<br />');          
+            var obj = {                
+                forum_comment_id: comment_id,
+                comment: textareaText
+            }
+            axios.post(api_url + "/forum/updateComment", obj)
+                .then((result) => {
+                    if (result.data.status) {
+                        let tempColl = [...forumCommentList];
+                        tempColl[index].comment = textareaText
+                        $("#edit_input" + comment_id).val('')
+                        $("#edit_description" + comment_id).css('display', 'none');
+                        $("#show_description" + comment_id).css('display', 'block');
+                        setForumCommentList(tempColl);
+
+                    } else {
+                        Swal.fire("Oops...", result.data.response.msg, "error");
+                    }
+                }).catch((err) => { console.log(err); });
+        }
+    }
+
+    const forumCommentDelete = (comment_id, index) => {
+
+        Swal.fire({
+            //title: 'warning!',
+            icon: 'warning',
+            text: "Are you sure you want to delete comment ?",
+            confirmButtonText: `Yes`,
+            showCancelButton: true,
+            cancelButtonText: 'No',
+            cancelButtonColor: '#e57979',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var obj = {
+                    forum_comment_id: comment_id
+                }
+                axios.post(api_url + "/forum/deleteComment", obj)
+                .then((result) => {
+                    if (result.data.status) {
+                            setForumCommentList(forumCommentList.filter(item => item.forum_comment_id !== comment_id));
+                    } else {
+                        Swal.fire("Oops...", result.data.response.msg, "error");
+                    }
+                }).catch((err) => { console.log(err); });
+            }
+        });    
+        
+    }
+
     
 
     // const forumCommentLikeClick = (comment_id, index) => {
@@ -371,13 +448,8 @@ export default function ForumDetail() {
                                                 </div>
                                             </div>
                                         }
-
                                     </div>
-
-                                   
-
                                     {forumCommentDetail.retire == 0 &&
-
                                         <div className="col-md-12">
                                             <div className="new-forums-input">
                                                 <form onSubmit={handleSubmit(onSubmit)}>
@@ -406,10 +478,7 @@ export default function ForumDetail() {
                                                 </form>
                                             </div>
                                         </div>
-
                                     }
-
-
                                 </div>
                                 <div className="row">
                                     <div className="col-md-6">
@@ -419,15 +488,12 @@ export default function ForumDetail() {
                                     </div>
                                     <div className="col-md-6">
                                         <div className="new-forums-follow-btn">
-
                                             {forumCommentDetail.follow == 0 && <span className="btn-follow" onClick={(e) => handleFollow()} >
                                                 <img src="images/add-user.png" /> Follow
                                             </span>}
                                             {forumCommentDetail.follow == 1 && <span className="btn-follow" onClick={(e) => handleUnFollow()} >
                                                 <img src="images/add-user.png" /> Following
                                             </span>}
-
-
                                         </div>
                                     </div>
                                 </div>
@@ -442,17 +508,46 @@ export default function ForumDetail() {
                                                 {data.avatar && <img src={data.avatar} />}
                                                 <img src="images/user.png" />
                                             </div>
-                                            <div className="forums-reply-text">
-                                            <h3><Link className="btn-edit" to={{ pathname: "/view-profile", search: "?id=" + data.user_id }}>{data.first_name} {data.last_name}</Link><span>({data.role})</span></h3>
+                                            <div className="forums-reply-text">    
+                                            <div class="comment-dot-btn">
+                                                <h3><Link className="btn-edit" to={{ pathname: "/view-profile", search: "?id=" + data.user_id }}>{data.first_name} {data.last_name}</Link><span>({data.role})</span></h3>
+                                                <div class="Bars-view dropdown">
+                                                    <a href="#" class="Bars-Btn-New dropdown-toggle" data-toggle="dropdown"><i class="fa fa-ellipsis-h"></i></a>
+                                                    <ul class="dropdown-menu">                                                        
+                                                        {(loginUserID == data.user_id) && <li onClick={(e) => forumCommentEdit(data.forum_comment_id, index, data.comment)}><span className="forum_action"><i class="fa fa-pencil"></i> Edit</span></li>}
+                                                        {(loginUserID == data.user_id) && <li onClick={(e) => forumCommentDelete(data.forum_comment_id, index)}><span className="forum_action"><i class="fa fa-trash-o"></i> Delete</span></li>}
+                                                        <li onClick={(e) => forumReport(data.forum_comment_id, index, data.forum_report_id)}><span className="forum_action"><i class="fa fa-bug"></i> {(data.forum_report_id) ? "Reported" : "Report"}</span></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                            {/* {(loginUserID == data.user_id) && <span onClick={(e) => forumCommentEdit(data.forum_comment_id, index, data.comment)} className="forum-report">Edit</span>}
+                                            {(loginUserID == data.user_id) && <span onClick={(e) => forumCommentDelete(data.forum_comment_id, index)} className="forum-report">Delete</span>}
+
+                                            <span onClick={(e) => forumReport(data.forum_comment_id, index, data.forum_report_id)} className="forum-report">
+                                                <i className="fa fa-file-text-o" aria-hidden="true"></i>&nbsp;{(data.forum_report_id) ? "Reported" : "Report"}
+                                            </span> */}
+
+
                                                 <span>{data.created_on}</span>
-                                                <ForumDescription description={data.comment}></ForumDescription>
+                                                <div id={"show_description" + data.forum_comment_id}><ForumDescription description={data.comment}></ForumDescription></div>
+
+                                                <div className="row" id={"edit_description" + data.forum_comment_id} style={{ display: 'none' }}>
+                                                    <div className="col-md-12">
+                                                        <div className="new-forums-input-edit">
+                                                            <TextareaAutosize minRows="2" maxRows="4" className="form-control" type="text" id={"edit_input" + data.forum_comment_id} name="comment" />
+                                                            <div className="comment-update-cancel">
+                                                                <button type="submit" onClick={(e) => replyEdit(data.forum_comment_id, index)} className="add-comment-btn">Update</button>
+                                                                <button type="submit" onClick={(e) => cancelClick(data.forum_comment_id, index)} className="add-comment-btn cancel-btn">Cancel</button>
+                                                            </div>
+                                                            <small style={{ display: 'none' }} id={"edit_error" + data.forum_comment_id} className="error">Comment is required.</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                                 <div>
-                                                    {forumCommentDetail.retire == 1 && <span className="Reply-Btn-New">Reply <img src="images/reply_btn.png" /></span>}
-                                                    {forumCommentDetail.retire == 0 && <span onClick={(e) => reply(data.forum_comment_id)} className="Reply-Btn-New">Reply <img src="images/reply_btn.png" /></span>}
-                                                    <span onClick={(e) => forumReport(data.forum_comment_id, index, data.forum_report_id)} className="forum-report">
-                                                        <i className="fa fa-file-text-o" aria-hidden="true"></i>&nbsp;
-                                                        {(data.forum_report_id) ? "Reported" : "Report"}
-                                                    </span>
+                                                    {forumCommentDetail.retire == 1 && <span className="Reply-Btn-New">Reply <i className="fa fa-reply"></i></span>}
+                                                    {forumCommentDetail.retire == 0 && <span onClick={(e) => reply(data.forum_comment_id)} className="Reply-Btn-New">Reply <i className="fa fa-reply"></i></span>}
                                                 </div>                                                
                                                 <div className="row">
                                                     <div className="col-md-12">

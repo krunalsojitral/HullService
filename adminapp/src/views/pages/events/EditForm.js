@@ -114,82 +114,162 @@ const AddEditForm = ({ match }) => {
   }
 
 
-  React.useEffect(() => {
-
-    setValue("title", "event title");
-    //setValue("start_date", "2022/02/10");
-    
-    setContentEditor("description");
-    setValue("location", "city");
-    setValue("organization", "organization");
-    setSetectimage("https://blog.logrocket.com/wp-content/uploads/2020/04/react-native-maps-introduction.png");
-
-    var sessionTitle = [{ "name": "default Value", "value": "Group Session 1" }, { "value": "Group Session 2" }];
-    var sessionDescription = [{ "name": "default Value", "value": "Group Description 1" }, { "value": "Group Description 2" }];
-    var sessionURL = [{ "name": "default Value", "value": "Group URL 1" }, { "value": "Group URL 2" }];
-    var videoURL = [{ "name": "default Value", "value": "Url 1 " }, { "value": "Url 2 " }];
-    var webPageUrl = [{ "name": "default Value", "value": "Web Page URL 1" }, { "value": "Web Page URL 2" }];
-
-    sessionTitle.forEach((item, index) => {
-      if (index > 0){
-        sessionAppend({})
-      }
-    });
-    
-    videoURL.forEach((item, index) => {
-      if (index > 0) {
-        videoAppend({})
-      }
-    });
-
-    webPageUrl.forEach((item, index) => {
-      if (index > 0) {
-        webPageAppend({})
-      }
-    });
-
-    setTimeout(() => {
-      sessionTitle.forEach((item, index) => {
-        setValue(`sessionTitle.${index}.value`, item.value);        
-      }); 
-      sessionDescription.forEach((item, index) => {        
-        setValue(`sessionDescription.${index}.value`, item.value);        
-      });
-      sessionURL.forEach((item, index) => {
-        setValue(`sessionURL.${index}.value`, item.value);
-      });
-      videoURL.forEach((item, index) => {
-        setValue(`videoURL.${index}.value`, item.value);
-      });
-      webPageUrl.forEach((item, index) => {
-        setValue(`webPageUrl.${index}.value`, item.value);
-      });
-    }, 500);
+  React.useEffect(() => {    
 
     
 
    
-    // if (match.params.id) {
-    //   setisEditMode(1);
-    //   axios.post(api_url + "/event/getEventDataById", { blog_id: match.params.id }, {})
-    //     .then((result) => {
-    //       if (result.data.status) {
-    //         var eventdata = result.data.response.data;            
-    //         setValue("title", eventdata.title);
-    //         setValue("start_date", eventdata.start_date);
-    //         setValue("end_date", eventdata.end_date);
-    //         setContentEditor(eventdata.description);
-    //         setValue("location", eventdata.location);
-    //         setValue("organization", eventdata.organization);
-    //         setSetectimage(eventdata.event_image);           
+
     
+
+    
+
+   
+    if (match.params.id) {
+      setisEditMode(1);
+      axios.post(api_url + "/event/getEventDataById", { event_id: match.params.id }, {})
+        .then((result) => {
+          if (result.data.status) {
+            var eventdata = result.data.response.data;            
+            setValue("title", eventdata.title);
+           // setValue("start_date", eventdata.start_date);
+           // setValue("end_date", eventdata.end_date);
+            setContentEditor(eventdata.description);
+            setValue("location", eventdata.location);
+            setValue("organization", eventdata.organization);
+            setSetectimage(eventdata.image);
+
+            // var sessionTitle = [{ "name": "default Value", "value": "Group Session 1" }, { "value": "Group Session 2" }];
+            // var sessionDescription = [{ "name": "default Value", "value": "Group Description 1" }, { "value": "Group Description 2" }];
+            // var sessionURL = [{ "name": "default Value", "value": "Group URL 1" }, { "value": "Group URL 2" }];
+            // var videoURL = [{ "name": "default Value", "value": "Url 1 " }, { "value": "Url 2 " }];
+            // var webPageUrl = [{ "name": "default Value", "value": "Web Page URL 1" }, { "value": "Web Page URL 2" }];
+
+            // setTimeout(() => {
+            //   sessionTitle.forEach((item, index) => {
+            //     setValue(`sessionTitle.${index}.value`, item.value);
+            //   });
+            //   sessionDescription.forEach((item, index) => {
+            //     setValue(`sessionDescription.${index}.value`, item.value);
+            //   });
+            //   sessionURL.forEach((item, index) => {
+            //     setValue(`sessionURL.${index}.value`, item.value);
+            //   });
+            //   videoURL.forEach((item, index) => {
+            //     setValue(`videoURL.${index}.value`, item.value);
+            //   });
+            //   webPageUrl.forEach((item, index) => {
+            //     setValue(`webPageUrl.${index}.value`, item.value);
+            //   });
+            // }, 500);
+
+            // videoURL.forEach((item, index) => {
+            //   if (index > 0) {
+            //     videoAppend({})
+            //   }
+            // });
+
+            // webPageUrl.forEach((item, index) => {
+            //   if (index > 0) {
+            //     webPageAppend({})
+            //   }
+            // });
+
+           
+
+            if (eventdata.group_session.length > 0){
+              var sessionTitle = [];
+              var sessionDescription = [];
+              var sessionURL = [];
+              eventdata.group_session.forEach((item, index) => {
+                if (index == 0){
+                  sessionTitle.push({ "name": "default Value", "value": item.title })
+                  sessionDescription.push({ "name": "default Value", "value": item.description })
+                  sessionURL.push({ "name": "default Value", "value": item.url })
+                }else{
+                  sessionTitle.push({ "value": item.title })
+                  sessionDescription.push({ "value": item.description })
+                  sessionURL.push({ "value": item.url })
+                }                
+              });
+
+              if ((sessionTitle.length > 0) || (sessionDescription.length > 0) || (sessionURL.length > 0)){
+                sessionTitle.forEach((item, index) => {
+                  if (index > 0) {
+                    sessionAppend({})
+                  }
+                });
+                setTimeout(() => {
+                  sessionTitle.forEach((item, index) => {
+                    setValue(`sessionTitle.${index}.value`, item.value);
+                  });
+                  sessionDescription.forEach((item, index) => {
+                    setValue(`sessionDescription.${index}.value`, item.value);
+                  });
+                  sessionURL.forEach((item, index) => {
+                    setValue(`sessionURL.${index}.value`, item.value);
+                  });
+                }, 500);
+              }
+            }
+
+            if (eventdata.videoURL.length > 0) {
+              var videoURL = [];
+              eventdata.videoURL.forEach((item, index) => {
+                if (index == 0) {
+                  videoURL.push({ "name": "default Value", "value": item.path })
+                } else {
+                  videoURL.push({ "value": item.path })
+                }
+              });
+              if (videoURL.length > 0) {
+                eventdata.videoURL.forEach((item, index) => {
+                  if (index > 0) {
+                    videoAppend({})
+                  }
+                });
+                setTimeout(() => {
+                  eventdata.videoURL.forEach((item, index) => {
+                    setValue(`videoURL.${index}.value`, item.path);
+                  });
+                }, 500);
+              }
+            }
+
+            if (eventdata.webPageUrl.length > 0) {
+              var webPageUrl = [];
+              eventdata.webPageUrl.forEach((item, index) => {                
+                if (index == 0) {
+                  webPageUrl.push({ "name": "default Value", "value": item.path })
+                } else {
+                  webPageUrl.push({ "value": item.path })
+                }
+              });
+              if (webPageUrl.length > 0) {
+                webPageUrl.forEach((item, index) => {
+                  if (index > 0) {
+                    webPageAppend({})
+                  }
+                });
+                setTimeout(() => {
+                  eventdata.webPageUrl.forEach((item, index) => {
+                    setValue(`webPageUrl.${index}.value`, item.path);
+                  });
+                }, 500);
+              }
+            }
+    
+            if (eventdata.resource.length > 0) {
+
+            }
+
             
-    //       } else {
-    //         Swal.fire("Oops...", result.data.response.msg, "error");
-    //       }
-    //     })
-    //     .catch((err) => { console.log(err); });
-    // }
+          } else {
+            Swal.fire("Oops...", result.data.response.msg, "error");
+          }
+        })
+        .catch((err) => { console.log(err); });
+    }
   }, []);
 
   const updateInformationAct = (data) => {
@@ -414,14 +494,11 @@ const AddEditForm = ({ match }) => {
                               accept=".png,.PNG,.JPG,.jpg,.jpeg"
                               name="myfile"
                               onChange={changeFileHandler}
-                            />
-                            {(isEditMode === 1) &&
-                              <span>
-                                {!setectimage && <img style={{ width: "100px" }} alt="avatar" src="company-logo.png" />}
-                                {setectimage && <img style={{ width: "100px" }} src={setectimage} alt="user-image" />}
-                              </span>
-                            }
-                            {(isEditMode !== 1 && setectimage != '') && <img style={{ width: "100px" }} src={setectimage} alt="user-image" />}
+                            />                            
+                            <span>
+                              {!setectimage && <img style={{ width: "100px" }} alt="avatar" src="company-logo.png" />}
+                              {setectimage && <img style={{ width: "100px" }} src={setectimage} alt="user-image" />}
+                            </span>
                           </CFormGroup>
                         </CCol>
                       </CRow>

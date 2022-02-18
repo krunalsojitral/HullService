@@ -208,83 +208,70 @@ export default function Header() {
                                             PARTICIPATE IN RESEARCH
                                         </NavLink>
                                         </li></ul></div>}
-
-                                    {(token && location.pathname != "/") && <div className="user-dropdown">
-                                        <div className="dropdown">
-                                            <a href="#" className="dropdown-toggle loged-user-link" data-toggle="dropdown">
-                                                <div className="loged-user-details">
-                                                    <div className="loged-user-icon">
-                                                        {!userData.avatar && <img src="images/user.png" />}
-                                                        {userData.avatar && <img src={userData.avatar} />}
-                                                    </div>
-                                                    <div className="loged-user-name">
-                                                        <h3 title={userData.first_name + ' ' + userData.last_name}> {(userData.first_name+' '+userData.last_name).substring(0, 15)}</h3>
-                                                        <small>({userTypeList})</small>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <ul className="dropdown-menu loged-user-menu">
-                                                <li><Link className="btn-edit" to={{ pathname: "/dashboard" }}>My Dashboard</Link></li>                                               
-                                                <li><Link className="btn-edit" to={{ pathname: "/view-profile", search: "?id=" + userData.id }}>View Profile</Link></li>
-                                                <li onClick={(e) => logoutClick()}><a className="logout">
-                                                    <InlineButton  name={"Logout"} />
-                                                </a></li>
+                                   
+                                        {(token && location.pathname == "/") &&  <div className="hull-menu">
+                                            <ul>
+                                                <li>
+                                                    <NavLink exact={true} activeClassName="active" to="/">
+                                                        <InlineButton name={"HOME"} />
+                                                    </NavLink>
+                                                </li>
+                                                <li>
+                                                    <NavLink activeClassName="active" to="/about">
+                                                        <InlineButton name={"ABOUT"} />
+                                                    </NavLink>
+                                                </li>
+                                                <li>
+                                                    <NavLink activeClassName="active" to="/members">
+                                                        <InlineButton name={"MEMBERS"} />
+                                                    </NavLink>
+                                                </li>
+                                                <li>
+                                                    <NavLink activeClassName="active" to="/partners">
+                                                        <InlineButton name={"PARTNERS"} />
+                                                    </NavLink>
+                                                </li>
+                                                <li>
+                                                    <NavLink activeClassName="active" to="/events">
+                                                        <InlineButton name={"EVENTS"} />
+                                                    </NavLink>
+                                                </li>                                                
+                                                <li>
+                                                    <NavLink activeClassName="active" to="/contact">
+                                                        <InlineButton name={"CONTACT"} />
+                                                    </NavLink>
+                                                </li>
+                                                <li>
+                                                    <NavLink activeClassName="active" to='/participate-in-research'>
+                                                        PARTICIPATE IN RESEARCH
+                                                    </NavLink>
+                                                </li>
                                             </ul>
-                                        </div>
-                                    </div>}
-                                    
-                                    {(token && location.pathname == "/") && <div className="hull-menu">
-                                        <ul>
-                                            <li>
-                                                <NavLink exact={true} activeClassName="active" to="/">
-                                                    <InlineButton name={"HOME"} />
-                                                </NavLink>
-                                            </li>
-                                            <li>
-                                                <NavLink activeClassName="active" to="/about">
-                                                    <InlineButton name={"ABOUT"} />
-                                                </NavLink>
-                                            </li>
-                                            <li>
-                                                <NavLink activeClassName="active" to="/members">
-                                                    <InlineButton name={"MEMBERS"} />
-                                                </NavLink>
-                                            </li>
-                                            <li>
-                                                <NavLink activeClassName="active" to="/partners">
-                                                    <InlineButton name={"PARTNERS"} />
-                                                </NavLink>
-                                            </li>
-                                            <li>
-                                                <NavLink activeClassName="active" to="/events">
-                                                    <InlineButton name={"EVENTS"} />
-                                                </NavLink>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:;">
-                                                    <InlineButton name={"RESOURCES"} />
-                                                </a>
-                                                <ul>
-                                                    <li>
-                                                        <NavLink activeClassName="active" to="/articles" isActive={() => ['/articles', '/article-detail', '/article-payment'].includes(pathname)}>
-                                                            <InlineButton name={"Articles"} />
-                                                        </NavLink>
-                                                    </li>                                                    
-                                                    <li>
-                                                        <NavLink activeClassName="active" to="/informational-video" isActive={() => ['/informational-video', '/video-detail', '/video-payment'].includes(pathname)}>
-                                                            <InlineButton name={"Informational Videos"} />
-                                                        </NavLink>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                            <li>
-                                                <NavLink activeClassName="active" to="/contact">
-                                                    <InlineButton name={"CONTACT"} />
-                                                </NavLink>
-                                            </li>
-                                        </ul>
-                                    </div>} 
-                                    
+                                        </div>}
+                                        {(token) &&  <div className="user-dropdown">
+                                                <div className="dropdown">
+                                                    <a href="#" className="dropdown-toggle loged-user-link" data-toggle="dropdown">
+                                                        <div className="loged-user-details">
+                                                            <div className="loged-user-icon">
+                                                                {!userData.avatar && <img src="images/user.png" />}
+                                                                {userData.avatar && <img src={userData.avatar} />}
+                                                            </div>
+                                                            <div className="loged-user-name">
+                                                                <h3 title={userData.first_name + ' ' + userData.last_name}> {(userData.first_name+' '+userData.last_name).substring(0, 15)}</h3>
+                                                                <small>({userTypeList})</small>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                    <ul className="dropdown-menu loged-user-menu">
+                                                        <li><Link className="btn-edit" to={{ pathname: "/dashboard" }}>My Dashboard</Link></li>                                               
+                                                        <li><Link className="btn-edit" to={{ pathname: "/view-profile", search: "?id=" + userData.id }}>View Profile</Link></li>
+                                                        <li onClick={(e) => logoutClick()}><a className="logout">
+                                                            <InlineButton  name={"Logout"} />
+                                                        </a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        } 
                                 </div> 
                         </div>
                     </div>

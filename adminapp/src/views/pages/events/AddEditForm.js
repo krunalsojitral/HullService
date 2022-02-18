@@ -79,44 +79,6 @@ const AddEditForm = ({ match }) => {
 
 
   React.useEffect(() => {
-    
-    axios.get(api_url + "/common/menuList", {})
-      .then((result) => {
-        if (result.data.status) {
-          var menudata = result.data.response.data;         
-          setMenuList(menudata);
-        } else {
-          Swal.fire("Oops...", result.data.response.msg, "error");
-        }
-      })
-      .catch((err) => { console.log(err); });
- 
-
-    if (match.params.id) {
-      setisEditMode(1);
-      axios.post(api_url + "/blog/getBlogDataById", { blog_id: match.params.id }, {})
-        .then((result) => {
-          if (result.data.status) {
-            var usersdata = result.data.response.data;
-            if (usersdata.draft_status) {
-              setDraftStatus(usersdata.draft_status);
-            } else {
-              setDraftStatus(0);
-            }
-            setValue("title", usersdata.title);
-            setValue("description", usersdata.description);
-            setValue("purchase_type", usersdata.purchase_type);
-            setSelectedRole(usersdata.selected_role);
-            setValue("cost", usersdata.cost);
-            setSelectedTag(usersdata.tag);
-            setSetectimage(usersdata.image);
-            setContentEditor(usersdata.description);
-          } else {
-            Swal.fire("Oops...", result.data.response.msg, "error");
-          }
-        })
-        .catch((err) => { console.log(err); });
-    }
   }, []);
 
   const updateInformationAct = (data) => {
@@ -159,8 +121,7 @@ const AddEditForm = ({ match }) => {
         formData.append("resources[]", finalFile[i], finalFile[i].name);
       }
     }
-
-    console.log(formData);
+    
     axios.post(api_url + "/event/addPageByadmin", formData, {}).then((result) => {
       if (result.data.status) {
         Swal.fire("Success!", result.data.response.msg, "success");

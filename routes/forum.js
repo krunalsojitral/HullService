@@ -1228,6 +1228,47 @@ router.post('/addComment', passport.authenticate('jwt', { session: false }), [
     }
 });
 
+router.post('/updateComment', [
+    check('forum_comment_id', 'forum comment id is required').notEmpty()
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {           
+        var obj = {
+            forum_comment_id: req.body.forum_comment_id,
+            comment: req.body.comment
+        }
+        Forum.updateComment(obj, function (err, result) {
+            if (err) {
+                return res.json({ 'status': 0, 'response': { 'msg': err } });
+            } else {
+                return res.json({ 'status': 1, 'response': { 'data': result, 'msg': 'Comment updated successfully.' } });
+            }
+        });
+    }
+});
+
+router.post('/deleteComment', [
+    check('forum_comment_id', 'forum comment id is required').notEmpty()
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {        
+        Forum.deleteComment(req.body.forum_comment_id, function (err, result) {
+            if (err) {
+                return res.json({ 'status': 0, 'response': { 'msg': err } });
+            } else {
+                return res.json({ 'status': 1, 'response': { 'data': result, 'msg': 'Comment deleted successfully.' } });
+            }
+        });
+    }
+});
+
+
 
 router.post('/forumLike', passport.authenticate('jwt', { session: false }), [
     check('forumid', 'Forum is required').notEmpty()

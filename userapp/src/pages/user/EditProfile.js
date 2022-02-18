@@ -262,15 +262,8 @@ export default function EditProfile() {
                     
 
                     if (userdata.about_us){ 
-                        // var test = userdata.about_us.split('<br />').map((line, i) => (
-                        //     <span key={i}>
-                        //         {line}
-                        //         \n
-                        //     </span>
-                        // ))
-
-                        var test = userdata.about_us.replace('<br />', "\n")
-                        setFormValue('about_us', test);
+                        var regex = /<br\s*[\/]?>/gi;
+                        setFormValue('about_us', userdata.about_us.replace(regex, "\n"));
                     }
                     if (userdata.avatar){
                         setSetectavatar(userdata.avatar)
@@ -322,7 +315,7 @@ export default function EditProfile() {
 
                     setTimeout(() => {
                         clearSuggestions();
-                    }, 500);
+                    }, 800);
                 }
             })
             .catch((err) => { console.log(err); });
