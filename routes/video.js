@@ -329,6 +329,45 @@ router.post('/getvideoDataByIdAfterLogin', passport.authenticate('jwt', { sessio
     }
 });
 
+router.post('/getRelatedPaidVideoList', passport.authenticate('jwt', { session: false }), [check('video_id', 'video id is required').notEmpty()], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        loggerData(req);
+        var user_role = req.user.userrole;
+        let video_id = req.body.video_id;
+        Video.getRelatedPaidVideoList(user_role, video_id, function (err, result) {
+            if (err) {
+                return res.json({ status: 0, 'response': { msg: err } });
+            } else {
+                var imageLink;
+                if (req.headers.host == env.ADMIN_LIVE_URL) {
+                    imageLink = env.ADMIN_LIVE_URL;
+                } else {
+                    imageLink = env.ADMIN_LIVE_URL;
+                }
+                var videoList = result.map(data => {
+                    let retObj = {};
+                    retObj['video_id'] = data.video_id;
+                    retObj['title'] = data.title;
+                    retObj['created_at'] = moment(data.video_date).format('MMMM DD, YYYY');
+                    retObj['role'] = data.role;
+                    retObj['video_embeded_id'] = data.video_embeded_id;
+                    retObj['video_url'] = data.video_url;                    
+                    retObj['video'] = data.video_url;
+                    retObj['cost'] = data.cost;
+                    retObj['status'] = data.status;
+                    retObj['purchase_type'] = data.purchase_type;
+                    return retObj;
+                });
+                return res.json({ status: 1, 'response': { data: videoList } });
+            }
+        });
+    }
+});
+
 
 router.post('/changevideoStatus', [
     check('video_id', 'video id is required').notEmpty(),
@@ -662,42 +701,7 @@ router.post('/getRelatedUnpaidVideoList', [ check('video_id', 'video id is requi
 });
 
 
-router.post('/getRelatedPaidVideoList', passport.authenticate('jwt', { session: false }), [check('video_id', 'video id is required').notEmpty()], (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        var error = errors.array();
-        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
-    } else {
-        loggerData(req);
-        var user_role = req.user.userrole;
-        let video_id = req.body.video_id;
-        Video.getRelatedPaidVideoList(user_role, video_id, function (err, result) {
-            if (err) {
-                return res.json({ status: 0, 'response': { msg: err } });
-            } else {
-                var imageLink;
-                if (req.headers.host == env.ADMIN_LIVE_URL) {
-                    imageLink = env.ADMIN_LIVE_URL;
-                } else {
-                    imageLink = env.ADMIN_LIVE_URL;
-                }
-                var videoList = result.map(data => {
-                    let retObj = {};
-                    retObj['video_id'] = data.video_id;
-                    retObj['title'] = data.title;
-                    retObj['created_at'] = moment(data.video_date).format('MMMM DD, YYYY');
-                    retObj['role'] = data.role;
-                    retObj['video_embeded_id'] = data.video_embeded_id;
-                    retObj['video'] = data.video_url;
-                    retObj['cost'] = data.cost;
-                    retObj['status'] = data.status;
-                    return retObj;
-                });
-                return res.json({ status: 1, 'response': { data: videoList } });
-            }
-        });
-    }
-});
+
 
 
 router.post('/purchase_video', [

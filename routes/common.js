@@ -850,8 +850,8 @@ router.get('/access_token', function (req, res) {
 
     const appID = '076cd275e3274e84b0daa2322e5180e4';
     const appCertificate = 'd4e4ca76b2124b8ea6170c92747d4a7f';
-    const channelName = 'dipika';
-    const uid = 0;
+    const channelName = req.query.channel;
+    const uid = req.query.uid;
     const account = "";
     const role = RtcRole.PUBLISHER;
 
@@ -865,14 +865,14 @@ router.get('/access_token', function (req, res) {
 
     // Build token with uid
     const tokenA = RtcTokenBuilder.buildTokenWithUid(appID, appCertificate, channelName, uid, role, privilegeExpiredTs);
-    console.log("Token With Integer Number Uid: " + tokenA);
+    console.log("token_with_integer_number_uid: " + tokenA);
 
     // Build token with user account
     const tokenB = RtcTokenBuilder.buildTokenWithAccount(appID, appCertificate, channelName, account, role, privilegeExpiredTs);
-    console.log("Token With UserAccount: " + tokenB);
+    console.log("Token_with_userAccount: " + tokenB);
 
 
-    return res.json({ 'status': 0, 'response': { "Token With Integer Number Uid: ": tokenA, "Token With UserAccount:":tokenB } });
+    return res.json({ 'status': 0, 'response': { "token_with_integer_number_uid": tokenA, "token_with_userAccount":tokenB } });
 
 
     // var channel = req.query.channel;

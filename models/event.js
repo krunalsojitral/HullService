@@ -6,19 +6,20 @@ var asyn = require("async");
 function User() {
   connection.init();
 
-  this.addEventByadmin = function (record, callback) {
+  this.addEventByadmin = function (record, resources, callback) {
     connection.acquire(function (err, con) {
       const sql =
-        "INSERT INTO event(title,description,location,image,organization,category,start_date,end_date,created_at) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *";
+        "INSERT INTO event(title,description,location,image,organization,start_date,end_date,status,created_at) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *";
       const values = [
         record.title,
         record.description,
         record.location,
         record.image,
         record.organization,
-        record.category,
+        //record.category,
         record.start_date,
         record.end_date,
+        1,
         record.created_at,
       ];
       con.query(sql, values, function (err, result) {
@@ -50,16 +51,20 @@ function User() {
               });
             });
           }
-          if (record.resources.length > 0) {
-            record.resources.map((data) => {
+          if (resources.length > 0) {
+            resources.map((data) => {
               var records = {
                 path: data.path,
                 type: data.type,
                 event_id: result.rows[0].event_id,
+                file_type:''
               };
+              if (data.type == "fileUpload"){
+                records.file_type = (data.file_type) ? data.file_type : 'image'
+              }
               const sql =
-                "INSERT INTO event_resource(path,type,event_id) VALUES($1,$2,$3) RETURNING *";
-              const values = [records.path, records.type, records.event_id];
+                "INSERT INTO event_resource(path,type,file_type,event_id) VALUES($1,$2,$3,$4) RETURNING *";
+              const values = [records.path, records.type, records.file_type, records.event_id];
               con.query(sql, values, function (err, result) {});
             });
           }
@@ -69,6 +74,138 @@ function User() {
         }
       });
     });
+  };
+
+  function updateProductByID(event_id, cols) {
+    // Setup static beginning of query
+    var query = ['UPDATE event'];
+    query.push('SET');
+
+    // Create another array storing each set command
+    // and assigning a number value for parameterized query
+    var set = [];
+
+    Object.keys(cols).map(function (key, i) {
+      set.push(key + ' = ($' + (i + 1) + ')');
+    });
+    query.push(set.join(', '));
+
+    // Add the WHERE statement to look up by id
+    query.push('WHERE event_id = ' + event_id);
+
+    // Return a complete query string
+    return query.join(' ');
+  }
+
+  this.updateEventByadmin = function (record, event_id, update_value, group_session, resources, deleteresources, videoURL, webPageUrl, callback) {
+      connection.acquire(function (err, con) {
+
+        
+        
+        if (err) {
+          callback(err, null);
+        } else {
+          var query = updateProductByID(event_id, record);
+          con.query(query, update_value, function (err, result) { 
+            console.log(err);
+            if (err){
+              callback(err, null);
+            }else{
+              if (group_session.length > 0) {
+                sqlq = 'SELECT * FROM event_group_session where event_id = $1';
+                con.query(sqlq, [event_id], function (err, groupresult) {
+                  if (groupresult.rows.length > 0){
+                    con.query('DELETE FROM event_group_session where event_id = $1', [event_id], function (err, results) { 
+                      group_session.map((data) => {
+                        var records = { title: data.title, description: data.description, url: data.url, event_id: event_id, };
+                        const sql = "INSERT INTO event_group_session(title,description,url,event_id) VALUES($1,$2,$3,$4) RETURNING *";
+                        const values = [records.title, records.description, records.url, event_id,];
+                        con.query(sql, values, function (err, result) { });
+                      });
+                    });
+                  }else{
+                    group_session.map((data) => {
+                      var records = { title: data.title, description: data.description, url: data.url, event_id: event_id, };
+                      const sql = "INSERT INTO event_group_session(title,description,url,event_id) VALUES($1,$2,$3,$4) RETURNING *";
+                      const values = [records.title, records.description, records.url, event_id,];
+                      con.query(sql, values, function (err, result) { });
+                    });
+                  }
+                  
+                });
+              }
+
+              if (deleteresources.length > 0) { 
+                deleteresources.map((data) => {
+                  con.query('DELETE FROM event_resource where event_resource_id = $1', [data[0].event_resource_id], function (err, results) {});
+                });
+              }
+
+              
+              if (resources.length > 0) {
+
+                resources.map((data) => {
+                  var records = { path: data.path, type: data.type, file_type: (data.file_type) ? data.file_type : 'image', event_id: event_id, };
+                  const sql = "INSERT INTO event_resource(path,type,file_type,event_id) VALUES($1,$2,$3,$4) RETURNING *";
+                  const values = [records.path, records.type, records.file_type, event_id];
+                  con.query(sql, values, function (err, result) { });
+                });
+
+              }
+
+              if (videoURL.length > 0){
+                sql = 'SELECT * FROM event_resource where event_id = $1 and type = $2';
+                con.query(sql, [event_id,"videoURL"], function (err, resourceresult) {
+                  if (resourceresult.rows.length > 0) {
+                    con.query('DELETE FROM event_resource where event_id = $1 and type = $2', [event_id, "videoURL"], function (err, results) {
+                      videoURL.map((data) => {
+                        var records = { path: data.path, type: data.type, file_type: (data.file_type) ? data.file_type:'image', event_id: event_id, };
+                        const sql = "INSERT INTO event_resource(path,type,file_type,event_id) VALUES($1,$2,$3,$4) RETURNING *";
+                        const values = [records.path, records.type, records.file_type, event_id];
+                        con.query(sql, values, function (err, result) { });
+                      });
+                    });
+                  }else{
+                    videoURL.map((data) => {
+                      var records = { path: data.path, type: data.type, file_type: (data.file_type) ? data.file_type : 'image', event_id: event_id, };
+                      const sql = "INSERT INTO event_resource(path,type,file_type,event_id) VALUES($1,$2,$3,$4) RETURNING *";
+                      const values = [records.path, records.type, records.file_type, event_id];
+                      con.query(sql, values, function (err, result) { });
+                    });
+                  }
+                });
+              }
+
+              if (webPageUrl.length > 0) {
+                sql = 'SELECT * FROM event_resource where event_id = $1 and type = $2';
+                con.query(sql, [event_id, "webPageUrl"], function (err, resourceresult) {
+                  if (resourceresult.rows.length > 0) {
+                    con.query('DELETE FROM event_resource where event_id = $1 and type = $2', [event_id, "webPageUrl"], function (err, results) {
+                      webPageUrl.map((data) => {
+                        var records = { path: data.path, type: data.type, file_type: (data.file_type) ? data.file_type : 'image', event_id: event_id, };
+                        const sql = "INSERT INTO event_resource(path,type,file_type,event_id) VALUES($1,$2,$3,$4) RETURNING *";
+                        const values = [records.path, records.type, records.file_type, event_id];
+                        con.query(sql, values, function (err, result) { });
+                      });
+                    });
+                  } else {
+                    webPageUrl.map((data) => {
+                      var records = { path: data.path, type: data.type, file_type: (data.file_type) ? data.file_type : 'image', event_id: event_id, };
+                      const sql = "INSERT INTO event_resource(path,type,file_type,event_id) VALUES($1,$2,$3,$4) RETURNING *";
+                      const values = [records.path, records.type, records.file_type, event_id];
+                      con.query(sql, values, function (err, result) { });
+                    });
+                  }
+                });
+              }
+
+              con.release();
+              callback(null, result);
+            }
+          });
+        }
+      });
+    
   };
 
   this.getAllAdminEvent = function (status, callback) {

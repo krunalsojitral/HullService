@@ -203,19 +203,21 @@ function ForumReply(props) {
                 {forumReplyCommentList && forumReplyCommentList.slice(0, visible).map((replydata, index) => (
                 <div key={replydata.reply_comment_id} className="forums-reply-card">
                     <div className="forums-reply-icon">
-                        {!replydata.avatar && <img src="images/user.png" />}
-                        {replydata.avatar && <img src={replydata.avatar} />}
+                        <Link className="btn-edit" to={{ pathname: "/view-profile", search: "?id=" + replydata.user_id }}>
+                            {!replydata.avatar && <img src="images/user.png" />}
+                            {replydata.avatar && <img src={replydata.avatar} />}
+                        </Link>
                     </div>
                     <div className="forums-reply-text">
 
-                            <div class="comment-dot-btn">
+                            <div className="comment-dot-btn">
                                 <h3><Link className="btn-edit" to={{ pathname: "/view-profile", search: "?id=" + replydata.user_id }}>{replydata.first_name} {replydata.last_name}</Link><span>({replydata.role})</span></h3>
-                                <div class="Bars-view dropdown">
-                                    <a href="#" class="Bars-Btn-New dropdown-toggle" data-toggle="dropdown"><i class="fa fa-ellipsis-h"></i></a>
-                                    <ul class="dropdown-menu">
-                                        {(loginUserID == replydata.user_id) && <li onClick={(e) => forumCommentEdit(replydata.reply_comment_id, index, replydata.comment)}><span className="forum_action"><i class="fa fa-pencil"></i> Edit</span></li>}
-                                        {(loginUserID == replydata.user_id) && <li onClick={(e) => forumCommentDelete(replydata.reply_comment_id, index)}><span className="forum_action"><i class="fa fa-trash-o"></i> Delete</span></li>}
-                                        <li onClick={(e) => forumReport(replydata.reply_comment_id, index, replydata.forum_report_id)}><span className="forum_action"><i class="fa fa-bug"></i> {(replydata.forum_report_id) ? "Reported" : "Report"}</span></li>
+                                <div className="Bars-view dropdown">
+                                    <a href="#" className="Bars-Btn-New dropdown-toggle" data-toggle="dropdown"><i className="fa fa-ellipsis-h"></i></a>
+                                    <ul className="dropdown-menu">
+                                        {(loginUserID == replydata.user_id) && <li onClick={(e) => forumCommentEdit(replydata.reply_comment_id, index, replydata.comment)}><span className="forum_action"><i className="fa fa-pencil"></i> Edit</span></li>}
+                                        {(loginUserID == replydata.user_id) && <li onClick={(e) => forumCommentDelete(replydata.reply_comment_id, index)}><span className="forum_action"><i className="fa fa-trash-o"></i> Delete</span></li>}
+                                        <li onClick={(e) => forumReport(replydata.reply_comment_id, index, replydata.forum_report_id)}><span className="forum_action"><i className="fa fa-bug"></i> {(replydata.forum_report_id) ? "Reported" : "Report"}</span></li>
                                     </ul>
                                 </div>
                             </div>

@@ -17,7 +17,13 @@ function ApplyInFutureResearchModel(props) {
         handleSubmit,
         control,        
         formState: { errors },
-    } = useForm();
+    } = useForm({
+        defaultValues: {
+            child: [{ name: "default Value" }],
+            childName: [{ name: "default Value" }],
+            childGender: [{ name: "default Value" }]
+        }
+    });
 
     useEffect(() => {        
         console.log(props);
@@ -43,8 +49,8 @@ function ApplyInFutureResearchModel(props) {
         axios.post(api_url + "/researches/addFutureResearchByuser", data)
             .then((result) => {
                 if (result.data.status) {
-                    Swal.fire("Success!", result.data.response.msg, "success");
-                    $(".modelclose").click();
+                   Swal.fire("Success!", result.data.response.msg, "success");
+                   $(".modelclose").click();
                 } else {
                     Swal.fire("Oops...", result.data.response.msg, "error");
                 }
@@ -124,6 +130,11 @@ function ApplyInFutureResearchModel(props) {
                                                     // showYearDropdown                                                    
                                                     // yearDropdownItemNumber={15}
                                                     // scrollableYearDropdown                                                    
+                                                    minDate={new Date(1990, 11)}
+                                                    maxDate={new Date(2023, 11)}
+                                                    peekNextMonth
+                                                    showMonthDropdown
+                                                    showYearDropdown                                                    
                                                     dropdownMode="select"
                                                     dateFormat="yyyy/MM/dd"
                                                     dateFormatCalendar="yyyy/MM/dd"
@@ -162,7 +173,7 @@ function ApplyInFutureResearchModel(props) {
                                 </div>                              
                             </div>
 
-                            <div className="row">
+                            {/* <div className="row">
                                 
                                 <div className="col-md-12">
                                     <div className="col-md-2"><label className="child-label">Child 1</label></div>
@@ -228,11 +239,11 @@ function ApplyInFutureResearchModel(props) {
                                 </div>
                             </div>
 
-                            
+                             */}
                             {fields.map((item, index) => (  
                                 <div className="row" key={item.id}>                                    
                                     <div className="col-md-12">  
-                                        <div className="col-md-2"><label className="child-label">Child {index + 2}</label></div>
+                                        <div className="col-md-2"><label className="child-label">Child {index + 1}</label></div>
                                         <div className="col-md-3">
                                             <div className="form-group">
                                                 <Controller
@@ -268,7 +279,7 @@ function ApplyInFutureResearchModel(props) {
                                                 <Controller
                                                     name={`child.${index}.value`}
                                                     control={control}
-                                                    defaultValue={item.value}
+                                                    // defaultValue={item.value}
                                                     render={({ field: { onChange, value } }) => (
                                                         <ReactDatePicker
                                                             className="form-control"
@@ -277,6 +288,11 @@ function ApplyInFutureResearchModel(props) {
                                                             // peekNextMonth
                                                             // showMonthDropdown
                                                             // showYearDropdown
+                                                            minDate={new Date(1990, 11)}
+                                                            maxDate={new Date(2023, 11)}
+                                                            peekNextMonth
+                                                            showMonthDropdown
+                                                            showYearDropdown
                                                             dropdownMode="select"
                                                             dateFormat="yyyy/MM/dd"
                                                             dateFormatCalendar="yyyy/MM/dd"

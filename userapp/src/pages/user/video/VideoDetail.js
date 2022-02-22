@@ -189,7 +189,20 @@ export default function VideoDetail() {
                                     {relatedVideoDetail.map((data, index) => (
                                         <div key={index} className="video-list-view">
                                             <div className="video-list-icon">
-                                                <iframe width="100%" height="90px" src={data.video+"?rel=0"} title="YouTube video player" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>
+
+                                                {data.purchase_type == 'paid' &&
+                                                    <div className="tooltip-relational-video">
+                                                    <iframe class="hideVideo" width="100%" height="90px" title="YouTube video player" src={`https://www.youtube.com/embed/${data.video_embeded_id}?rel=0&modestbranding=1&showinfo=0`} autoplay="false"></iframe>
+                                                        <span className="tooltip-title">Paid Video.</span>
+                                                    </div>
+                                                }
+
+                                                {data.purchase_type == 'unpaid' &&
+                                                    <iframe width="100%" height="90px" src={`https://www.youtube.com/embed/${data.video}?rel=0&modestbranding=1&showinfo=0`} title="YouTube video player" allow="fullscreen; accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>
+                                                } 
+
+                                                {/* <iframe width="100%" height="90px" src={data.video+"?rel=0"} title="YouTube video player" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>  */}
+                                                
                                             </div>
                                             <div className="video-list-text">                                                
                                                 <a onClick={(e) => linkTarget(data.video_id)}><h3>{data.title.slice(0, 46)}</h3></a>

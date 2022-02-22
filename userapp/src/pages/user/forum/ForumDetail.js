@@ -504,19 +504,22 @@ export default function ForumDetail() {
                                     <div key={data.forum_comment_id} className="new-forums-reply">
                                         <div className="forums-reply-card">
                                             <div className="forums-reply-icon">
-                                                {!data.avatar && <img src="images/user.png" />}
+                                                <Link className="btn-edit" to={{ pathname: "/view-profile", search: "?id=" + data.user_id }}>{!data.avatar && <img src="images/user.png" />}
                                                 {data.avatar && <img src={data.avatar} />}
-                                                <img src="images/user.png" />
+                                                <img src="images/user.png" /></Link>
                                             </div>
                                             <div className="forums-reply-text">    
-                                            <div class="comment-dot-btn">
-                                                <h3><Link className="btn-edit" to={{ pathname: "/view-profile", search: "?id=" + data.user_id }}>{data.first_name} {data.last_name}</Link><span>({data.role})</span></h3>
-                                                <div class="Bars-view dropdown">
-                                                    <a href="#" class="Bars-Btn-New dropdown-toggle" data-toggle="dropdown"><i class="fa fa-ellipsis-h"></i></a>
-                                                    <ul class="dropdown-menu">                                                        
-                                                        {(loginUserID == data.user_id) && <li onClick={(e) => forumCommentEdit(data.forum_comment_id, index, data.comment)}><span className="forum_action"><i class="fa fa-pencil"></i> Edit</span></li>}
-                                                        {(loginUserID == data.user_id) && <li onClick={(e) => forumCommentDelete(data.forum_comment_id, index)}><span className="forum_action"><i class="fa fa-trash-o"></i> Delete</span></li>}
-                                                        <li onClick={(e) => forumReport(data.forum_comment_id, index, data.forum_report_id)}><span className="forum_action"><i class="fa fa-bug"></i> {(data.forum_report_id) ? "Reported" : "Report"}</span></li>
+                                            <div className="comment-dot-btn">
+                                                <h3>
+                                                    <Link className="btn-edit" to={{ pathname: "/view-profile", search: "?id=" + data.user_id }}>{data.first_name} {data.last_name}</Link>
+                                                    <span>({data.role})</span>
+                                                </h3>
+                                                <div className="Bars-view dropdown">
+                                                    <a href="#" className="Bars-Btn-New dropdown-toggle" data-toggle="dropdown"><i className="fa fa-ellipsis-h"></i></a>
+                                                    <ul className="dropdown-menu">                                                        
+                                                        {(loginUserID == data.user_id) && <li onClick={(e) => forumCommentEdit(data.forum_comment_id, index, data.comment)}><span className="forum_action"><i className="fa fa-pencil"></i> Edit</span></li>}
+                                                        {(loginUserID == data.user_id) && <li onClick={(e) => forumCommentDelete(data.forum_comment_id, index)}><span className="forum_action"><i className="fa fa-trash-o"></i> Delete</span></li>}
+                                                        <li onClick={(e) => forumReport(data.forum_comment_id, index, data.forum_report_id)}><span className="forum_action"><i className="fa fa-bug"></i> {(data.forum_report_id) ? "Reported" : "Report"}</span></li>
                                                     </ul>
                                                 </div>
                                             </div>

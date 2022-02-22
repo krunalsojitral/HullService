@@ -156,13 +156,22 @@ function Researches() {
                         const sql = 'INSERT INTO researches_participate(name,gender,dob,email,created_at,researches_id) VALUES($1,$2,$3,$4,$5,$6) RETURNING *'
                         const values = [record.name, record.gender, record.dob, record.email, record.created_at, record.researches_id]
                         con.query(sql, values, function (err, result) {
-                            con.release()
+                            
                             if (err) {
                                 if (env.DEBUG) {
                                     console.log(err);
                                 }
                                 callback(err, null);
                             } else {
+                                var participate_research_id = result.rows[0].researches_participate_id
+                                if (record.childName && record.childName.length > 0) {
+                                    record.childName.forEach(function (value, index) {
+                                        const sql = 'INSERT INTO researches_participate_child(researches_participate_id,child_name,child_gender,child_dob) VALUES($1,$2,$3,$4) RETURNING *'
+                                        const values = [participate_research_id, value.value, (record.childGender[index] && record.childGender[index].value) ? record.childGender[index].value : '', (record.child[index] && record.child[index].value) ? record.child[index].value : '']
+                                        con.query(sql, values, function (err, result) { });
+                                    });
+                                }
+                                con.release()
                                 callback(null, result.rows);
                             }
                         });
@@ -284,11 +293,11 @@ function Researches() {
                     callback(err, null);
                 } else {
                     var research_id = result.rows[0].future_research_id
-                    if (record.child_name_first){
-                        const sql = 'INSERT INTO future_research_child(future_research_id,child_dob,child_gender,child_name) VALUES($1,$2,$3,$4) RETURNING *'
-                        const values = [research_id, record.child_age_first, record.child_gender_first, record.child_name_first]
-                        con.query(sql, values, function (err, result) { });
-                    }
+                    // if (record.child_name_first){
+                    //     const sql = 'INSERT INTO future_research_child(future_research_id,child_dob,child_gender,child_name) VALUES($1,$2,$3,$4) RETURNING *'
+                    //     const values = [research_id, record.child_age_first, record.child_gender_first, record.child_name_first]
+                    //     con.query(sql, values, function (err, result) { });
+                    // }
                     if (record.childName && record.childName.length > 0) {                        
                         record.childName.forEach(function (value,index) {
                             const sql = 'INSERT INTO future_research_child(future_research_id,child_name,child_gender,child_dob) VALUES($1,$2,$3,$4) RETURNING *'
@@ -332,9 +341,38 @@ function Researches() {
         });
     };
 
+    this.getCurrentResearchByID = function (id, callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM researches_participate where researches_participate_id = $1', [id], function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
     this.getResearchesChildDataById = function (id, callback) {
         connection.acquire(function (err, con) {
             con.query('SELECT * FROM future_research_child where future_research_id = $1 order by future_research_child_id desc', [id], function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
+    this.getCurrentChildDataById = function (id, callback) {
+        connection.acquire(function (err, con) {
+            console.log(id);
+            con.query('SELECT * FROM researches_participate_child where researches_participate_id = $1 order by researches_participate_child_id desc', [id], function (err, result) {
                 con.release()
                 if (err) {
                     if (env.DEBUG) { console.log(err); }

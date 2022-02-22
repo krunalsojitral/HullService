@@ -88,36 +88,65 @@ const Slider = () => {
         }
     }
 
-
+    
 
     React.useEffect(() => {
         const intervalId = setInterval(() => {  //assign interval to a variable to clear it.
             if (state.items.length > 1){
-                var total_item = (state.items.length - 1)
-                var total_item_plus = (state.items.length + 1)
-                setSliderClick((parseInt(sliderClick) + parseInt(1)))                
-                if (sliderClick == total_item_plus) {
-                    setSliderClick(0)
-                }
-                if (sliderClick == 0) {                    
-                    setAction('plus')
-                }
-                if (sliderClick == total_item) {
-                    setAction('minus')
-                }
-                if (action == 'plus') {
-                    $(".fa-angle-right").click()
-                }
-                if (action == 'minus') {
-                    $(".fa-angle-left").click()
-                }
+
+                $(".fa-angle-right").click()
+
+                // var total_item = (state.items.length - 1)
+                // var total_item_plus = (state.items.length + 1)
+                // setSliderClick((parseInt(sliderClick) + parseInt(1)))                
+                // if (sliderClick == total_item_plus) {
+                //     setSliderClick(0)
+                // }
+                // if (sliderClick == 0) {                    
+                //     setAction('plus')
+                // }
+                // if (sliderClick == total_item) {
+                //     setAction('minus')
+                // }
+                // if (action == 'plus') {
+                //     $(".fa-angle-right").click()
+                // }
+                // if (action == 'minus') {
+                //     $(".fa-angle-left").click()
+                // }
             }
                        
         }, 8000)
         return () => clearInterval(intervalId); //This is important
     }, [state, sliderClick, action])
     
+    const clickNext = (start, end) => {        
+        if (start <= (end - 2)){            
+            if (start < end - 1) {
+                dispatch({ type: "NEXT" })
+            } else {
+                dispatch({ type: "PREV" })
+            }
+        }else{            
+            var index = 0;
+            dispatch({ type: "GOTO", index })
+        }
+        
+    }
 
+    const clickPreview = (start, item) => {
+        if (start == 0){
+            var index = (item - 1);
+            dispatch({ type: "GOTO", index })
+        }else{            
+            if (start > 0) {
+                dispatch({ type: "PREV" })
+            } else {
+                dispatch({ type: "NEXT" })
+            }
+        }
+        
+    }
     
   
 
@@ -161,7 +190,7 @@ const Slider = () => {
                     })}
                 </Navigation>
                 <div>
-                    {state.currentIndex > 0 && (
+                    {/* {state.currentIndex > 0 && (
                         <ControlLeft onClick={() => dispatch({ type: "PREV" })}>
                             {<i className="fa fa-angle-left" aria-hidden="true"></i>}
                         </ControlLeft>
@@ -171,7 +200,15 @@ const Slider = () => {
                         <ControlRight onClick={() => dispatch({ type: "NEXT" })}>
                             {<i className="fa fa-angle-right" aria-hidden="true"></i>}
                         </ControlRight>
-                    )}
+                    )} */}
+
+                    <ControlLeft onClick={() => clickPreview(state.currentIndex, state.items.length)}>
+                        {<i className="fa fa-angle-left" aria-hidden="true"></i>}
+                    </ControlLeft>
+                    <ControlRight onClick={() => clickNext(state.currentIndex, state.items.length )}>
+                        {<i className="fa fa-angle-right" aria-hidden="true"></i>}
+                    </ControlRight>
+                    
                 </div>
             </SliderContainer>
         </div>
@@ -201,18 +238,15 @@ const Slide = ({ item, width }) => {
         <SliderItem width={width}>
             {/* style={{ "width": "100%", "background-image": "url(https://daveceddia.com/images/useState-hook.png)" }} */}
             <div className="banner-slide">
-
                 <div className="banner-images"><img src={item.image} /></div>
-
-                <div className="col-md-1">                
-                </div>
+                <div className="col-md-1"></div>
                 <div className="col-md-10">
                     <div className="banner-text">
                         {item.title && <span>{item.title}</span>}
                         {item.description && <h1>{item.description}</h1>}
-                        {(item.button_text && item.button_url) && <Link className="banner-btn" to={item.button_url}>
+                        {(item.button_text && item.button_url) && <a href={item.button_url} rel="noopener noreferrer" target="_blank" className="banner-btn">
                             {item.button_text}
-                        </Link>}
+                        </a>}
                     </div>
                 </div>
             </div>

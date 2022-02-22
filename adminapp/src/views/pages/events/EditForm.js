@@ -49,10 +49,12 @@ const AddEditForm = ({ match }) => {
   });
 
  
-  const [isEditMode, setisEditMode] = React.useState(0);
+  const [eventId, setEventId] = React.useState(0);
   const [setectimage, setSetectimage] = React.useState(0);
   const [selectedFile, setSelectedFile] = useState();
   const [contentEditor, setContentEditor] = useState();
+  const [displayImage, setDisplayImage] = React.useState([]);
+  const [deleteresources, setDeleteresources] = React.useState([]);
   const handleEditorChange = (content, editor) => {
     setContentEditor(content);
   }
@@ -70,10 +72,10 @@ const AddEditForm = ({ match }) => {
 
   //const initialText = ``;
   const { fields: session, insert:sessionInsert, append: sessionAppend, remove: sessionRemove } = useFieldArray({
-    control,
-    name: 'sessionTitle',
+    control,    
+    name: 'sessionURL',   
     name: 'sessionDescription',
-    name: 'sessionURL'
+    name: 'sessionTitle',
   });
 
   const { fields: video, append: videoAppend, remove: videoRemove } = useFieldArray({
@@ -104,36 +106,29 @@ const AddEditForm = ({ match }) => {
 
   function upload(e) {
     e.preventDefault();
-    console.log(file);
   }
 
-  function deleteFile(e) {
+  function deleteFile(e, name) {
     const s = file.filter((item, index) => index !== e);
+    const fs = finalFile.filter((item, index) => item.name !== name);
     setFile(s);
-    setFinalFile(s);
+    setFinalFile(fs);
   }
 
 
   React.useEffect(() => {    
-
-    
-
-   
-
-    
-
-    
-
    
     if (match.params.id) {
-      setisEditMode(1);
+      setEventId(match.params.id)      
       axios.post(api_url + "/event/getEventDataById", { event_id: match.params.id }, {})
         .then((result) => {
           if (result.data.status) {
             var eventdata = result.data.response.data;            
             setValue("title", eventdata.title);
-           // setValue("start_date", eventdata.start_date);
-           // setValue("end_date", eventdata.end_date);
+            $("#start_date").val(eventdata.start_date)
+            $("#end_date").val(eventdata.end_date)
+            setValue("start_date", new Date(Date.parse(eventdata.start_date)));
+            setValue("end_date", new Date(Date.parse(eventdata.end_date)));
             setContentEditor(eventdata.description);
             setValue("location", eventdata.location);
             setValue("organization", eventdata.organization);
@@ -173,9 +168,7 @@ const AddEditForm = ({ match }) => {
             //   if (index > 0) {
             //     webPageAppend({})
             //   }
-            // });
-
-           
+            // });           
 
             if (eventdata.group_session.length > 0){
               var sessionTitle = [];
@@ -260,7 +253,7 @@ const AddEditForm = ({ match }) => {
             }
     
             if (eventdata.resource.length > 0) {
-
+              setDisplayImage(eventdata.resource)
             }
 
             
@@ -274,24 +267,29 @@ const AddEditForm = ({ match }) => {
 
   const updateInformationAct = (data) => {
     data.description = contentEditor;
+    data.event_id = eventId;
+    data.deleteresources = deleteresources;
+   
     const formData = new FormData();
     formData.append("data", JSON.stringify(data));
     if (selectedFile) {
       formData.append("image", selectedFile, selectedFile.name);
     }
-    console.log(finalFile);
+    
     if (finalFile && finalFile.length > 0) {
       for (var i = 0; i < finalFile.length; i++) {
-        formData.append("resources[]", finalFile[i], finalFile[i].name);
+        if (finalFile[i].name){
+          formData.append("resources[]", finalFile[i], finalFile[i].name);
+        }
       }
     }
 
-    axios.post(api_url + "/event/updateBlogByadmin", formData, {}).then((result) => {
+    axios.post(api_url + "/event/updateEventByadmin", formData, {}).then((result) => {
       if (result.data.status) {
-        //Swal.fire("Success!", result.data.response.msg, "success");
-        
+        Swal.fire("Success!", result.data.response.msg, "success");
+        history.push("/events");
       } else {
-        //Swal.fire("Oops...", result.data.response.msg, "error");
+        Swal.fire("Oops...", result.data.response.msg, "error");
       }
     }).catch((err) => { console.log(err); });
 
@@ -307,6 +305,19 @@ const AddEditForm = ({ match }) => {
       setActive(tab);
     }
   }
+
+  const deleteImage = async (event_resource_id) => {
+    setDisplayImage(displayImage.filter((item, index) => item.event_resource_id !== event_resource_id));
+    var image = displayImage.filter((item, index) => item.event_resource_id == event_resource_id);
+    if (deleteresources.length > 0){
+      setDeleteresources(oldArray => [...oldArray, image]);
+    }else{
+      setDeleteresources([image]);
+    }
+    
+
+  }
+  
 
  
 
@@ -384,7 +395,12 @@ const AddEditForm = ({ match }) => {
                                   selected={value}
                                   onChange={onChange}
                                   dateFormat="yyyy/MM/dd"
-                                  dateFormatCalendar="yyyy/MM/dd"
+                                  // dateFormatCalendar="yyyy/MM/dd"
+                                  minDate={new Date(2022, 11)}
+                                  maxDate={new Date(2030, 11)}
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
                                   isClearable
                                   id="start_date"
                                   placeholderText="Start date"
@@ -410,6 +426,11 @@ const AddEditForm = ({ match }) => {
                                   onChange={onChange}
                                   dateFormat="yyyy/MM/dd"
                                   dateFormatCalendar="yyyy/MM/dd"
+                                  minDate={new Date(2022, 11)}
+                                  maxDate={new Date(2030, 11)}
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
                                   isClearable
                                   placeholderText="End date"
                                 />
@@ -613,6 +634,26 @@ const AddEditForm = ({ match }) => {
                         <CCol xs="12">
                           <CRow>
                             <CCol xs="12">
+
+                              
+                              {displayImage.length > 0 &&
+                                displayImage.map((item, index) => {
+                                  return (
+                                    <div>
+                                      <CRow key={index}>
+                                        <CCol xs="4">
+                                          {item.type == 'image' && <img style={{ width: '50px', height: '50px' }} src={item.file} alt="" />}
+                                          {item.type == 'doc' && item.name}
+                                        </CCol>
+                                        <CCol xs="6">
+                                          <button type="button" className="btn btn-danger" onClick={() => deleteImage(item.event_resource_id)}>delete</button>
+                                          </CCol>
+                                      </CRow>
+                                      <hr />
+                                    </div>
+                                  );
+                                })}
+
                               {file.length > 0 &&
                                 file.map((item, index) => {
                                   return (
@@ -625,7 +666,7 @@ const AddEditForm = ({ match }) => {
                                               {item.type == 'doc' && item.name}
                                             </CCol>
                                             <CCol xs="6">
-                                              <button type="button" className="btn btn-danger" onClick={() => deleteFile(index)}>delete</button>
+                                            <button type="button" className="btn btn-danger" onClick={() => deleteFile(index, item.name)}>delete</button>
                                             </CCol>
                                           </CRow>
                                           <hr />
@@ -738,7 +779,7 @@ const AddEditForm = ({ match }) => {
               <br/>
               <hr/>
               <center>
-                <button type="submit" className="btn btn-outline-primary">Save</button>
+                <button type="submit" className="btn btn-outline-primary">Update</button>
               </center>              
             </form>
           </CCardBody>

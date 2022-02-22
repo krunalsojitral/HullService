@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useForm, Controller } from "react-hook-form";
+import { useForm, useFieldArray, Controller } from "react-hook-form";
 import api_url from './../components/Apiurl';
 import axios from "axios";
 import { useHistory } from 'react-router-dom';
@@ -19,7 +19,13 @@ function ApplyInResearchModel(props) {
         handleSubmit,
         control,                
         formState: { errors },
-    } = useForm();
+    } = useForm({
+        defaultValues: {
+            child: [{ name: "default Value" }],
+            childName: [{ name: "default Value" }],
+            childGender: [{ name: "default Value" }]
+        }
+    });
 
     useEffect(() => {   
         console.log(props);
@@ -53,10 +59,17 @@ function ApplyInResearchModel(props) {
         history.push('/');
     }
 
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: 'child',
+        name: 'childName',
+        name: 'childGender'
+    });
+
   
 
     return (
-        <div className="popup" style={{ width: '500px', background: '#fff', padding: '19px', display: 'block' }}>
+        <div className="popup" style={{ width: '600px', background: '#fff', padding: '19px', display: 'block', maxHeight: '640px', overflowY: 'scroll', scrollBehavior: 'smooth' }}>
             <div><button className="modelclose" onClick={props.close}>x</button></div>
             <div className="participate-modal">
                 <div className="modal-body">
@@ -121,9 +134,11 @@ function ApplyInResearchModel(props) {
                                                     onChange={onChange}
                                                     dateFormat="yyyy/MM/dd"
                                                     dateFormatCalendar="yyyy/MM/dd"
-                                                    // peekNextMonth
-                                                    // showMonthDropdown
-                                                    // showYearDropdown
+                                                    minDate={new Date(1990, 11)}
+                                                    maxDate={new Date(2023, 11)}
+                                                    peekNextMonth
+                                                    showMonthDropdown
+                                                    showYearDropdown
                                                     dropdownMode="select"
                                                     isClearable
                                                     placeholderText="Your DOB"
@@ -157,35 +172,110 @@ function ApplyInResearchModel(props) {
                                         {errors?.email?.type === "required" && <small className="error">Email is required.</small>}
                                         {errors?.email?.type === "pattern" && <small className="error">Invalid email address.</small>}
                                     </div>
-                                </div>                                
+                                </div>    
+
+
+                                {fields.map((item, index) => (
+                                    <div className="row" key={item.id}>
+                                        <div className="col-md-12">
+                                            <div className="col-md-2"><label className="child-label">Child {index + 1}</label></div>
+                                            <div className="col-md-3">
+                                                <div className="form-group">
+                                                    <Controller
+                                                        name={`childName.${index}.value`}
+                                                        control={control}
+                                                        defaultValue={item.value}
+                                                        render={({ field }) => <input type="text" placeholder={`Child Name`} className="form-control" {...field} />}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="col-md-3">
+                                                <div className="form-group">
+                                                    <Controller
+                                                        name={`childGender.${index}.value`}
+                                                        control={control}
+                                                        rules={{ required: true }}
+                                                        render={({ field: { onChange, value } }) => (
+                                                            <select className="form-control" onChange={onChange} value={value}>
+                                                                <option key="0" value="">Your Gender</option>
+                                                                <option key="1" value="Male">Male</option>
+                                                                <option key="2" value="Female">Female</option>
+                                                                <option key="3" value="Transgender">Transgender</option>
+                                                                <option key="4" value="Non-Binary">Non-Binary</option>
+                                                                <option key="5" value="Gender-Non-Conforming">Gender Non-Conforming</option>
+                                                                <option key="6" value="Decline-to-State">Decline to State</option>
+                                                            </select>
+                                                        )}
+                                                    ></Controller>
+                                                </div>
+                                            </div>
+                                            <div className="col-md-3">
+                                                <div className="form-group">
+                                                    <Controller
+                                                        name={`child.${index}.value`}
+                                                        control={control}
+                                                        // defaultValue={item.value}
+                                                        render={({ field: { onChange, value } }) => (
+                                                            <ReactDatePicker
+                                                                className="form-control"
+                                                                selected={value}
+                                                                onChange={onChange}
+                                                                minDate={new Date(1990, 11)}
+                                                                maxDate={new Date(2023, 11)}
+                                                                peekNextMonth
+                                                                showMonthDropdown
+                                                                showYearDropdown
+                                                                dropdownMode="select"
+                                                                dateFormat="yyyy/MM/dd"
+                                                                dateFormatCalendar="yyyy/MM/dd"
+                                                                isClearable
+                                                                placeholderText="Your DOB"
+                                                            />
+                                                        )}
+                                                    // render={({ field }) => <input type="number" min="1" placeholder={`Child age`} className="form-control" {...field} />}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="col-md-1">
+                                                <div className="delete-icon" onClick={() => remove(index)}><i className="fa fa-times" aria-hidden="true"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+
+                                <div className="row">
+                                    <div className="col-md-12 text-right">
+                                        <button type="button" className="child-btn" onClick={() => append({ value: "" })}>Add Child</button>
+                                    </div>
+                                </div>
                                 
                                 {researchesDetail.participate_text && 
-                                <div className="col-md-12">
-                                    <div className="form-group">
-                                        <Controller
-                                            control={control}
-                                            name="participate_text"
-                                            rules={{ required: true }}
-                                            render={({
-                                                field: { onChange, onBlur, value, name, ref },
-                                                fieldState: { invalid, isTouched, isDirty, error },
-                                                formState,
-                                            }) => (
-                                                <input
-                                                    type="checkbox"
-                                                    onBlur={onBlur} // notify when input is touched
-                                                    onChange={onChange} // send value to hook form
-                                                    checked={value}
-                                                    inputRef={ref}                                                    
-                                                />
-                                            )}
-                                        />
-                                        <span>&nbsp;{researchesDetail.participate_text}</span><br/>
-                                        {errors.participate_text && errors.participate_text.type === "required" && (
-                                            <small className="error">This is required.</small>
-                                        )}         
-                                    </div>
-                                </div>}
+                                    <div className="col-md-12">
+                                        <div className="form-group">
+                                            <Controller
+                                                control={control}
+                                                name="participate_text"
+                                                rules={{ required: true }}
+                                                render={({
+                                                    field: { onChange, onBlur, value, name, ref },
+                                                    fieldState: { invalid, isTouched, isDirty, error },
+                                                    formState,
+                                                }) => (
+                                                    <input
+                                                        type="checkbox"
+                                                        onBlur={onBlur} // notify when input is touched
+                                                        onChange={onChange} // send value to hook form
+                                                        checked={value}
+                                                        inputRef={ref}                                                    
+                                                    />
+                                                )}
+                                            />
+                                            <span>&nbsp;{researchesDetail.participate_text}</span><br/>
+                                            {errors.participate_text && errors.participate_text.type === "required" && (
+                                                <small className="error">This is required.</small>
+                                            )}         
+                                        </div>
+                                    </div>}
 
                             </div>
 

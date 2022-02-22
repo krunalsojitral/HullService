@@ -118,13 +118,16 @@ const AddEditForm = ({ match }) => {
     
     if (finalFile && finalFile.length > 0) {
       for (var i = 0; i < finalFile.length; i++) {
-        formData.append("resources[]", finalFile[i], finalFile[i].name);
+        if (finalFile[i].name) { 
+          formData.append("resources[]", finalFile[i], finalFile[i].name);
+        }
       }
     }
     
-    axios.post(api_url + "/event/addPageByadmin", formData, {}).then((result) => {
+    axios.post(api_url + "/event/addEventByadmin", formData, {}).then((result) => {
       if (result.data.status) {
         Swal.fire("Success!", result.data.response.msg, "success");
+        history.push("/events");
       } else {
         Swal.fire("Oops...", result.data.response.msg, "error");
       }
@@ -179,13 +182,13 @@ const AddEditForm = ({ match }) => {
 
   function upload(e) {
     e.preventDefault();
-    console.log(file);
   }
 
-  function deleteFile(e) {
+  function deleteFile(e, name) {
     const s = file.filter((item, index) => index !== e);
+    const fs = finalFile.filter((item, index) => item.name !== name);
     setFile(s);
-    setFinalFile(s);
+    setFinalFile(fs);
   }
 
 
@@ -262,9 +265,11 @@ const AddEditForm = ({ match }) => {
                                   onChange={onChange}
                                   dateFormat="yyyy/MM/dd"
                                   dateFormatCalendar="yyyy/MM/dd"
-                                  // peekNextMonth
-                                  // showMonthDropdown
-                                  // showYearDropdown
+                                  minDate={new Date(2022, 11)}
+                                  maxDate={new Date(2030, 11)}
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
                                   dropdownMode="select"
                                   isClearable
                                   placeholderText="Start date"
@@ -290,9 +295,11 @@ const AddEditForm = ({ match }) => {
                                   onChange={onChange}
                                   dateFormat="yyyy/MM/dd"
                                   dateFormatCalendar="yyyy/MM/dd"
-                                  // peekNextMonth
-                                  // showMonthDropdown
-                                  // showYearDropdown
+                                  minDate={new Date(2022, 11)}
+                                  maxDate={new Date(2030, 11)}
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
                                   dropdownMode="select"
                                   isClearable
                                   placeholderText="End date"
@@ -512,7 +519,7 @@ const AddEditForm = ({ match }) => {
                                               {item.type == 'doc' && item.name}
                                             </CCol>
                                             <CCol xs="6">
-                                              <button type="button" className="btn btn-danger" onClick={() => deleteFile(index)}>delete</button>
+                                            <button type="button" className="btn btn-danger" onClick={() => deleteFile(index, item.name)}>delete</button>
                                             </CCol>
                                           </CRow>
                                           <hr />

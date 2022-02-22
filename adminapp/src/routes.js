@@ -51,6 +51,7 @@ const FutureParticipantsDemoTable = React.lazy(() => import('./views/pages/resea
 const ResearchesDemoTable = React.lazy(() => import('./views/pages/researches/ResearchesDemoTable'))
 const ResearchDetail = React.lazy(() => import('./views/pages/researches/ResearchDetail'))
 const FutureParticipateDetail = React.lazy(() => import('./views/pages/researches/FutureParticipateDetail'))
+const CurrentParticipateDetail = React.lazy(() => import('./views/pages/researches/CurrentParticipateDetail'))
 const ParticipateDemoTable = React.lazy(() => import('./views/pages/researches/ParticipateDemoTable'))
 const AddContentForm = React.lazy(() => import('./views/pages/researches/AddContentForm'))
 const ResearchRequestsDemoTable = React.lazy(() => import('./views/pages/researches/ResearchRequestsDemoTable'))
@@ -139,7 +140,8 @@ const routes = [
   { path: '/researcherinterestareaedit/:id', name: 'Researcher Interest Area Edit', component: ResearcherinterestareaAddEditForm },
   { path: '/researches-list', name: 'Researches List', component: ResearchesDemoTable },
   { path: '/research-detail/:id', name: 'Researches List', component: ResearchDetail },
-  { path: '/futureresearchdetail/:id', name: 'Future Researches List', component: FutureParticipateDetail },
+  { path: '/futureresearchdetail/:id', name: 'Future Researcher List', component: FutureParticipateDetail },
+  { path: '/currentresearchdetail/:id', name: 'Current Participate List', component: CurrentParticipateDetail },
   { path: '/participate-list/:id', name: 'Participants List', component: ParticipateDemoTable },
   { path: '/add-content-form', name: 'Researches Content', component: AddContentForm },
   { path: '/research-requests', name: 'Researches Requests', component: ResearchRequestsDemoTable },

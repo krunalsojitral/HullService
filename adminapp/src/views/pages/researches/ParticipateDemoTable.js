@@ -5,12 +5,15 @@ import Swal from "sweetalert2";
 import {
   CCardBody,  
   CCardHeader,    
-  CDataTable
+  CDataTable,
+  CButton
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { CSVLink, CSVDownload } from "react-csv";
+import { useHistory } from 'react-router-dom'
 
 const ParticipateDemoTable = ({ match }) => {
+  const history = useHistory()
   
   const [items, setItems] = useState([])
   const [csvData, setCsvData] = useState([["S.No","Name", "Email", "DOB","Gender"]]);
@@ -47,7 +50,13 @@ const ParticipateDemoTable = ({ match }) => {
     { key: 'name', _style: { width: '20%'} },
     { key: 'email', _style: { width: '20%' } },
     { key: 'dob', _style: { width: '20%'} },
-    { key: 'gender', _style: { width: '20%'} }
+    { key: 'gender', _style: { width: '20%'} },
+    {
+      key: 'show_details',
+      label: '',
+      _style: { width: '1%' },
+      filter: false
+    }
   ]
   
   const getNewList = () => {
@@ -96,7 +105,24 @@ const ParticipateDemoTable = ({ match }) => {
           // onSorterValueChange={(val) => console.log('new sorter value:', val)}
           // onTableFilterChange={(val) => console.log('new table filter:', val)}
           // onColumnFilterChange={(val) => console.log('new column filter:', val)}
-          scopedSlots = {{}}
+          scopedSlots = {{
+            'show_details':
+              item => {
+                return (
+                  <td className="py-2">
+                    <CButton
+                      color="primary"
+                      variant="outline"
+                      shape="square"
+                      size="sm"
+                      onClick={() => history.push(`/currentresearchdetail/${item.researches_participate_id}`)}
+                    >
+                      View
+                  </CButton>
+                  </td>
+                )
+              },
+          }}
         />
       </CCardBody>
     </div>

@@ -157,19 +157,21 @@ function ForumSubReply(props) {
             {forumSubReplyCommentList && forumSubReplyCommentList.slice(0, replyVisible).map((subdata, index) => (
                 <div key={subdata.reply_comment_id} className="forums-reply-card">
                     <div className="forums-reply-icon">
-                        {!subdata.avatar && <img src="images/user.png" />}
-                        {subdata.avatar && <img src={subdata.avatar} />}
+                        <Link className="btn-edit" to={{ pathname: "/view-profile", search: "?id=" + subdata.user_id }}>
+                            {!subdata.avatar && <img src="images/user.png" />}
+                            {subdata.avatar && <img src={subdata.avatar} />}
+                        </Link>
                     </div>
                     <div className="forums-reply-text">
 
-                        <div class="comment-dot-btn">
+                        <div className="comment-dot-btn">
                             <h3><Link className="btn-edit" to={{ pathname: "/view-profile", search: "?id=" + subdata.user_id }}>{subdata.first_name} {subdata.last_name}</Link><span>({subdata.role})</span></h3>
-                            <div class="Bars-view dropdown">
-                                <a href="#" class="Bars-Btn-New dropdown-toggle" data-toggle="dropdown"><i class="fa fa-ellipsis-h"></i></a>
-                                <ul class="dropdown-menu">
-                                    {(loginUserID == subdata.user_id) && <li onClick={(e) => forumCommentEdit(subdata.reply_comment_id, index, subdata.comment)}><span className="forum_action"><i class="fa fa-pencil"></i> Edit</span></li>}
-                                    {(loginUserID == subdata.user_id) && <li onClick={(e) => forumCommentDelete(subdata.reply_comment_id, index)}><span className="forum_action"><i class="fa fa-trash-o"></i> Delete</span></li>}
-                                    <li onClick={(e) => forumReport(subdata.reply_comment_id, index, subdata.forum_report_id)}><span className="forum_action"><i class="fa fa-bug"></i> {(subdata.forum_report_id) ? "Reported" : "Report"}</span></li>
+                            <div className="Bars-view dropdown">
+                                <a href="#" className="Bars-Btn-New dropdown-toggle" data-toggle="dropdown"><i className="fa fa-ellipsis-h"></i></a>
+                                <ul className="dropdown-menu">
+                                    {(loginUserID == subdata.user_id) && <li onClick={(e) => forumCommentEdit(subdata.reply_comment_id, index, subdata.comment)}><span className="forum_action"><i className="fa fa-pencil"></i> Edit</span></li>}
+                                    {(loginUserID == subdata.user_id) && <li onClick={(e) => forumCommentDelete(subdata.reply_comment_id, index)}><span className="forum_action"><i className="fa fa-trash-o"></i> Delete</span></li>}
+                                    <li onClick={(e) => forumReport(subdata.reply_comment_id, index, subdata.forum_report_id)}><span className="forum_action"><i className="fa fa-bug"></i> {(subdata.forum_report_id) ? "Reported" : "Report"}</span></li>
                                 </ul>
                             </div>
                         </div>

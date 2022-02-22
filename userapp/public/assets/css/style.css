@@ -74,6 +74,20 @@ p {
     font-weight: 500
 }
 
+.react-datepicker__day-name, .react-datepicker__day, .react-datepicker__time-name{
+    margin: 0.366rem !important;
+    font-size: 11px;
+}
+.react-datepicker__header__dropdown.react-datepicker__header__dropdown--select {
+    padding: 8px;
+    font-size: 11px;
+}
+.react-datepicker__current-month.react-datepicker__current-month--hasYearDropdown.react-datepicker__current-month--hasMonthDropdown {
+    font-size: 13px;
+}
+.react-datepicker__header {
+    padding: 10px;
+}
 /* .container {
     width: 1300px;
 } */
@@ -3524,10 +3538,15 @@ div#swal2-html-container{
     font-weight: 500;    
     cursor: pointer;
 }
-.ytplayer {
+.video-card .ytplayer {
     pointer-events: none;
     position: absolute;
     opacity: 0.2;
+}
+.video-list-card .hideVideo{
+    pointer-events: none;    
+    opacity: 0.2;
+        position: absolute;
 }
 .tooltip-video .tooltip-title {
     position: absolute;
@@ -3542,6 +3561,24 @@ div#swal2-html-container{
     background: #000;
     padding-top: 5px;
 }
+.tooltip-relational-video{
+    position: relative;
+}
+
+.tooltip-relational-video .tooltip-title {
+    left: 0;
+    width: 100%;
+    height: 18%;
+    text-align: center;
+    font-size: 16px;
+    bottom: 0;
+    color: #fff;    
+    background: #000;
+    padding-top: 0px;    
+    margin-top: 67px;
+    display: none;
+}
+.tooltip-relational-video:hover .tooltip-title { display: block;}
 .tooltip-video:hover .tooltip-title { display: block;}
 .forum-tooltip-box a{ display: block;position: relative;}
 .forum-tooltip-box a .tooltip-title {
@@ -4103,6 +4140,7 @@ input.react-autosuggest__input::placeholder { color: #A0A0A0;}
 
 .new-forums-reply .forums-reply-card .forums-reply-icon img {
     width: 100%;
+    height: 100%;
 }
 
 .new-forums-reply .forums-reply-card .forums-reply-text {
@@ -4505,6 +4543,10 @@ color: #1e6e80;
 
 .view-profile-card {
     margin: 20px 0;
+}
+.view-profile-title-icon img {
+    height: 100%;
+    width: 100%;
 }
 
 .view-profile-card .view-profile-header {

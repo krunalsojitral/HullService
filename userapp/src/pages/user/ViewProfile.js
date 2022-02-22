@@ -33,6 +33,13 @@ export default function ViewProfile() {
         axios.post(api_url + '/user/getAdminUserById', { user_id }).then((result) => {
             if (result.data.status) {
                 var userdata = result.data.response.data;
+                if (userdata.avatar){
+                    const typeStrings = localStorage.getItem('userdata');    
+                    var newstring = JSON.parse(typeStrings);
+                    newstring.avatar = userdata.avatar
+                    localStorage.setItem('userdata', JSON.stringify(newstring));
+                }
+
                 setUsers(userdata);               
             } else {
                 Swal.fire('Oops...', result.data.response.msg, 'error')
@@ -102,7 +109,7 @@ export default function ViewProfile() {
                                                 
                                             </li>
                                             }
-                                            {(users.role == 3 && (users.other_research_interest_area || users.rinterestarea)) && <li>
+                                            {(users.role == 3 && (users.other_research_interest_area || users.pinterestarea)) && <li>
                                                 <i className="fa fa-heart"></i>         
                                                 {users.pinterestarea && <span>{users.pinterestarea} {users.other_research_interest_area && <span>,&nbsp;</span>} </span>}
                                                 {users.other_research_interest_area && <span>Others; {users.other_research_interest_area}</span>}                                                

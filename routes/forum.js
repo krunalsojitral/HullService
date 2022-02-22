@@ -951,7 +951,7 @@ router.post('/getForumCommentList', passport.authenticate('jwt', { session: fals
                                     // retObj['like_comment_count'] = data.like_comment_count;
                                     // retObj['unlike_comment_count'] = data.unlike_comment_count;
                                     retObj['role'] = data.role;
-                                    retObj['avatar'] = (data.user_image) ? imageLink + env.USER_VIEW_PATH + data.user_image : '';
+                                    retObj['avatar'] = (data.user_image) ? imageLink + env.USER_VIEW_PATH_THUMB + data.user_image : '';
                                     return retObj;
                                 }).sort(function (a, b) {                                                                                                         
                                     return a.forum_comment_id - b.forum_comment_id;
@@ -1214,7 +1214,7 @@ router.post('/addComment', passport.authenticate('jwt', { session: false }), [
                                     parent_comment_id: null,
                                     reply: [],
                                     unlike_comment_count: "0",
-                                    avatar: (userdata[0].user_image) ? imageLink + env.USER_VIEW_PATH + userdata[0].user_image : ''
+                                    avatar: (userdata[0].user_image) ? imageLink + env.USER_VIEW_PATH_THUMB + userdata[0].user_image : ''
                                 }
                                 return res.json({ 'status': 1, 'response': { 'data': user_obj, 'msg': 'Data found' } });
                             });

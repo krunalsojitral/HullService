@@ -257,7 +257,7 @@ router.get('/getFutureParticipateResearchesList', function (req, res) {
                 retObj['name'] = data.academic;
                 retObj['user_id'] = data.id;
                 retObj['organization'] = data.organization_name;
-                retObj['avatar'] = (data.user_image) ? imageLink + env.USER_VIEW_PATH + data.user_image : '';
+                retObj['avatar'] = (data.user_image) ? imageLink + env.USER_VIEW_PATH_THUMB + data.user_image : '';
                 return retObj;
             });
             return res.json({ status: 1, 'response': { data: researchList } });
@@ -274,13 +274,19 @@ router.post('/addParticipate', [
         var error = errors.array();
         res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
     } else {
+
+        var dob = (parsed.dob) ? moment(parsed.dob, "YYYY-MM-DD").add(1, 'days').format("YYYY-MM-DD") : ''
+
         let record = {
             name: req.body.name,
             email: req.body.email,
             gender: req.body.gender,
-            dob: (req.body.dob) ? moment(req.body.dob).format('YYYY-MM-DD') : '',
+            dob: dob,
             created_at: moment().format('YYYY-MM-DD'),
-            researches_id: req.body.researches_id
+            researches_id: req.body.researches_id,
+            child: req.body.child,
+            childGender: req.body.childGender,
+            childName: req.body.childName,
         };        
         Researches.addParticipate(record, function (err, data) {
             if (err) {
@@ -308,6 +314,7 @@ router.post('/participateList', [
             } else {
                 var participateList = result.map(data => {
                     let retObj = {};
+                    retObj['researches_participate_id'] = data.researches_participate_id;
                     retObj['researches_id'] = data.researches_id;
                     retObj['name'] = data.name;
                     retObj['gender'] = (data.gender) ? data.gender.replace("-", " ") : '';
@@ -665,18 +672,20 @@ router.post('/addFutureResearchByuser', [
     if (!errors.isEmpty()) {
         var error = errors.array();
         res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
-    } else {       
+    } else {     
+        
+        var dob = (req.body.dob) ? moment(req.body.dob, "YYYY-MM-DD").add(1, 'days').format("YYYY-MM-DD") : ''
         let record = {
             name: req.body.name,
             email: req.body.email,
-            dob: req.body.dob,            
-            child: req.body.child,
+            dob: dob,
             gender: req.body.gender,
+            child: req.body.child,
             childGender: req.body.childGender,
             childName: req.body.childName,
-            child_name_first: req.body.child_name_first,
-            child_gender_first: req.body.child_gender_first,
-            child_age_first: req.body.child_age_first,            
+            // child_name_first: req.body.child_name_first,
+            // child_gender_first: req.body.child_gender_first,
+            // child_age_first: req.body.child_age_first,            
             created_at: moment().format('YYYY-MM-DD')
         };
         Researches.addFutureResearchByuser(record, function (err, data) {
@@ -710,6 +719,43 @@ router.post('/getFutureParticipateById',[
                         var childresults = childresult.map(data => {
                             let retObj = {};
                             retObj['child_gender'] = (data.child_gender) ? data.child_gender.replace("-", " "):'';
+                            retObj['child_name'] = data.child_name;
+                            retObj['child_dob'] = (data.child_dob) ? moment(data.child_dob).format('YYYY-MM-DD') : '';
+                            return retObj;
+                        });
+                    }
+
+                    researches['name'] = result[0].name;
+                    researches['dob'] = (result[0].dob) ? moment(result[0].dob).format('YYYY-MM-DD') : '';
+                    researches['email'] = result[0].email;
+                    researches['child'] = (childresult.length > 0) ? childresults : [];
+                    return res.json({ 'status': 1, 'response': { 'data': researches, 'msg': 'data found' } });
+                });
+            }
+        });
+    }
+});
+
+router.post('/getCurrentParticipateById', [
+    check('researches_participate_id', 'Research participate id is required').notEmpty()
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        var id = req.body.researches_participate_id;
+        Researches.getCurrentResearchByID(id, function (err, result) {
+            if (err) {
+                res.json({ 'status': 0, 'response': { 'msg': err, 'dev_msg': err } });
+            } else {
+                Researches.getCurrentChildDataById(id, function (err, childresult) {
+                    let researches = {};
+
+                    if (childresult.length > 0) {
+                        var childresults = childresult.map(data => {
+                            let retObj = {};
+                            retObj['child_gender'] = (data.child_gender) ? data.child_gender.replace("-", " ") : '';
                             retObj['child_name'] = data.child_name;
                             retObj['child_dob'] = (data.child_dob) ? moment(data.child_dob).format('YYYY-MM-DD') : '';
                             return retObj;

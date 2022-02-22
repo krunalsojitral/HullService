@@ -19,6 +19,7 @@ var asyn = require('async');
 var helper = require('../config/helper');
 var moment = require('moment');
 var formidable = require('formidable');
+const gm = require('gm');
 
 
 function loggerData(req) {
@@ -476,7 +477,7 @@ router.post('/getuserData', [
                     userList['phone'] = result[0].phone;
                     userList['email'] = result[0].email;
                     userList['password'] = result[0].password;
-                    userList['avatar'] = (result[0].user_image) ? imageLink + env.USER_VIEW_PATH + result[0].user_image : '';
+                    userList['avatar'] = (result[0].user_image) ? imageLink + env.USER_VIEW_PATH_THUMB + result[0].user_image : '';
                     return res.json({ 'status': 1, 'response': { 'data': userList, 'msg': 'data found' } });
                 } else {
                     return res.json({ 'status': 1, 'response': { 'data': {}, 'msg': 'data found' } });
@@ -527,7 +528,7 @@ router.post('/getAdminUserById', [
                         userList['rinterestarea'] = result[0].rinterestarea;                        
                         userList['sectorname'] = result[0].sectorname;
                         userList['occupationname'] = result[0].occupationname;
-                        userList['avatar'] = (result[0].user_image) ? imageLink + env.USER_VIEW_PATH + result[0].user_image : '';
+                        userList['avatar'] = (result[0].user_image) ? imageLink + env.USER_VIEW_PATH_THUMB + result[0].user_image : '';
                         userList['academicdisciplinename'] = result[0].academicdisciplinename;
                         userList['level_of_education'] = result[0].level_of_education;
                         userList['other_sector'] = result[0].other_sector;
@@ -577,7 +578,7 @@ router.get('/getEditUserById', passport.authenticate('jwt', { session: false }),
                     userList['sector'] = result[0].sector;
                     userList['occupation'] = result[0].occupation;
                     userList['academic_discipline'] = result[0].academic_discipline;
-                    userList['avatar'] = (result[0].user_image) ? imageLink + env.USER_VIEW_PATH + result[0].user_image : '';
+                    userList['avatar'] = (result[0].user_image) ? imageLink + env.USER_VIEW_PATH_THUMB + result[0].user_image : '';
                     userList['sectorname'] = result[0].sectorname;
                     userList['occupationname'] = result[0].occupationname;
                     userList['academicdisciplinename'] = result[0].academicdisciplinename;
@@ -785,24 +786,36 @@ router.post('/updateuserByadmin', passport.authenticate('jwt', { session: false 
             var final_obj = {}
             asyn.waterfall([
                 function (done) {
+
                     if (typeof files.image !== 'undefined') {
                         let file_ext = files.image.name.split('.').pop();
                         let filename = Date.now() + '-' + files.image.name.split(" ").join("");
                         let tmp_path = files.image.path;
                         if (file_ext == 'png' || file_ext == 'PNG' || file_ext == 'jpg' || file_ext == 'JPG' || file_ext == 'jpeg' || file_ext == 'JPEG') {
-                            fs.rename(tmp_path, path.join(__dirname, env.USER_PATH + filename), function (err) {
-                                if (err) {
-                                    done("Image upload error", overview)
-                                } else {
-                                    overview.user_image = filename;                                    
-                                    done(err, overview)
-                                }
-                            });
+                            // fs.rename(tmp_path, path.join(__dirname, env.ARTICLE_PATH + ProfileImage), function (err) {
+                            //     overview['image'] = ProfileImage;
+                            //     done(err, overview)
+                            //     fs.unlink(tmp_path, function () {
+                            //         if (err) {
+                            //             return res.json({ status: 1, 'response': { msg: err } });
+                            //         }
+                            //     });
+                            // });
 
+                            fs.rename(tmp_path, path.join(__dirname, env.USER_PATH + filename), function (err) {
+                                    gm(__dirname + env.USER_PATH + filename).gravity('Center').thumb(150, 150, __dirname + env.USER_PATH_THUMB + filename, 100, function (err, data) {
+                                        if (err) {
+                                            done("Image upload error", overview)
+                                        } else {
+                                            overview.user_image = filename;
+                                            done(err, overview)
+                                        }
+                                    });
+                            });
                         } else {
                             return res.json({ status: 0, response: { msg: 'Only image with jpg, jpeg and png format are allowed', } });
                         }
-                    } else {                        
+                    } else {
                         overview.user_image = '';
                         done(err, overview);
                     }
@@ -946,7 +959,7 @@ router.get('/getuserDetail', passport.authenticate('jwt', { session: false }), f
                 userList['email'] = result[0].email;
                 userList['password'] = result[0].password;
                 userList['role'] = result[0].userrole;
-                userList['avatar'] = (result[0].user_image) ? imageLink + env.USER_VIEW_PATH + result[0].user_image : '';
+                userList['avatar'] = (result[0].user_image) ? imageLink + env.USER_VIEW_PATH_THUMB + result[0].user_image : '';
                 return res.json({ 'status': 1, 'response': { 'data': userList, 'msg': 'data found' } });
             } else {
                 return res.json({ 'status': 0, 'response': { 'data': {}, 'msg': 'data found' } });

@@ -218,20 +218,19 @@ const _nav = [
       },
     ],
   },
-  // {
-  //   _tag: "CSidebarNavDropdown",
-  //   name: "Events",
-  //   route: "/events",
-  //   icon: "cil-list",
-  //   _children: [
-  //     {
-  //       _tag: "CSidebarNavItem",
-  //       name: "View Event",
-  //       to: "/events",
-  //     }      
-  //   ],
-  // },
-
+  {
+    _tag: "CSidebarNavDropdown",
+    name: "Events",
+    route: "/events",
+    icon: "cil-list",
+    _children: [
+      {
+        _tag: "CSidebarNavItem",
+        name: "View Event",
+        to: "/events",
+      }      
+    ],
+  },
   {
     _tag: "CSidebarNavDropdown",
     name: "Website’s content",
