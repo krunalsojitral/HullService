@@ -624,6 +624,8 @@ router.post('/getPaidArticleList', passport.authenticate('jwt', { session: false
                 retObj['created_at'] = moment(data.article_date).format('MMMM DD, YYYY');
                 retObj['role'] = data.role;
                 retObj['bookmark_article_id'] = data.bookmark_article_id;
+                retObj['cost'] = data.cost;
+                retObj['purchase_type'] = data.purchase_type;
                 retObj['image'] = (data.image) ? imageLink + env.ARTICLE_VIEW_PATH + data.image : '';
                 retObj['image_thumb'] = (data.image) ? imageLink + env.ARTICLE_VIEW_PATH_THUMB + data.image : '';
                 retObj['status'] = data.status;
@@ -654,6 +656,8 @@ router.post('/getUnpaidArticleList', function (req, res) {
                 retObj['description'] = data.description;
                 retObj['created_at'] = moment(data.article_date).format('MMMM DD, YYYY');
                 retObj['role'] = data.role;
+                retObj['cost'] = data.cost;
+                retObj['purchase_type'] = data.purchase_type;
                 retObj['image'] = (data.image) ? imageLink + env.ARTICLE_VIEW_PATH + data.image : '';
                 retObj['image_thumb'] = (data.image) ? imageLink + env.ARTICLE_VIEW_PATH_THUMB + data.image : '';
                 retObj['status'] = data.status;

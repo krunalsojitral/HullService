@@ -126,3 +126,38 @@
     width: 100%;
     height: 100%;
 }
+
+header.custom-table-header.filter-section{
+display: inline-block;
+    margin-bottom: 14px;
+    justify-content: inherit;
+    align-items: inherit;
+}
+.header-filter{
+    // background-color: #efefef;
+    padding: 10px;
+}
+
+.header-filter .google-serach {
+    position: relative;
+}
+.header-filter .google-serach .suggestion li {
+    font-size: 14px;
+}
+.header-filter li.city_suggestion p{
+    margin: 0px;
+}
+.header-filter .google-serach .suggestion {
+    position: absolute;
+    left: 15px;
+    width: 91%;
+    background: #fff;
+    z-index: 99999;
+    height: 160px !important;
+    border: solid 1px #ddd;
+    display: inline-table;
+}
+.header-filter li.city_suggestion {
+    display: block !important;
+    cursor: pointer;
+}

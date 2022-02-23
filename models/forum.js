@@ -482,7 +482,7 @@ function forum() {
         });
     };
 
-    this.updateComment = function (record, callback) {
+    this.updateCommentForumRequest = function (record, callback) {
         connection.acquire(function (err, con) {
             const values = [record.status, record.user_status, record.admin_comment, record.created_at, record.id]
             con.query("UPDATE forum SET status =$1, user_status =$2,comment =$3,created_at=$4 WHERE forum_id = $5", values, function (err, result) {

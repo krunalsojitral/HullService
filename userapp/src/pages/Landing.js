@@ -26,7 +26,8 @@ export default function Landing() {
         infinite: true,
         speed: 500,
         slidesToShow: 3,
-        slidesToScroll: 3
+        slidesToScroll: 3,
+        infinite: true,
     };
 
     React.useEffect(() => {
@@ -326,11 +327,11 @@ export default function Landing() {
                                     <Slider
                                         dots={false}
                                         slidesToShow={4}
-                                        slidesToScroll={4}
+                                        // slidesToScroll={4}
                                         autoplay={true}
-                                        infinite={false}
                                         autoplaySpeed={3000}
                                         ref={customeSlider}
+                                        infinite={true}
                                     >
                                         {partnerSlider.length > 0 && partnerSlider.map((data, index) => (
                                             <img style={{ "Height": "350px !important" }} alt="avatar" src={data.partner} />

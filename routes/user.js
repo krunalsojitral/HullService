@@ -335,17 +335,12 @@ router.post('/checkEmail', [
 
 // user list
 router.post('/userList', function (req, res) {
-    loggerData(req);
-    var role = req.body.role;
-    var status = req.body.status;
-    User.getAllAdminUsers(role,status, function (err, result) {
+    loggerData(req);    
+    User.getFilterAdminUsers(req.body, function (err, result) {
         if (err) {
             return res.json({ status: 0, 'response': { msg: err } });
         } else {
-            
-
             var userList = result.map(data => {
-
                 var first_name = ''
                 if (data.first_name){ first_name = data.first_name }
                 var last_name = ''
@@ -361,8 +356,6 @@ router.post('/userList', function (req, res) {
                 retObj['email_verification_token'] = data.email_verification_token;                
                 retObj['email'] = data.email;                
                 retObj['status'] = data.status;
-                
-                
                 return retObj;
             });
             return res.json({ status: 1, 'response': { data: userList } });
@@ -370,18 +363,15 @@ router.post('/userList', function (req, res) {
     });
 });
 
-
 router.post('/csvuserList', function (req, res) {
     loggerData(req);
-    var role = req.body.role;
-    var status = req.body.status;
-    User.getCSVAdminUser(role, status, function (err, result) {
+    User.getCSVAdminUser(req.body, function (err, result) {
         if (err) {
             return res.json({ status: 0, 'response': { msg: err } });
         } else {
             let temparray = new Promise(async (resolve, reject) => {
                 for (let userdata of result) {
-                    await User.getUserInterestAreaById(userdata.id, userdata.role_id, function (err, interestresult) {                        
+                    await User.getUserInterestAreaById(userdata.id, userdata.role_id, function (err, interestresult) {
                         if (interestresult && interestresult.length > 0) {
                             userdata.csvString = Array.from(interestresult.values(), v => v.name).join(", ");
                         } else {
@@ -409,15 +399,64 @@ router.post('/csvuserList', function (req, res) {
                     retObj['pinterestarea'] = data.csvString;
                     return retObj;
                 });
-                if (participateList.length > 0){
+                if (participateList.length > 0) {
                     return res.json({ status: 1, 'response': { data: participateList } });
-                }else{
+                } else {
                     return res.json({ status: 1, 'response': { data: [] } });
                 }
             })
         }
     });
 });
+
+
+// router.post('/csvuserList', function (req, res) {
+//     loggerData(req);
+//     var role = req.body.role;
+//     var status = req.body.status;
+//     User.getCSVAdminUser(role, status, function (err, result) {
+//         if (err) {
+//             return res.json({ status: 0, 'response': { msg: err } });
+//         } else {
+//             let temparray = new Promise(async (resolve, reject) => {
+//                 for (let userdata of result) {
+//                     await User.getUserInterestAreaById(userdata.id, userdata.role_id, function (err, interestresult) {                        
+//                         if (interestresult && interestresult.length > 0) {
+//                             userdata.csvString = Array.from(interestresult.values(), v => v.name).join(", ");
+//                         } else {
+//                             userdata.csvString = '';
+//                         }
+//                     });
+//                 }
+//                 setTimeout(() => resolve(result), 40)
+//             });
+//             temparray.then(result => {
+
+//                 var participateList = result.map((data, index) => {
+//                     let retObj = {};
+//                     retObj['id'] = data.id;
+//                     retObj['no'] = index + 1;
+//                     retObj['name'] = data.first_name + ' ' + data.last_name;
+//                     retObj['email'] = data.email;
+//                     retObj['city'] = data.city;
+//                     retObj['organization'] = data.organizationname;
+//                     retObj['rinterestarea'] = data.rinterestarea;
+//                     retObj['sectorname'] = data.sectorname;
+//                     retObj['occupationname'] = data.occupationname;
+//                     retObj['academicdisciplinename'] = data.academicdisciplinename;
+//                     retObj['level_of_education'] = data.level_of_education;
+//                     retObj['pinterestarea'] = data.csvString;
+//                     return retObj;
+//                 });
+//                 if (participateList.length > 0){
+//                     return res.json({ status: 1, 'response': { data: participateList } });
+//                 }else{
+//                     return res.json({ status: 1, 'response': { data: [] } });
+//                 }
+//             })
+//         }
+//     });
+// });
 
 
 // Email Varification

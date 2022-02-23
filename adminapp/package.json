@@ -45,7 +45,8 @@
     "react-router-config": "^5.1.1",
     "react-router-dom": "^5.2.0",
     "redux": "4.0.5",
-    "sweetalert2": "^11.1.9"
+    "sweetalert2": "^11.1.9",
+    "use-places-autocomplete": "^1.11.0"
   },
   "devDependencies": {
     "auto-changelog": "2.2.0",

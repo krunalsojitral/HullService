@@ -154,7 +154,23 @@ export default function Articles() {
                                                     {!data.bookmark_article_id && <img className="bookmark-outline" src="images/bookmark-outline.png" alt="bookmark-fill" />}
                                                 </div>}
                                                 {token && data.article_order_id && <div><img src="images/buy.png" alt="buy" /></div>}
+                                                <div className="date">
+                                                    {data.purchase_type == 'paid' && <p className="price">${data.cost}</p>}
+                                                    {data.purchase_type == 'unpaid' && <p className="price">Free</p>}                                                    
+                                                </div>
                                             </div>
+
+                                            {/* <div className="blog-post">
+                                                <div className="blog-author">
+                                                    <img src="images/favicon.png" alt="author" />
+                                                    <p>Hull Service</p>
+                                                </div>
+                                                <div className="date">
+                                                    {data.purchase_type == 'paid' && <p className="price">${data.cost}</p>}
+                                                    {data.purchase_type == 'unpaid' && <p className="price">Free</p>}
+                                                   
+                                                </div>
+                                            </div> */}
 
                                             
                                             {!token && <br />}

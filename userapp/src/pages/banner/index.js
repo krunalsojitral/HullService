@@ -244,7 +244,7 @@ const Slide = ({ item, width }) => {
                     <div className="banner-text">
                         {item.title && <span>{item.title}</span>}
                         {item.description && <h1>{item.description}</h1>}
-                        {(item.button_text && item.button_url) && <a href={item.button_url} rel="noopener noreferrer" target="_blank" className="banner-btn">
+                        {(item.button_text && item.button_url) && <a href={item.button_url} rel="noopener noreferrer" className="banner-btn">
                             {item.button_text}
                         </a>}
                     </div>

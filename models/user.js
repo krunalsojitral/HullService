@@ -1,7 +1,7 @@
 //methods for fetching mysql data
 var connection = require('../config/database');
 var env = require('../config/env');
-var asyn = require('async');
+var async = require('async');
 
 function User() {
     connection.init();
@@ -39,40 +39,337 @@ function User() {
         });
     };
 
-
-    this.getCSVAdminUser = function (role, status, callback) {
+    this.getCSVAdminUser = function (search, callback) {
         connection.acquire(function (err, con) {
-
-            var sql = '';
-            var array = [role];
-            if (status) {
-                if (status == 2) {
-                    sql = 'SELECT *, sector.name as sectorname,organization.organization_name as organizationname, occupation.name as occupationname, academic_discipline.name as academicdisciplinename FROM users inner join user_role on users.role = user_role.role_id left join organization on users.organization = organization.organization_id left join sector on users.sector = sector.sector_id left join occupation on users.occupation = occupation.occupation_id left join academic_discipline on users.academic_discipline = academic_discipline.academic_discipline_id where users.role = $1 and (users.email_verification_token IS NOT NULL and length(users.email_verification_token) > 0) order by UPPER(users.first_name) ASC';
-                    //sql = "SELECT * FROM users where users.role = $1 and (users.email_verification_token IS NOT NULL and length(users.email_verification_token) > 0) order by UPPER(first_name) ASC";
-                    array = [role];
-                } else {
-                    sql = 'SELECT *, sector.name as sectorname,organization.organization_name as organizationname, occupation.name as occupationname, academic_discipline.name as academicdisciplinename FROM users inner join user_role on users.role = user_role.role_id left join organization on users.organization = organization.organization_id left join sector on users.sector = sector.sector_id left join occupation on users.occupation = occupation.occupation_id left join academic_discipline on users.academic_discipline = academic_discipline.academic_discipline_id where users.role = $1 and users.status = $2 and (users.email_verification_token IS NULL or length(users.email_verification_token) = 0) order by UPPER(users.first_name) ASC';
-                    //sql = 'SELECT * FROM users where users.role = $1 and users.status = $2 and (users.email_verification_token IS NULL or length(users.email_verification_token) = 0) order by UPPER(first_name) ASC';
-                    array = [role, status];
-                }
-            } else {
-                sql = 'SELECT *, sector.name as sectorname,organization.organization_name as organizationname, occupation.name as occupationname, academic_discipline.name as academicdisciplinename FROM users inner join user_role on users.role = user_role.role_id left join organization on users.organization = organization.organization_id left join sector on users.sector = sector.sector_id left join occupation on users.occupation = occupation.occupation_id left join academic_discipline on users.academic_discipline = academic_discipline.academic_discipline_id where users.role = $1 order by UPPER(users.first_name) ASC';
-                //sql = 'SELECT * FROM users where users.role = $1 order by UPPER(first_name) ASC';
+            var params = {
+                city: (search.data && search.data.city) ? search.data.city : '',
+                level_of_education: (search.data && search.data.level_of_education) ? search.data.level_of_education : '',
+                occupation: (search.data && search.data.occupation) ? search.data.occupation : '',
+                sector: (search.data && search.data.sector) ? search.data.sector : '',
+                professional_interest_of_area: (search.data && search.data.professional_interest_of_area) ? search.data.professional_interest_of_area : '',
+                research_interest_of_area: (search.data && search.data.research_interest_of_area) ? search.data.research_interest_of_area : '',
+                organization: (search.data && search.data.organization) ? search.data.organization : '',
+                academic_discipline: (search.data && search.data.academic_discipline) ? search.data.academic_discipline : '',
+                role: (search.data.role) ? search.data.role : '',
+                status: (search.data && search.data.status) ? search.data.status : ''
             }
 
-            //var sql = 'SELECT *, sector.name as sectorname, organization.organization_name as organizationname, occupation.name as occupationname, academic_discipline.name as academicdisciplinename FROM users inner join user_role on users.role = user_role.role_id left join organization on users.organization = organization.organization_id left join sector on users.sector = sector.sector_id left join occupation on users.occupation = occupation.occupation_id left join academic_discipline on users.academic_discipline = academic_discipline.academic_discipline_id where users.role = $1 order by UPPER(first_name) ASC';
-            
-            con.query(sql, array, function (err, result) {
-                con.release();
-                if (err){
-                    console.log(err);
+            var user_id = [];
+            async.waterfall([
+                function (callback0) {
+                    if (params.professional_interest_of_area) {
+                        con.query("SELECT user_id FROM user_professional_interest_area where professional_interest_area_id = ANY($1::int[])", [params.professional_interest_of_area], function (err, result) {
+                            if (err) {
+                                callback0(null, user_id);
+                            } else {
+                                if (result.rows.length > 0) {
+                                    result.rows.forEach(function (d) {
+                                        user_id.push(d.user_id);
+                                    });
+                                    callback0(null, user_id);
+                                } else {
+                                    user_id.push(0)
+                                    callback0(null, user_id);
+                                }
+                            }
+                        });
+                    } else {
+                        callback0(null, user_id);
+                    }
+                },
+                function (user_id, callback1) {
+                    if (params.research_interest_of_area) {
+                        con.query("SELECT user_id FROM user_researcher_interest_area where researcher_interest_area_id = ANY($1::int[])", [params.research_interest_of_area], function (err, result) {
+                            if (err) {
+                                callback1(null, user_id);
+                            } else {
+                                if (result.rows.length > 0) {
+                                    result.rows.forEach(function (d) {
+                                        user_id.push(d.user_id);
+                                    });
+                                    callback1(null, user_id);
+                                } else {
+                                    user_id.push(0)
+                                    callback1(null, user_id);
+                                }
+                            }
+                        });
+                    } else {
+                        callback1(null, user_id);
+                    }
+                }, function (arg1, callback2) {
+                    params.user_id = user_id;
+                    var conditions = csvbuildConditions(params);                    
+                    var sql = 'SELECT *, sector.name as sectorname,organization.organization_name as organizationname, occupation.name as occupationname, academic_discipline.name as academicdisciplinename FROM users inner join user_role on users.role = user_role.role_id left join organization on users.organization = organization.organization_id left join sector on users.sector = sector.sector_id left join occupation on users.occupation = occupation.occupation_id left join academic_discipline on users.academic_discipline = academic_discipline.academic_discipline_id WHERE ' + conditions.where + ' ' + conditions.orderby;
+                    con.query(sql, conditions.values, function (err, result) {
+                        con.release();                        
+                        if (err) {
+                            console.log(err);
+                            callback2(err, null);
+                        } else {
+                            callback2(null, result.rows);
+                        }
+                    });
+                }
+            ], function (err, result) {
+                if (err) {
                     callback(err, null);
-                }else{
-                    callback(null, result.rows);
-                }                
+                } else {
+                    callback(null, result);
+                }
             });
         });
     }
+
+    function csvbuildConditions(params) {
+
+
+        var conditions = [];
+        var orderby_conditions = ["order by UPPER(users.first_name) ASC"];
+        var values = [];
+
+        if (params.status) { 
+            if (params.status == 2) {
+                console.log('in');
+                conditions.push("(users.email_verification_token IS NOT NULL and length(users.email_verification_token) > 0)");
+            } else {
+                conditions.push("(users.email_verification_token IS NULL or length(users.email_verification_token) = 0)");
+            }
+        }        
+
+        conditions.push("users.role = $" + (values.length + 1));
+        values.push(params.role);
+
+        if (typeof params.level_of_education !== 'undefined' && params.level_of_education != '') {
+            conditions.push("users.level_of_education = $" + (values.length + 1));
+            values.push(params.level_of_education);
+        }
+
+        if (typeof params.occupation !== 'undefined' && params.occupation != '') {
+            conditions.push("users.occupation = $" + (values.length + 1));
+            values.push(params.occupation);
+        }
+
+        if (typeof params.sector !== 'undefined' && params.sector != '') {
+            conditions.push("users.sector = $" + (values.length + 1));
+            values.push(params.sector);
+        }
+
+        if (typeof params.organization !== 'undefined' && params.organization != '') {
+            conditions.push("users.organization = $" + (values.length + 1));
+            values.push(params.organization);
+        }
+
+        if (typeof params.academic_discipline !== 'undefined' && params.academic_discipline != '') {
+            conditions.push("users.academic_discipline = $" + (values.length + 1));
+            values.push(params.academic_discipline);
+        }
+
+        if (typeof params.city !== 'undefined' && params.city != '') {
+            conditions.push("users.city ILIKE $" + (values.length + 1));
+            values.push("%" + params.city + "%");
+        }
+
+        if (typeof params.status !== 'undefined' && params.status != '' && params.status != 2) {
+            conditions.push("users.status = $" + (values.length + 1));
+            values.push(params.status);
+        }
+
+        if (params.user_id.length > 0) {
+            conditions.push("users.id = ANY($" + (values.length + 1) + "::int[])");
+            values.push(params.user_id);
+        }
+
+        return {
+            where: conditions.length ? conditions.join(' AND ') : '1',
+            values: values,
+            orderby: orderby_conditions
+        };
+    }
+
+    this.getFilterAdminUsers = function (search, callback) {
+        connection.acquire(function (err, con) {
+            var params = {
+                city: (search.data && search.data.city) ? search.data.city : '',
+                level_of_education: (search.data && search.data.level_of_education) ? search.data.level_of_education : '',
+                occupation: (search.data && search.data.occupation) ? search.data.occupation : '',
+                sector: (search.data && search.data.sector) ? search.data.sector : '',
+                professional_interest_of_area: (search.data && search.data.professional_interest_of_area) ? search.data.professional_interest_of_area : '',
+                research_interest_of_area: (search.data && search.data.research_interest_of_area) ? search.data.research_interest_of_area : '',
+                organization: (search.data && search.data.organization) ? search.data.organization : '',
+                academic_discipline: (search.data && search.data.academic_discipline) ? search.data.academic_discipline : '',
+                role: (search.data.role) ? search.data.role : '',
+                status: (search.data && search.data.status) ? search.data.status : ''
+            }
+
+            var user_id = [];
+            async.waterfall([
+                function (callback0) {
+                    if (params.professional_interest_of_area) {
+                        con.query("SELECT user_id FROM user_professional_interest_area where professional_interest_area_id = ANY($1::int[])", [params.professional_interest_of_area], function (err, result) {
+                            if (err) {
+                                callback0(null, user_id);
+                            } else {
+                                if (result.rows.length > 0) {
+                                    result.rows.forEach(function (d) {
+                                        user_id.push(d.user_id);
+                                    });
+                                    callback0(null, user_id);
+                                } else {
+                                    user_id.push(0)
+                                    callback0(null, user_id);
+                                }
+                            }
+                        });
+                    } else {
+                        callback0(null, user_id);
+                    }
+                },
+                function (user_id, callback1) {
+                    if (params.research_interest_of_area) {
+                        con.query("SELECT user_id FROM user_researcher_interest_area where researcher_interest_area_id = ANY($1::int[])", [params.research_interest_of_area], function (err, result) {
+                            if (err) {
+                                callback1(null, user_id);
+                            } else {
+                                if (result.rows.length > 0) {
+                                    result.rows.forEach(function (d) {
+                                        user_id.push(d.user_id);
+                                    });
+                                    callback1(null, user_id);
+                                } else {
+                                    user_id.push(0)
+                                    callback1(null, user_id);
+                                }
+                            }
+                        });
+                    } else {
+                        callback1(null, user_id);
+                    }
+                }, function (arg1, callback2) {
+                    params.user_id = user_id;
+                    var conditions = buildConditions(params);
+                    var sql = 'SELECT * FROM users WHERE ' + conditions.where + ' ' + conditions.orderby;
+                    
+                    con.query(sql, conditions.values, function (err, result) {
+                        con.release();
+                        
+                        if (err) {
+                            console.log(err);
+                            callback2(err, null);
+                        } else {
+                            callback2(null, result.rows);
+                        }
+                    });
+                }
+            ], function (err, result) {
+                if (err) {
+                    callback(err, null);
+                } else {
+                    callback(null, result);
+                }
+            });
+        });
+    }
+
+    function buildConditions(params) {
+
+
+        var conditions = [];
+        var orderby_conditions = ["order by UPPER(users.first_name) ASC"];
+        var values = [];
+
+        conditions.push("role = $" + (values.length + 1));
+        values.push(params.role);
+
+        if (params.status) {
+            if (params.status == 2) {
+                conditions.push("(users.email_verification_token IS NOT NULL and length(users.email_verification_token) > 0)");
+            } else {
+                conditions.push("(users.email_verification_token IS NULL or length(users.email_verification_token) = 0)");
+            }
+        }
+
+        if (typeof params.level_of_education !== 'undefined' && params.level_of_education != '') {
+            conditions.push("level_of_education = $" + (values.length + 1));
+            values.push(params.level_of_education);
+        }
+
+        if (typeof params.occupation !== 'undefined' && params.occupation != '') {
+            conditions.push("occupation = $" + (values.length + 1));
+            values.push(params.occupation);
+        }
+
+        if (typeof params.sector !== 'undefined' && params.sector != '') {
+            conditions.push("sector = $" + (values.length + 1));
+            values.push(params.sector);
+        }
+
+        if (typeof params.organization !== 'undefined' && params.organization != '') {
+            conditions.push("organization = $" + (values.length + 1));
+            values.push(params.organization);
+        }
+
+        if (typeof params.academic_discipline !== 'undefined' && params.academic_discipline != '') {
+            conditions.push("academic_discipline = $" + (values.length + 1));
+            values.push(params.academic_discipline);
+        }
+
+        if (typeof params.city !== 'undefined' && params.city != '') {
+            conditions.push("city ILIKE $" + (values.length + 1));
+            values.push("%" + params.city + "%");
+        }
+
+        if (typeof params.status !== 'undefined' && params.status != '' && params.status != 2) {
+            conditions.push("status = $" + (values.length + 1));
+            values.push(params.status);
+        }
+
+        if (params.user_id.length > 0) {
+            conditions.push("id = ANY($" + (values.length + 1) + "::int[])");
+            values.push(params.user_id);
+        }
+
+        return {
+            where: conditions.length ? conditions.join(' AND ') : '1',
+            values: values,
+            orderby: orderby_conditions
+        };
+    }
+
+
+    // this.getCSVAdminUser = function (role, status, callback) {
+    //     connection.acquire(function (err, con) {
+
+    //         var sql = '';
+    //         var array = [role];
+    //         if (status) {
+    //             if (status == 2) {
+    //                 sql = 'SELECT *, sector.name as sectorname,organization.organization_name as organizationname, occupation.name as occupationname, academic_discipline.name as academicdisciplinename FROM users inner join user_role on users.role = user_role.role_id left join organization on users.organization = organization.organization_id left join sector on users.sector = sector.sector_id left join occupation on users.occupation = occupation.occupation_id left join academic_discipline on users.academic_discipline = academic_discipline.academic_discipline_id where users.role = $1 and (users.email_verification_token IS NOT NULL and length(users.email_verification_token) > 0) order by UPPER(users.first_name) ASC';
+    //                 //sql = "SELECT * FROM users where users.role = $1 and (users.email_verification_token IS NOT NULL and length(users.email_verification_token) > 0) order by UPPER(first_name) ASC";
+    //                 array = [role];
+    //             } else {
+    //                 sql = 'SELECT *, sector.name as sectorname,organization.organization_name as organizationname, occupation.name as occupationname, academic_discipline.name as academicdisciplinename FROM users inner join user_role on users.role = user_role.role_id left join organization on users.organization = organization.organization_id left join sector on users.sector = sector.sector_id left join occupation on users.occupation = occupation.occupation_id left join academic_discipline on users.academic_discipline = academic_discipline.academic_discipline_id where users.role = $1 and users.status = $2 and (users.email_verification_token IS NULL or length(users.email_verification_token) = 0) order by UPPER(users.first_name) ASC';
+    //                 //sql = 'SELECT * FROM users where users.role = $1 and users.status = $2 and (users.email_verification_token IS NULL or length(users.email_verification_token) = 0) order by UPPER(first_name) ASC';
+    //                 array = [role, status];
+    //             }
+    //         } else {
+    //             sql = 'SELECT *, sector.name as sectorname,organization.organization_name as organizationname, occupation.name as occupationname, academic_discipline.name as academicdisciplinename FROM users inner join user_role on users.role = user_role.role_id left join organization on users.organization = organization.organization_id left join sector on users.sector = sector.sector_id left join occupation on users.occupation = occupation.occupation_id left join academic_discipline on users.academic_discipline = academic_discipline.academic_discipline_id where users.role = $1 order by UPPER(users.first_name) ASC';
+    //             //sql = 'SELECT * FROM users where users.role = $1 order by UPPER(first_name) ASC';
+    //         }
+
+    //         //var sql = 'SELECT *, sector.name as sectorname, organization.organization_name as organizationname, occupation.name as occupationname, academic_discipline.name as academicdisciplinename FROM users inner join user_role on users.role = user_role.role_id left join organization on users.organization = organization.organization_id left join sector on users.sector = sector.sector_id left join occupation on users.occupation = occupation.occupation_id left join academic_discipline on users.academic_discipline = academic_discipline.academic_discipline_id where users.role = $1 order by UPPER(first_name) ASC';
+            
+    //         con.query(sql, array, function (err, result) {
+    //             con.release();
+    //             if (err){
+    //                 console.log(err);
+    //                 callback(err, null);
+    //             }else{
+    //                 callback(null, result.rows);
+    //             }                
+    //         });
+    //     });
+    // }
 
 
     this.adduserByadmin = function (record, callback) {
@@ -290,34 +587,34 @@ function User() {
         });
     }
 
-    this.getAllAdminUsers = function (role, status, callback) {
-        connection.acquire(function (err, con) {
-            var sql = '';
-            var array = [role];
-            if (status) {
-                if (status == 2){
-                    sql = "SELECT * FROM users where users.role = $1 and (users.email_verification_token IS NOT NULL and length(users.email_verification_token) > 0) order by UPPER(first_name) ASC";
-                    array = [role];
-                }else{                   
-                    sql = 'SELECT * FROM users where users.role = $1 and users.status = $2 and (users.email_verification_token IS NULL or length(users.email_verification_token) = 0) order by UPPER(first_name) ASC';
-                    array = [role, status];
-                }                
-            } else {                
-                sql = 'SELECT * FROM users where users.role = $1 order by UPPER(first_name) ASC';
-            }
-            con.query(sql, array, function (err, result) {
-                con.release()
-                if (err) {
-                    if (env.DEBUG) { console.log(err); }
-                    callback(err, null);
-                } else {
-                    callback(null, result.rows);
-                }
-            });
-        });
-    };
+    // this.getAllAdminUsers = function (role, status, callback) {
+    //     connection.acquire(function (err, con) {
+    //         var sql = '';
+    //         var array = [role];
+    //         if (status) {
+    //             if (status == 2){
+    //                 sql = "SELECT * FROM users where users.role = $1 and (users.email_verification_token IS NOT NULL and length(users.email_verification_token) > 0) order by UPPER(first_name) ASC";
+    //                 array = [role];
+    //             }else{                   
+    //                 sql = 'SELECT * FROM users where users.role = $1 and users.status = $2 and (users.email_verification_token IS NULL or length(users.email_verification_token) = 0) order by UPPER(first_name) ASC';
+    //                 array = [role, status];
+    //             }                
+    //         } else {                
+    //             sql = 'SELECT * FROM users where users.role = $1 order by UPPER(first_name) ASC';
+    //         }
+    //         con.query(sql, array, function (err, result) {
+    //             con.release()
+    //             if (err) {
+    //                 if (env.DEBUG) { console.log(err); }
+    //                 callback(err, null);
+    //             } else {
+    //                 callback(null, result.rows);
+    //             }
+    //         });
+    //     });
+    // };
 
-
+    
 
     //normal login
     this.checkUser = function (req, callback) {

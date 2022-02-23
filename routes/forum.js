@@ -616,12 +616,14 @@ router.post('/approveRejectedRequest', [
     var forum_id = req.body.id;
     var status = req.body.status;
     var comment = req.body.comment;
-
+    
     if (status == 1) {
+        
         Forum.getforumRequestDataById(forum_id, function (err, result) {
             if (err) {
                 return res.json({ status: 0, 'response': { msg: err } });
-            } else {       
+            } else {   
+                
                 var obj = {
                     id: forum_id,
                     user_status: status,
@@ -629,8 +631,7 @@ router.post('/approveRejectedRequest', [
                     admin_comment: comment,
                     created_at: moment().format('YYYY-MM-DD')
                 }
-                
-                Forum.updateComment(obj, function (err, updateresult) {
+                Forum.updateCommentForumRequest(obj, function (err, updateresult) {
                     if (err) {
                         return res.json({ status: 0, 'msg': err, 'response': { msg: err } });
                     } else {

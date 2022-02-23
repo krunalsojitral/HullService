@@ -45,7 +45,7 @@ const DemoTable = () => {
   }, [])
 
   const getCSVNewList = (status) => {
-    axios.post(api_url + '/user/csvuserList', { role: 4, status: status }).then((result) => {
+    axios.post(api_url + '/user/csvuserList', { data: { role: 4, status: status } }).then((result) => {
       if (result.data.status) {
         if (result.data.response.data.length > 0){
           var usersdatas = result.data.response.data;
@@ -118,7 +118,7 @@ const DemoTable = () => {
 
   
   const getNewList = (status) => {
-    axios.post(api_url + '/user/userList', { role: 4, status: status }).then((result) => {
+    axios.post(api_url + '/user/userList', { data: { role: 4, status: status } }).then((result) => {
       if (result.data.status) {
         if (result.data.response.data.length > 0) {
           var usersdatas = result.data.response.data;
