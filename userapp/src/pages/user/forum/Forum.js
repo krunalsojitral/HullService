@@ -171,17 +171,18 @@ export default function Forum() {
                                                         <table className="question-titles">
                                                             <tbody>
                                                                 {data.forum.map((forumdata, index) => (                                                                    
-                                                                        <tr>
+                                                                    <tr>
                                                                         <td className="tooltip-box"><Link key={forumdata.forum_id} to={{ pathname: "/forum-detail", search: "?id=" + forumdata.forum_id }}>{forumdata.topic.slice(0, 45)} {forumdata.topic.length > 45 && '...'}<span className="tooltip-title">{forumdata.topic}</span></Link></td>
                                                                         <td><span className="comment">{(forumdata.comment && forumdata.comment[0].forum_comment_count) ? forumdata.comment[0].forum_comment_count : 0}</span></td>
                                                                         <td>{(forumdata.comment && forumdata.comment[0].created_at) ? forumdata.comment[0].created_at : '-'}</td>
-                                                                        </tr>                                                                                                                                  
-                                                                ))} 
+                                                                    </tr>                                                                                                                                  
+                                                                ))}
+                                                                {data.forum.length > 3 &&
                                                                 <tr>
                                                                     <td></td>
                                                                     <td></td>
                                                                     <td><Link className="view-btn" to={{ pathname: "/forum-sub", search: "?id=" + data.forumheading_id }}>View More</Link></td>
-                                                                </tr>
+                                                                </tr>}
                                                                 
                                                             </tbody>
                                                         </table>

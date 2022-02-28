@@ -413,5 +413,36 @@ function Common() {
         });
     }
 
+    this.updateMembershipFees = function (record, callback) {
+        connection.acquire(function (err, con) {
+            con.query("UPDATE membership_fees SET membership_fees =$1 WHERE membership_fees_id = $2", [record.membership_fees, 1], function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, record);
+                }
+            });
+        });
+    }
+
+    
+    this.getMembershipFees = function (callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM membership_fees where membership_fees_id = $1',[1], function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) { console.log(err); }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    };
+
 }
 module.exports = new Common();

@@ -825,6 +825,27 @@ router.post('/updateBecomeMemberByadmin', function (req, res) {
 });
 
 
+router.post('/updateMembershipFees', function (req, res) {
+    var record = { membership_fees: req.body.membership_fees  }
+    Common.updateMembershipFees(record, function (err, result) {
+        if (err) {
+            return res.json({ 'status': 0, 'response': { 'msg': err } });
+        } else {
+            return res.json({ 'status': 1, 'response': { 'msg': 'Membership fees updated successfully.', data: result } });
+        }
+    });
+});
+
+router.get('/getMembershipFees', function (req, res) {
+    Common.getMembershipFees(function (err, result) {
+        if (err) {
+            return res.json({ 'status': 0, 'response': { 'msg': err } });
+        } else {
+            return res.json({ 'status': 1, 'response': { 'msg': 'get membership fees.', data: result } });
+        }
+    });
+});
+
 router.post('/sendEmail', function (req, res) {
     var logo;
     var home_url;
@@ -862,9 +883,6 @@ router.post('/sendEmail', function (req, res) {
         }
     });
     return res.json({ status: 1, 'msg': 'Send mail successfully.'});
-
-
-
 });
 
 router.get('/access_token', function (req, res) {
@@ -886,11 +904,11 @@ router.get('/access_token', function (req, res) {
 
     // Build token with uid
     const tokenA = RtcTokenBuilder.buildTokenWithUid(appID, appCertificate, channelName, uid, role, privilegeExpiredTs);
-    console.log("token_with_integer_number_uid: " + tokenA);
+    
 
     // Build token with user account
     const tokenB = RtcTokenBuilder.buildTokenWithAccount(appID, appCertificate, channelName, account, role, privilegeExpiredTs);
-    console.log("Token_with_userAccount: " + tokenB);
+    
 
 
     return res.json({ 'status': 0, 'response': { "token_with_integer_number_uid": tokenA, "token_with_userAccount":tokenB } });

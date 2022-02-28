@@ -237,7 +237,7 @@ export default function Video() {
 
                                                         {data.purchase_type == 'unpaid' &&
                                                             <div className="video-img"> 
-                                                                <iframe width="100%" height="195px" title="YouTube video player" src={`https://www.youtube.com/embed/${data.video_embeded_id}?rel=0&modestbranding=1&showinfo=0`} allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>
+                                                            <iframe width="100%" height="195px" allow="fullscreen;" title="YouTube video player" src={`https://www.youtube.com/embed/${data.video_embeded_id}?rel=0&modestbranding=1&showinfo=0`} ></iframe>
                                                             </div>
                                                         }
 

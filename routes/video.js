@@ -717,7 +717,8 @@ router.post('/purchase_video', [
         var obj = {
             user_id: req.body.user_id,
             order_id: req.body.order_id,
-            video_id: req.body.video_id
+            video_id: req.body.video_id,
+            created_at: moment().format('YYYY-MM-DD')
         }
 
         Video.purchase_video(obj, function (err, result) {

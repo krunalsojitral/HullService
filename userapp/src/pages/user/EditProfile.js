@@ -367,7 +367,7 @@ export default function EditProfile() {
             updateProfile(data);            
         } else {
             if (!city) {
-                setCityError('City is required.');
+                setCityError('Address is required.');
             } else if (!latitude && !longitude) {
                 setCityError('Please enter proper address.');
             } else {
@@ -400,8 +400,17 @@ export default function EditProfile() {
         };
 
         axios.post(api_url + '/user/updateuserByadmin', formData, config).then((result) => {               
-            if (result.data.status) {                
-                history.push("/view-profile?id=" + user.id);
+            if (result.data.status) {   
+                var userdata = result.data.response.data;
+
+                if (userdata.avatar) {
+                    const typeStrings = localStorage.getItem('userdata');
+                    var newstring = JSON.parse(typeStrings);
+                    newstring.avatar = userdata.avatar
+                    localStorage.setItem('userdata', JSON.stringify(newstring));
+                }
+              //  history.push("/view-profile?id=" + user.id);
+                window.location = "/view-profile?id=" + user.id;
             } else {
                 Swal.fire('Oops...', result.data.response.msg, 'error')
             }
@@ -478,7 +487,7 @@ export default function EditProfile() {
         if (!e.target.value) {
             setValue(e.target.value);
             setCity(e.target.value);
-            setCityError('City is required.');
+            setCityError('Address is required.');
         } else {
             setValue(e.target.value);
             setCity(e.target.value);
@@ -666,7 +675,7 @@ export default function EditProfile() {
                                                                 value={cityValue}
                                                                 onChange={handleInput}
                                                                 disabled={!ready}
-                                                                placeholder="City *"
+                                                                placeholder="Address *"
                                                                 className="form-control input"
                                                             />
                                                             {status === "OK" && <ul className="suggestion">{renderSuggestions()}</ul>}
@@ -946,6 +955,33 @@ export default function EditProfile() {
                                             </div>
 
                                         </div>}
+
+
+                                        <div className="row">
+                                            <div className="col-md-12">
+                                                <div className="form-group">
+                                                    <Controller
+                                                        control={control}
+                                                        name="subscribe"
+                                                        render={({
+                                                            field: { onChange, onBlur, value, name, ref },
+                                                            fieldState: { invalid, isTouched, isDirty, error },
+                                                            formState,
+                                                        }) => (
+                                                            <input
+                                                                type="checkbox"
+                                                                onBlur={onBlur} // notify when input is touched
+                                                                onChange={onChange} // send value to hook form
+                                                                checked={value}
+                                                                inputRef={ref}
+                                                            />
+                                                        )}
+                                                    />
+                                                    <span>&nbsp;Subscribe to Hull Services Email</span><br />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
 
                                         <div className="row">
                                             <div className="col-md-12">

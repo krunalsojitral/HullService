@@ -307,7 +307,7 @@ function forum() {
 
     this.getForumHeadingList = function (callback) {
         connection.acquire(function (err, con) {
-            const sql = 'SELECT * FROM forumheading where forumheading.status = $1'
+            const sql = 'SELECT * FROM forumheading where forumheading.status = $1 order by forumheading_name ASC'
             const values = [1]
             con.query(sql, values, function (err, result) {
                 con.release()
@@ -731,7 +731,7 @@ function forum() {
                             retObj['last_name'] = data.last_name;
                             retObj['role'] = data.role;
                             retObj['reply_comment_id'] = data.reply_comment_id;
-                            retObj['avatar'] = (data.user_image) ? imageLink + env.USER_PATH_THUMB + data.user_image : '';                            
+                            retObj['avatar'] = (data.user_image) ? imageLink + env.USER_VIEW_PATH_THUMB + data.user_image : '';
                             return retObj;
                         })
                         callback(null, obj);
@@ -773,7 +773,7 @@ function forum() {
                                                 retObj['first_name'] = data.first_name;
                                                 retObj['last_name'] = data.last_name;
                                                 retObj['role'] = data.role;
-                                                retObj['avatar'] = (data.user_image) ? imageLink + env.USER_PATH_THUMB + data.user_image : '';
+                                                retObj['avatar'] = (data.user_image) ? imageLink + env.USER_VIEW_PATH_THUMB + data.user_image : '';
                                                 retObj['reply_comment_id'] = data.reply_comment_id;
                                                 retObj['forum_report_id'] = data.forum_report_id;
                                                 return retObj;
@@ -802,7 +802,7 @@ function forum() {
                                         // retObj['comment_dislike_id'] = (data.action_type == 'unlike') ? data.comment_like_id : '';
                                         retObj['reply'] = (data.reply && data.reply.length > 0) ? data.reply : [];
                                         retObj['role'] = data.role;
-                                        retObj['avatar'] = (data.user_image) ? imageLink + env.USER_PATH_THUMB + data.user_image : '';
+                                        retObj['avatar'] = (data.user_image) ? imageLink + env.USER_VIEW_PATH_THUMB + data.user_image : '';
                                         retObj['forum_report_id'] = data.forum_report_id;
                                         return retObj;
                                     }).sort(function (a, b) {

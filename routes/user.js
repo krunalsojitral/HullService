@@ -230,6 +230,9 @@ router.post('/register', (req, res) => {
                                     other_occupation: (req.body.other_occupation) ? req.body.other_occupation: '',
                                     other_professional_interest_area: (req.body.other_professional_interest_area) ? req.body.other_professional_interest_area: '',
                                     other_research_interest_area: (req.body.other_research_interest_area) ? req.body.other_research_interest_area: '',
+                                    payment_id: (req.body.payment_id) ? req.body.payment_id : '',
+                                    joined_date: moment.utc().format('YYYY-MM-DD'),
+                                    renewal_date: moment.utc().add(1, 'years').format('YYYY-MM-DD'),
                                 };
                                 
                                 overview['data'] = record;
@@ -577,6 +580,8 @@ router.post('/getAdminUserById', [
                         userList['other_research_interest_area'] = result[0].other_research_interest_area;
                         userList['pinterestarea'] = csvString;
                         userList['about_us'] = result[0].about_us;                       
+                        userList['joined_date'] = (result[0].joined_date) ? moment(result[0].joined_date).format('MM-DD-YYYY') : '';
+                        userList['renewal_date'] = (result[0].renewal_date) ? moment(result[0].renewal_date).format('MM-DD-YYYY') : '';
                         return res.json({ 'status': 1, 'response': { 'data': userList, 'msg': 'data found' } });
                     });                    
                 } else {
@@ -628,6 +633,8 @@ router.get('/getEditUserById', passport.authenticate('jwt', { session: false }),
                     userList['other_professional_interest_area'] = result[0].other_professional_interest_area;
                     userList['other_research_interest_area'] = result[0].other_research_interest_area;
                     userList['about_us'] = result[0].about_us;
+                    userList['joined_date'] = (result[0].joined_date) ? moment(result[0].joined_date).format('MM-DD-YYYY') : '';
+                    userList['renewal_date'] = (result[0].renewal_date) ? moment(result[0].renewal_date).format('MM-DD-YYYY'): '';
 
                     if (interestresult && interestresult.length > 0) {                        
                         var obj = interestresult.map((data, index) => {
@@ -952,11 +959,29 @@ router.post('/updateuserByadmin', passport.authenticate('jwt', { session: false 
                         }
                     } 
                     User.updateuserByadmin(final_obj, user_id, update_value, professional_interest_of_area, researcher_interest_of_area, obj.role, async function (err, data) {
-                        User.getUserById(user_id, function (err, data) {
+                        User.getUserById(user_id, function (err, result) {
                             if (err){
                                 done2(err, null);
                             }else{
-                                done2(err, overview);
+
+                                if (result != '') {
+                                    var imageLink;
+                                    if (req.headers.host == env.ADMIN_LIVE_URL) {
+                                        imageLink = env.ADMIN_LIVE_URL;
+                                    } else {
+                                        imageLink = env.ADMIN_LIVE_URL;
+                                    }
+                                    let userList = {};
+                                    userList['id'] = result[0].id;
+                                    userList['name'] = result[0].name;
+                                    userList['phone'] = result[0].phone;
+                                    userList['email'] = result[0].email;
+                                    userList['password'] = result[0].password;
+                                    userList['avatar'] = (result[0].user_image) ? imageLink + env.USER_VIEW_PATH_THUMB + result[0].user_image : '';
+                                    done2(err, userList);
+                                } else {
+                                    done2(err, []);
+                                }
                             }
                         });
                     });
@@ -1071,6 +1096,74 @@ router.post('/added_deactivate_reason', [
 });
 
 
+const ical = require('ical-generator');
+
+
+router.post('/sendInvite', (req, res) => { 
+
+    const ics = require('ics');
+    const event = {
+        uid: "dipika.letsnurture@gmail.com",
+        start: [2022, 2, 27, 6, 30],
+        duration: { hours: 6, minutes: 30 },
+        title: 'Bolder Boulder',
+        description: 'Annual 10-kilometer run in Boulder, Colorado',
+        location: 'Folsom Field, University of Colorado (finish line)',
+        url: 'http://www.bolderboulder.com/',
+        geo: { lat: 40.0095, lon: 105.2669 },
+        categories: ['10k races', 'Memorial Day Weekend', 'Boulder CO'],
+        status: 'CONFIRMED',
+        busyStatus: 'BUSY',
+        organizer: { name: 'Admin', email: 'dipika.letsnurture@gmail.com' },
+        attendees: [
+            { name: 'Adam Gibbons', email: 'dipika.letsnurture@gmail.com', rsvp: true, partstat: 'ACCEPTED', role: 'REQ-PARTICIPANT' },
+            { name: 'Brittany Seaton', email: 'dipika.letsnurture@gmail.com', dir: 'https://linkedin.com/in/brittanyseaton', role: 'OPT-PARTICIPANT' }
+        ]
+    }
+
+    ics.createEvent(event, (error, result) => {
+        if (error) {
+            console.log('=============');
+            console.log(error)
+            return
+        }else{
+            console.log('=======dfgfdg======');
+            console.log(result)
+
+            var mailOptions = {
+                to: "dipika.letsnurture@gmail.com",
+                subject: "event",
+                html: "<p>Event : Bolder Boulder</p>"
+            }
+            if (result) {
+                let alternatives = {
+                    "Content-Type": "text/calendar",
+                    "method": "REQUEST",
+                    "content": Buffer.from(result.toString()),
+                    "component": "VEVENT",
+                    "Content-Class": "urn:content-classes:calendarmessage"
+                }
+                mailOptions['alternatives'] = alternatives;
+                mailOptions['alternatives']['contentType'] = 'text/calendar'
+                mailOptions['alternatives']['content'] = Buffer.from(result.toString())
+            }
+
+            let transporter = nodemailer.createTransport(nodeMailerCredential); // node mailer credentials
+
+            // send mail with defined transport object
+            transporter.sendMail(mailOptions, (error, info) => {
+                console.log(error);
+                console.log('============');
+                console.log(info);
+                // transporter.sendMail(createGmailCalenderEVent(options), (err, info) => {
+                //     if(err){
+                //         console.log(err)
+                //     }
+
+            })
+        }      
+    })
+});
 
 
 module.exports = router;

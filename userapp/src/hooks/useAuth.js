@@ -109,7 +109,7 @@ export default function useAuth() {
                 console.log(err);
                 //Swal.fire('Oops...', err, 'error')
             })
-        };
+    };
 
 
     const verifyEmail = (data) => {

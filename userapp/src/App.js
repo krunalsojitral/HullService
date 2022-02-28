@@ -10,7 +10,7 @@ import { browserHistory } from 'react-router';
 
 
 const Register = lazy(() => import("./pages/Register"));
-const Payment = lazy(() => import("./pages/Payment"));
+const Payment = lazy(() => import("./pages/MemberPayment"));
 const UserSelection = lazy(() => import("./pages/UserSelection"));
 const Login = lazy(() => import("./pages/Login"));
 const ActivationAccount = lazy(() => import("./pages/ActivationAccount"));
@@ -135,7 +135,7 @@ function App() {
           <Route path="/dynamic-page" component={DynamicPage} />
           <Route path="/add-research" component={AddResearch} />
           <Route path="/view-profile" component={ViewProfile} />
-            <Route path="/edit-profile" component={EditProfile} />
+          <Route path="/edit-profile" component={EditProfile} />
         </Switch>
         </Suspense>
       </UserContext.Provider>

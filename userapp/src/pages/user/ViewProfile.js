@@ -33,12 +33,12 @@ export default function ViewProfile() {
         axios.post(api_url + '/user/getAdminUserById', { user_id }).then((result) => {
             if (result.data.status) {
                 var userdata = result.data.response.data;
-                if (userdata.avatar){
-                    const typeStrings = localStorage.getItem('userdata');    
-                    var newstring = JSON.parse(typeStrings);
-                    newstring.avatar = userdata.avatar
-                    localStorage.setItem('userdata', JSON.stringify(newstring));
-                }
+                // if (userdata.avatar){
+                //     const typeStrings = localStorage.getItem('userdata');    
+                //     var newstring = JSON.parse(typeStrings);
+                //     newstring.avatar = userdata.avatar
+                //     localStorage.setItem('userdata', JSON.stringify(newstring));
+                // }
 
                 setUsers(userdata);               
             } else {
@@ -54,9 +54,11 @@ export default function ViewProfile() {
 
             <section className="inner-header">
                 <div className="container">
-                    <div className="row">
+                    <div className="row">                        
                         <div className="col-md-12">
-                            <h2>View Profile</h2>
+                            <h2>{showEdit && "My Profile"}
+                                {!showEdit && "View Profile"}
+                            </h2>
                         </div>
                     </div>
                 </div>
@@ -68,11 +70,33 @@ export default function ViewProfile() {
                             <div className="view-profile-card">
                                 <div className="view-profile-header">
                                     {showEdit && <div className="row">
-                                        <div className="col-md-12">
-                                            <div className="view-profile-button">
-                                                <Link className="btn-edit" to={{ pathname: "/edit-profile" }}>
-                                                    EDIT
-                                                </Link>                                                
+                                        <div className="col-md-12 upper-section">
+                                            <div class="col-md-6">
+                                                {users.joined_date && <div class="cal-date">
+                                                    <div class="cal-date-icon">
+                                                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                    </div>
+                                                    <div class="cal-date-text">
+                                                        <h3>Member Since</h3>
+                                                        <p>{users.joined_date}</p>
+                                                    </div>
+                                                </div>}
+                                                {users.renewal_date && <div class="cal-date">
+                                                    <div class="cal-date-icon">
+                                                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                    </div>
+                                                    <div class="cal-date-text">
+                                                        <h3>Renewal Date</h3>
+                                                        <p>{users.renewal_date}</p>
+                                                    </div>
+                                                </div>}
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div className="view-profile-button">
+                                                    <Link className="btn-edit" to={{ pathname: "/edit-profile" }}>
+                                                        EDIT
+                                                </Link>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>}
@@ -101,17 +125,17 @@ export default function ViewProfile() {
                                             {(users.role == 2 && (users.sectorname || users.other_sector)) && <li><i className="fa fa-square"></i>{users.sectorname} {users.other_sector}</li>}
                                             {(users.role == 2 && users.level_of_education) && <li><i className="fa fa-graduation-cap"></i>{users.level_of_education}</li>}
                                             {(users.role == 2 && (users.occupationname || users.other_occupation)) && <li><i className="fa fa-briefcase"></i>{users.occupationname} {users.other_occupation}</li>}
-                                            {(users.role == 3 && (users.academicdisciplinename || users.other_academic_discipline)) && <li><i className="fa fa-suitcase"></i>{users.academicdisciplinename} {users.other_academic_discipline}</li>}                                            
+                                            {(users.role == 3 && (users.academicdisciplinename || users.other_academic_discipline)) && <li><i className="fa fa-suitcase"></i>{users.academicdisciplinename}{users.other_academic_discipline}</li>}                                            
                                             {(users.role == 2 && (users.other_professional_interest_area || users.pinterestarea)) && <li>                                                
                                                 <i className="fa fa-heart"></i>                                                                                                   
-                                                {users.pinterestarea && <span>{users.pinterestarea} {users.other_professional_interest_area && <span>,&nbsp;</span>}</span>}
+                                                {users.pinterestarea && <span>{users.pinterestarea}{users.other_professional_interest_area && <span>,&nbsp;</span>}</span>}
                                                 {users.other_professional_interest_area && <span> Others; {users.other_professional_interest_area} </span>}
                                                 
                                             </li>
                                             }
                                             {(users.role == 3 && (users.other_research_interest_area || users.pinterestarea)) && <li>
                                                 <i className="fa fa-heart"></i>         
-                                                {users.pinterestarea && <span>{users.pinterestarea} {users.other_research_interest_area && <span>,&nbsp;</span>} </span>}
+                                                {users.pinterestarea && <span>{users.pinterestarea}{users.other_research_interest_area && <span>,&nbsp;</span>} </span>}
                                                 {users.other_research_interest_area && <span>Others; {users.other_research_interest_area}</span>}                                                
                                                 </li>}                                            
                                         </ul>

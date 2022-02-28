@@ -266,6 +266,11 @@ const _nav = [
         _tag: "CSidebarNavItem",
         name: "Banner Content",
         to: "/banner",
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "Membership fees",
+        to: "/membership-fees",
       }
     ],
   },

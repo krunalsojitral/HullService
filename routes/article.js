@@ -756,7 +756,8 @@ router.post('/purchase_article', [
         var obj = {
             user_id: req.body.user_id,
             order_id: req.body.order_id,
-            article_id: req.body.article_id
+            article_id: req.body.article_id,
+            created_at: moment().format('YYYY-MM-DD')
         }
 
         Article.purchase_article(obj, function (err, result) {

@@ -237,8 +237,7 @@ router.post('/updatebannerByadmin', function (req, res) {
                     if (typeof files.image !== 'undefined') {
                         let file_ext = files.image.name.split('.').pop();
                         let filename = Date.now() + '-' + files.image.name.split(" ").join("");
-                        let tmp_path = files.image.path;
-                        console.log(files)
+                        let tmp_path = files.image.path;                        
                         if (file_ext == 'png' || file_ext == 'PNG' || file_ext == 'jpg' || file_ext == 'JPG' || file_ext == 'jpeg' || file_ext == 'JPEG') {
 
                             fs.rename(tmp_path, path.join(__dirname, env.BANNER_PATH + filename), function (err) {

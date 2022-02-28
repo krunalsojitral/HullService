@@ -454,7 +454,7 @@ img.bookmark-fill { cursor: pointer; }
 }
 footer {
     background: linear-gradient(135deg, #036E80 30.73%, #5EA5C7 100%);
-    padding: 50px;
+    padding: 50px 0;
 }
 .footer-logo .logo {
     width: 90px;
@@ -949,7 +949,7 @@ section.banner-card .banner-text .banner-btn {
     font-style: normal;
     font-weight: 500;
     font-size: 17px;
-    
+    color:#A0A0A0;
 }
 /* .login-section .login-box .login-details span:before {
     content: '';
@@ -4203,6 +4203,7 @@ input.react-autosuggest__input::placeholder { color: #A0A0A0;}
     text-transform: uppercase;
     color: #2B75E5;   
     display: inline-block;
+    cursor: pointer;
 }
 
 .new-forums-reply .forums-reply-card .forums-reply-text .Reply-Btn-New {
@@ -4372,7 +4373,7 @@ line-height: 45px;
 margin: 0;
 padding: 0;
 box-shadow: none;
-left: -142px;
+left: -145px;
 }
 .Bars-view ul.dropdown-menu li {
 border-bottom: none;
@@ -4585,12 +4586,9 @@ color: #1e6e80;
 
 .view-profile-card .view-profile-header .view-profile-button {
     text-align: right;
-    border-bottom: 2px #1e6e80 dotted;
     padding-bottom: 25px;
 }
-.pofile-view{
-    background: #f1f1f1;
-}
+.pofile-view{ background: #f1f1f1; }
 .view-profile-card .view-profile-header .view-profile-button .btn-edit {
     background: #036E80;
     border-radius: 5px;
@@ -4673,6 +4671,9 @@ color: #1e6e80;
 .view-profile-card .view-profile-body .view-profile-details ul li i {
     margin-right: 10px;
     color: #ababab;
+    width: 14px;
+    height: 14px;
+    text-align: center;
 }
 .view-profile-card .view-profile-body .view-profile-details {
     width: 774px;
@@ -4830,17 +4831,15 @@ color: #1e6e80;
 }
 .loged-user-link { display: block;}
 .loged-user-link .loged-user-details .loged-user-icon {
-    width: 50px;
-    height: 50px;
-    border-radius: 100px;
-    overflow: hidden;
-    border: solid 1px #f9b92a;
     float: left;
     margin-right: 10px;
 }
-.loged-user-link .loged-user-details .loged-user-icon img{
-    width: 100%;
-    height: 100%;
+.loged-user-link .loged-user-details .loged-user-icon img {
+    width: 50px;
+    height: 50px;
+    border: solid 2px #f9b92a;
+    overflow: hidden;
+    border-radius: 100px;
 }
 .user-dropdown { width: 200px;margin-left: 12px;}
 .loged-user-link .loged-user-details .loged-user-name {
@@ -4991,4 +4990,68 @@ color: #1e6e80;
 .sort-cetagory a.active {
     border: 2px solid #1E90E3;
     font-weight: 700;
+}
+.order-summery {
+    margin: 30px 0;
+    background: #E5F6F9;
+    padding: 30px;
+}
+.dashboard-content .membership-card{
+    padding: 0px 25px;
+}
+.order-summery table {
+    width: 100%;
+    margin: 15px 0;
+}
+.order-summery table td {
+    font-size: 18px;
+    line-height: 21px;
+    letter-spacing: 0.1px;
+    padding: 15px 0;
+    border-bottom: solid 1px #1e6e80;
+    font-weight: normal;
+}
+
+.order-summery table td.footer-td {
+    font-size: 18px;
+    line-height: 21px;
+    letter-spacing: 0.1px;
+    color: #000000;
+}
+
+.order-summery p {
+    font-family: 'Open Sans';
+    font-size: 15px;
+    line-height: 21px;
+    letter-spacing: 0.1px;
+    color: #000000;
+    margin-bottom: 15px;
+    font-weight: 400;
+}
+
+.order-summery p:last-child { margin: 0;}
+
+.view-profile-card .view-profile-header .cal-date {
+display: inline-block;
+margin-right: 15px;
+}
+
+.view-profile-card .view-profile-header .cal-date .cal-date-icon {
+float: left;
+margin-right: 14px;
+}
+
+.view-profile-card .view-profile-header .cal-date .cal-date-text {
+overflow: hidden;
+}
+.view-profile-card .view-profile-header .upper-section {
+    border-bottom: 2px #1e6e80 dotted;
+}
+.view-profile-card .view-profile-header .cal-date-text h3{
+    font-size: 19px;
+    line-height: 15px;
+}
+.view-profile-card .view-profile-header i.fa.fa-calendar {
+    color: #036E80;
+    font-size: 25px;
 }

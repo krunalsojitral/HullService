@@ -35,9 +35,9 @@ export default function Header() {
         //var userdata = JSON.parse(typeString);
         if (userdata){
             if (userdata.role == 2){
-                setUserTypeList('Researcher')
-            } else if (userdata.role == 3) {
                 setUserTypeList('Professional')
+            } else if (userdata.role == 3) {
+                setUserTypeList('Researcher')
             } else{
                 setUserTypeList('General Public')
             }
@@ -223,7 +223,7 @@ export default function Header() {
                                                 </li>
                                                 <li>
                                                     <NavLink activeClassName="active" to="/members">
-                                                        <InlineButton name={"MEMBERS"} />
+                                                        <InlineButton name={"MEMBER SHIP"} />
                                                     </NavLink>
                                                 </li>
                                                 <li>
@@ -238,7 +238,7 @@ export default function Header() {
                                                 </li>                                                
                                                 <li>
                                                     <NavLink activeClassName="active" to="/contact">
-                                                        <InlineButton name={"CONTACT"} />
+                                                        <InlineButton name={"CONTACT US"} />
                                                     </NavLink>
                                                 </li>
                                                 <li>
@@ -264,7 +264,7 @@ export default function Header() {
                                                     </a>
                                                     <ul className="dropdown-menu loged-user-menu">
                                                         <li><Link className="btn-edit" to={{ pathname: "/dashboard" }}>My Dashboard</Link></li>                                               
-                                                        <li><Link className="btn-edit" to={{ pathname: "/view-profile", search: "?id=" + userData.id }}>View Profile</Link></li>
+                                                        <li><Link className="btn-edit" onClick={() => { window.location.href = "/view-profile?id=" + userData.id }} >View Profile</Link></li>
                                                         <li onClick={(e) => logoutClick()}><a className="logout">
                                                             <InlineButton  name={"Logout"} />
                                                         </a></li>

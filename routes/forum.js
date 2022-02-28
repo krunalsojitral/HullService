@@ -460,12 +460,25 @@ router.post('/getForumHeadingList', function (req, res) {
                 if (error) {
                     return res.json({ 'status': 0, 'response': { 'msg': error } });
                 } else {
+
+                    finalData.sort(compare);
+
                     return res.json({ 'status': 1, 'response': { 'data': finalData, 'forum_id': forum_tag_id, 'msg': 'data found' } });
                 }
             });            
         }
     });
 });
+
+function compare(a, b) {
+    if (a.forumheading_name < b.forumheading_name) {
+        return -1;
+    }
+    if (a.forumheading_name > b.forumheading_name) {
+        return 1;
+    }
+    return 0;
+}
 
 
 router.post('/getForumSubHeadingList', [

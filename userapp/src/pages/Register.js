@@ -10,6 +10,8 @@ import axios from "axios";
 import { MultiSelect } from "react-multi-select-component";
 import useAuth from './../hooks/useAuth';
 import Autosuggest from "react-autosuggest";
+import { useHistory } from 'react-router-dom';
+import Swal from "sweetalert2";
 
 function escapeRegexCharacters(str) {
     return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -30,7 +32,7 @@ function getSectionSuggestions(section) {
 
 export default function Register() {
 
-
+    let history = useHistory();
     const [values, setValues] = useState("");
     const [suggestion, setSuggestion] = useState([]);
     const [suggestionOrganizationList, setSuggestionOrganizationList] = useState([]);
@@ -156,7 +158,6 @@ export default function Register() {
             .then((result) => {
                 if (result.data.status) {
                     var orgdata = result.data.response.data;
-                    console.log(orgdata);
                     setSuggestionOrganizationList(orgdata);
                 }
             })
@@ -235,31 +236,7 @@ export default function Register() {
     const { registerUser } = useAuth();
     
 
-    const onSubmit = (data) => {
-        // console.log(data);
-       
-        // if (userTypeList == 'researcher') {
-        //     data.role = 3;
-        // } else if (userTypeList == 'professional') {
-        //     data.role = 2;
-        // } else {
-        //     data.role = 4;
-        // }
-        // data.user_id = 27;
-      
-        // const formData = new FormData();
-        // formData.append("data", JSON.stringify(data));
-        // if (selectedFile) {
-        //     formData.append("image", selectedFile, selectedFile.name);
-        // }
-
-        // axios.post(api_url + '/user/updateuserByadmin', formData).then(async (result) => {
-            
-        // })
-        // .catch((err) => {
-            
-        // })
-        // return;
+    const onSubmit = (data) => {        
 
         if (userTypeList == 'general') {
             if (userTypeList == 'researcher') {
@@ -269,10 +246,24 @@ export default function Register() {
             } else {
                 data.role = 4;
             }
-            registerUser(data);
+            
+            axios.post(api_url + "/user/checkEmail", { email: data.email })
+                .then((result) => {
+                    console.log(result);
+                    if (result.data.status) {
+                        localStorage.setItem('registerdata', JSON.stringify(data));
+                        history.push('/payment');
+                        //registerUser(data);
+                    } else {
+                        Swal.fire('Oops...', result.data.response.msg, 'error');
+                    }
+                })
+                .catch((err) => { console.log(err); });
+
+            
         }else{
             if (!city) {
-                setCityError('City is required.');
+                setCityError('Address is required.');
             } else if (!latitude && !longitude) {
                 setCityError('Please enter proper address.');
             } else {
@@ -290,11 +281,21 @@ export default function Register() {
                 } else {
                     data.role = 4;
                 }
-                registerUser(data);
-            }
-        }
 
-        
+                axios.post(api_url + "/user/checkEmail", { email: data.email })
+                    .then((result) => {
+                        console.log(result);
+                        if (result.data.status) {
+                            localStorage.setItem('registerdata', JSON.stringify(data))
+                            history.push('/payment');
+                            //registerUser(data);
+                        }else{
+                            Swal.fire('Oops...', result.data.response.msg, 'error');
+                        }
+                    })
+                    .catch((err) => { console.log(err); });
+            }
+        }        
     }
 
     const {
@@ -708,7 +709,7 @@ export default function Register() {
                                                     value={cityValue}
                                                     onChange={handleInput}
                                                     disabled={!ready}
-                                                    placeholder="City *"
+                                                    placeholder="Address *"
                                                     className="form-control input"
                                                 />
                                                 {status === "OK" && <ul className="suggestion">{renderSuggestions()}</ul>}
@@ -970,10 +971,57 @@ export default function Register() {
                                             </div>} 
 
                                         </div>}
+
                                         
+                                        <div className="form-group checkbox">
+                                            <Controller
+                                                control={control}
+                                                name="terms_condition"
+                                                rules={{ required: true }}
+                                                render={({
+                                                    field: { onChange, onBlur, value, name, ref },
+                                                    fieldState: { invalid, isTouched, isDirty, error },
+                                                    formState,
+                                                }) => (
+                                                    <input
+                                                        type="checkbox"
+                                                        onBlur={onBlur} // notify when input is touched
+                                                        onChange={onChange} // send value to hook form
+                                                        checked={value}
+                                                        inputRef={ref}
+                                                    />
+                                                )}
+                                            />
+                                            <span>&nbsp;By clicking Sign Up, you agree to our Terms and Conditions</span><br />
+                                            {errors.terms_condition && errors.terms_condition.type === "required" && (
+                                                <small className="error">This is required.</small>
+                                            )}
+                                        </div>
+
+                                        <div className="form-group checkbox">
+                                            <Controller
+                                                control={control}
+                                                name="subscribe"
+                                                rules={{ required: true }}
+                                                render={({
+                                                    field: { onChange, onBlur, value, name, ref },
+                                                    fieldState: { invalid, isTouched, isDirty, error },
+                                                    formState,
+                                                }) => (
+                                                    <input
+                                                        type="checkbox"
+                                                        onBlur={onBlur} // notify when input is touched
+                                                        onChange={onChange} // send value to hook form
+                                                        checked={value}
+                                                        inputRef={ref}
+                                                    />
+                                                )}
+                                            />
+                                            <span>&nbsp;Subscribe to Hull Services Email</span><br />
+                                        </div>                                        
                                          
 
-                                        <button type="submit" className="sign-btn">Submit</button>
+                                        <button type="submit" className="sign-btn">Make Payment</button>
                                         {/* <span>OR</span>
                                             <ul>
                                                 <li><a href="javacript:;"><img src="images/google.png" /></a></li>
