@@ -69,7 +69,7 @@ export default function ViewProfile() {
                         <div className="col-md-12">
                             <div className="view-profile-card">
                                 <div className="view-profile-header">
-                                    {showEdit && <div className="row">
+                                    {showEdit && users.role != 4 && <div className="row">
                                         <div className="col-md-12 upper-section">
                                             <div class="col-md-6">
                                                 {users.joined_date && <div class="cal-date">
@@ -100,6 +100,17 @@ export default function ViewProfile() {
                                             </div>
                                         </div>
                                     </div>}
+
+                                    {showEdit && users.role == 4 && <div className="row">
+                                        <div className="col-md-12 upper-section">
+                                            <div className="view-profile-button">
+                                                <Link className="btn-edit" to={{ pathname: "/edit-profile" }}>
+                                                    EDIT
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    </div>}
+
                                     <div className="row">
                                         <div className="col-md-12">
                                             <div className="view-pro-button">

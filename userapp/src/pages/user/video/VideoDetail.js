@@ -198,10 +198,10 @@ export default function VideoDetail() {
                                                 }
 
                                                 {data.purchase_type == 'unpaid' &&
-                                                    <iframe width="100%" height="90px" src={`https://www.youtube.com/embed/${data.video}?rel=0&modestbranding=1&showinfo=0`} title="YouTube video player" allow="fullscreen; accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>
+                                                    <iframe width="100%" height="90px" src={`https://www.youtube.com/embed/${data.video_embeded_id}?rel=0&modestbranding=1&showinfo=0`} title="YouTube video player" allow="fullscreen; accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>
                                                 } 
 
-                                                {/* <iframe width="100%" height="90px" src={data.video+"?rel=0"} title="YouTube video player" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>  */}
+                                                {/* <iframe width="100%" height="90px" src={data.video+"?rel=0"} title="Youtube video player" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>  */}
                                                 
                                             </div>
                                             <div className="video-list-text">                                                

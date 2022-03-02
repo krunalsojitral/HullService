@@ -3563,22 +3563,24 @@ div#swal2-html-container{
 }
 .tooltip-relational-video{
     position: relative;
+    display: block;
+    height: 100%;
 }
 
 .tooltip-relational-video .tooltip-title {
+    position: absolute;
     left: 0;
     width: 100%;
-    height: 18%;
+    height: auto;
     text-align: center;
     font-size: 16px;
-    bottom: 0;
-    color: #fff;    
+    bottom: 2px;
+    color: #fff;
     background: #000;
-    padding-top: 0px;    
-    margin-top: 67px;
     display: none;
+    padding: 4px 0;
 }
-.tooltip-relational-video:hover .tooltip-title { display: block;}
+.tooltip-relational-video:hover span.tooltip-title { display: block;}
 .tooltip-video:hover .tooltip-title { display: block;}
 .forum-tooltip-box a{ display: block;position: relative;}
 .forum-tooltip-box a .tooltip-title {
@@ -4683,6 +4685,10 @@ color: #1e6e80;
     position: relative;
     margin-bottom: 25px;
 }
+.edit-profile .remove-image{
+    color: red;
+    font-size: 15px;
+}
 .edit-profile input.form-control {
     background: #FFFFFF;
     border: 1px solid #B8B8B8;
@@ -4708,6 +4714,9 @@ color: #1e6e80;
 }
 .edit-profile .react-autosuggest__section-container:last-child{
     border-bottom: 1px solid gray;
+}
+.edit-profile .dropdown-heading-value span{
+    font-size: 15px;
 }
 
 .edit-profile ul.react-autosuggest__suggestions-list {

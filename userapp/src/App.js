@@ -65,6 +65,8 @@ const MyStudies = lazy(() => import("./pages/user/research/MyStudies"));
 
 const ViewProfile = lazy(() => import("./pages/user/ViewProfile"));
 const EditProfile = lazy(() => import("./pages/user/EditProfile"));
+const TermsCondition = lazy(() => import("./pages/TermsCondition"));
+
 
 
 function App() {
@@ -136,6 +138,8 @@ function App() {
           <Route path="/add-research" component={AddResearch} />
           <Route path="/view-profile" component={ViewProfile} />
           <Route path="/edit-profile" component={EditProfile} />
+          <Route path="/terms-condition" component={TermsCondition} />
+          
         </Switch>
         </Suspense>
       </UserContext.Provider>

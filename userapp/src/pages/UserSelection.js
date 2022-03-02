@@ -63,17 +63,16 @@ export default function UserSelection() {
                                             <p>Select this if you are one of the following:  </p>
                                         </div>
                                     </div>
-                                    <button onClick={(e) => handleSelectUser('general')} className="btn-research"></button>
+                                    <button onClick={(e) => handleSelectUser('general')} className="btn-research">General Public</button>
                                 </div>
                             </div>
-
                             {/* <div className="row">
                                 <div className="col-md-12">
                                     <div className="register-general-public-text">
                                         If you do not fall into any of the above categories click here to <b className="signup-text" onClick={(e) => handleSelectUser('general')}><u>sign-up</u></b>
                                     </div>                                        
                                 </div>                                    
-                            </div>     */}
+                            </div> */}
                         </div>
                     </div>
                 </div>

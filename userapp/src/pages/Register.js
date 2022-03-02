@@ -236,7 +236,8 @@ export default function Register() {
     const { registerUser } = useAuth();
     
 
-    const onSubmit = (data) => {        
+    const onSubmit = (data) => { 
+        
 
         if (userTypeList == 'general') {
             if (userTypeList == 'researcher') {
@@ -249,11 +250,13 @@ export default function Register() {
             
             axios.post(api_url + "/user/checkEmail", { email: data.email })
                 .then((result) => {
-                    console.log(result);
                     if (result.data.status) {
-                        localStorage.setItem('registerdata', JSON.stringify(data));
-                        history.push('/payment');
-                        //registerUser(data);
+                        if (data.role == 4){
+                            registerUser(data);
+                        }else{
+                            localStorage.setItem('registerdata', JSON.stringify(data));
+                            history.push('/payment');
+                        }
                     } else {
                         Swal.fire('Oops...', result.data.response.msg, 'error');
                     }
@@ -286,9 +289,12 @@ export default function Register() {
                     .then((result) => {
                         console.log(result);
                         if (result.data.status) {
-                            localStorage.setItem('registerdata', JSON.stringify(data))
-                            history.push('/payment');
-                            //registerUser(data);
+                            if (data.role == 4) {
+                                registerUser(data);
+                            } else {
+                                localStorage.setItem('registerdata', JSON.stringify(data));
+                                history.push('/payment');
+                            }
                         }else{
                             Swal.fire('Oops...', result.data.response.msg, 'error');
                         }
@@ -317,7 +323,7 @@ export default function Register() {
                 // When user selects a place, we can replace the keyword without request data from API
                 // by setting the second parameter to "false"    
                 
-                console.log(description);
+                
                 setValue(description, false);
                 setCity(description);
                 clearSuggestions();
@@ -325,7 +331,7 @@ export default function Register() {
                 // Get latitude and longitude via utility functions
                 getGeocode({ address: description })
                     .then((results) => {
-                        console.log(results);
+                        
                         const address_components = results[0].address_components;
                         var filtered_array = address_components.filter(function (address_component) {
                             return address_component.types.includes("country");
@@ -992,7 +998,7 @@ export default function Register() {
                                                     />
                                                 )}
                                             />
-                                            <span>&nbsp;By clicking Sign Up, you agree to our Terms and Conditions</span><br />
+                                            <span>&nbsp;By clicking Sign Up, you agree to our <Link target="_blank" to='/terms-condition'>Terms and Conditions</Link></span><br />
                                             {errors.terms_condition && errors.terms_condition.type === "required" && (
                                                 <small className="error">This is required.</small>
                                             )}
@@ -1002,7 +1008,6 @@ export default function Register() {
                                             <Controller
                                                 control={control}
                                                 name="subscribe"
-                                                rules={{ required: true }}
                                                 render={({
                                                     field: { onChange, onBlur, value, name, ref },
                                                     fieldState: { invalid, isTouched, isDirty, error },

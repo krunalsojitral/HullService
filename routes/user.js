@@ -231,6 +231,7 @@ router.post('/register', (req, res) => {
                                     other_professional_interest_area: (req.body.other_professional_interest_area) ? req.body.other_professional_interest_area: '',
                                     other_research_interest_area: (req.body.other_research_interest_area) ? req.body.other_research_interest_area: '',
                                     payment_id: (req.body.payment_id) ? req.body.payment_id : '',
+                                    subscribe: (req.body.subscribe)?1:0,
                                     joined_date: moment.utc().format('YYYY-MM-DD'),
                                     renewal_date: moment.utc().add(1, 'years').format('YYYY-MM-DD'),
                                 };
@@ -633,6 +634,7 @@ router.get('/getEditUserById', passport.authenticate('jwt', { session: false }),
                     userList['other_professional_interest_area'] = result[0].other_professional_interest_area;
                     userList['other_research_interest_area'] = result[0].other_research_interest_area;
                     userList['about_us'] = result[0].about_us;
+                    userList['subscribe'] = result[0].subscribe;
                     userList['joined_date'] = (result[0].joined_date) ? moment(result[0].joined_date).format('MM-DD-YYYY') : '';
                     userList['renewal_date'] = (result[0].renewal_date) ? moment(result[0].renewal_date).format('MM-DD-YYYY'): '';
 
@@ -791,6 +793,7 @@ router.post('/updateuserByadmin', passport.authenticate('jwt', { session: false 
         var other_occupation = (obj.other_occupation) ? obj.other_occupation : '';
         var other_professional_interest_area = (obj.other_professional_interest_area) ? obj.other_professional_interest_area : '';
         var other_research_interest_area = (obj.other_research_interest_area) ? obj.other_research_interest_area : '';        
+        var subscribe = (obj.subscribe)?1:0;
 
         if (first_name == "") {
             return res.json({ status: 0, response: { msg: 'First name is required' } });
@@ -894,7 +897,7 @@ router.post('/updateuserByadmin', passport.authenticate('jwt', { session: false 
                 },
                 function (overview, done2) {
                     if (obj.role == 2) {                        
-                        update_value = [first_name, last_name, about_us, city, email, overview.organization, level_of_education, occupation, sector, other_sector, other_occupation, other_professional_interest_area]
+                        update_value = [first_name, last_name, about_us, city, email, overview.organization, level_of_education, occupation, sector, other_sector, other_occupation, other_professional_interest_area, subscribe]
                         final_obj = {
                             first_name: first_name,
                             last_name: last_name,
@@ -907,16 +910,21 @@ router.post('/updateuserByadmin', passport.authenticate('jwt', { session: false 
                             sector: sector,
                             other_sector: other_sector,
                             other_occupation: other_occupation,
-                            other_professional_interest_area: other_professional_interest_area
+                            other_professional_interest_area: other_professional_interest_area,
+                            subscribe: subscribe
                         };
                         
                         if (overview.user_image){
                             update_value.push(overview.user_image)
                             final_obj.user_image = overview.user_image;
-                        }                        
+                        } 
+                        if (obj.removeImages){
+                            update_value.push('')
+                            final_obj.user_image = '';
+                        }
                     } else if (obj.role == 3) {
                         
-                        update_value = [first_name, last_name, about_us, city, email, overview.organization, academic_discipline, other_academic_discipline, other_research_interest_area]
+                        update_value = [first_name, last_name, about_us, city, email, overview.organization, academic_discipline, other_academic_discipline, other_research_interest_area, subscribe]
                         final_obj = {
                             first_name: first_name,
                             last_name: last_name,
@@ -926,36 +934,51 @@ router.post('/updateuserByadmin', passport.authenticate('jwt', { session: false 
                             organization: overview.organization,
                             academic_discipline: academic_discipline,
                             other_academic_discipline: other_academic_discipline,
-                            other_research_interest_area: other_research_interest_area
+                            other_research_interest_area: other_research_interest_area,
+                            subscribe: subscribe
                         };
                         
                         if (overview.user_image) {
                             update_value.push(overview.user_image)
                             final_obj.user_image = overview.user_image;
                         }
+                        if (obj.removeImages) {
+                            update_value.push('')
+                            final_obj.user_image = '';
+                        }
                     } else if (obj.role == 4) {
-                        update_value = [first_name, last_name, about_us, email]
+                        update_value = [first_name, last_name, about_us, email, subscribe]
                         final_obj = {
                             first_name: first_name,
                             last_name: last_name,
                             about_us: about_us,
-                            email: email
+                            email: email,
+                            subscribe: subscribe
                         };
                         if (overview.user_image) {
                             update_value.push(overview.user_image)
                             final_obj.user_image = overview.user_image;
                         }
+                        if (obj.removeImages) {
+                            update_value.push('')
+                            final_obj.user_image = '';
+                        }
                     } else {
-                        update_value = [first_name, last_name, about_us, email]
+                        update_value = [first_name, last_name, about_us, email, subscribe]
                         final_obj = {
                             first_name: first_name,
                             last_name: last_name,
                             about_us: about_us,
-                            email: email
+                            email: email,
+                            subscribe: subscribe
                         };
                         if (overview.user_image) {
                             update_value.push(overview.user_image)
                             final_obj.user_image = overview.user_image;
+                        }
+                        if (obj.removeImages) {
+                            update_value.push('')
+                            final_obj.user_image = '';
                         }
                     } 
                     User.updateuserByadmin(final_obj, user_id, update_value, professional_interest_of_area, researcher_interest_of_area, obj.role, async function (err, data) {
@@ -1104,10 +1127,10 @@ router.post('/sendInvite', (req, res) => {
     const ics = require('ics');
     const event = {
         uid: "dipika.letsnurture@gmail.com",
-        start: [2022, 2, 27, 6, 30],
+        start: [2022, 4, 2, 6, 30],
         duration: { hours: 6, minutes: 30 },
         title: 'Bolder Boulder',
-        description: 'Annual 10-kilometer run in Boulder, Colorado',
+        description: '<a href="http://www.bolderboulder.com/">Annual 10-kilometer run in Boulder, Colorado</a>.',
         location: 'Folsom Field, University of Colorado (finish line)',
         url: 'http://www.bolderboulder.com/',
         geo: { lat: 40.0095, lon: 105.2669 },
@@ -1159,7 +1182,7 @@ router.post('/sendInvite', (req, res) => {
                 //     if(err){
                 //         console.log(err)
                 //     }
-
+                return res.json({ status: 1, 'msg': 'Send invitation successfully.', 'response': { data: result } });
             })
         }      
     })

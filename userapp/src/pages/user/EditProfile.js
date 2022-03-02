@@ -35,6 +35,7 @@ export default function EditProfile() {
     let history = useHistory();
     const [values, setValues] = useState("");
     const [user, setUser] = useState({});
+    const [removeImages, setRemoveImages] = useState('');
     const [suggestion, setSuggestion] = useState([]);
     const [suggestionOrganizationList, setSuggestionOrganizationList] = useState([]);
 
@@ -233,6 +234,8 @@ export default function EditProfile() {
                     setFormValue('last_name', userdata.last_name)
                     setFormValue('email', userdata.email)
                     setFormValue('organization', userdata.organization)
+                    setFormValue('subscribe', userdata.subscribe)
+                    
                     if (userdata.organization){
                         setValues(userdata.organization)
                     }
@@ -335,7 +338,7 @@ export default function EditProfile() {
     const occupation_selected = watch("occupation");
     const academic_discipline_selected = watch("academic_discipline");
 
-    const onSubmit = (data) => {           
+    const onSubmit = (data) => {
 
         if (!otherProfessionalInterestArea){
             data.other_professional_interest_area = '';
@@ -387,6 +390,7 @@ export default function EditProfile() {
     }
 
     const updateProfile = (data) => {
+        data.removeImages = removeImages;
         const formData = new FormData();
         formData.append("data", JSON.stringify(data));
         if (selectedFile) {
@@ -530,6 +534,12 @@ export default function EditProfile() {
         }
     };
 
+    const removeImage = () =>{
+        setSelectedFile('');
+        setSetectavatar('');
+        setRemoveImages('yes')
+    }
+
     return (
 
         <div>
@@ -616,6 +626,8 @@ export default function EditProfile() {
                                                             UPLOAD IMAGE
                                                         </div>
                                                     <small>{selectedFile && selectedFile.name}</small>
+                                                    <br/>
+                                                    {setectavatar && <span className="remove-image" onClick={(e) => removeImage()}>Remove<i class="fa fa-times" aria-hidden="true"></i></span>}
                                                 </div>
                                             </div>
                                         </div>

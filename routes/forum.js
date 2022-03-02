@@ -83,6 +83,7 @@ router.post('/forumCommentList', (req, res) => {
                                 retObj['forum_id'] = data.forum_id;
                                 retObj['comment'] = data.comment;
                                 retObj['user_id'] = data.user_id;
+                                retObj['email'] = data.email;
                                 retObj['no_of_reports'] = (data.report) ? data.report: 0;
                                 retObj['user_name'] = (data.first_name) ? data.first_name : '' + " " + (data.last_name) ? data.last_name : '';
                                 retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');

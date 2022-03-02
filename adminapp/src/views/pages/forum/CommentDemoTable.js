@@ -21,6 +21,7 @@ const CommentDemoTable = ({ match }) => {
   const fields = [
     { key: 'comment', _style: { width: '20%'} },
     { key: 'user_name', _style: { width: '20%' } },
+    { key: 'email', _style: { width: '20%' } },
     { key: 'created_at', _style: { width: '20%' } },
     { key: 'no_of_reports', _style: { width: '20%' } },
     {
@@ -101,10 +102,54 @@ const CommentDemoTable = ({ match }) => {
         // onTableFilterChange={(val) => console.log('new table filter:', val)}
         // onColumnFilterChange={(val) => console.log('new column filter:', val)}
         scopedSlots = {{                 
+          'comment':
+            item => {
+              return (
+                <td className={(item.no_of_reports > 5 ? "py-2 badge-danger" : "py-2")} className="comment-tooltip-box">
+                   <p>
+                    {(item.comment.length > 50) ? item.comment.substring(0, 50) + "..." : item.comment}
+                      <span className="tooltip-title"> {item.comment}</span>
+                    </p>
+                  {/* {item.comment} */}
+                </td>
+              )
+            },
+          'user_name':
+            item => {
+              return (
+                <td className={(item.no_of_reports > 5 ? "py-2 badge-danger" : "py-2")}>
+                  {item.user_name}
+                </td>
+              )
+            },
+          'email':
+            item => {
+              return (
+                <td className={(item.no_of_reports > 5 ? "py-2 badge-danger" : "py-2")}>
+                  {item.email}
+                </td>
+              )
+            },
+          'created_at':
+            item => {
+              return (
+                <td className={(item.no_of_reports > 5 ? "py-2 badge-danger" : "py-2")}>
+                  {item.created_at}
+                </td>
+              )
+            },
+          'no_of_reports':
+            item => {
+              return (
+                <td className={(item.no_of_reports > 5 ? "py-2 badge-danger" : "py-2")}>
+                  {item.no_of_reports}
+                </td>
+              )
+            },
           'show_details':
             item => {
               return (
-                <td className="py-2">                 
+                <td className={(item.no_of_reports > 5 ? "py-2 badge-danger" : "py-2")}>
 
                   <CButton
                     color="primary"
