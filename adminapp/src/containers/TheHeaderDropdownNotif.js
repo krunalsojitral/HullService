@@ -17,6 +17,7 @@ const TheHeaderDropdownNotif = () => {
   const [notiTotalCount, setNotiTotalCount] = React.useState(0);
   const [forumNotiCount, setForumNotiCount] = React.useState(0);
   const [researchNotiCount, setResearchNotiCount] = React.useState(0);
+  const [forumCommentList, setForumCommentList] = React.useState([]);
 
 
   React.useEffect(() => {
@@ -38,6 +39,7 @@ const TheHeaderDropdownNotif = () => {
         setForumNotiCount(data.forum_cnt)
         setResearchNotiCount(data.research_request_cnt)
         setNotiTotalCount(parseInt(data.forum_cnt) + parseInt(data.research_request_cnt))
+        setForumCommentList(data.forum_list)
       }
     }).catch((err) => {
       console.log(err);
@@ -78,6 +80,13 @@ const TheHeaderDropdownNotif = () => {
         </CDropdownItem>
         <CDropdownItem onClick={() => history.push(`/research-requests`)}><CIcon name="cil-comment-square" className="mr-2 text-success" /> New Research Requests &nbsp; <CBadge color="success" className="mfs-auto">{researchNotiCount}</CBadge></CDropdownItem>
         <CDropdownItem onClick={() => history.push(`/forum-request`)} ><CIcon name="cil-comment-square" className="mr-2 text-danger" /> New Forum Request &nbsp; <CBadge color="success" className="mfs-auto">{forumNotiCount}</CBadge></CDropdownItem>
+
+        {forumCommentList.length > 0 && forumCommentList.map((data, index) => (<div key={data.forum_comment_id}>
+          <CDropdownItem onClick={() => history.push(`/forumcomment/` + data.forum_id)} ><CIcon name="cil-comment-square" className="mr-2 text-danger" /> "{data.comment.substring(0, 8)}" has more than 5 reports</CDropdownItem>
+        </div>
+        ))}
+
+        
       </CDropdownMenu>
     </CDropdown>
   )

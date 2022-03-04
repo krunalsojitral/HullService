@@ -239,16 +239,19 @@ const Slide = ({ item, width }) => {
             {/* style={{ "width": "100%", "background-image": "url(https://daveceddia.com/images/useState-hook.png)" }} */}
             <div className="banner-slide">
                 <div className="banner-images"><img src={item.image} /></div>
-                <div className="col-md-1"></div>
-                <div className="col-md-10">
-                    <div className="banner-text">
-                        {item.title && <span>{item.title}</span>}
-                        {item.description && <h1>{item.description}</h1>}
-                        {(item.button_text && item.button_url) && <a href={item.button_url} rel="noopener noreferrer" className="banner-btn">
-                            {item.button_text}
-                        </a>}
+                <div className="row">
+                    <div className="col-md-1"></div>
+                    <div className="col-md-10">
+                        <div className="banner-text">
+                            {item.title && <span>{item.title}</span>}
+                            {item.description && <h1>{item.description}</h1>}
+                            {(item.button_text && item.button_url) && <a href={item.button_url} rel="noopener noreferrer" className="banner-btn">
+                                {item.button_text}
+                            </a>}
+                        </div>
                     </div>
                 </div>
+                
             </div>
         </SliderItem>
     );

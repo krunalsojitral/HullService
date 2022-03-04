@@ -52,11 +52,20 @@ const AddEditForm = ({ match }) => {
   const [eventId, setEventId] = React.useState(0);
   const [setectimage, setSetectimage] = React.useState(0);
   const [selectedFile, setSelectedFile] = useState();
+
+  const [selectpromoimage, setSelectpromoimage] = React.useState(0);
+  const [selectedPromoFile, setSelectedPromoFile] = useState();
+
   const [contentEditor, setContentEditor] = useState();
   const [displayImage, setDisplayImage] = React.useState([]);
   const [deleteresources, setDeleteresources] = React.useState([]);
   const handleEditorChange = (content, editor) => {
     setContentEditor(content);
+  }
+
+  const [contentPromoEditor, setContentPromoEditor] = useState();
+  const handlePromoEditorChange = (content, editor) => {
+    setContentPromoEditor(content);
   }
 
   const changeFileHandler = (event) => {
@@ -115,6 +124,17 @@ const AddEditForm = ({ match }) => {
     setFinalFile(fs);
   }
 
+  const changePromoFileHandler = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      var reader = new FileReader();
+      reader.onload = (event) => {
+        setSelectpromoimage(event.target.result);
+      };
+      reader.readAsDataURL(event.target.files[0]);
+      setSelectedPromoFile(event.target.files[0]);
+    }
+  };
+
 
   React.useEffect(() => {    
    
@@ -133,6 +153,9 @@ const AddEditForm = ({ match }) => {
             setValue("location", eventdata.location);
             setValue("organization", eventdata.organization);
             setSetectimage(eventdata.image);
+            setSelectpromoimage(eventdata.promo_image);
+            setValue("promo_title", eventdata.promo_title);
+            setContentPromoEditor(eventdata.promo_description);
 
             // var sessionTitle = [{ "name": "default Value", "value": "Group Session 1" }, { "value": "Group Session 2" }];
             // var sessionDescription = [{ "name": "default Value", "value": "Group Description 1" }, { "value": "Group Description 2" }];
@@ -267,6 +290,7 @@ const AddEditForm = ({ match }) => {
 
   const updateInformationAct = (data) => {
     data.description = contentEditor;
+    data.promo_description = contentPromoEditor;
     data.event_id = eventId;
     data.deleteresources = deleteresources;
    
@@ -274,6 +298,10 @@ const AddEditForm = ({ match }) => {
     formData.append("data", JSON.stringify(data));
     if (selectedFile) {
       formData.append("image", selectedFile, selectedFile.name);
+    }
+
+    if (selectedPromoFile) {
+      formData.append("promo_image", selectedPromoFile, selectedPromoFile.name);
     }
     
     if (finalFile && finalFile.length > 0) {
@@ -350,6 +378,12 @@ const AddEditForm = ({ match }) => {
                     <CNavLink>
                    Resources
                       {active === 2 && ' '}
+                    </CNavLink>
+                  </CNavItem>
+                  <CNavItem>
+                    <CNavLink>
+                      Promo
+                      {active === 3 && ' '}
                     </CNavLink>
                   </CNavItem>
                 </CNav>
@@ -770,10 +804,77 @@ const AddEditForm = ({ match }) => {
                       </div>
                     </CCol>
 
-                   
-                  
-
                   </CTabPane>
+
+                  <CTabPane>
+
+                    <CCol>
+                      <br />
+
+
+                      <CRow>
+                        <CCol xs="12">
+                          <CFormGroup>
+                            <CLabel htmlFor="title">Promo title </CLabel>
+                            <Controller
+                              name={"promo_title"}
+                              control={control}
+                              render={({ field: { onChange, value } }) => (
+                                <CInput
+                                  type="text"
+                                  onChange={onChange}
+                                  value={value}
+                                  required
+                                  placeholder={`Enter promo title`}
+                                />
+                              )}
+                            ></Controller>
+                          </CFormGroup>
+                        </CCol>
+                      </CRow>
+
+                      <CRow>
+                        <CCol xs="12">
+                          <CFormGroup>
+                            <CLabel htmlFor="ccnumber">Promo upload image</CLabel>
+                            <br />
+                            <input
+                              type="file"
+                              accept=".png,.PNG,.JPG,.jpg,.jpeg"
+                              name="myfile"
+                              onChange={changePromoFileHandler}
+                            />
+                            <span>
+                              {!selectpromoimage && <img style={{ width: "100px" }} alt="avatar" src="company-logo.png" />}
+                              {selectpromoimage && <img style={{ width: "100px" }} src={selectpromoimage} alt="promo-image" />}
+                            </span>
+                          </CFormGroup>
+                        </CCol>
+                      </CRow>
+
+                      <CRow>
+                        <CCol xs="12">
+                          <CFormGroup>
+                            <CLabel htmlFor="password">Promo description</CLabel>
+                            <Editor
+                              apiKey="5w0ir8k2b6c9y5k3xrngkoskhxhvw6bm7y5qyfo6z8tlce6c"
+                              cloudChannel="dev"
+                              init={{
+                                selector: "textarea",
+                                plugins: "link image textpattern lists textcolor colorpicker",
+                                toolbar: "undo redo | styleselect | forecolor | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | link image | code forecolor backcolor",
+                              }}
+                              value={contentPromoEditor}
+                              onEditorChange={handlePromoEditorChange}
+                            />
+                          </CFormGroup>
+                        </CCol>
+                      </CRow>
+
+                    </CCol>
+                  </CTabPane>
+
+
                 </CTabContent>
               </CTabs>
               <br/>

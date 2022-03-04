@@ -143,8 +143,10 @@ export default function ParticipateInResearch() {
                                         <div className="studies-box">
                                             <div className="studies-header">
                                                 <div className="studies-icon">                                                    
-                                                    {!row.avatar && <img src="images/user.png" />}
-                                                    {row.avatar && <img src={row.avatar} />}
+                                                    <Link className="btn-edit" to={{ pathname: "/view-profile", search: "?id=" + row.user_id }}>
+                                                        {!row.avatar && <img src="images/user.png" />}
+                                                        {row.avatar && <img src={row.avatar} />}
+                                                    </Link>                                                    
                                                 </div>
                                                 <div className="studies-text">
                                                     <h3><Link className="btn-edit" to={{ pathname: "/view-profile", search: "?id=" + row.user_id }}>{row.user_name}</Link></h3>

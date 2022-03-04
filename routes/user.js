@@ -1074,7 +1074,7 @@ router.post('/added_deactivate_reason', [
         var reason = req.body.deactive_reason;
         var name = req.body.name;        
         var email = req.body.email;
-        User.updateuserByadmin(record, user_id, update_value, function (err, data) { 
+        User.updateuserByadmin(record, user_id, update_value,'','','', function (err, data) { 
             if (err) {
                 return res.json({ status: 0, 'msg': err, 'response': { msg: err } });
             } else {

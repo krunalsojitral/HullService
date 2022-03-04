@@ -16,6 +16,7 @@ const CommentDemoTable = ({ match }) => {
   React.useEffect(() => {
     getNewList();
     getNewListWrap();
+    resetCommentNotification();
   }, [])
 
   const fields = [
@@ -31,6 +32,14 @@ const CommentDemoTable = ({ match }) => {
       filter: false
     }
   ]
+
+  const resetCommentNotification = () => {
+    if (match.params.id) {
+      var obj = { forum_id: match.params.id }
+      axios.post(api_url + '/forum/resetCommentNotification', obj).then((result) => { }).catch((err) => {})
+    }
+    
+  }
   
 
   const deleteForum = (comment_id) => {
@@ -105,7 +114,7 @@ const CommentDemoTable = ({ match }) => {
           'comment':
             item => {
               return (
-                <td className={(item.no_of_reports > 5 ? "py-2 badge-danger" : "py-2")} className="comment-tooltip-box">
+                <td className={(item.no_of_reports > 5 ? "py-2 comment-tooltip-box badge-danger" : "py-2 comment-tooltip-box")}>
                    <p>
                     {(item.comment.length > 50) ? item.comment.substring(0, 50) + "..." : item.comment}
                       <span className="tooltip-title"> {item.comment}</span>

@@ -1392,10 +1392,20 @@ router.get('/getForumNotificationCount', function (req, res) {
             return res.json({ 'status': 0, 'response': { 'msg': err } });
         } else {
             return res.json({ 'status': 1, 'response': { 'data': Count, 'msg': 'data found' } });
-            
         }
     });
-  
+});
+
+router.post('/resetCommentNotification', function (req, res) {
+    loggerData(req);
+    var forum_id = req.body.forum_id;
+    Forum.resetCommentNotification(forum_id, function (err, Count) {
+        if (err) {
+            return res.json({ 'status': 0, 'response': { 'msg': err } });
+        } else {
+            return res.json({ 'status': 1, 'response': { 'data': Count, 'msg': 'data found' } });
+        }
+    });
 });
 
 router.get('/updateForumRequestCount', function (req, res) {

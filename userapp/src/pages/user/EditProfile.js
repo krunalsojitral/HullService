@@ -617,7 +617,7 @@ export default function EditProfile() {
                                             <div className="col-md-3">
                                                 <div className="form-group edit-profile">
 
-                                                    <input type="file" style={{ "opacity": 0, "position": "relative", "zIndex": 1 }} className="form-control" name="myfile" accept=".png,.jpg" onChange={changeFileHandler} />
+                                                    <input type="file" className="form-control edit-avatar-image" name="myfile" accept=".png,.jpg" onChange={changeFileHandler} />
                                                     <div className="profile-img">
                                                         <span className="browse-img">
                                                             {!setectavatar && <img alt="avatar" src="images/user.png" />}

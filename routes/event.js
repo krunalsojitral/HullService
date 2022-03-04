@@ -87,6 +87,9 @@ router.post("/addEventByadmin", function (req, res) {
         created_at: moment().format("YYYY-MM-DD"),
         group_session: [],
         image: "",
+        promo_image:"",
+        promo_title: parsed.promo_title,
+        promo_description: parsed.promo_description,
       };
       for (let i = 0; i < parsed.sessionTitle.length; i++) {
         let data = {
@@ -114,6 +117,7 @@ router.post("/addEventByadmin", function (req, res) {
     }
      const start_time = new Date(record.start_date).getTime() / 1000,
       end_time = new Date(record.end_date).getTime() / 1000;
+        let overview = {};
         asyn.waterfall(
           [
             function (done) {              
@@ -170,17 +174,42 @@ router.post("/addEventByadmin", function (req, res) {
             },
 
             function (overview, done1) {
+              if (typeof files.promo_image !== "undefined") {
+                let file_ext = files.promo_image.name.split(".").pop();
+                let filename = Date.now() + "-" + files.promo_image.name.split(" ").join("");
+                let tmp_path = files.promo_image.path;
+                if (file_ext == "png" || file_ext == "PNG" || file_ext == "jpg" || file_ext == "JPG" || file_ext == "jpeg" || file_ext == "JPEG") {
+                  fs.rename(tmp_path, path.join(__dirname, env.EVENT_PATH + filename),function (err) {
+                    if (err) {
+                      record.promo_image = filename;
+                      done1("Image upload error", overview)
+                    } else {
+                      record.promo_image = filename;
+                      overview["promo_image"] = filename;
+                      done1(err, overview);
+                    }
+                  });
+                } else {
+                  return res.json({ status: 0,response: {msg: "Only image with jpg, jpeg and png format are allowed",} });
+                }
+              } else {
+                overview["image"] = "";
+                done1(err, overview);
+              }
+            },
+
+            function (overview, done2) {
               setTimeout(() => {
                 Event.addEventByadmin(record, resources, function (err, data) {
                   if (err) {
-                    done1(err, data);
+                    done2(err, data);
                   } else {
-                    done1(err, data);
+                    done2(err, data);
                   }
                 });
               }, 100);          
             },
-            function (data, done2) {
+            function (data, done3) {
               const event = nylas.events.build({
                 title: record.title,
                 calendarId:  env.NYLAS_CALENDAR_ID,
@@ -189,7 +218,7 @@ router.post("/addEventByadmin", function (req, res) {
                 location: fields.location,
               });
               event.save({ notify_participants: true }).then((event) => {
-                done2(err, data);
+                done3(err, data);
               });
             },
           ],
@@ -304,6 +333,9 @@ router.post('/getEventDataById', [check('event_id', 'Event is required').notEmpt
             event['organization'] = result[0].organization;
             event['image'] = (result[0].image) ? imageLink + env.EVENT_VIEW_PATH + result[0].image : '';
             event['status'] = result[0].status;  
+            event['promo_title'] = result[0].promo_title;
+            event['promo_image'] = (result[0].promo_image) ? imageLink + env.EVENT_VIEW_PATH + result[0].promo_image : '';
+            event['promo_description'] = result[0].promo_description;
             event['group_session'] = [];
             event['videoURL'] = [];
             event['webPageUrl'] = [];
@@ -460,6 +492,11 @@ router.post("/updateEventByadmin", function (req, res) {
       end_date: end_date,
     };
 
+    var promo_record = {
+      promo_title: obj.promo_title,
+      promo_description: obj.promo_description,
+    }
+
       var update_value = [obj.title, obj.description, obj.location, obj.organization, start_date, end_date];
       var group_session = []
 
@@ -501,8 +538,7 @@ router.post("/updateEventByadmin", function (req, res) {
     end_time = new Date(record.end_date).getTime() / 1000;
 
     asyn.waterfall(
-      [function (done) {
-        
+      [ function (done) {        
           if (typeof files.image !== "undefined") {
             let file_ext = files.image.name.split(".").pop();
             let filename = Date.now() + "-" + files.image.name.split(" ").join("");
@@ -533,16 +569,39 @@ router.post("/updateEventByadmin", function (req, res) {
             overview["image"] = "";
             done(err, overview);
           }
-
-        
         },
-        function (overview, done1) { 
+        function (overview, done1) {
+          if (typeof files.promo_image !== "undefined") {
+            let file_ext = files.promo_image.name.split(".").pop();
+            let filename = Date.now() + "-" + files.promo_image.name.split(" ").join("");
+            let tmp_path = files.promo_image.path;
+
+            if (file_ext == "png" || file_ext == "PNG" || file_ext == "jpg" || file_ext == "JPG" || file_ext == "jpeg" || file_ext == "JPEG") {
+              fs.rename(tmp_path, path.join(__dirname, env.EVENT_PATH + filename), function (err) {
+                if (err) {
+                  promo_record.promo_image = filename;
+                  done1("Image upload error", overview)
+                } else {
+                  promo_record.promo_image = filename;
+                  overview["promo_image"] = filename;
+                  done1(err, overview);
+                }
+              });
+            } else {
+              return res.json({ status: 0, response: { msg: "Only image with jpg, jpeg and png format are allowed" } });
+            }
+          } else {
+            overview["promo_image"] = "";
+            done1(err, overview);
+          }
+        },
+        function (overview, done2) { 
           setTimeout(() => {
-            Event.updateEventByadmin(record, event_id, update_value, group_session, resources, deleteresources, videoURL, webPageUrl, function (err, data) {
+            Event.updateEventByadmin(record, promo_record, event_id, update_value, group_session, resources, deleteresources, videoURL, webPageUrl, function (err, data) {
               if (err) {
-                done1(err, overview);
+                done2(err, overview);
               } else {
-                done1(err, overview);
+                done2(err, overview);
               }
             });
           }, 200);

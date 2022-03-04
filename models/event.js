@@ -69,6 +69,12 @@ function User() {
             });
           }
 
+          if (resources.length > 0) {
+            const promosql ="INSERT INTO event_promo(promo_title,promo_image,promo_description,event_id) VALUES($1,$2,$3,$4) RETURNING *";
+            const promovalues = [record.promo_title, record.promo_image, record.promo_description, result.rows[0].event_id];
+            con.query(promosql, promovalues, function (err, result) { });
+          }
+
           con.release();
           callback(null, result.rows[0]);
         }
@@ -97,7 +103,7 @@ function User() {
     return query.join(' ');
   }
 
-  this.updateEventByadmin = function (record, event_id, update_value, group_session, resources, deleteresources, videoURL, webPageUrl, callback) {
+  this.updateEventByadmin = function (record, promo_record, event_id, update_value, group_session, resources, deleteresources, videoURL, webPageUrl, callback) {
       connection.acquire(function (err, con) {
 
         
@@ -111,6 +117,10 @@ function User() {
             if (err){
               callback(err, null);
             }else{
+
+              var sqlevent = "UPDATE event_promo SET promo_title =$1,promo_description =$2,promo_image=$3 where event_id = $3";
+              con.query(sqlevent, [promo_record.promo_title, promo_record.promo_description, promo_record.promo_image, event_id], function (err, results) {});
+
               if (group_session.length > 0) {
                 sqlq = 'SELECT * FROM event_group_session where event_id = $1';
                 con.query(sqlq, [event_id], function (err, groupresult) {
@@ -249,7 +259,7 @@ function User() {
 
   this.getEventDataById = function (id, callback) {
     connection.acquire(function (err, con) {
-      con.query('SELECT * FROM event where event_id = $1', [id], function (err, result) {
+      con.query('SELECT * FROM event left join event_promo on event.event_id = event_promo.event_id where event.event_id = $1', [id], function (err, result) {
         con.release();
         if (err) {
           callback(err, null);

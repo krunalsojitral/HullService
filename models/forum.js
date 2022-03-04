@@ -1138,7 +1138,8 @@ function forum() {
         connection.acquire(function (err, con) {
             let overview = {
                 research_request_cnt : 0,
-                forum_cnt: 0
+                forum_cnt: 0,
+                forum_list: []
             }   
             asyn.waterfall([
                 function (done) {                    
@@ -1158,7 +1159,6 @@ function forum() {
                 function (obj, done2) {
                     var sql = 'SELECT count(*) as cnt FROM forum where read = $1';
                     con.query(sql, [0], function (err, result) {
-                        con.release();
                         if (err) {
                             if (env.DEBUG) {
                                 console.log(err);
@@ -1169,6 +1169,48 @@ function forum() {
                             done2(null, overview);
                         }
                     });
+                },
+                function (obj, done3) {
+                    var response = [];
+                    var sql = 'SELECT forum_report.forum_comment_id,count(*) AS total FROM forum_report where read = $1 GROUP BY forum_report.forum_comment_id HAVING COUNT(*)> $2';
+                    //var sql = 'SELECT m.forum_comment_id, t.mx FROM(SELECT forum_comment_id, count(*) AS mx FROM forum_report GROUP BY forum_comment_id) t JOIN forum_report m ON m.forum_comment_id = t.forum_comment_id group by m.forum_comment_id';
+                    con.query(sql,[0, 5], function (err, result) {
+                        if (err) {
+                            if (env.DEBUG) {
+                                console.log(err);
+                            }
+                            done3(err, null);
+                        } else {
+                          
+                            Promise.all(result.rows.map(function (item) {
+                                var temparray = new Promise(function (resolve, reject) {
+                                    var sql = 'SELECT forum_id,comment FROM forum_comment where forum_comment_id = $1';
+                                    con.query(sql, [item.forum_comment_id], function (err, results) {
+                                        if (results && results.rows.length > 0) {
+                                            item.forum_id = results.rows[0].forum_id
+                                            item.comment = results.rows[0].comment
+                                        } 
+                                        response.push(item);
+                                        setTimeout(() => resolve(response), 50)
+                                    });
+
+                                });
+                                return temparray.then(resultf => {
+                                    var commentList = resultf.map(data => {
+                                        let retObj = {};
+                                        retObj['parent_comment_id'] = data.parent_comment_id;
+                                        retObj['forum_id'] = data.forum_id;
+                                        retObj['comment'] = data.comment;
+                                        return retObj;
+                                    });
+                                    overview.forum_list = commentList;
+                                })
+                            })).then(function () {
+                                con.release();
+                                done3(null, overview);
+                            })
+                        }
+                    });
                 }
             ],
             function (err, obj) {
@@ -1177,6 +1219,36 @@ function forum() {
                 }else{
                     callback(null, obj);
                 }                
+            });
+        });
+    };
+
+  
+
+    this.resetCommentNotification = function (forum_id, callback) {
+        connection.acquire(function (err, con) {
+            con.query("SELECT * FROM forum_comment inner join forum_report on forum_comment.forum_comment_id = forum_report.forum_comment_id  WHERE forum_comment.forum_id = $1", [forum_id], function (err, result) {
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    Promise.all(result.rows.map(function (item) {
+                        var temparray = new Promise(function (resolve, reject) {
+                            var sql = "UPDATE forum_report SET read =$1 where forum_comment_id = $2";
+                            con.query(sql, [1, item.forum_comment_id], function (err, results) {
+                                setTimeout(() => resolve(item), 50)
+                            });
+                        });
+                        return temparray.then(result => {
+                            return result
+                        })
+                    })).then(function () {
+                        con.release();
+                        callback(null, result.rows);
+                    })
+                }
             });
         });
     };
@@ -1204,8 +1276,8 @@ function forum() {
                             }
                         });
                     }else{
-                        const sql = 'INSERT INTO forum_report(user_id,forum_comment_id) VALUES($1,$2) RETURNING *'
-                        const values = [user_id, forum_comment_id]
+                        const sql = 'INSERT INTO forum_report(user_id,forum_comment_id,read) VALUES($1,$2,$3) RETURNING *'
+                        const values = [user_id, forum_comment_id, 0]
                         con.query(sql, values, function (err, result) {
                             con.release()
                             if (err) {

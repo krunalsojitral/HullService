@@ -85,9 +85,7 @@ p {
 .react-datepicker__current-month.react-datepicker__current-month--hasYearDropdown.react-datepicker__current-month--hasMonthDropdown {
     font-size: 13px;
 }
-.react-datepicker__header {
-    padding: 10px;
-}
+.react-datepicker__header { padding: 10px; }
 /* .container {
     width: 1300px;
 } */
@@ -709,13 +707,10 @@ section.banner-card .banner-slide {
     /* height: 100vh; */
     background-size: cover;
 }
-section.banner-card .banner-slide .banner-text {
-    padding: 180px 0;
-}
 
 section.banner-card .banner-text {
     text-align: left;
-    padding: 194px 0 0;
+    padding: 110px 0 0;
 }
 
 section.banner-card .banner-text span {
@@ -4688,6 +4683,7 @@ color: #1e6e80;
 .edit-profile .remove-image{
     color: red;
     font-size: 15px;
+    cursor: pointer;
 }
 .edit-profile input.form-control {
     background: #FFFFFF;
@@ -4737,6 +4733,7 @@ color: #1e6e80;
     height: 25px;
     margin-right: 6px;
     display: inline-block;   
+    cursor: pointer;
 }
 .view-profile-header .edit-profile small{word-break: break-all;}
 .view-profile-header .edit-profile img{overflow: hidden;border-radius: 50%; height: 100%; width: 100%; }
@@ -4805,6 +4802,14 @@ color: #1e6e80;
     top: 0;
     left: 0;
     z-index: 0;
+    cursor: pointer;
+}
+
+.edit-profile .edit-avatar-image{
+    opacity: 0;
+    position: relative;
+    z-index: 1;
+    cursor: pointer !important;
 }
 
 .edit-profile textarea.form-control {
@@ -5064,3 +5069,215 @@ overflow: hidden;
     color: #036E80;
     font-size: 25px;
 }
+
+  .Event-Search {
+        border: solid 1px #ddd;
+        position: relative;
+        padding: 6px;
+        background: #fff;
+    }
+
+    .Event-List {
+        margin: 30px 0;
+    }
+
+    .Event-Search input.form-control {
+        background: transparent;
+        height: 50px;
+        box-shadow: none;
+        border-radius: 0px;
+        padding-left: 45px;
+        border: none;
+        padding: 0px 0px 0px 45px;
+    }
+
+    .Event-Search img {
+        position: absolute;
+        left: 00;
+        top: 12px;
+        left: 30px;
+    }
+
+    .Event-Search .select-listing {
+        position: absolute;
+        top: 0;
+        right: 15px;
+    }
+
+    .Event-Search .select-listing select.form-control {
+        height: 50px;
+        border: none;
+        box-shadow: none;
+        border-radius: 0px;
+        ba transition: ;
+    }
+    .filer-option {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        margin: 20px 0;
+        vertical-align: top;
+    }
+
+    .filer-option .page-change-btn {
+        margin-right: 8px;
+    }
+
+    .filer-option .page-change-btn a {
+        font-size: 48px;
+        color: #000;
+        margin-right: 10px;
+    }
+
+    .filer-option .page-change-label {
+        margin: 0 20px 0 0;
+    }
+
+    .filer-option .page-change-label label {
+        font-size: 16px;
+        line-height: 22px;
+    /* identical to box height, or 32px */
+        text-transform: capitalize;
+        color: #000000;
+        border: 1px solid #D3D3D3;
+        box-sizing: border-box;
+        border-radius: 5px;
+        padding: 10px 27px;
+        background: #fff;
+        vertical-align: middle;
+    }
+
+    .filer-option .page-change-select {
+    }
+
+    .filer-option .page-change-select select.form-control {
+        box-shadow: none;
+        border-radius: 0px;
+        background-color: transparent;
+        vertical-align: top;
+        font-size: 17px;
+        
+    /* identical to box height, or 64px */
+        text-transform: capitalize;
+        color: #000000;
+        vertical-align: baseline;
+        height: 40px;
+        padding: 0;
+        border: none;
+        margin-top: -7px;
+    }
+    .event-month {
+        position: relative;
+        margin-bottom: 30px;
+    }
+
+    .event-month span {
+        display: inline-block;
+        background: #ffff;
+        padding: 12px 18px;
+        position: relative;
+        z-index: 1;
+        font-size: 20px;
+        line-height: 177.8%;
+    /* identical to box height, or 36px */
+        text-transform: capitalize;
+        color: #000000;
+    }
+
+    .event-month:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 1px;
+        background: #ddd;
+        top: 30px;
+        z-index: 0;
+    }
+
+    .event-card {
+        margin-bottom: 30px;
+    }
+    .event-card .event-message {}
+
+    .event-card .event-message .event-date {
+        width: 100px;
+        float: left;
+        height: 100px;
+        margin-right: 16px;
+        text-align: center;
+    }
+
+    .event-card .event-message .event-date small {
+        display: block;
+        font-size: 20px;
+        line-height: 22px;
+    /* identical to box height, or 36px */
+        text-transform: capitalize;
+        color: #808080;
+    }
+
+    .event-card .event-message .event-date span {
+        display: block;
+        font-size: 36px;
+        line-height: 42px;
+    /* identical to box height, or 64px */
+        text-transform: capitalize;
+        color: #000000;
+    }
+
+    .event-card .event-message .event-text {
+        overflow: hidden;
+    }
+
+    .event-card .event-message .event-text span {
+        font-size: 20px;
+        line-height: 30px;
+    /* identical to box height, or 36px */
+        text-transform: capitalize;
+        color: #636363;
+        display: block;
+    }
+
+    .event-card .event-message .event-text small {
+        font-size: 20px;
+        line-height: 24px;
+    /* identical to box height, or 36px */
+        text-transform: capitalize;
+        color: #000000;
+        display: block;
+        margin-bottom: 19px;
+    }
+
+    .event-card .event-message .event-text h3 {
+        font-size: 31px;
+        line-height: 41px;
+    /* or 50px */
+        text-transform: capitalize;
+        color: #000000;
+        margin: 15px 0;
+    }
+
+    .event-card .event-message .event-text p {
+        font-size: 18px;
+        line-height: 30px;
+    /* or 43px */
+        text-transform: capitalize;
+        color: #000000;
+        font-weight: 400;
+    }
+
+    .event-img img {
+        width: 100%;
+        height: 100%;
+    }
+    .Event-Search img.search-icon {
+        top: 15px;
+    }
+    .border-right {
+        border-right: solid 1px #ddd;
+    }
+    .event-back{
+        background: #fff;
+    }
