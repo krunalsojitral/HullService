@@ -81,7 +81,7 @@ const TheHeaderDropdownNotif = () => {
         <CDropdownItem onClick={() => history.push(`/research-requests`)}><CIcon name="cil-comment-square" className="mr-2 text-success" /> New Research Requests &nbsp; <CBadge color="success" className="mfs-auto">{researchNotiCount}</CBadge></CDropdownItem>
         <CDropdownItem onClick={() => history.push(`/forum-request`)} ><CIcon name="cil-comment-square" className="mr-2 text-danger" /> New Forum Request &nbsp; <CBadge color="success" className="mfs-auto">{forumNotiCount}</CBadge></CDropdownItem>
 
-        {forumCommentList.length > 0 && forumCommentList.map((data, index) => (<div key={data.forum_comment_id}>
+        {forumCommentList.length > 0 && forumCommentList.map((data, index) => (<div key={index}>
           <CDropdownItem onClick={() => history.push(`/forumcomment/` + data.forum_id)} ><CIcon name="cil-comment-square" className="mr-2 text-danger" /> "{data.comment.substring(0, 8)}" has more than 5 reports</CDropdownItem>
         </div>
         ))}

@@ -30,10 +30,20 @@ function UserRequest({
         setValue,
         control,
         formState: { errors },
+        reset,
     } = useForm();
-
-    
-    
+   
+    React.useEffect(() => {       
+        if (modal){
+            reset({ deactive_reason: '' });
+            document.body.style.overflow = 'hidden';
+            return () => document.body.style.overflow = 'unset';
+        }else{
+            document.body.style.overflow = 'auto';
+            return () => document.body.style.overflow = 'auto';
+        }
+    }, [modal])
+   
     const addInformationAct = (finalData) => {        
         var obj = {
             user_id: selectedItem.id,            
@@ -74,8 +84,8 @@ function UserRequest({
             .catch((err) => {
                 console.log(err);
             });
-
     };
+
     return (
         <CModal show={modal} onClose={setModal}>
             <CModalHeader closeButton>

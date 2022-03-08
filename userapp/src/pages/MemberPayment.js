@@ -92,8 +92,8 @@ export default function MemberPayment() {
             <section className="dashboard-card">
                 <div className="container-fluid">
                     <div className="row">
-                        <div class="col-md-8">
-                            <div class="dashboard-content">
+                        <div className="col-md-8">
+                            <div className="dashboard-content">
                                 <div className="membership-card">
                                     <h3>Paypal/Credit Card</h3>
                                     <br/>
@@ -103,8 +103,8 @@ export default function MemberPayment() {
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="order-summery">
+                        <div className="col-md-4">
+                            <div className="order-summery">
                                 <h3>&nbsp;</h3>
                                 <table>
                                     <tr>
@@ -112,8 +112,8 @@ export default function MemberPayment() {
                                         <td>${price}.00</td>
                                     </tr>
                                     <tr>
-                                        <td class="footer-td">Total</td>
-                                        <td class="footer-td">${price}.00</td>
+                                        <td className="footer-td">Total</td>
+                                        <td className="footer-td">${price}.00</td>
                                     </tr>
                                 </table>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>

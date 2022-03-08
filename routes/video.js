@@ -913,7 +913,7 @@ router.post('/deleteVideo', [
             if (err) {
                 return res.json({ status: 0, 'response': { msg: err } });
             } else {
-                return res.json({ status: 1, 'response': { msg: 'Video deleted successfully', data: result } });
+                return res.json({ status: 1, 'response': { msg: 'Video(s) deleted successfully', data: result } });
             }
         });
     }    

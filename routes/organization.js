@@ -151,7 +151,7 @@ router.post('/deleteorganization', [
             if (err) {
                 return res.json({ status: 0, 'response': { msg: err } });
             } else {
-                return res.json({ status: 1, 'response': { msg: 'Organization deleted successfully', data: result } });
+                return res.json({ status: 1, 'response': { msg: 'Organization(s) deleted successfully', data: result } });
             }
         });
     }

@@ -15,7 +15,7 @@ export default function MembershipBenefit() {
 
     let history = useHistory();
 
-    const [Modal, open, close] = useModal('root', {
+    const [Modal, open, close, isOpen] = useModal('root', {
         preventScroll: true,
     });
 
@@ -38,6 +38,17 @@ export default function MembershipBenefit() {
             })
             .catch((err) => { console.log(err); });
     }, []);
+
+    React.useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+            return () => document.body.style.overflow = 'unset';
+        } else {
+            document.body.style.overflow = 'auto';
+            return () => document.body.style.overflow = 'auto';
+        }
+    }, [isOpen]);
+    
 
     const handleOpenDirection = () => {
         history.push('/');

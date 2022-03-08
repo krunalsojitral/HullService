@@ -175,7 +175,7 @@ router.post('/deletepartner', [check('partner_id', 'partner is required').notEmp
         if (err) {
             return res.json({ 'status': 0, 'response': { 'msg': err } });
         } else {
-            return res.json({ 'status': 1, 'response': { 'msg': 'Image deleted successfully.', data: data } });
+            return res.json({ 'status': 1, 'response': { 'msg': 'Image(s) deleted successfully.', data: data } });
         }
     });
 });

@@ -2,6 +2,9 @@
 var connection = require('../config/database');
 var env = require('../config/env');
 var asyn = require('async');
+var CryptoJS = require("crypto-js");
+
+
 
 function Researches() {
     connection.init();
@@ -153,28 +156,44 @@ function Researches() {
                     callback(err, null);
                 } else {
                     if (results.rows.length === 0) {
-                        const sql = 'INSERT INTO researches_participate(name,gender,dob,email,created_at,researches_id) VALUES($1,$2,$3,$4,$5,$6) RETURNING *'
-                        const values = [record.name, record.gender, record.dob, record.email, record.created_at, record.researches_id]
+                        
+                        //const message = JSON.stringify(record);
+                        var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(record), 'mypassword').toString();
+
+
+                        const sql = 'INSERT INTO researches_participate(researches_id,created_at,research_data) VALUES($1,$2,$3) RETURNING *'
+                        const values = [record.researches_id, record.created_at, ciphertext]
                         con.query(sql, values, function (err, result) {
-                            
-                            if (err) {
-                                if (env.DEBUG) {
-                                    console.log(err);
-                                }
-                                callback(err, null);
-                            } else {
-                                var participate_research_id = result.rows[0].researches_participate_id
-                                if (record.childName && record.childName.length > 0) {
-                                    record.childName.forEach(function (value, index) {
-                                        const sql = 'INSERT INTO researches_participate_child(researches_participate_id,child_name,child_gender,child_dob) VALUES($1,$2,$3,$4) RETURNING *'
-                                        const values = [participate_research_id, value.value, (record.childGender[index] && record.childGender[index].value) ? record.childGender[index].value : '', (record.child[index] && record.child[index].value) ? record.child[index].value : '']
-                                        con.query(sql, values, function (err, result) { });
-                                    });
-                                }
-                                con.release()
-                                callback(null, result.rows);
-                            }
+                            con.release()
+                            callback(null, result.rows);
                         });
+
+
+                      
+
+
+                        // const sql = 'INSERT INTO researches_participate(name,gender,dob,email,created_at,researches_id) VALUES($1,$2,$3,$4,$5,$6) RETURNING *'
+                        // const values = [record.name, record.gender, record.dob, record.email, record.created_at, record.researches_id]
+                        // con.query(sql, values, function (err, result) {
+                            
+                        //     if (err) {
+                        //         if (env.DEBUG) {
+                        //             console.log(err);
+                        //         }
+                        //         callback(err, null);
+                        //     } else {
+                        //         var participate_research_id = result.rows[0].researches_participate_id
+                        //         if (record.childName && record.childName.length > 0) {
+                        //             record.childName.forEach(function (value, index) {
+                        //                 const sql = 'INSERT INTO researches_participate_child(researches_participate_id,child_name,child_gender,child_dob) VALUES($1,$2,$3,$4) RETURNING *'
+                        //                 const values = [participate_research_id, value.value, (record.childGender[index] && record.childGender[index].value) ? record.childGender[index].value : '', (record.child[index] && record.child[index].value) ? record.child[index].value : '']
+                        //                 con.query(sql, values, function (err, result) { });
+                        //             });
+                        //         }
+                        //         con.release()
+                        //         callback(null, result.rows);
+                        //     }
+                        // });
                     } else {
                         con.release();
                         var msg = 'You are already participate in research.';
@@ -282,33 +301,51 @@ function Researches() {
      
     this.addFutureResearchByuser = function (record, callback) {
         connection.acquire(function (err, con) {
-            const sql = 'INSERT INTO future_research(name,dob,email,gender,created_at) VALUES($1,$2,$3,$4,$5) RETURNING *'
-            const values = [record.name, record.dob, record.email, record.gender, record.created_at]
-            con.query(sql, values, function (err, result) {                
+
+            var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(record), 'mypassword').toString();
+
+            const sql = 'INSERT INTO future_research(future_research_encrypt,created_at) VALUES($1,$2) RETURNING *'
+            const values = [ciphertext, record.created_at]
+            con.query(sql, values, function (err, result) {
+            con.release()
                 if (err) {
                     if (env.DEBUG) {
                         console.log(err);
-                    }
-                    con.release()
+                    }                    
                     callback(err, null);
-                } else {
-                    var research_id = result.rows[0].future_research_id
-                    // if (record.child_name_first){
-                    //     const sql = 'INSERT INTO future_research_child(future_research_id,child_dob,child_gender,child_name) VALUES($1,$2,$3,$4) RETURNING *'
-                    //     const values = [research_id, record.child_age_first, record.child_gender_first, record.child_name_first]
-                    //     con.query(sql, values, function (err, result) { });
-                    // }
-                    if (record.childName && record.childName.length > 0) {                        
-                        record.childName.forEach(function (value,index) {
-                            const sql = 'INSERT INTO future_research_child(future_research_id,child_name,child_gender,child_dob) VALUES($1,$2,$3,$4) RETURNING *'
-                            const values = [research_id, value.value, (record.childGender[index] && record.childGender[index].value) ? record.childGender[index].value : '', (record.child[index] && record.child[index].value) ? record.child[index].value:'']
-                            con.query(sql, values, function (err, result) { });
-                        });                        
-                    }
-                    con.release()
+                } else {                    
                     callback(null, result.rows);
                 }
             });
+            
+
+            // const sql = 'INSERT INTO future_research(name,dob,email,gender,created_at) VALUES($1,$2,$3,$4,$5) RETURNING *'
+            // const values = [record.name, record.dob, record.email, record.gender, record.created_at]
+            // con.query(sql, values, function (err, result) {                
+            //     if (err) {
+            //         if (env.DEBUG) {
+            //             console.log(err);
+            //         }
+            //         con.release()
+            //         callback(err, null);
+            //     } else {
+            //         var research_id = result.rows[0].future_research_id
+            //         // if (record.child_name_first){
+            //         //     const sql = 'INSERT INTO future_research_child(future_research_id,child_dob,child_gender,child_name) VALUES($1,$2,$3,$4) RETURNING *'
+            //         //     const values = [research_id, record.child_age_first, record.child_gender_first, record.child_name_first]
+            //         //     con.query(sql, values, function (err, result) { });
+            //         // }
+            //         if (record.childName && record.childName.length > 0) {                        
+            //             record.childName.forEach(function (value,index) {
+            //                 const sql = 'INSERT INTO future_research_child(future_research_id,child_name,child_gender,child_dob) VALUES($1,$2,$3,$4) RETURNING *'
+            //                 const values = [research_id, value.value, (record.childGender[index] && record.childGender[index].value) ? record.childGender[index].value : '', (record.child[index] && record.child[index].value) ? record.child[index].value:'']
+            //                 con.query(sql, values, function (err, result) { });
+            //             });                        
+            //         }
+            //         con.release()
+            //         callback(null, result.rows);
+            //     }
+            // });
         });
     };
 

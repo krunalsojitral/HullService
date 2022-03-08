@@ -160,7 +160,7 @@ router.post('/deleteTag', [
             if (err) {
                 return res.json({ 'status': 0, 'response': { 'msg': err } });
             } else {
-                return res.json({ 'status': 1, 'response': { 'msg': 'Tag deleted successfully.', data: data } });
+                return res.json({ 'status': 1, 'response': { 'msg': 'Tag(s) deleted successfully.', data: data } });
             }
         });
     }

@@ -1,15 +1,27 @@
-import React, { useEffect } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { useModal } from 'react-hooks-use-modal';
 import ApplyInFutureResearchModel from "./ApplyInFutureResearchModel";
 
 
 
-function ApplyInResearchPage(props) {
-    
-    useEffect(() => { }, []);
-    const [Modal, open, close] = useModal('root', {
-        preventScroll: true,
+
+
+function ApplyInResearchPage() {
+
+    const [Modal, open, close, isOpen] = useModal('root', {
+        // preventScroll: true,
+        //closeOnOverlayClick: false
     });
+
+    React.useEffect(() => {
+        if (isOpen){
+            document.body.style.overflow = 'hidden';
+            return () => document.body.style.overflow = 'unset';
+        }else{
+            document.body.style.overflow = 'auto';
+            return () => document.body.style.overflow = 'auto';
+        }
+    }, [isOpen]);
 
     const applyfuturebutton = (id) => {
         open();

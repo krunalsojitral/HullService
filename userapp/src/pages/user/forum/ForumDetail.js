@@ -22,7 +22,7 @@ export default function ForumDetail() {
     const [forumId, setForumId] = useState([]);
     const [hideLoad, setHideLoad] = useState(false);
     const [loginUserID, setLoginUserID] = useState();
-    const [Modal, open, close] = useModal('root', {});
+    const [Modal, open, close, isOpen] = useModal('root', {});
 
     React.useEffect(() => {
 
@@ -38,6 +38,16 @@ export default function ForumDetail() {
         setLoginUserID(usersessiondata.id)
 
     }, []);
+
+    React.useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+            return () => document.body.style.overflow = 'unset';
+        } else {
+            document.body.style.overflow = 'auto';
+            return () => document.body.style.overflow = 'auto';
+        }
+    }, [isOpen]);
 
     React.useEffect(() => {
         if (forumCommentList.length > 0 && parseInt(forumCommentList.length) > parseInt(visible)) {

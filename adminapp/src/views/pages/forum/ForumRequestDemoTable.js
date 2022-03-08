@@ -99,7 +99,7 @@ const ForumRequestDemoTable = ({ moduleConfigUrls }) => {
       Swal.fire({
         //title: 'warning!',
         icon: 'warning',
-        text: 'Are you sure you want to delete the selected threads request ?',
+        text: 'Are you sure you want to delete the selected threads request(s) ?',
         confirmButtonText: `Yes`,
         showCancelButton: true,
         cancelButtonText: 'No',

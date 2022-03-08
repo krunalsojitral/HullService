@@ -151,7 +151,7 @@ router.post('/deleteSector', [
             if (err) {
                 return res.json({ status: 0, 'response': { msg: err } });
             } else {
-                return res.json({ status: 1, 'response': { msg: 'Sector deleted successfully', data: result } });
+                return res.json({ status: 1, 'response': { msg: 'Sector(s) deleted successfully', data: result } });
             }
         });
     }

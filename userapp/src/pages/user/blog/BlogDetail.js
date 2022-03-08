@@ -109,12 +109,22 @@ export default function BlogDetail() {
 
     }, [])
 
-    const [Modal, open, close] = useModal('root', {});
+    const [Modal, open, close, isOpen] = useModal('root', {});
 
     const linkTarget = (id) => {
         history.replace("/blog-detail?id=" + id);
         window.location.reload();
     };
+
+    React.useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+            return () => document.body.style.overflow = 'unset';
+        } else {
+            document.body.style.overflow = 'auto';
+            return () => document.body.style.overflow = 'auto';
+        }
+    }, [isOpen]);
    
     return (
         <div>

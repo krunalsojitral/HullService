@@ -41,8 +41,8 @@ export default function ParticipateInResearch() {
             .catch((err) => { console.log(err); });
     }, []);
 
-    const [Modal, open, close] = useModal('root', {
-        preventScroll: true,
+    const [Modal, open, close, isOpen] = useModal('root', {
+       // preventScroll: true,
     });
     const applybutton = (id, title) => {
         setResearchID(id);
@@ -58,6 +58,16 @@ export default function ParticipateInResearch() {
         }
         setCurrentData(data.slice(offset, offset + pageLimit));
     }, [offset, data]);
+
+    React.useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+            return () => document.body.style.overflow = 'unset';
+        } else {
+            document.body.style.overflow = 'auto';
+            return () => document.body.style.overflow = 'auto';
+        }
+    }, [isOpen]);
     
     // const ProfileItem = (props) => {
     //     console.log(props);

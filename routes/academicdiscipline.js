@@ -151,7 +151,7 @@ router.post('/deleteAcademicdiscipline', [
             if (err) {
                 return res.json({ status: 0, 'response': { msg: err } });
             } else {
-                return res.json({ status: 1, 'response': { msg: 'Academic Discipline deleted successfully', data: result } });
+                return res.json({ status: 1, 'response': { msg: 'Academic Discipline(s) deleted successfully', data: result } });
             }
         });
     }

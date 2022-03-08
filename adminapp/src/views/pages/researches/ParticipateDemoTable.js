@@ -16,7 +16,7 @@ const ParticipateDemoTable = ({ match }) => {
   const history = useHistory()
   
   const [items, setItems] = useState([])
-  const [csvData, setCsvData] = useState([["S.No","Name", "Email", "DOB","Gender"]]);
+  const [csvData, setCsvData] = useState([["S.No", "Name", "Email", "DOB", "Gender", "No of Kids", "Kids Detail"]]);
   const [filedate, setFiledate] = useState();
 
   const getCSVList = () => {
@@ -31,6 +31,15 @@ const ParticipateDemoTable = ({ match }) => {
       console.log(err);
     })
   }
+
+  const headers = [
+    { label: "S.No", key: "S.No" },
+    { label: "Name", key: "Name" },
+    { label: "Email", key: "Email" },
+    { label: "DOB", key: "DOB" },
+    { label: "No of Kids", key: "No_of_Kids" },
+    { label: "Kids Detail", key: "Kids_detail" }
+  ];
 
   React.useEffect(() => {
     getCSVList();
@@ -81,7 +90,7 @@ const ParticipateDemoTable = ({ match }) => {
           <CIcon name="cil-grid" /> Participants
             </div>
         <div className="header-right">
-          <CSVLink filename={filedate + ".csv"} data={csvData}>Download</CSVLink> &nbsp;
+          <CSVLink filename={filedate + ".csv"} headers={headers}  data={csvData}>Download</CSVLink> &nbsp;
             </div>
       </CCardHeader>
       <CCardBody>

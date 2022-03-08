@@ -71,27 +71,27 @@ export default function ViewProfile() {
                                 <div className="view-profile-header">
                                     {showEdit && users.role != 4 && <div className="row">
                                         <div className="col-md-12 upper-section">
-                                            <div class="col-md-6">
-                                                {users.joined_date && <div class="cal-date">
-                                                    <div class="cal-date-icon">
-                                                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                                            <div className="col-md-6">
+                                                {users.joined_date && <div className="cal-date">
+                                                    <div className="cal-date-icon">
+                                                        <i className="fa fa-calendar" aria-hidden="true"></i>
                                                     </div>
-                                                    <div class="cal-date-text">
+                                                    <div className="cal-date-text">
                                                         <h3>Member Since</h3>
                                                         <p>{users.joined_date}</p>
                                                     </div>
                                                 </div>}
-                                                {users.renewal_date && <div class="cal-date">
-                                                    <div class="cal-date-icon">
-                                                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                {users.renewal_date && <div className="cal-date">
+                                                    <div className="cal-date-icon">
+                                                        <i className="fa fa-calendar" aria-hidden="true"></i>
                                                     </div>
-                                                    <div class="cal-date-text">
+                                                    <div className="cal-date-text">
                                                         <h3>Renewal Date</h3>
                                                         <p>{users.renewal_date}</p>
                                                     </div>
                                                 </div>}
                                             </div>
-                                            <div class="col-md-6">
+                                            <div className="col-md-6">
                                                 <div className="view-profile-button">
                                                     <Link className="btn-edit" to={{ pathname: "/edit-profile" }}>
                                                         EDIT

@@ -372,7 +372,7 @@ router.post('/deleteForum', [check('comment_id', 'comment id is required').notEm
         if (err) {
             return res.json({ 'status': 0, 'response': { 'msg': err } });
         } else {
-            return res.json({ 'status': 1, 'response': { 'msg': 'Comment deleted successfully.', data: data } });
+            return res.json({ 'status': 1, 'response': { 'msg': 'Comment(s) deleted successfully.', data: data } });
         }
     });
 });
@@ -1277,7 +1277,7 @@ router.post('/deleteComment', [
             if (err) {
                 return res.json({ 'status': 0, 'response': { 'msg': err } });
             } else {
-                return res.json({ 'status': 1, 'response': { 'data': result, 'msg': 'Comment deleted successfully.' } });
+                return res.json({ 'status': 1, 'response': { 'data': result, 'msg': 'Comment(s) deleted successfully.' } });
             }
         });
     }
@@ -1379,7 +1379,7 @@ router.post('/deleteMultipleForum', [
             if (err) {
                 return res.json({ status: 0, 'response': { msg: err } });
             } else {
-                return res.json({ status: 1, 'response': { msg: 'Thread deleted successfully', data: result } });
+                return res.json({ status: 1, 'response': { msg: 'Thread(s) deleted successfully', data: result } });
             }
         });
     }

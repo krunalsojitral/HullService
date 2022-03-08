@@ -116,7 +116,17 @@ export default function VideoDetail() {
 
     }, [])
 
-    const [Modal, open, close] = useModal('root', {});
+    const [Modal, open, close, isOpen] = useModal('root', {});
+
+    React.useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+            return () => document.body.style.overflow = 'unset';
+        } else {
+            document.body.style.overflow = 'auto';
+            return () => document.body.style.overflow = 'auto';
+        }
+    }, [isOpen]);
 
     const linkTarget = (id) => {        
         history.replace("/video-detail?id=" + id);
@@ -192,7 +202,7 @@ export default function VideoDetail() {
 
                                                 {data.purchase_type == 'paid' &&
                                                     <div className="tooltip-relational-video">
-                                                    <iframe class="hideVideo" width="100%" height="90px" title="YouTube video player" src={`https://www.youtube.com/embed/${data.video_embeded_id}?rel=0&modestbranding=1&showinfo=0`} autoplay="false"></iframe>
+                                                    <iframe className="hideVideo" width="100%" height="90px" title="YouTube video player" src={`https://www.youtube.com/embed/${data.video_embeded_id}?rel=0&modestbranding=1&showinfo=0`} autoplay="false"></iframe>
                                                         <span className="tooltip-title">Paid Video.</span>
                                                     </div>
                                                 }

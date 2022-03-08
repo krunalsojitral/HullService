@@ -99,7 +99,7 @@ const ResearchesDemoTable = ({ moduleConfigUrls }) => {
       Swal.fire({
         //title: 'warning!',
         icon: 'warning',
-        text: 'Are you sure you want to delete the selected research requests ?',
+        text: 'Are you sure you want to delete the selected research request(s) ?',
         confirmButtonText: `Yes`,
         showCancelButton: true,
         cancelButtonText: 'No',

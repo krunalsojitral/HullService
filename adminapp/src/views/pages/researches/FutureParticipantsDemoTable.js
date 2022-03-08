@@ -116,7 +116,7 @@ const FutureParticipantsDemoTable = () => {
       Swal.fire({
         //title: 'warning!',
         icon: 'warning',
-        text: 'Are you sure you want to delete the selected future participates ?',
+        text: 'Are you sure you want to delete the selected future participate(s) ?',
         confirmButtonText: `Yes`,
         showCancelButton: true,
         cancelButtonText: 'No',

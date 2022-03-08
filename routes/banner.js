@@ -174,7 +174,7 @@ router.post('/addbannerByadmin', function (req, res) {
                             //     });
                             // });
                             fs.rename(tmp_path, path.join(__dirname, env.BANNER_PATH + filename), function (err) {
-                              //  gm(__dirname + env.BANNER_PATH + filename).gravity('Center').thumb(258, 195, __dirname + env.BANNER_PATH_THUMB + filename, 100, function (err, data) {
+                                gm(__dirname + env.BANNER_PATH + filename).gravity('Center').thumb(1920, 800, __dirname + env.BANNER_PATH + filename, 100, function (err, data) {
                                     if (err) {
                                         console.log(err);
                                         done("Image upload error", overview)
@@ -182,7 +182,7 @@ router.post('/addbannerByadmin', function (req, res) {
                                         overview['banner_image'] = filename;
                                         done(err, overview)
                                     }
-                               // });
+                                });
                             });
                         } else {
                             return res.json({ status: 0, response: { msg: 'Only image with jpg, jpeg and png format are allowed', } });
@@ -241,14 +241,14 @@ router.post('/updatebannerByadmin', function (req, res) {
                         if (file_ext == 'png' || file_ext == 'PNG' || file_ext == 'jpg' || file_ext == 'JPG' || file_ext == 'jpeg' || file_ext == 'JPEG') {
 
                             fs.rename(tmp_path, path.join(__dirname, env.BANNER_PATH + filename), function (err) {
-                              //  gm(__dirname + env.BANNER_PATH + filename).gravity('Center').thumb(258, 195, __dirname + env.BANNER_PATH_THUMB + filename, 100, function (err, data) {
+                                gm(__dirname + env.BANNER_PATH + filename).gravity('Center').thumb(1920, 800, __dirname + env.BANNER_PATH + filename, 100, function (err, data) {
                                     if (err) {
                                         done("Image upload error", overview)
                                     } else {
                                         overview['banner_image'] = filename;
                                         done(err, overview)
                                     }
-                               // });
+                                });
                             });
 
                             
@@ -359,7 +359,7 @@ router.post('/deletebanner', [
             if (err) {
                 return res.json({ status: 0, 'response': { msg: err } });
             } else {
-                return res.json({ status: 1, 'response': { msg: 'Banner deleted successfully', data: result } });
+                return res.json({ status: 1, 'response': { msg: 'Banner(s) deleted successfully', data: result } });
             }
         });
     }    

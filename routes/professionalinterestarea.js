@@ -162,7 +162,7 @@ router.post('/deleteProfessionalinterestarea', [
             if (err) {
                 return res.json({ status: 0, 'response': { msg: err } });
             } else {
-                return res.json({ status: 1, 'response': { msg: 'Professional interest area deleted successfully', data: result } });
+                return res.json({ status: 1, 'response': { msg: 'Professional interest area(s) deleted successfully', data: result } });
             }
         });
     }

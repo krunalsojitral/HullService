@@ -307,7 +307,7 @@ const DemoTable = () => {
       data.research_interest_of_area = interestArea;
     }
     data.role = 3;
-    console.log(data);
+    
 
     axios.post(api_url + '/user/userList', { data }).then((result) => {
       if (result.data.status) {

@@ -319,7 +319,7 @@ router.post('/deleteForum', [check('comment_id', 'comment id is required').notEm
         if (err) {
             return res.json({ 'status': 0, 'response': { 'msg': err } });
         } else {
-            return res.json({ 'status': 1, 'response': { 'msg': 'Comment deleted successfully.', data: data } });
+            return res.json({ 'status': 1, 'response': { 'msg': 'Comment(s) deleted successfully.', data: data } });
         }
     });
 });

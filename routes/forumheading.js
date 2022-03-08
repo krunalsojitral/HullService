@@ -163,7 +163,7 @@ router.post('/deleteForumheading', [
             if (err) {
                 return res.json({ status: 0, 'response': { msg: err } });
             } else {
-                return res.json({ status: 1, 'response': { msg: 'Topic deleted successfully', data: result } });
+                return res.json({ status: 1, 'response': { msg: 'Topic(s) deleted successfully', data: result } });
             }
         });
     }

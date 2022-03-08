@@ -38,7 +38,7 @@ const CurrentParticipateDetail = ({ match }) => {
                 <tr><td>Email :</td><td><strong>{details.email}</strong></td></tr>
                 <tr><td>DOB :</td><td><strong>{details.dob}</strong></td></tr>
                 <tr><td>No of Kids :</td><td><strong>{(details.child && details.child.length > 0) ? details.child.length :0}</strong></td></tr>                
-                {details.child && details.child.length > 0 && <tr><td>kids Detail:</td>
+                {details.child && details.child.length > 0 && <tr><td>Kids Detail:</td>
                 <td>
                     <table>
                       {details.child && details.child.length > 0 && details.child.map((item, index) => (

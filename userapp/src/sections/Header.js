@@ -66,9 +66,11 @@ export default function Header() {
     }
 
     const logoutClick = () => {
-        localStorage.clear();
-        history.push('/');
-        window.location.reload();
+        localStorage.clear();       
+        window.location.href = "/";
+        
+        // history.push('/');
+       //  window.location.reload(false);
     }
  
 
@@ -151,7 +153,7 @@ export default function Header() {
                                             </li>
                                             <li>
                                                 <NavLink activeClassName="active" to="/members">
-                                                    <InlineButton name={"MEMBERS"} />
+                                                    <InlineButton name={"MEMBERSHIP"} />
                                                 </NavLink>
                                             </li>
                                             <li>
@@ -223,7 +225,7 @@ export default function Header() {
                                                 </li>
                                                 <li>
                                                     <NavLink activeClassName="active" to="/members">
-                                                        <InlineButton name={"MEMBER SHIP"} />
+                                                        <InlineButton name={"MEMBERSHIP"} />
                                                     </NavLink>
                                                 </li>
                                                 <li>

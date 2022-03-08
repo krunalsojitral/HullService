@@ -19,9 +19,9 @@ function ApplyInFutureResearchModel(props) {
         formState: { errors },
     } = useForm({
         defaultValues: {
-            child: [{ name: "default Value" }],
-            childName: [{ name: "default Value" }],
-            childGender: [{ name: "default Value" }]
+            childs: [{ name: "default Value" }],
+            // childName: [{ name: "default Value" }],
+            // childGender: [{ name: "default Value" }]
         }
     });
 
@@ -35,17 +35,17 @@ function ApplyInFutureResearchModel(props) {
                 }
             })
             .catch((err) => { console.log(err); });
-
     }, []);
 
     const { fields, append, remove } = useFieldArray({
         control,
-        name: 'child',
-        name: 'childName',
-        name: 'childGender'
+        name: 'childs',
+        // name: 'childName',
+        // name: 'childGender'
     });
 
-    const onSubmit = (data) => {         
+    const onSubmit = (data) => {     
+        
         axios.post(api_url + "/researches/addFutureResearchByuser", data)
             .then((result) => {
                 if (result.data.status) {
@@ -131,7 +131,7 @@ function ApplyInFutureResearchModel(props) {
                                                     // yearDropdownItemNumber={15}
                                                     // scrollableYearDropdown                                                    
                                                     minDate={new Date(1990, 11)}
-                                                    maxDate={new Date(2030, 11)}
+                                                    maxDate={new Date()}
                                                     peekNextMonth
                                                     showMonthDropdown
                                                     showYearDropdown                                                    
@@ -246,20 +246,31 @@ function ApplyInFutureResearchModel(props) {
                                         <div className="col-md-2"><label className="child-label">Child {index + 1}</label></div>
                                         <div className="col-md-3">
                                             <div className="form-group">
+
+                                                {/* render={({ field: { onChange, value } }) => (
+                                                    <CInput
+                                                        type="text"
+                                                        onChange={onChange}
+                                                        value={value}
+                                                        maxlength="38"
+                                                        placeholder={`Enter banner title`}
+                                                    />
+                                                )}
+                                                 */}
                                                 <Controller
-                                                    name={`childName.${index}.value`}
+                                                    name={`childs.${index}.childName`}
                                                     control={control}
-                                                    defaultValue={item.value}
-                                                    render={({ field }) => <input type="text" placeholder={`Child Name`} className="form-control" {...field} />}
+                                                   // defaultValue={item.value}
+                                                    render={({ field: { onChange, value } }) => (<input type="text" placeholder={`Child Name`} className="form-control" onChange={onChange}
+                                                        value={value} />)}
                                                 />
                                             </div>
                                         </div>
                                         <div className="col-md-3">
                                             <div className="form-group">
                                                 <Controller
-                                                    name={`childGender.${index}.value`}
-                                                    control={control}
-                                                    rules={{ required: true }}
+                                                    name={`childs.${index}.childGender`}
+                                                    control={control}                                                    
                                                     render={({ field: { onChange, value } }) => (
                                                         <select className="form-control" onChange={onChange} value={value}>
                                                             <option key="0" value="">Your Gender</option>
@@ -277,7 +288,7 @@ function ApplyInFutureResearchModel(props) {
                                         <div className="col-md-3"> 
                                             <div className="form-group">
                                                 <Controller
-                                                    name={`child.${index}.value`}
+                                                    name={`childs.${index}.child`}
                                                     control={control}
                                                     // defaultValue={item.value}
                                                     render={({ field: { onChange, value } }) => (
@@ -289,7 +300,7 @@ function ApplyInFutureResearchModel(props) {
                                                             // showMonthDropdown
                                                             // showYearDropdown
                                                             minDate={new Date(1990, 11)}
-                                                            maxDate={new Date(2030, 11)}
+                                                            maxDate={new Date()}
                                                             peekNextMonth
                                                             showMonthDropdown
                                                             showYearDropdown
@@ -314,7 +325,7 @@ function ApplyInFutureResearchModel(props) {
 
                             <div className="row">
                                 <div className="col-md-12 text-right">
-                                    <button type="button" className="child-btn" onClick={() => append({ value: "" })}>Add Child</button>
+                                    <button type="button" className="child-btn" onClick={() => append({ childName:"", childGender:"", child: "" })}>Add Child</button>
                                 </div>
                             </div>
 

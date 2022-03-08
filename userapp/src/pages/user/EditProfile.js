@@ -627,7 +627,7 @@ export default function EditProfile() {
                                                         </div>
                                                     <small>{selectedFile && selectedFile.name}</small>
                                                     <br/>
-                                                    {setectavatar && <span className="remove-image" onClick={(e) => removeImage()}>Remove<i class="fa fa-times" aria-hidden="true"></i></span>}
+                                                    {setectavatar && <span className="remove-image" onClick={(e) => removeImage()}>Remove<i className="fa fa-times" aria-hidden="true"></i></span>}
                                                 </div>
                                             </div>
                                         </div>

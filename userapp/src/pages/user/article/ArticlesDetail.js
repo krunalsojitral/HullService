@@ -147,7 +147,7 @@ export default function ArticlesDetail() {
         }
     }, [])
 
-    const [Modal, open, close] = useModal('root', {});
+    const [Modal, open, close, isOpen] = useModal('root', {});
 
     const linkTarget = (id) => {
         history.replace("/article-detail?id=" + id);
@@ -159,6 +159,16 @@ export default function ArticlesDetail() {
             if (result.data.status) { }
         }).catch((err) => { console.log(err); })
     }
+
+    React.useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+            return () => document.body.style.overflow = 'unset';
+        } else {
+            document.body.style.overflow = 'auto';
+            return () => document.body.style.overflow = 'auto';
+        }
+    }, [isOpen]);
 
     return (
         <div>

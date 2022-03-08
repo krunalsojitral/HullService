@@ -20,6 +20,8 @@ var mustache = require('mustache');
 var bcrypt = require('bcryptjs');
 var nodemailer = require('nodemailer');
 const nodeMailerCredential = require('./../EmailCredential');
+var CryptoJS = require("crypto-js");
+
 
 function loggerData(req) {
     if (env.DEBUG) {
@@ -275,7 +277,7 @@ router.post('/addParticipate', [
         res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
     } else {
 
-        var dob = (parsed.dob) ? moment(parsed.dob, "YYYY-MM-DD").add(1, 'days').format("YYYY-MM-DD") : ''
+        var dob = (req.body.dob) ? moment(req.body.dob, "YYYY-MM-DD").add(1, 'days').format("YYYY-MM-DD") : ''
 
         let record = {
             name: req.body.name,
@@ -284,10 +286,10 @@ router.post('/addParticipate', [
             dob: dob,
             created_at: moment().format('YYYY-MM-DD'),
             researches_id: req.body.researches_id,
-            child: req.body.child,
-            childGender: req.body.childGender,
-            childName: req.body.childName,
-        };        
+            childs: req.body.childs
+        };    
+        
+        
         Researches.addParticipate(record, function (err, data) {
             if (err) {
                 return res.json({ 'status': 0, 'response': { 'msg': err } });
@@ -308,18 +310,24 @@ router.post('/participateList', [
     } else { 
         loggerData(req);
         var researches_id = req.body.researches_id; 
+      
         Researches.participateList(researches_id, function (err, result) {
             if (err) {
                 return res.json({ status: 0, 'response': { msg: err } });
             } else {
-                var participateList = result.map(data => {
+
+                var participateList = result.map(data => { 
+
+                    var bytes = CryptoJS.AES.decrypt(data.research_data, 'mypassword');
+                    var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));                    
+
                     let retObj = {};
                     retObj['researches_participate_id'] = data.researches_participate_id;
                     retObj['researches_id'] = data.researches_id;
-                    retObj['name'] = data.name;
-                    retObj['gender'] = (data.gender) ? data.gender.replace("-", " ") : '';
-                    retObj['email'] = data.email;
-                    retObj['dob'] = moment(data.dob).format('YYYY-MM-DD');
+                    retObj['name'] = (decryptedData.name) ? decryptedData.name: '';
+                    retObj['gender'] = (decryptedData.gender) ? decryptedData.gender.replace("-", " ") : '';
+                    retObj['email'] = (decryptedData.email) ? decryptedData.email: '';
+                    retObj['dob'] = moment(decryptedData.dob).format('YYYY-MM-DD');
                     retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
                     return retObj;
                 });
@@ -337,22 +345,50 @@ router.post('/csvParticipateList', [
         var error = errors.array();
         res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
     } else {
-        loggerData(req);
         var researches_id = req.body.researches_id;
         Researches.participateList(researches_id, function (err, result) {
             if (err) {
                 return res.json({ status: 0, 'response': { msg: err } });
             } else {
-                var participateList = result.map((data,index) => {
+
+                loggerData(req);
+                var participateList = result.map((data, index) => {
+                    var bytes = CryptoJS.AES.decrypt(data.research_data, 'mypassword');
+                    var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
                     let retObj = {};
+                    let childresults = [];
+                    if (decryptedData.childs.length > 0) {
+                        decryptedData.childs.forEach(function (value, index) {
+                            let DOB = (value.child) ? moment(value.child).format('YYYY-MM-DD') : '';
+                            childresults.push(index + 1 + ')' + 'Child Name: ' + value.childName + ' ,Child Gender: ' + value.childGender + ' ,Child DOB: ' + DOB + '\n')
+                        });                        
+                        retObj['No_of_Kids'] = decryptedData.childs.length;
+                        retObj['Kids_detail'] = childresults;
+                    }
                     retObj['S.No'] = index + 1;
-                    retObj['Name'] = data.name;
-                    retObj['Email'] = data.email;
-                    retObj['DOB'] = moment(data.dob).format('YYYY-MM-DD');
-                    retObj['gender'] = (data.gender) ? data.gender.replace("-", " ") : '';
+                    retObj['Name'] = decryptedData.name;
+                    retObj['Email'] = decryptedData.email;
+                    retObj['DOB'] = moment(decryptedData.dob).format('YYYY-MM-DD');
+                    retObj['gender'] = (decryptedData.gender) ? decryptedData.gender.replace("-", " ") : '';
+                    // retObj['No_of_Kids'] = decryptedData.child_number;
+                    // retObj['Kids_detail'] = decryptedData.child;
                     return retObj;
                 });
-                return res.json({ status: 1, 'response': { data: participateList } });
+                return res.json({ 'status': 1, 'response': { 'data': participateList, 'msg': 'data found' } });
+
+
+                // var participateList = result.map((data,index) => {
+                //     var bytes = CryptoJS.AES.decrypt(data.research_data, 'mypassword');
+                //     var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+                //     let retObj = {};
+                //     retObj['S.No'] = index + 1;
+                //     retObj['Name'] = decryptedData.name;
+                //     retObj['Email'] = decryptedData.email;
+                //     retObj['DOB'] = moment(decryptedData.dob).format('YYYY-MM-DD');
+                //     retObj['gender'] = (decryptedData.gender) ? decryptedData.gender.replace("-", " ") : '';
+                //     return retObj;
+                // });
+                // return res.json({ status: 1, 'response': { data: participateList } });
             }
         });
     }
@@ -364,30 +400,50 @@ router.get('/getFutureResearchList', function (req, res) {
         if (err) {
             return res.json({ status: 0, 'response': { msg: err } });
         } else {
-            let temparray = new Promise(async (resolve, reject) => {
-                for (let research of result) {
-                    await Researches.getResearchesChildDataById(research.future_research_id, function (err, childresult) {
-                        if (childresult && childresult.length > 0) {
-                            research.child_number = childresult.length;
-                            research.child = Array.from(childresult.values(), v => v.child_dob).join(", ");
-                        }
-                    });
-                }
-                setTimeout(() => resolve(result), 40)
+
+            
+
+            var participateList = result.map(data => {
+
+                var bytes = CryptoJS.AES.decrypt(data.future_research_encrypt, 'mypassword');
+                var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+
+                let retObj = {};
+                retObj['future_research_id'] = data.future_research_id;
+                retObj['name'] = decryptedData.name;
+                retObj['email'] = decryptedData.email;
+                retObj['dob'] = moment(decryptedData.dob).format('YYYY-MM-DD');
+               // retObj['no_of_kids'] = decryptedData.child_number;
+               // retObj['age_of_kids'] = decryptedData.child;
+                return retObj;
             });
-            temparray.then(result => {
-                var participateList = result.map(data => {
-                    let retObj = {};
-                    retObj['future_research_id'] = data.future_research_id;
-                    retObj['name'] = data.name;
-                    retObj['email'] = data.email;
-                    retObj['dob'] = moment(data.dob).format('YYYY-MM-DD');
-                    retObj['no_of_kids'] = data.child_number;
-                    retObj['age_of_kids'] = data.child;
-                    return retObj;
-                });
-                return res.json({ status: 1, 'response': { data: participateList } });
-            })
+            return res.json({ status: 1, 'response': { data: participateList } });
+
+
+            // let temparray = new Promise(async (resolve, reject) => {
+            //     for (let research of result) {
+            //         await Researches.getResearchesChildDataById(research.future_research_id, function (err, childresult) {
+            //             if (childresult && childresult.length > 0) {
+            //                 research.child_number = childresult.length;
+            //                 research.child = Array.from(childresult.values(), v => v.child_dob).join(", ");
+            //             }
+            //         });
+            //     }
+            //     setTimeout(() => resolve(result), 40)
+            // });
+            // temparray.then(result => {
+            //     var participateList = result.map(data => {
+            //         let retObj = {};
+            //         retObj['future_research_id'] = data.future_research_id;
+            //         retObj['name'] = data.name;
+            //         retObj['email'] = data.email;
+            //         retObj['dob'] = moment(data.dob).format('YYYY-MM-DD');
+            //         retObj['no_of_kids'] = data.child_number;
+            //         retObj['age_of_kids'] = data.child;
+            //         return retObj;
+            //     });
+            //     return res.json({ status: 1, 'response': { data: participateList } });
+            // })
         }
     });
 });
@@ -397,6 +453,28 @@ router.get('/getCSVFutureResearchList', (req, res) => {
         if (err) {
             return res.json({ status: 0, 'response': { msg: err } });
         } else {
+            var participateList = result.map((data, index) => {
+                var bytes = CryptoJS.AES.decrypt(data.future_research_encrypt, 'mypassword');
+                var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+                let retObj = {};
+                let childresults= [];
+                if (decryptedData.childs.length > 0) {
+                    decryptedData.childs.forEach(function (value, index) {
+                        let DOB = (value.child) ? moment(value.child).format('YYYY-MM-DD') : '';
+                        childresults.push(index + 1 + ')' + 'Child Name: ' + value.childName + ' ,Child Gender: ' + value.childGender + ' ,Child DOB: ' + DOB + '\n')
+                    });
+                    retObj['No_of_Kids'] = decryptedData.childs.length;
+                    retObj['Kids_detail'] = childresults;
+                }
+                retObj['S.No'] = index + 1;
+                retObj['Name'] = decryptedData.name;
+                retObj['Email'] = decryptedData.email;
+                retObj['DOB'] = moment(decryptedData.dob).format('YYYY-MM-DD');
+               // retObj['No_of_Kids'] = decryptedData.child_number;
+                // retObj['Kids_detail'] = decryptedData.child;
+                return retObj;
+            });
+            return res.json({ 'status': 1, 'response': { 'data': participateList, 'msg': 'data found' } });
             let temparray = new Promise(async (resolve, reject) => {
                 for (let research of result) {                    
                     await Researches.getResearchesChildDataById(research.future_research_id, function (err, childresult) {
@@ -417,7 +495,6 @@ router.get('/getCSVFutureResearchList', (req, res) => {
                 setTimeout(() => resolve(result), 40)
             });
             temparray.then(result => {
-
                 var participateList = result.map((data,index) => {
                     let retObj = {};                    
                     retObj['S.No'] = index+1;
@@ -680,12 +757,7 @@ router.post('/addFutureResearchByuser', [
             email: req.body.email,
             dob: dob,
             gender: req.body.gender,
-            child: req.body.child,
-            childGender: req.body.childGender,
-            childName: req.body.childName,
-            // child_name_first: req.body.child_name_first,
-            // child_gender_first: req.body.child_gender_first,
-            // child_age_first: req.body.child_age_first,            
+            childs: req.body.childs,
             created_at: moment().format('YYYY-MM-DD')
         };
         Researches.addFutureResearchByuser(record, function (err, data) {
@@ -712,25 +784,46 @@ router.post('/getFutureParticipateById',[
             if (err) {                
                 res.json({ 'status': 0, 'response': { 'msg': err, 'dev_msg': err } });
             } else {
-                Researches.getResearchesChildDataById(result[0].future_research_id, function (err, childresult) {
-                    let researches = {};
 
-                    if (childresult.length > 0){
-                        var childresults = childresult.map(data => {
-                            let retObj = {};
-                            retObj['child_gender'] = (data.child_gender) ? data.child_gender.replace("-", " "):'';
-                            retObj['child_name'] = data.child_name;
-                            retObj['child_dob'] = (data.child_dob) ? moment(data.child_dob).format('YYYY-MM-DD') : '';
-                            return retObj;
-                        });
-                    }
+                var bytes = CryptoJS.AES.decrypt(result[0].future_research_encrypt, 'mypassword');
+                var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+                let researches = {};
+                var childresults = [];
 
-                    researches['name'] = result[0].name;
-                    researches['dob'] = (result[0].dob) ? moment(result[0].dob).format('YYYY-MM-DD') : '';
-                    researches['email'] = result[0].email;
-                    researches['child'] = (childresult.length > 0) ? childresults : [];
-                    return res.json({ 'status': 1, 'response': { 'data': researches, 'msg': 'data found' } });
-                });
+                if (decryptedData.childs.length > 0) {
+                    decryptedData.childs.forEach(function (value, index) {
+                        let retObj = {};
+                        retObj['child_gender'] = value.childGender;
+                        retObj['child_name'] = value.childName;
+                        retObj['child_dob'] = (value.child) ? moment(value.child).format('YYYY-MM-DD') : '';
+                        childresults.push(retObj)
+                    });
+                    researches['child'] = childresults;
+                }
+                researches['name'] = decryptedData.name;
+                researches['dob'] = (decryptedData.dob) ? moment(decryptedData.dob).format('YYYY-MM-DD') : '';
+                researches['email'] = decryptedData.email;
+                return res.json({ 'status': 1, 'response': { 'data': researches, 'msg': 'data found' } });
+                // Researches.getResearchesChildDataById(result[0].future_research_id, function (err, childresult) {
+
+                //     let researches = {};
+
+                //     if (childresult.length > 0){
+                //         var childresults = childresult.map(data => {
+                //             let retObj = {};
+                //             retObj['child_gender'] = (data.child_gender) ? data.child_gender.replace("-", " "):'';
+                //             retObj['child_name'] = data.child_name;
+                //             retObj['child_dob'] = (data.child_dob) ? moment(data.child_dob).format('YYYY-MM-DD') : '';
+                //             return retObj;
+                //         });
+                //     }
+
+                //     researches['name'] = result[0].name;
+                //     researches['dob'] = (result[0].dob) ? moment(result[0].dob).format('YYYY-MM-DD') : '';
+                //     researches['email'] = result[0].email;
+                //     researches['child'] = (childresult.length > 0) ? childresults : [];
+                //     return res.json({ 'status': 1, 'response': { 'data': researches, 'msg': 'data found' } });
+                // });
             }
         });
     }
@@ -749,25 +842,45 @@ router.post('/getCurrentParticipateById', [
             if (err) {
                 res.json({ 'status': 0, 'response': { 'msg': err, 'dev_msg': err } });
             } else {
-                Researches.getCurrentChildDataById(id, function (err, childresult) {
+                var bytes = CryptoJS.AES.decrypt(result[0].research_data, 'mypassword');
+                var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));               
                     let researches = {};
 
-                    if (childresult.length > 0) {
-                        var childresults = childresult.map(data => {
-                            let retObj = {};
-                            retObj['child_gender'] = (data.child_gender) ? data.child_gender.replace("-", " ") : '';
-                            retObj['child_name'] = data.child_name;
-                            retObj['child_dob'] = (data.child_dob) ? moment(data.child_dob).format('YYYY-MM-DD') : '';
-                            return retObj;
-                        });
-                    }
+                    var childresults = [];
 
-                    researches['name'] = result[0].name;
-                    researches['dob'] = (result[0].dob) ? moment(result[0].dob).format('YYYY-MM-DD') : '';
-                    researches['email'] = result[0].email;
-                    researches['child'] = (childresult.length > 0) ? childresults : [];
-                    return res.json({ 'status': 1, 'response': { 'data': researches, 'msg': 'data found' } });
-                });
+                    if (decryptedData.childs.length > 0) {
+                        decryptedData.childs.forEach(function (value, index) {
+                            let retObj = {};
+                            retObj['child_gender'] = value.childGender;
+                            retObj['child_name'] = value.childName;
+                            retObj['child_dob'] = (value.child) ? moment(value.child).format('YYYY-MM-DD') : '';
+                            childresults.push(retObj)
+                        });
+                        researches['child'] = childresults;
+                    }
+                   
+                    researches['name'] = decryptedData.name;
+                    researches['dob'] = (decryptedData.dob) ? moment(decryptedData.dob).format('YYYY-MM-DD') : '';
+                    researches['email'] = decryptedData.email;
+                return res.json({ 'status': 1, 'response': { 'data': researches, 'msg': 'data found' } });
+
+                // Researches.getCurrentChildDataById(id, function (err, childresult) {
+                //     let researches = {};
+                //     if (childresult.length > 0) {
+                //         var childresults = childresult.map(data => {
+                //             let retObj = {};
+                //             retObj['child_gender'] = (data.child_gender) ? data.child_gender.replace("-", " ") : '';
+                //             retObj['child_name'] = data.child_name;
+                //             retObj['child_dob'] = (data.child_dob) ? moment(data.child_dob).format('YYYY-MM-DD') : '';
+                //             return retObj;
+                //         });
+                //     }
+                //     researches['name'] = result[0].name;
+                //     researches['dob'] = (result[0].dob) ? moment(result[0].dob).format('YYYY-MM-DD') : '';
+                //     researches['email'] = result[0].email;
+                //     researches['child'] = (childresult.length > 0) ? childresults : [];
+                //     return res.json({ 'status': 1, 'response': { 'data': researches, 'msg': 'data found' } });
+                // });
             }
         });
     }
@@ -788,7 +901,7 @@ router.post('/deleteResearches', [
             if (err) {
                 return res.json({ status: 0, 'response': { msg: err } });
             } else {
-                return res.json({ status: 1, 'response': { msg: 'Researches deleted successfully', data: result } });
+                return res.json({ status: 1, 'response': { msg: 'Researche(s) deleted successfully', data: result } });
             }
         });
     }
@@ -808,7 +921,7 @@ router.post('/deleteFutureParticipate', [
             if (err) {
                 return res.json({ status: 0, 'response': { msg: err } });
             } else {
-                return res.json({ status: 1, 'response': { msg: 'Future participants deleted successfully', data: result } });
+                return res.json({ status: 1, 'response': { msg: 'Future participant(s) deleted successfully', data: result } });
             }
         });
     }

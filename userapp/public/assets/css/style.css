@@ -3515,6 +3515,7 @@ div#swal2-html-container{
     text-align: center;
     margin-right: 28px;
     font-size: 23px;
+    cursor: pointer;
 }
 .read-more-des{
     border: none;

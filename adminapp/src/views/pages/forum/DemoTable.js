@@ -183,7 +183,7 @@ const DemoTable = ({ moduleConfigUrls }) => {
       Swal.fire({
         //title: 'warning!',
         icon: 'warning',
-        text: 'Are you sure you want to delete the selected threads ?',
+        text: 'Are you sure you want to delete the selected thread(s) ?',
         confirmButtonText: `Yes`,
         showCancelButton: true,
         cancelButtonText: 'No',

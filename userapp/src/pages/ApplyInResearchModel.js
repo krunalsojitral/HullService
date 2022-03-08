@@ -21,9 +21,7 @@ function ApplyInResearchModel(props) {
         formState: { errors },
     } = useForm({
         defaultValues: {
-            child: [{ name: "default Value" }],
-            childName: [{ name: "default Value" }],
-            childGender: [{ name: "default Value" }]
+            childs: [{ name: "default Value" }]
         }
     });
 
@@ -61,9 +59,7 @@ function ApplyInResearchModel(props) {
 
     const { fields, append, remove } = useFieldArray({
         control,
-        name: 'child',
-        name: 'childName',
-        name: 'childGender'
+        name: 'childs'
     });
 
   
@@ -135,7 +131,7 @@ function ApplyInResearchModel(props) {
                                                     dateFormat="yyyy/MM/dd"
                                                     dateFormatCalendar="yyyy/MM/dd"
                                                     minDate={new Date(1990, 11)}
-                                                    maxDate={new Date(2030, 11)}
+                                                    maxDate={new Date()}
                                                     peekNextMonth
                                                     showMonthDropdown
                                                     showYearDropdown
@@ -182,7 +178,7 @@ function ApplyInResearchModel(props) {
                                             <div className="col-md-3">
                                                 <div className="form-group">
                                                     <Controller
-                                                        name={`childName.${index}.value`}
+                                                        name={`childs.${index}.childName`}
                                                         control={control}
                                                         defaultValue={item.value}
                                                         render={({ field }) => <input type="text" placeholder={`Child Name`} className="form-control" {...field} />}
@@ -192,7 +188,7 @@ function ApplyInResearchModel(props) {
                                             <div className="col-md-3">
                                                 <div className="form-group">
                                                     <Controller
-                                                        name={`childGender.${index}.value`}
+                                                        name={`childs.${index}.childGender`}
                                                         control={control}
                                                         rules={{ required: true }}
                                                         render={({ field: { onChange, value } }) => (
@@ -212,7 +208,7 @@ function ApplyInResearchModel(props) {
                                             <div className="col-md-3">
                                                 <div className="form-group">
                                                     <Controller
-                                                        name={`child.${index}.value`}
+                                                        name={`childs.${index}.child`}
                                                         control={control}
                                                         // defaultValue={item.value}
                                                         render={({ field: { onChange, value } }) => (
@@ -221,7 +217,7 @@ function ApplyInResearchModel(props) {
                                                                 selected={value}
                                                                 onChange={onChange}
                                                                 minDate={new Date(1990, 11)}
-                                                                maxDate={new Date(2030, 11)}
+                                                                maxDate={new Date()}
                                                                 peekNextMonth
                                                                 showMonthDropdown
                                                                 showYearDropdown

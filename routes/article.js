@@ -848,7 +848,7 @@ router.post('/deleteArticle', [
             if (err) {
                 return res.json({ status: 0, 'response': { msg: err } });
             } else {
-                return res.json({ status: 1, 'response': { msg: 'Article deleted successfully', data: result } });
+                return res.json({ status: 1, 'response': { msg: 'Article(s) deleted successfully', data: result } });
             }
         });
     }    

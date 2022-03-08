@@ -28,6 +28,7 @@ function UserRequest({
         setValue,
         control,
         formState: { errors },
+        reset
     } = useForm();
 
     useEffect(() => {        
@@ -36,6 +37,16 @@ function UserRequest({
         } else {
             setValue("name", "");
         }
+
+        if (modal){
+            reset({ comment: '' });
+            document.body.style.overflow = 'hidden';
+            return () => document.body.style.overflow = 'unset';
+        }else{
+            document.body.style.overflow = 'auto';
+            return () => document.body.style.overflow = 'auto';
+        }
+        
     }, [modal]);
     
     const addInformationAct = (finalData, status) => {
