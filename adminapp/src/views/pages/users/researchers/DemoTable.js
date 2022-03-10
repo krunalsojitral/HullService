@@ -30,6 +30,7 @@ const DemoTable = () => {
   const [items, setItems] = useState([])
   const [csvData, setCsvData] = useState([["S.No", "Name", "Email", "City", "Organization", "Academic Discipline", "Interestarea"]]);
   const [modal, setModal] = useState();
+  const [statusindex, setStatusIndex] = useState();
   const [selectedItem, setSelectedItem] = useState();
   const [filedate, setFiledate] = useState();
   const [academicDisciplineList, setAcademicDisciplineList] = React.useState([]);  
@@ -38,16 +39,16 @@ const DemoTable = () => {
   const [selectedResearcherInterestArea, setselectedResearcherInterestArea] = React.useState([])
   const [researcherInterestAreaDropdown, setResearcherInterestAreaDropdown] = React.useState([])
 
+  const [filterstatus, setFilterStatus] = React.useState('');
+
 
   const handleInput = (e) => {
     if (!e.target.value) {
       setValue(e.target.value);
       setCity(e.target.value);
-
     } else {
       setValue(e.target.value);
       setCity(e.target.value);
-
     }
   };
 
@@ -78,7 +79,6 @@ const DemoTable = () => {
         // When user selects a place, we can replace the keyword without request data from API
         // by setting the second parameter to "false"    
 
-        console.log(description);
         setValue(description, false);
         setCity(description);
         clearSuggestions();
@@ -202,7 +202,7 @@ const DemoTable = () => {
     })
   }
 
-  const updateItemStatus = (item, status) => {
+  const updateItemStatus = (index, item, status) => {
 
     if (status == 1) {
       if (status == 1) {
@@ -220,26 +220,67 @@ const DemoTable = () => {
         cancelButtonColor: '#e57979',
       }).then((result) => {
         if (result.isConfirmed) {
-          var obj = {
-            id: item.id,
-            status: status,
-          };
-          axios.post(api_url + "/user/changeuserStatus", obj)
-            .then((result) => {
-              if (result.data.status) {
-                getNewListWrap('');
-                ref.current.value = "";
-              } else {
-                Swal.fire("Oops...", result.data.response.msg, "error");
-              }
-            })
-            .catch((err) => {
-              console.log(err);
-            });
+            var obj = {
+              id: item.id,
+              status: status,
+            };
+            axios.post(api_url + "/user/changeuserStatus", obj)
+              .then((result) => {
+                if (result.data.status) {
+                 // getNewListWrap('');
+
+                  if (toggle) {
+                    if (filterstatus){
+                      setItems(items.filter((data, index) => data.id !== item.id));
+                      Swal.fire("Success!", 'You have successfully activated user.', "success");
+                    }else{
+                      let tempColl = [...items];
+                      //tempColl[index].reply = [result.data.response.data, ...tempColl[index].reply]
+                      tempColl[index].status = status
+                      setItems(tempColl);
+                    }
+                  } else {
+                    let tempColl = [...items];
+                    //tempColl[index].reply = [result.data.response.data, ...tempColl[index].reply]
+                    tempColl[index].status = status
+                    setItems(tempColl);
+                  }
+
+                  
+                  ref.current.value = "";
+                } else {
+                  Swal.fire("Oops...", result.data.response.msg, "error");
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+         
+
+         
+
+
+
+
+          // var obj = {
+          //   id: item.id,
+          //   status: status,
+          // };
+          // axios.post(api_url + "/user/changeuserStatus", obj)
+          //   .then((result) => {
+          //     if (result.data.status) {
+          //       getNewListWrap('');
+          //       ref.current.value = "";
+          //     } else {
+          //       Swal.fire("Oops...", result.data.response.msg, "error");
+          //     }
+          //   })
+          //   .catch((err) => {
+          //     console.log(err);
+          //   });
         }
       });
     }
-
   }
 
 
@@ -297,6 +338,8 @@ const DemoTable = () => {
   }
 
   const onSubmit = (data) => {
+
+    setFilterStatus(data.status)
     if (city) { data.city = city; } else { data.city = ''; }
 
     if (selectedResearcherInterestArea && selectedResearcherInterestArea.length > 0) {
@@ -492,7 +535,7 @@ const DemoTable = () => {
           // onTableFilterChange={(val) => console.log('new table filter:', val)}
           // onColumnFilterChange={(val) => console.log('new column filter:', val)}
           scopedSlots={{
-            status: (item) => (
+            status: (item,index) => (
               <td className="tooltip-box">
                 {item.email_verification_token && item.email_verification_token !== null ? 'Pending' : ''}
                 {(item.email_verification_token == null || item.email_verification_token == '') ? item.status === 1 ? (
@@ -500,7 +543,9 @@ const DemoTable = () => {
                     onClick={() => {
                       setSelectedItem(item);
                       setModal(true);
+                      setStatusIndex(index);
                       updateItemStatus(
+                        index,
                         item,
                         0,
                         getNewListWrap
@@ -514,6 +559,7 @@ const DemoTable = () => {
                   <p
                     onClick={() => {
                       updateItemStatus(
+                        index,
                         item,
                         1,
                         getNewListWrap
@@ -588,7 +634,12 @@ const DemoTable = () => {
         selectedItem={selectedItem}
         setSelectedItem={setSelectedItem}
         setModal={setModal}
-        updateListing={getNewListWrap}
+        statusindex={statusindex}
+        //updateListing={getNewListWrap}
+        items={items}
+        setItems={setItems}
+        toggle={toggle}
+        filterstatus={filterstatus}
       />
     </div>
   )

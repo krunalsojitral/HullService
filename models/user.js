@@ -375,8 +375,8 @@ function User() {
     this.adduserByadmin = function (record, callback) {
         connection.acquire(function (err, con) {
 
-            const sql = 'INSERT INTO users(first_name,last_name,phone,email,password,created_at,role, status) VALUES($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *'
-            const values = [record.first_name, record.last_name, record.phone, record.email, record.password, record.created_at, record.role, 1]
+            const sql = 'INSERT INTO users(first_name,last_name,phone,email,password,created_at,role, status, first_time_login) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *'
+            const values = [record.first_name, record.last_name, record.phone, record.email, record.password, record.created_at, record.role, 1, 1]
             con.query(sql, values, function (err, result) {
                 con.release()
                 if (err) {
@@ -712,7 +712,21 @@ function User() {
         });
     }
 
-    
+    this.updateFirstView = function ( user_id, callback) { 
+        connection.acquire(function (err, con) { 
+            con.query("UPDATE users SET first_time_login =$1 WHERE id = $2", [0, user_id], function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, result);
+                }
+            });
+        });
+    }
 
     //user Profile update
     this.userProfileUpdate = function (record, user_id, callback) {

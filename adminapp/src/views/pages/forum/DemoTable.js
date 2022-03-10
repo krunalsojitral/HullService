@@ -24,6 +24,7 @@ const DemoTable = ({ moduleConfigUrls }) => {
   const [selectedItem, setSelectedItem] = useState();
   const [deleteButtonDisable, setDeleteButtonDisable] = useState(true)
   const ref = React.useRef();
+  const [filterstatus, setFilterStatus] = React.useState('');
 
   React.useEffect(() => {
     getNewList('');
@@ -47,7 +48,7 @@ const DemoTable = ({ moduleConfigUrls }) => {
   ]
   
 
-  const updateItemStatus = (item, status) => {
+  const updateItemStatus = (indexs, item, status) => {
     if (status == 1) {
       var message = 'Are you sure you want to activate a Forum ?'
     } else {
@@ -70,7 +71,24 @@ const DemoTable = ({ moduleConfigUrls }) => {
         axios.post(api_url + "/forum/changeforumStatus", obj)
           .then((result) => {
             if (result.data.status) {
-              getNewListWrap('');
+              //getNewListWrap('');
+
+              if (filterstatus) {
+                setItems(items.filter((data, index) => index !== indexs));
+              } else {
+                let tempColl = [...items];
+                //tempColl[index].reply = [result.data.response.data, ...tempColl[index].reply]
+                tempColl[indexs].status = status
+                setItems(tempColl);
+              }
+
+              var successmessage = '';
+              if (status == 1) {
+                successmessage = 'You have successfully activated forum.'
+              } else {
+                successmessage = 'You have successfully deactivated forum.'
+              }
+              Swal.fire("Success!", successmessage, "success");
             } else {
               Swal.fire("Oops...", result.data.response.msg, "error");
             }
@@ -108,6 +126,8 @@ const DemoTable = ({ moduleConfigUrls }) => {
           .then((result) => {
             if (result.data.status) {
               getNewListWrap('');
+
+              
             } else {
               Swal.fire("Oops...", result.data.response.msg, "error");
             }
@@ -150,10 +170,13 @@ const DemoTable = ({ moduleConfigUrls }) => {
   const handleAddrTypeChange = (e) => {
     if (e.target.value == '0') {
       getNewListWrap(e.target.value);
+      setFilterStatus(e.target.value)
     } else if (e.target.value == '1') {
       getNewListWrap(e.target.value);
+      setFilterStatus(e.target.value)
     } else {
       getNewListWrap('');
+      setFilterStatus('')
     }
   }
 
@@ -280,12 +303,13 @@ const DemoTable = ({ moduleConfigUrls }) => {
                 />
               </td>
             ),
-            status: (item) => (
+            status: (item, index) => (
               <td className="tooltip-box">
                 {item.status === 1 ? (
                   <p
                     onClick={() => {
                       updateItemStatus(
+                        index,
                         item,
                         0,
                         getNewListWrap
@@ -299,6 +323,7 @@ const DemoTable = ({ moduleConfigUrls }) => {
                   <p
                     onClick={() => {
                       updateItemStatus(
+                        index,
                         item,
                         1,
                         getNewListWrap

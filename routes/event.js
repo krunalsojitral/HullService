@@ -468,11 +468,8 @@ router.post("/updateEventByadmin", function (req, res) {
           }
         });
       }
-    }
-   
+    }   
   });
-
- 
 
   form.parse(req, function (err, fields, files) {
     if (err) return res.json({ status: 1, response: { msg: err } });
@@ -631,6 +628,211 @@ router.post("/updateEventByadmin", function (req, res) {
       }
     );
   });
+});
+
+router.get('/getAllAdminEventPromoList', function (req, res) {
+  loggerData(req);
+  var status = req.query.status;
+  Event.getAllAdminEventPromoList(status, function (err, result) {
+    if (err) {
+      return res.json({ status: 0, 'response': { msg: err } });
+    } else {
+      var eventList = result.map(data => {
+        let retObj = {};
+        retObj['event_promo_id'] = data.event_promo_id;
+        retObj['title'] = data.promo_title;
+        retObj['status'] = data.status;
+        return retObj;
+      });
+      return res.json({ status: 1, 'response': { data: eventList } });
+    }
+  });
+});
+
+router.get('/getEventPromoList', function (req, res) {
+  loggerData(req);
+  Event.getEventPromoList(function (err, result) {
+    if (err) {
+      return res.json({ status: 0, 'response': { msg: err } });
+    } else {
+      var eventList = result.map(data => {
+        let retObj = {};
+        retObj['event_id'] = data.event_id;
+        retObj['title'] = data.title;
+        retObj['status'] = data.status;
+        return retObj;
+      });
+      return res.json({ status: 1, 'response': { data: eventList } });
+    }
+  });
+});
+
+
+router.post("/addEventPromoByadmin", function (req, res) {
+  var form = new formidable.IncomingForm();
+  form.parse(req, function (err, fields, files) {
+    if (err) return res.json({ status: 1, response: { msg: err } });   
+    let parsed = JSON.parse(fields.data);
+    var record = {
+      event_id: parsed.event,
+      promo_image: "",
+      promo_title: parsed.promo_title,
+      promo_description: parsed.promo_description,
+    };
+    let overview = {};
+    asyn.waterfall(
+      [function (done1) {
+          if (typeof files.promo_image !== "undefined") {
+            let file_ext = files.promo_image.name.split(".").pop();
+            let filename = Date.now() + "-" + files.promo_image.name.split(" ").join("");
+            let tmp_path = files.promo_image.path;
+            if (file_ext == "png" || file_ext == "PNG" || file_ext == "jpg" || file_ext == "JPG" || file_ext == "jpeg" || file_ext == "JPEG") {
+              fs.rename(tmp_path, path.join(__dirname, env.EVENT_PATH + filename), function (err) {
+                if (err) {
+                  record.promo_image = filename;
+                  done1("Image upload error", overview)
+                } else {
+                  record.promo_image = filename;
+                  overview["promo_image"] = filename;
+                  done1(err, overview);
+                }
+              });
+            } else {
+              return res.json({ status: 0, response: { msg: "Only image with jpg, jpeg and png format are allowed", } });
+            }
+          } else {
+            overview["image"] = "";
+            done1(err, overview);
+          }
+        },
+        function (overview, done2) {
+          Event.addPromoEventByadmin(record, function (err, data) {
+            if (err) {
+              done2(err, data);
+            } else {
+              done2(err, data);
+            }
+          });
+        },        
+      ],
+      function (error, data) {
+        if (error) {
+          return res.json({ status: 0, response: { msg: error } });
+        } else {
+          return res.json({ status: 1, response: { msg: "Event Promo added successfully.", data: data } });
+        }
+      });
+  });
+});
+
+router.post("/updateEventPromoByadmin", function (req, res) {
+  
+  var form = new formidable.IncomingForm();
+  form.parse(req, function (err, fields, files) {
+    if (err) return res.json({ status: 1, response: { msg: err } });
+    let parsed = JSON.parse(fields.data);
+    var event_promo_id = parsed.event_promo_id;
+    var record = {
+      event_id: parsed.event,
+      promo_image: "",
+      promo_title: parsed.promo_title,
+      promo_description: parsed.promo_description,
+    };
+    console.log('in dfsdf');
+    let overview = {};
+    asyn.waterfall([
+      function (done1) {
+        if (typeof files.promo_image !== "undefined") {
+          let file_ext = files.promo_image.name.split(".").pop();
+          let filename = Date.now() + "-" + files.promo_image.name.split(" ").join("");
+          let tmp_path = files.promo_image.path;
+          if (file_ext == "png" || file_ext == "PNG" || file_ext == "jpg" || file_ext == "JPG" || file_ext == "jpeg" || file_ext == "JPEG") {
+            fs.rename(tmp_path, path.join(__dirname, env.EVENT_PATH + filename), function (err) {
+              if (err) {
+                record.promo_image = filename;
+                done1("Image upload error", overview)
+              } else {
+                record.promo_image = filename;
+                overview["promo_image"] = filename;
+                done1(err, overview);
+              }
+            });
+          } else {
+            return res.json({ status: 0, response: { msg: "Only image with jpg, jpeg and png format are allowed", } });
+          }
+        } else {
+          overview["image"] = "";
+          done1(err, overview);
+        }
+      },
+      function (overview, done2) {
+        Event.updateEventPromoByadmin(record, event_promo_id, function (err, data) {
+          if (err) {
+            done2(err, null);
+          } else {
+            done2(err, data);
+          }
+        });
+      }],
+      function (error, data) {
+        if (error) {
+          return res.json({ status: 0, response: { msg: error } });
+        } else {
+          return res.json({ status: 1,response: { msg: "Event Promo updated successfully.", data: data } });
+        }
+      });
+  });
+});
+
+
+router.post('/getEventPromoDataById', [check('event_promo_id', 'Event is required').notEmpty()], (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    var error = errors.array();
+    res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+  } else {
+    let event_promo_id = req.body.event_promo_id;
+    Event.getEventPromoDataById(event_promo_id, function (err, result) {
+      if (err) {
+        return res.json({ 'status': 0, 'response': { 'msg': error } });
+      } else {
+        var imageLink;
+        if (req.headers.host == env.ADMIN_LIVE_URL) {
+          imageLink = env.ADMIN_LIVE_URL;
+        } else {
+          imageLink = env.ADMIN_LIVE_URL;
+        }
+        let event = {};
+        event['event_id'] = result[0].event_id;
+        event['status'] = result[0].status;
+        event['promo_title'] = result[0].promo_title;
+        event['promo_image'] = (result[0].promo_image) ? imageLink + env.EVENT_VIEW_PATH + result[0].promo_image : '';
+        event['promo_description'] = result[0].promo_description;
+        return res.json({ 'status': 1, 'response': { 'data': event, 'msg': 'data found' } });
+      }
+    });
+
+  }
+});
+
+router.post('/deletePromoEvent', [
+  check('event', 'Event is required').notEmpty(),
+], (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    var error = errors.array();
+    res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+  } else {
+    loggerData(req);
+    let event = req.body.event;
+    Event.deletePromoEvent(event, function (err, result) {
+      if (err) {
+        return res.json({ status: 0, 'response': { msg: err } });
+      } else {
+        return res.json({ status: 1, 'response': { msg: 'Promo Event(s) deleted successfully', data: result } });
+      }
+    });
+  }
 });
 
 module.exports = router;

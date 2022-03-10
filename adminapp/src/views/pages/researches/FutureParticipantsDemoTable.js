@@ -151,7 +151,7 @@ const FutureParticipantsDemoTable = () => {
           <div className="header-left">
             &nbsp; Future Participants
             </div>
-          <div className="header-right">
+          {items.length > 0 && <div className="header-right">
             <CButton
               color="primary"
               variant="outline"
@@ -161,9 +161,9 @@ const FutureParticipantsDemoTable = () => {
               onClick={() => deleteItem()}
               className="d-inline-block"
             > Delete
-              </CButton>
-            <CSVLink filename={filedate + ".csv"} headers={headers} data={csvData}>Download</CSVLink> &nbsp;
-            </div>
+              </CButton> 
+            <CSVLink filename={filedate + ".csv"} className="d-inline-block" headers={headers} data={csvData}>Download</CSVLink> &nbsp;
+            </div>}
         </CCardHeader>
 
         <CDataTable

@@ -30,6 +30,7 @@ const DemoTable = () => {
   const [modal, setModal] = useState();
   const [selectedItem, setSelectedItem] = useState();
   const [filedate, setFiledate] = useState();
+  const [statusindex, setStatusIndex] = useState();
   const [toggle, setToggle] = useState(false)
 
   const headers = [
@@ -52,6 +53,7 @@ const DemoTable = () => {
   const [organizationList, setOrganizationList] = React.useState([]);
   const [selectedProfessionalInterestArea, setSelectedProfessionalInterestArea] = React.useState([])
   const [professionalInterestAreaDropdown, setProfessionalInterestAreaDropdown] = React.useState([])
+  const [filterstatus, setFilterStatus] = React.useState('');
 
   const handleInput = (e) => {
     if (!e.target.value) {
@@ -228,7 +230,7 @@ const DemoTable = () => {
     }
   ]
 
-  const updateItemStatus = (item, status) => {
+  const updateItemStatus = (index, item, status) => {
     if (status == 1) { 
       if (status == 1) {
         var message = 'Are you sure you want to activate the user ?'
@@ -252,8 +254,31 @@ const DemoTable = () => {
           axios.post(api_url + "/user/changeuserStatus", obj)
             .then((result) => {
               if (result.data.status) {
-                getNewListWrap();
+                
+                
+
+                // getNewListWrap('');
+
+                if (toggle) {
+                  if (filterstatus) {
+                    setItems(items.filter((data, index) => data.id !== item.id));
+                    Swal.fire("Success!", 'You have successfully activated user.', "success");
+                  } else {
+                    let tempColl = [...items];
+                    //tempColl[index].reply = [result.data.response.data, ...tempColl[index].reply]
+                    tempColl[index].status = status
+                    setItems(tempColl);
+                  }
+                } else {
+                  let tempColl = [...items];
+                  //tempColl[index].reply = [result.data.response.data, ...tempColl[index].reply]
+                  tempColl[index].status = status
+                  setItems(tempColl);
+                }
+
+
                 ref.current.value = "";
+
               } else {
                 Swal.fire("Oops...", result.data.response.msg, "error");
               }
@@ -322,6 +347,7 @@ const DemoTable = () => {
   // }
 
   const onSubmit = (data) => { 
+    setFilterStatus(data.status)
     if (city){ data.city = city; }else{ data.city = '';} 
     
     if (selectedProfessionalInterestArea && selectedProfessionalInterestArea.length > 0){
@@ -554,7 +580,7 @@ const DemoTable = () => {
           // onTableFilterChange={(val) => console.log('new table filter:', val)}
           // onColumnFilterChange={(val) => console.log('new column filter:', val)}
           scopedSlots={{
-            status: (item) => (
+            status: (item, index) => (
 
 
               
@@ -567,7 +593,9 @@ const DemoTable = () => {
                     onClick={() => {
                       setSelectedItem(item);
                       setModal(true);
+                      setStatusIndex(index);
                       updateItemStatus(
+                        index,
                         item,
                         0,
                         getNewListWrap
@@ -581,6 +609,7 @@ const DemoTable = () => {
                   <p
                     onClick={() => {
                       updateItemStatus(
+                        index,
                         item,
                         1,
                         getNewListWrap
@@ -654,7 +683,12 @@ const DemoTable = () => {
         selectedItem={selectedItem}
         setSelectedItem={setSelectedItem}
         setModal={setModal}
-        updateListing={getNewListWrap}
+        statusindex={statusindex}
+        //updateListing={getNewListWrap}
+        items={items}
+        setItems={setItems}
+        toggle={toggle}
+        filterstatus={filterstatus}
       />
     </div>
     

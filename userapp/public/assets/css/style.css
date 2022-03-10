@@ -4693,7 +4693,8 @@ color: #1e6e80;
     border-radius: 5px;
     height: 45px;
     box-shadow: none;
-    color:#000
+    color:#000;
+    font-size: 14px;
 }
 .edit-profile select.form-control {
     background: #FFFFFF;
@@ -4707,13 +4708,13 @@ color: #1e6e80;
     font-family: Open Sans;
     font-style: normal;
     font-weight: 500;
-    font-size: 17px;
+    font-size: 14px;
 }
 .edit-profile .react-autosuggest__section-container:last-child{
     border-bottom: 1px solid gray;
 }
 .edit-profile .dropdown-heading-value span{
-    font-size: 15px;
+    font-size: 14px;
 }
 
 .edit-profile ul.react-autosuggest__suggestions-list {
@@ -4735,6 +4736,14 @@ color: #1e6e80;
     margin-right: 6px;
     display: inline-block;   
     cursor: pointer;
+}
+.view-profile-incomplete{
+    background: #DBF1F4;
+    padding: 17px;
+    padding-left: 41px;
+    color: #036E80;
+    font-size: 16px;
+    margin-top:20px;
 }
 .view-profile-header .edit-profile small{word-break: break-all;}
 .view-profile-header .edit-profile img{overflow: hidden;border-radius: 50%; height: 100%; width: 100%; }
@@ -4784,7 +4793,7 @@ color: #1e6e80;
     width: 100%;
     padding: 6px 12px;
     color: #000;
-
+    font-size: 14px;
 }
 .view-profile-body .autosuggestion .react-autosuggest__input--focused{
     border: 1px solid #B8B8B8;

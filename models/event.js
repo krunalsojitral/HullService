@@ -337,5 +337,108 @@ function User() {
     });
   };
 
+  this.getAllAdminEventPromoList = function (status, callback) {
+    connection.acquire(function (err, con) {
+      var sql = '';
+      var array = [];
+      if (status) {
+        sql = 'SELECT * FROM event_promo where status = $1 order by event_promo_id DESC';
+        array = [status];
+      } else {
+        sql = 'SELECT * FROM event_promo order by event_promo_id DESC';
+      }
+      con.query(sql, array, function (err, result) {
+        con.release()
+        if (err) {
+          if (env.DEBUG) { console.log(err); }
+          callback(err, null);
+        } else {
+          callback(null, result.rows);
+        }
+      });
+    });
+  };
+
+  this.getEventPromoList = function (callback) {
+    connection.acquire(function (err, con) {
+      sql = 'SELECT * FROM event where status = $1 order by event_id DESC';
+      con.query(sql, [1], function (err, result) {
+        con.release()
+        if (err) {
+          if (env.DEBUG) { console.log(err); }
+          callback(err, null);
+        } else {
+          callback(null, result.rows);
+        }
+      });
+    });
+  };
+
+  this.addPromoEventByadmin = function (record, callback) {
+    connection.acquire(function (err, con) {
+      const promosql = "INSERT INTO event_promo(event_id,promo_title,promo_image,promo_description,status) VALUES($1,$2,$3,$4,$5) RETURNING *";
+      const promovalues = [record.event_id,record.promo_title, record.promo_image, record.promo_description,1];
+      con.query(promosql, promovalues, function (err, result) { 
+      con.release();
+        if (err) {
+          if (env.DEBUG) {
+            console.log(err);
+          }
+          callback(err, null);
+        } else { 
+          callback(null, result);
+        }
+      });
+    });
+  };
+
+
+  this.updateEventPromoByadmin = function (record, event_promo_id, callback) {
+    connection.acquire(function (err, con) {
+      var sqlevent = "UPDATE event_promo SET promo_title =$1,promo_description =$2,promo_image=$3,event_id=$4 where event_promo_id = $5";
+      con.query(sqlevent, [record.promo_title, record.promo_description, record.promo_image, record.event_id, event_promo_id], function (err, results) {
+        if (err) {
+          if (env.DEBUG) {
+            console.log(err);
+          }
+          con.release();
+          callback(err, null);
+        } else {
+          callback(null, results);
+        }
+      });
+      
+    });
+  };
+
+  
+  this.getEventPromoDataById = function (id, callback) {
+    connection.acquire(function (err, con) {
+      con.query('SELECT * FROM event_promo where event_promo_id = $1', [id], function (err, result) {
+        con.release();
+        if (err) {
+          callback(err, null);
+        } else {
+          callback(null, result.rows);
+        }
+      });
+    });
+  }
+
+  
+  this.deletePromoEvent = function (event, callback) {
+    connection.acquire(function (err, con) {
+      event.map(data => {
+        con.query('DELETE FROM event_promo where event_promo_id = $1', [data.event_promo_id], function (err, results) {
+         
+        });
+      });
+      con.release()
+      callback(null, event);
+    });
+  };
+
+  
+
 }
 module.exports = new User();

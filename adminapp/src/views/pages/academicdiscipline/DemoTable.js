@@ -16,6 +16,7 @@ const DemoTable = () => {
   const [items, setItems] = useState([])
   const ref = React.useRef();
   const [deleteButtonDisable, setDeleteButtonDisable] = useState(true)
+  const [filterstatus, setFilterStatus] = React.useState('');
 
   React.useEffect(() => {
     getNewList('');
@@ -35,7 +36,7 @@ const DemoTable = () => {
   ]
   
 
-  const updateItemStatus = (item, status) => {
+  const updateItemStatus = (indexs, item, status) => {
     var message = '';
     if (status == 1) {
       message = 'Are you sure you want to activate an academic discipline ?'
@@ -60,8 +61,25 @@ const DemoTable = () => {
         axios.post(api_url + "/academicdiscipline/changeacademicdisciplineStatus", obj)
           .then((result) => {
             if (result.data.status) {
-              getNewListWrap('');
-              ref.current.value = "";
+              // getNewListWrap('');
+              // ref.current.value = "";
+
+              if (filterstatus) {
+                setItems(items.filter((data, index) => index !== indexs));
+              } else {
+                let tempColl = [...items];
+                //tempColl[index].reply = [result.data.response.data, ...tempColl[index].reply]
+                tempColl[indexs].status = status
+                setItems(tempColl);
+              }
+
+              var successmessage = '';
+              if (status == 1) {
+                successmessage = 'You have successfully activated academic discipline.'
+              } else {
+                successmessage = 'You have successfully deactivated academic discipline.'
+              }
+              Swal.fire("Success!", successmessage, "success");
             } else {
               Swal.fire("Oops...", result.data.response.msg, "error");
             }
@@ -95,10 +113,13 @@ const DemoTable = () => {
     console.clear();
     if (e.target.value == '0') {
       getNewListWrap(e.target.value);
+      setFilterStatus(e.target.value)
     } else if (e.target.value == '1') {
       getNewListWrap(e.target.value);
+      setFilterStatus(e.target.value)
     } else {
       getNewListWrap('');
+      setFilterStatus('')
     }
 
   }
@@ -223,12 +244,13 @@ const DemoTable = () => {
                 />
               </td>
             ),
-            status: (item) => (
+            status: (item, index) => (
               <td className="tooltip-box">
                 {item.status === 1 ? (
                   <p
                     onClick={() => {
                       updateItemStatus(
+                        index,
                         item,
                         0,
                         getNewListWrap
@@ -242,6 +264,7 @@ const DemoTable = () => {
                   <p
                     onClick={() => {
                       updateItemStatus(
+                        index,
                         item,
                         1,
                         getNewListWrap

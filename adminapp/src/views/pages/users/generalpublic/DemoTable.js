@@ -22,6 +22,9 @@ const DemoTable = () => {
   const [filedate, setFiledate] = useState();
   const [modal, setModal] = useState();
   const [selectedItem, setSelectedItem] = useState();
+  const [filterstatus, setFilterStatus] = React.useState('');
+  const [statusindex, setStatusIndex] = useState();
+  const [toggle, setToggle] = useState(false)
 
   const headers = [
     { label: "S.No", key: "no" },
@@ -76,7 +79,7 @@ const DemoTable = () => {
   ]
   
 
-  const updateItemStatus = (item, status) => {
+  const updateItemStatus = (indexs, item, status) => {
     if (status == 1) { 
       var message = '';
       if (status == 1) {
@@ -101,8 +104,28 @@ const DemoTable = () => {
           axios.post(api_url + "/user/changeuserStatus", obj)
             .then((result) => {
               if (result.data.status) {
-                getNewListWrap();
-                ref.current.value = "";
+                // getNewListWrap();
+                // ref.current.value = "";
+
+
+
+                if (filterstatus) {
+                  setItems(items.filter((data, index) => index !== indexs));
+                } else {
+                  let tempColl = [...items];
+                  //tempColl[index].reply = [result.data.response.data, ...tempColl[index].reply]
+                  tempColl[indexs].status = status
+                  setItems(tempColl);
+                }
+
+                var successmessage = '';
+                if (status == 1) {
+                  successmessage = 'You have successfully activated user.'
+                } else {
+                  successmessage = 'You have successfully deactivated user.'
+                }
+                Swal.fire("Success!", successmessage, "success");
+
               } else {
                 Swal.fire("Oops...", result.data.response.msg, "error");
               }
@@ -158,15 +181,23 @@ const DemoTable = () => {
     if (e.target.value == '0') {
       getNewListWrap(e.target.value);
       getCSVNewListWrap(e.target.value);
+      setFilterStatus(e.target.value)
+      setToggle(true)
     } else if (e.target.value == '1') {
       getNewListWrap(e.target.value);
       getCSVNewListWrap(e.target.value);
+      setFilterStatus(e.target.value)
+      setToggle(true)
     } else if (e.target.value == '2') {
       getNewListWrap(e.target.value);
       getCSVNewListWrap(e.target.value);
+      setFilterStatus(e.target.value)
+      setToggle(true)
     } else {
       getNewListWrap('');
       getCSVNewListWrap('');
+      setFilterStatus('')
+      setToggle(false)
     }
 
   }
@@ -221,7 +252,7 @@ const DemoTable = () => {
         // onTableFilterChange={(val) => console.log('new table filter:', val)}
         // onColumnFilterChange={(val) => console.log('new column filter:', val)}
         scopedSlots = {{
-          status: (item) => (
+          status: (item, index) => (
             <td className="tooltip-box">
               {item.email_verification_token && item.email_verification_token !== null ? 'Pending' : ''}
               {(item.email_verification_token == null || item.email_verification_token == '') ? item.status === 1 ? (
@@ -229,7 +260,9 @@ const DemoTable = () => {
                   onClick={() => {
                     setSelectedItem(item);
                     setModal(true);
+                    setStatusIndex(index);
                     updateItemStatus(
+                      index,
                       item,
                       0,
                       getNewListWrap
@@ -243,6 +276,7 @@ const DemoTable = () => {
                 <p
                   onClick={() => {
                     updateItemStatus(
+                      index,
                       item,
                       1,
                       getNewListWrap
@@ -314,7 +348,12 @@ const DemoTable = () => {
         selectedItem={selectedItem}
         setSelectedItem={setSelectedItem}
         setModal={setModal}
-        updateListing={getNewListWrap}
+        statusindex={statusindex}
+        //updateListing={getNewListWrap}
+        items={items}
+        setItems={setItems}
+        toggle={toggle}
+        filterstatus={filterstatus}
       />
 
     </CCardBody>

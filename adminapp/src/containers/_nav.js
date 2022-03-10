@@ -228,7 +228,12 @@ const _nav = [
         _tag: "CSidebarNavItem",
         name: "View Event",
         to: "/events",
-      }      
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "Event Promo",
+        to: "/eventpromo",
+      }
     ],
   },
   {

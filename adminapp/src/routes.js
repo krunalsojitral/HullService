@@ -65,6 +65,8 @@ const Events = React.lazy(() => import('./views/pages/events/Events'))
 const EventAddEditForm = React.lazy(() => import('./views/pages/events/AddEditForm'))
 const EventEditForm = React.lazy(() => import('./views/pages/events/EditForm'))
 
+const EventsPromo = React.lazy(() => import('./views/pages/events/EventsPromo'))
+const EventPromoAddEditForm = React.lazy(() => import('./views/pages/events/AddEditFormEventPromo'))
 
 const DynamicPages = React.lazy(() => import('./views/pages/dynamicpages/DynamicPages'))
 const DynamicPagesAddEditForm = React.lazy(() => import('./views/pages/dynamicpages/AddEditForm'))
@@ -157,6 +159,9 @@ const routes = [
   { path: '/events', name: 'Event Pages', component: Events },
   { path: '/eventadd', name: 'Event Add', component: EventAddEditForm },
   { path: '/eventedit/:id', name: 'Event Edit', component: EventEditForm },
+  { path: '/eventpromo', name: 'Event Pages', component: EventsPromo },
+  { path: '/eventpromoadd', name: 'Event Add', component: EventPromoAddEditForm },
+  { path: '/eventpromoedit/:id', name: 'Event Edit', component: EventPromoAddEditForm },
   { path: '/banner', name: 'Banner', component: Banner },
   { path: '/banneradd', name: 'Banner Add', component: BannerAddEditForm },
   { path: '/banneredit/:id', name: 'Banner Edit', component: BannerAddEditForm },

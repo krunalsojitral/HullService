@@ -10,13 +10,14 @@ import {
   CCardHeader
 } from '@coreui/react'
 
-const DemoTable = () => {
+
+const DemoTableEventPromo = () => {
 
   const history = useHistory()
+ // const [details, setDetails] = useState([])
   const [items, setItems] = useState([])
   const [deleteButtonDisable, setDeleteButtonDisable] = useState(true)
   const ref = React.useRef();
-  const [filterstatus, setFilterStatus] = React.useState('');
 
   React.useEffect(() => {
     getNewList('');
@@ -25,8 +26,8 @@ const DemoTable = () => {
 
   const fields = [
     { key: 'checkbox', label: '', _style: { width: '1%' }, filter: false },
-    { key: 'Heading', _style: { width: '20%'} },
-    { key: 'status', _style: { width: '20%'} },
+    { key: 'title', _style: { width: '20%'} },       
+    // { key: 'status', _style: { width: '20%'} },
     {
       key: 'show_details',
       label: '',
@@ -34,13 +35,14 @@ const DemoTable = () => {
       filter: false
     }
   ]
-  
-  const updateItemStatus = (indexs, item, status) => {
+
+
+  const updateItemStatus = (item, status) => {
     var message = '';
     if (status == 1) {
-      message = 'Are you sure you want to activate the forum heading ?'
+      message = 'Are you sure you want to activate the event ?'
     } else {
-      message = 'Are you sure you want to deactivate the forum heading ?'
+      message = 'Are you sure you want to deactivate the event ?'
     }
     Swal.fire({
       //title: 'warning!',
@@ -53,33 +55,13 @@ const DemoTable = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         var obj = {
-          forumheading_id: item.forumheading_id,
+          event_promo_id: item.event_promo_id,
           status: status,
         };
-        axios.post(api_url + "/forumheading/changeforumheadingStatus", obj)
+        axios.post(api_url + "/event/changeEventStatus", obj)
           .then((result) => {
             if (result.data.status) {
-              // getNewListWrap('');
-              // ref.current.value = "";
-
-
-              if (filterstatus) {
-                setItems(items.filter((data, index) => index !== indexs));
-              } else {
-                let tempColl = [...items];
-                //tempColl[index].reply = [result.data.response.data, ...tempColl[index].reply]
-                tempColl[indexs].status = status
-                setItems(tempColl);
-              }
-
-              var successmessage = '';
-              if (status == 1) {
-                successmessage = 'You have successfully activated forum heading.'
-              } else {
-                successmessage = 'You have successfully deactivated forum heading.'
-              }
-              Swal.fire("Success!", successmessage, "success");
-
+              getNewListWrap('');
             } else {
               Swal.fire("Oops...", result.data.response.msg, "error");
             }
@@ -91,14 +73,14 @@ const DemoTable = () => {
       }
     });
   }
-  
+
   const getNewList = (status) => {
-    axios.get(api_url + '/forumheading/forumheadingList?status=' + status, {}).then((result) => {
+    axios.get(api_url + '/event/getAllAdminEventPromoList?status=' + status, {}).then((result) => {
       if (result.data.status) {
         var usersdatas = result.data.response.data;
         setItems(usersdatas);
       } else {
-        Swal.fire('Oops...', result.data.response.msg, 'error')
+       // Swal.fire('Oops...', result.data.response.msg, 'error')
       }
     }).catch((err) => {
       console.log(err);
@@ -107,18 +89,51 @@ const DemoTable = () => {
 
   const getNewListWrap = (status) => {
     getNewList(status);
-  }; 
+  };
+
+  const deleteItem = (e) => {
+    const filteredThatArray = items.filter((item) => item.isChecked == true).map(item => {
+      const container = {};
+      container['event_promo_id'] = item.event_promo_id;
+      return container;
+    });
+
+    if (filteredThatArray.length > 0) {
+      Swal.fire({
+        //title: 'warning!',
+        icon: 'warning',
+        text: 'Are you sure you want to delete the selected promo event(s) ?',
+        confirmButtonText: `Yes`,
+        showCancelButton: true,
+        cancelButtonText: 'No',
+        cancelButtonColor: '#e57979',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios.post(api_url + '/event/deletePromoEvent', { event: filteredThatArray }).then((result) => {
+            if (result.data.status) {
+              getNewListWrap('');
+              Swal.fire('Success', result.data.response.msg, 'success')
+            } else {
+              Swal.fire('Oops...', result.data.response.msg, 'error')
+            }
+          }).catch((err) => {
+            console.log(err);
+          })
+        }
+      });
+
+    } else {
+      Swal.fire('Oops...', 'Please select event', 'error')
+    }
+  }
 
   const handleAddrTypeChange = (e) => {
     if (e.target.value == '0') {
       getNewListWrap(e.target.value);
-      setFilterStatus(e.target.value)
     } else if (e.target.value == '1') {
       getNewListWrap(e.target.value);
-      setFilterStatus(e.target.value)
     } else {
       getNewListWrap('');
-      setFilterStatus('')
     }
   }
 
@@ -136,79 +151,45 @@ const DemoTable = () => {
     }
   };
 
-  const deleteItem = (e) => {
-    const filteredThatArray = items.filter((item) => item.isChecked == true).map(item => {
-      const container = {};
-      container['forumheading_id'] = item.forumheading_id;
-      return container;
-    });
-
-    if (filteredThatArray.length > 0) {
-
-      Swal.fire({
-        //title: 'warning!',
-        icon: 'warning',
-        text: 'Are you sure you want to delete the selected topic(s) ?',
-        confirmButtonText: `Yes`,
-        showCancelButton: true,
-        cancelButtonText: 'No',
-        cancelButtonColor: '#e57979',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          axios.post(api_url + '/forumheading/deleteForumheading', { forumheading: filteredThatArray }).then((result) => {
-            if (result.data.status) {
-              getNewListWrap('');
-              Swal.fire('Success', result.data.response.msg, 'success')
-            } else {
-              Swal.fire('Oops...', result.data.response.msg, 'error')
-            }
-          }).catch((err) => {
-            console.log(err);
-          })
-        }
-      });
-
-      
-    }
-  }
-
   return (
 
     <div>
-      <CCardHeader className="custom-table-header">
-          <div>&nbsp;&nbsp; Forum Topic</div>
-          <div>
-            <CButton
-              color="primary"
-              variant="outline"
-              shape="square"
-              size="sm"
-              disabled={deleteButtonDisable}
-              onClick={() => deleteItem()}
-              className="d-inline-block"
-            > Delete
+       <CCardHeader className="custom-table-header">
+        <div> &nbsp;&nbsp; Event Promo</div>
+        <div>   
+          <CButton
+            color="primary"
+            variant="outline"
+            shape="square"
+            size="sm"            
+            onClick={() => deleteItem()}
+            disabled={deleteButtonDisable}
+            className="d-inline-block"
+          > Delete
+          </CButton>
+          {/* <select ref={ref} onChange={e => handleAddrTypeChange(e)} className="form-control d-inline-block" >
+            <option key="0" value="">Select Option</option>
+            <option key="1" value="1">Active</option>
+            <option key="2" value="0">Inactive</option>
+          </select>            */}
+          <CButton
+            color="primary"
+            variant="outline"
+            shape="square"
+            size="sm"
+            className="d-inline-block"
+            onClick={() => history.push(`/eventpromoadd`)}
+          >
+            Add
             </CButton>
-            <select ref={ref} onChange={e => handleAddrTypeChange(e)} className="form-control d-inline-block" >
-              <option key="0" value="">Select Option</option>
-              <option key="1" value="1">Active</option>
-              <option key="2" value="0">Inactive</option>
-            </select>
-            <CButton
-              color="primary"
-              variant="outline"
-              shape="square"
-              size="sm"
-              className="d-inline-block"
-              onClick={() => history.push(`/forumheadingadd`)}
-            >Add</CButton>
-          </div>
+        </div>             
       </CCardHeader>
       <CCardBody>
         <CDataTable
           items={items}
           fields={fields}
           columnFilter
-          tableFilter={{ 'placeholder': 'Type something...' }}
+          tableFilter
           cleaner
           itemsPerPageSelect
           itemsPerPage={10}
@@ -228,7 +209,7 @@ const DemoTable = () => {
             checkbox: (item, index) => (
               <td>
                 <input
-                  key={item.forumheading_id}
+                  key={item.blog_id}
                   name={index}
                   type="checkbox"
                   checked={item.isChecked}
@@ -236,13 +217,14 @@ const DemoTable = () => {
                 />
               </td>
             ),
-            status: (item, index) => (
+            status: (item) => (
               <td className="tooltip-box">
                 {item.status === 1 ? (
                   <p
+                    href
+                    style={{ cursor: "pointer", textDecoration: "underline" }}
                     onClick={() => {
                       updateItemStatus(
-                        index,
                         item,
                         0,
                         getNewListWrap
@@ -250,13 +232,14 @@ const DemoTable = () => {
                     }}
                   >
                     Active{" "}
-                    <span className="tooltip-title">De-activating the forum heading will remove the forum heading from the front end.</span>
+                    <span className="tooltip-title">De-activating the page will remove the page from the front end.</span>
                   </p>
                 ) : (
                   <p
+                    href
+                    style={{ cursor: "pointer", textDecoration: "underline" }}
                     onClick={() => {
                       updateItemStatus(
-                        index,
                         item,
                         1,
                         getNewListWrap
@@ -264,11 +247,12 @@ const DemoTable = () => {
                     }}
                   >
                     Inactive
-                    <span className="tooltip-title">Activating the forum heading will add the forum heading back on the front end.</span>
+                    <span className="tooltip-title">Activating the page will add the page back on the front end.</span>
                   </p>
                 )}
+                {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}
               </td>
-            ),
+            ),           
             'show_details':
               item => {
                 return (
@@ -278,38 +262,20 @@ const DemoTable = () => {
                       variant="outline"
                       shape="square"
                       size="sm"
-                      onClick={() => history.push(`/forumheadingedit/${item.forumheading_id}`)}
+                      onClick={() => history.push(`/eventpromoedit/${item.event_promo_id}`)}
                       className="mr-1"
                     > Edit
                   </CButton>
+
                   </td>
                 )
-              },
-            // 'details':
-            //   item => {
-            //     return (
-            //       <CCollapse show={details.includes(item.id)}>
-            //         <CCardBody>
-            //           <h4>
-            //             {item.username}
-            //           </h4>
-            //           <p className="text-muted">User since: {item.created_at}</p>
-            //           <CButton size="sm" color="info">
-            //             User Settings
-            //         </CButton>
-            //           <CButton size="sm" color="danger" className="ml-1">
-            //             Delete
-            //         </CButton>
-            //         </CCardBody>
-            //       </CCollapse>
-            //     )
-            //   }
+              }
           }}
         />
       </CCardBody>
     </div>
-   
+    
   )
 }
 
-export default DemoTable
+export default DemoTableEventPromo

@@ -357,7 +357,7 @@ router.post('/csvParticipateList', [
                     var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
                     let retObj = {};
                     let childresults = [];
-                    if (decryptedData.childs.length > 0) {
+                    if (decryptedData.childs && decryptedData.childs.length > 0) {
                         decryptedData.childs.forEach(function (value, index) {
                             let DOB = (value.child) ? moment(value.child).format('YYYY-MM-DD') : '';
                             childresults.push(index + 1 + ')' + 'Child Name: ' + value.childName + ' ,Child Gender: ' + value.childGender + ' ,Child DOB: ' + DOB + '\n')
@@ -458,7 +458,7 @@ router.get('/getCSVFutureResearchList', (req, res) => {
                 var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
                 let retObj = {};
                 let childresults= [];
-                if (decryptedData.childs.length > 0) {
+                if (decryptedData.childs && decryptedData.childs.length > 0) {
                     decryptedData.childs.forEach(function (value, index) {
                         let DOB = (value.child) ? moment(value.child).format('YYYY-MM-DD') : '';
                         childresults.push(index + 1 + ')' + 'Child Name: ' + value.childName + ' ,Child Gender: ' + value.childGender + ' ,Child DOB: ' + DOB + '\n')
@@ -790,7 +790,7 @@ router.post('/getFutureParticipateById',[
                 let researches = {};
                 var childresults = [];
 
-                if (decryptedData.childs.length > 0) {
+                if (decryptedData.childs && decryptedData.childs.length > 0) {
                     decryptedData.childs.forEach(function (value, index) {
                         let retObj = {};
                         retObj['child_gender'] = value.childGender;
@@ -848,7 +848,7 @@ router.post('/getCurrentParticipateById', [
 
                     var childresults = [];
 
-                    if (decryptedData.childs.length > 0) {
+                if (decryptedData.childs && decryptedData.childs.length > 0) {
                         decryptedData.childs.forEach(function (value, index) {
                             let retObj = {};
                             retObj['child_gender'] = value.childGender;

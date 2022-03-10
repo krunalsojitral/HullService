@@ -23,7 +23,7 @@ const TheHeaderDropdownNotif = () => {
   React.useEffect(() => {
 
     const intervalId = setInterval(() => {  //assign interval to a variable to clear it.
-      getNotificationCount();
+     // getNotificationCount();
     }, 2500)
 
     return () => clearInterval(intervalId); //This is important

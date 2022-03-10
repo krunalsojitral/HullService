@@ -10,12 +10,10 @@ import Swal from "sweetalert2";
 export default function ViewProfile() {
 
     const [users, setUsers] = useState({});
+    const [firstLogin, setFirstLogin] = useState(0);
     const [showEdit, setShowEdit] = React.useState(false);
 
     React.useEffect(() => {
-
-        
-
 
         const params = new URLSearchParams(window.location.search) // id=123
         let user_id = params.get('id')        
@@ -29,10 +27,17 @@ export default function ViewProfile() {
                 
         }
 
+        const tokenString = localStorage.getItem('token');
+        var token = JSON.parse(tokenString);
+        const config = {
+            headers: { Authorization: `${token}` }
+        };
+
         
         axios.post(api_url + '/user/getAdminUserById', { user_id }).then((result) => {
             if (result.data.status) {
                 var userdata = result.data.response.data;
+                setFirstLogin(userdata.first_time_login)
                 // if (userdata.avatar){
                 //     const typeStrings = localStorage.getItem('userdata');    
                 //     var newstring = JSON.parse(typeStrings);
@@ -40,7 +45,9 @@ export default function ViewProfile() {
                 //     localStorage.setItem('userdata', JSON.stringify(newstring));
                 // }
 
-                setUsers(userdata);               
+                setUsers(userdata);   
+                
+                axios.post(api_url + '/user/updateFirstView', '', config).then((result) => {}).catch((err) => {})
             } else {
                 Swal.fire('Oops...', result.data.response.msg, 'error')
             }
@@ -66,9 +73,18 @@ export default function ViewProfile() {
             <section className="dashboard-card pofile-view">
                 <div className="container">
                     <div className="row">
+
+                        {firstLogin == 1 && <div className="col-md-12">
+                            <div className="view-profile-incomplete">
+                                <div className="row"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Your profile is incomplete. Please fill your addition details to complete your profile.</div>
+                            </div>
+                        </div>}
+                        
+                        
                         <div className="col-md-12">
                             <div className="view-profile-card">
                                 <div className="view-profile-header">
+
                                     {showEdit && users.role != 4 && <div className="row">
                                         <div className="col-md-12 upper-section">
                                             <div className="col-md-6">

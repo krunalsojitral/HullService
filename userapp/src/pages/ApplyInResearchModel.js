@@ -130,7 +130,7 @@ function ApplyInResearchModel(props) {
                                                     onChange={onChange}
                                                     dateFormat="yyyy/MM/dd"
                                                     dateFormatCalendar="yyyy/MM/dd"
-                                                    minDate={new Date(1990, 11)}
+                                                    minDate={new Date(1900, 11)}
                                                     maxDate={new Date()}
                                                     peekNextMonth
                                                     showMonthDropdown
@@ -216,7 +216,7 @@ function ApplyInResearchModel(props) {
                                                                 className="form-control"
                                                                 selected={value}
                                                                 onChange={onChange}
-                                                                minDate={new Date(1990, 11)}
+                                                                minDate={new Date(1900, 11)}
                                                                 maxDate={new Date()}
                                                                 peekNextMonth
                                                                 showMonthDropdown

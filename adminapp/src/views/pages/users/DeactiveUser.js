@@ -23,7 +23,12 @@ function UserRequest({
     setModal,        
     setSelectedItem,    
     selectedItem,
-    updateListing
+    statusindex,
+   // updateListing
+    items,
+    setItems,
+    toggle,
+    filterstatus
 }) {
     const {
         handleSubmit,
@@ -68,7 +73,27 @@ function UserRequest({
                                 setModal(!modal);
                                 setValue("title", "");
                                 setValue("deactive_reason", "");
-                                updateListing();
+                               // updateListing();
+
+                                if (toggle){
+                                    if (filterstatus){
+                                        setItems(items.filter((item, index) => index !== statusindex));
+                                        Swal.fire("Success!", 'You have successfully activated user.', "success");
+                                    }else{
+                                        let tempColl = [...items];
+                                        //tempColl[index].reply = [result.data.response.data, ...tempColl[index].reply]
+                                        tempColl[statusindex].status = 0
+                                        setItems(tempColl);
+                                    }
+                                }else{
+                                    let tempColl = [...items];
+                                    //tempColl[index].reply = [result.data.response.data, ...tempColl[index].reply]
+                                    tempColl[statusindex].status = 0
+                                    setItems(tempColl);
+                                }
+
+                                
+
                                 Swal.fire("Success!", result.data.msg, "success");
                             } else {
                                 Swal.fire("Oops...", results.data.response.msg, "error");

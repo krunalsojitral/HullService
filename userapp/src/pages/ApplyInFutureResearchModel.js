@@ -130,7 +130,7 @@ function ApplyInFutureResearchModel(props) {
                                                     // showYearDropdown                                                    
                                                     // yearDropdownItemNumber={15}
                                                     // scrollableYearDropdown                                                    
-                                                    minDate={new Date(1990, 11)}
+                                                    minDate={new Date(1900, 11)}
                                                     maxDate={new Date()}
                                                     peekNextMonth
                                                     showMonthDropdown
@@ -299,7 +299,7 @@ function ApplyInFutureResearchModel(props) {
                                                             // peekNextMonth
                                                             // showMonthDropdown
                                                             // showYearDropdown
-                                                            minDate={new Date(1990, 11)}
+                                                            minDate={new Date(1900, 11)}
                                                             maxDate={new Date()}
                                                             peekNextMonth
                                                             showMonthDropdown

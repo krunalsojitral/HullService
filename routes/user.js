@@ -581,6 +581,7 @@ router.post('/getAdminUserById', [
                         userList['other_research_interest_area'] = result[0].other_research_interest_area;
                         userList['pinterestarea'] = csvString;
                         userList['about_us'] = result[0].about_us;                       
+                        userList['first_time_login'] = result[0].first_time_login;
                         userList['joined_date'] = (result[0].joined_date) ? moment(result[0].joined_date).format('MM-DD-YYYY') : '';
                         userList['renewal_date'] = (result[0].renewal_date) ? moment(result[0].renewal_date).format('MM-DD-YYYY') : '';
                         return res.json({ 'status': 1, 'response': { 'data': userList, 'msg': 'data found' } });
@@ -746,6 +747,19 @@ router.post('/adduserByadmin', [
             }
         ]);
     }
+});
+
+
+
+router.post('/updateFirstView', passport.authenticate('jwt', { session: false }), function (req, res) {
+    var user_id = req.user.id;
+    User.updateFirstView(user_id, function (err, data) {
+        if (err) {
+            return res.json({ 'status': 0, 'response': { 'msg': err } });
+        } else {
+            return res.json({ 'status': 1, 'response': { 'msg': 'User updated successfully.', data: data } });
+        }
+    });
 });
 
 // router.post('/updateuserByadmin', function (req, res) {
