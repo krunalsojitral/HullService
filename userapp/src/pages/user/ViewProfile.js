@@ -76,7 +76,7 @@ export default function ViewProfile() {
 
                         {firstLogin == 1 && <div className="col-md-12">
                             <div className="view-profile-incomplete">
-                                <div className="row"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Your profile is incomplete. Please fill your addition details to complete your profile.</div>
+                                <div className="row"><i className="fa fa-exclamation-circle" aria-hidden="true"></i> Your profile is incomplete. Please fill your addition details to complete your profile.</div>
                             </div>
                         </div>}
                         

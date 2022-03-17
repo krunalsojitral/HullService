@@ -412,7 +412,7 @@ router.get('/getFutureResearchList', function (req, res) {
                 retObj['future_research_id'] = data.future_research_id;
                 retObj['name'] = decryptedData.name;
                 retObj['email'] = decryptedData.email;
-                retObj['dob'] = moment(decryptedData.dob).format('YYYY-MM-DD');
+                retObj['dob'] = (decryptedData.dob) ? moment(decryptedData.dob).format("YYYY-MM-DD"):'';
                // retObj['no_of_kids'] = decryptedData.child_number;
                // retObj['age_of_kids'] = decryptedData.child;
                 return retObj;
@@ -460,7 +460,7 @@ router.get('/getCSVFutureResearchList', (req, res) => {
                 let childresults= [];
                 if (decryptedData.childs && decryptedData.childs.length > 0) {
                     decryptedData.childs.forEach(function (value, index) {
-                        let DOB = (value.child) ? moment(value.child).format('YYYY-MM-DD') : '';
+                        let DOB = (value.child) ? moment(value.child, "YYYY-MM-DD").add(1, 'days').format("YYYY-MM-DD"): '';
                         childresults.push(index + 1 + ')' + 'Child Name: ' + value.childName + ' ,Child Gender: ' + value.childGender + ' ,Child DOB: ' + DOB + '\n')
                     });
                     retObj['No_of_Kids'] = decryptedData.childs.length;
@@ -469,7 +469,7 @@ router.get('/getCSVFutureResearchList', (req, res) => {
                 retObj['S.No'] = index + 1;
                 retObj['Name'] = decryptedData.name;
                 retObj['Email'] = decryptedData.email;
-                retObj['DOB'] = moment(decryptedData.dob).format('YYYY-MM-DD');
+                retObj['DOB'] = moment(decryptedData.dob, "YYYY-MM-DD").add(1, 'days').format("YYYY-MM-DD");
                // retObj['No_of_Kids'] = decryptedData.child_number;
                 // retObj['Kids_detail'] = decryptedData.child;
                 return retObj;
@@ -751,7 +751,7 @@ router.post('/addFutureResearchByuser', [
         res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
     } else {     
         
-        var dob = (req.body.dob) ? moment(req.body.dob, "YYYY-MM-DD").add(1, 'days').format("YYYY-MM-DD") : ''
+        var dob = (req.body.dob) ? moment(req.body.dob).format("YYYY-MM-DD") : ''
         let record = {
             name: req.body.name,
             email: req.body.email,
@@ -795,13 +795,13 @@ router.post('/getFutureParticipateById',[
                         let retObj = {};
                         retObj['child_gender'] = value.childGender;
                         retObj['child_name'] = value.childName;
-                        retObj['child_dob'] = (value.child) ? moment(value.child).format('YYYY-MM-DD') : '';
+                        retObj['child_dob'] = (value.child) ? moment(value.child, "YYYY-MM-DD").add(1, 'days').format("YYYY-MM-DD") : '';
                         childresults.push(retObj)
                     });
                     researches['child'] = childresults;
                 }
                 researches['name'] = decryptedData.name;
-                researches['dob'] = (decryptedData.dob) ? moment(decryptedData.dob).format('YYYY-MM-DD') : '';
+                researches['dob'] = (decryptedData.dob) ? moment(decryptedData.dob).format("YYYY-MM-DD") : '';
                 researches['email'] = decryptedData.email;
                 return res.json({ 'status': 1, 'response': { 'data': researches, 'msg': 'data found' } });
                 // Researches.getResearchesChildDataById(result[0].future_research_id, function (err, childresult) {
@@ -853,14 +853,14 @@ router.post('/getCurrentParticipateById', [
                             let retObj = {};
                             retObj['child_gender'] = value.childGender;
                             retObj['child_name'] = value.childName;
-                            retObj['child_dob'] = (value.child) ? moment(value.child).format('YYYY-MM-DD') : '';
+                            retObj['child_dob'] = (value.child) ? moment(value.child, "YYYY-MM-DD").add(1, 'days').format("YYYY-MM-DD") : '';
                             childresults.push(retObj)
                         });
                         researches['child'] = childresults;
                     }
                    
                     researches['name'] = decryptedData.name;
-                    researches['dob'] = (decryptedData.dob) ? moment(decryptedData.dob).format('YYYY-MM-DD') : '';
+                    researches['dob'] = (decryptedData.dob) ? moment(decryptedData.dob).format("YYYY-MM-DD") : '';
                     researches['email'] = decryptedData.email;
                 return res.json({ 'status': 1, 'response': { 'data': researches, 'msg': 'data found' } });
 

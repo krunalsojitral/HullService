@@ -193,7 +193,7 @@ function ApplyInResearchModel(props) {
                                                         rules={{ required: true }}
                                                         render={({ field: { onChange, value } }) => (
                                                             <select className="form-control" onChange={onChange} value={value}>
-                                                                <option key="0" value="">Your Gender</option>
+                                                                <option key="0" value="">Gender</option>
                                                                 <option key="1" value="Male">Male</option>
                                                                 <option key="2" value="Female">Female</option>
                                                                 <option key="3" value="Transgender">Transgender</option>
@@ -225,7 +225,7 @@ function ApplyInResearchModel(props) {
                                                                 dateFormat="yyyy/MM/dd"
                                                                 dateFormatCalendar="yyyy/MM/dd"
                                                                 isClearable
-                                                                placeholderText="Your DOB"
+                                                                placeholderText="DOB"
                                                             />
                                                         )}
                                                     // render={({ field }) => <input type="number" min="1" placeholder={`Child age`} className="form-control" {...field} />}
