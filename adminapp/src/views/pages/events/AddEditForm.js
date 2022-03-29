@@ -266,6 +266,7 @@ const AddEditForm = ({ match }) => {
                               rules={{ required: true }}
                               render={({ field: { onChange, value } }) => (
                                 <ReactDatePicker
+                                  showTimeSelect
                                   className="form-control"
                                   selected={value}
                                   onChange={onChange}
@@ -296,6 +297,7 @@ const AddEditForm = ({ match }) => {
                               rules={{ required: true }}
                               render={({ field: { onChange, value } }) => (
                                 <ReactDatePicker
+                                  showTimeSelect
                                   className="form-control"
                                   selected={value}
                                   onChange={onChange}

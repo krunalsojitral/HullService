@@ -62,7 +62,7 @@ export default function Preview() {
                                 <div className="research-box">
                                     <div className="research-profile">
                                         <img src="images/hull-icon.png" alt="author" />
-                                        <p>Hull Service</p>
+                                        <p>Pathways To Prevention</p>
                                     </div>
                                     <div className="research-date">
                                         <label>{detail.created_at}</label>

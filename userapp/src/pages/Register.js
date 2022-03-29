@@ -36,13 +36,13 @@ export default function Register() {
     const [values, setValues] = useState("");
     const [suggestion, setSuggestion] = useState([]);
     const [suggestionOrganizationList, setSuggestionOrganizationList] = useState([]);
+    const [user, setUser] = useState({});
 
     const getSuggestions = (value) => {
 
         const escapedValue = escapeRegexCharacters(value.trim());
         if (escapedValue === "") { return []; }
         const regex = new RegExp("^" + escapedValue, "i");
-        console.log(suggestionOrganizationList);
         const return_value = suggestionOrganizationList.map(section => {
             return {
                 name: section.organization.filter(language =>
@@ -118,15 +118,19 @@ export default function Register() {
     const [userTypeList, setUserTypeList] = React.useState('researcher');
 
     React.useEffect(() => { 
+
+        const params = new URLSearchParams(window.location.search) // id=123
+        let emailToken = params.get('code')
+
         $("#pswd_info").hide();
 
         setTimeout(() => {
             $(".dropdown-heading-value .gray").text("Interest area");
         }, 50);        
 
-        const typeString = localStorage.getItem('selection');
-        //var userdata = JSON.parse(typeString);
-        setUserTypeList(typeString);
+        // const typeString = localStorage.getItem('selection');
+        
+        // setUserTypeList(typeString);
 
         axios.get(api_url + "/common/academicDisciplineList", {})
             .then((result) => {
@@ -215,7 +219,79 @@ export default function Register() {
                     setResearcherInterestAreaDropdown(obj);
                 }
             })
-            .catch((err) => { console.log(err); });        
+            .catch((err) => { console.log(err); });      
+            
+        axios.post(api_url + "/user/getEditUserByEmailToken", { token: emailToken})
+            .then((result) => {
+
+                if (result.data.status) {
+                    var userdata = result.data.response.data;
+                    setUser(userdata);
+                    setFormValue('first_name', userdata.first_name)
+                    setFormValue('last_name', userdata.last_name)
+                    setFormValue('email', userdata.email)
+                    setFormValue('organization', userdata.organization)
+                    setFormValue('subscribe', userdata.subscribe)
+
+                    if (userdata.organization) {
+                        setValues(userdata.organization)
+                    }
+
+                    if (userdata.other_sector) {
+                        setFormValue('sector', 0)
+                        setFormValue('other_sector', userdata.other_sector)
+                    } else {
+                        setFormValue('sector', userdata.sector)
+                    }
+
+                    if (userdata.other_academic_discipline) {
+                        setFormValue('academic_discipline', 0)
+                        setFormValue('other_academic_discipline', userdata.other_academic_discipline)
+                    } else {
+                        setFormValue('academic_discipline', userdata.academic_discipline)
+                    }
+
+                    setFormValue('level_of_education', userdata.level_of_education)
+
+                    if (userdata.other_occupation) {
+                        setFormValue('occupation', 0)
+                        setFormValue('other_occupation', userdata.other_occupation)
+                    } else {
+                        setFormValue('occupation', userdata.occupation)
+                    }
+
+
+                    if (userTypeList == 3) {
+                        if (userdata.other_research_interest_area) {
+                            setOtherResearcherInterestArea(true)
+                            setFormValue('other_research_interest_area', userdata.other_research_interest_area)
+                            if (userdata.rinterestarea && userdata.rinterestarea.length > 0) {
+                                userdata.rinterestarea.push({ id: 0, label: "Other Interest Area", value: 0 });
+                                setSelectedResearcherInterestArea(userdata.rinterestarea);
+                            } else {
+                                setSelectedResearcherInterestArea([{ id: 0, label: "Other Interest Area", value: 0 }]);
+                            }
+                        } else {
+                            if (userdata.rinterestarea && userdata.rinterestarea.length > 0) {
+                                setSelectedResearcherInterestArea(userdata.rinterestarea);
+                            }
+                        }
+                    }
+
+
+                    if (userdata.city) {
+                        setValue(userdata.city)
+                        setCity(userdata.city)
+                        setLatitude('23.23')
+                        setLongitude('23.23')
+                    }
+
+                    setTimeout(() => {
+                        clearSuggestions();
+                    }, 800);
+                }
+            })
+            .catch((err) => { console.log(err); });
     }, []);
 
 
@@ -233,75 +309,26 @@ export default function Register() {
 
     const password = useRef({});
     password.current = watch("password", "");
-    const { registerUser } = useAuth();
+    const { registerResearcherUser } = useAuth();
     
 
     const onSubmit = (data) => { 
         
-
-        if (userTypeList == 'general') {
-            if (userTypeList == 'researcher') {
-                data.role = 3;
-            } else if (userTypeList == 'professional') {
-                data.role = 2;
-            } else {
-                data.role = 4;
-            }
-            
-            axios.post(api_url + "/user/checkEmail", { email: data.email })
-                .then((result) => {
-                    if (result.data.status) {
-                        if (data.role == 4){
-                            registerUser(data);
-                        }else{
-                            localStorage.setItem('registerdata', JSON.stringify(data));
-                            history.push('/payment');
-                        }
-                    } else {
-                        Swal.fire('Oops...', result.data.response.msg, 'error');
-                    }
-                })
-                .catch((err) => { console.log(err); });
-
-            
-        }else{
-            if (!city) {
-                setCityError('Address is required.');
-            } else if (!latitude && !longitude) {
-                setCityError('Please enter proper address.');
-            } else {
-                data.city = city;
-                data.latitude = latitude;
-                data.longitude = longitude;
-                data.country = country;
-                data.professional_interest_of_area = selectedProfessionalInterestArea;
-                data.researcher_interest_of_area = selectedResearcherInterestArea;
-
-                if (userTypeList == 'researcher') {
-                    data.role = 3;
-                } else if (userTypeList == 'professional') {
-                    data.role = 2;
-                } else {
-                    data.role = 4;
-                }
-
-                axios.post(api_url + "/user/checkEmail", { email: data.email })
-                    .then((result) => {
-                        console.log(result);
-                        if (result.data.status) {
-                            if (data.role == 4) {
-                                registerUser(data);
-                            } else {
-                                localStorage.setItem('registerdata', JSON.stringify(data));
-                                history.push('/payment');
-                            }
-                        }else{
-                            Swal.fire('Oops...', result.data.response.msg, 'error');
-                        }
-                    })
-                    .catch((err) => { console.log(err); });
-            }
-        }        
+        if (!city) {
+            setCityError('Address is required.');
+        } else if (!latitude && !longitude) {
+            setCityError('Please enter proper address.');
+        } else {
+            data.city = city;
+            data.latitude = latitude;
+            data.longitude = longitude;
+            data.country = country;
+            data.professional_interest_of_area = selectedProfessionalInterestArea;
+            data.researcher_interest_of_area = selectedResearcherInterestArea;
+            data.role = 3;
+            data.user_id = user.id;
+            registerResearcherUser(data);
+        }
     }
 
     const {
@@ -327,6 +354,7 @@ export default function Register() {
                 setValue(description, false);
                 setCity(description);
                 clearSuggestions();
+           
 
                 // Get latitude and longitude via utility functions
                 getGeocode({ address: description })
@@ -1022,31 +1050,14 @@ export default function Register() {
                                                     />
                                                 )}
                                             />
-                                            <span>&nbsp;Subscribe to Hull Services Email</span><br />
+                                            <span>&nbsp;Subscribe to Pathways To Preventions Email</span><br />
                                         </div>                                        
                                          
 
-                                        <button type="submit" className="sign-btn">Make Payment</button>
-                                        {/* <span>OR</span>
-                                            <ul>
-                                                <li><a href="javacript:;"><img src="images/google.png" /></a></li>
-                                                <li><a href="javacript:;"><img src="images/facebook.png" /></a></li>
-                                                <li><a href="javacript:;"><img src="images/twitter.png" /></a></li>
-                                                <li><a href="javacript:;"><img src="images/linkedin.png" /></a></li>
-                                            </ul> */}
+                                        <button type="submit" className="sign-btn">Submit</button>
+                                        
                                     </div>
-                                    <div className="row">
-                                        <div className="col-md-6">
-                                            <Link className="forgot-btn" to='/forgotpassword'>
-                                                Forgot your password?
-                                            </Link>
-                                        </div>
-                                        <div className="col-md-6 text-right">
-                                            <Link className="signup-btn" to='/login'>
-                                                Sign in
-                                            </Link>
-                                        </div>
-                                    </div>
+                                    
                                 </form>
                             </div>
                         </div>

@@ -989,7 +989,7 @@ export default function EditProfile() {
                                                             />
                                                         )}
                                                     />
-                                                    <span>&nbsp;Subscribe to Hull Services Email</span><br />
+                                                    <span>&nbsp;Subscribe to Pathways To Preventions Email</span><br />
                                                 </div>
                                             </div>
                                         </div>

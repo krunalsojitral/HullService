@@ -23,6 +23,61 @@ function User() {
         });
     };
 
+    //check email User Token
+    this.checkEmailVerifyUser = function (token, email, callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM users where email_verification_token = $1 and LOWER(email)=$2', [token, email.toLowerCase()], function (err, results) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, results.rows);
+                }
+            });
+        });
+    };
+
+    this.checkEmailVerify = function (token, callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM users where email_verification_token = $1', [token], function (err, results) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, results.rows);
+                }
+            });
+        });
+    };
+
+    this.getAdminUserByEmailToken = function (token, callback) {
+        connection.acquire(function (err, con) {
+            var sql = 'SELECT *, sector.name as sectorname, occupation.name as occupationname, academic_discipline.name as academicdisciplinename FROM users inner join user_role on users.role = user_role.role_id left join organization on users.organization = organization.organization_id left join sector on users.sector = sector.sector_id left join occupation on users.occupation = occupation.occupation_id left join academic_discipline on users.academic_discipline = academic_discipline.academic_discipline_id where users.email_verification_token = $1';
+            con.query(sql, [token], function (err, result) {
+                con.release();
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    if (result.rows.length === 0) {
+                        msg = 'User does not exist.';
+                        callback(msg, null);
+                    } else {
+                        callback(null, result.rows);
+                    }
+                }
+            });
+        });
+    }
+
     this.checkUserEditProfile = function (email,user_id, callback) {
         connection.acquire(function (err, con) {
             con.query('SELECT * FROM users where LOWER(email) = $1 and (id NOT IN ($2::int))', [email.toLowerCase(), user_id], function (err, results) {
@@ -763,22 +818,7 @@ function User() {
             });
         });
     }
-    //check email User Token
-    this.checkEmailVerifyUser = function (token, callback) {
-        connection.acquire(function (err, con) {
-            con.query('SELECT * FROM users where email_verification_token = $1', [token], function (err, results) {
-                con.release()
-                if (err) {
-                    if (env.DEBUG) {
-                        console.log(err);
-                    }
-                    callback(err, null);
-                } else {
-                    callback(null, results.rows);
-                }
-            });
-        });
-    };
+    
 
     //user email verify token update
     this.emailTokenUpdate = function (record, email_verify_token, callback) {

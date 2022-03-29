@@ -7,7 +7,6 @@ import ApplyInResearchModel from "./ApplyInResearchModel";
 import ApplyInResearchPage from "./ApplyInResearchPage";
 import ParticipateInResearchDescription from "./ParticipateInResearchDescription";
 import { useModal } from 'react-hooks-use-modal';
-import './dev.css';
 import Paginator from 'react-hooks-paginator';
 import { Link } from 'react-router-dom';
 

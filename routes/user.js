@@ -29,6 +29,320 @@ function loggerData(req) {
     }
 }
 
+router.post('/researcher-request', (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        let overview = {};
+        asyn.waterfall([
+            function (done) {
+                var email = req.body.email;
+                User.checkUserRegistration(email, function (err, data) {
+                    let totalrecord = data.length;
+                    if (totalrecord) {
+                        return res.json({ status: 0, 'response': { msg: 'Email already exists.' } });
+                    } else {
+                        let record = {
+                            first_name: req.body.first_name,
+                            last_name: req.body.last_name,
+                            email: req.body.email,
+                            organization: (req.body.organization) ? req.body.organization : '',
+                            city: (req.body.city) ? req.body.city : '',
+                            lat: (req.body.latitude) ? req.body.latitude : '',
+                            long: (req.body.longitude) ? req.body.longitude : '',
+                            country: (req.body.country) ? req.body.country : '',
+                            level_of_education: (req.body.level_of_education) ? req.body.level_of_education : '',
+                            occupation: (req.body.occupation) ? req.body.occupation : '',
+                            sector: (req.body.sector) ? req.body.sector : '',
+                            academic_discipline: (req.body.academic_discipline) ? req.body.academic_discipline : '',
+                            status: 0,
+                            role: req.body.role,
+                            email_verification_token: shortid.generate() + Date.now(),
+                            created_at: moment.utc().format('YYYY-MM-DD'),
+                            professional_interest_of_area: req.body.professional_interest_of_area,
+                            researcher_interest_of_area: req.body.researcher_interest_of_area,
+                            other_sector: (req.body.other_sector) ? req.body.other_sector : '',
+                            other_academic_discipline: (req.body.other_academic_discipline) ? req.body.other_academic_discipline : '',
+                            other_occupation: (req.body.other_occupation) ? req.body.other_occupation : '',
+                            other_professional_interest_area: (req.body.other_professional_interest_area) ? req.body.other_professional_interest_area : '',
+                            other_research_interest_area: (req.body.other_research_interest_area) ? req.body.other_research_interest_area : ''
+                        };
+                        overview['data'] = record;
+                        done(err, overview);
+                    }
+                });
+            },
+            function (overview, done1) {
+                var organization = overview.data.organization;
+                User.checkUserOrganization(organization, function (err, data) {
+                    let org_record = data;
+                    if (org_record) {
+                        overview.data.organization = org_record[0].organization_id;
+                        done1(err, overview);
+                    } else {
+                        overview.data.organization = '';
+                        done1(err, overview);
+                    }
+                });
+            },
+            function (overview, done2) {
+                User.addUser(overview.data, async function (err, data) {
+                    if (err){
+                        return res.json({ status: 0, response: { msg: err } });
+                    }else{
+                        return res.json({ status: 1, response: { msg: 'Your request was successful. We have sent you a confirmation link to your email address. Please click on the link to verify/validate your account. Thank You!.', } });
+                    }
+                });
+            }
+        ]);
+    }
+});
+
+router.post('/register', (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+
+        let overview = {};
+        asyn.waterfall([
+            function (done) {
+                var email = req.body.email;
+                User.checkUserRegistration(email, function (err, data) {
+                    let totalrecord = data.length;
+                    if (totalrecord) {
+                        return res.json({ status: 0, 'response': { msg: 'Email already exists.' } });
+                    } else {
+                        bcrypt.genSalt(10, (err, salt) => {
+                            bcrypt.hash(req.body.password, salt, (err, hash) => {
+                                let record = {
+                                    first_name: req.body.first_name,
+                                    last_name: req.body.last_name,
+                                    email: req.body.email,
+                                    organization: (req.body.organization) ? req.body.organization : '',
+                                    city: (req.body.city) ? req.body.city : '',
+                                    lat: (req.body.latitude) ? req.body.latitude : '',
+                                    long: (req.body.longitude) ? req.body.longitude : '',
+                                    country: (req.body.country) ? req.body.country : '',
+                                    level_of_education: (req.body.level_of_education) ? req.body.level_of_education : '',
+                                    occupation: (req.body.occupation) ? req.body.occupation : '',
+                                    sector: (req.body.sector) ? req.body.sector : '',
+                                    academic_discipline: (req.body.academic_discipline) ? req.body.academic_discipline : '',
+                                    password: hash,
+                                    status: 0,
+                                    role: req.body.role,
+                                    email_verification_token: shortid.generate() + Date.now(),
+                                    created_at: moment.utc().format('YYYY-MM-DD'),
+                                    professional_interest_of_area: req.body.professional_interest_of_area,
+                                    researcher_interest_of_area: req.body.researcher_interest_of_area,
+                                    other_sector: (req.body.other_sector) ? req.body.other_sector : '',
+                                    other_academic_discipline: (req.body.other_academic_discipline) ? req.body.other_academic_discipline : '',
+                                    other_occupation: (req.body.other_occupation) ? req.body.other_occupation : '',
+                                    other_professional_interest_area: (req.body.other_professional_interest_area) ? req.body.other_professional_interest_area : '',
+                                    other_research_interest_area: (req.body.other_research_interest_area) ? req.body.other_research_interest_area : '',
+                                    payment_id: (req.body.payment_id) ? req.body.payment_id : '',
+                                    subscribe: (req.body.subscribe) ? 1 : 0,
+                                    joined_date: moment.utc().format('YYYY-MM-DD'),
+                                    renewal_date: moment.utc().add(1, 'years').format('YYYY-MM-DD'),
+                                };
+
+                                overview['data'] = record;
+                                done(err, overview);
+                            })
+                        })
+                    }
+                });
+            },
+            function (overview, done1) {
+                var organization = overview.data.organization;
+                User.checkUserOrganization(organization, function (err, data) {
+                    let org_record = data;
+                    if (org_record) {
+                        overview.data.organization = org_record[0].organization_id;
+                        done1(err, overview);
+                    } else {
+                        overview.data.organization = '';
+                        done1(err, overview);
+                    }
+                });
+            },
+            function (overview, done2) {
+                User.addUser(overview.data, async function (err, data) {
+                    if (err) {
+                        return res.json({ status: 0, response: { msg: err } });
+                    } else {
+                        return res.json({ status: 1, response: { msg: 'Your payment was successful. We have sent you a confirmation link to your email address. Please click on the link to verify/validate your account. Thank You!.', } });
+                    }
+                });
+            }
+        ]);
+    }
+});
+
+
+router.post('/userStatusAction', [
+    check('user_id', 'Please enter user id').notEmpty(),
+    check('status', 'Please enter status').notEmpty()
+], (req, res) => {
+    var hostname = req.headers.host;
+    var user_id = req.body.user_id;
+
+    User.getUserById(user_id, function (err, data) {
+
+        var resetLink;
+        var home_url;
+        var admin_app_url;
+
+        if (hostname == env.LOCAL_HOST_USER_APP) {
+            home_url = env.APP_URL;
+            resetLink = 'http://localhost:4200/' + 'register?code='+data[0].email_verification_token;
+            admin_app_url = env.ADMIN_APP_URL
+        } else {
+            home_url = env.APP_URL;
+            resetLink = 'http://localhost:4200/' + 'register?code='+data[0].email_verification_token
+            admin_app_url = env.ADMIN_APP_URL
+        }
+
+        var htmlUser = fs.readFileSync(__dirname + '/templates/userRegistration/userRegistration.html', 'utf8');
+
+        var dynamicHtml = {
+            home_url: home_url,
+            fullname: data[0].firstName,
+            resetLink: resetLink
+        }
+
+        var view = { data: dynamicHtml };
+        var finalHtmlUser = mustache.render(htmlUser, view);
+        let transporter = nodemailer.createTransport(nodeMailerCredential); // node mailer credentials
+        let mailOptions1 = {
+            from: env.MAIL_FROM, // sender address
+            to: data[0].email,
+            subject: 'Verify your detail',
+            html: finalHtmlUser.replace(/&#x2F;/g, '/')
+        };
+        transporter.sendMail(mailOptions1, (error, info) => {
+            if (error) {
+                return res.json({ status: 0, response: { msg: 'There was an email error', } });
+            } else {
+                return res.json({ status: 1, response: { msg: 'We have sent confirmation link to user for email verification.', } });
+            }
+        });
+    });
+});
+
+
+// router.post('/userStatusAction', [
+//     check('user_id', 'Please enter user id').notEmpty(),
+//     check('status', 'Please enter status').notEmpty()
+// ], (req, res) => { 
+//     var hostname = req.headers.host;
+//     var user_id = req.body.user_id;
+
+//     User.getUserById(user_id, function (err, data) {
+
+//         var resetLink;
+//         var home_url;
+//         var admin_app_url;
+
+//         if (hostname == env.LOCAL_HOST_USER_APP) {
+//             home_url = env.APP_URL;
+//             resetLink = 'http://localhost:4200/' + 'activation-account?activationcode=' + data[0].email_verification_token;
+//             admin_app_url = env.ADMIN_APP_URL
+//         } else {
+//             home_url = env.APP_URL;
+//             resetLink = 'http://localhost:4200/' + 'activation-account?activationcode=' + data[0].email_verification_token
+//             admin_app_url = env.ADMIN_APP_URL
+//         }
+
+//         var htmlUser = fs.readFileSync(__dirname + '/templates/userRegistration/userRegistration.html', 'utf8');
+
+//         var dynamicHtml = {
+//             home_url: home_url,
+//             fullname: data[0].firstName,
+//             resetLink: resetLink
+//         }
+
+//         var view = { data: dynamicHtml };
+//         var finalHtmlUser = mustache.render(htmlUser, view);
+//         let transporter = nodemailer.createTransport(nodeMailerCredential); // node mailer credentials
+//         let mailOptions1 = {
+//             from: env.MAIL_FROM, // sender address
+//             to: data[0].email,
+//             subject: 'Verify your email address',
+//             html: finalHtmlUser.replace(/&#x2F;/g, '/')
+//         };
+//         transporter.sendMail(mailOptions1, (error, info) => {
+//             if (error) {
+//                 return res.json({status: 0, response : { msg: 'There was an email error',}  });
+//             } else {
+//                 return res.json({ status: 1, response: { msg: 'We have sent confirmation link to user for email verification.', } });
+//             }
+//         });
+//     });
+// });
+
+
+// Email Varification
+router.post('/email-varification', [
+    check('email_verify_token', 'Reset password token is required').notEmpty(),
+    check('email', 'Email is required').notEmpty()
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        loggerData(req);
+        let email_verify_token = req.body.email_verify_token;
+        let email = req.body.email;
+        
+        User.checkEmailVerifyUser(email_verify_token, email, function (req, result) {
+            if (result.length) {
+                let record1 = { 'status': 1 }
+                User.emailTokenUpdate(record1, email_verify_token, function (err, data) {
+                    if (err) {
+                        return res.json({ status: 0, 'response': { msg: err } });
+                    } else {
+                        return res.json({ status: 1, 'response': { msg: 'Verification Successfully.' } });
+                    }
+                });
+            } else {
+                return res.json({ status: 0, 'response': { msg: 'Reset token is invalid.' } });
+            }
+        });
+
+    }
+});
+
+router.post('/verify-email', [
+    check('email_verify_token', 'Reset password token is required').notEmpty()
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+        loggerData(req);
+        let email_verify_token = req.body.email_verify_token;
+        User.checkEmailVerify(email_verify_token, function (req, result) {
+            if (result.length) {
+                return res.json({ status: 1, 'response': { msg: 'Verification Successfully.' } });
+            } else {
+                return res.json({ status: 0, 'response': { msg: 'Reset token is invalid.' } });
+            }
+        });
+
+    }
+});
+
+
+
+
+
+
 router.post('/login', [
     check('email', 'Please enter valid email').isEmail(),
     check('email', 'Please enter email').notEmpty(),
@@ -79,7 +393,6 @@ router.post('/login', [
         });
     }
 });
-
 
 //forgot password send
 router.post('/forgot-password', [
@@ -187,128 +500,7 @@ router.post('/reset-password', [
     }
 });
 
-router.post('/register', (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        var error = errors.array();
-        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
-    } else {
-        
-        let overview = {};
-        asyn.waterfall([
-            function (done) {
-                var email = req.body.email;
-                User.checkUserRegistration(email, function (err, data) {
-                    let totalrecord = data.length;
-                    if (totalrecord) {
-                        return res.json({ status: 0, 'response': { msg: 'Email already exists.' } });
-                    } else {
-                        bcrypt.genSalt(10, (err, salt) => {
-                            bcrypt.hash(req.body.password, salt, (err, hash) => {
-                                let record = {
-                                    first_name: req.body.first_name,
-                                    last_name: req.body.last_name,
-                                    email: req.body.email,
-                                    organization: (req.body.organization) ? req.body.organization :'',
-                                    city: (req.body.city) ? req.body.city : '',
-                                    lat: (req.body.latitude) ? req.body.latitude : '',
-                                    long: (req.body.longitude) ? req.body.longitude : '',
-                                    country: (req.body.country) ? req.body.country : '',
-                                    level_of_education: (req.body.level_of_education) ? req.body.level_of_education : '',
-                                    occupation: (req.body.occupation) ? req.body.occupation : '',
-                                    sector: (req.body.sector) ? req.body.sector : '',
-                                    academic_discipline: (req.body.academic_discipline) ? req.body.academic_discipline : '',
-                                    password: hash,                                    
-                                    status: 0,
-                                    role: req.body.role,
-                                    email_verification_token: shortid.generate() + Date.now(),
-                                    created_at: moment.utc().format('YYYY-MM-DD'),
-                                    professional_interest_of_area: req.body.professional_interest_of_area,
-                                    researcher_interest_of_area: req.body.researcher_interest_of_area,
-                                    other_sector: (req.body.other_sector) ? req.body.other_sector: '',
-                                    other_academic_discipline: (req.body.other_academic_discipline) ? req.body.other_academic_discipline: '',
-                                    other_occupation: (req.body.other_occupation) ? req.body.other_occupation: '',
-                                    other_professional_interest_area: (req.body.other_professional_interest_area) ? req.body.other_professional_interest_area: '',
-                                    other_research_interest_area: (req.body.other_research_interest_area) ? req.body.other_research_interest_area: '',
-                                    payment_id: (req.body.payment_id) ? req.body.payment_id : '',
-                                    subscribe: (req.body.subscribe)?1:0,
-                                    joined_date: moment.utc().format('YYYY-MM-DD'),
-                                    renewal_date: moment.utc().add(1, 'years').format('YYYY-MM-DD'),
-                                };
-                                
-                                overview['data'] = record;
-                                done(err, overview);
-                            })
-                        })
-                    }
-                });
-            },
-            function (overview, done1) { 
-                var organization = overview.data.organization;
-                User.checkUserOrganization(organization, function (err, data) {
-                    let org_record = data;
-                    if (org_record) {
-                        overview.data.organization = org_record[0].organization_id;
-                        done1(err, overview);
-                    } else {
-                        overview.data.organization = '';
-                        done1(err, overview);
-                    }
-                });
-            },
-            function (overview, done2) {                
-                User.addUser(overview.data, async function (err, data) {
-                    var hostname = req.headers.host;
-                    var user_id = data[0].id;
 
-                    User.getUserById(user_id, function (err, data) {
-
-                        var resetLink;
-                        var home_url;
-                        var admin_app_url;
-
-                        if (hostname == env.LOCAL_HOST_USER_APP) {
-                            home_url = env.APP_URL;
-                            resetLink = env.APP_URL + 'activation-account?activationcode=' + overview.data.email_verification_token;
-                            admin_app_url = env.ADMIN_APP_URL
-                        } else {
-                            home_url = env.APP_URL;
-                            resetLink = env.APP_URL + 'activation-account?activationcode=' + overview.data.email_verification_token
-                            admin_app_url = env.ADMIN_APP_URL
-                        }
-
-                        var htmlUser = fs.readFileSync(__dirname + '/templates/userRegistration/userRegistration.html', 'utf8');
-
-                        var dynamicHtml = {
-                            home_url: home_url,
-                            fullname: data[0].firstName,
-                            resetLink: resetLink
-                        }
-
-                        var view = { data: dynamicHtml };
-                        var finalHtmlUser = mustache.render(htmlUser, view);
-                        let transporter = nodemailer.createTransport(nodeMailerCredential); // node mailer credentials
-                        let mailOptions1 = {
-                            from: env.MAIL_FROM, // sender address
-                            to: data[0].email,
-                            subject: 'Verify your email address',
-                            html: finalHtmlUser.replace(/&#x2F;/g, '/')
-                        };
-                        transporter.sendMail(mailOptions1, (error, info) => {
-                            if (error) {
-                                console.log(error);
-                                //return res.json({status: 0, response : { msg: 'There was an email error',}  });
-                            } else {
-                            }
-                        });
-                        return res.json({ status: 1, response: { msg: 'Your payment was successful. We have sent you a confirmation link to your email address. Please click on the link to verify/validate your account. Thank You!.', } });
-
-                    });
-                });
-            }
-        ]);
-    }
-});
 
 router.post('/checkEmail', [
     check('email', 'Email is required').notEmpty(),
@@ -463,34 +655,7 @@ router.post('/csvuserList', function (req, res) {
 // });
 
 
-// Email Varification
-router.post('/email-varification', [
-    check('email_verify_token', 'Reset password token is required').notEmpty()
-], (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        var error = errors.array();
-        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
-    } else {
-        loggerData(req);
-        let email_verify_token = req.body.email_verify_token;
-        User.checkEmailVerifyUser(email_verify_token, function (req, result) {
-            if (result.length) {
-                let record1 = { 'status': 1 }
-                User.emailTokenUpdate(record1, email_verify_token, function (err, data) {
-                    if (err) {
-                        return res.json({ status: 0, 'response': { msg: err } });
-                    } else {
-                        return res.json({ status: 1, 'response': { msg: 'Verification Successfully.' } });
-                    }
-                });
-            } else {
-                return res.json({ status: 0, 'response': { msg: 'Reset token is invalid.' } });
-            }
-        });
 
-    }
-});
 
 
 //get user data - adminside
@@ -581,6 +746,7 @@ router.post('/getAdminUserById', [
                         userList['other_research_interest_area'] = result[0].other_research_interest_area;
                         userList['pinterestarea'] = csvString;
                         userList['about_us'] = result[0].about_us;                       
+                        userList['email_verification_token'] = result[0].email_verification_token;
                         userList['first_time_login'] = result[0].first_time_login;
                         userList['joined_date'] = (result[0].joined_date) ? moment(result[0].joined_date).format('MM-DD-YYYY') : '';
                         userList['renewal_date'] = (result[0].renewal_date) ? moment(result[0].renewal_date).format('MM-DD-YYYY') : '';
@@ -653,6 +819,79 @@ router.get('/getEditUserById', passport.authenticate('jwt', { session: false }),
                         }else{
                             userList['rinterestarea'] = obj;
                         }                        
+                    } else {
+                        userList['pinterestarea'] = [];
+                        userList['rinterestarea'] = [];
+                    }
+                    return res.json({ 'status': 1, 'response': { 'data': userList, 'msg': 'data found' } });
+                });
+            } else {
+                return res.json({ 'status': 1, 'response': { 'data': {}, 'msg': 'data found' } });
+            }
+        }
+    });
+});
+
+
+router.post('/getEditUserByEmailToken', (req, res, next) => {
+    let token = req.body.token;
+    User.getAdminUserByEmailToken(token, function (err, result) {
+        if (err) {
+            return res.json({ 'status': 0, 'response': { 'msg': err } });
+        } else {
+            if (result != '') {
+
+                var role = result[0].role_id
+
+                User.getUserInterestAreaById(result[0].id, result[0].role_id, function (err, interestresult) {
+
+
+                    var imageLink;
+                    if (req.headers.host == env.ADMIN_LIVE_URL) {
+                        imageLink = env.ADMIN_LIVE_URL;
+                    } else {
+                        imageLink = env.ADMIN_LIVE_URL;
+                    }
+
+                    let userList = {};
+                    userList['id'] = result[0].id;
+                    userList['first_name'] = result[0].first_name;
+                    userList['last_name'] = result[0].last_name;
+                    userList['email'] = result[0].email;
+                    userList['city'] = result[0].city;
+                    userList['organization'] = result[0].organization_name;
+                    userList['sector'] = result[0].sector;
+                    userList['occupation'] = result[0].occupation;
+                    userList['academic_discipline'] = result[0].academic_discipline;
+                    userList['avatar'] = (result[0].user_image) ? imageLink + env.USER_VIEW_PATH_THUMB + result[0].user_image : '';
+                    userList['sectorname'] = result[0].sectorname;
+                    userList['occupationname'] = result[0].occupationname;
+                    userList['academicdisciplinename'] = result[0].academicdisciplinename;
+                    userList['level_of_education'] = result[0].level_of_education;
+                    userList['other_sector'] = result[0].other_sector;
+                    userList['other_academic_discipline'] = result[0].other_academic_discipline;
+                    userList['other_occupation'] = result[0].other_occupation;
+                    userList['other_professional_interest_area'] = result[0].other_professional_interest_area;
+                    userList['other_research_interest_area'] = result[0].other_research_interest_area;
+                    userList['about_us'] = result[0].about_us;
+                    userList['subscribe'] = result[0].subscribe;
+                    userList['joined_date'] = (result[0].joined_date) ? moment(result[0].joined_date).format('MM-DD-YYYY') : '';
+                    userList['renewal_date'] = (result[0].renewal_date) ? moment(result[0].renewal_date).format('MM-DD-YYYY') : '';
+
+                    if (interestresult && interestresult.length > 0) {
+                        var obj = interestresult.map((data, index) => {
+                            let retObj = {};
+                            retObj['id'] = (index + 1);
+                            retObj['label'] = data.name;
+                            retObj['value'] = data.p_id;
+                            return retObj;
+                        });
+
+                        if (role == 2) {
+                            userList['pinterestarea'] = obj;
+                        } else {
+                            userList['rinterestarea'] = obj;
+                        }
                     } else {
                         userList['pinterestarea'] = [];
                         userList['rinterestarea'] = [];
@@ -777,6 +1016,135 @@ router.post('/updateFirstView', passport.authenticate('jwt', { session: false })
 //         }
 //     });
 // });
+
+
+router.post('/registerResearcherUser', function (req, res) {
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+
+        let overview = {};
+        asyn.waterfall([
+            function (done) {
+                bcrypt.genSalt(10, (err, salt) => {
+                    bcrypt.hash(req.body.password, salt, (err, hash) => {
+                        let record = {
+                            first_name: req.body.first_name,
+                            last_name: req.body.last_name,
+                            email: req.body.email,
+                            organization: (req.body.organization) ? req.body.organization : '',
+                            city: (req.body.city) ? req.body.city : '',
+                            lat: (req.body.latitude) ? req.body.latitude : '',
+                            long: (req.body.longitude) ? req.body.longitude : '',
+                            country: (req.body.country) ? req.body.country : '',
+                            level_of_education: (req.body.level_of_education) ? req.body.level_of_education : '',
+                            occupation: (req.body.occupation) ? req.body.occupation : '',
+                            sector: (req.body.sector) ? req.body.sector : '',
+                            academic_discipline: (req.body.academic_discipline) ? req.body.academic_discipline : '',
+                            password: hash,
+                            status: 0,
+                            role: 3,
+                            created_at: moment.utc().format('YYYY-MM-DD'),
+                            professional_interest_of_area: req.body.professional_interest_of_area,
+                            researcher_interest_of_area: req.body.researcher_interest_of_area,
+                            other_sector: (req.body.other_sector) ? req.body.other_sector : '',
+                            other_academic_discipline: (req.body.other_academic_discipline) ? req.body.other_academic_discipline : '',
+                            other_occupation: (req.body.other_occupation) ? req.body.other_occupation : '',
+                            other_professional_interest_area: (req.body.other_professional_interest_area) ? req.body.other_professional_interest_area : '',
+                            other_research_interest_area: (req.body.other_research_interest_area) ? req.body.other_research_interest_area : '',
+                            subscribe: (req.body.subscribe) ? 1 : 0,
+                            user_id: req.body.user_id
+                        };
+                        overview['data'] = record;
+                        done(err, overview);
+                    })
+                })
+            },
+            function (overview, done1) {
+                var organization = overview.data.organization;
+                User.checkUserOrganization(organization, function (err, data) {
+                    let org_record = data;
+                    if (org_record) {
+                        overview.data.organization = org_record[0].organization_id;
+                        done1(err, overview);
+                    } else {
+                        overview.data.organization = '';
+                        done1(err, overview);
+                    }
+                });
+            },
+            function (overview, done2) {
+                var update_value = [overview.data.password,overview.data.first_name, overview.data.last_name, overview.data.city, overview.data.email, overview.data.organization, overview.data.academic_discipline, overview.data.other_academic_discipline, overview.data.other_research_interest_area]
+                var final_obj = {
+                    password: overview.data.password,
+                    first_name: overview.data.first_name,
+                    last_name: overview.data.last_name,
+                    city: overview.data.city,
+                    email: overview.data.email,
+                    organization: overview.data.organization,
+                    academic_discipline: overview.data.academic_discipline,
+                    other_academic_discipline: overview.data.other_academic_discipline,
+                    other_research_interest_area: overview.data.other_research_interest_area
+                };
+                User.updateuserByadmin(final_obj, overview.data.user_id, update_value, '', overview.data.researcher_interest_of_area, overview.data.role, async function (err, data) {
+                    User.getUserById(overview.data.user_id, function (error, finalData) {
+                        if (error) {
+                            return res.json({ 'status': 0, 'response': { 'msg': error } });
+                        } else {
+                            var resetLink;
+                            var home_url;
+                            var admin_app_url;
+                            var hostname = req.headers.host;
+
+                            if (hostname == env.LOCAL_HOST_USER_APP) {
+                                home_url = env.APP_URL;
+                                resetLink = env.APP_URL + 'activation-account?activationcode=' + finalData[0].email_verification_token + '&email=' + finalData[0].email;
+                                admin_app_url = env.ADMIN_APP_URL
+                            } else {
+                                home_url = env.APP_URL;
+                                resetLink = env.APP_URL + 'activation-account?activationcode=' + finalData[0].email_verification_token + '&email=' + finalData[0].email;
+                                admin_app_url = env.ADMIN_APP_URL
+                            }
+
+                            var htmlUser = fs.readFileSync(__dirname + '/templates/userRegistration/userRegistration.html', 'utf8');
+
+                            var dynamicHtml = {
+                                home_url: home_url,
+                                fullname: finalData[0].firstName,
+                                resetLink: resetLink
+                            }
+
+                            var view = { data: dynamicHtml };
+                            var finalHtmlUser = mustache.render(htmlUser, view);
+                            let transporter = nodemailer.createTransport(nodeMailerCredential); // node mailer credentials
+                            let mailOptions1 = {
+                                from: env.MAIL_FROM, // sender address
+                                to: finalData[0].email,
+                                subject: 'Verify your email address',
+                                html: finalHtmlUser.replace(/&#x2F;/g, '/')
+                            };
+                            transporter.sendMail(mailOptions1, (error, info) => {
+                                if (error) {
+                                    console.log(error);
+                                    //return res.json({status: 0, response : { msg: 'There was an email error',}  });
+                                } else {
+                                }
+                            });
+                            return res.json({ status: 1, response: { msg: 'We have sent you a confirmation link to your email address. Please click on the link to verify/validate your account. Thank You!.', } });
+                        }
+                    });
+                });
+            }
+        ]);
+    }
+   
+   
+});
+
+
 
 router.post('/updateuserByadmin', passport.authenticate('jwt', { session: false }), function (req, res) {
     var user_id = req.user.id;

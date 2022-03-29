@@ -4,17 +4,21 @@ import useAuth from './../hooks/useAuth';
 import Header from './../sections/Header';
 import Footer from './../sections/Footer';
 import { Link } from 'react-router-dom';
-import './dev.css';
+
 
 export default function ActivationAccount() {
-  
+
   const [flag, setFlag] = React.useState('')
   const { verifyEmail } = useAuth();
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search) // id=123
+    console.log(params);
     let token = params.get('activationcode')
+    let email = params.get('email')
+    console.log(email);
     var obj = {
+      email: email,
       email_verify_token: token
     }
     verifyEmail(obj).then(function (result) {
@@ -60,6 +64,6 @@ export default function ActivationAccount() {
     </div>
   )
 
-  
+
 }
 

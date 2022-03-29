@@ -6,7 +6,6 @@ import Sidebar from './../Sidebar';
 import axios from 'axios';
 import Swal from "sweetalert2";
 import api_url from '../../../components/Apiurl';
-import './../../dev.css';
 import Paginator from 'react-hooks-paginator';
 //import { useForm } from "react-hook-form";
 

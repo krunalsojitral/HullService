@@ -75,211 +75,80 @@ export default function Header() {
  
 
     return(
-
-        <div>
-            
-            {!token && <div className="top-header">
+            <header>
                 <div className="container">
                     <div className="row">
-                        <div className="col-md-12">            
-                                 <div className="top-header-icon">
-                                    <div className="social-icon">
-                                        <ul>                                        
-                                            <li><a href="https://twitter.com"><i className="fa fa-twitter"></i></a></li>
-                                            <li><a href="https://www.facebook.com"><i className="fa fa-facebook"></i></a></li>
-                                            <li><a href="https://www.linkedin.com"><i className="fa fa-linkedin"></i></a></li>
-                                            <li><a href="https://www.youtube.com"><i className="fa fa-youtube-play"></i></a></li>
-                                        </ul>
-                                    </div> 
-                                    <div className="Member-login">
-                                        <Link to='/login'>
-                                                Member Sign In
-                                        </Link>                                    
-                                    </div>
-                                    <div className="cta-header">
-                                        <NavLink activeClassName="active" to='/participate-in-research'>
-                                                PARTICIPATE IN RESEARCH
-                                        </NavLink>
-                                        <NavLink activeClassName="active" to='/membership-benefit'>
-                                                BECOME A MEMBER
-                                        </NavLink>                                    
-                                    </div>
-                                </div>
-                                
-                                {/* {token &&
-                                    <div className="top-header-icon">                                                                            
-                                        <div className="Member-login">
-                                            <Link to='/dashboard'>
-                                                My Dashboard
-                                            </Link>
-                                        </div>
-                                        <div className="cta-header">
-                                            <NavLink activeClassName="active" to='/participate-in-research'>
-                                                    PARTICIPATE IN RESEARCH
-                                            </NavLink>                                           
-                                        </div>
-                                    </div>
-                                }                            */}
-                        </div>
-                    </div>
-                </div>
-            </div> }
-            
 
-            <header>
-            <div className="container">
-                <div className="row">
                     <div className="col-md-12">
                         <div className="header-card">
                             <div className="logo" onClick={(e) => handleOpenDirection()}>
-                                <img alt="logo" src="images/logo.png"/>
-							</div>
-                                <div className="hull-links">
-                                    <a href="javascript:void(0);" className="mob-btn">
-                                        <i className="fa fa-bars"></i>
-                                    </a>
+                                <img alt="logo" src="images/logo.png" />
+                            </div>
+                            <div className="hull-links">
+                                <a href="javascript:void(0);" className="mob-btn">
+                                    <i className="fa fa-bars"></i>
+                                </a>
 
-                                    {!token &&<div className="hull-menu">
-                                         <ul>
-                                            <li>
-                                                <NavLink exact={true} activeClassName="active" to="/">
-                                                    <InlineButton name={"HOME"} />
-                                                </NavLink>
-                                            </li>
-                                            <li>
-                                                <NavLink activeClassName="active" to="/about">
-                                                    <InlineButton name={"ABOUT"} />
-                                                </NavLink>
-                                            </li>
-                                            <li>
-                                                <NavLink activeClassName="active" to="/members">
-                                                    <InlineButton name={"MEMBERSHIP"} />
-                                                </NavLink>
-                                            </li>
-                                            <li>
-                                                <NavLink activeClassName="active" to="/partners">
-                                                    <InlineButton name={"PARTNERS"} />
-                                                </NavLink>
-                                            </li>
-                                            <li>
-                                                <NavLink activeClassName="active" to="/events">
-                                                    <InlineButton name={"EVENTS"} />
-                                                </NavLink>
-                                            </li>
-                                            {/* <li>
-                                                <a href="javascript:;">
-                                                    <InlineButton name={"RESOURCES"} />
-                                                </a>
-                                                <ul>
-                                                    <li>
-                                                        <NavLink activeClassName="active" to="/articles" isActive={() => ['/articles', '/article-detail', '/article-payment'].includes(pathname)}>
-                                                            <InlineButton name={"Articles"} />
-                                                        </NavLink>
-                                                    </li>
-                                                    <li>
-                                                        <NavLink isActive={() => ['/blog', '/blog-detail', '/blog-payment', '/my-blog'].includes(pathname)} to="/blog">
-                                                            <InlineButton name={"Blogs"} />
-                                                        </NavLink>
-                                                    </li>
-                                                    <li>
-                                                        <NavLink activeClassName="active" to="/informational-video" isActive={() => ['/informational-video', '/video-detail', '/video-payment'].includes(pathname)}>
-                                                            <InlineButton name={"Informational Videos"} />
-                                                        </NavLink>
-                                                    </li>
-                                                </ul>
-                                            </li>                                            */}
-                                            <li>
-                                                <NavLink activeClassName="active" to="/contact">
-                                                    <InlineButton name={"CONTACT"} />
-                                                </NavLink>
-                                            </li>
+                                {!token && <div className="hull-menu">
+                                    <ul>
+                                        <li>
+                                            <NavLink exact={true} activeClassName="active" to="/">
+                                                <InlineButton name={"HOME"} />
+                                            </NavLink>
+                                        </li>
+                                        <li>
+                                            <NavLink activeClassName="active" to="/research-request-form">
+                                                <InlineButton name={"RESEARCHER'S REGISTRATION"} />
+                                            </NavLink>
+                                        </li>
+                                        <li>
+                                            <NavLink activeClassName="active" to="/events">
+                                                <InlineButton name={"EVENTS"} />
+                                            </NavLink>
+                                        </li>                                        
+                                        <li>
+                                            <NavLink activeClassName="active" to="/course">
+                                                <InlineButton name={"COURSE"} />
+                                            </NavLink>
+                                        </li>
+                                    </ul>
+                                </div>}
 
-                                            {/* {menuList.length > 0 && menuList.map((data, index) => (
-                                                <li>
-                                                    <NavLink to={"/dynamic-page?menu=" + data.dynamic_menu_id}>
-                                                        <InlineButton name={data.menu_name} />
-                                                    </NavLink>
-                                                </li>
-                                            ))} */}
-                                        </ul>
-                                    </div>}
-                                   
-                                    {(token && location.pathname != "/") && <div className="hull-menu">
-                                        <ul><li>
-                                        <NavLink activeClassName="active" to='/participate-in-research'>
-                                            PARTICIPATE IN RESEARCH
-                                        </NavLink>
-                                        </li></ul></div>}
-                                   
-                                        {(token && location.pathname == "/") &&  <div className="hull-menu">
-                                            <ul>
-                                                <li>
-                                                    <NavLink exact={true} activeClassName="active" to="/">
-                                                        <InlineButton name={"HOME"} />
-                                                    </NavLink>
-                                                </li>
-                                                <li>
-                                                    <NavLink activeClassName="active" to="/about">
-                                                        <InlineButton name={"ABOUT"} />
-                                                    </NavLink>
-                                                </li>
-                                                <li>
-                                                    <NavLink activeClassName="active" to="/members">
-                                                        <InlineButton name={"MEMBERSHIP"} />
-                                                    </NavLink>
-                                                </li>
-                                                <li>
-                                                    <NavLink activeClassName="active" to="/partners">
-                                                        <InlineButton name={"PARTNERS"} />
-                                                    </NavLink>
-                                                </li>
-                                                <li>
-                                                    <NavLink activeClassName="active" to="/events">
-                                                        <InlineButton name={"EVENTS"} />
-                                                    </NavLink>
-                                                </li>                                                
-                                                <li>
-                                                    <NavLink activeClassName="active" to="/contact">
-                                                        <InlineButton name={"CONTACT US"} />
-                                                    </NavLink>
-                                                </li>
-                                                <li>
-                                                    <NavLink activeClassName="active" to='/participate-in-research'>
-                                                        PARTICIPATE IN RESEARCH
-                                                    </NavLink>
-                                                </li>
-                                            </ul>
-                                        </div>}
-                                        {(token) &&  <div className="user-dropdown">
-                                                <div className="dropdown">
-                                                    <a href="#" className="dropdown-toggle loged-user-link" data-toggle="dropdown">
-                                                        <div className="loged-user-details">
-                                                            <div className="loged-user-icon">
-                                                                {!userData.avatar && <img src="images/user.png" />}
-                                                                {userData.avatar && <img src={userData.avatar} />}
-                                                            </div>
-                                                            <div className="loged-user-name">
-                                                                <h3 title={userData.first_name + ' ' + userData.last_name}> {(userData.first_name+' '+userData.last_name).substring(0, 15)}</h3>
-                                                                <small>({userTypeList})</small>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                    <ul className="dropdown-menu loged-user-menu">
-                                                        <li><Link className="btn-edit" to={{ pathname: "/dashboard" }}>My Dashboard</Link></li>                                               
-                                                        <li><Link className="btn-edit" onClick={() => { window.location.href = "/view-profile?id=" + userData.id }} >View Profile</Link></li>
-                                                        <li onClick={(e) => logoutClick()}><a className="logout">
-                                                            <InlineButton  name={"Logout"} />
-                                                        </a></li>
-                                                    </ul>
+                             
+
+                              
+                                {(token) && <div className="user-dropdown">
+                                    <div className="dropdown">
+                                        <a href="#" className="dropdown-toggle loged-user-link" data-toggle="dropdown">
+                                            <div className="loged-user-details">
+                                                <div className="loged-user-icon">
+                                                    {!userData.avatar && <img src="images/user.png" />}
+                                                    {userData.avatar && <img src={userData.avatar} />}
+                                                </div>
+                                                <div className="loged-user-name">
+                                                    <h3 title={userData.first_name + ' ' + userData.last_name}> {(userData.first_name + ' ' + userData.last_name).substring(0, 15)}</h3>
+                                                    <small>({userTypeList})</small>
                                                 </div>
                                             </div>
-                                        } 
-                                </div> 
+                                        </a>
+                                        <ul className="dropdown-menu loged-user-menu">
+                                            <li><Link className="btn-edit" to={{ pathname: "/dashboard" }}>My Dashboard</Link></li>
+                                            <li><Link className="btn-edit" onClick={() => { window.location.href = "/view-profile?id=" + userData.id }} >View Profile</Link></li>
+                                            <li onClick={(e) => logoutClick()}><a className="logout">
+                                                <InlineButton name={"Logout"} />
+                                            </a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                }
+                            </div>
                         </div>
                     </div>
+
+
+                      
+                    </div>
                 </div>
-            </div>
-		</header>
-        </div>
+            </header>
     )
 }

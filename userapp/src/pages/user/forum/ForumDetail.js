@@ -453,7 +453,7 @@ export default function ForumDetail() {
                                                     <i className="fa fa-lock" aria-hidden="true"></i>
                                                 </div>
                                                 <div className="message-text">
-                                                    <h2>This thread has been closed by the moderators of hull services</h2>
+                                                    <h2>This thread has been closed by the moderators of Pathways To Preventions</h2>
                                                     <p>New comments cannot be posted</p>
                                                 </div>
                                             </div>
@@ -599,7 +599,7 @@ export default function ForumDetail() {
                                         <i className="fa fa-lock" aria-hidden="true"></i>
                                         </div>
                                     <div className="message-text">
-                                         <h2>This thread has been closed by the moderators of hull services</h2>
+                                         <h2>This thread has been closed by the moderators of Pathways To Preventions</h2>
                                             <p>New comments cannot be posted</p>
                                         </div>
                                     </div>

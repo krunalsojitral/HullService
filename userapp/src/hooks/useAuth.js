@@ -66,22 +66,24 @@ export default function useAuth() {
     }
 
     //register user  
-    const registerUser = async (data) => {
-        return axios.post(api_url + '/user/register', data).then(async (result) => {
-            if (result.data.status) { 
-                Swal.fire({
-                    title: 'Success!',
-                    icon: 'success',
-                    text: result.data.response.msg,
-                    confirmButtonText: `ok`,
-                }).then((result) => {
-                    /* Read more about isConfirmed, isDenied below */
-                    if (result.isConfirmed) {
-                        history.push("/login");
-                    } else {
-                        Swal.fire('Changes are not saved', '', 'info')
-                    }
-                })
+    const researcherrequestUser = async (data) => {
+        return axios.post(api_url + '/user/researcher-request', data).then(async (result) => {
+            if (result.data.status) {                 
+                Swal.fire('Success!', 'We will verify your detail and send you confirmation mail after approval.', 'success');
+                history.push("/");
+                // Swal.fire({
+                //     title: 'Success!',
+                //     icon: 'success',
+                //     text: result.data.response.msg,
+                //     confirmButtonText: `ok`,
+                // }).then((result) => {
+                //     /* Read more about isConfirmed, isDenied below */
+                //     if (result.isConfirmed) {
+                //         history.push("/login");
+                //     } else {
+                //         Swal.fire('Changes are not saved', '', 'info')
+                //     }
+                // })
             }else{
                 Swal.fire('Oops...', result.data.response.msg, 'error')
             }
@@ -92,6 +94,34 @@ export default function useAuth() {
                    return setError(err.response.data);
             })
         };
+    const registerResearcherUser = async (data) => {
+        return axios.post(api_url + '/user/registerResearcherUser', data).then(async (result) => {
+            if (result.data.status) {
+                Swal.fire('Success!', 'We will verify your detail and send you confirmation mail after approval.', 'success');
+                history.push("/");
+                // Swal.fire({
+                //     title: 'Success!',
+                //     icon: 'success',
+                //     text: result.data.response.msg,
+                //     confirmButtonText: `ok`,
+                // }).then((result) => {
+                //     /* Read more about isConfirmed, isDenied below */
+                //     if (result.isConfirmed) {
+                //         history.push("/login");
+                //     } else {
+                //         Swal.fire('Changes are not saved', '', 'info')
+                //     }
+                // })
+            } else {
+                Swal.fire('Oops...', result.data.response.msg, 'error')
+            }
+
+            //history.push('/login');
+        })
+            .catch((err) => {
+                return setError(err.response.data);
+            })
+    };
 
     //login user 
     const loginUser = async (data) => {
@@ -111,11 +141,10 @@ export default function useAuth() {
             })
     };
 
-
     const verifyEmail = (data) => {
-        const { email_verify_token } = data;
+        const { email,email_verify_token  } = data;
         return axios.post(api_url + '/user/email-varification', {
-            email_verify_token
+            email,email_verify_token
         }).then((result) => {               
             return result.data.status;
         }).catch((err) => {
@@ -168,7 +197,8 @@ export default function useAuth() {
     
 
     return {
-        registerUser,
+        registerResearcherUser,
+        researcherrequestUser,
         loginUser,
         verifyEmail,
         forgotpassword,

@@ -32,91 +32,91 @@ const _nav = [
       },
     ],
   },
-  {
-    _tag: "CSidebarNavDropdown",
-    name: "Resources",
-    route: "/#",
-    icon: "cil-list",
-    _children: [
-      // {
-      //   _tag: "CSidebarNavDropdown",
-      //   name: "Blogs",
-      //   route: "/#",
-      //   icon: "cil-list",
-      //   _children: [
-      //     {
-      //       _tag: "CSidebarNavItem",
-      //       name: "Publish Blogs",
-      //       to: "/blog",
-      //     },
-      //     {
-      //       _tag: "CSidebarNavItem",
-      //       name: "Draft Blogs",
-      //       to: "/draft-blog",
-      //     }
-      //   ]
-      // },
-      {
-        _tag: "CSidebarNavDropdown",
-        name: "Articles",
-        route: "/#",
-        icon: "cil-list",
-        _children: [
-          {
-            _tag: "CSidebarNavItem",
-            name: "Publish Articles",
-            to: "/article",
-          },
-          {
-            _tag: "CSidebarNavItem",
-            name: "Draft Articles",
-            to: "/draft-articles",
-          }
-        ],
-      },
-      {
-        _tag: "CSidebarNavDropdown",
-        name: "Videos",
-        route: "/#",
-        icon: "cil-list",
-        _children: [
-          {
-            _tag: "CSidebarNavItem",
-            name: "Publish Videos",
-            to: "/video",
-          },
-          {
-            _tag: "CSidebarNavItem",
-            name: "Draft Videos",
-            to: "/draft-video",
-          }
-        ],
-      },
-      // {
-      //   _tag: "CSidebarNavDropdown",
-      //   name: "Courses",
-      //   route: "/#",
-      //   icon: "cil-list",
-      //   _children: [
-      //     {
-      //       _tag: "CSidebarNavItem",
-      //       name: "Publish Courses",
-      //       to: "/course",
-      //       icon: "cil-calculator",
-      //       badge: {
-      //         color: "info",
-      //         text: "",
-      //       },
-      //     },
-      //     {
-      //       _tag: "CSidebarNavItem",
-      //       name: "Draft Courses",
-      //       to: "/draft-courses",
-      //     }
-      //   ],
-      // }
-    ]
-  },
+  // {
+  //   _tag: "CSidebarNavDropdown",
+  //   name: "Resources",
+  //   route: "/#",
+  //   icon: "cil-list",
+  //   _children: [
+  //     // {
+  //     //   _tag: "CSidebarNavDropdown",
+  //     //   name: "Blogs",
+  //     //   route: "/#",
+  //     //   icon: "cil-list",
+  //     //   _children: [
+  //     //     {
+  //     //       _tag: "CSidebarNavItem",
+  //     //       name: "Publish Blogs",
+  //     //       to: "/blog",
+  //     //     },
+  //     //     {
+  //     //       _tag: "CSidebarNavItem",
+  //     //       name: "Draft Blogs",
+  //     //       to: "/draft-blog",
+  //     //     }
+  //     //   ]
+  //     // },
+  //     // {
+  //     //   _tag: "CSidebarNavDropdown",
+  //     //   name: "Articles",
+  //     //   route: "/#",
+  //     //   icon: "cil-list",
+  //     //   _children: [
+  //     //     {
+  //     //       _tag: "CSidebarNavItem",
+  //     //       name: "Publish Articles",
+  //     //       to: "/article",
+  //     //     },
+  //     //     {
+  //     //       _tag: "CSidebarNavItem",
+  //     //       name: "Draft Articles",
+  //     //       to: "/draft-articles",
+  //     //     }
+  //     //   ],
+  //     // },
+  //     // {
+  //     //   _tag: "CSidebarNavDropdown",
+  //     //   name: "Videos",
+  //     //   route: "/#",
+  //     //   icon: "cil-list",
+  //     //   _children: [
+  //     //     {
+  //     //       _tag: "CSidebarNavItem",
+  //     //       name: "Publish Videos",
+  //     //       to: "/video",
+  //     //     },
+  //     //     {
+  //     //       _tag: "CSidebarNavItem",
+  //     //       name: "Draft Videos",
+  //     //       to: "/draft-video",
+  //     //     }
+  //     //   ],
+  //     // },
+  //     // {
+  //     //   _tag: "CSidebarNavDropdown",
+  //     //   name: "Courses",
+  //     //   route: "/#",
+  //     //   icon: "cil-list",
+  //     //   _children: [
+  //     //     {
+  //     //       _tag: "CSidebarNavItem",
+  //     //       name: "Publish Courses",
+  //     //       to: "/course",
+  //     //       icon: "cil-calculator",
+  //     //       badge: {
+  //     //         color: "info",
+  //     //         text: "",
+  //     //       },
+  //     //     },
+  //     //     {
+  //     //       _tag: "CSidebarNavItem",
+  //     //       name: "Draft Courses",
+  //     //       to: "/draft-courses",
+  //     //     }
+  //     //   ],
+  //     // }
+  //   ]
+  // },
   {
     _tag: "CSidebarNavDropdown",
     name: "Membership Form",
@@ -257,21 +257,21 @@ const _nav = [
         name: "Participate in Research Content ",
         to: "/add-content-form",
       },      
-      {
-        _tag: "CSidebarNavItem",
-        name: "Sponsors and Partners",
-        to: "/partner",
-      },
+      // {
+      //   _tag: "CSidebarNavItem",
+      //   name: "Sponsors and Partners",
+      //   to: "/partner",
+      // },
       {
         _tag: "CSidebarNavItem",
         name: "Forums Content",
         to: "/forum-content",
       },
-      {
-        _tag: "CSidebarNavItem",
-        name: "Banner Content",
-        to: "/banner",
-      },
+      // {
+      //   _tag: "CSidebarNavItem",
+      //   name: "Banner Content",
+      //   to: "/banner",
+      // },
       {
         _tag: "CSidebarNavItem",
         name: "Membership fees",

@@ -28,39 +28,40 @@ require('./config/passport')(passport);
 var usersRouter = require('./routes/user');
 var tagRouter = require('./routes/tag');
 var categoryRouter = require('./routes/category');
-var blogRouter = require('./routes/blog');
-var videoRouter = require('./routes/video');
-var articleRouter = require('./routes/article');
-var courseRouter = require('./routes/course');
+// var blogRouter = require('./routes/blog');
+// var videoRouter = require('./routes/video');
+// var articleRouter = require('./routes/article');
+// var courseRouter = require('./routes/course');
 var commonRouter = require('./routes/common');
 var mediaRouter = require('./routes/media');
 var organizationRouter = require('./routes/organization');
-var cmsRouter = require('./routes/cms');
+// var cmsRouter = require('./routes/cms');
 var forumheadingRouter = require('./routes/forumheading');
 var forumRouter = require('./routes/forum');
 var researchesRouter = require('./routes/researches');
-var bannerRouter = require('./routes/banner');
+// var bannerRouter = require('./routes/banner');
+var eventRouter = require('./routes/event');
 
 //app.use(express.static('uploads'));
 app.use(express.static('routes/uploads'));
 app.use(express.static(path.join(__dirname, 'userapp/build')));
 
 app.use('/api/user', usersRouter);
-app.use('/api/blog', blogRouter);
+// app.use('/api/blog', blogRouter);
 app.use('/api/tag', tagRouter);
 app.use('/api/category', categoryRouter);
-app.use('/api/video', videoRouter);
-app.use('/api/article', articleRouter);
-app.use('/api/course', courseRouter);
+// app.use('/api/video', videoRouter);
+// app.use('/api/article', articleRouter);
+// app.use('/api/course', courseRouter);
 app.use('/api/common', commonRouter);
 app.use('/api/media', mediaRouter);
 app.use('/api/organization', organizationRouter);
 app.use('/api/forumheading', forumheadingRouter);
 app.use('/api/forum', forumRouter);
-app.use('/api/cms', cmsRouter);
+// app.use('/api/cms', cmsRouter);
 app.use('/api/researches', researchesRouter);
-app.use('/api/banner', bannerRouter);
-
+// app.use('/api/banner', bannerRouter);
+app.use('/api/event', eventRouter);
 
 app.get('/', (req, res) => {
     res.json({ msg: 'Server started running on ' + port })

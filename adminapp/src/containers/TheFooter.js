@@ -11,7 +11,7 @@ const TheFooter = () => {
       </div> */}
       <div className="mfs-auto">
         <span className="mr-1">Powered by</span>
-        <a href="https://hullservice.com" target="_blank" rel="noopener noreferrer">Hull Service</a>
+        <a href="https://hullservice.com" target="_blank" rel="noopener noreferrer">Pathways To Prevention</a>
       </div>
     </CFooter>
   )

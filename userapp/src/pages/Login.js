@@ -64,22 +64,22 @@ export default function Login() {
 
                                 <div className="row">
                                     <div className="col-md-6">
-                                                <Link className="forgot-btn" to='/forgotpassword'>
-                                                    Forgot your password?
-                                                </Link>                                                
-                                            </div>
+                                        <Link className="forgot-btn" to='/forgotpassword'>
+                                            Forgot your password?
+                                        </Link>                                                
+                                    </div>
                                     <div className="col-md-6 text-right">
-                                                <Link className="signup-btn" to='/userSelection'>
-                                                    Sign Up
-                                                </Link>                                                
-                                            </div>
-                                        </div>
+                                        <Link className="signup-btn" to='/userSelection'>
+                                            Sign Up
+                                        </Link>                                                
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-            <Footer/>
+                </div>
+            </div>
+        <Footer/>
         </div>
     )
 }
