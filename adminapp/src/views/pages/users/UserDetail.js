@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 const UserDetail = ({ match }) => {
 
   const [details, setDetails] = useState({})
+  const [loader, setLoader] = useState(0)
 
   React.useEffect(() => {
     axios.post(api_url + '/user/getAdminUserById', { 'user_id': match.params.id }).then((result) => {
@@ -42,7 +43,9 @@ const UserDetail = ({ match }) => {
       cancelButtonColor: '#e57979',
     }).then((result) => {
       if (result.isConfirmed) {
+        setLoader(1)
         axios.post(api_url + '/user/userStatusAction', obj).then((result) => {
+          setLoader(0)
           if (result.data.status) {
             Swal.fire("Success!", result.data.response.msg, "success");
           } else {
@@ -74,9 +77,11 @@ const UserDetail = ({ match }) => {
                 <tr><td>First Name :</td><td><strong>{details.first_name}</strong></td></tr>
                 <tr><td>Last Name :</td><td><strong>{details.last_name}</strong></td></tr>                
                 <tr><td>Email :</td><td><strong>{details.email}</strong></td></tr>
-                {details.joined_date && <tr><td>Joined on :</td><td><strong>{details.joined_date}</strong></td></tr>}
-                {details.renewal_date && <tr><td>Renewal Date :</td><td><strong>{details.renewal_date}</strong></td></tr>}
+                {details.phone && <tr><td>Phone :</td><td><strong>{details.phone}</strong></td></tr>}
+                {/* {details.joined_date && <tr><td>Joined on :</td><td><strong>{details.joined_date}</strong></td></tr>}
+                {details.renewal_date && <tr><td>Renewal Date :</td><td><strong>{details.renewal_date}</strong></td></tr>} */}
                 {details.about_us && <tr><td>About US :</td><td><strong dangerouslySetInnerHTML={{ __html: details.about_us }}></strong></td></tr>}
+                {details.research_description && <tr><td>Research description :</td><td><strong dangerouslySetInnerHTML={{ __html: details.research_description }}></strong></td></tr>}
                 {details.city && <tr><td>City :</td><td><strong>{details.city}</strong></td></tr>}
                 {details.organization && <tr><td>Organization :</td><td><strong>{details.organization}</strong></td></tr>}
                 {details.sectorname && <tr><td>Sector :</td><td><strong>{details.sectorname}</strong></td></tr>}
@@ -95,8 +100,11 @@ const UserDetail = ({ match }) => {
                 {(details.email_verification_token && details.email_verification_token !== null) &&
                   <tr>
                     <td>
-                      <span style={{ cursor: "pointer" }} onClick={() => userStatusAction(1)} class="badge badge-warning">Approved</span> &nbsp;
-                      <span style={{ cursor: "pointer" }} onClick={() => userStatusAction(0)} class="mr-1 badge badge-primary badge-square" variant="outline"> Rejected </span>
+                    <button onClick={() => userStatusAction(1)} style={{ cursor: "pointer" }} className="badge badge-warning">
+                      {loader == 1 && <span className="spinner-border spinner-border-sm"></span>}
+                                        Approve</button>
+                      {/* <span style={{ cursor: "pointer" }} onClick={() => userStatusAction(1)} class="badge badge-warning">Approve</span> &nbsp; */}
+                      {/* <span style={{ cursor: "pointer" }} onClick={() => userStatusAction(0)} class="mr-1 badge badge-primary badge-square" variant="outline"> Reject </span> */}
                     </td>
                   </tr>}
               </tbody>

@@ -12,6 +12,7 @@ import { browserHistory } from 'react-router';
 const Register = lazy(() => import("./pages/Register"));
 const ResearchRequestForm = lazy(() => import("./pages/ResearchRequestForm"));
 const ActivationAccount = lazy(() => import("./pages/ActivationAccount"));
+const ChangePassword = lazy(() => import("./pages/ChangePassword"));
 const Login = lazy(() => import("./pages/Login"));
 const Forgotpassword = lazy(() => import("./pages/Forgotpassword"));
 const About = lazy(() => import("./pages/About"));
@@ -25,7 +26,8 @@ const AddResearch = lazy(() => import("./pages/user/research/AddResearch"));
 //user page
 
 const Events = lazy(() => import("./pages/user/event/Events"));
-
+const EventDetail = lazy(() => import("./pages/user/event/EventDetail"));
+const CoursesTrainings = lazy(() => import("./pages/user/coursesTrainings/CoursesTrainings"));
 const AddForum = lazy(() => import("./pages/user/forum/AddForum"));
 const Forum = lazy(() => import("./pages/user/forum/Forum"));
 const MyForum = lazy(() => import("./pages/user/forum/MyForum"));
@@ -71,8 +73,11 @@ function App() {
           <Route path="/activation-account" component={ActivationAccount} />
           <Route path="/login" component={Login} />          
           <Route path="/forgotpassword" component={Forgotpassword} />          
+          <Route path="/reset-password" component={ChangePassword} />
           <Route path="/about" component={About} />
-          <Route path="/events" component={Events} />          
+          <Route path="/events" component={Events} />   
+          <Route path="/event-detail" component={EventDetail} />
+          <Route path="/courses-training" component={CoursesTrainings} />
           <Route path="/add-forum" component={AddForum} />
           <PrivateRoute path="/forum" component={Forum} />
           <PrivateRoute path="/my-forum" component={MyForum} />          

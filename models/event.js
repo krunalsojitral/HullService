@@ -450,6 +450,7 @@ function User() {
         sql = 'SELECT * FROM event where title ILIKE $1  and status = $2 order by event_id DESC';
         array = ['%' + search.search + '%', 1];
       } else{
+        //sql = `SELECT DATE_TRUNC('month', "created_at") AS "month", COUNT(*) FROM event GROUP BY DATE_TRUNC('month', "created_at")`;
         sql = 'SELECT * FROM event where status = $1 order by event_id DESC';
         array = [1];
       }
@@ -460,6 +461,7 @@ function User() {
           if (env.DEBUG) { console.log(err); }
           callback(err, null);
         } else {
+          console.log(result.rows);
           callback(null, result.rows);
         }
       });

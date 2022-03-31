@@ -18,12 +18,13 @@ const TheHeaderDropdownNotif = () => {
   const [forumNotiCount, setForumNotiCount] = React.useState(0);
   const [researchNotiCount, setResearchNotiCount] = React.useState(0);
   const [forumCommentList, setForumCommentList] = React.useState([]);
+  const [researcherNotiCount, setResearcherNotiCount] = React.useState(0);
 
 
   React.useEffect(() => {
 
     const intervalId = setInterval(() => {  //assign interval to a variable to clear it.
-     // getNotificationCount();
+      getNotificationCount();
     }, 2500)
 
     return () => clearInterval(intervalId); //This is important
@@ -38,8 +39,9 @@ const TheHeaderDropdownNotif = () => {
         //setNotiCount(data[0].cnt);
         setForumNotiCount(data.forum_cnt)
         setResearchNotiCount(data.research_request_cnt)
-        setNotiTotalCount(parseInt(data.forum_cnt) + parseInt(data.research_request_cnt))
+        setNotiTotalCount(parseInt(data.forum_cnt) + parseInt(data.research_request_cnt) + parseInt(data.research_cnt))
         setForumCommentList(data.forum_list)
+        setResearcherNotiCount(data.research_cnt);
       }
     }).catch((err) => {
       console.log(err);
@@ -78,7 +80,8 @@ const TheHeaderDropdownNotif = () => {
         >
           <strong>You have {notiTotalCount} notifications</strong>
         </CDropdownItem>
-        <CDropdownItem onClick={() => history.push(`/research-requests`)}><CIcon name="cil-comment-square" className="mr-2 text-success" /> New Research Requests &nbsp; <CBadge color="success" className="mfs-auto">{researchNotiCount}</CBadge></CDropdownItem>
+        <CDropdownItem onClick={() => history.push(`/researchers`)}><CIcon name="cil-comment-square" className="mr-2 text-success" /> New Research Signup Requests &nbsp; <CBadge color="success" className="mfs-auto">{researcherNotiCount}</CBadge></CDropdownItem>
+        <CDropdownItem onClick={() => history.push(`/research-requests`)}><CIcon name="cil-comment-square" className="mr-2 text-success" /> New Research Thread Requests &nbsp; <CBadge color="success" className="mfs-auto">{researchNotiCount}</CBadge></CDropdownItem>
         <CDropdownItem onClick={() => history.push(`/forum-request`)} ><CIcon name="cil-comment-square" className="mr-2 text-danger" /> New Forum Request &nbsp; <CBadge color="success" className="mfs-auto">{forumNotiCount}</CBadge></CDropdownItem>
 
         {forumCommentList.length > 0 && forumCommentList.map((data, index) => (<div key={index}>

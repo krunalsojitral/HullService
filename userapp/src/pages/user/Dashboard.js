@@ -100,7 +100,7 @@ export default function Dashboard() {
                                                     </div>                                                                    
                                                 </Link>
                                             </div> */}
-                                            <div className="col-md-4">
+                                            {/* <div className="col-md-4">
                                                 <Link to='/my-article' className="Support-card">
                                                     <h3>My Articles</h3>
                                                     <div className="support-img">
@@ -115,7 +115,7 @@ export default function Dashboard() {
                                                         <img alt="support" src="images/support06.png" />
                                                     </div>
                                                 </Link>
-                                            </div>
+                                            </div> */}
                                         </div>
                                     </div>
                                 </div>

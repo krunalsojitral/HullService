@@ -429,7 +429,7 @@ const AddEditForm = ({ match }) => {
                                   className="form-control"
                                   selected={value}
                                   onChange={onChange}
-                                  dateFormat="yyyy/MM/dd"
+                                  dateFormat="yyyy/MM/dd h:mm a"
                                   // dateFormatCalendar="yyyy/MM/dd"
                                   minDate={new Date(2022, 11)}
                                   maxDate={new Date(2030, 11)}
@@ -460,8 +460,8 @@ const AddEditForm = ({ match }) => {
                                   className="form-control"
                                   selected={value}
                                   onChange={onChange}
-                                  dateFormat="yyyy/MM/dd"
-                                  dateFormatCalendar="yyyy/MM/dd"
+                                  dateFormat="yyyy/MM/dd h:mm a"
+                                  dateFormatCalendar="yyyy/MM/dd h:mm a"
                                   minDate={new Date(2022, 11)}
                                   maxDate={new Date(2030, 11)}
                                   peekNextMonth

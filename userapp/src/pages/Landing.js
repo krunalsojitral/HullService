@@ -30,24 +30,24 @@ export default function Landing() {
         infinite: true,
     };
 
-    React.useEffect(() => {
-        axios.get(api_url + '/cms/partnerList').then((result) => {
-            if (result.data.status) {
-                var partnerdata = result.data.response.data;
-                setPartnerSlider(partnerdata);
-            } 
-        }).catch((err) => {})
+    // React.useEffect(() => {
+    //     axios.get(api_url + '/cms/partnerList').then((result) => {
+    //         if (result.data.status) {
+    //             var partnerdata = result.data.response.data;
+    //             setPartnerSlider(partnerdata);
+    //         } 
+    //     }).catch((err) => {})
 
-        axios.get(api_url + '/cms/getHomeContentData').then((result) => {
-            if (result.data.status) {
-                var contentdata = result.data.response.data;                
-                setContent(contentdata);
-            }
-        }).catch((err) => { })
+    //     axios.get(api_url + '/cms/getHomeContentData').then((result) => {
+    //         if (result.data.status) {
+    //             var contentdata = result.data.response.data;                
+    //             setContent(contentdata);
+    //         }
+    //     }).catch((err) => { })
 
         
 
-    }, [])
+    // }, [])
 
     const next = () => {
         customeSlider.current.slickNext()
@@ -63,11 +63,20 @@ export default function Landing() {
 
         <div>
             <Header />           
-            
+            <br />
+            <br />
             <div className="container">
                 <div className="row">
                     <div className="col-md-12">
-                        <h4>Landing Page</h4>
+                        <div class="section-title"><h2>National Volunteer Week 2021</h2><span>Hull Services wants to give a big thank you to all our volunteers for all their support!</span></div>
+                        <br/>
+                        <p>Humans see colors in light waves. Mixing light—or the additive color mixing model—allows you to create colors by mixing red, green and blue light sources of various intensities. The more light you add, the brighter the color mix becomes. If you mix all three colors of light, you get pure, white light.</p>
+                        <br />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <iframe width="100%" height="554px" title="video" allow="fullscreen;" src="https://www.youtube.com/embed/6nPAtW9ZYB0?rel=0&amp;modestbranding=1&amp;showinfo=0"></iframe>
                     </div>
                 </div>
             </div>

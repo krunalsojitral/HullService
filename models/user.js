@@ -78,6 +78,23 @@ function User() {
         });
     }
 
+    
+    this.updateResearchRequestSignUpCount = function (callback) {
+        connection.acquire(function (err, con) {
+            con.query("UPDATE users SET user_read_status =$1", [1], function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, result);
+                }
+            });
+        });
+    };
+
     this.checkUserEditProfile = function (email,user_id, callback) {
         connection.acquire(function (err, con) {
             con.query('SELECT * FROM users where LOWER(email) = $1 and (id NOT IN ($2::int))', [email.toLowerCase(), user_id], function (err, results) {
@@ -180,12 +197,11 @@ function User() {
 
 
         var conditions = [];
-        var orderby_conditions = ["order by UPPER(users.first_name) ASC"];
+        var orderby_conditions = ["order by users.status ASC, users.id DESC"];
         var values = [];
 
         if (params.status) { 
             if (params.status == 2) {
-                console.log('in');
                 conditions.push("(users.email_verification_token IS NOT NULL and length(users.email_verification_token) > 0)");
             } else {
                 conditions.push("(users.email_verification_token IS NULL or length(users.email_verification_token) = 0)");
@@ -304,7 +320,7 @@ function User() {
                     params.user_id = user_id;
                     var conditions = buildConditions(params);
                     var sql = 'SELECT * FROM users WHERE ' + conditions.where + ' ' + conditions.orderby;
-                    
+                    console.log(sql);
                     con.query(sql, conditions.values, function (err, result) {
                         con.release();
                         
@@ -330,7 +346,7 @@ function User() {
 
 
         var conditions = [];
-        var orderby_conditions = ["order by UPPER(users.first_name) ASC"];
+        var orderby_conditions = ["order by users.status ASC, users.id DESC"];
         var values = [];
 
         conditions.push("role = $" + (values.length + 1));
@@ -482,14 +498,14 @@ function User() {
     this.addUser = function (record, callback) {
         connection.acquire(function (err, con) {
             if (record.role == 3){
-                var sql = 'INSERT INTO users("first_name","last_name","email","city","lat","long","country","academic_discipline","password","status","role","email_verification_token","created_at","organization","other_sector","other_academic_discipline","other_occupation","other_professional_interest_area","other_research_interest_area","payment_id","joined_date","renewal_date","subscribe") VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23) RETURNING *'
-                var values = [record.first_name, record.last_name, record.email, record.city, record.lat, record.long, record.country, record.academic_discipline, record.password, record.status, record.role, record.email_verification_token, record.created_at, record.organization, record.other_sector, record.other_academic_discipline, record.other_occupation, record.other_professional_interest_area, record.other_research_interest_area, record.payment_id, record.joined_date, record.renewal_date, record.subscribe]
+                var sql = 'INSERT INTO users("first_name","last_name","email","phone","city","lat","long","country","academic_discipline","password","status","role","email_verification_token","created_at","organization","other_sector","other_academic_discipline","other_occupation","other_professional_interest_area","other_research_interest_area","payment_id","joined_date","renewal_date","subscribe","about_us","research_description") VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26) RETURNING *'
+                var values = [record.first_name, record.last_name, record.email, record.phone, record.city, record.lat, record.long, record.country, record.academic_discipline, record.password, record.status, record.role, record.email_verification_token, record.created_at, record.organization, record.other_sector, record.other_academic_discipline, record.other_occupation, record.other_professional_interest_area, record.other_research_interest_area, record.payment_id, record.joined_date, record.renewal_date, record.subscribe, record.about_us, record.research_description]
             } else if (record.role == 2) {
-                var sql = 'INSERT INTO users("first_name","last_name","email","city","lat","long","country", "level_of_education","occupation","sector","password","status","role","email_verification_token","created_at","organization","other_sector","other_academic_discipline","other_occupation","other_professional_interest_area","other_research_interest_area","payment_id","joined_date","renewal_date","subscribe") VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25) RETURNING *'
-                var values = [record.first_name, record.last_name, record.email, record.city, record.lat, record.long, record.country, record.level_of_education, record.occupation, record.sector, record.password, record.status, record.role, record.email_verification_token, record.created_at, record.organization, record.other_sector, record.other_academic_discipline, record.other_occupation, record.other_professional_interest_area, record.other_research_interest_area, record.payment_id, record.joined_date, record.renewal_date, record.subscribe]
+                var sql = 'INSERT INTO users("first_name","last_name","email","phone","city","lat","long","country", "level_of_education","occupation","sector","password","status","role","email_verification_token","created_at","organization","other_sector","other_academic_discipline","other_occupation","other_professional_interest_area","other_research_interest_area","payment_id","joined_date","renewal_date","subscribe","about_us","research_description") VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28) RETURNING *'
+                var values = [record.first_name, record.last_name, record.email, record.phone, record.city, record.lat, record.long, record.country, record.level_of_education, record.occupation, record.sector, record.password, record.status, record.role, record.email_verification_token, record.created_at, record.organization, record.other_sector, record.other_academic_discipline, record.other_occupation, record.other_professional_interest_area, record.other_research_interest_area, record.payment_id, record.joined_date, record.renewal_date, record.subscribe, record.about_us, record.research_description]
             }else{
-                var sql = 'INSERT INTO users("first_name","last_name","email","password","status","role","email_verification_token","created_at","payment_id","joined_date","renewal_date","subscribe") VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNING *'
-                var values = [record.first_name, record.last_name, record.email, record.password, record.status, record.role, record.email_verification_token, record.created_at, record.payment_id, record.joined_date, record.renewal_date, record.subscribe]
+                var sql = 'INSERT INTO users("first_name","last_name","email","phone","password","status","role","email_verification_token","created_at","payment_id","joined_date","renewal_date","subscribe","about_us","research_description") VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15) RETURNING *'
+                var values = [record.first_name, record.last_name, record.email, record.phone, record.password, record.status, record.role, record.email_verification_token, record.created_at, record.payment_id, record.joined_date, record.renewal_date, record.subscribe, record.about_us, record.research_description]
             }
             
             

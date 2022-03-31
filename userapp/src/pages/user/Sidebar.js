@@ -30,9 +30,9 @@ export default function Sidebar() {
     //     })
     // }, [history])
 
-    // const submenu = () => {
-    //     $(".sub-menu").toggleClass('sub-active');
-    // }
+    const submenu = () => {
+        $(".sub-menu").toggleClass('open');
+    }
 
     return(
         <div className="side-bar">
@@ -44,44 +44,28 @@ export default function Sidebar() {
                        <InlineButton name={"Dashboard"} />
                     </NavLink>
                 </li>}
-                <li>
-                    <NavLink activeClassName="active" to="/articles" isActive={() => ['/articles', '/article-detail', '/article-payment'].includes(pathname)}>
-                        
-                        <InlineButton name={"Articles"} />
-                    </NavLink>                    
-                </li>
-                {/* <li>
-                    <NavLink activeClassName="active" isActive={() => ['/blog', '/blog-detail', '/blog-payment'].includes(pathname)} to="/blog">
-                        <svg className="icon icon-tag">
-                            <use xlinkHref="#icon-blog"></use>
-                        </svg>
-                        <InlineButton name={"Blogs"} />
-                    </NavLink>                    
-                </li>                 */}
+                
                 <li>
                     <NavLink activeClassName="active" to="/events">
-                        
                         <InlineButton name={"Events"} />
                     </NavLink>
                 </li>
-                {users && (users.role == 3 || users.role == 2) && <li>
+                {/* {users && (users.role == 3 || users.role == 2) && <li>
                     <NavLink activeClassName="active" isActive={() => ['/forum', '/forum-sub', '/forum-detail', '/add-forum'].includes(pathname)} to="/forum">
                         
                         <InlineButton name={"Forums"} />
                     </NavLink>                    
-                </li>}
-                <li>
-                    <NavLink activeClassName="active" to="/informational-video" isActive={() => ['/informational-video', '/video-detail', '/video-payment'].includes(pathname)}>
-                        
-                        <InlineButton name={"Informational Videos"} />
-                    </NavLink>
-                </li>
-                {users && (users.role == 3 || users.role == 2) && <li>
-                    <NavLink activeClassName="active" to="/group-session">
-                       
-                        <InlineButton name={"Group Sessions"} />
-                    </NavLink>
-                </li>}
+                </li>}                 */}
+                {users && (users.role == 3 || users.role == 2) &&                 
+                    <li className="dropdown sub-menu">
+                        <a activeClassName="active" id="sub-click" onClick={(e) => submenu()} href="javascript:;" >
+                           <span>Courses & Trainings</span>
+                        </a>
+                        <ul className="dropdown-menu">
+                        <li><NavLink activeClassName="active" isActive={() => ['/forum', '/forum-sub', '/forum-detail', '/add-forum'].includes(pathname)} to="/forum"><span>Forum</span></NavLink></li>
+                        </ul>
+                    </li>
+                   }
                 {/* <li>
                     <NavLink activeClassName="active" to="/professional-development" isActive={() => ['/professional-development', '/professional-development-detail', '/course-payment'].includes(pathname)}>
                         <svg className="icon icon-tag">
@@ -94,7 +78,6 @@ export default function Sidebar() {
 
                 {users && users.role == 3 && <li>
                     <NavLink activeClassName="active" to="/my-studies" isActive={() => ['/my-studies', '/add-research'].includes(pathname)}>
-                        
                         <InlineButton name={"My Studies"} />
                     </NavLink>
                 </li>}

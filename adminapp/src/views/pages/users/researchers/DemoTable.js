@@ -125,6 +125,7 @@ const DemoTable = () => {
     getNewListWrap('');    
     getCSVNewList('');
     getCSVNewListWrap('');
+    updateResearchRequestCount();
 
     let newDate = new Date()
     let date = newDate.getDate();
@@ -170,6 +171,10 @@ const DemoTable = () => {
       .catch((err) => { console.log(err); });
 
   }, [])
+
+  const updateResearchRequestCount = () => {
+    axios.get(api_url + '/user/updateResearchRequestSignUpCount').then((result) => { }).catch((err) => { console.log(err); })
+  }
 
   const fields = [
     { key: 'name', _style: { width: '20%' } },

@@ -1,29 +1,47 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-// import useAuth from './../../hooks/useAuth';
 import Header from './../../../sections/Header';
 import Footer from './../../../sections/Footer';
-//import { useForm } from "react-hook-form";
 import Sidebar from './../Sidebar';
-
+import axios from 'axios';
+import Swal from "sweetalert2";
+import api_url from '../../../components/Apiurl';
+import { useModal } from 'react-hooks-use-modal';
+import { useHistory } from "react-router-dom";
 export default function Events() {
    
 
-//     const { loginUser } = useAuth();
+    let history = useHistory();
 
-//    // const [isFirstRadioLoaded, setIsFirstRadioLoaded] = useState(false);  
+    const [eventId, setEventId] = React.useState(0)
+    const [eventDetail, seteventDetail] = React.useState({})
+   
 
-//     const { register, handleSubmit, formState: { errors } } = useForm();
-//     const onSubmit = async (data) => {
-//         var obj = {
-//             email: data.email,
-//             password: data.password
-//         }
+    React.useEffect(() => {
 
-//        // setIsFirstRadioLoaded(currentIsLoaded => !currentIsLoaded)
-//         await loginUser(obj);
+        const params = new URLSearchParams(window.location.search) // id=123
+        let event_id = params.get('id')
+        setEventId(event_id);
 
-//     }
+        const tokenString = localStorage.getItem('token');
+        var token = JSON.parse(tokenString);
+        const config = {
+            headers: { Authorization: `${token}` }
+        };
+
+        axios.post(api_url + '/event/getEventDataById', { event_id: event_id }).then((result) => {
+            if (result.data.status) {
+                var eventdata = result.data.response.data;
+                console.log(eventdata.group_session);
+                seteventDetail(eventdata);
+            } else {
+                Swal.fire('Oops...', result.data.response.msg, 'error')
+            }
+        }).catch((err) => {
+            console.log(err);
+        })
+
+    }, [])
 
     return(
         <div>
@@ -48,7 +66,7 @@ export default function Events() {
                                 <div className="row">
                                     <div className="col-md-12">
                                         <div className="event-details-title">
-                                            <h3>Child Therapy</h3>
+                                            <h3>{eventDetail.title}</h3>
                                         </div>
                                         <div className="event-details-links">
                                             <ul>
@@ -62,13 +80,11 @@ export default function Events() {
                                                 <div className="event-details-content">
                                                     <div className="row">
                                                         <div className="col-md-9">
-                                                            <div className="event-content-img">
-                                                                <img src="images/Events-Img.png" />
-                                                            </div>
+                                                            {eventDetail.image && <div className="event-content-img">
+                                                                <img src={eventDetail.image} />
+                                                            </div>}
                                                             <div className="event-content-list">
-                                                                <p>Luptatum volutpat delicatissimi has. Sed ad dicam platonem, mea eros illum elitr id, ei has similique constituto. Ea movet saperet rationibus sit, pri autem aliquip invidunt an. Consetetur omittantur consequuntur eos et. Eleifend praesent iudicabit no mea, tollit persequeris ex pri, tota splendide voluptaria in pri. Ad per tale aliquip, ei sit viris commune albucius. Eos aliquip scaevola ut, eum alii mentitum prodesset no, his ne suas atomorum. Et numquam deleniti ponderum vis, quod error at mei. Novum blandit adolescens sea te. Ea eum cetero scaevola.</p>
-
-                                                                <p>Lorem ipsum dolor sit amet, voluptua iracundia disputationi an pri, his utinam principes dignissim ad. Ne nec dolore oblique nusquam, cu luptatum volutpat delicatissimi has. Sed ad dicam platonem, mea eros illum elitr id, ei has similique constituto. Ea movet saperet rationibus sit, pri autem aliquip invidunt an. Consetetur omittantur consequuntur eos et. Eleifend praesent iudicabit no mea, tollit persequeris ex pri, tota splendide voluptaria in pri. Ad per tale aliquip, ei sit viris commune albucius. Eos aliquip scaevola ut, eum alii mentitum prodesset no, his ne suas atomorum. Et numquam deleniti ponderum vis, quod error at mei. Novum blandit adolescens sea te. Ea eum cetero scaevola.</p>
+                                                                <p dangerouslySetInnerHTML={{ __html: eventDetail.description }}></p>
                                                             </div>
                                                         </div>
                                                         <div className="col-md-3">
@@ -79,18 +95,22 @@ export default function Events() {
                                                                     </div>
                                                                     <div className="event-text-word">
                                                                         <h3>START DATE</h3>
+                                                                        {/* {eventDetail.start_date} */}
                                                                         <span>November 17, 2020 12:00 pm</span>
                                                                     </div>
                                                                 </div>
+                                                                <br/>
                                                                 <div className="event-listing-text">
                                                                     <div className="event-text-icon">
                                                                         <img src="images/cal.png" />
                                                                     </div>
                                                                     <div className="event-text-word">
                                                                         <h3>END DATE</h3>
+                                                                        {/* {eventDetail.end_date} */}
                                                                         <span>November 17, 2020 12:00 pm</span>
                                                                     </div>
                                                                 </div>
+                                                                <br />
                                                                 <div className="event-listing-text">
                                                                     <div className="event-text-icon">
                                                                         <img src="images/checking.png" />
@@ -100,16 +120,16 @@ export default function Events() {
                                                                         <span>Showing</span>
                                                                     </div>
                                                                 </div>
-                                                                <div className="event-listing-text">
+                                                                {eventDetail.location && <div className="event-listing-text">
                                                                     <div className="event-text-icon">
                                                                         <img src="images/marker-event.png" />
                                                                     </div>
                                                                     <div className="event-text-word">
                                                                         <h3>LOCATION</h3>
-                                                                        <span>Milan</span>
+                                                                        <span>{eventDetail.location}</span>
                                                                     </div>
-                                                                </div>
-                                                                <div className="event-listing-text">
+                                                                </div>}
+                                                                {/* <div className="event-listing-text">
                                                                     <div className="event-text-icon">
                                                                         <img src="images/box.png" />
                                                                     </div>
@@ -117,6 +137,9 @@ export default function Events() {
                                                                         <h3>CATEGORY</h3>
                                                                         <span>Business</span>
                                                                     </div>
+                                                                </div> */}
+                                                                <div className="event-listing-text">
+                                                                    <button type="submit" class="btn-save">Purchase</button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -128,44 +151,37 @@ export default function Events() {
                                                 <div className="event-details-content">
                                                     <div className="row">
                                                         <div className="col-md-12">
-                                                            <div className="event-content-list">
-                                                                <div className="event-joining">
-                                                                    <div className="row">
-                                                                        <div className="col-md-10">
-                                                                            <div className="joining-card">
-                                                                                <h3>Title One Goes Here</h3>
-                                                                                <p>Lorem ipsum dolor sit amet, voluptua iracundia disputationi an pri Lorem ipsum dolor sit amet, voluptua iracundia disputationi an priLorem ipsum dolor sit amet, voluptua iracundia disputationi an pri Lorem ipsum dolor sit amet, voluptua iracundia disputationi an </p>
-                                                                                <span>November 17, 2020 12:00 pm</span>
+                                                            {eventDetail.group_session && eventDetail.group_session.length > 0 &&
+                                                                <div className="event-content-list">
+                                                                    {eventDetail.group_session.map((data, index) => (
+                                                                        <div className="event-joining">
+                                                                            <div className="row">
+                                                                                <div className="col-md-10">
+                                                                                    <div className="joining-card">
+                                                                                        <h3>{data.title}</h3>
+                                                                                        <p>{data.description}</p>
+                                                                                        {/* <span>November 17, 2020 12:00 pm</span> */}
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="col-md-2">
+                                                                                    <div className="joining-btn-card">
+                                                                                        <a href="" className="join-btn">
+                                                                                            JOIN
+                                                                                        </a>
+                                                                                    </div>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-                                                                        <div className="col-md-2">
-                                                                            <div className="joining-btn-card">
-                                                                                <a href="" className="join-btn">
-                                                                                    JOIN
-                                                                       </a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
+                                                                    ))} 
+                                                                </div>}
+                                                            {eventDetail.group_session && eventDetail.group_session.length == 0 &&
+                                                                <div>
+                                                                    <center>
+                                                                        <img height="250px" width="350px" src="images/hull-no-results.png" alt="author" />
+                                                                        <div className="no-data">No results found.</div>
+                                                                    </center>
                                                                 </div>
-                                                                <div className="event-joining">
-                                                                    <div className="row">
-                                                                        <div className="col-md-10">
-                                                                            <div className="joining-card">
-                                                                                <h3>Title One Goes Here</h3>
-                                                                                <p>Lorem ipsum dolor sit amet, voluptua iracundia disputationi an pri Lorem ipsum dolor sit amet, voluptua iracundia disputationi an priLorem ipsum dolor sit amet, voluptua iracundia disputationi an pri Lorem ipsum dolor sit amet, voluptua iracundia disputationi an </p>
-                                                                                <span>November 17, 2020 12:00 pm</span>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="col-md-2">
-                                                                            <div className="joining-btn-card">
-                                                                                <a href="" className="join-btn">
-                                                                                    JOIN
-                                                                       </a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                            }
                                                         </div>
                                                     </div>
                                                 </div>
@@ -173,80 +189,57 @@ export default function Events() {
                                             <div id="menu2" className="tab-pane fade">
                                                 <div className="event-details-content">
                                                     <div className="row">
-                                                        <div className="col-md-15">
-                                                            <div className="resources-box">
-                                                                <div className="resources-icon">
-                                                                    <img src="images/pdf.png" />
+                                                        {eventDetail.resource && eventDetail.resource.length > 0 && eventDetail.resource.map((data, index) => (
+                                                            <div className="col-md-15">
+                                                                <div className="resources-box">
+                                                                    <div className="resources-icon">
+                                                                        <img src="images/pdf.png" />
+                                                                    </div>
+                                                                    <h3>
+                                                                        <a download href={data.file}>{data.name.substring(0, 14)}</a>
+                                                                    </h3>
                                                                 </div>
-                                                                <h3>File Name</h3>
                                                             </div>
-                                                        </div>
-                                                        <div className="col-md-15">
-                                                            <div className="resources-box">
-                                                                <div className="resources-icon">
-                                                                    <img src="images/word.png" />
-                                                                </div>
-                                                                <h3>File Name</h3>
+                                                        ))}
+                                                    </div>
+                                                    {eventDetail.videoURL && eventDetail.videoURL.length > 0 && 
+                                                        <div>
+                                                            <h3>Video title goes here</h3>
+                                                            <div className="row">
+                                                                {eventDetail.videoURL.map((data, index) => (
+                                                                    <div className="col-md-4">
+                                                                        <div className="resources-video">
+                                                                            <iframe height="250" src="https://www.youtube.com/embed/D1JVg0q0nJg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                                                            {/* <img src="images/Events-Img.png" />
+                                                                        <div className="video-icon">
+                                                                            <img src="images/video-icon.png" />
+                                                                        </div> */}
+                                                                        </div>
+                                                                    </div>
+                                                                ))}
                                                             </div>
-                                                        </div>
+                                                        </div>}
 
-                                                    </div>
-                                                    <h3>Video title goes here</h3>
-                                                    <div className="row">
-                                                        <div className="col-md-4">
-                                                            <div className="resources-video">
-                                                                <img src="images/Events-Img.png" />
-                                                                <div className="video-icon">
-                                                                    <img src="images/video-icon.png" />
+                                                    {eventDetail.webPageUrl && eventDetail.webPageUrl.length > 0 && 
+                                                        <div>
+                                                            <h3>Arctiles Link Heading</h3>
+                                                            <div className="row">
+                                                                <div className="col-md-12">
+                                                                    {eventDetail.webPageUrl.map((data, index) => (
+                                                                        <div className="Arctiles-Card">
+                                                                            <div className="Arctiles-Icon">
+                                                                                <i className="fa fa-link"></i>
+                                                                            </div>
+                                                                            <div className="Arctiles-Text">
+                                                                                <h3><a target="_blank" href={data.path}>{data.path}</a></h3>
+                                                                            </div>
+                                                                        </div>
+                                                                    ))}
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div className="col-md-4">
-                                                            <div className="resources-video">
-                                                                <img src="images/Events-Img.png" />
-                                                                <div className="video-icon">
-                                                                    <img src="images/video-icon.png" />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-md-4">
-                                                            <div className="resources-video">
-                                                                <img src="images/Events-Img.png" />
-                                                                <div className="video-icon">
-                                                                    <img src="images/video-icon.png" />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <h3>Arctiles Link Heading</h3>
-                                                    <div className="row">
-                                                        <div className="col-md-12">
-                                                            <div className="Arctiles-Card">
-                                                                <div className="Arctiles-Icon">
-                                                                    <i className="fa fa-link"></i>
-                                                                </div>
-                                                                <div className="Arctiles-Text">
-                                                                    <h3><a href="http://3.99.13.94:6161/members">http://3.99.13.94:6161/members</a></h3>
-                                                                </div>
-                                                            </div>
-                                                            <div className="Arctiles-Card">
-                                                                <div className="Arctiles-Icon">
-                                                                    <i className="fa fa-link"></i>
-                                                                </div>
-                                                                <div className="Arctiles-Text">
-                                                                    <h3><a href="http://3.99.13.94:6161/members">http://3.99.13.94:6161/members</a></h3>
-                                                                </div>
-                                                            </div>
-                                                            <div className="Arctiles-Card">
-                                                                <div className="Arctiles-Icon">
-                                                                    <i className="fa fa-link"></i>
-                                                                </div>
-                                                                <div className="Arctiles-Text">
-                                                                    <h3><a href="http://3.99.13.94:6161/members">http://3.99.13.94:6161/members</a></h3>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                    }
+
                                                 </div>
                                             </div>
                                         </div>

@@ -233,6 +233,7 @@ export default function EditProfile() {
                     setFormValue('first_name', userdata.first_name)
                     setFormValue('last_name', userdata.last_name)
                     setFormValue('email', userdata.email)
+                    setFormValue('phone', userdata.phone)
                     setFormValue('organization', userdata.organization)
                     setFormValue('subscribe', userdata.subscribe)
                     
@@ -267,6 +268,10 @@ export default function EditProfile() {
                     if (userdata.about_us){ 
                         var regex = /<br\s*[\/]?>/gi;
                         setFormValue('about_us', userdata.about_us.replace(regex, "\n"));
+                    }
+                    if (userdata.research_description) {
+                        var regex = /<br\s*[\/]?>/gi;
+                        setFormValue('research_description', userdata.research_description.replace(regex, "\n"));
                     }
                     if (userdata.avatar){
                         setSetectavatar(userdata.avatar)
@@ -340,12 +345,12 @@ export default function EditProfile() {
 
     const onSubmit = (data) => {
 
-        if (!otherProfessionalInterestArea){
-            data.other_professional_interest_area = '';
-        }
-        if (!otherResearcherInterestArea) {
-            data.other_research_interest_area = '';
-        }
+        // if (!otherProfessionalInterestArea){
+        //     data.other_professional_interest_area = '';
+        // }
+        // if (!otherResearcherInterestArea) {
+        //     data.other_research_interest_area = '';
+        // }
 
         if (data.sector > 0){            
             data.other_sector = ''
@@ -365,27 +370,38 @@ export default function EditProfile() {
             data.about_us = textareaText;
         }
 
+        if (data.research_description) {
+            var textareaText = data.research_description;
+            textareaText = textareaText.replace(/\r?\n/g, '<br />');
+            data.research_description = textareaText;
+        }
+
         if (userTypeList == 4) {            
             data.role = userTypeList
             updateProfile(data);            
         } else {
-            if (!city) {
-                setCityError('Address is required.');
-            } else if (!latitude && !longitude) {
-                setCityError('Please enter proper address.');
-            } else {
+
+            data.role = userTypeList
+
+            updateProfile(data);
+
+            // if (!city) {
+            //     setCityError('Address is required.');
+            // } else if (!latitude && !longitude) {
+            //     setCityError('Please enter proper address.');
+            // } else {
                 
-                data.city = city;
-                data.latitude = latitude;
-                data.longitude = longitude;
-                data.country = country;
-                data.professional_interest_of_area = selectedProfessionalInterestArea;
-                data.researcher_interest_of_area = selectedResearcherInterestArea;     
-                data.role = userTypeList
+            //     data.city = city;
+            //     data.latitude = latitude;
+            //     data.longitude = longitude;
+            //     data.country = country;
+            //     data.professional_interest_of_area = selectedProfessionalInterestArea;
+            //     data.researcher_interest_of_area = selectedResearcherInterestArea;     
+            //     data.role = userTypeList
                 
-                updateProfile(data);
+            //     updateProfile(data);
                 
-            }
+            // }
         }
     }
 
@@ -635,21 +651,40 @@ export default function EditProfile() {
                                     <div className="view-profile-body">
                                         <div className="row">
                                             <div className="col-md-12">
-                                                {(userTypeList == 3 || userTypeList == 2) && <div className="form-group edit-profile">
-                                                    <Controller
-                                                        name={"about_us"}
-                                                        control={control}
-                                                        render={({ field: { onChange, value } }) => (
-                                                            <textarea
-                                                                type="text"
-                                                                onChange={onChange}
-                                                                value={value}
-                                                                className="form-control"
-                                                                placeholder={`Tell us something about yourself `}
-                                                            />
-                                                        )}
-                                                    ></Controller>
-                                                </div>}
+                                                {(userTypeList == 3 || userTypeList == 2) && 
+                                                <div>
+                                                    <div className="form-group edit-profile">
+                                                        <Controller
+                                                            name={"about_us"}
+                                                            control={control}
+                                                            render={({ field: { onChange, value } }) => (
+                                                                <textarea
+                                                                    type="text"
+                                                                    onChange={onChange}
+                                                                    value={value}
+                                                                    className="form-control"
+                                                                    placeholder={`Tell us something about yourself `}
+                                                                />
+                                                            )}
+                                                        ></Controller>
+                                                    </div>
+                                                    <div className="form-group edit-profile">
+                                                        <Controller
+                                                            name={"research_description"}
+                                                            control={control}
+                                                            render={({ field: { onChange, value } }) => (
+                                                                <textarea
+                                                                    type="text"
+                                                                    onChange={onChange}
+                                                                    value={value}
+                                                                    className="form-control"
+                                                                    placeholder={`Description of Research  `}
+                                                                />
+                                                            )}
+                                                        ></Controller>
+                                                    </div>
+                                                </div>
+                                                }
                                                 <div className="form-group edit-profile">
                                                     <Controller
                                                         name={"email"}
@@ -674,12 +709,35 @@ export default function EditProfile() {
                                                     {errors?.email?.type === "required" && <small className="error">Email is required</small>}
                                                     {errors?.email?.type === "pattern" && (<small className="error">Invalid email address</small>)}
                                                 </div>
+                                                <div className="form-group edit-profile">
+                                                    <Controller
+                                                        name={"phone"}
+                                                        control={control}
+                                                        rules={{
+                                                            required: true,
+                                                            pattern: {
+                                                                value: /^[0-9]+$/i,
+                                                            },
+                                                        }}
+                                                        render={({ field: { onChange, value } }) => (
+                                                            <input
+                                                                type="phone"
+                                                                onChange={onChange}
+                                                                className="form-control"
+                                                                value={value}
+                                                                placeholder={`Phone *`}
+                                                            />
+                                                        )}
+                                                    ></Controller>
+                                                    {errors?.phone?.type === "required" && <small className="error">Phone is required</small>}
+                                                    {errors?.phone?.type === "pattern" && (<small className="error">Invalid phone address</small>)}
+                                                </div>
                                             </div>
                                         </div>
                                         <hr />
 
                                         <div className="row">
-                                            <div className="col-md-6">
+                                            {/* <div className="col-md-6">
                                                 <div className="form-group edit-profile">
                                                     {userTypeList !== 4 && <div className="form-group google-serach">
                                                         <div ref={ref}>
@@ -695,7 +753,7 @@ export default function EditProfile() {
                                                         </div>
                                                     </div>}
                                                 </div>
-                                            </div>
+                                            </div> */}
                                             <div className="col-md-6">
                                                 <div className="form-group edit-profile autosuggestion">
                                                     {userTypeList !== 4 && <div>
@@ -725,8 +783,6 @@ export default function EditProfile() {
 
                                                 </div>
                                             </div>
-                                        </div>
-                                        {userTypeList == 3 && <div className="row">
                                             <div className="col-md-6">
                                                 <div className="form-group edit-profile">
                                                     <Controller
@@ -771,7 +827,10 @@ export default function EditProfile() {
 
                                                 </div>
                                             </div>
-                                            <div className="col-md-6">
+                                        </div>
+                                        {/* {userTypeList == 3 && <div className="row">
+                                            
+                                            { <div className="col-md-6">
                                                 <div className="form-group edit-profile">
                                                     <MultiSelect
                                                         options={researcherInterestAreaDropdown}
@@ -806,9 +865,9 @@ export default function EditProfile() {
                                                     </div>}
 
                                                 </div>
-                                            </div>
+                                            </div> }
                                         </div>}
-
+ */}
 
                                         {userTypeList == 2 && <div>
 

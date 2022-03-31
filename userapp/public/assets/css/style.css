@@ -13,7 +13,7 @@ body {
     display: flex;
     flex-direction: column;
     position: relative;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     color: #000
 }
 main { flex: 1;}
@@ -29,6 +29,7 @@ a {
     -webkit-transition: all 0.2s;
     -ms-transition: all 0.2s;
     -moz-transition: all 0.2s;
+    font-family: 'Montserrat', sans-serif;
 }
 a:hover,a:focus {
     text-decoration: none;
@@ -36,6 +37,7 @@ a:hover,a:focus {
     -webkit-transition: all 0.2s;
     -ms-transition: all 0.2s;
     -moz-transition: all 0.2s;
+    font-family: 'Montserrat', sans-serif;
 }
 span { display: inline-block;}
 em,i {
@@ -46,24 +48,28 @@ img {max-width: 100%;}
 h1 { font-size: 34px;
     line-height: 44px;
     margin: 0;
-    font-weight: 700
+    font-weight: 700;
+    font-family: 'Montserrat', sans-serif;
 }
 h2 {
     font-size: 30px;
     line-height: 40px;
     margin: 0;
-    font-weight: 700
+    font-weight: 700;
+    font-family: 'Montserrat', sans-serif;
 }
 h3 {
     font-size: 26px;
     line-height: 30px;
     margin: 0;
+    font-family: 'Montserrat', sans-serif;
 }
 
 h4 {
     font-size: 21px;
     line-height: 26px;
     margin: 0;
+    font-family: 'Montserrat', sans-serif;
 }
 
 p {
@@ -71,7 +77,8 @@ p {
     line-height: 24px;
     margin: 0;
     padding: 0;
-    font-weight: 500
+    font-weight: 500;
+    font-family: 'Lora', serif;
 }
 
 .react-datepicker__day-name, .react-datepicker__day, .react-datepicker__time-name{
@@ -203,8 +210,8 @@ header .header-card .hull-links .hull-menu ul li {
 }
 header .header-card .hull-links .hull-menu ul li a {
     font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
+    font-weight: 500;
+    font-size: 13px;
     line-height: 25px;
     color: #006577;
     padding: 3px 12px;
@@ -212,7 +219,7 @@ header .header-card .hull-links .hull-menu ul li a {
 }
 header .header-card .hull-links .hull-menu ul li a.active {
     font-style: normal;
-    font-weight: normal;
+    font-weight: 500;
     line-height: 25px;
     color: #fff;
     padding: 3px 12px;
@@ -221,7 +228,7 @@ header .header-card .hull-links .hull-menu ul li a.active {
 }
 header .header-card .hull-links .hull-menu ul li a:hover{
     font-style: normal;
-    font-weight: normal;
+    font-weight: 500;
     line-height: 25px;
     color: #fff;
     padding: 3px 12px;
@@ -386,7 +393,7 @@ footer .social-icon ul li a {
 }
 
 .login-section .login-box .login-img {
-    width: 150px;
+    width: 200px;
     margin: 0 auto 15px;
 }
 
@@ -421,7 +428,7 @@ footer .social-icon ul li a {
 }
 
 .login-section .login-box .login-details .form-group input.form-control {
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: 500;
     font-size: 17px;
@@ -451,7 +458,7 @@ footer .social-icon ul li a {
 
 
 .login-section .login-box .login-details .form-group input.react-autosuggest__input {
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: 500;
     font-size: 17px;
@@ -470,7 +477,7 @@ footer .social-icon ul li a {
 
 .login-section .login-box .login-details .form-group select.form-control {
     appearance: none;
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: 500;
     font-size: 17px;
@@ -483,8 +490,22 @@ footer .social-icon ul li a {
     height: 50px;
 }
 
+.login-section .login-box .login-details .form-group textarea.form-control {
+    appearance: none;
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 35px;
+    color: #A0A0A0;
+    box-shadow: none;
+    border: #A0A0A0 solid 1px;
+    border-radius: 10px;
+    padding: 4px 11px;
+}
+
 .login-section .login-box .login-details .form-group .dropdown-container {
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 13px;
@@ -497,7 +518,7 @@ footer .social-icon ul li a {
 
 .login-section .login-box .login-details .form-group .dropdown-heading-value .gray {
     float: left;
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: 500;
     font-size: 17px;
@@ -523,7 +544,7 @@ footer .social-icon ul li a {
 }
 
 .login-section .login-box .login-details .sub-title {
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 18px;
@@ -536,7 +557,7 @@ footer .social-icon ul li a {
 }
 
 .login-section .login-box .login-details span {
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: 500;
     font-size: 17px;
@@ -545,10 +566,26 @@ footer .social-icon ul li a {
 
 
 .login-section .login-box .forgot-btn {
-    font-family: 'Avenir Next LT Pro';
+    font-family: 'Montserrat', sans-serif;
     font-size: 18px;
     line-height: 21px;
     color: #8183B2;
+}
+
+
+.accout-section .btn-submit {
+    background: #006577;
+    border-radius: 5px;
+    width: 133px;
+    height: 53px;
+    color: #fff;
+    line-height: 54px;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: block;
+    margin: 0 auto;
+    font-size: 17px;
+    border: none;
 }
 
 .top-header .top-header-icon .cta-header a.active{        
@@ -561,7 +598,7 @@ footer .social-icon ul li a {
 }
 
 .login-section .login-box .signup-btn {
-    font-family: 'Avenir Next LT Pro';
+    font-family: 'Montserrat', sans-serif;
     font-size: 20px;
     line-height: 23px;
     text-align: right;
@@ -576,6 +613,17 @@ footer .social-icon ul li a {
     background-size: cover;
     background-repeat: no-repeat;
 }
+
+.login-box .login-details .select-dropdown { position: relative;}
+.login-box .login-details .select-dropdown:after {
+    content: '\f107';
+    position: absolute;
+    top: 9px;
+    right: 16px;
+    font-family: FontAwesome;
+    font-size: 22px;
+    color: #aaa;
+ }
 
 header .header-card .hull-links .Sign-header a {
     background: #FFFFFF;
@@ -729,7 +777,7 @@ section.inner-header h2 {
     padding: 15px 30px;
     display: block;
     font-style: normal;
-    font-weight: bold;
+    font-weight: 600;
     font-size: 17px;
     line-height: 120%;
     /* or 19px */
@@ -1038,7 +1086,7 @@ section.inner-header h2 {
     border-top: none;
     border-left: 0;
     border-radius: 0;
-    font-family: 'Mulish', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: bold;
     font-size: 16px;
     line-height: 120%;
@@ -1047,12 +1095,12 @@ section.inner-header h2 {
     padding-left: 0;
     padding-right: 0;
     padding-bottom: 25px;
-    margin-top: 25px;
+    margin-top: 22px;
     padding-top:0;
 }
 
 .panel-default>.panel-heading h4 a {
-    font-family: 'Mulish', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: bold;
     font-size: 16px;
     line-height: 120%;
@@ -1104,7 +1152,7 @@ section.inner-header h2 {
     border-left: 1px solid transparent;
     border-right: 1px solid transparent;
     border-bottom: 1px solid transparent;
-    font-family:'Open Sans';
+    font-family: 'Montserrat', sans-serif;
     margin-bottom:0 ;
 }
 
@@ -1122,7 +1170,7 @@ section.inner-header h2 {
     color: #11142D;
     margin-bottom: 24px;
     margin-top: 25px;
-    font-family: 'Mulish', sans-serif;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .banner-ads a { display: block;margin-top: 25px;}
@@ -1311,18 +1359,17 @@ a.book-apoint {
     display: none;
     float: left;
     min-width: 160px;
-    padding: 0 0;
+    padding: 0 24px;
     margin: 0 0 0;
     font-size: 14px;
     text-align: left;
     list-style: none;
-    background-color: #fff;
+    background-color: #f7f7fc;
     background-clip: padding-box;
     border: none;
     border: none;
-    border-radius: 8px;
-    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
-    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    border-radius: 2px;
+    box-shadow: none;
 }
 .dashboard-card .side-bar ul li ul li {
     display: block;
@@ -1398,11 +1445,85 @@ div#swal2-html-container{
     margin-top: 30px;
 }
  .full-width{margin-bottom: 30px;}
+ .blog-box {
+    border: 1px solid #EEEEEE;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.151033);
+    border-radius: 4px;
+    margin: 27px 0;
+    background: #fff;
+    overflow: hidden;
+}
+.forum-section {
+    padding: 30px;
+    background: #fff;
+}
+
+.forum-box .forum-details .form-group input.form-control{
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 18px;
+    color: #000;
+    border: none;
+    box-shadow: none;
+    border-bottom: #A0A0A0 solid 1px;
+    border-radius: 0px;
+    padding: 13px 0px;
+    height: 50px;
+    text-transform: lowercase;
+}
+
+.forum-box .forum-details .form-group textarea.form-control{
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 17px;    
+    color: #000;
+    text-transform: lowercase;
+}
+
+.forum-box .forum-details .form-group select.form-control {
+    appearance: none;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 20px;
+    color: #A0A0A0;
+    box-shadow: none;
+    border: #A0A0A0 solid 1px;
+    border-radius: 10px;
+    padding: 13px 10px;
+    height: 50px;
+    text-transform: lowercase;
+}
+.forum-box .forum-details .dropdown-container{
+    border-radius: 9px;
+    border: #A0A0A0 solid 1px;
+}
+.forum-box .forum-details .dropdown-heading{
+   height: 50px;
+   font-size: 17px;
+   font-weight: 500;
+}
+.forum-box .forum-details .forum-btn{
+    background: linear-gradient(135deg, #036E80 30.73%, #5EA5C7 100%);
+    border-radius: 25px;
+    width: 150px;
+    height: 42px;
+    color: #fff;
+    line-height: 42px;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: block;
+    margin: 0 auto;
+    border: none;
+}
 .search-forum {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 15px;    
+    margin-top: 29px;    
 }
 .search-forum .add-forum {
     width: 100%;
@@ -1498,7 +1619,7 @@ div#swal2-html-container{
     position: absolute;
     top: 9px;
     right: 16px;
-    font-family: FontAwesome;
+    font-family: 'Montserrat', sans-serif;
     font-size: 22px;
     color: #aaa;
  }
@@ -1575,11 +1696,11 @@ div#swal2-html-container{
 }
 .forum-comments p i { vertical-align: top;}
 .studies-research {
-    padding: 70px 0;
+    padding: 20px 0;
     background: #F7F7FC;
 }
 .studies-research .studies-title h2 {
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 27px;    
@@ -1619,7 +1740,7 @@ div#swal2-html-container{
     margin: 25px 0;
 }
 .studies-card .studies-list h3 {
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 22px;
@@ -1629,7 +1750,7 @@ div#swal2-html-container{
 }
 
 .studies-card .studies-list p {
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
@@ -1894,7 +2015,7 @@ input[type=number]::-webkit-outer-spin-button {
 .form-group.google-serach { position: relative;}
 input.react-autosuggest__input::placeholder { color: #A0A0A0;}
 .login-box .register-general-public-text {
-    font-family: Avenir;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: 300;
     font-size: 18px;
@@ -1967,7 +2088,7 @@ input.react-autosuggest__input::placeholder { color: #A0A0A0;}
     margin: 30px 0;
 }
 .new-forums-card .new-forums-blog small {
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 14px;    
@@ -1978,7 +2099,7 @@ input.react-autosuggest__input::placeholder { color: #A0A0A0;}
 }
 
 .new-forums-card .new-forums-blog h3 {
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 24px;    
@@ -1989,7 +2110,7 @@ input.react-autosuggest__input::placeholder { color: #A0A0A0;}
 }
 
 .new-forums-card .new-forums-blog p {
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 16px;    
@@ -2015,7 +2136,7 @@ input.react-autosuggest__input::placeholder { color: #A0A0A0;}
 .new-forums-card .new-forums-input .add-comment-btn {
     background: #006577;
     border-radius: 5px;
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 14px;
@@ -2033,7 +2154,7 @@ input.react-autosuggest__input::placeholder { color: #A0A0A0;}
 
 .new-forums-card .new-forums-count span {
     position: relative;
-    font-family: Open Sans;
+    font-family: FontAwesome;
     font-style: normal;
     font-weight: bold;
     font-size: 16px;
@@ -2051,7 +2172,7 @@ input.react-autosuggest__input::placeholder { color: #A0A0A0;}
     background: #98D3DD;
     border-radius: 100px;
     border: none;
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 14px;
@@ -2115,7 +2236,7 @@ input.react-autosuggest__input::placeholder { color: #A0A0A0;}
 }
 
 .new-forums-reply .forums-reply-card .forums-reply-text h3 {
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 16px;
@@ -2126,7 +2247,7 @@ input.react-autosuggest__input::placeholder { color: #A0A0A0;}
 }
 
 .new-forums-reply .forums-reply-card .forums-reply-text h3 span {
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 16px;
@@ -2138,7 +2259,7 @@ input.react-autosuggest__input::placeholder { color: #A0A0A0;}
 }
 
 .new-forums-reply .forums-reply-card .forums-reply-text span {
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 13px;
@@ -2149,7 +2270,7 @@ input.react-autosuggest__input::placeholder { color: #A0A0A0;}
 }
 
 .new-forums-reply .forums-reply-card .forums-reply-text p {
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
@@ -2160,7 +2281,7 @@ input.react-autosuggest__input::placeholder { color: #A0A0A0;}
     display: inline-block;
 }
 .new-forums-reply .forums-reply-card .forums-reply-text p span{
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 13px;
@@ -2178,7 +2299,7 @@ input.react-autosuggest__input::placeholder { color: #A0A0A0;}
     border-radius: 100px;
     width: 79px;
     height: 33px;
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: 500;
     font-size: 13px;
@@ -2239,7 +2360,7 @@ input.react-autosuggest__input::placeholder { color: #A0A0A0;}
 .new-forums-input .add-comment-btn {
     background: #006577;
     border-radius: 5px;
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 14px;
@@ -2267,7 +2388,7 @@ input.react-autosuggest__input::placeholder { color: #A0A0A0;}
 .new-forums-input-edit .add-comment-btn {
     background: #006577;
     border-radius: 5px;
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 14px;
@@ -2395,7 +2516,7 @@ color: #1e6e80;
 
 .studies-card .studies-list { padding: 30px;}
 .studies-card .studies-list h3 {
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 22px;
@@ -2435,7 +2556,7 @@ color: #1e6e80;
 }
 
 .studies-box .studies-header h3 {
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 16px;
@@ -2451,7 +2572,7 @@ color: #1e6e80;
     mix-blend-mode: normal;
     opacity: 0.5;
     display: block;
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
@@ -2461,7 +2582,7 @@ color: #1e6e80;
 
 .studies-box .studies-header .studies-text span {
     display: block;
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 12px;
@@ -2478,7 +2599,7 @@ color: #1e6e80;
     height: 47px;
     color: #fff;
     line-height: 47px;
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 16px;
@@ -2488,7 +2609,7 @@ color: #1e6e80;
 }
 
 .studies-card .studies-list  p a {
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 13px;
@@ -2499,7 +2620,7 @@ color: #1e6e80;
 }
 
 .studies-card .studies-list  p {
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
@@ -2541,7 +2662,7 @@ color: #1e6e80;
 }
 
 .view-profile-card .view-profile-header .view-profile-title .view-profile-title-text h3 {
-    font-family: 'Open Sans';
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 36px;
@@ -2561,7 +2682,7 @@ color: #1e6e80;
     width: 150px;
     height: 50px;
     border: none;
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 14px;
@@ -2595,7 +2716,7 @@ color: #1e6e80;
 }
 
 .view-pro-button .view-profile-title-text h3 {
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 16px;
@@ -2606,7 +2727,7 @@ color: #1e6e80;
 }
 
 .view-pro-button .view-profile-title-text p {
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
@@ -2624,7 +2745,7 @@ color: #1e6e80;
     padding: 15px 0;
     display: inline-block;
     width: 49%;
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
@@ -2671,7 +2792,7 @@ color: #1e6e80;
     box-shadow: none;
 }
 .edit-profile span { 
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: 500;
     font-size: 14px;
@@ -2692,7 +2813,7 @@ color: #1e6e80;
     cursor: pointer;
 }
 .edit-profile .browse-img {
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: 500;
     font-size: 17px;
@@ -2809,7 +2930,7 @@ color: #1e6e80;
     width: 150px;
     height: 50px;
     border: none;
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 14px;
@@ -2869,7 +2990,7 @@ color: #1e6e80;
     width: 100%;
 }
 
-.question-titles th {font-family: Open Sans;font-style: normal;font-weight: bold;font-size: 14px;line-height: 26px;
+.question-titles th {font-family: 'Montserrat', sans-serif;font-style: normal;font-weight: bold;font-size: 14px;line-height: 26px;
 /* identical to box height, or 186% */letter-spacing: 1px;text-transform: uppercase;color: #6C6B6B;text-align: center;}
 
 .question-titles th:first-child {
@@ -2886,7 +3007,7 @@ color: #1e6e80;
 }
 .question-titles td {
     width: 9%;
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
@@ -2904,7 +3025,7 @@ color: #1e6e80;
 
 .question-list .panel-group .panel.panel-default {
     background: #fff;
-    padding: 20px 30px 0;
+    padding: 1px 30px 0;
     margin: 15px 0;
     box-shadow: none;
 }
@@ -2936,16 +3057,16 @@ color: #1e6e80;
     border: none;
     background: #A2D6DF;
     border-radius: 5px;
-    font-family: Open Sans;
+    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: bold;
-    font-size: 13px;
+    font-size: 11px;
     line-height: 21px;
     text-align: center;
     letter-spacing: 1px;
     text-transform: uppercase;
     color: #363535;
-    padding: 7px 13px;
+    padding: 9px 11px;
 }
 
 .question-cards {
@@ -2963,7 +3084,7 @@ color: #1e6e80;
 
 .question-titles td .comment:before {
     content: '\f0d7';
-    font-family: 'FontAwesome';
+    font-family: FontAwesome;
     position: absolute;
     left: 0;
     right: 0;
@@ -3168,7 +3289,10 @@ overflow: hidden;
         color: #000000;
     }
 
-    .event-card .event-message .event-text {
+    .event-card .event-message .event-text a{
+        color: #000000;
+    }
+     .event-card .event-message .event-text {
         overflow: hidden;
     }
 
@@ -3237,3 +3361,340 @@ overflow: hidden;
     border: solid 1px #ddd;
     padding: 8px;
 }
+
+.event-details {
+        margin: 30px 0;
+    }
+
+    .event-details-title {}
+
+    .event-details-title h3 {
+        font-style: normal;
+        font-weight: bold;
+        font-size: 64px;
+        line-height: 53px;
+    /* identical to box height, or 33% */
+        letter-spacing: 0.1px;
+        color: #000000;
+        margin-bottom: 30px;
+    }
+
+    .event-details-links {
+        margin: 15px 0 0;
+    }
+
+   .event-listing-box .btn-save{
+        background: #006577;
+        border-radius: 5px;
+        width: 235px;
+        height: 50px;
+        border: none;
+        font-family: 'Montserrat', sans-serif;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 21px;
+        text-align: center;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #FFFFFF;
+    }
+
+    .event-details-links ul li {
+        display: inline-block;
+        margin-right: 15px;
+    }
+
+    .event-details-links ul li a {
+        background: #D6EBEE;
+        border-radius: 100px;
+        display: block;
+        padding: 17px 40px;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 18px;
+        line-height: 21px;
+    /* identical to box height, or 117% */
+        letter-spacing: 0.1px;
+        color: #000000;
+    }
+
+    .event-details-links ul li.active a {
+        background: #fff !important;
+    }
+    .event-details-content .event-content-img {
+        margin-bottom: 30px;
+    }
+
+    .event-details-content .event-content-img img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .event-details-content {
+        background: #fff;
+        padding: 30px;
+        margin: 30px 0;
+    }
+
+    .event-details-content .event-content-list p {
+        font-style: normal;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 24px;
+    /* or 117% */
+        letter-spacing: 0.1px;
+        color: #000000;
+        margin: 0 0 20px;
+    }
+
+    .event-listing-box .event-listing-text {
+        min-height: 70px;
+    }
+
+    .event-listing-box .event-listing-text .event-text-icon {
+        width: 35px;
+        height: 35px;
+        background:transparent;
+        text-align: center;
+        line-height: 35px;
+        float: left;
+        margin-right: 15px;
+    }
+
+    .event-listing-box .event-listing-text .event-text-word {
+        overflow: hidden;
+    }
+
+    .event-listing-box .event-listing-text .event-text-word h3 {
+        font-style: normal;
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 23px;
+    /* identical to box height, or 150% */
+        letter-spacing: 0.1px;
+        color: #000000;
+        margin: 0px 0px 5px;
+    }
+
+    .event-listing-box .event-listing-text .event-text-word span {
+        display: block;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 21px;
+    /* identical to box height, or 117% */
+        letter-spacing: 0.1px;
+        color: #4d5156;
+    }
+
+    .event-joining {
+        background: #EEF9FB;
+        border-radius: 5px;
+        margin-bottom: 15px;
+    }
+
+    .event-joining h3 {
+        font-style: normal;
+        font-weight: bold;
+        font-size: 18px;
+        line-height: 21px;
+    /* identical to box height, or 87% */
+        letter-spacing: 0.1px;
+        color: #000000;
+    }
+
+    .event-joining p {
+        font-style: normal;
+        font-weight: normal;
+        font-size: 16px;
+        line-height: 21px;
+    /* or 131% */
+        letter-spacing: 0.1px;
+        color: #000000;
+        margin: 10px 0px !important;
+    }
+
+    .event-joining span {
+        color: #1e6e80;
+    }
+    .event-joining .joining-card {
+        padding: 15px;
+    }
+    .joining-btn-card {
+        text-align: center;
+        display: block;
+        vertical-align: middle;
+        background: #036E80;
+        border-radius: 0px 5px 5px 0px;
+        color: #fff;
+        min-height: 142px;
+        position: relative;
+    }
+
+    .joining-btn-card a {
+        font-style: normal;
+        font-weight: bold;
+        font-size: 18px;
+        text-align: center;
+        letter-spacing: 0.1px;
+        color: #FFF1F1;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        line-height: 130px;
+    }
+    /* 5 Columns */
+.event-joining .joining-card h3 {
+    margin: 0  !important;
+    font-size: 20px;
+}
+
+
+.resources-box {
+    background: #E5F6F9;
+    border-radius: 5px;
+    padding: 30px;
+    text-align: center;
+}
+
+.resources-box .resources-icon {
+    width: 80px;
+    height: 80px;
+    margin: 10px auto;
+    display: block;
+    line-height: 80px;
+}
+.event-details-content h3 {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 21px;
+/* identical to box height, or 150% */
+    letter-spacing: 0.1px;
+    color: #000000;
+    margin: 30px 0;
+}
+
+.resources-video {
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative;
+}
+
+.resources-video img {
+    width: 100%;
+    height: 100%;
+}
+
+.resources-video .video-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.5s;
+}
+
+.resources-video .video-icon img {
+    width: 65px;
+    height: 65px;
+}
+
+.resources-video:hover .video-icon {
+    opacity: 1;
+    visibility: visible;
+    top: 35%;
+}
+
+.resources-video:hover:before {
+    content: '';
+    background: rgb(0 0 0 / 43%);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+.Arctiles-Card {
+    background: #E5F6F9;
+    border-radius: 10px;
+    padding: 15px;
+    min-height: 101px;    
+    margin-bottom: 15px;
+}
+
+.Arctiles-Card .Arctiles-Icon {
+    width: 70px;
+    height: 70px;
+    background: #e5f6f9;
+    border-radius: 100px;
+    text-align: center;
+    line-height: 70px;
+    font-size: 26px;
+    color: #000;
+    float: left;
+    margin-right: 18px;
+    background: #A2D6DF;
+}
+
+.Arctiles-Card .Arctiles-Text {
+    overflow: hidden;
+}
+
+.Arctiles-Card .Arctiles-Text h3 {
+    margin: 20px 0;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 21px;
+/* identical to box height, or 117% */
+    letter-spacing: 0.1px;
+    color: #000000;
+}
+
+.Arctiles-Card .Arctiles-Text h3 a {
+    display: block;
+    color: #000;
+}
+
+.col-xs-15,
+.col-sm-15,
+.col-md-15,
+.col-lg-15 {
+    position: relative;
+    min-height: 1px;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.col-xs-15 {
+    width: 20%;
+    float: left;
+}
+@media (min-width: 768px) {
+    .col-sm-15 {
+        width: 20%;
+        float: left;
+    }
+}
+@media (min-width: 992px) {
+    .col-md-15 {
+        width: 20%;
+        float: left;
+    }
+}
+@media (min-width: 1200px) {
+    .col-lg-15 {
+        width: 20%;
+        float: left;
+    }
+}
+

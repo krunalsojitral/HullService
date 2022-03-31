@@ -69,7 +69,7 @@ export default function Login() {
                                         </Link>                                                
                                     </div>
                                     <div className="col-md-6 text-right">
-                                        <Link className="signup-btn" to='/userSelection'>
+                                        <Link className="signup-btn" to='/research-request-form'>
                                             Sign Up
                                         </Link>                                                
                                     </div>

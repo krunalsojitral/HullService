@@ -237,6 +237,10 @@ export default function Register() {
                         setValues(userdata.organization)
                     }
 
+                    if (userdata.phone) {
+                        setFormValue('phone', userdata.phone)
+                    }
+
                     if (userdata.other_sector) {
                         setFormValue('sector', 0)
                         setFormValue('other_sector', userdata.other_sector)
@@ -258,6 +262,16 @@ export default function Register() {
                         setFormValue('other_occupation', userdata.other_occupation)
                     } else {
                         setFormValue('occupation', userdata.occupation)
+                    }
+
+                    if (userdata.about_us) {
+                        var regex = /<br\s*[\/]?>/gi;
+                        setFormValue('about_us', userdata.about_us.replace(regex, "\n"));
+                    }
+
+                    if (userdata.research_description) {
+                        var regex = /<br\s*[\/]?>/gi;
+                        setFormValue('research_description', userdata.research_description.replace(regex, "\n"));
                     }
 
 
@@ -313,22 +327,26 @@ export default function Register() {
     
 
     const onSubmit = (data) => { 
+
+        data.role = 3;
+        data.user_id = user.id;
+        registerResearcherUser(data);
         
-        if (!city) {
-            setCityError('Address is required.');
-        } else if (!latitude && !longitude) {
-            setCityError('Please enter proper address.');
-        } else {
-            data.city = city;
-            data.latitude = latitude;
-            data.longitude = longitude;
-            data.country = country;
-            data.professional_interest_of_area = selectedProfessionalInterestArea;
-            data.researcher_interest_of_area = selectedResearcherInterestArea;
-            data.role = 3;
-            data.user_id = user.id;
-            registerResearcherUser(data);
-        }
+        // if (!city) {
+        //     setCityError('Address is required.');
+        // } else if (!latitude && !longitude) {
+        //     setCityError('Please enter proper address.');
+        // } else {
+        //     data.city = city;
+        //     data.latitude = latitude;
+        //     data.longitude = longitude;
+        //     data.country = country;
+        //     data.professional_interest_of_area = selectedProfessionalInterestArea;
+        //     data.researcher_interest_of_area = selectedResearcherInterestArea;
+        //     data.role = 3;
+        //     data.user_id = user.id;
+        //     registerResearcherUser(data);
+        // }
     }
 
     const {
@@ -644,6 +662,30 @@ export default function Register() {
 
                                         </div>
 
+                                        <div className="form-group">
+                                            <Controller
+                                                name={"phone"}
+                                                control={control}
+                                                rules={{ required: true,
+                                                            pattern: {
+                                                                value: /^[0-9]+$/i,
+                                                            } }}
+                                                render={({ field: { onChange, value } }) => (
+                                                    <input
+                                                        type="text"
+                                                        onChange={onChange}
+                                                        value={value}
+                                                        className="form-control"
+                                                        placeholder={`Phone *`}
+                                                    />
+                                                )}
+                                            ></Controller>
+                                            {errors.phone && errors.phone.type === "required" && (
+                                                <small className="error">Phone is required.</small>
+                                            )}
+                                            {errors?.phone?.type === "pattern" && (<small className="error">Invalid phone number</small>)}
+                                        </div>
+
 
                                         
                                         <div className="form-group">
@@ -737,7 +779,7 @@ export default function Register() {
 
 
 
-                                        {userTypeList !== 'general' && <div className="form-group google-serach">
+                                        {/* {userTypeList !== 'general' && <div className="form-group google-serach">
                                             <div ref={ref}>
                                                 <input
                                                     value={cityValue}
@@ -749,9 +791,9 @@ export default function Register() {
                                                 {status === "OK" && <ul className="suggestion">{renderSuggestions()}</ul>}
                                                 {cityError && <small className="error">{cityError}</small>}
                                             </div>
-                                        </div>}
+                                        </div>} */}
 
-                                        {userTypeList !== 'general' && <div className="form-group autosuggestion">
+                                        <div className="form-group autosuggestion">
                                             <Controller
                                                 name={"organization"}
                                                 control={control}
@@ -774,7 +816,7 @@ export default function Register() {
                                             {errors.suggestion && errors.suggestion.type === "required" && (
                                                 <small className="error">suggestion is required.</small>
                                             )}
-                                        </div>}
+                                        </div>
                                         
 
                                         {userTypeList == 'researcher' &&
@@ -821,7 +863,7 @@ export default function Register() {
                                                 )}
                                             </div>}
 
-                                                <div className="form-group">
+                                                {/* <div className="form-group">
                                                     <MultiSelect
                                                         options={researcherInterestAreaDropdown}
                                                         value={selectedResearcherInterestArea}                                                
@@ -853,7 +895,7 @@ export default function Register() {
                                                         />
                                                     )}
                                                 ></Controller>
-                                            </div>}
+                                            </div>} */}
 
                                             </div>
                                         }
@@ -1007,6 +1049,41 @@ export default function Register() {
                                         </div>}
 
                                         
+                                        <div className="form-group">
+                                            <Controller
+                                                name={"research_description"}
+                                                control={control}
+                                                render={({ field: { onChange, value } }) => (
+                                                    <textarea
+                                                        rows="4" cols="50"
+                                                        type="text"
+                                                        onChange={onChange}
+                                                        value={value}
+                                                        className="form-control"
+                                                        placeholder={`Description of Research `}
+                                                    />
+                                                )}
+                                            ></Controller>
+                                        </div>
+
+
+                                        <div className="form-group">
+                                            <Controller
+                                                name={"about_us"}
+                                                control={control}
+                                                render={({ field: { onChange, value } }) => (
+                                                    <textarea
+                                                        rows="4" cols="50"
+                                                        type="text"
+                                                        onChange={onChange}
+                                                        value={value}
+                                                        className="form-control"
+                                                        placeholder={`Tell us about you`}
+                                                    />
+                                                )}
+                                            ></Controller>
+                                        </div>
+
                                         <div className="form-group checkbox">
                                             <Controller
                                                 control={control}

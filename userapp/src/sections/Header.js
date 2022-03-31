@@ -102,12 +102,27 @@ export default function Header() {
                                             </NavLink>
                                         </li>
                                         <li>
+                                            <NavLink activeClassName="active" to="/login">
+                                                <InlineButton name={"LOGIN"} />
+                                            </NavLink>
+                                        </li>
+                                    </ul>
+                                </div>}
+
+                                {token && <div className="hull-menu">
+                                    <ul>
+                                        <li>
+                                            <NavLink exact={true} activeClassName="active" to="/">
+                                                <InlineButton name={"HOME"} />
+                                            </NavLink>
+                                        </li>
+                                        <li>
                                             <NavLink activeClassName="active" to="/events">
                                                 <InlineButton name={"EVENTS"} />
                                             </NavLink>
-                                        </li>                                        
+                                        </li>
                                         <li>
-                                            <NavLink activeClassName="active" to="/course">
+                                            <NavLink activeClassName="active" to="/courses-training">
                                                 <InlineButton name={"COURSE"} />
                                             </NavLink>
                                         </li>

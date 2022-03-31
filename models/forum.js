@@ -1139,7 +1139,8 @@ function forum() {
             let overview = {
                 research_request_cnt : 0,
                 forum_cnt: 0,
-                forum_list: []
+                forum_list: [],
+                research_cnt: 0,
             }   
             asyn.waterfall([
                 function (done) {                    
@@ -1211,7 +1212,21 @@ function forum() {
                             })
                         }
                     });
-                }
+                },
+                function (obj, done4) {
+                    var sql = 'SELECT count(*) as cnt FROM users where user_read_status = $1';
+                    con.query(sql, [0], function (err, result) {
+                        if (err) {
+                            if (env.DEBUG) {
+                                console.log(err);
+                            }
+                            done4(err, null);
+                        } else {
+                            overview.research_cnt = result.rows[0].cnt
+                            done4(null, overview);
+                        }
+                    });
+                },
             ],
             function (err, obj) {
                 if (err){

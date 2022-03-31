@@ -57,6 +57,9 @@ router.post('/researcher-request', (req, res) => {
                             occupation: (req.body.occupation) ? req.body.occupation : '',
                             sector: (req.body.sector) ? req.body.sector : '',
                             academic_discipline: (req.body.academic_discipline) ? req.body.academic_discipline : '',
+                            research_description: (req.body.research_description) ? req.body.research_description : '',
+                            about_us: (req.body.about_us) ? req.body.about_us : '',
+                            phone: (req.body.phone) ? req.body.phone : '',
                             status: 0,
                             role: req.body.role,
                             email_verification_token: shortid.generate() + Date.now(),
@@ -67,7 +70,8 @@ router.post('/researcher-request', (req, res) => {
                             other_academic_discipline: (req.body.other_academic_discipline) ? req.body.other_academic_discipline : '',
                             other_occupation: (req.body.other_occupation) ? req.body.other_occupation : '',
                             other_professional_interest_area: (req.body.other_professional_interest_area) ? req.body.other_professional_interest_area : '',
-                            other_research_interest_area: (req.body.other_research_interest_area) ? req.body.other_research_interest_area : ''
+                            other_research_interest_area: (req.body.other_research_interest_area) ? req.body.other_research_interest_area : '',
+                            user_read_status:0
                         };
                         overview['data'] = record;
                         done(err, overview);
@@ -198,11 +202,11 @@ router.post('/userStatusAction', [
 
         if (hostname == env.LOCAL_HOST_USER_APP) {
             home_url = env.APP_URL;
-            resetLink = 'http://localhost:4200/' + 'register?code='+data[0].email_verification_token;
+            resetLink = env.APP_URL + 'register?code='+data[0].email_verification_token;
             admin_app_url = env.ADMIN_APP_URL
         } else {
             home_url = env.APP_URL;
-            resetLink = 'http://localhost:4200/' + 'register?code='+data[0].email_verification_token
+            resetLink = env.APP_URL + 'register?code='+data[0].email_verification_token
             admin_app_url = env.ADMIN_APP_URL
         }
 
@@ -233,6 +237,17 @@ router.post('/userStatusAction', [
     });
 });
 
+router.get('/updateResearchRequestSignUpCount', function (req, res) {
+    loggerData(req);
+    User.updateResearchRequestSignUpCount(function (err, count) {
+        if (err) {
+            return res.json({ 'status': 0, 'response': { 'msg': err } });
+        } else {
+            return res.json({ 'status': 1, 'response': { 'msg': 'updated successfully' } });
+        }
+    });
+});
+
 
 // router.post('/userStatusAction', [
 //     check('user_id', 'Please enter user id').notEmpty(),
@@ -249,11 +264,11 @@ router.post('/userStatusAction', [
 
 //         if (hostname == env.LOCAL_HOST_USER_APP) {
 //             home_url = env.APP_URL;
-//             resetLink = 'http://localhost:4200/' + 'activation-account?activationcode=' + data[0].email_verification_token;
+//             resetLink = env.APP_URL + 'activation-account?activationcode=' + data[0].email_verification_token;
 //             admin_app_url = env.ADMIN_APP_URL
 //         } else {
 //             home_url = env.APP_URL;
-//             resetLink = 'http://localhost:4200/' + 'activation-account?activationcode=' + data[0].email_verification_token
+//             resetLink = env.APP_URL + 'activation-account?activationcode=' + data[0].email_verification_token
 //             admin_app_url = env.ADMIN_APP_URL
 //         }
 
@@ -746,6 +761,8 @@ router.post('/getAdminUserById', [
                         userList['other_research_interest_area'] = result[0].other_research_interest_area;
                         userList['pinterestarea'] = csvString;
                         userList['about_us'] = result[0].about_us;                       
+                        userList['phone'] = result[0].phone;
+                        userList['research_description'] = result[0].research_description;
                         userList['email_verification_token'] = result[0].email_verification_token;
                         userList['first_time_login'] = result[0].first_time_login;
                         userList['joined_date'] = (result[0].joined_date) ? moment(result[0].joined_date).format('MM-DD-YYYY') : '';
@@ -785,6 +802,7 @@ router.get('/getEditUserById', passport.authenticate('jwt', { session: false }),
                     userList['first_name'] = result[0].first_name;
                     userList['last_name'] = result[0].last_name;
                     userList['email'] = result[0].email;
+                    userList['phone'] = result[0].phone;
                     userList['city'] = result[0].city;
                     userList['organization'] = result[0].organization_name;                    
                     userList['sector'] = result[0].sector;
@@ -801,6 +819,7 @@ router.get('/getEditUserById', passport.authenticate('jwt', { session: false }),
                     userList['other_professional_interest_area'] = result[0].other_professional_interest_area;
                     userList['other_research_interest_area'] = result[0].other_research_interest_area;
                     userList['about_us'] = result[0].about_us;
+                    userList['research_description'] = result[0].research_description;
                     userList['subscribe'] = result[0].subscribe;
                     userList['joined_date'] = (result[0].joined_date) ? moment(result[0].joined_date).format('MM-DD-YYYY') : '';
                     userList['renewal_date'] = (result[0].renewal_date) ? moment(result[0].renewal_date).format('MM-DD-YYYY'): '';
@@ -874,6 +893,8 @@ router.post('/getEditUserByEmailToken', (req, res, next) => {
                     userList['other_professional_interest_area'] = result[0].other_professional_interest_area;
                     userList['other_research_interest_area'] = result[0].other_research_interest_area;
                     userList['about_us'] = result[0].about_us;
+                    userList['phone'] = result[0].phone;
+                    userList['research_description'] = result[0].research_description;
                     userList['subscribe'] = result[0].subscribe;
                     userList['joined_date'] = (result[0].joined_date) ? moment(result[0].joined_date).format('MM-DD-YYYY') : '';
                     userList['renewal_date'] = (result[0].renewal_date) ? moment(result[0].renewal_date).format('MM-DD-YYYY') : '';
@@ -1040,6 +1061,9 @@ router.post('/registerResearcherUser', function (req, res) {
                             lat: (req.body.latitude) ? req.body.latitude : '',
                             long: (req.body.longitude) ? req.body.longitude : '',
                             country: (req.body.country) ? req.body.country : '',
+                            phone: (req.body.phone) ? req.body.phone : '',
+                            research_description: (req.body.research_description) ? req.body.research_description : '',
+                            about_us: (req.body.about_us) ? req.body.about_us : '',
                             level_of_education: (req.body.level_of_education) ? req.body.level_of_education : '',
                             occupation: (req.body.occupation) ? req.body.occupation : '',
                             sector: (req.body.sector) ? req.body.sector : '',
@@ -1077,13 +1101,16 @@ router.post('/registerResearcherUser', function (req, res) {
                 });
             },
             function (overview, done2) {
-                var update_value = [overview.data.password,overview.data.first_name, overview.data.last_name, overview.data.city, overview.data.email, overview.data.organization, overview.data.academic_discipline, overview.data.other_academic_discipline, overview.data.other_research_interest_area]
+                var update_value = [overview.data.password, overview.data.first_name, overview.data.last_name, overview.data.city, overview.data.email, overview.data.phone, overview.data.about_us, overview.data.research_description,overview.data.organization, overview.data.academic_discipline, overview.data.other_academic_discipline, overview.data.other_research_interest_area]
                 var final_obj = {
                     password: overview.data.password,
                     first_name: overview.data.first_name,
                     last_name: overview.data.last_name,
                     city: overview.data.city,
                     email: overview.data.email,
+                    phone: overview.phone,
+                    about_us: overview.about_us,
+                    research_description: overview.research_description,
                     organization: overview.data.organization,
                     academic_discipline: overview.data.academic_discipline,
                     other_academic_discipline: overview.data.other_academic_discipline,
@@ -1109,7 +1136,7 @@ router.post('/registerResearcherUser', function (req, res) {
                                 admin_app_url = env.ADMIN_APP_URL
                             }
 
-                            var htmlUser = fs.readFileSync(__dirname + '/templates/userRegistration/userRegistration.html', 'utf8');
+                            var htmlUser = fs.readFileSync(__dirname + '/templates/userRegistration/verifyEmail.html', 'utf8');
 
                             var dynamicHtml = {
                                 home_url: home_url,
@@ -1161,8 +1188,10 @@ router.post('/updateuserByadmin', passport.authenticate('jwt', { session: false 
         var first_name = obj.first_name;
         var last_name = obj.last_name;
         var email = (obj.email) ? obj.email : '';
+        var phone = (obj.phone) ? obj.phone : '';
         var city = (obj.city) ? obj.city : '';
         var about_us = (obj.about_us) ? obj.about_us : '';
+        var research_description = (obj.research_description) ? obj.research_description : '';
         var organization = (obj.organization) ? obj.organization : '';
         var level_of_education = (obj.level_of_education) ? obj.level_of_education : '';
         var occupation = (obj.occupation && parseInt(obj.occupation) > 0) ? obj.occupation : null;
@@ -1204,6 +1233,7 @@ router.post('/updateuserByadmin', passport.authenticate('jwt', { session: false 
                 first_name: first_name,
                 last_name: last_name,
                 email: email,
+                phone: phone,
                 city:city,
                 organization: organization,
                 level_of_education: level_of_education,
@@ -1279,13 +1309,15 @@ router.post('/updateuserByadmin', passport.authenticate('jwt', { session: false 
                 },
                 function (overview, done2) {
                     if (obj.role == 2) {                        
-                        update_value = [first_name, last_name, about_us, city, email, overview.organization, level_of_education, occupation, sector, other_sector, other_occupation, other_professional_interest_area, subscribe]
+                        update_value = [first_name, last_name, about_us, research_description, city, email, phone, overview.organization, level_of_education, occupation, sector, other_sector, other_occupation, other_professional_interest_area, subscribe]
                         final_obj = {
                             first_name: first_name,
                             last_name: last_name,
                             about_us: about_us,
+                            research_description: research_description,
                             city:city,
                             email: email,
+                            phone: phone,
                             organization: overview.organization,
                             level_of_education: level_of_education,
                             occupation: occupation,
@@ -1306,13 +1338,15 @@ router.post('/updateuserByadmin', passport.authenticate('jwt', { session: false 
                         }
                     } else if (obj.role == 3) {
                         
-                        update_value = [first_name, last_name, about_us, city, email, overview.organization, academic_discipline, other_academic_discipline, other_research_interest_area, subscribe]
+                        update_value = [first_name, last_name, about_us, research_description, city, email, phone, overview.organization, academic_discipline, other_academic_discipline, other_research_interest_area, subscribe]
                         final_obj = {
                             first_name: first_name,
                             last_name: last_name,
                             about_us: about_us,
+                            research_description: research_description,
                             city: city,
                             email: email,
+                            phone: phone,
                             organization: overview.organization,
                             academic_discipline: academic_discipline,
                             other_academic_discipline: other_academic_discipline,
@@ -1329,12 +1363,14 @@ router.post('/updateuserByadmin', passport.authenticate('jwt', { session: false 
                             final_obj.user_image = '';
                         }
                     } else if (obj.role == 4) {
-                        update_value = [first_name, last_name, about_us, email, subscribe]
+                        update_value = [first_name, last_name, about_us, research_description, email, phone, subscribe]
                         final_obj = {
                             first_name: first_name,
                             last_name: last_name,
                             about_us: about_us,
+                            research_description: research_description,
                             email: email,
+                            phone: phone,
                             subscribe: subscribe
                         };
                         if (overview.user_image) {
@@ -1346,12 +1382,14 @@ router.post('/updateuserByadmin', passport.authenticate('jwt', { session: false 
                             final_obj.user_image = '';
                         }
                     } else {
-                        update_value = [first_name, last_name, about_us, email, subscribe]
+                        update_value = [first_name, last_name, about_us, research_description, email, phone, subscribe]
                         final_obj = {
                             first_name: first_name,
                             last_name: last_name,
                             about_us: about_us,
+                            research_description: research_description,
                             email: email,
+                            phone: phone,
                             subscribe: subscribe
                         };
                         if (overview.user_image) {

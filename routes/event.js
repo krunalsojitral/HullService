@@ -72,8 +72,8 @@ router.post("/addEventByadmin", function (req, res) {
     if (validationErrors == false) {
       let parsed = JSON.parse(fields.data);
 
-      var start_date = (parsed.start_date) ? moment(parsed.start_date, "YYYY-MM-DD").add(1, 'days').format("YYYY-MM-DD") : ''
-      var end_date = (parsed.end_date) ? moment(parsed.end_date, "YYYY-MM-DD").add(1, 'days').format("YYYY-MM-DD") : ''
+      var start_date = (parsed.start_date) ? moment(parsed.start_date, "YYYY-MM-DD h:mm a").add(1, 'days').format("YYYY-MM-DD h:mm a") : ''
+      var end_date = (parsed.end_date) ? moment(parsed.end_date, "YYYY-MM-DD h:mm a").add(1, 'days').format("YYYY-MM-DD h:mm a") : ''
 
       var record = {
         title: parsed.title,
@@ -327,8 +327,8 @@ router.post('/getEventDataById', [check('event_id', 'Event is required').notEmpt
             event['event_id'] = result[0].event_id;
             event['title'] = result[0].title;
             event['description'] = result[0].description;            
-            event['start_date'] = (result[0].start_date) ? moment(result[0].start_date).format('YYYY/MM/DD') :'';
-            event['end_date'] = (result[0].end_date) ? moment(result[0].end_date).format('YYYY/MM/DD') : '';
+            event['start_date'] = (result[0].start_date) ? moment(result[0].start_date).format('YYYY/MM/DD h:mm a') :'';
+            event['end_date'] = (result[0].end_date) ? moment(result[0].end_date).format('YYYY/MM/DD h:mm a') : '';
             event['location'] = result[0].location;
             event['organization'] = result[0].organization;
             event['image'] = (result[0].image) ? imageLink + env.EVENT_VIEW_PATH + result[0].image : '';
@@ -862,14 +862,46 @@ router.post('/getUnpaidEventList', function (req, res) {
         retObj['image'] = (data.image) ? imageLink + env.EVENT_VIEW_PATH + data.image : '';
         retObj['day'] = (data.start_date) ? moment(data.start_date).format('ddd') : '';
         retObj['date'] = (data.start_date) ? moment(data.start_date).format('DD') : '';
+        retObj['group_start_date'] = (data.start_date) ? moment(data.start_date).format('YYYY-MM-DD') : '';
         retObj['start_date'] = (data.start_date) ? moment(data.start_date).format('MMM Do YYYY') : '';
         retObj['end_date'] = (data.end_date) ? moment(data.end_date).format('MMM Do YYYY') : '';
         retObj['status'] = data.status;
         return retObj;
       });
+      var newResult = getDateArr(eventList)
+
+      // var newarry = [];
+      // var subarry = [];
+      // Object.keys(newResult).map(function (k, index) {
+      //   subarry[k].push(newResult[k]) 
+      //   newarry[index].push(subarry);
+      //   console.log(index);
+      //   console.log("key with value: " + k + " = " + newResult[k])
+
+      // })
+
+      // console.log(newarry);
+
       return res.json({ status: 1, 'response': { data: eventList } });
     }
   });
 });
+
+function getDateArr(arr) {
+  var new_arr = {};
+  for (var i = 0, len = arr.length; i < len; i++) {
+    var Month_index = arr[i].group_start_date.lastIndexOf('-');
+    var group_start_date = moment(arr[i].group_start_date.substr(0, Month_index)).format('MMM YYYY');
+    
+    if (!new_arr[group_start_date]) {
+      new_arr[group_start_date] = [];
+      new_arr[group_start_date].push(arr[i])
+    } else {
+      new_arr[group_start_date].push(arr[i])
+    }
+
+  }
+  return new_arr
+}
 
 module.exports = router;

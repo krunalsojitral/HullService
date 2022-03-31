@@ -14,11 +14,8 @@ import usePlacesAutocomplete, { getGeocode, getLatLng, } from "use-places-autoco
 export default function Events() {
    
 
-    const pageLimit = 9;
-    const [offset, setOffset] = useState(0);
-    const [currentPage, setCurrentPage] = useState(1);
+    
     const [eventdata, setEventData] = useState([]);
-    const [currentData, setCurrentData] = useState([]);    
     const [token, setToken] = useState('');
     const [noresult, setNoresult] = React.useState(false)
 
@@ -47,10 +44,11 @@ export default function Events() {
         };
 
         if (token) {
-            axios.post(api_url + '/event/getPaidEventList', {}, config).then((result) => {
+            axios.post(api_url + '/event/getUnpaidEventList', {}, config).then((result) => {
                 if (result.data.status) {
                     var eventdata = result.data.response.data;
                     if (eventdata.length > 0) {
+                        
                         setEventData(eventdata);
                         setNoresult(false);
                     } else {
@@ -66,7 +64,10 @@ export default function Events() {
             axios.post(api_url + '/event/getUnpaidEventList', {}).then((result) => {
                 if (result.data.status) {
                     var eventdata = result.data.response.data;
+                    console.log(eventdata);
                     if (eventdata.length > 0) {
+                        console.log('tetse');
+                        console.log(eventdata);
                         setEventData(eventdata);
                         setNoresult(false);
                     } else {
@@ -103,14 +104,14 @@ export default function Events() {
         })
     }
 
-    React.useEffect(() => {
-        if (offset > 0) {
-            $('html, body').animate({
-                scrollTop: $("#scrolltop").offset().top
-            }, 2);
-        }
-        setCurrentData(eventdata.slice(offset, offset + pageLimit));
-    }, [offset, eventdata]);
+    // React.useEffect(() => {
+    //     if (offset > 0) {
+    //         $('html, body').animate({
+    //             scrollTop: $("#scrolltop").offset().top
+    //         }, 2);
+    //     }
+    //     setCurrentData(eventdata.slice(offset, offset + pageLimit));
+    // }, [offset, eventdata]);
 
     const bookmarkClick = (id) => {
 
@@ -255,25 +256,39 @@ export default function Events() {
                     </div>
                 </div>
             </section>
+
             <section className="dashboard-card">
                 <div className="container-fluid">
-                    <div className="row">   
-                        <div className="col-md-1"></div>                     
-                            <div className="col-md-10">
+                    <div className="row">
+                        <div className="col-md-2 side-col">
+                            <Sidebar />
+                        </div>
+
+                        <div className="col-md-10">
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+            
+            {/* <section className="dashboard-card">
+                <div className="container-fluid">
+                    <div className="row"> 
+                        <div className="col-md-2 side-col">
+                            <Sidebar />
+                        </div>
+                        
+                        <div className="col-md-10">
                                 <div className="Event-List">
                                     <div className="row">
                                         <div className="col-md-12">
                                             <div className="Event-Search">
                                                 <div className="row">
-                                                    <div className="col-md-6 border-right google-serach">
+                                                    <div className="col-md-12">
                                                         <form onSubmit={handleSubmit(search)}>
                                                             <input type="text" onChange={onChangeSearch} className="form-control" name="search_name" placeholder="Search for Events" />
                                                             <img className="search-icon" src="images/search-icon.png" />
                                                         </form>
-
-                                                        {/* <input type="text" className="form-control" placeholder="Search for Events" name="" /> */}
-                                                        
-
                                                     </div>
                                                     <div className="col-md-6">
                                                     <div className="filter-address" ref={ref}>
@@ -317,12 +332,15 @@ export default function Events() {
                                             </div>
                                         </div>
                                         <div className="col-md-12">                                        
-                                            <div className="event-back">
+                                        {eventdata.length > 0 && <div className="event-back">
 
-                                            {!noresult && currentData.map((data, index) => (
+                                              
+
+                                             {!noresult && 
+                                                eventdata.map((data, index) => (
                                                 <div key={index}>
                                                     <div className="event-month">
-                                                        <span>April 2022</span>
+                                                        <span>{data[index]}April 2022</span>
                                                     </div>
                                                     <div className="event-card">
                                                         <div className="row">
@@ -334,8 +352,12 @@ export default function Events() {
                                                                     </div>
                                                                     <div className="event-text">
                                                                         <span>{data.start_date} @ 8:00 am - {data.end_date} @ 5:00 pm</span>
-                                                                        <h3>{data.title}</h3>
-                                                                        <p dangerouslySetInnerHTML={{ __html: data.description }}></p>
+                                                                        <h3>
+                                                                            <Link to={{ pathname: "/event-detail", search: "?id=" + data.event_id }}>
+                                                                                {data.title}
+                                                                            </Link>
+                                                                        </h3>
+                                                                        <p dangerouslySetInnerHTML={{ __html: data.description.substring(0, 350) }}></p>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -351,17 +373,26 @@ export default function Events() {
                                                 </div>
                                                 
                                             ))}
-                                                
-                                            </div>
+                                                 
+                                            </div>}
                                             
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        <div className="col-md-1"></div>
+                        
+                        {noresult &&
+                            <div>
+                                <center>
+                                    <img height="250px" width="350px" src="images/hull-no-results.png" alt="author" />
+                                    <div className="no-data">No results found.</div>
+                                </center>
+                            </div>
+                        }
+
                     </div>
                 </div>
-            </section>           
+            </section>            */}
 
             <Footer/>
         </div>

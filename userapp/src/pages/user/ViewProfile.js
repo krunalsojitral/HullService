@@ -136,7 +136,8 @@ export default function ViewProfile() {
                                                 </div>
                                                 <div className="view-profile-title-text">
                                                     <h3>{users.first_name} {users.last_name}</h3>
-                                                    {((users.role == 2 || users.role == 3) && users.about_us) && <p dangerouslySetInnerHTML={{ __html: users.about_us }}></p>}
+                                                    {((users.role == 2 || users.role == 3) && users.about_us) && <p dangerouslySetInnerHTML={{ __html: users.about_us }}></p>}                                                    
+                                                    {((users.role == 2 || users.role == 3) && users.research_description) && <p dangerouslySetInnerHTML={{ __html: users.research_description }}></p>}
                                                 </div>
                                             </div>
                                         </div>
@@ -149,6 +150,7 @@ export default function ViewProfile() {
                                             {showEdit && <li><i className="fa fa-envelope"></i>{users.email}</li>}
                                             {((users.role == 2 || users.role == 3) && users.city) && <li><i className="fa fa-map-marker"></i>{users.city}</li>}
                                             {((users.role == 2 || users.role == 3) && users.organization) && <li><i className="fa fa-sitemap"></i>{users.organization}</li>}
+                                            {((users.role == 2 || users.role == 3) && users.phone) && <li><i className="fa fa-phone"></i>{users.phone}</li>}
                                             {(users.role == 2 && (users.sectorname || users.other_sector)) && <li><i className="fa fa-square"></i>{users.sectorname} {users.other_sector}</li>}
                                             {(users.role == 2 && users.level_of_education) && <li><i className="fa fa-graduation-cap"></i>{users.level_of_education}</li>}
                                             {(users.role == 2 && (users.occupationname || users.other_occupation)) && <li><i className="fa fa-briefcase"></i>{users.occupationname} {users.other_occupation}</li>}

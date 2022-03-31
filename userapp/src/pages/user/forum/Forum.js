@@ -128,7 +128,7 @@ export default function Forum() {
                                 </div>}
                             </div>
 
-                            {forumRule && <div><div dangerouslySetInnerHTML={{ __html: forumRule }}></div><br></br></div> }
+                            {forumRule && <div><br/><div dangerouslySetInnerHTML={{ __html: forumRule }}></div><br/></div> }
 
 
                             {/* {!noresult && <div className="video-tag">
