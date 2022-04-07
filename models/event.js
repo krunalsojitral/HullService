@@ -10,16 +10,22 @@ function User() {
   this.addEventByadmin = function (record, resources, callback) {
     connection.acquire(function (err, con) {
       const sql =
-        "INSERT INTO event(title,description,location,image,organization,start_date,end_date,status,created_at) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *";
+        "INSERT INTO event(title,description,location,image,speaker_name,speaker_image,start_date,end_date,start_time,end_time,purchase_type,cost,about_speaker,status,created_at) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15) RETURNING *";
       const values = [
         record.title,
         record.description,
         record.location,
         record.image,
-        record.organization,
+        record.speaker_name,
+        record.speaker_image,
         //record.category,
         record.start_date,
         record.end_date,
+        record.start_time,
+        record.end_time,
+        record.purchase_type,
+        record.cost,
+        record.about_speaker,
         1,
         record.created_at,
       ];
@@ -467,6 +473,25 @@ function User() {
       });
     });
   };
+
+  this.addEventPurchase = function (record, callback) {
+    connection.acquire(function (err, con) {
+      const eventsql = "INSERT INTO event_purchase(user_id,event_id,payment_id,event_purchase_date,status) VALUES($1,$2,$3,$4,$5) RETURNING *";
+      const eventvalues = [record.user_id, record.event_id, record.payment_id, record.event_purchase_date, 1];
+      con.query(eventsql, eventvalues, function (err, result) {
+        con.release();
+        if (err) {
+          if (env.DEBUG) {
+            console.log(err);
+          }
+          callback(err, null);
+        } else {
+          callback(null, result);
+        }
+      });
+    });
+  };
+  
   
 
 }

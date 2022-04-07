@@ -46,13 +46,14 @@ export default function Events() {
         if (token) {
             axios.post(api_url + '/event/getUnpaidEventList', {}, config).then((result) => {
                 if (result.data.status) {
-                    var eventdata = result.data.response.data;
-                    if (eventdata.length > 0) {
+                    var eventdatas = result.data.response.data;
+                    setEventData(eventdatas);
+                    if (eventdatas.length > 0) {
                         
-                        setEventData(eventdata);
+                        setEventData(eventdatas);
                         setNoresult(false);
                     } else {
-                        setNoresult(true);
+                       // setNoresult(true);
                     }
                 } else {
                     Swal.fire('Oops...', result.data.response.msg, 'error')
@@ -61,24 +62,7 @@ export default function Events() {
                 console.log(err);
             })
         } else {
-            axios.post(api_url + '/event/getUnpaidEventList', {}).then((result) => {
-                if (result.data.status) {
-                    var eventdata = result.data.response.data;
-                    console.log(eventdata);
-                    if (eventdata.length > 0) {
-                        console.log('tetse');
-                        console.log(eventdata);
-                        setEventData(eventdata);
-                        setNoresult(false);
-                    } else {
-                        setNoresult(true);
-                    }
-                } else {
-                    Swal.fire('Oops...', result.data.response.msg, 'error')
-                }
-            }).catch((err) => {
-                console.log(err);
-            })
+            getEventDataQuery({})
         }
 
     }
@@ -87,14 +71,22 @@ export default function Events() {
         var data = {
             today : true
         }
-        axios.post(api_url + '/event/getUnpaidEventList', data).then((result) => {
+        getEventDataQuery(data)
+    }
+
+    const getEventDataQuery = (obj) => {
+        axios.post(api_url + '/event/getUnpaidEventList', obj).then((result) => {
             if (result.data.status) {
-                var eventdata = result.data.response.data;
-                if (eventdata.length > 0) {
-                    setEventData(eventdata);
+                var eventdatas = result.data.response.data;
+                console.log(eventdatas);
+                setEventData(eventdatas);
+                if (eventdatas.length > 0) {
+                    console.log('tetse');
+                    console.log(eventdatas);
+                    setEventData(eventdatas);
                     setNoresult(false);
                 } else {
-                    setNoresult(true);
+                    // setNoresult(true);
                 }
             } else {
                 Swal.fire('Oops...', result.data.response.msg, 'error')
@@ -102,20 +94,6 @@ export default function Events() {
         }).catch((err) => {
             console.log(err);
         })
-    }
-
-    // React.useEffect(() => {
-    //     if (offset > 0) {
-    //         $('html, body').animate({
-    //             scrollTop: $("#scrolltop").offset().top
-    //         }, 2);
-    //     }
-    //     setCurrentData(eventdata.slice(offset, offset + pageLimit));
-    // }, [offset, eventdata]);
-
-    const bookmarkClick = (id) => {
-
-        
     }
 
     const {
@@ -135,9 +113,7 @@ export default function Events() {
         ({ description }) =>
             () => {
                 // When user selects a place, we can replace the keyword without request data from API
-                // by setting the second parameter to "false"    
-
-
+                // by setting the second parameter to "false"
                 setValue(description, false);
                 setCity(description);
                 clearSuggestions();
@@ -145,23 +121,7 @@ export default function Events() {
                 var obj = {
                     "location": description
                 }
-                axios.post(api_url + '/event/getUnpaidEventList', obj).then((result) => {
-                    if (result.data.status) {
-                        var eventdata = result.data.response.data;
-                        if (eventdata.length > 0) {
-                            setEventData(eventdata);
-                            setNoresult(false);
-                        } else {
-                            setNoresult(true);
-                        }
-                    } else {
-                        setNoresult(true);
-                        Swal.fire('Oops...', result.data.response.msg, 'error')
-                    }
-                }).catch((err) => {
-                    console.log(err);
-                    //Swal.fire('Oops...', err, 'error')
-                })
+                getEventDataQuery(obj)
 
                 // Get latitude and longitude via utility functions
                 getGeocode({ address: description })
@@ -223,26 +183,8 @@ export default function Events() {
         var obj = {
             "search": searchtext
         }
-        axios.post(api_url + '/event/getUnpaidEventList', obj).then((result) => {
-            if (result.data.status) {
-                var eventdata = result.data.response.data;
-                if (eventdata.length > 0) {
-                    setEventData(eventdata);
-                    setNoresult(false);
-                } else {
-                    setNoresult(true);
-                }
-            } else {
-                setNoresult(true);
-                Swal.fire('Oops...', result.data.response.msg, 'error')
-            }
-        }).catch((err) => {
-            console.log(err);
-            //Swal.fire('Oops...', err, 'error')
-        })
+        getEventDataQuery(obj)
     }
-
-    
 
     return(
         <div>
@@ -255,23 +197,9 @@ export default function Events() {
                         </div>
                     </div>
                 </div>
-            </section>
-
-            <section className="dashboard-card">
-                <div className="container-fluid">
-                    <div className="row">
-                        <div className="col-md-2 side-col">
-                            <Sidebar />
-                        </div>
-
-                        <div className="col-md-10">
-                        </div>
-
-                    </div>
-                </div>
-            </section>
+            </section>         
             
-            {/* <section className="dashboard-card">
+             <section className="dashboard-card">
                 <div className="container-fluid">
                     <div className="row"> 
                         <div className="col-md-2 side-col">
@@ -290,7 +218,7 @@ export default function Events() {
                                                             <img className="search-icon" src="images/search-icon.png" />
                                                         </form>
                                                     </div>
-                                                    <div className="col-md-6">
+                                                    {/* <div className="col-md-6">
                                                     <div className="filter-address" ref={ref}>
                                                             <input
                                                                 value={cityValue}
@@ -307,7 +235,7 @@ export default function Events() {
                                                                 <option>List</option>
                                                             </select>
                                                         </div>
-                                                    </div>
+                                                    </div> */}
                                                 </div>
                                             </div>
                                         </div>
@@ -331,51 +259,48 @@ export default function Events() {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="col-md-12">                                        
-                                        {eventdata.length > 0 && <div className="event-back">
+                                        <div className="col-md-12">  
 
-                                              
-
-                                             {!noresult && 
-                                                eventdata.map((data, index) => (
-                                                <div key={index}>
+                                        {eventdata && <div className="event-back">
+                                              {!noresult && 
+                                                Object.entries(eventdata).map(([key, value], i) =>
+                                                    <div key={i}>
                                                     <div className="event-month">
-                                                        <span>{data[index]}April 2022</span>
+                                                        <span>{key}</span>
                                                     </div>
-                                                    <div className="event-card">
-                                                        <div className="row">
-                                                            <div className="col-md-8">
-                                                                <div className="event-message">
-                                                                    <div className="event-date">
-                                                                        <small>{data.day}</small>
-                                                                        <span>{data.date}</span>
+                                                        {value.map((data, index) => (
+                                                            <div className="event-card">
+                                                                <div className="row">
+                                                                    <div className="col-md-8">
+                                                                        <div className="event-message">
+                                                                            <div className="event-date">
+                                                                                <small>{data.day}</small>
+                                                                                <span>{data.date}</span>
+                                                                            </div>
+                                                                            <div className="event-text">
+                                                                                <span>{data.start_date} @ 8:00 am - {data.end_date} @ 5:00 pm</span>
+                                                                                <h3>
+                                                                                    <Link to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}>
+                                                                                        {data.title}
+                                                                                    </Link>
+                                                                                </h3>
+                                                                                <p dangerouslySetInnerHTML={{ __html: data.description.substring(0, 350) }}></p>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
-                                                                    <div className="event-text">
-                                                                        <span>{data.start_date} @ 8:00 am - {data.end_date} @ 5:00 pm</span>
-                                                                        <h3>
-                                                                            <Link to={{ pathname: "/event-detail", search: "?id=" + data.event_id }}>
-                                                                                {data.title}
-                                                                            </Link>
-                                                                        </h3>
-                                                                        <p dangerouslySetInnerHTML={{ __html: data.description.substring(0, 350) }}></p>
+                                                                    <div className="col-md-4">
+                                                                        <div className="event-img">
+                                                                            {!data.image && <img width="200px" src="images/Rectangle.png" />}
+                                                                            {data.image && <img width="200px" src={data.image} />}
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div className="col-md-4">
-                                                                <div className="event-img">
-                                                                    {!data.image && <img width="200px" src="images/Rectangle.png" />}
-                                                                    {data.image && <img width="200px" src={data.image} />}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                        ))}
                                                     <br/>   
                                                 </div>
-                                                
-                                            ))}
-                                                 
-                                            </div>}
-                                            
+                                              )}                                                  
+                                            </div>}                                            
                                         </div>
                                     </div>
                                 </div>
@@ -389,10 +314,9 @@ export default function Events() {
                                 </center>
                             </div>
                         }
-
                     </div>
                 </div>
-            </section>            */}
+            </section>           
 
             <Footer/>
         </div>

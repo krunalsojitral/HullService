@@ -878,6 +878,7 @@ router.post('/getEditUserByEmailToken', (req, res, next) => {
                     userList['last_name'] = result[0].last_name;
                     userList['email'] = result[0].email;
                     userList['city'] = result[0].city;
+                    userList['role'] = result[0].role;
                     userList['organization'] = result[0].organization_name;
                     userList['sector'] = result[0].sector;
                     userList['occupation'] = result[0].occupation;
@@ -1117,6 +1118,7 @@ router.post('/registerResearcherUser', function (req, res) {
                     other_research_interest_area: overview.data.other_research_interest_area
                 };
                 User.updateuserByadmin(final_obj, overview.data.user_id, update_value, '', overview.data.researcher_interest_of_area, overview.data.role, async function (err, data) {
+                    
                     User.getUserById(overview.data.user_id, function (error, finalData) {
                         if (error) {
                             return res.json({ 'status': 0, 'response': { 'msg': error } });

@@ -336,6 +336,12 @@ router.post('/addPreview', function (req, res) {
                 purchase_type: obj.purchase_type,
                 main_cost: obj.main_cost,
                 sale_cost: obj.sale_cost,
+                start_date: obj.start_date,
+                start_time: obj.start_time,
+                end_date: obj.end_date,
+                end_time: obj.end_time,
+                speaker_name: obj.speaker_name,
+                location: obj.location,
             };
 
             let course_record = {
@@ -395,6 +401,12 @@ router.post('/addPreview', function (req, res) {
                 sale_cost: obj.sale_cost,
                 created_at: moment().format('YYYY-MM-DD'),
                 module_type: obj.type,
+                start_date: obj.start_date,
+                start_time: obj.start_time,
+                end_date: obj.end_date,
+                end_time: obj.end_time,
+                speaker_name: obj.speaker_name,
+                location: obj.location,
             };
 
             let update_value = [obj.title, obj.live_session_url, obj.live_session_date,
@@ -416,7 +428,8 @@ router.post('/addPreview', function (req, res) {
             obj.content_title_third, obj.content_description_third,
             obj.content_title_four, obj.content_description_four,
             obj.content_title_five, obj.content_description_five,
-                obj.trainer, obj.purchase_type, obj.main_cost, obj.sale_cost, moment().format('YYYY-MM-DD'), obj.type]
+            obj.trainer, obj.purchase_type, obj.main_cost, obj.sale_cost, moment().format('YYYY-MM-DD'), obj.type,
+            obj.start_date,obj.start_time,obj.end_date,obj.end_time,obj.speaker_name,obj.location]
 
             asyn.waterfall([
                 function (done) {
@@ -550,6 +563,12 @@ router.get('/getPreview', function (req, res) {
                 retObj['update_at'] = (result[0].update_at) ? moment(result[0].update_at).format('MM/YYYY') : '';
                 retObj['course_purchase'] = 0;
                 retObj['draft_status'] = result[0].draft_status;
+                retObj['start_date'] = result[0].start_date;
+                retObj['start_time'] = result[0].start_time;
+                retObj['end_date'] = result[0].end_date;
+                retObj['end_time'] = result[0].end_time;
+                retObj['speaker_name'] = result[0].speaker_name;
+                retObj['location'] = result[0].location;
                 return res.json({ status: 1, 'response': { data: retObj } });
             }else{
                 return res.json({ status: 1, 'response': { data: {} } });

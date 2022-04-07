@@ -1,4 +1,4 @@
-import React, { useState, Fragment  } from 'react'
+import React, { useState, useRef, ref } from 'react';
 import { Editor } from "@tinymce/tinymce-react";
 import ReactDatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
@@ -26,17 +26,26 @@ import api_url from './../../Apiurl';
 import axios from "axios";
 import Swal from "sweetalert2";
 import $ from 'jquery';
+import usePlacesAutocomplete, { getGeocode, getLatLng, } from "use-places-autocomplete";
 
 const AddEditForm = ({ match }) => {
   const [active, setActive] = useState(0)
+
+  const [city, setCity] = React.useState('');
+  const [cityError, setCityError] = React.useState('');
+  const [latitude, setLatitude] = React.useState('');
+  const [longitude, setLongitude] = React.useState('');
+  const [country, setCountry] = React.useState('');
+
   let history = useHistory();
   const {
     handleSubmit,
-    setValue,
+    setValue: setFormValue,
     control,    
     trigger,
     getValues,
     reset,
+    watch,
     formState: { errors },
   } = useForm({    
     defaultValues: {
@@ -48,10 +57,14 @@ const AddEditForm = ({ match }) => {
     }
   });
 
+  const purchase_type_selected = watch("purchase_type");
  
   const [eventId, setEventId] = React.useState(0);
   const [setectimage, setSetectimage] = React.useState(0);
   const [selectedFile, setSelectedFile] = useState();
+
+  const [selectSpeakerImage, setSelectSpeakerImage] = React.useState(0);
+  const [selectedSpeakerFile, setSelectedSpeakerFile] = useState();
 
   const [selectpromoimage, setSelectpromoimage] = React.useState(0);
   const [selectedPromoFile, setSelectedPromoFile] = useState();
@@ -76,6 +89,17 @@ const AddEditForm = ({ match }) => {
       };
       reader.readAsDataURL(event.target.files[0]);
       setSelectedFile(event.target.files[0]);
+    }
+  };
+
+  const changeSpeakerFileHandler = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      var reader = new FileReader();
+      reader.onload = (event) => {
+        setSelectSpeakerImage(event.target.result);
+      };
+      reader.readAsDataURL(event.target.files[0]);
+      setSelectedSpeakerFile(event.target.files[0]);
     }
   };
 
@@ -124,6 +148,83 @@ const AddEditForm = ({ match }) => {
     setFinalFile(fs);
   }
 
+  const renderSuggestions = () =>
+    data.map((suggestion) => {
+      const {
+        place_id,
+        structured_formatting: { main_text, secondary_text },
+      } = suggestion;
+
+      return (
+        <li className="city_suggestion" key={place_id} onClick={handleSelect(suggestion)}>
+          <p> <strong>{main_text}</strong>  {secondary_text}</p>
+        </li>
+      );
+    });
+
+  const handleInput = (e) => {
+
+    if (!e.target.value) {
+      setValue(e.target.value);
+      setCity(e.target.value);
+      setCityError('City is required.');
+    } else {
+      setValue(e.target.value);
+      setCity(e.target.value);
+      setCityError('');
+    }
+  };
+
+  const {
+    ready,
+    value: cityValue,
+    suggestions: { status, data },
+    setValue,
+    clearSuggestions,
+  } = usePlacesAutocomplete({
+    requestOptions: {
+      /* Define search scope here */
+    },
+    debounce: 300,
+  });
+
+  const handleSelect =
+    ({ description }) =>
+      () => {
+        // When user selects a place, we can replace the keyword without request data from API
+        // by setting the second parameter to "false"    
+        console.log(description);
+
+        setValue(description, false);
+        setCity(description);
+        clearSuggestions();
+
+
+        // Get latitude and longitude via utility functions
+        getGeocode({ address: description })
+          .then((results) => {
+
+            const address_components = results[0].address_components;
+            var filtered_array = address_components.filter(function (address_component) {
+              return address_component.types.includes("country");
+            });
+            var country = filtered_array.length ? filtered_array[0].long_name : "";
+            if (country) { setCountry(country); }
+            return getLatLng(results[0])
+
+          })
+          .then(({ lat, lng }) => {
+            setLatitude(lat)
+            setLongitude(lng)
+          })
+          .catch((error) => {
+            setLatitude('');
+            setLongitude('');
+            setCountry('');
+            console.log("Error: ", error);
+          });
+      };
+
   const changePromoFileHandler = (event) => {
     if (event.target.files && event.target.files[0]) {
       var reader = new FileReader();
@@ -144,17 +245,21 @@ const AddEditForm = ({ match }) => {
         .then((result) => {
           if (result.data.status) {
             var eventdata = result.data.response.data;            
-            setValue("title", eventdata.title);
+            setFormValue("title", eventdata.title);
             $("#start_date").val(eventdata.start_date)
             $("#end_date").val(eventdata.end_date)
-            setValue("start_date", new Date(Date.parse(eventdata.start_date)));
-            setValue("end_date", new Date(Date.parse(eventdata.end_date)));
+            setFormValue("start_date", new Date(Date.parse(eventdata.start_date)));
+            setFormValue("end_date", new Date(Date.parse(eventdata.end_date)));
+            // setFormValue("start_time", eventdata.start_time);
+            // setFormValue("end_time", eventdata.end_time);
+            setFormValue("speaker_name", eventdata.speaker_name);
             setContentEditor(eventdata.description);
-            setValue("location", eventdata.location);
-            setValue("organization", eventdata.organization);
+            setFormValue("location", eventdata.location);
+            setFormValue("speaker_name", eventdata.speaker_name);
             setSetectimage(eventdata.image);
             setSelectpromoimage(eventdata.promo_image);
-            setValue("promo_title", eventdata.promo_title);
+            setSelectSpeakerImage(eventdata.event_image)
+            setFormValue("promo_title", eventdata.promo_title);
             setContentPromoEditor(eventdata.promo_description);
 
             // var sessionTitle = [{ "name": "default Value", "value": "Group Session 1" }, { "value": "Group Session 2" }];
@@ -217,13 +322,13 @@ const AddEditForm = ({ match }) => {
                 });
                 setTimeout(() => {
                   sessionTitle.forEach((item, index) => {
-                    setValue(`sessionTitle.${index}.value`, item.value);
+                    setFormValue(`sessionTitle.${index}.value`, item.value);
                   });
                   sessionDescription.forEach((item, index) => {
-                    setValue(`sessionDescription.${index}.value`, item.value);
+                    setFormValue(`sessionDescription.${index}.value`, item.value);
                   });
                   sessionURL.forEach((item, index) => {
-                    setValue(`sessionURL.${index}.value`, item.value);
+                    setFormValue(`sessionURL.${index}.value`, item.value);
                   });
                 }, 500);
               }
@@ -246,7 +351,7 @@ const AddEditForm = ({ match }) => {
                 });
                 setTimeout(() => {
                   eventdata.videoURL.forEach((item, index) => {
-                    setValue(`videoURL.${index}.value`, item.path);
+                    setFormValue(`videoURL.${index}.value`, item.path);
                   });
                 }, 500);
               }
@@ -269,7 +374,7 @@ const AddEditForm = ({ match }) => {
                 });
                 setTimeout(() => {
                   eventdata.webPageUrl.forEach((item, index) => {
-                    setValue(`webPageUrl.${index}.value`, item.path);
+                    setFormValue(`webPageUrl.${index}.value`, item.path);
                   });
                 }, 500);
               }
@@ -430,7 +535,7 @@ const AddEditForm = ({ match }) => {
                                   selected={value}
                                   onChange={onChange}
                                   dateFormat="yyyy/MM/dd h:mm a"
-                                  // dateFormatCalendar="yyyy/MM/dd"
+                                  dateFormatCalendar="yyyy/MM/dd h:mm a"
                                   minDate={new Date(2022, 11)}
                                   maxDate={new Date(2030, 11)}
                                   peekNextMonth
@@ -447,6 +552,34 @@ const AddEditForm = ({ match }) => {
                             <p style={{ color: "red", fontSize: "12px" }}>Start date is required.</p>
                           )}
                         </CCol>
+                        <CCol xs="6">
+                          <CFormGroup>
+                            <CLabel htmlFor="title">Start Time <span className="label-validation">*</span></CLabel>
+                            <Controller
+                              name={"start_time"}
+                              control={control}
+                              rules={{ required: true }}
+                              render={({ field: { onChange, value } }) => (
+                                <ReactDatePicker
+                                  selected={value}
+                                  onChange={onChange}
+                                  showTimeSelect
+                                  showTimeSelectOnly
+                                  timeIntervals={15}
+                                  timeCaption="Time"
+                                  dateFormat="h:mm aa"
+                                  className="form-control"
+                                />
+                              )}
+                            ></Controller>
+                          </CFormGroup>
+                          {errors.start_time && errors.start_time.type === "required" && (
+                            <p style={{ color: "red", fontSize: "12px" }}>Start time is required.</p>
+                          )}
+                        </CCol>
+                      </CRow>
+
+                      <CRow>
                         <CCol xs="6">
                           <CFormGroup>
                             <CLabel htmlFor="title">End Date <span className="label-validation">*</span></CLabel>
@@ -471,20 +604,45 @@ const AddEditForm = ({ match }) => {
                                   placeholderText="End date"
                                 />
                               )}
-                            ></Controller>                            
+                            ></Controller>
                           </CFormGroup>
                           {errors.end_date && errors.end_date.type === "required" && (
                             <p style={{ color: "red", fontSize: "12px" }}>End date is required.</p>
                           )}
                         </CCol>
+                       
+                        <CCol xs="6">
+                          <CFormGroup>
+                            <CLabel htmlFor="title">End Time <span className="label-validation">*</span></CLabel>
+                            <Controller
+                              name={"end_time"}
+                              control={control}
+                              rules={{ required: true }}
+                              render={({ field: { onChange, value } }) => (
+                                <ReactDatePicker
+                                  selected={value}
+                                  onChange={onChange}
+                                  showTimeSelect
+                                  showTimeSelectOnly
+                                  timeIntervals={15}
+                                  timeCaption="Time"
+                                  dateFormat="h:mm aa"
+                                  className="form-control"
+                                />
+                              )}
+                            ></Controller>
+                          </CFormGroup>
+                          {errors.end_time && errors.end_time.type === "required" && (
+                            <p style={{ color: "red", fontSize: "12px" }}>End time is required.</p>
+                          )}
+                        </CCol>
                       </CRow>
+
 
                       <CRow>
                         <CCol xs="12">
                           <CFormGroup>
-                            <CLabel htmlFor="password">Description</CLabel>
-                            {/* <ReactQuill value={text} modules={modules} onChange={setText} /> */}
-
+                            <CLabel htmlFor="password">About the Event</CLabel>
                             <Editor
                               apiKey="5w0ir8k2b6c9y5k3xrngkoskhxhvw6bm7y5qyfo6z8tlce6c"
                               cloudChannel="dev"
@@ -501,45 +659,100 @@ const AddEditForm = ({ match }) => {
                         </CCol>
                       </CRow>
 
-                      <CRow>
-                        <CCol xs="12">
-                          <CFormGroup>
-                            <CLabel htmlFor="title">Location</CLabel>
-                            <Controller
-                              name={"location"}
-                              control={control}                              
-                              render={({ field: { onChange, value } }) => (
-                                <CInput
-                                  type="location"
-                                  onChange={onChange}
-                                  value={value}                                  
-                                  placeholder={`Enter event location`}
-                                />
-                              )}
-                            ></Controller>
-                          </CFormGroup>                          
-                        </CCol>                       
-                      </CRow>
 
                       <CRow>
                         <CCol xs="12">
                           <CFormGroup>
-                            <CLabel htmlFor="Organization">Organization</CLabel>
+                            <CLabel htmlFor="speaker_name">Speaker Name</CLabel>
                             <Controller
-                              name={"organization"}
+                              name={"speaker_name"}
                               control={control}
                               render={({ field: { onChange, value } }) => (
                                 <CInput
                                   type="text"
                                   onChange={onChange}
-                                  value={value}                                  
-                                  placeholder={`Enter organization`}
+                                  value={value}
+                                  placeholder={`Enter speaker name`}
                                 />
                               )}
                             ></Controller>
-                          </CFormGroup>                          
+                          </CFormGroup>
                         </CCol>
                       </CRow>
+
+                      <CRow>
+                        <CCol xs="12">
+                          <CFormGroup>
+                            <CLabel htmlFor="ccnumber">Speaker’s Image</CLabel>
+                            <br />
+                            <input
+                              type="file"
+                              accept=".png,.PNG,.JPG,.jpg,.jpeg"
+                              name="myfile"
+                              onChange={changeSpeakerFileHandler}
+                            />
+                            <span>
+                              {!selectSpeakerImage && <img style={{ width: "100px" }} alt="avatar" src="/company-logo.png" />}
+                              {selectSpeakerImage && <img style={{ width: "100px" }} src={selectSpeakerImage} alt="user-image" />}
+                            </span>
+                          </CFormGroup>
+                        </CCol>
+                      </CRow>
+
+                      <CRow>
+                        <CCol xs="12">
+                          <CFormGroup>
+                            <CLabel className="forum-feedback"><b>About the speaker : </b> &nbsp;</CLabel>
+                            <Controller
+                              name={"about_speaker"}
+                              control={control}
+                              render={({ field: { onChange, value } }) => (
+                                <textarea rows="6" cols="45"
+                                  type="text"
+                                  onChange={onChange}
+                                  value={value}
+                                  className="form-control"
+                                  placeholder={`About the speaker`}
+                                />
+                              )}
+                            ></Controller>
+                          </CFormGroup>
+                        </CCol>
+                      </CRow>
+
+
+                      <CRow>
+                        <CCol xs="12">
+                          <CFormGroup>
+                            <CLabel htmlFor="title">Location</CLabel>
+                            <div ref={ref}>
+                              <input
+                                value={cityValue}
+                                onChange={handleInput}
+                                disabled={!ready}
+                                placeholder="Address *"
+                                className="form-control input"
+                              />
+                              {status === "OK" && <ul className="suggestion">{renderSuggestions()}</ul>}
+                              {cityError && <small className="error">{cityError}</small>}
+                            </div>
+                            {/* <Controller
+                              name={"location"}
+                              control={control}
+                              render={({ field: { onChange, value } }) => (
+                                <CInput
+                                  type="location"
+                                  onChange={onChange}
+                                  value={value}
+                                  placeholder={`Enter event location`}
+                                />
+                              )}
+                            ></Controller> */}
+                          </CFormGroup>
+                        </CCol>
+                      </CRow>
+                      
+                     
 
                       <CRow>
                         <CCol xs="12">
@@ -559,6 +772,56 @@ const AddEditForm = ({ match }) => {
                           </CFormGroup>
                         </CCol>
                       </CRow>
+
+                      <CRow>
+                        <CCol xs="12">
+                          <CFormGroup>
+                            <CLabel htmlFor="role">Paid / Unpaid <span className="label-validation">*</span></CLabel>
+                            <Controller
+                              name="purchase_type"
+                              control={control}
+                              rules={{ required: true }}
+                              render={({ field: { onChange, value } }) => (
+                                <select className="form-control" onChange={onChange} value={value}>
+                                  <option key="0" value="">select value</option>
+                                  <option key="1" value="paid">Paid</option>
+                                  <option key="2" value="unpaid">Unpaid</option>
+                                </select>
+                              )}
+                            ></Controller>
+                          </CFormGroup>
+                          {errors.purchase_type && errors.purchase_type.type === "required" && (
+                            <p style={{ color: "red", fontSize: "12px" }}>Type is required.</p>
+                          )}
+                        </CCol>
+                      </CRow>
+
+                      {purchase_type_selected === 'paid' &&
+                        <CRow>
+                          <CCol xs="12">
+                            <CFormGroup>
+                              <CLabel htmlFor="cost">Cost <span className="label-validation">*</span></CLabel>
+                              <Controller
+                                name={"cost"}
+                                control={control}
+                                rules={{ required: true }}
+                                render={({ field: { onChange, value } }) => (
+                                  <CInput
+                                    type="text"
+                                    onChange={onChange}
+                                    value={value}
+                                    placeholder={`Enter your cost`}
+                                  />
+                                )}
+                              ></Controller>
+                            </CFormGroup>
+                            {errors.cost && errors.cost.type === "required" && (
+                              <p style={{ color: "red", fontSize: "12px" }}>Cost is required.</p>
+                            )}
+                          </CCol>
+                        </CRow>}
+
+
                      
                       <CRow>
                         <CCol xs="12">

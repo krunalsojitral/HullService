@@ -43,6 +43,15 @@ export default function Events() {
 
     }, [])
 
+    
+    const cartEvent = (id) => {
+        var data = {
+            event_id: id
+        }
+        localStorage.setItem('eventPurchaseData', JSON.stringify(data));
+        history.push("/event-cart");
+    }
+
     return(
         <div>
             <Header/>
@@ -120,6 +129,16 @@ export default function Events() {
                                                                         <span>Showing</span>
                                                                     </div>
                                                                 </div>
+                                                                <br />
+                                                                <div className="event-listing-text">
+                                                                    <div className="event-text-icon">
+                                                                        <img src="images/checking.png" />
+                                                                    </div>
+                                                                    <div className="event-text-word">
+                                                                        <h3>Speaker’s Name</h3>
+                                                                        <span>{eventDetail.speaker_name}</span>
+                                                                    </div>
+                                                                </div>
                                                                 {eventDetail.location && <div className="event-listing-text">
                                                                     <div className="event-text-icon">
                                                                         <img src="images/marker-event.png" />
@@ -129,6 +148,7 @@ export default function Events() {
                                                                         <span>{eventDetail.location}</span>
                                                                     </div>
                                                                 </div>}
+                                                                <br />
                                                                 {/* <div className="event-listing-text">
                                                                     <div className="event-text-icon">
                                                                         <img src="images/box.png" />
@@ -139,7 +159,7 @@ export default function Events() {
                                                                     </div>
                                                                 </div> */}
                                                                 <div className="event-listing-text">
-                                                                    <button type="submit" class="btn-save">Purchase</button>
+                                                                    <button type="button" class="btn-save">Join</button>
                                                                 </div>
                                                             </div>
                                                         </div>

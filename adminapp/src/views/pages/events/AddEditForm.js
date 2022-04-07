@@ -1,4 +1,4 @@
-import React, { useState, Fragment  } from 'react'
+import React, { useState, useRef, ref } from 'react';
 import { Editor } from "@tinymce/tinymce-react";
 import ReactDatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
@@ -25,21 +25,26 @@ import { useHistory } from "react-router-dom";
 import api_url from './../../Apiurl';
 import axios from "axios";
 import Swal from "sweetalert2";
-
+import usePlacesAutocomplete, { getGeocode, getLatLng, } from "use-places-autocomplete";
 
 
 const AddEditForm = ({ match }) => {
   const [active, setActive] = useState(0)
+  const [city, setCity] = React.useState('');
+  const [cityError, setCityError] = React.useState('');
+  const [latitude, setLatitude] = React.useState('');
+  const [longitude, setLongitude] = React.useState('');
+  const [country, setCountry] = React.useState('');
 
 
   let history = useHistory();
   const {
     handleSubmit,
-    setValue,
-    control,    
+    control,
     trigger,
+    watch,
     formState: { errors },
-  } = useForm({    
+  } = useForm({
     defaultValues: {
       sessionTitle: [{ name: "default Value" }],
       sessionDescription: [{ name: "default Value" }],
@@ -49,16 +54,17 @@ const AddEditForm = ({ match }) => {
     }
   });
 
- 
-  
- 
-  
+  const purchase_type_selected = watch("purchase_type");
+
   const [selectimage, setSelectimage] = React.useState(0);
   const [selectedFile, setSelectedFile] = useState();
 
+  const [selectSpeakerImage, setSelectSpeakerImage] = React.useState(0);
+  const [selectedSpeakerFile, setSelectedSpeakerFile] = useState();
+
   const [selectpromoimage, setSelectpromoimage] = React.useState(0);
   const [selectedPromoFile, setSelectedPromoFile] = useState();
-  
+
 
   const [contentEditor, setContentEditor] = useState();
   const handleEditorChange = (content, editor) => {
@@ -81,6 +87,18 @@ const AddEditForm = ({ match }) => {
     }
   };
 
+  const changeSpeakerFileHandler = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      var reader = new FileReader();
+      reader.onload = (event) => {
+        setSelectSpeakerImage(event.target.result);
+      };
+      reader.readAsDataURL(event.target.files[0]);
+      setSelectedSpeakerFile(event.target.files[0]);
+    }
+  };
+
+
   const changePromoFileHandler = (event) => {
     if (event.target.files && event.target.files[0]) {
       var reader = new FileReader();
@@ -94,15 +112,40 @@ const AddEditForm = ({ match }) => {
 
   //const initialText = ``;
 
+  const preview = () => {
 
-  React.useEffect(() => {
-  }, []);
+    var obj = {
+      cost: (control._fields.cost && control._fields.cost._f.value) ? control._fields.cost._f.value : '',
+      purchase_type: (control._fields.purchase_type && control._fields.purchase_type._f.value) ? control._fields.purchase_type._f.value : '',
+      title: (control._fields.title && control._fields.title._f.value) ? control._fields.title._f.value : '',
+      description: (contentEditor) ? contentEditor : '',
+      start_date: (control._fields.start_date && control._fields.start_date._f.value) ? control._fields.start_date._f.value : '',
+      start_time: (control._fields.start_time && control._fields.start_time._f.value) ? control._fields.start_time._f.value : '',
+      end_date: (control._fields.end_date && control._fields.end_date._f.value) ? control._fields.end_date._f.value : '',
+      end_time: (control._fields.end_time && control._fields.end_time._f.value) ? control._fields.end_time._f.value : '',
+      speaker_name: (control._fields.speaker_name && control._fields.speaker_name._f.value) ? control._fields.speaker_name._f.value : '',
+      location: city,
+      type: 'event'
+    }
 
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(obj));
+    if (selectedFile) {
+      formData.append("image", selectedFile, selectedFile.name);
+    }
+    axios.post(api_url + "/common/addPreview", formData).then((result) => {
+      if (result.data.status) {
+        //window.open(result.data.response.preview + "preview-module");
+        window.open("http://localhost:4200/preview-module");
+      } else {
+        Swal.fire("Oops...", result.data.response.msg, "error");
+      }
+    }).catch((err) => { console.log(err); });
 
-
-  
+  }
 
   const addInformationAct = async (data) => {
+    data.location = city;
     data.description = contentEditor;
     data.promo_description = contentPromoEditor;
     const formData = new FormData();
@@ -111,18 +154,22 @@ const AddEditForm = ({ match }) => {
       formData.append("image", selectedFile, selectedFile.name);
     }
 
+    if (selectedSpeakerFile) {
+      formData.append("speaker_image", selectedSpeakerFile, selectedSpeakerFile.name);
+    }
+
     if (selectedPromoFile) {
       formData.append("promo_image", selectedPromoFile, selectedPromoFile.name);
     }
-    
+
     if (finalFile && finalFile.length > 0) {
       for (var i = 0; i < finalFile.length; i++) {
-        if (finalFile[i].name) { 
+        if (finalFile[i].name) {
           formData.append("resources[]", finalFile[i], finalFile[i].name);
         }
       }
     }
-    
+
     axios.post(api_url + "/event/addEventByadmin", formData, {}).then((result) => {
       if (result.data.status) {
         Swal.fire("Success!", result.data.response.msg, "success");
@@ -132,16 +179,16 @@ const AddEditForm = ({ match }) => {
       }
     }).catch((err) => { console.log(err); });
 
-  
+
   };
-  
+
   const nextTab = async (tab) => {
-    if (tab == 1){
+    if (tab == 1) {
       const result = await trigger(["title", "start_date", "end_date"]);
-      if (result){
+      if (result) {
         setActive(tab);
       }
-    }else{
+    } else {
       setActive(tab);
     }
   }
@@ -151,7 +198,7 @@ const AddEditForm = ({ match }) => {
     name: 'sessionTitle',
     name: 'sessionDescription',
     name: 'sessionURL'
-  });  
+  });
 
   const { fields: video, append: videoAppend, remove: videoRemove } = useFieldArray({
     control,
@@ -166,17 +213,17 @@ const AddEditForm = ({ match }) => {
   const [file, setFile] = useState([{ type: '', name: '', file: [] }]);
   const [finalFile, setFinalFile] = useState([]);
 
-  function uploadSingleFile(e) {  
+  function uploadSingleFile(e) {
     setFinalFile([...finalFile, (e.target.files[0])]);
-    var type = '' 
+    var type = ''
     var ext = e.target.files[0].type;
     var arrayExtensions = ['image/jpg', 'image/jpeg', 'image/png', 'image/bmp', 'image/gif'];
     if (arrayExtensions.lastIndexOf(ext.toLowerCase()) == -1) {
       type = 'doc';
     } else {
       type = 'image';
-    }    
-    setFile([...file, { type: type, name: e.target.files[0].name, file: URL.createObjectURL(e.target.files[0]) } ]);
+    }
+    setFile([...file, { type: type, name: e.target.files[0].name, file: URL.createObjectURL(e.target.files[0]) }]);
   }
 
   function upload(e) {
@@ -190,11 +237,88 @@ const AddEditForm = ({ match }) => {
     setFinalFile(fs);
   }
 
+  const renderSuggestions = () =>
+    data.map((suggestion) => {
+      const {
+        place_id,
+        structured_formatting: { main_text, secondary_text },
+      } = suggestion;
+
+      return (
+        <li className="city_suggestion" key={place_id} onClick={handleSelect(suggestion)}>
+          <p> <strong>{main_text}</strong>  {secondary_text}</p>
+        </li>
+      );
+    });
+
+  const handleInput = (e) => {
+
+    if (!e.target.value) {
+      setValue(e.target.value);
+      setCity(e.target.value);
+      setCityError('City is required.');
+    } else {
+      setValue(e.target.value);
+      setCity(e.target.value);
+      setCityError('');
+    }
+  };
+
+  const {
+    ready,
+    value: cityValue,
+    suggestions: { status, data },
+    setValue ,
+    clearSuggestions,
+  } = usePlacesAutocomplete({
+    requestOptions: {
+      /* Define search scope here */
+    },
+    debounce: 300,
+  });
+
+  const handleSelect =
+    ({ description }) =>
+      () => {
+        // When user selects a place, we can replace the keyword without request data from API
+        // by setting the second parameter to "false"    
+        console.log(description);
+
+        setValue(description, false);
+        setCity(description);
+        clearSuggestions();
+
+
+        // Get latitude and longitude via utility functions
+        getGeocode({ address: description })
+          .then((results) => {
+
+            const address_components = results[0].address_components;
+            var filtered_array = address_components.filter(function (address_component) {
+              return address_component.types.includes("country");
+            });
+            var country = filtered_array.length ? filtered_array[0].long_name : "";
+            if (country) { setCountry(country); }
+            return getLatLng(results[0])
+
+          })
+          .then(({ lat, lng }) => {
+            setLatitude(lat)
+            setLongitude(lng)
+          })
+          .catch((error) => {
+            setLatitude('');
+            setLongitude('');
+            setCountry('');
+            console.log("Error: ", error);
+          });
+      };
+
 
   return (
-    <CRow>             
-        <CCol xs="12" md="12" className="mb-4">
-          <CCard>
+    <CRow>
+      <CCol xs="12" md="12" className="mb-4">
+        <CCard>
           <CCardHeader>
             Add Event
           </CCardHeader>
@@ -204,19 +328,19 @@ const AddEditForm = ({ match }) => {
                 <CNav variant="tabs">
                   <CNavItem>
                     <CNavLink>
-                    Event
+                      Event
                       {active === 0 && ' '}
                     </CNavLink>
                   </CNavItem>
                   <CNavItem>
                     <CNavLink>
-                    Group Session
+                      Group Session
                       {active === 1 && ' '}
                     </CNavLink>
                   </CNavItem>
                   <CNavItem>
                     <CNavLink>
-                   Resources
+                      Resources
                       {active === 2 && ' '}
                     </CNavLink>
                   </CNavItem>
@@ -242,9 +366,9 @@ const AddEditForm = ({ match }) => {
                               rules={{ required: true }}
                               render={({ field: { onChange, value } }) => (
                                 <CInput
-                                  type="text"                                  
+                                  type="text"
                                   onChange={onChange}
-                                  value={value}                                   
+                                  value={value}
                                   placeholder={`Enter event title`}
                                 />
                               )}
@@ -254,7 +378,7 @@ const AddEditForm = ({ match }) => {
                             <p style={{ color: "red", fontSize: "12px" }}>Title is required.</p>
                           )}
                         </CCol>
-                      </CRow>    
+                      </CRow>
 
                       <CRow>
                         <CCol xs="6">
@@ -270,8 +394,8 @@ const AddEditForm = ({ match }) => {
                                   className="form-control"
                                   selected={value}
                                   onChange={onChange}
-                                  dateFormat="yyyy/MM/dd h:mm aa"
-                                  dateFormatCalendar="yyyy/MM/dd h:mm aa"
+                                  dateFormat="yyyy/MM/dd h:mm a"
+                                  dateFormatCalendar="yyyy/MM/dd h:mm a"
                                   minDate={new Date(2022, 11)}
                                   maxDate={new Date(2030, 11)}
                                   peekNextMonth
@@ -282,12 +406,40 @@ const AddEditForm = ({ match }) => {
                                   placeholderText="Start date"
                                 />
                               )}
-                            ></Controller>                            
+                            ></Controller>
                           </CFormGroup>
                           {errors.start_date && errors.start_date.type === "required" && (
                             <p style={{ color: "red", fontSize: "12px" }}>Start date is required.</p>
                           )}
                         </CCol>
+                        <CCol xs="6">
+                          <CFormGroup>
+                            <CLabel htmlFor="title">Start Time <span className="label-validation">*</span></CLabel>
+                            <Controller
+                              name={"start_time"}
+                              control={control}
+                              rules={{ required: true }}
+                              render={({ field: { onChange, value } }) => (
+                                <ReactDatePicker
+                                  selected={value}
+                                  onChange={onChange}
+                                  showTimeSelect
+                                  showTimeSelectOnly
+                                  timeIntervals={15}
+                                  timeCaption="Time"
+                                  dateFormat="h:mm aa"
+                                  className="form-control"
+                                />
+                              )}
+                            ></Controller>                            
+                          </CFormGroup>
+                          {errors.start_time && errors.start_time.type === "required" && (
+                            <p style={{ color: "red", fontSize: "12px" }}>Start time is required.</p>
+                          )}
+                        </CCol>
+                      </CRow>
+
+                      <CRow>
                         <CCol xs="6">
                           <CFormGroup>
                             <CLabel htmlFor="title">End Date <span className="label-validation">*</span></CLabel>
@@ -301,8 +453,8 @@ const AddEditForm = ({ match }) => {
                                   className="form-control"
                                   selected={value}
                                   onChange={onChange}
-                                  dateFormat="yyyy/MM/dd h:mm aa"
-                                  dateFormatCalendar="yyyy/MM/dd h:mm aa"
+                                  dateFormat="yyyy/MM/dd h:mm a"
+                                  dateFormatCalendar="yyyy/MM/dd h:mm a"
                                   minDate={new Date(2022, 11)}
                                   maxDate={new Date(2030, 11)}
                                   peekNextMonth
@@ -313,10 +465,35 @@ const AddEditForm = ({ match }) => {
                                   placeholderText="End date"
                                 />
                               )}
-                            ></Controller>                            
+                            ></Controller>
                           </CFormGroup>
                           {errors.end_date && errors.end_date.type === "required" && (
                             <p style={{ color: "red", fontSize: "12px" }}>End date is required.</p>
+                          )}
+                        </CCol>
+                        <CCol xs="6">
+                          <CFormGroup>
+                            <CLabel htmlFor="title">End Time <span className="label-validation">*</span></CLabel>
+                            <Controller
+                              name={"end_time"}
+                              control={control}
+                              rules={{ required: true }}
+                              render={({ field: { onChange, value } }) => (
+                                <ReactDatePicker
+                                  selected={value}
+                                  onChange={onChange}
+                                  showTimeSelect
+                                  showTimeSelectOnly
+                                  timeIntervals={15}
+                                  timeCaption="Time"
+                                  dateFormat="h:mm aa"
+                                  className="form-control"
+                                />
+                              )}
+                            ></Controller>
+                          </CFormGroup>
+                          {errors.end_time && errors.end_time.type === "required" && (
+                            <p style={{ color: "red", fontSize: "12px" }}>End time is required.</p>
                           )}
                         </CCol>
                       </CRow>
@@ -324,9 +501,7 @@ const AddEditForm = ({ match }) => {
                       <CRow>
                         <CCol xs="12">
                           <CFormGroup>
-                            <CLabel htmlFor="password">Description</CLabel>
-                            {/* <ReactQuill value={text} modules={modules} onChange={setText} /> */}
-
+                            <CLabel htmlFor="password">About the Event</CLabel>
                             <Editor
                               apiKey="5w0ir8k2b6c9y5k3xrngkoskhxhvw6bm7y5qyfo6z8tlce6c"
                               cloudChannel="dev"
@@ -337,7 +512,6 @@ const AddEditForm = ({ match }) => {
                               }}
                               value={contentEditor}
                               onEditorChange={handleEditorChange}
-
                             />
                           </CFormGroup>
                         </CCol>
@@ -346,47 +520,114 @@ const AddEditForm = ({ match }) => {
                       <CRow>
                         <CCol xs="12">
                           <CFormGroup>
-                            <CLabel htmlFor="title">Location</CLabel>
+                            <CLabel htmlFor="Organization">Speaker Name</CLabel>
                             <Controller
-                              name={"location"}
-                              control={control}                              
-                              render={({ field: { onChange, value } }) => (
-                                <CInput
-                                  type="location"
-                                  onChange={onChange}
-                                  value={value}                                  
-                                  placeholder={`Enter event location`}
-                                />
-                              )}
-                            ></Controller>
-                          </CFormGroup>                          
-                        </CCol>                       
-                      </CRow>
-
-                      <CRow>
-                        <CCol xs="12">
-                          <CFormGroup>
-                            <CLabel htmlFor="Organization">Organization</CLabel>
-                            <Controller
-                              name={"organization"}
+                              name={"speaker_name"}
                               control={control}
                               render={({ field: { onChange, value } }) => (
                                 <CInput
                                   type="text"
                                   onChange={onChange}
-                                  value={value}                                  
-                                  placeholder={`Enter organization`}
+                                  value={value}
+                                  placeholder={`Enter speaker name`}
                                 />
                               )}
                             ></Controller>
-                          </CFormGroup>                          
+                          </CFormGroup>
                         </CCol>
                       </CRow>
 
                       <CRow>
                         <CCol xs="12">
                           <CFormGroup>
-                            <CLabel htmlFor="ccnumber">Upload Image</CLabel>
+                            <CLabel htmlFor="ccnumber">Speaker’s Image</CLabel>
+                            <br />
+                            <input
+                              type="file"
+                              accept=".png,.PNG,.JPG,.jpg,.jpeg"
+                              name="myfile"
+                              onChange={changeSpeakerFileHandler}
+                            />
+                            <span>
+                              {!selectSpeakerImage && <img style={{ width: "100px" }} alt="avatar" src="/company-logo.png" />}
+                              {selectSpeakerImage && <img style={{ width: "100px" }} src={selectSpeakerImage} alt="user-image" />}
+                            </span>
+                          </CFormGroup>
+                        </CCol>
+                      </CRow> 
+
+                      <CRow>
+                        <CCol xs="12">
+                          <CFormGroup>
+                            <CLabel className="forum-feedback"><b>About the speaker : </b> &nbsp;</CLabel>
+                            <Controller
+                              name={"about_speaker"}
+                              control={control}
+                              render={({ field: { onChange, value } }) => (
+                                <textarea rows="6" cols="45"
+                                  type="text"
+                                  onChange={onChange}
+                                  value={value}
+                                  className="form-control"
+                                  placeholder={`About the speaker`}
+                                />
+                              )}
+                            ></Controller>
+                          </CFormGroup>
+                        </CCol>
+                      </CRow>
+                      
+
+                      
+                      {/* <div className="form-group google-serach">
+                        <div ref={ref}>
+                          <input
+                            value={cityValue}
+                            onChange={handleInput}
+                            disabled={!ready}
+                            placeholder="Address *"
+                            className="form-control input"
+                          />
+                          {status === "OK" && <ul className="suggestion">{renderSuggestions()}</ul>}
+                          {cityError && <small className="error">{cityError}</small>}
+                        </div>
+                      </div> */}
+
+                      <CRow>
+                        <CCol xs="12">
+                          <CFormGroup>
+                            <CLabel htmlFor="title">Location</CLabel>
+                            <div ref={ref}>
+                              <input
+                                value={cityValue}
+                                onChange={handleInput}
+                                disabled={!ready}
+                                placeholder="Address *"
+                                className="form-control input"
+                              />
+                              {status === "OK" && <ul className="suggestion">{renderSuggestions()}</ul>}
+                              {cityError && <small className="error">{cityError}</small>}
+                            </div>
+                            {/* <Controller
+                              name={"location"}
+                              control={control}
+                              render={({ field: { onChange, value } }) => (
+                                <CInput
+                                  type="location"
+                                  onChange={onChange}
+                                  value={value}
+                                  placeholder={`Enter event location`}
+                                />
+                              )}
+                            ></Controller> */}
+                          </CFormGroup>
+                        </CCol>
+                      </CRow>
+
+                      <CRow>
+                        <CCol xs="12">
+                          <CFormGroup>
+                            <CLabel htmlFor="ccnumber">Event Image</CLabel>
                             <br />
                             <input
                               type="file"
@@ -401,18 +642,68 @@ const AddEditForm = ({ match }) => {
                           </CFormGroup>
                         </CCol>
                       </CRow>
-                     
+
                       <CRow>
                         <CCol xs="12">
-                          <button className="btn btn-outline-primary" type="button" onClick={() => nextTab(1)}>Next</button>                          
+                          <CFormGroup>
+                            <CLabel htmlFor="role">Paid / Unpaid <span className="label-validation">*</span></CLabel>
+                            <Controller
+                              name="purchase_type"
+                              control={control}
+                              rules={{ required: true }}
+                              render={({ field: { onChange, value } }) => (
+                                <select className="form-control" onChange={onChange} value={value}>
+                                  <option key="0" value="">select value</option>
+                                  <option key="1" value="paid">Paid</option>
+                                  <option key="2" value="unpaid">Unpaid</option>
+                                </select>
+                              )}
+                            ></Controller>
+                          </CFormGroup>
+                          {errors.purchase_type && errors.purchase_type.type === "required" && (
+                            <p style={{ color: "red", fontSize: "12px" }}>Type is required.</p>
+                          )}
                         </CCol>
-                      </CRow>  
-                    </CCol>                    
+                      </CRow>
+
+                      {purchase_type_selected === 'paid' &&
+                        <CRow>
+                          <CCol xs="12">
+                            <CFormGroup>
+                              <CLabel htmlFor="cost">Cost <span className="label-validation">*</span></CLabel>
+                              <Controller
+                                name={"cost"}
+                                control={control}
+                                rules={{ required: true }}
+                                render={({ field: { onChange, value } }) => (
+                                  <CInput
+                                    type="text"
+                                    onChange={onChange}
+                                    value={value}
+                                    placeholder={`Enter your cost`}
+                                  />
+                                )}
+                              ></Controller>
+                            </CFormGroup>
+                            {errors.cost && errors.cost.type === "required" && (
+                              <p style={{ color: "red", fontSize: "12px" }}>Cost is required.</p>
+                            )}
+                          </CCol>
+                        </CRow>}
+
+
+
+                      <CRow>
+                        <CCol xs="12">
+                          <button className="btn btn-outline-primary" type="button" onClick={() => nextTab(1)}>Next</button>
+                        </CCol>
+                      </CRow>
+                    </CCol>
                   </CTabPane>
 
                   <CTabPane>
                     <CCol>
-                      <br/>
+                      <br />
                       {session.map((item, index) => (
                         <div key={item.id}>
                           <CCol xs="12">
@@ -420,7 +711,7 @@ const AddEditForm = ({ match }) => {
                               <CLabel htmlFor="title">Group Session {index + 1}</CLabel>
                             </CRow>
                           </CCol>
-                          <br/>
+                          <br />
                           <CCol xs="12">
                             <CRow>
                               <CCol xs="11">
@@ -465,18 +756,18 @@ const AddEditForm = ({ match }) => {
                                 </CRow>
                               </CCol>
                               <CCol xs="1">
-                                <div className="btn btn-danger"  onClick={() => sessionRemove(index)}>Delete</div>
+                                <div className="btn btn-danger" onClick={() => sessionRemove(index)}>Delete</div>
                               </CCol>
                             </CRow>
                           </CCol>
-                          <hr/>
+                          <hr />
                         </div>
                       ))}
                       <CRow>
                         <div className="col-md-12 text-right">
                           <button type="button" className="btn btn-success" onClick={() => sessionAppend({ value: "" })}>Add More Session</button>
                         </div>
-                      </CRow>     
+                      </CRow>
                       <CRow>
                         <CCol xs="12">
                           <button className="btn btn-outline-primary" type="button" onClick={() => nextTab(2)}>Next</button>
@@ -484,7 +775,7 @@ const AddEditForm = ({ match }) => {
                       </CRow>
                     </CCol>
                   </CTabPane>
-                  <CTabPane>  
+                  <CTabPane>
 
                     <CCol>
                       <br />
@@ -515,16 +806,16 @@ const AddEditForm = ({ match }) => {
                               {file.length > 0 &&
                                 file.map((item, index) => {
                                   return (
-                                    <div>
+                                    <div key={item.name}>
                                       {index > 0 &&
                                         <div>
-                                        <CRow key={item.name}>
+                                          <CRow>
                                             <CCol xs="4">
                                               {item.type == 'image' && <img style={{ width: '50px', height: '50px' }} src={item.file} alt="" />}
                                               {item.type == 'doc' && item.name}
                                             </CCol>
                                             <CCol xs="6">
-                                            <button type="button" className="btn btn-danger" onClick={() => deleteFile(index, item.name)}>delete</button>
+                                              <button type="button" className="btn btn-danger" onClick={() => deleteFile(index, item.name)}>delete</button>
                                             </CCol>
                                           </CRow>
                                           <hr />
@@ -542,14 +833,14 @@ const AddEditForm = ({ match }) => {
                     <hr />
 
 
-                    <CCol>                      
+                    <CCol>
                       <CCol xs="12">
                         <CRow>
                           <CLabel htmlFor="title"><b>Video URL</b></CLabel>
                         </CRow>
                       </CCol>
                       {video.map((item, index) => (
-                        <div key={item.id}>  
+                        <div key={item.id}>
                           <br />
                           <CRow>
                             <CCol xs="12">
@@ -572,9 +863,9 @@ const AddEditForm = ({ match }) => {
                                 <CCol xs="1">
                                   <div className="btn btn-danger" onClick={() => videoRemove(index)}>Delete</div>
                                 </CCol>
-                              </CRow>    
+                              </CRow>
                             </CCol>
-                          </CRow>                          
+                          </CRow>
                         </div>
                       ))}
                       <div className="row">
@@ -584,9 +875,9 @@ const AddEditForm = ({ match }) => {
                       </div>
                     </CCol>
 
-                    <hr/>
+                    <hr />
 
-                    <CCol>                      
+                    <CCol>
                       <CCol xs="12">
                         <CRow>
                           <CLabel htmlFor="title"><b>Web Page URL</b></CLabel>
@@ -634,14 +925,14 @@ const AddEditForm = ({ match }) => {
                       </CCol>
                     </CRow>
 
-                   
+
                   </CTabPane>
 
                   <CTabPane>
 
                     <CCol>
                       <br />
-                     
+
 
                       <CRow>
                         <CCol xs="12">
@@ -655,7 +946,6 @@ const AddEditForm = ({ match }) => {
                                   type="text"
                                   onChange={onChange}
                                   value={value}
-                                  required
                                   placeholder={`Enter promo title`}
                                 />
                               )}
@@ -701,23 +991,24 @@ const AddEditForm = ({ match }) => {
                           </CFormGroup>
                         </CCol>
                       </CRow>
-                     
+
                     </CCol>
                   </CTabPane>
 
                 </CTabContent>
               </CTabs>
-              <br/>
-              <hr/>
+              <br />
+              <hr />
               <center>
+                <button type="button" onClick={(e) => preview()} className="btn btn-outline-primary">Preview</button>&nbsp;
                 <button type="submit" className="btn btn-outline-primary">Save</button>
-              </center>              
+              </center>
             </form>
           </CCardBody>
         </CCard>
       </CCol>
 
-     
+
     </CRow>
   )
 }

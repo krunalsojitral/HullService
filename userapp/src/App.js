@@ -19,6 +19,11 @@ const About = lazy(() => import("./pages/About"));
 const Dashboard = lazy(() => import("./pages/user/Dashboard"));
 const Landing = lazy(() => import("./pages/Landing"));
 const Contact = lazy(() => import("./pages/Contact"));
+const Faq = lazy(() => import("./pages/Faq"));
+const Partner = lazy(() => import("./pages/Partner"));
+const Ourteam = lazy(() => import("./pages/Ourteam"));
+
+
 const ParticipateInResearch = lazy(() => import("./pages/ParticipateInResearch"));
 const Preview = lazy(() => import("./pages/Preview"));
 const AddResearch = lazy(() => import("./pages/user/research/AddResearch"));
@@ -27,6 +32,11 @@ const AddResearch = lazy(() => import("./pages/user/research/AddResearch"));
 
 const Events = lazy(() => import("./pages/user/event/Events"));
 const EventDetail = lazy(() => import("./pages/user/event/EventDetail"));
+const EventsCart = lazy(() => import("./pages/user/event/EventsCart"));
+const EventTicket = lazy(() => import("./pages/user/event/EventTicket"));
+const PromoPage = lazy(() => import("./pages/user/event/PromoPage"));
+
+
 const CoursesTrainings = lazy(() => import("./pages/user/coursesTrainings/CoursesTrainings"));
 const AddForum = lazy(() => import("./pages/user/forum/AddForum"));
 const Forum = lazy(() => import("./pages/user/forum/Forum"));
@@ -77,6 +87,9 @@ function App() {
           <Route path="/about" component={About} />
           <Route path="/events" component={Events} />   
           <Route path="/event-detail" component={EventDetail} />
+          <Route path="/event-promo" component={PromoPage} />
+          <Route path="/event-cart" component={EventsCart} />
+          <Route path="/event-ticket" component={EventTicket} />          
           <Route path="/courses-training" component={CoursesTrainings} />
           <Route path="/add-forum" component={AddForum} />
           <PrivateRoute path="/forum" component={Forum} />
@@ -86,6 +99,9 @@ function App() {
           <Route path="/dashboard" component={Dashboard} />
           <Route exact path="/" component={Landing} />
           <Route path="/contact" component={Contact} />          
+          <Route path="/faq" component={Faq} />
+          <Route path="/partner" component={Partner} />
+          <Route path="/ourteam" component={Ourteam} />
           <Route path="/participants-in-my-studies" component={ParticipantsInMyStudies} />
           <Route path="/participate-in-research" component={ParticipateInResearch} />
           <Route path="/my-studies" component={MyStudies} />

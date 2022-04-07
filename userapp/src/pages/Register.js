@@ -232,6 +232,11 @@ export default function Register() {
                     setFormValue('email', userdata.email)
                     setFormValue('organization', userdata.organization)
                     setFormValue('subscribe', userdata.subscribe)
+                    console.log(']]]]]]]]]]]]]]]]]]');
+                    console.log(userdata.role);
+                    
+                    setUserTypeList(userdata.role)
+                    
 
                     if (userdata.organization) {
                         setValues(userdata.organization)
@@ -793,7 +798,7 @@ export default function Register() {
                                             </div>
                                         </div>} */}
 
-                                        <div className="form-group autosuggestion">
+                                        {userTypeList != 'Guest' && <div className="form-group autosuggestion">
                                             <Controller
                                                 name={"organization"}
                                                 control={control}
@@ -816,7 +821,7 @@ export default function Register() {
                                             {errors.suggestion && errors.suggestion.type === "required" && (
                                                 <small className="error">suggestion is required.</small>
                                             )}
-                                        </div>
+                                        </div>}
                                         
 
                                         {userTypeList == 'researcher' &&
@@ -901,7 +906,7 @@ export default function Register() {
                                         }
 
 
-                                        {userTypeList == 'professional' && <div>
+                                        {/* {userTypeList == 'professional' && <div>
 
                                             <div className="form-group select-dropdown">
                                                 <Controller
@@ -1048,8 +1053,8 @@ export default function Register() {
 
                                         </div>}
 
-                                        
-                                        <div className="form-group">
+                                         */}
+                                        {userTypeList != 'Guest' && <div className="form-group">
                                             <Controller
                                                 name={"research_description"}
                                                 control={control}
@@ -1064,10 +1069,10 @@ export default function Register() {
                                                     />
                                                 )}
                                             ></Controller>
-                                        </div>
+                                        </div>}
 
 
-                                        <div className="form-group">
+                                        {userTypeList != 'Guest' && <div className="form-group">
                                             <Controller
                                                 name={"about_us"}
                                                 control={control}
@@ -1082,7 +1087,7 @@ export default function Register() {
                                                     />
                                                 )}
                                             ></Controller>
-                                        </div>
+                                        </div>}
 
                                         <div className="form-group checkbox">
                                             <Controller

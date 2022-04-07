@@ -89,49 +89,76 @@ export default function Header() {
                                     <i className="fa fa-bars"></i>
                                 </a>
 
-                                {!token && <div className="hull-menu">
+                                <div className="hull-menu">
                                     <ul>
                                         <li>
                                             <NavLink exact={true} activeClassName="active" to="/">
-                                                <InlineButton name={"HOME"} />
+                                                <InlineButton name={"Home"} />
                                             </NavLink>
                                         </li>
                                         <li>
-                                            <NavLink activeClassName="active" to="/research-request-form">
-                                                <InlineButton name={"RESEARCHER'S REGISTRATION"} />
-                                            </NavLink>
+                                            <a href="javascript:;">
+                                                <InlineButton name={"About us"} />
+                                            </a>
+                                            <ul>
+                                                <li>
+                                                    <NavLink activeClassName="active" to="/ourteam">
+                                                        <InlineButton name={"Our Team"} />
+                                                    </NavLink>
+                                                </li>
+                                                <li>
+                                                    <NavLink activeClassName="active" to="/faq">
+                                                        <InlineButton name={"FAQ"} />
+                                                    </NavLink>
+                                                </li>
+                                                <li>
+                                                    <NavLink activeClassName="active" to="/about">
+                                                        <InlineButton name={"About Hull Services"} />
+                                                    </NavLink>
+                                                </li>
+                                            </ul>
                                         </li>
+                                        {(!token) && <li>
+                                            <a href="javascript:;">
+                                                <InlineButton name={"Research"} />
+                                            </a>
+                                            <ul>
+                                                <li>
+                                                    <NavLink activeClassName="active" to="/research-request-form">
+                                                        <InlineButton name={"Become a researcher"} />
+                                                    </NavLink>
+                                                </li>                                                
+                                            </ul>
+                                        </li>}
                                         <li>
-                                            <NavLink activeClassName="active" to="/login">
-                                                <InlineButton name={"LOGIN"} />
-                                            </NavLink>
-                                        </li>
-                                    </ul>
-                                </div>}
-
-                                {token && <div className="hull-menu">
-                                    <ul>
-                                        <li>
-                                            <NavLink exact={true} activeClassName="active" to="/">
-                                                <InlineButton name={"HOME"} />
+                                            <NavLink activeClassName="active" to="/courses-training">
+                                                <InlineButton name={"Traning & Courses"} />
                                             </NavLink>
                                         </li>
                                         <li>
                                             <NavLink activeClassName="active" to="/events">
-                                                <InlineButton name={"EVENTS"} />
+                                                <InlineButton name={"Events"} />
                                             </NavLink>
                                         </li>
                                         <li>
-                                            <NavLink activeClassName="active" to="/courses-training">
-                                                <InlineButton name={"COURSE"} />
+                                            <NavLink activeClassName="active" to="/partner">
+                                                <InlineButton name={"Our Partners"} />
                                             </NavLink>
                                         </li>
+                                        <li>
+                                            <NavLink activeClassName="active" to="/contact">
+                                                <InlineButton name={"Contact us"} />
+                                            </NavLink>
+                                        </li> 
+                                        {(!token) && <li>
+                                            <NavLink activeClassName="active" to="/login">
+                                                <InlineButton name={"Login"} />
+                                            </NavLink>
+                                        </li>}
                                     </ul>
-                                </div>}
+                                </div>
 
-                             
-
-                              
+                                                              
                                 {(token) && <div className="user-dropdown">
                                     <div className="dropdown">
                                         <a href="#" className="dropdown-toggle loged-user-link" data-toggle="dropdown">

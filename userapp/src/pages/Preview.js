@@ -53,6 +53,95 @@ export default function Preview() {
                             <Sidebar />
                         </div>
 
+                        {detail.module_type == 'event' && 
+
+                            <div className="col-md-10">
+                                <div className="event-details">
+                                    <div className="row">
+                                        <div className="col-md-12">
+                                            <div className="event-details-title">
+                                                <h3>{detail.title}</h3>
+                                            </div>
+                                            <div className="event-details-content">
+                                                <div className="row">
+                                                    <div className="col-md-9">
+                                                        {detail.image && <div className="event-content-img">
+                                                            <img src={detail.image} />
+                                                        </div>}
+                                                        <div className="event-content-list">
+                                                            <p dangerouslySetInnerHTML={{ __html: detail.description }}></p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-md-3">
+                                                        <div className="event-listing-box">
+                                                            <div className="event-listing-text">
+                                                                <div className="event-text-icon">
+                                                                    <img src="images/cal.png" />
+                                                                </div>
+                                                                <div className="event-text-word">
+                                                                    <h3>START DATE</h3>
+                                                                    {/* {detail.start_date} */}
+                                                                    <span>November 17, 2020 12:00 pm</span>
+                                                                </div>
+                                                            </div>
+                                                            <br />
+                                                            <div className="event-listing-text">
+                                                                <div className="event-text-icon">
+                                                                    <img src="images/cal.png" />
+                                                                </div>
+                                                                <div className="event-text-word">
+                                                                    <h3>END DATE</h3>
+                                                                    {/* {detail.end_date} */}
+                                                                    <span>November 17, 2020 12:00 pm</span>
+                                                                </div>
+                                                            </div>
+                                                            <br />
+                                                            <div className="event-listing-text">
+                                                                <div className="event-text-icon">
+                                                                    <img src="images/checking.png" />
+                                                                </div>
+                                                                <div className="event-text-word">
+                                                                    <h3>STATUS</h3>
+                                                                    <span>Showing</span>
+                                                                </div>
+                                                            </div>
+                                                            {detail.location && <div className="event-listing-text">
+                                                                <div className="event-text-icon">
+                                                                    <img src="images/marker-event.png" />
+                                                                </div>
+                                                                <div className="event-text-word">
+                                                                    <h3>LOCATION</h3>
+                                                                    <span>{detail.location}</span>
+                                                                </div>
+                                                            </div>}
+                                                            <br/>
+                                                            {/* <div className="event-listing-text">
+                                                                    <div className="event-text-icon">
+                                                                        <img src="images/box.png" />
+                                                                    </div>
+                                                                    <div className="event-text-word">
+                                                                        <h3>CATEGORY</h3>
+                                                                        <span>Business</span>
+                                                                    </div>
+                                                                </div> */}
+                                                            <div className="event-listing-text">
+                                                                <button type="submit" class="btn-save">Purchase</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+
+                                        </div>
+
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        }
+
 
                         {(detail.module_type == 'article' || detail.module_type == 'blog' || detail.module_type == 'video') && <div className="col-md-7 bg-white">
                             <div className="research-main">

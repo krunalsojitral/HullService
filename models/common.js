@@ -189,8 +189,8 @@ function Common() {
                             var values = update_value;
                             var sql = updateProductByID(1, course_record);
                         }else{
-                            var values = [record.title, record.image, record.description, record.module_type, record.created_at, record.videoId, 1]
-                            var sql = "UPDATE preview SET title = $1, image = $2, description = $3, module_type = $4, created_at = $5, videoId = $6  WHERE preview_id = $7";
+                            var values = [record.title, record.image, record.description, record.module_type, record.created_at, record.videoId, record.start_date, record.start_time, record.end_date, record.end_time, record.speaker_name, record.location,1]
+                            var sql = "UPDATE preview SET title = $1, image = $2, description = $3, module_type = $4, created_at = $5, videoId = $6, start_date = $7, start_time = $8, end_date = $9, end_time = $10, speaker_name= $11, location= $12 WHERE preview_id = $13";
                         }        
                         con.query(sql, values, function (err, result) {
                             con.release()

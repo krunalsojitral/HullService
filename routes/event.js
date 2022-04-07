@@ -11,13 +11,12 @@ var asyn = require("async");
 var moment = require("moment");
 var formidable = require("formidable");
 const gm = require("gm");
-var Nylas = require("nylas");
-
-Nylas.config({
-  clientId: env.NYLAS_CLIENT_ID,
-  clientSecret: env.NYLAS_CLIENT_SECRET,
-});
-var nylas = Nylas.with(env.NYLAS_TOKEN);
+var passport = require('passport');
+var mustache = require('mustache');
+var nodemailer = require('nodemailer');
+const nodeMailerCredential = require('./../EmailCredential');
+var User = require('../models/user');
+var shortid = require('shortid');
 
 function loggerData(req) {
   if (env.DEBUG) {
@@ -75,15 +74,27 @@ router.post("/addEventByadmin", function (req, res) {
       var start_date = (parsed.start_date) ? moment(parsed.start_date, "YYYY-MM-DD h:mm a").add(1, 'days').format("YYYY-MM-DD h:mm a") : ''
       var end_date = (parsed.end_date) ? moment(parsed.end_date, "YYYY-MM-DD h:mm a").add(1, 'days').format("YYYY-MM-DD h:mm a") : ''
 
+      var start_time = (parsed.start_time) ? moment(parsed.start_time, "h:mm a").add(1, 'days').format("h:mm a") : ''
+      var end_time = (parsed.end_time) ? moment(parsed.end_time, "h:mm a").add(1, 'days').format("h:mm a") : ''
+
+      // const start_time = new Date(record.start_date).getTime() / 1000,
+      //   end_time = new Date(record.end_date).getTime() / 1000;
+
       var record = {
         title: parsed.title,
         description: parsed.description,
         status: parsed.status,
         location: parsed.location,
        // category: parsed.category,
-        organization: parsed.organization,
+        speaker_name: parsed.speaker_name,
+        speaker_image: '',
+        about_speaker: parsed.about_speaker,
+        purchase_type: parsed.purchase_type,
+        cost: parsed.cost,
         start_date: start_date,
         end_date: end_date,
+        start_time: start_time,
+        end_time: end_time,
         created_at: moment().format("YYYY-MM-DD"),
         group_session: [],
         image: "",
@@ -115,8 +126,7 @@ router.post("/addEventByadmin", function (req, res) {
       });
      // var filenames = Object.entries(files).filter((el) => el[0] != "image");
     }
-     const start_time = new Date(record.start_date).getTime() / 1000,
-      end_time = new Date(record.end_date).getTime() / 1000;
+     
         let overview = {};
         asyn.waterfall(
           [
@@ -197,7 +207,30 @@ router.post("/addEventByadmin", function (req, res) {
                 done1(err, overview);
               }
             },
-
+            function (overview, done1) {
+              if (typeof files.speaker_image !== "undefined") {
+                let file_ext = files.speaker_image.name.split(".").pop();
+                let filename = Date.now() + "-" + files.speaker_image.name.split(" ").join("");
+                let tmp_path = files.speaker_image.path;
+                if (file_ext == "png" || file_ext == "PNG" || file_ext == "jpg" || file_ext == "JPG" || file_ext == "jpeg" || file_ext == "JPEG") {
+                  fs.rename(tmp_path, path.join(__dirname, env.EVENT_PATH + filename), function (err) {
+                    if (err) {
+                      record.speaker_image = filename;
+                      done1("Image upload error", overview)
+                    } else {
+                      record.speaker_image = filename;
+                      overview["speaker_image"] = filename;
+                      done1(err, overview);
+                    }
+                  });
+                } else {
+                  return res.json({ status: 0, response: { msg: "Only image with jpg, jpeg and png format are allowed", } });
+                }
+              } else {
+                overview["speaker_image"] = "";
+                done1(err, overview);
+              }
+            },
             function (overview, done2) {
               setTimeout(() => {
                 Event.addEventByadmin(record, resources, function (err, data) {
@@ -208,19 +241,7 @@ router.post("/addEventByadmin", function (req, res) {
                   }
                 });
               }, 100);          
-            },
-            function (data, done3) {
-              const event = nylas.events.build({
-                title: record.title,
-                calendarId:  env.NYLAS_CALENDAR_ID,
-                when: { start_time: start_time, end_time: end_time },
-                participants: env.NYLAS_PARTICIPANTS,
-                location: fields.location,
-              });
-              event.save({ notify_participants: true }).then((event) => {
-                done3(err, data);
-              });
-            },
+            }
           ],
         function (error, data) {
           if (error) {
@@ -329,10 +350,15 @@ router.post('/getEventDataById', [check('event_id', 'Event is required').notEmpt
             event['description'] = result[0].description;            
             event['start_date'] = (result[0].start_date) ? moment(result[0].start_date).format('YYYY/MM/DD h:mm a') :'';
             event['end_date'] = (result[0].end_date) ? moment(result[0].end_date).format('YYYY/MM/DD h:mm a') : '';
+            event['start_time'] = (result[0].start_time) ? result[0].start_time : '';
+            event['end_time'] = (result[0].end_time) ? result[0].end_time : '';
             event['location'] = result[0].location;
-            event['organization'] = result[0].organization;
+            event['speaker_name'] = result[0].speaker_name;
+            event['speaker_image'] = (result[0].speaker_image) ? imageLink + env.EVENT_VIEW_PATH + result[0].speaker_image : '';;
             event['image'] = (result[0].image) ? imageLink + env.EVENT_VIEW_PATH + result[0].image : '';
             event['status'] = result[0].status;  
+            event['cost'] = result[0].cost;
+            event['purchase_type'] = result[0].purchase_type;
             event['promo_title'] = result[0].promo_title;
             event['promo_image'] = (result[0].promo_image) ? imageLink + env.EVENT_VIEW_PATH + result[0].promo_image : '';
             event['promo_description'] = result[0].promo_description;
@@ -475,8 +501,8 @@ router.post("/updateEventByadmin", function (req, res) {
     if (err) return res.json({ status: 1, response: { msg: err } });
 
     let obj = JSON.parse(fields.data);
-    var start_date = (obj.start_date) ? moment(obj.start_date, "YYYY-MM-DD").add(1, 'days').format("YYYY-MM-DD") : ''
-    var end_date = (obj.end_date) ? moment(obj.end_date, "YYYY-MM-DD").add(1, 'days').format("YYYY-MM-DD") : ''
+    var start_date = (obj.start_date) ? moment(obj.start_date, "YYYY-MM-DD h:mm a").add(1, 'days').format("YYYY-MM-DD h:mm a") : ''
+    var end_date = (obj.end_date) ? moment(obj.end_date, "YYYY-MM-DD h:mm a").add(1, 'days').format("YYYY-MM-DD h:mm a") : ''
 
     var event_id = obj.event_id;
     var deleteresources = obj.deleteresources;
@@ -484,7 +510,7 @@ router.post("/updateEventByadmin", function (req, res) {
       title: obj.title,
       description: obj.description,
       location: obj.location,
-      organization: obj.organization,
+      speaker_name: obj.speaker_name,
       start_date: start_date,
       end_date: end_date,
     };
@@ -494,7 +520,7 @@ router.post("/updateEventByadmin", function (req, res) {
       promo_description: obj.promo_description,
     }
 
-      var update_value = [obj.title, obj.description, obj.location, obj.organization, start_date, end_date];
+      var update_value = [obj.title, obj.description, obj.location, obj.speaker_name, start_date, end_date];
       var group_session = []
 
       if (obj.sessionTitle.length > 0){
@@ -531,8 +557,7 @@ router.post("/updateEventByadmin", function (req, res) {
       }
     
     
-    const start_time = new Date(record.start_date).getTime() / 1000,
-    end_time = new Date(record.end_date).getTime() / 1000;
+ 
 
     asyn.waterfall(
       [ function (done) {        
@@ -882,10 +907,11 @@ router.post('/getUnpaidEventList', function (req, res) {
 
       // console.log(newarry);
 
-      return res.json({ status: 1, 'response': { data: eventList } });
+      return res.json({ status: 1, 'response': { data: newResult } });
     }
   });
 });
+
 
 function getDateArr(arr) {
   var new_arr = {};
@@ -903,5 +929,225 @@ function getDateArr(arr) {
   }
   return new_arr
 }
+
+router.post('/eventRegisterWithUser', passport.authenticate('jwt', { session: false }), function (req, res) {
+  loggerData(req);
+  var event_id = req.body.event_id
+  var email = req.user.email;  
+  var first_name = req.user.first_name;
+  var obj = {
+    event_id:req.body.event_id,
+    user_id:req.user.id,
+    payment_id:'',
+    event_purchase_date: moment().format('YYYY-MM-DD')
+  }
+  Event.addEventPurchase(obj, function (err, result) {
+    if (err) {
+      return res.json({ status: 0, 'response': { msg: err } });
+    } else {
+
+      Event.getEventDataById(event_id, function (err, eventdata) { 
+        var eventLink;
+        var home_url;
+        var admin_app_url;
+        var hostname = req.headers.host;
+
+        if (hostname == env.LOCAL_HOST_USER_APP) {
+          home_url = env.APP_URL;
+          eventLink = env.APP_URL + 'event-detail?id=' + event_id;
+          admin_app_url = env.ADMIN_APP_URL
+        } else {
+          home_url = env.APP_URL;
+          eventLink = env.APP_URL + 'event-detail?id=' + event_id;
+          admin_app_url = env.ADMIN_APP_URL
+        }
+
+        var htmlUser = fs.readFileSync(__dirname + '/templates/event/EventInvitation.html', 'utf8');
+
+        var dynamicHtml = {
+          home_url: home_url,
+          fullname: first_name,
+          eventLink: eventLink
+        }
+
+        var view = { data: dynamicHtml };
+        var finalHtmlUser = mustache.render(htmlUser, view);
+        let transporter = nodemailer.createTransport(nodeMailerCredential); // node mailer credentials
+        let mailOptions1 = {
+          from: env.MAIL_FROM, // sender address
+          to: email,
+          subject: 'Your Tickets for' + eventdata[0].title,
+          html: finalHtmlUser.replace(/&#x2F;/g, '/')
+        };
+
+        console.log(mailOptions1);
+        transporter.sendMail(mailOptions1, (error, info) => {
+          if (error) {
+            //return res.json({status: 0, response : { msg: 'There was an email error',}  });
+          } else {
+          }
+        });
+
+        return res.json({ status: 1, 'response': { data: eventdata } });
+      });
+
+     
+    }
+  });
+});
+
+router.post('/eventRegisterWithoutUser', function (req, res) {
+  loggerData(req);
+  var event_id = req.body.event_id
+  var email = req.body.email;
+  var first_name = req.body.first_name;
+  var event_title = req.body.event_title;
+  var obj = {
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
+    email: email,
+    email_verification_token: shortid.generate() + Date.now(),
+    created_at: moment.utc().format('YYYY-MM-DD'),
+    role:5,
+    status: 0,
+    user_read_status: 0
+  }
+  
+  User.checkUserRegistration(email, function (err, data) {
+    let totalrecord = data.length;
+    if (totalrecord) {
+
+      var eventobj = {
+        event_id: event_id,
+        user_id: data[0].id,
+        payment_id: '',
+        event_purchase_date: moment().format('YYYY-MM-DD')
+      }
+      Event.addEventPurchase(eventobj, function (err, result) {
+        if (err) {
+          return res.json({ status: 0, 'response': { msg: err } });
+        } else {
+
+          var eventLink;
+          var registerURL;
+          var home_url;
+          var admin_app_url;
+          var hostname = req.headers.host;
+
+          if (hostname == env.LOCAL_HOST_USER_APP) {
+            home_url = env.APP_URL;
+            eventLink = env.APP_URL + 'event-detail?id=' + event_id;
+            registerURL = env.APP_URL + 'register?code=' + data[0].email_verification_token
+            admin_app_url = env.ADMIN_APP_URL
+          } else {
+            home_url = env.APP_URL;
+            eventLink = env.APP_URL + 'event-detail?id=' + event_id;
+            registerURL = env.APP_URL + 'register?code=' + data[0].email_verification_token
+            admin_app_url = env.ADMIN_APP_URL
+          }
+
+          var htmlUser = fs.readFileSync(__dirname + '/templates/event/EventInvitation.html', 'utf8');
+
+          var dynamicHtml = {
+            home_url: home_url,
+            fullname: first_name,
+            eventLink: eventLink
+          }
+
+          if (data[0].role == 5 && data[0].email_verification_token) {
+            dynamicHtml.registerURL = registerURL;
+          }
+
+          var view = { data: dynamicHtml };
+          var finalHtmlUser = mustache.render(htmlUser, view);
+          let transporter = nodemailer.createTransport(nodeMailerCredential); // node mailer credentials
+          let mailOptions1 = {
+            from: env.MAIL_FROM, // sender address
+            to: email,
+            subject: 'Your Tickets for' + event_title,
+            html: finalHtmlUser.replace(/&#x2F;/g, '/')
+          };
+          transporter.sendMail(mailOptions1, (error, info) => {
+            if (error) {
+              console.log(error);
+              //return res.json({status: 0, response : { msg: 'There was an email error',}  });
+            } else {
+            }
+          });
+          return res.json({ status: 1, 'response': { data: result } });
+        }
+      });
+
+    } else {
+
+        User.addUser(obj, async function (err, data) {
+          var eventobj = {
+            event_id: event_id,
+            payment_id: '',
+            event_purchase_date: moment().format('YYYY-MM-DD')
+          }
+          Event.addEventPurchase(eventobj, function (err, result) {
+            if (err) {
+              return res.json({ status: 0, 'response': { msg: err } });
+            } else {
+
+              Event.getEventDataById(event_id, function (err, eventdata) {
+                var eventLink;
+                var home_url;
+                var admin_app_url;
+                var hostname = req.headers.host;
+                var registerURL;
+
+                if (hostname == env.LOCAL_HOST_USER_APP) {
+                  home_url = env.APP_URL;
+                  eventLink = env.APP_URL + 'event-ticket?code=' + event_id;
+                  admin_app_url = env.ADMIN_APP_URL
+                  registerURL = env.APP_URL + 'register?code=' + obj.email_verification_token
+                } else {
+                  home_url = env.APP_URL;
+                  eventLink = env.APP_URL + 'event-ticket?code=' + event_id;
+                  admin_app_url = env.ADMIN_APP_URL
+                  registerURL = env.APP_URL + 'register?code=' + obj.email_verification_token
+                }
+
+                var htmlUser = fs.readFileSync(__dirname + '/templates/event/EventInvitation.html', 'utf8');
+
+                var dynamicHtml = {
+                  home_url: home_url,
+                  fullname: data[0].first_name,
+                  eventLink: eventLink,
+                  registerURL: registerURL
+                }
+
+                var view = { data: dynamicHtml };
+                var finalHtmlUser = mustache.render(htmlUser, view);
+                let transporter = nodemailer.createTransport(nodeMailerCredential); // node mailer credentials
+                let mailOptions1 = {
+                  from: env.MAIL_FROM, // sender address
+                  to: email,
+                  subject: 'Your Tickets for' + event_title,
+                  html: finalHtmlUser.replace(/&#x2F;/g, '/')
+                };
+                transporter.sendMail(mailOptions1, (error, info) => {
+                  if (error) {
+                    console.log(error);
+                    //return res.json({status: 0, response : { msg: 'There was an email error',}  });
+                  } else {
+                  }
+                });
+
+                return res.json({ status: 1, 'response': { data: result } });
+              });
+            }
+          });
+        });
+    }
+  });
+
+  
+  
+  
+});
+
 
 module.exports = router;
