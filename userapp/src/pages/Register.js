@@ -231,9 +231,7 @@ export default function Register() {
                     setFormValue('last_name', userdata.last_name)
                     setFormValue('email', userdata.email)
                     setFormValue('organization', userdata.organization)
-                    setFormValue('subscribe', userdata.subscribe)
-                    console.log(']]]]]]]]]]]]]]]]]]');
-                    console.log(userdata.role);
+                    setFormValue('subscribe', userdata.subscribe)                    
                     
                     setUserTypeList(userdata.role)
                     
@@ -333,7 +331,7 @@ export default function Register() {
 
     const onSubmit = (data) => { 
 
-        data.role = 3;
+        data.role = userTypeList;
         data.user_id = user.id;
         registerResearcherUser(data);
         
@@ -667,7 +665,7 @@ export default function Register() {
 
                                         </div>
 
-                                        <div className="form-group">
+                                        {userTypeList != 'General Public' && <div className="form-group">
                                             <Controller
                                                 name={"phone"}
                                                 control={control}
@@ -689,7 +687,7 @@ export default function Register() {
                                                 <small className="error">Phone is required.</small>
                                             )}
                                             {errors?.phone?.type === "pattern" && (<small className="error">Invalid phone number</small>)}
-                                        </div>
+                                        </div>}
 
 
                                         

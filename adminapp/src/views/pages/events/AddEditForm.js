@@ -411,35 +411,7 @@ const AddEditForm = ({ match }) => {
                           {errors.start_date && errors.start_date.type === "required" && (
                             <p style={{ color: "red", fontSize: "12px" }}>Start date is required.</p>
                           )}
-                        </CCol>
-                        <CCol xs="6">
-                          <CFormGroup>
-                            <CLabel htmlFor="title">Start Time <span className="label-validation">*</span></CLabel>
-                            <Controller
-                              name={"start_time"}
-                              control={control}
-                              rules={{ required: true }}
-                              render={({ field: { onChange, value } }) => (
-                                <ReactDatePicker
-                                  selected={value}
-                                  onChange={onChange}
-                                  showTimeSelect
-                                  showTimeSelectOnly
-                                  timeIntervals={15}
-                                  timeCaption="Time"
-                                  dateFormat="h:mm aa"
-                                  className="form-control"
-                                />
-                              )}
-                            ></Controller>                            
-                          </CFormGroup>
-                          {errors.start_time && errors.start_time.type === "required" && (
-                            <p style={{ color: "red", fontSize: "12px" }}>Start time is required.</p>
-                          )}
-                        </CCol>
-                      </CRow>
-
-                      <CRow>
+                        </CCol>  
                         <CCol xs="6">
                           <CFormGroup>
                             <CLabel htmlFor="title">End Date <span className="label-validation">*</span></CLabel>
@@ -470,33 +442,10 @@ const AddEditForm = ({ match }) => {
                           {errors.end_date && errors.end_date.type === "required" && (
                             <p style={{ color: "red", fontSize: "12px" }}>End date is required.</p>
                           )}
-                        </CCol>
-                        <CCol xs="6">
-                          <CFormGroup>
-                            <CLabel htmlFor="title">End Time <span className="label-validation">*</span></CLabel>
-                            <Controller
-                              name={"end_time"}
-                              control={control}
-                              rules={{ required: true }}
-                              render={({ field: { onChange, value } }) => (
-                                <ReactDatePicker
-                                  selected={value}
-                                  onChange={onChange}
-                                  showTimeSelect
-                                  showTimeSelectOnly
-                                  timeIntervals={15}
-                                  timeCaption="Time"
-                                  dateFormat="h:mm aa"
-                                  className="form-control"
-                                />
-                              )}
-                            ></Controller>
-                          </CFormGroup>
-                          {errors.end_time && errors.end_time.type === "required" && (
-                            <p style={{ color: "red", fontSize: "12px" }}>End time is required.</p>
-                          )}
-                        </CCol>
+                        </CCol>                     
                       </CRow>
+
+                     
 
                       <CRow>
                         <CCol xs="12">

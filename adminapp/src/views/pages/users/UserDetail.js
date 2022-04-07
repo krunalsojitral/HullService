@@ -8,9 +8,14 @@ import Swal from "sweetalert2";
 const UserDetail = ({ match }) => {
 
   const [details, setDetails] = useState({})
+  const [userId, setUserId] = useState()
   const [loader, setLoader] = useState(0)
+  
 
   React.useEffect(() => {
+
+    setUserId(match.params.id);
+
     axios.post(api_url + '/user/getAdminUserById', { 'user_id': match.params.id }).then((result) => {
       if (result.data.status) {
         var usersData = result.data.response.data;
@@ -60,8 +65,24 @@ const UserDetail = ({ match }) => {
 
    
   }
-
   
+  const changeuserStatusClick = (action) => {  
+    var obj = {
+      id: userId,
+      status: 1,
+    };
+    axios.post(api_url + "/user/changeuserStatus", obj)
+      .then((result) => {
+        if (result.data.status) {
+          Swal.fire("Success!", "This user is become a researcher successfully.", "success");
+        } else {
+          Swal.fire("Oops...", result.data.response.msg, "error");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
   
   return (
     <CRow>
@@ -79,9 +100,7 @@ const UserDetail = ({ match }) => {
                 <tr><td>Email :</td><td><strong>{details.email}</strong></td></tr>
                 <tr><td>Phone :</td><td>{details.phone && <strong>{details.phone}</strong>}</td></tr>
                 {/* {details.joined_date && <tr><td>Joined on :</td><td><strong>{details.joined_date}</strong></td></tr>}
-                {details.renewal_date && <tr><td>Renewal Date :</td><td><strong>{details.renewal_date}</strong></td></tr>} */}
-                {details.role == 3 && <tr><td>About US :</td><td>{details.about_us && <strong dangerouslySetInnerHTML={{ __html: details.about_us }}></strong>}</td></tr>}
-                {details.role == 3 && <tr><td>Research description :</td><td>{details.research_description && <strong dangerouslySetInnerHTML={{ __html: details.research_description }}></strong>}</td></tr>}
+                {details.renewal_date && <tr><td>Renewal Date :</td><td><strong>{details.renewal_date}</strong></td></tr>} */}                
                 {details.city && <tr><td>City :</td><td><strong>{details.city}</strong></td></tr>}
                 {details.organization && <tr><td>Organization :</td><td><strong>{details.organization}</strong></td></tr>}
                 {details.sectorname && <tr><td>Sector :</td><td><strong>{details.sectorname}</strong></td></tr>}
@@ -92,21 +111,30 @@ const UserDetail = ({ match }) => {
                 {(details.academicdisciplinename || details.other_academic_discipline) && <tr><td>Academic Discipline :</td><td><strong>{details.academicdisciplinename}</strong>{details.other_academic_discipline && <span>,&nbsp;</span>}  {details.other_academic_discipline && <strong>Other; {details.other_academic_discipline}</strong>} </td></tr>}
                 {(details.role == 3 && (details.pinterestarea || details.other_research_interest_area)) && <tr><td>Interest Area :</td><td><strong>{details.pinterestarea}</strong> {details.other_research_interest_area && <span>,&nbsp;</span>} {details.other_research_interest_area && <strong>Other; {details.other_research_interest_area}</strong>}</td></tr>}
                 {(details.role == 2 && (details.pinterestarea || details.other_professional_interest_area)) && <tr><td>Interest Area :</td><td><strong>{details.pinterestarea}</strong> {details.other_professional_interest_area && <span>,&nbsp;</span>} {details.other_professional_interest_area && <strong>Other; {details.other_professional_interest_area}</strong>} </td></tr>}
+                {details.role == 3 && <tr><td>About Us :</td><td>{details.about_us && <strong dangerouslySetInnerHTML={{ __html: details.about_us }}></strong>}</td></tr>}
+                {details.role == 3 && <tr><td>Research description :</td><td>{details.research_description && <strong dangerouslySetInnerHTML={{ __html: details.research_description }}></strong>}</td></tr>}
 
                 </tbody>
             </table>
             <table className="table">
               <tbody>
-                {(details.email_verification_token && details.email_verification_token !== null) &&
+                {(details.email_verification_token && details.email_verification_token !== null && details.status == 0) &&
                   <tr>
                     <td>
                     <button onClick={() => userStatusAction(1)} style={{ cursor: "pointer" }} className="badge badge-warning">
                       {loader == 1 && <span className="spinner-border spinner-border-sm"></span>}
                                         Approve</button>
-                      {/* <span style={{ cursor: "pointer" }} onClick={() => userStatusAction(1)} class="badge badge-warning">Approve</span> &nbsp; */}
-                      {/* <span style={{ cursor: "pointer" }} onClick={() => userStatusAction(0)} class="mr-1 badge badge-primary badge-square" variant="outline"> Reject </span> */}
                     </td>
                   </tr>}
+                {(!details.email_verification_token && details.status == 0) &&
+                  <tr>
+                    <td>
+                      <button onClick={() => changeuserStatusClick()} style={{ cursor: "pointer" }} className="badge badge-warning">
+                        {loader == 1 && <span className="spinner-border spinner-border-sm"></span>}
+                        Approve</button>
+                    </td>
+                  </tr>}
+
               </tbody>
             </table>
            

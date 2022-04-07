@@ -342,8 +342,10 @@ router.post('/getEventDataById', [check('event_id', 'Event is required').notEmpt
             event['description'] = result[0].description;            
             event['start_date'] = (result[0].start_date) ? moment(result[0].start_date).format('YYYY/MM/DD h:mm a') :'';
             event['end_date'] = (result[0].end_date) ? moment(result[0].end_date).format('YYYY/MM/DD h:mm a') : '';
-            event['start_time'] = (result[0].start_time) ? result[0].start_time : '';
-            event['end_time'] = (result[0].end_time) ? result[0].end_time : '';
+            event['user_start_date'] = (result[0].start_date) ? moment(result[0].start_date).format('MMM Do YYYY h:mm a') : '';
+            event['user_end_date'] = (result[0].end_date) ? moment(result[0].end_date).format('MMM Do YYYY h:mm a') : '';
+            event['start_time'] = (result[0].start_date) ? moment(result[0].start_date).format('h:mm a') : '';
+            event['end_time'] = (result[0].end_date) ? moment(result[0].end_date).format('h:mm a') : '';
             event['location'] = result[0].location;
             event['about_speaker'] = result[0].about_speaker;            
             event['speaker_name'] = result[0].speaker_name;
@@ -917,6 +919,8 @@ router.post('/getUnpaidEventList', function (req, res) {
         retObj['group_start_date'] = (data.start_date) ? moment(data.start_date).format('YYYY-MM-DD') : '';
         retObj['start_date'] = (data.start_date) ? moment(data.start_date).format('MMM Do YYYY') : '';
         retObj['end_date'] = (data.end_date) ? moment(data.end_date).format('MMM Do YYYY') : '';
+        retObj['start_time'] = (data.start_date) ? moment(data.start_date).format('h:mm a') : '';
+        retObj['end_time'] = (data.end_date) ? moment(data.end_date).format('h:mm a') : '';
         retObj['status'] = data.status;
         return retObj;
       });
@@ -1127,12 +1131,12 @@ router.post('/eventRegisterWithoutUser', function (req, res) {
 
                 if (hostname == env.LOCAL_HOST_USER_APP) {
                   home_url = env.APP_URL;
-                  eventLink = env.APP_URL + 'event-ticket?code=' + event_id;
+                  eventLink = env.APP_URL + 'event-detail?id=' + event_id;
                   admin_app_url = env.ADMIN_APP_URL
                   registerURL = env.APP_URL + 'register?code=' + obj.email_verification_token
                 } else {
                   home_url = env.APP_URL;
-                  eventLink = env.APP_URL + 'event-ticket?code=' + event_id;
+                  eventLink = env.APP_URL + 'event-detail?id=' + event_id;
                   admin_app_url = env.ADMIN_APP_URL
                   registerURL = env.APP_URL + 'register?code=' + obj.email_verification_token
                 }

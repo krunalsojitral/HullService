@@ -54,7 +54,7 @@ router.post('/researcher-request', (req, res) => {
                                 phone: (req.body.phone) ? req.body.phone : '',
                                 status: 0,
                                 role: req.body.role,
-                                email_verification_token: shortid.generate() + Date.now(),
+                                email_verification_token: '',
                                 created_at: moment.utc().format('YYYY-MM-DD'),
                                 other_academic_discipline: (req.body.other_academic_discipline) ? req.body.other_academic_discipline : '',
                                 user_read_status: 0
@@ -118,8 +118,6 @@ router.post('/researcher-request', (req, res) => {
                         overview.data.about_us,overview.data.phone,overview.data.status,overview.data.role,overview.data.email_verification_token,overview.data.created_at,
                         overview.data.other_academic_discipline,overview.data.user_read_status
                     ]                    
-                    console.log(overview.data);
-                    console.log(update_value);
                     User.updateuserByadmin(overview.data, user_id, update_value, '', '', '', function (err, datas) {  
                         if (err) {
                             return res.json({ status: 0, response: { msg: err } });
@@ -951,6 +949,7 @@ router.post('/getAdminUserById', [
                         userList['first_name'] = result[0].first_name;
                         userList['last_name'] = result[0].last_name;
                         userList['role'] = result[0].role_id;
+                        userList['status'] = result[0].user_status;
                         userList['email'] = result[0].email;
                         userList['city'] = result[0].city;
                         userList['organization'] = result[0].organization_name;
@@ -1256,29 +1255,15 @@ router.post('/registerResearcherUser', function (req, res) {
                             last_name: req.body.last_name,
                             email: req.body.email,
                             organization: (req.body.organization) ? req.body.organization : '',
-                            city: (req.body.city) ? req.body.city : '',
-                            lat: (req.body.latitude) ? req.body.latitude : '',
-                            long: (req.body.longitude) ? req.body.longitude : '',
-                            country: (req.body.country) ? req.body.country : '',
                             phone: (req.body.phone) ? req.body.phone : '',
                             research_description: (req.body.research_description) ? req.body.research_description : '',
                             about_us: (req.body.about_us) ? req.body.about_us : '',
-                            level_of_education: (req.body.level_of_education) ? req.body.level_of_education : '',
-                            occupation: (req.body.occupation) ? req.body.occupation : '',
-                            sector: (req.body.sector) ? req.body.sector : '',
                             academic_discipline: (req.body.academic_discipline) ? req.body.academic_discipline : '',
                             password: hash,
                             status: 0,
-                            role: 3,
-                            created_at: moment.utc().format('YYYY-MM-DD'),
-                            professional_interest_of_area: req.body.professional_interest_of_area,
-                            researcher_interest_of_area: req.body.researcher_interest_of_area,
-                            other_sector: (req.body.other_sector) ? req.body.other_sector : '',
-                            other_academic_discipline: (req.body.other_academic_discipline) ? req.body.other_academic_discipline : '',
-                            other_occupation: (req.body.other_occupation) ? req.body.other_occupation : '',
-                            other_professional_interest_area: (req.body.other_professional_interest_area) ? req.body.other_professional_interest_area : '',
-                            other_research_interest_area: (req.body.other_research_interest_area) ? req.body.other_research_interest_area : '',
-                            subscribe: (req.body.subscribe) ? 1 : 0,
+                            role: req.body.role,
+                            created_at: moment.utc().format('YYYY-MM-DD'),                            
+                            other_academic_discipline: (req.body.other_academic_discipline) ? req.body.other_academic_discipline : '',                            
                             user_id: req.body.user_id
                         };
                         overview['data'] = record;
@@ -1300,23 +1285,33 @@ router.post('/registerResearcherUser', function (req, res) {
                 });
             },
             function (overview, done2) {
-                var update_value = [overview.data.password, overview.data.first_name, overview.data.last_name, overview.data.city, overview.data.email, overview.data.phone, overview.data.about_us, overview.data.research_description,overview.data.organization, overview.data.academic_discipline, overview.data.other_academic_discipline, overview.data.other_research_interest_area]
-                var final_obj = {
-                    password: overview.data.password,
-                    first_name: overview.data.first_name,
-                    last_name: overview.data.last_name,
-                    city: overview.data.city,
-                    email: overview.data.email,
-                    phone: overview.phone,
-                    about_us: overview.about_us,
-                    research_description: overview.research_description,
-                    organization: overview.data.organization,
-                    academic_discipline: overview.data.academic_discipline,
-                    other_academic_discipline: overview.data.other_academic_discipline,
-                    other_research_interest_area: overview.data.other_research_interest_area
-                };
-                User.updateuserByadmin(final_obj, overview.data.user_id, update_value, '', overview.data.researcher_interest_of_area, overview.data.role, async function (err, data) {
-                    
+                if (overview.data.role == 3){
+                    var update_value = [overview.data.password, overview.data.first_name, overview.data.last_name,  overview.data.email, overview.data.phone, overview.data.about_us, overview.data.research_description,overview.data.organization, overview.data.academic_discipline, overview.data.other_academic_discipline]
+                    var final_obj = {
+                        password: overview.data.password,
+                        first_name: overview.data.first_name,
+                        last_name: overview.data.last_name,
+                        email: overview.data.email,
+                        phone: (overview.phone) ? overview.phone : '',
+                        about_us: overview.about_us,
+                        research_description: overview.research_description,
+                        organization: overview.data.organization,
+                        academic_discipline: overview.data.academic_discipline,
+                        other_academic_discipline: overview.data.other_academic_discipline
+                    };
+                }else{
+                    var update_value = [overview.data.password, overview.data.first_name, overview.data.last_name, overview.data.email]
+                    var final_obj = {
+                        password: overview.data.password,
+                        first_name: overview.data.first_name,
+                        last_name: overview.data.last_name,
+                        email: overview.data.email
+                    };
+                }
+                console.log(update_value);
+                console.log(final_obj);
+                User.updateuserByadmin(final_obj, overview.data.user_id, update_value, '', '', overview.data.role, async function (err, data) {
+                    console.log(err);
                     User.getUserById(overview.data.user_id, function (error, finalData) {
                         if (error) {
                             return res.json({ 'status': 0, 'response': { 'msg': error } });

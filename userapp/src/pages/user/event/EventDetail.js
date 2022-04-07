@@ -103,9 +103,8 @@ export default function Events() {
                                                                         <img src="images/cal.png" />
                                                                     </div>
                                                                     <div className="event-text-word">
-                                                                        <h3>START DATE</h3>
-                                                                        {/* {eventDetail.start_date} */}
-                                                                        <span>November 17, 2020 12:00 pm</span>
+                                                                        <h3>START DATE</h3>                                                                         
+                                                                        <span>{eventDetail.user_start_date} </span>
                                                                     </div>
                                                                 </div>
                                                                 <br/>
@@ -114,9 +113,8 @@ export default function Events() {
                                                                         <img src="images/cal.png" />
                                                                     </div>
                                                                     <div className="event-text-word">
-                                                                        <h3>END DATE</h3>
-                                                                        {/* {eventDetail.end_date} */}
-                                                                        <span>November 17, 2020 12:00 pm</span>
+                                                                        <h3>END DATE</h3>                                                                        
+                                                                        <span>{eventDetail.user_end_date} </span>
                                                                     </div>
                                                                 </div>
                                                                 <br />

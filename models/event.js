@@ -10,7 +10,7 @@ function User() {
   this.addEventByadmin = function (record, resources, callback) {
     connection.acquire(function (err, con) {
       const sql =
-        "INSERT INTO event(title,description,location,image,speaker_name,speaker_image,start_date,end_date,purchase_type,cost,about_speaker,status,created_at) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15) RETURNING *";
+        "INSERT INTO event(title,description,location,image,speaker_name,speaker_image,start_date,end_date,purchase_type,cost,about_speaker,status,created_at) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING *";
       const values = [
         record.title,
         record.description,
@@ -451,11 +451,11 @@ function User() {
         sql = 'SELECT * FROM event where start_date::date = now()::date and status = $1 order by event_id DESC';
         array = [1];
       } if (search.search) {        
-        sql = 'SELECT * FROM event where title ILIKE $1  and status = $2 order by event_id DESC';
+        sql = 'SELECT * FROM event where start_date::date >= now() and title ILIKE $1  and status = $2 order by event_id DESC';
         array = ['%' + search.search + '%', 1];
       } else{
         //sql = `SELECT DATE_TRUNC('month', "created_at") AS "month", COUNT(*) FROM event GROUP BY DATE_TRUNC('month', "created_at")`;
-        sql = 'SELECT * FROM event where status = $1 order by event_id DESC';
+        sql = 'SELECT * FROM event where start_date::date >= now() and status = $1 order by event_id DESC';
         array = [1];
       }
       
@@ -465,7 +465,6 @@ function User() {
           if (env.DEBUG) { console.log(err); }
           callback(err, null);
         } else {
-          console.log(result.rows);
           callback(null, result.rows);
         }
       });

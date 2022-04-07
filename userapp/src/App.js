@@ -32,6 +32,7 @@ const AddResearch = lazy(() => import("./pages/user/research/AddResearch"));
 //user page
 
 const Events = lazy(() => import("./pages/user/event/Events"));
+const MyEvents = lazy(() => import("./pages/user/event/MyEvents"));
 const EventDetail = lazy(() => import("./pages/user/event/EventDetail"));
 const EventsCart = lazy(() => import("./pages/user/event/EventsCart"));
 const EventTicket = lazy(() => import("./pages/user/event/EventTicket"));
@@ -88,6 +89,7 @@ function App() {
           <Route path="/reset-password" component={ChangePassword} />
           <Route path="/about" component={About} />
           <Route path="/events" component={Events} />   
+          <Route path="/my-events" component={MyEvents} />   
           <Route path="/event-detail" component={EventDetail} />
           <Route path="/event-promo" component={PromoPage} />
           <Route path="/event-cart" component={EventsCart} />

@@ -278,13 +278,13 @@ export default function Events() {
                                                                                 <span>{data.date}</span>
                                                                             </div>
                                                                             <div className="event-text">
-                                                                                <span>{data.start_date} @ 8:00 am - {data.end_date} @ 5:00 pm</span>
+                                                                                <span>{data.start_date} @ {data.start_time} - {data.end_date} @ {data.end_time}</span>
                                                                                 <h3>
                                                                                     <Link to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}>
                                                                                         {data.title}
                                                                                     </Link>
                                                                                 </h3>
-                                                                                <p dangerouslySetInnerHTML={{ __html: data.description.substring(0, 350) }}></p>
+                                                                                {data.description && <p dangerouslySetInnerHTML={{ __html: data.description.substring(0, 350) }}></p>}
                                                                             </div>
                                                                         </div>
                                                                     </div>

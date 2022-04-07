@@ -53,7 +53,7 @@ export default function Dashboard() {
                                     <div className="dashboard-content">
                                         <div className="row">
                                             <div className="col-md-4">
-                                                <Link to='/events' className="Support-card">
+                                                <Link to='/my-events' className="Support-card">
                                                     <h3>My Events</h3>
                                                     <div className="support-img">
                                                         <img alt="support" src="images/support01.png"/>
