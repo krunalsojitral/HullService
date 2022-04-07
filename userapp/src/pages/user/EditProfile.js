@@ -269,10 +269,10 @@ export default function EditProfile() {
                         var regex = /<br\s*[\/]?>/gi;
                         setFormValue('about_us', userdata.about_us.replace(regex, "\n"));
                     }
-                    if (userdata.research_description) {
-                        var regex = /<br\s*[\/]?>/gi;
-                        setFormValue('research_description', userdata.research_description.replace(regex, "\n"));
-                    }
+                    // if (userdata.research_description) {
+                    //     var regex = /<br\s*[\/]?>/gi;
+                    //     setFormValue('research_description', userdata.research_description.replace(regex, "\n"));
+                    // }
                     if (userdata.avatar){
                         setSetectavatar(userdata.avatar)
                     }                        
@@ -370,11 +370,11 @@ export default function EditProfile() {
             data.about_us = textareaText;
         }
 
-        if (data.research_description) {
-            var textareaText = data.research_description;
-            textareaText = textareaText.replace(/\r?\n/g, '<br />');
-            data.research_description = textareaText;
-        }
+        // if (data.research_description) {
+        //     var textareaText = data.research_description;
+        //     textareaText = textareaText.replace(/\r?\n/g, '<br />');
+        //     data.research_description = textareaText;
+        // }
 
         if (userTypeList == 4) {            
             data.role = userTypeList
@@ -668,7 +668,7 @@ export default function EditProfile() {
                                                             )}
                                                         ></Controller>
                                                     </div>
-                                                    <div className="form-group edit-profile">
+                                                    {/* <div className="form-group edit-profile">
                                                         <Controller
                                                             name={"research_description"}
                                                             control={control}
@@ -682,7 +682,7 @@ export default function EditProfile() {
                                                                 />
                                                             )}
                                                         ></Controller>
-                                                    </div>
+                                                    </div> */}
                                                 </div>
                                                 }
                                                 <div className="form-group edit-profile">

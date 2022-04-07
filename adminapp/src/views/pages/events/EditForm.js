@@ -27,6 +27,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import $ from 'jquery';
 import usePlacesAutocomplete, { getGeocode, getLatLng, } from "use-places-autocomplete";
+import { setTimeout } from 'core-js/web';
 
 const AddEditForm = ({ match }) => {
   const [active, setActive] = useState(0)
@@ -253,14 +254,17 @@ const AddEditForm = ({ match }) => {
             // setFormValue("start_time", eventdata.start_time);
             // setFormValue("end_time", eventdata.end_time);
             setFormValue("speaker_name", eventdata.speaker_name);
+            setFormValue("about_speaker", eventdata.about_speaker);
             setContentEditor(eventdata.description);
-            setFormValue("location", eventdata.location);
-            setFormValue("speaker_name", eventdata.speaker_name);
+            setCity(eventdata.location)
+            setValue(eventdata.location)
             setSetectimage(eventdata.image);
-            setSelectpromoimage(eventdata.promo_image);
-            setSelectSpeakerImage(eventdata.event_image)
+            setSelectSpeakerImage(eventdata.speaker_image)
             setFormValue("promo_title", eventdata.promo_title);
             setContentPromoEditor(eventdata.promo_description);
+            setSelectpromoimage(eventdata.promo_image);
+            setFormValue("purchase_type", eventdata.purchase_type);
+            setFormValue("cost", eventdata.cost);
 
             // var sessionTitle = [{ "name": "default Value", "value": "Group Session 1" }, { "value": "Group Session 2" }];
             // var sessionDescription = [{ "name": "default Value", "value": "Group Description 1" }, { "value": "Group Description 2" }];
@@ -383,7 +387,10 @@ const AddEditForm = ({ match }) => {
             if (eventdata.resource.length > 0) {
               setDisplayImage(eventdata.resource)
             }
-
+            
+            setTimeout(() => {
+              clearSuggestions();
+            }, 800);
             
           } else {
             Swal.fire("Oops...", result.data.response.msg, "error");
@@ -398,12 +405,18 @@ const AddEditForm = ({ match }) => {
     data.promo_description = contentPromoEditor;
     data.event_id = eventId;
     data.deleteresources = deleteresources;
+    data.location = city;
    
     const formData = new FormData();
     formData.append("data", JSON.stringify(data));
     if (selectedFile) {
       formData.append("image", selectedFile, selectedFile.name);
     }
+
+    if (selectedSpeakerFile) {
+      formData.append("speaker_image", selectedSpeakerFile, selectedSpeakerFile.name);
+    }
+
 
     if (selectedPromoFile) {
       formData.append("promo_image", selectedPromoFile, selectedPromoFile.name);
@@ -554,34 +567,6 @@ const AddEditForm = ({ match }) => {
                         </CCol>
                         <CCol xs="6">
                           <CFormGroup>
-                            <CLabel htmlFor="title">Start Time <span className="label-validation">*</span></CLabel>
-                            <Controller
-                              name={"start_time"}
-                              control={control}
-                              rules={{ required: true }}
-                              render={({ field: { onChange, value } }) => (
-                                <ReactDatePicker
-                                  selected={value}
-                                  onChange={onChange}
-                                  showTimeSelect
-                                  showTimeSelectOnly
-                                  timeIntervals={15}
-                                  timeCaption="Time"
-                                  dateFormat="h:mm aa"
-                                  className="form-control"
-                                />
-                              )}
-                            ></Controller>
-                          </CFormGroup>
-                          {errors.start_time && errors.start_time.type === "required" && (
-                            <p style={{ color: "red", fontSize: "12px" }}>Start time is required.</p>
-                          )}
-                        </CCol>
-                      </CRow>
-
-                      <CRow>
-                        <CCol xs="6">
-                          <CFormGroup>
                             <CLabel htmlFor="title">End Date <span className="label-validation">*</span></CLabel>
                             <Controller
                               name={"end_date"}
@@ -610,6 +595,35 @@ const AddEditForm = ({ match }) => {
                             <p style={{ color: "red", fontSize: "12px" }}>End date is required.</p>
                           )}
                         </CCol>
+                        {/* <CCol xs="6">
+                          <CFormGroup>
+                            <CLabel htmlFor="title">Start Time <span className="label-validation">*</span></CLabel>
+                            <Controller
+                              name={"start_time"}
+                              control={control}
+                              //rules={{ required: true }}
+                              render={({ field: { onChange, value } }) => (
+                                <ReactDatePicker
+                                  selected={value}
+                                  onChange={onChange}
+                                  showTimeSelect
+                                  showTimeSelectOnly
+                                  timeIntervals={15}
+                                  timeCaption="Time"
+                                  dateFormat="h:mm aa"
+                                  className="form-control"
+                                />
+                              )}
+                            ></Controller>
+                          </CFormGroup>
+                          {errors.start_time && errors.start_time.type === "required" && (
+                            <p style={{ color: "red", fontSize: "12px" }}>Start time is required.</p>
+                          )}
+                        </CCol> */}
+                      </CRow>
+
+                      {/* <CRow>
+                       
                        
                         <CCol xs="6">
                           <CFormGroup>
@@ -617,7 +631,7 @@ const AddEditForm = ({ match }) => {
                             <Controller
                               name={"end_time"}
                               control={control}
-                              rules={{ required: true }}
+                            //  rules={{ required: true }}
                               render={({ field: { onChange, value } }) => (
                                 <ReactDatePicker
                                   selected={value}
@@ -636,7 +650,7 @@ const AddEditForm = ({ match }) => {
                             <p style={{ color: "red", fontSize: "12px" }}>End time is required.</p>
                           )}
                         </CCol>
-                      </CRow>
+                      </CRow> */}
 
 
                       <CRow>
@@ -1088,8 +1102,7 @@ const AddEditForm = ({ match }) => {
                                 <CInput
                                   type="text"
                                   onChange={onChange}
-                                  value={value}
-                                  required
+                                  value={value}                                  
                                   placeholder={`Enter promo title`}
                                 />
                               )}

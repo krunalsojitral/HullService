@@ -83,7 +83,7 @@ export default function EventsCart() {
         if (token){
             axios.post(api_url + '/event/eventRegisterWithUser', data, config).then(async (result) => {
                 if (result.data.status) {
-                    Swal.fire('Success!', 'We will verify your detail and send you confirmation mail after approval.', 'success');
+                    Swal.fire('Success!', 'Please check your email for event link.', 'success');
                     history.push("/");
                     // Swal.fire({
                     //     title: 'Success!',
@@ -108,7 +108,7 @@ export default function EventsCart() {
         }else{
             axios.post(api_url + '/event/eventRegisterWithoutUser', data, config).then(async (result) => {
                 if (result.data.status) {
-                    Swal.fire('Success!', 'We will verify your detail and send you confirmation mail after approval.', 'success');
+                    Swal.fire('Success!', 'Please check your email for event link.', 'success');
                     history.push("/");
                     // Swal.fire({
                     //     title: 'Success!',
@@ -130,9 +130,15 @@ export default function EventsCart() {
             .catch((err) => {
                 return '';
             })
-        }
-        
+        }        
     }
+
+    const loginClick = (event_id) => {        
+        localStorage.setItem('last_visit_url', '/event-cart');
+        history.push("/login");
+    }
+
+    
 
     return(
         <div>
@@ -173,14 +179,13 @@ export default function EventsCart() {
                                                 <div>
                                                     <div>Price : Free</div>
                                                 <div>Total  Free</div>
-                                                </div>}
-                                            
+                                                </div>}                                            
                                             
                                             <hr/>
                                             
                                             <h4>Contact information</h4>
 
-                                            {token && <h4>Continue as guest or <Link to='/login'>login</Link> for a faster experience.</h4>}
+                                            {!token && <h5>Continue as guest or <a onClick={(e) => loginClick(eventDetail.event_id)}>login</a> for a faster experience.</h5>}
 
                                             <hr/>
 

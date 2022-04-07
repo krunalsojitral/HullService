@@ -77,11 +77,11 @@ const UserDetail = ({ match }) => {
                 <tr><td>First Name :</td><td><strong>{details.first_name}</strong></td></tr>
                 <tr><td>Last Name :</td><td><strong>{details.last_name}</strong></td></tr>                
                 <tr><td>Email :</td><td><strong>{details.email}</strong></td></tr>
-                {details.phone && <tr><td>Phone :</td><td><strong>{details.phone}</strong></td></tr>}
+                <tr><td>Phone :</td><td>{details.phone && <strong>{details.phone}</strong>}</td></tr>
                 {/* {details.joined_date && <tr><td>Joined on :</td><td><strong>{details.joined_date}</strong></td></tr>}
                 {details.renewal_date && <tr><td>Renewal Date :</td><td><strong>{details.renewal_date}</strong></td></tr>} */}
-                {details.about_us && <tr><td>About US :</td><td><strong dangerouslySetInnerHTML={{ __html: details.about_us }}></strong></td></tr>}
-                {details.research_description && <tr><td>Research description :</td><td><strong dangerouslySetInnerHTML={{ __html: details.research_description }}></strong></td></tr>}
+                {details.role == 3 && <tr><td>About US :</td><td>{details.about_us && <strong dangerouslySetInnerHTML={{ __html: details.about_us }}></strong>}</td></tr>}
+                {details.role == 3 && <tr><td>Research description :</td><td>{details.research_description && <strong dangerouslySetInnerHTML={{ __html: details.research_description }}></strong>}</td></tr>}
                 {details.city && <tr><td>City :</td><td><strong>{details.city}</strong></td></tr>}
                 {details.organization && <tr><td>Organization :</td><td><strong>{details.organization}</strong></td></tr>}
                 {details.sectorname && <tr><td>Sector :</td><td><strong>{details.sectorname}</strong></td></tr>}

@@ -18,6 +18,7 @@ const nodeMailerCredential = require('./../EmailCredential');
 var User = require('../models/user');
 var shortid = require('shortid');
 
+
 function loggerData(req) {
   if (env.DEBUG) {
     var URL = "Url:-" + JSON.stringify(req.originalUrl, null, 4) + "\n";
@@ -71,14 +72,14 @@ router.post("/addEventByadmin", function (req, res) {
     if (validationErrors == false) {
       let parsed = JSON.parse(fields.data);
 
-      var start_date = (parsed.start_date) ? moment(parsed.start_date, "YYYY-MM-DD h:mm a").add(1, 'days').format("YYYY-MM-DD h:mm a") : ''
-      var end_date = (parsed.end_date) ? moment(parsed.end_date, "YYYY-MM-DD h:mm a").add(1, 'days').format("YYYY-MM-DD h:mm a") : ''
+      // var start_date = (parsed.start_date) ? moment(parsed.start_date, "YYYY-MM-DD h:mm a").add(1, 'days').format("YYYY-MM-DD h:mm a") : ''
+      // var end_date = (parsed.end_date) ? moment(parsed.end_date, "YYYY-MM-DD h:mm a").add(1, 'days').format("YYYY-MM-DD h:mm a") : ''
 
-      var start_time = (parsed.start_time) ? moment(parsed.start_time, "h:mm a").add(1, 'days').format("h:mm a") : ''
-      var end_time = (parsed.end_time) ? moment(parsed.end_time, "h:mm a").add(1, 'days').format("h:mm a") : ''
+      var start_date = moment(parsed.start_date).format("YYYY-MM-DD h:mm a");
+      var end_date = moment(parsed.end_date).format("YYYY-MM-DD h:mm a");
 
       // const start_time = new Date(record.start_date).getTime() / 1000,
-      //   end_time = new Date(record.end_date).getTime() / 1000;
+      // end_time = new Date(record.end_date).getTime() / 1000;
 
       var record = {
         title: parsed.title,
@@ -93,8 +94,6 @@ router.post("/addEventByadmin", function (req, res) {
         cost: parsed.cost,
         start_date: start_date,
         end_date: end_date,
-        start_time: start_time,
-        end_time: end_time,
         created_at: moment().format("YYYY-MM-DD"),
         group_session: [],
         image: "",
@@ -137,14 +136,7 @@ router.post("/addEventByadmin", function (req, res) {
                 let filename =
                   Date.now() + "-" + files.image.name.split(" ").join("");
                 let tmp_path = files.image.path;
-                if (
-                  file_ext == "png" ||
-                  file_ext == "PNG" ||
-                  file_ext == "jpg" ||
-                  file_ext == "JPG" ||
-                  file_ext == "jpeg" ||
-                  file_ext == "JPEG"
-                ) {
+                if (file_ext == "png" || file_ext == "PNG" || file_ext == "jpg" || file_ext == "JPG" || file_ext == "jpeg" || file_ext == "JPEG") {
                   fs.rename(
                     tmp_path,
                     path.join(__dirname, env.EVENT_PATH + filename),
@@ -353,8 +345,9 @@ router.post('/getEventDataById', [check('event_id', 'Event is required').notEmpt
             event['start_time'] = (result[0].start_time) ? result[0].start_time : '';
             event['end_time'] = (result[0].end_time) ? result[0].end_time : '';
             event['location'] = result[0].location;
+            event['about_speaker'] = result[0].about_speaker;            
             event['speaker_name'] = result[0].speaker_name;
-            event['speaker_image'] = (result[0].speaker_image) ? imageLink + env.EVENT_VIEW_PATH + result[0].speaker_image : '';;
+            event['speaker_image'] = (result[0].speaker_image) ? imageLink + env.EVENT_VIEW_PATH + result[0].speaker_image : '';
             event['image'] = (result[0].image) ? imageLink + env.EVENT_VIEW_PATH + result[0].image : '';
             event['status'] = result[0].status;  
             event['cost'] = result[0].cost;
@@ -453,7 +446,6 @@ router.post('/getEventDataById', [check('event_id', 'Event is required').notEmpt
   }
 });
 
-
 router.post("/updateEventByadmin", function (req, res) {
   var form = new formidable.IncomingForm();
   form.multiples = true;
@@ -501,9 +493,13 @@ router.post("/updateEventByadmin", function (req, res) {
     if (err) return res.json({ status: 1, response: { msg: err } });
 
     let obj = JSON.parse(fields.data);
-    var start_date = (obj.start_date) ? moment(obj.start_date, "YYYY-MM-DD h:mm a").add(1, 'days').format("YYYY-MM-DD h:mm a") : ''
-    var end_date = (obj.end_date) ? moment(obj.end_date, "YYYY-MM-DD h:mm a").add(1, 'days').format("YYYY-MM-DD h:mm a") : ''
 
+    var start_date = moment(obj.start_date).format("YYYY-MM-DD h:mm a");
+    var end_date = moment(obj.end_date).format("YYYY-MM-DD h:mm a");
+
+    // var start_date = (obj.start_date) ? moment(obj.start_date, "YYYY-MM-DD h:mm a").add(1, 'days').format("YYYY-MM-DD h:mm a") : ''
+    // var end_date = (obj.end_date) ? moment(obj.end_date, "YYYY-MM-DD h:mm a").add(1, 'days').format("YYYY-MM-DD h:mm a") : ''
+  
     var event_id = obj.event_id;
     var deleteresources = obj.deleteresources;
     var record = {
@@ -511,16 +507,20 @@ router.post("/updateEventByadmin", function (req, res) {
       description: obj.description,
       location: obj.location,
       speaker_name: obj.speaker_name,
+      about_speaker: obj.about_speaker,
+      purchase_type: obj.purchase_type,
+      cost: obj.cost,
       start_date: start_date,
       end_date: end_date,
     };
 
+  
     var promo_record = {
       promo_title: obj.promo_title,
       promo_description: obj.promo_description,
     }
 
-      var update_value = [obj.title, obj.description, obj.location, obj.speaker_name, start_date, end_date];
+      var update_value = [obj.title, obj.description, obj.location, obj.speaker_name, obj.about_speaker, obj.purchase_type, obj.cost, start_date, end_date];
       var group_session = []
 
       if (obj.sessionTitle.length > 0){
@@ -556,8 +556,6 @@ router.post("/updateEventByadmin", function (req, res) {
         });
       }
     
-    
- 
 
     asyn.waterfall(
       [ function (done) {        
@@ -617,8 +615,37 @@ router.post("/updateEventByadmin", function (req, res) {
             done1(err, overview);
           }
         },
+        function (overview, done1) {
+          if (typeof files.speaker_image !== "undefined") {
+            let file_ext = files.speaker_image.name.split(".").pop();
+            let filename = Date.now() + "-" + files.speaker_image.name.split(" ").join("");
+            let tmp_path = files.speaker_image.path;
+
+            if (file_ext == "png" || file_ext == "PNG" || file_ext == "jpg" || file_ext == "JPG" || file_ext == "jpeg" || file_ext == "JPEG") {
+              fs.rename(tmp_path, path.join(__dirname, env.EVENT_PATH + filename), function (err) {
+                if (err) {
+                  record.speaker_image = filename;
+                  update_value.push(filename)
+                  done1("Image upload error", overview)
+                } else {
+                  record.speaker_image = filename;
+                  update_value.push(filename)
+                  overview["speaker_image"] = filename;
+                  done1(err, overview);
+                }
+              });
+            } else {
+              return res.json({ status: 0, response: { msg: "Only image with jpg, jpeg and png format are allowed" } });
+            }
+          } else {
+            overview["speaker_image"] = "";
+            done1(err, overview);
+          }
+        },
         function (overview, done2) { 
           setTimeout(() => {
+            console.log(record);
+            console.log(update_value);
             Event.updateEventByadmin(record, promo_record, event_id, update_value, group_session, resources, deleteresources, videoURL, webPageUrl, function (err, data) {
               if (err) {
                 done2(err, overview);
@@ -1008,7 +1035,7 @@ router.post('/eventRegisterWithoutUser', function (req, res) {
     email: email,
     email_verification_token: shortid.generate() + Date.now(),
     created_at: moment.utc().format('YYYY-MM-DD'),
-    role:5,
+    role:4,
     status: 0,
     user_read_status: 0
   }
@@ -1054,7 +1081,7 @@ router.post('/eventRegisterWithoutUser', function (req, res) {
             eventLink: eventLink
           }
 
-          if (data[0].role == 5 && data[0].email_verification_token) {
+          if (data[0].role == 4 && data[0].email_verification_token) {
             dynamicHtml.registerURL = registerURL;
           }
 

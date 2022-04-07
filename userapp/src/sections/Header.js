@@ -155,6 +155,11 @@ export default function Header() {
                                                 <InlineButton name={"Login"} />
                                             </NavLink>
                                         </li>}
+                                        {/* {(!token) && <li>
+                                            <NavLink activeClassName="active" to="/public-user-register">
+                                                <InlineButton name={"Register"} />
+                                            </NavLink>
+                                        </li>} */}
                                     </ul>
                                 </div>
 

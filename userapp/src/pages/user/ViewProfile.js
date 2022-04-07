@@ -132,12 +132,12 @@ export default function ViewProfile() {
                                             <div className="view-pro-button">
                                                 <div className="view-profile-title-icon">                                                    
                                                     {!users.avatar && <img alt="avatar" src="images/user.png" />}
-                                                    {users.avatar && <img alt="avatar" src={users.avatar} alt="user-image" />}
+                                                    {users.avatar && <img alt="avatar" src={users.avatar} />}
                                                 </div>
                                                 <div className="view-profile-title-text">
                                                     <h3>{users.first_name} {users.last_name}</h3>
                                                     {((users.role == 2 || users.role == 3) && users.about_us) && <p dangerouslySetInnerHTML={{ __html: users.about_us }}></p>}                                                    
-                                                    {((users.role == 2 || users.role == 3) && users.research_description) && <p dangerouslySetInnerHTML={{ __html: users.research_description }}></p>}
+                                                    {/* {((users.role == 2 || users.role == 3) && users.research_description) && <p dangerouslySetInnerHTML={{ __html: users.research_description }}></p>} */}
                                                 </div>
                                             </div>
                                         </div>

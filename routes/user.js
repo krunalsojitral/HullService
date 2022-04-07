@@ -42,20 +42,39 @@ router.post('/researcher-request', (req, res) => {
                 User.checkUserRegistration(email, function (err, data) {
                     let totalrecord = data.length;
                     if (totalrecord) {
-                        return res.json({ status: 0, 'response': { msg: 'Email already exists.' } });
+                        if (data[0].role == 4){
+                            let record = {
+                                first_name: req.body.first_name,
+                                last_name: req.body.last_name,
+                                email: req.body.email,
+                                organization: (req.body.organization) ? req.body.organization : '',
+                                academic_discipline: (req.body.academic_discipline) ? req.body.academic_discipline : '',
+                                research_description: (req.body.research_description) ? req.body.research_description : '',
+                                about_us: (req.body.about_us) ? req.body.about_us : '',
+                                phone: (req.body.phone) ? req.body.phone : '',
+                                status: 0,
+                                role: req.body.role,
+                                email_verification_token: shortid.generate() + Date.now(),
+                                created_at: moment.utc().format('YYYY-MM-DD'),
+                                other_academic_discipline: (req.body.other_academic_discipline) ? req.body.other_academic_discipline : '',
+                                user_read_status: 0
+                            };
+                            overview['data'] = record;
+                            var other_obj = {
+                                user_id: data[0].id,
+                                changeStatus: 'yes',
+                            }
+                            overview['other_data'] = other_obj;
+                            done(err, overview);
+                        }else{
+                            return res.json({ status: 0, 'response': { msg: 'Email already exists.' } });
+                        }
                     } else {
                         let record = {
                             first_name: req.body.first_name,
                             last_name: req.body.last_name,
                             email: req.body.email,
                             organization: (req.body.organization) ? req.body.organization : '',
-                            city: (req.body.city) ? req.body.city : '',
-                            lat: (req.body.latitude) ? req.body.latitude : '',
-                            long: (req.body.longitude) ? req.body.longitude : '',
-                            country: (req.body.country) ? req.body.country : '',
-                            level_of_education: (req.body.level_of_education) ? req.body.level_of_education : '',
-                            occupation: (req.body.occupation) ? req.body.occupation : '',
-                            sector: (req.body.sector) ? req.body.sector : '',
                             academic_discipline: (req.body.academic_discipline) ? req.body.academic_discipline : '',
                             research_description: (req.body.research_description) ? req.body.research_description : '',
                             about_us: (req.body.about_us) ? req.body.about_us : '',
@@ -64,16 +83,14 @@ router.post('/researcher-request', (req, res) => {
                             role: req.body.role,
                             email_verification_token: shortid.generate() + Date.now(),
                             created_at: moment.utc().format('YYYY-MM-DD'),
-                            professional_interest_of_area: req.body.professional_interest_of_area,
-                            researcher_interest_of_area: req.body.researcher_interest_of_area,
-                            other_sector: (req.body.other_sector) ? req.body.other_sector : '',
                             other_academic_discipline: (req.body.other_academic_discipline) ? req.body.other_academic_discipline : '',
-                            other_occupation: (req.body.other_occupation) ? req.body.other_occupation : '',
-                            other_professional_interest_area: (req.body.other_professional_interest_area) ? req.body.other_professional_interest_area : '',
-                            other_research_interest_area: (req.body.other_research_interest_area) ? req.body.other_research_interest_area : '',
                             user_read_status:0
                         };
                         overview['data'] = record;
+                        var other_obj = {
+                            changeStatus: 'no',
+                        }
+                        overview['other_data'] = other_obj;
                         done(err, overview);
                     }
                 });
@@ -92,13 +109,34 @@ router.post('/researcher-request', (req, res) => {
                 });
             },
             function (overview, done2) {
-                User.addUser(overview.data, async function (err, data) {
-                    if (err){
-                        return res.json({ status: 0, response: { msg: err } });
-                    }else{
-                        return res.json({ status: 1, response: { msg: 'Your request was successful. We have sent you a confirmation link to your email address. Please click on the link to verify/validate your account. Thank You!.', } });
-                    }
-                });
+
+                if (overview.other_data.changeStatus == 'yes'){
+                    var user_id = overview.other_data.user_id; 
+                    let update_value = [
+                        overview.data.first_name,overview.data.last_name,overview.data.email,overview.data.organization,
+                        overview.data.academic_discipline,overview.data.research_description,
+                        overview.data.about_us,overview.data.phone,overview.data.status,overview.data.role,overview.data.email_verification_token,overview.data.created_at,
+                        overview.data.other_academic_discipline,overview.data.user_read_status
+                    ]                    
+                    console.log(overview.data);
+                    console.log(update_value);
+                    User.updateuserByadmin(overview.data, user_id, update_value, '', '', '', function (err, datas) {  
+                        if (err) {
+                            return res.json({ status: 0, response: { msg: err } });
+                        } else {
+                            return res.json({ status: 1, response: { msg: 'Your request was successful. We have sent you a confirmation link to your email address. Please click on the link to verify/validate your account. Thank You!.', } });
+                        }
+                    });
+
+                }else{
+                    User.addUser(overview.data, async function (err, data) {
+                        if (err) {
+                            return res.json({ status: 0, response: { msg: err } });
+                        } else {
+                            return res.json({ status: 1, response: { msg: 'Your request was successful. We have sent you a confirmation link to your email address. Please click on the link to verify/validate your account. Thank You!.', } });
+                        }
+                    });
+                }
             }
         ]);
     }
@@ -186,6 +224,179 @@ router.post('/register', (req, res) => {
     }
 });
 
+router.post('/publicUserRegister', (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {
+
+        let overview = {};
+        asyn.waterfall([
+            function (done) {
+                var email = req.body.email;
+                User.checkUserRegistration(email, function (err, data) {
+                    let totalrecord = data.length;
+                    if (totalrecord) {
+                        if (data[0].role == 3){
+                            return res.json({ status: 0, 'response': { msg: 'You are already register as researcher.' } });
+                        }else{
+                            if (data[0].role == 4 && !data[0].password) {
+                                bcrypt.genSalt(10, (err, salt) => {
+                                    bcrypt.hash(req.body.password, salt, (err, hash) => {
+                                        var user_id = data[0].id;
+                                        var token = shortid.generate() + Date.now();
+                                        let update_value = [req.body.first_name, req.body.last_name, req.body.email, 0, hash, token]
+                                        let record = {
+                                            first_name: req.body.first_name,
+                                            last_name: req.body.last_name,
+                                            email: req.body.email,
+                                            status: 0,
+                                            password: hash,
+                                            email_verification_token: token,
+                                        };
+                                        
+                                        User.updateuserByadmin(record, user_id, update_value, '', '', '', function (err, datas) {  
+                                             if(err){
+                                                 return res.json({ status: 0, response: { msg: err } });
+                                             }else{
+                                                 var resetLink;
+                                                 var home_url;
+                                                 var admin_app_url;
+                                                 var hostname = req.headers.host;
+
+                                                 if (hostname == env.LOCAL_HOST_USER_APP) {
+                                                     home_url = env.APP_URL;
+                                                     resetLink = env.APP_URL + 'activation-account?activationcode=' + token + '&email=' + data[0].email;
+                                                     admin_app_url = env.ADMIN_APP_URL
+                                                 } else {
+                                                     home_url = env.APP_URL;
+                                                     resetLink = env.APP_URL + 'activation-account?activationcode=' + token + '&email=' + data[0].email;
+                                                     admin_app_url = env.ADMIN_APP_URL
+                                                 }
+
+                                                 var htmlUser = fs.readFileSync(__dirname + '/templates/userRegistration/verifyEmail.html', 'utf8');
+
+                                                 var dynamicHtml = {
+                                                     home_url: home_url,
+                                                     fullname: data[0].firstName,
+                                                     resetLink: resetLink
+                                                 }
+
+                                                 var view = { data: dynamicHtml };
+                                                 var finalHtmlUser = mustache.render(htmlUser, view);
+                                                 let transporter = nodemailer.createTransport(nodeMailerCredential); // node mailer credentials
+                                                 let mailOptions1 = {
+                                                     from: env.MAIL_FROM, // sender address
+                                                     to: data[0].email,
+                                                     subject: 'Verify your email address',
+                                                     html: finalHtmlUser.replace(/&#x2F;/g, '/')
+                                                 };
+                                                 transporter.sendMail(mailOptions1, (error, info) => {
+                                                     if (error) {
+                                                         console.log(error);
+                                                         //return res.json({status: 0, response : { msg: 'There was an email error',}  });
+                                                     } else {
+                                                     }
+                                                 });
+                                                 return res.json({ status: 1, response: { msg: 'There was an email error', } });
+                                             }
+                                        });
+                                    })
+                                })
+                            }else{
+                                return res.json({ status: 0, 'response': { msg: 'You are already register.' } });    
+                            }
+                        }
+                    } else {
+                        bcrypt.genSalt(10, (err, salt) => {
+                            bcrypt.hash(req.body.password, salt, (err, hash) => {
+                                let record = {
+                                    first_name: req.body.first_name,
+                                    last_name: req.body.last_name,
+                                    email: req.body.email,
+                                    organization: (req.body.organization) ? req.body.organization : '',
+                                    city: (req.body.city) ? req.body.city : '',
+                                    lat: (req.body.latitude) ? req.body.latitude : '',
+                                    long: (req.body.longitude) ? req.body.longitude : '',
+                                    country: (req.body.country) ? req.body.country : '',
+                                    level_of_education: (req.body.level_of_education) ? req.body.level_of_education : '',
+                                    occupation: (req.body.occupation) ? req.body.occupation : '',
+                                    sector: (req.body.sector) ? req.body.sector : '',
+                                    academic_discipline: (req.body.academic_discipline) ? req.body.academic_discipline : '',
+                                    password: hash,
+                                    status: 0,
+                                    role: req.body.role,
+                                    email_verification_token: shortid.generate() + Date.now(),
+                                    created_at: moment.utc().format('YYYY-MM-DD'),
+                                    professional_interest_of_area: req.body.professional_interest_of_area,
+                                    researcher_interest_of_area: req.body.researcher_interest_of_area,
+                                    other_sector: (req.body.other_sector) ? req.body.other_sector : '',
+                                    other_academic_discipline: (req.body.other_academic_discipline) ? req.body.other_academic_discipline : '',
+                                    other_occupation: (req.body.other_occupation) ? req.body.other_occupation : '',
+                                    other_professional_interest_area: (req.body.other_professional_interest_area) ? req.body.other_professional_interest_area : '',
+                                    other_research_interest_area: (req.body.other_research_interest_area) ? req.body.other_research_interest_area : '',
+                                    payment_id: (req.body.payment_id) ? req.body.payment_id : '',
+                                    subscribe: (req.body.subscribe) ? 1 : 0,
+                                    joined_date: moment.utc().format('YYYY-MM-DD'),
+                                    renewal_date: moment.utc().add(1, 'years').format('YYYY-MM-DD'),
+                                };
+
+                                User.addUser(record, async function (err, data) {
+                                    if (err) {
+                                        return res.json({ status: 0, response: { msg: err } });
+                                    } else {
+                                        var resetLink;
+                                        var home_url;
+                                        var admin_app_url;
+                                        var hostname = req.headers.host;
+
+                                        if (hostname == env.LOCAL_HOST_USER_APP) {
+                                            home_url = env.APP_URL;
+                                            resetLink = env.APP_URL + 'activation-account?activationcode=' + data[0].email_verification_token + '&email=' + data[0].email;
+                                            admin_app_url = env.ADMIN_APP_URL
+                                        } else {
+                                            home_url = env.APP_URL;
+                                            resetLink = env.APP_URL + 'activation-account?activationcode=' + data[0].email_verification_token + '&email=' + data[0].email;
+                                            admin_app_url = env.ADMIN_APP_URL
+                                        }
+
+                                        var htmlUser = fs.readFileSync(__dirname + '/templates/userRegistration/verifyEmail.html', 'utf8');
+
+                                        var dynamicHtml = {
+                                            home_url: home_url,
+                                            fullname: data[0].firstName,
+                                            resetLink: resetLink
+                                        }
+
+                                        var view = { data: dynamicHtml };
+                                        var finalHtmlUser = mustache.render(htmlUser, view);
+                                        let transporter = nodemailer.createTransport(nodeMailerCredential); // node mailer credentials
+                                        let mailOptions1 = {
+                                            from: env.MAIL_FROM, // sender address
+                                            to: data[0].email,
+                                            subject: 'Verify your email address',
+                                            html: finalHtmlUser.replace(/&#x2F;/g, '/')
+                                        };
+                                        transporter.sendMail(mailOptions1, (error, info) => {
+                                            if (error) {
+                                                console.log(error);
+                                                //return res.json({status: 0, response : { msg: 'There was an email error',}  });
+                                            } else {
+                                            }
+                                        });
+
+                                        return res.json({ status: 1, response: { msg: 'Your payment was successful. We have sent you a confirmation link to your email address. Please click on the link to verify/validate your account. Thank You!.', } });
+                                    }
+                                });
+                            })
+                        })
+                    }
+                });
+            },
+        ]);
+    }
+});
 
 router.post('/userStatusAction', [
     check('user_id', 'Please enter user id').notEmpty(),
@@ -353,11 +564,6 @@ router.post('/verify-email', [
     }
 });
 
-
-
-
-
-
 router.post('/login', [
     check('email', 'Please enter valid email').isEmail(),
     check('email', 'Please enter email').notEmpty(),
@@ -376,31 +582,35 @@ router.post('/login', [
             } else {
                 let totalrecord = data.length;
                 if (totalrecord) {
-                    let dbPassword = (data[0].password).trim();
-                    password = req.body.password;
-                    var jsonUser = JSON.stringify(data[0]);
-                    var token = jwt.sign(jsonUser, env.SECRET, {});
-                    bcrypt.compare(password, dbPassword, function (err, doesMatch) {
-                        if (err) {
-                            res.json({ 'status': 0, 'response': { 'msg': 'Error Occured.' } });
-                        } else {
-                            if (doesMatch) {
-                                let userList = {};
-                                userList = {
-                                    'id': data[0].id,
-                                    'first_name': data[0].first_name,
-                                    'last_name': data[0].last_name,                                    
-                                    // 'usertype': data[0].usertype,
-                                    // 'country': data[0].country,
-                                    'email': data[0].email,
-                                    'userRole': (data[0].userrole) ? data[0].userrole : '',
-                                };
-                                res.json({ 'status': 1, 'response': { 'msg': 'Login successfully.', 'token': 'JWT ' + token, 'data': userList } });
+                    if (data[0].password){
+                        let dbPassword = (data[0].password).trim();
+                        password = req.body.password;
+                        var jsonUser = JSON.stringify(data[0]);
+                        var token = jwt.sign(jsonUser, env.SECRET, {});
+                        bcrypt.compare(password, dbPassword, function (err, doesMatch) {
+                            if (err) {
+                                res.json({ 'status': 0, 'response': { 'msg': 'Error Occured.' } });
                             } else {
-                                res.json({ 'status': 0, 'response': { 'msg': 'Incorrect password.' } });
+                                if (doesMatch) {
+                                    let userList = {};
+                                    userList = {
+                                        'id': data[0].id,
+                                        'first_name': data[0].first_name,
+                                        'last_name': data[0].last_name,
+                                        // 'usertype': data[0].usertype,
+                                        // 'country': data[0].country,
+                                        'email': data[0].email,
+                                        'userRole': (data[0].userrole) ? data[0].userrole : '',
+                                    };
+                                    res.json({ 'status': 1, 'response': { 'msg': 'Login successfully.', 'token': 'JWT ' + token, 'data': userList } });
+                                } else {
+                                    res.json({ 'status': 0, 'response': { 'msg': 'Incorrect password.' } });
+                                }
                             }
-                        }
-                    });
+                        });
+                    }else{
+                        return res.json({ 'status': 0, 'response': { 'msg': 'Please register first.' } });
+                    }
                 } else {
                     return res.json({ 'status': 0, 'response': { 'msg': data } });
                 }
@@ -515,8 +725,6 @@ router.post('/reset-password', [
     }
 });
 
-
-
 router.post('/checkEmail', [
     check('email', 'Email is required').notEmpty(),
 ], (req, res, next) => {
@@ -541,8 +749,6 @@ router.post('/checkEmail', [
        
     }
 });
-
-
 
 // user list
 router.post('/userList', function (req, res) {
@@ -851,7 +1057,6 @@ router.get('/getEditUserById', passport.authenticate('jwt', { session: false }),
     });
 });
 
-
 router.post('/getEditUserByEmailToken', (req, res, next) => {
     let token = req.body.token;
     User.getAdminUserByEmailToken(token, function (err, result) {
@@ -927,9 +1132,6 @@ router.post('/getEditUserByEmailToken', (req, res, next) => {
     });
 });
 
-
-
-
 router.post('/changeuserStatus', [
     check('id', 'User id is required').notEmpty(),
     check('status', 'Please enter status').notEmpty(),
@@ -956,8 +1158,6 @@ router.post('/changeuserStatus', [
         });
     }
 });
-
-
 
 router.post('/adduserByadmin', [
     // check('name', 'Name is required').notEmpty(),
@@ -1009,8 +1209,6 @@ router.post('/adduserByadmin', [
         ]);
     }
 });
-
-
 
 router.post('/updateFirstView', passport.authenticate('jwt', { session: false }), function (req, res) {
     var user_id = req.user.id;
@@ -1311,12 +1509,11 @@ router.post('/updateuserByadmin', passport.authenticate('jwt', { session: false 
                 },
                 function (overview, done2) {
                     if (obj.role == 2) {                        
-                        update_value = [first_name, last_name, about_us, research_description, city, email, phone, overview.organization, level_of_education, occupation, sector, other_sector, other_occupation, other_professional_interest_area, subscribe]
+                        update_value = [first_name, last_name, about_us, city, email, phone, overview.organization, level_of_education, occupation, sector, other_sector, other_occupation, other_professional_interest_area, subscribe]
                         final_obj = {
                             first_name: first_name,
                             last_name: last_name,
                             about_us: about_us,
-                            research_description: research_description,
                             city:city,
                             email: email,
                             phone: phone,
@@ -1340,12 +1537,11 @@ router.post('/updateuserByadmin', passport.authenticate('jwt', { session: false 
                         }
                     } else if (obj.role == 3) {
                         
-                        update_value = [first_name, last_name, about_us, research_description, city, email, phone, overview.organization, academic_discipline, other_academic_discipline, other_research_interest_area, subscribe]
+                        update_value = [first_name, last_name, about_us, city, email, phone, overview.organization, academic_discipline, other_academic_discipline, other_research_interest_area, subscribe]
                         final_obj = {
                             first_name: first_name,
                             last_name: last_name,
                             about_us: about_us,
-                            research_description: research_description,
                             city: city,
                             email: email,
                             phone: phone,
@@ -1365,12 +1561,11 @@ router.post('/updateuserByadmin', passport.authenticate('jwt', { session: false 
                             final_obj.user_image = '';
                         }
                     } else if (obj.role == 4) {
-                        update_value = [first_name, last_name, about_us, research_description, email, phone, subscribe]
+                        update_value = [first_name, last_name, about_us, email, phone, subscribe]
                         final_obj = {
                             first_name: first_name,
                             last_name: last_name,
                             about_us: about_us,
-                            research_description: research_description,
                             email: email,
                             phone: phone,
                             subscribe: subscribe
@@ -1384,12 +1579,11 @@ router.post('/updateuserByadmin', passport.authenticate('jwt', { session: false 
                             final_obj.user_image = '';
                         }
                     } else {
-                        update_value = [first_name, last_name, about_us, research_description, email, phone, subscribe]
+                        update_value = [first_name, last_name, about_us, email, phone, subscribe]
                         final_obj = {
                             first_name: first_name,
                             last_name: last_name,
                             about_us: about_us,
-                            research_description: research_description,
                             email: email,
                             phone: phone,
                             subscribe: subscribe

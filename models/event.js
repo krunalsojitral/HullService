@@ -10,7 +10,7 @@ function User() {
   this.addEventByadmin = function (record, resources, callback) {
     connection.acquire(function (err, con) {
       const sql =
-        "INSERT INTO event(title,description,location,image,speaker_name,speaker_image,start_date,end_date,start_time,end_time,purchase_type,cost,about_speaker,status,created_at) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15) RETURNING *";
+        "INSERT INTO event(title,description,location,image,speaker_name,speaker_image,start_date,end_date,purchase_type,cost,about_speaker,status,created_at) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15) RETURNING *";
       const values = [
         record.title,
         record.description,
@@ -21,8 +21,6 @@ function User() {
         //record.category,
         record.start_date,
         record.end_date,
-        record.start_time,
-        record.end_time,
         record.purchase_type,
         record.cost,
         record.about_speaker,

@@ -798,7 +798,7 @@ export default function Register() {
                                             </div>
                                         </div>} */}
 
-                                        {userTypeList != 'Guest' && <div className="form-group autosuggestion">
+                                        {userTypeList != 'General Public' && <div className="form-group autosuggestion">
                                             <Controller
                                                 name={"organization"}
                                                 control={control}
@@ -1054,7 +1054,7 @@ export default function Register() {
                                         </div>}
 
                                          */}
-                                        {userTypeList != 'Guest' && <div className="form-group">
+                                        {userTypeList != 'General Public' && <div className="form-group">
                                             <Controller
                                                 name={"research_description"}
                                                 control={control}
@@ -1072,7 +1072,7 @@ export default function Register() {
                                         </div>}
 
 
-                                        {userTypeList != 'Guest' && <div className="form-group">
+                                        {userTypeList != 'General Public' && <div className="form-group">
                                             <Controller
                                                 name={"about_us"}
                                                 control={control}

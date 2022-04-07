@@ -56,7 +56,7 @@ export default function Sidebar() {
                         <InlineButton name={"Forums"} />
                     </NavLink>                    
                 </li>}                 */}
-                {users && (users.role == 3 || users.role == 2) &&                 
+                {users && (users.role == 3 || users.role == 4) &&                 
                     <li className="dropdown sub-menu">
                         <a activeClassName="active" id="sub-click" onClick={(e) => submenu()} href="javascript:;" >
                            <span>Courses & Trainings</span>

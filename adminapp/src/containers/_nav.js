@@ -15,11 +15,11 @@ const _nav = [
     route: "/serviceprovider",
     icon: "cil-list",
     _children: [
-      {
-        _tag: "CSidebarNavItem",
-        name: "Professionals",
-        to: "/serviceprovider",
-      },
+      // {
+      //   _tag: "CSidebarNavItem",
+      //   name: "Professionals",
+      //   to: "/serviceprovider",
+      // },
       {
         _tag: "CSidebarNavItem",
         name: "General Public",
@@ -123,29 +123,29 @@ const _nav = [
     route: "/#",
     icon: "cil-list",
     _children: [
-      {
-        _tag: "CSidebarNavDropdown",
-        name: "Professional",
-        route: "/#",
-        icon: "cil-list",
-        _children: [
-          {
-            _tag: "CSidebarNavItem",
-            name: "Sector",
-            to: "/sector",
-          },
-          {
-            _tag: "CSidebarNavItem",
-            name: "Occupation",
-            to: "/occupation",
-          },
-          {
-            _tag: "CSidebarNavItem",
-            name: "Interest Area",
-            to: "/professional-interest-area",
-          }
-          ]
-      },
+      // {
+      //   _tag: "CSidebarNavDropdown",
+      //   name: "Professional",
+      //   route: "/#",
+      //   icon: "cil-list",
+      //   _children: [
+      //     {
+      //       _tag: "CSidebarNavItem",
+      //       name: "Sector",
+      //       to: "/sector",
+      //     },
+      //     {
+      //       _tag: "CSidebarNavItem",
+      //       name: "Occupation",
+      //       to: "/occupation",
+      //     },
+      //     {
+      //       _tag: "CSidebarNavItem",
+      //       name: "Interest Area",
+      //       to: "/professional-interest-area",
+      //     }
+      //     ]
+      // },
       {
         _tag: "CSidebarNavDropdown",
         name: "Researcher",
@@ -157,11 +157,11 @@ const _nav = [
             name: "Academic Discipline",
             to: "/academic-discipline",
           }, 
-          {
-            _tag: "CSidebarNavItem",
-            name: "Interest Area",
-            to: "/researcher-interest-area",
-          }
+          // {
+          //   _tag: "CSidebarNavItem",
+          //   name: "Interest Area",
+          //   to: "/researcher-interest-area",
+          // }
         ]
       },
       {
@@ -229,11 +229,11 @@ const _nav = [
         name: "View Event",
         to: "/events",
       },
-      {
-        _tag: "CSidebarNavItem",
-        name: "Event Promo",
-        to: "/eventpromo",
-      }
+      // {
+      //   _tag: "CSidebarNavItem",
+      //   name: "Event Promo",
+      //   to: "/eventpromo",
+      // }
     ],
   },
   {

@@ -10,6 +10,7 @@ import { browserHistory } from 'react-router';
 
 
 const Register = lazy(() => import("./pages/Register"));
+const PublicUserRegister = lazy(() => import("./pages/PublicUserRegister"));
 const ResearchRequestForm = lazy(() => import("./pages/ResearchRequestForm"));
 const ActivationAccount = lazy(() => import("./pages/ActivationAccount"));
 const ChangePassword = lazy(() => import("./pages/ChangePassword"));
@@ -80,6 +81,7 @@ function App() {
         <Switch>                                     
           <Route path="/research-request-form" component={ResearchRequestForm} />
           <Route path="/register" component={Register} />
+          <Route path="/public-user-register" component={PublicUserRegister} />
           <Route path="/activation-account" component={ActivationAccount} />
           <Route path="/login" component={Login} />          
           <Route path="/forgotpassword" component={Forgotpassword} />          

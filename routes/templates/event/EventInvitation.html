@@ -55,15 +55,17 @@
                                                     <tr>
                                                         <td align="center">
                                                             <a style="display: inline-block;background-color:#358EA6;color:#FFF;text-decoration:none;width:70%;border-radius:5px;padding:7px 0;font-size:22px;margin:25px 0;"
-                                                                href="{{data.eventLink}}" title="Verify email address">View Ticket</a>
+                                                                href="{{data.eventLink}}" title="Verify email address">Join Meeting</a>
                                                         </td>
                                                     </tr>
+                                                    {{#data.registerURL}}
                                                     <tr>
                                                         <td align="center">
                                                             <a style="display: inline-block;background-color:#358EA6;color:#FFF;text-decoration:none;width:70%;border-radius:5px;padding:7px 0;font-size:22px;margin:25px 0;"
                                                                 href="{{data.registerURL}}" title="Verify email address">Register</a>
                                                         </td>
                                                     </tr>
+                                                    {{/data.registerURL}}
                                                     <tr>
                                                         <td align="left">
                                                             <p style="margin:0px 0 25px 0;color:#606060;">Once your email address is verified, we will activate your Pathways To Prevention
