@@ -90,12 +90,7 @@ export default function Header() {
                                 </a>
 
                                 <div className="hull-menu">
-                                    <ul>
-                                        <li>
-                                            <NavLink exact={true} activeClassName="active" to="/">
-                                                <InlineButton name={"Home"} />
-                                            </NavLink>
-                                        </li>
+                                    <ul>                                        
                                         <li>
                                             <a href="javascript:;">
                                                 <InlineButton name={"About us"} />

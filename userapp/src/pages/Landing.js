@@ -68,17 +68,13 @@ export default function Landing() {
             <div className="container">
                 <div className="row">
                     <div className="col-md-12">
-                        <div class="section-title"><h2>National Volunteer Week 2021</h2><span>Hull Services wants to give a big thank you to all our volunteers for all their support!</span></div>
                         <br/>
-                        <p>Humans see colors in light waves. Mixing light—or the additive color mixing model—allows you to create colors by mixing red, green and blue light sources of various intensities. The more light you add, the brighter the color mix becomes. If you mix all three colors of light, you get pure, white light.</p>
+                        <p>
+                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                        </p>
                         <br />
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <iframe width="100%" height="554px" title="video" allow="fullscreen;" src="https://www.youtube.com/embed/6nPAtW9ZYB0?rel=0&amp;modestbranding=1&amp;showinfo=0"></iframe>
-                    </div>
-                </div>
+                </div>                
             </div>
             
                

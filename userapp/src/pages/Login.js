@@ -63,16 +63,18 @@ export default function Login() {
                                 </form>
 
                                 <div className="row">
-                                    <div className="col-md-6">
-                                        <Link className="forgot-btn" to='/forgotpassword'>
-                                            Forgot your password?
-                                        </Link>                                                
+                                    <div className="col-md-12">
+                                        <center>
+                                            <Link className="forgot-btn" to='/forgotpassword'>
+                                                Forgot your password?
+                                            </Link>         
+                                        </center>                                      
                                     </div>
-                                    <div className="col-md-6 text-right">
+                                    {/* <div className="col-md-6 text-right">
                                         <Link className="signup-btn" to='/research-request-form'>
                                             Sign Up
                                         </Link>                                                
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>
