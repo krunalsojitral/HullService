@@ -36,6 +36,7 @@ const MyEvents = lazy(() => import("./pages/user/event/MyEvents"));
 const EventDetail = lazy(() => import("./pages/user/event/EventDetail"));
 const EventsCart = lazy(() => import("./pages/user/event/EventsCart"));
 const EventTicket = lazy(() => import("./pages/user/event/EventTicket"));
+const EventPayment = lazy(() => import("./pages/user/event/EventPayment"));
 const PromoPage = lazy(() => import("./pages/user/event/PromoPage"));
 
 
@@ -93,7 +94,8 @@ function App() {
           <Route path="/event-detail" component={EventDetail} />
           <Route path="/event-promo" component={PromoPage} />
           <Route path="/event-cart" component={EventsCart} />
-          <Route path="/event-ticket" component={EventTicket} />          
+          <Route path="/event-ticket" component={EventTicket} />
+          <Route path="/event-payment" component={EventPayment} />          
           <Route path="/courses-training" component={CoursesTrainings} />
           <Route path="/add-forum" component={AddForum} />
           <PrivateRoute path="/forum" component={Forum} />

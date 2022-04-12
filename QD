@@ -1,0 +1,11 @@
+user.name=rajvik.letsnurture
+user.email=rajvik.letsnurture@gmail.com
+user.password=dqrh3gvi7x7pcerb4prukmrjd3mzq64zrxscgv62x363ssetkuiq
+core.repositoryformatversion=0
+core.filemode=true
+core.bare=false
+core.logallrefupdates=true
+remote.origin.url=git@27.109.17.155:network/KDSVW_ATWHullService_10142021.git
+remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
+branch.web.remote=origin
+branch.web.merge=refs/heads/web

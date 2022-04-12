@@ -11,9 +11,9 @@ import { useForm, Controller } from "react-hook-form";
 import { useHistory } from 'react-router-dom';
 
 export default function EventsCart() {
-   
+
     let history = useHistory();
-    
+
     const [eventdata, setEventData] = useState([]);
     const [eventId, setEventId] = useState('');
     const [token, setToken] = useState('');
@@ -41,7 +41,7 @@ export default function EventsCart() {
         setToken(token);
         getEventData(eventID.event_id);
 
-        if (token){
+        if (token) {
             const config = { headers: { Authorization: `${token}` } };
             axios.get(api_url + "/user/getEditUserById", config)
                 .then((result) => {
@@ -54,7 +54,7 @@ export default function EventsCart() {
                     }
                 })
                 .catch((err) => { console.log(err); });
-        }       
+        }
     }, [])
 
 
@@ -74,13 +74,13 @@ export default function EventsCart() {
 
     }
 
-    const onSubmit = (data) => { 
+    const onSubmit = (data) => {
         data.event_id = eventId
         data.event_title = eventDetail.title
         const config = {
             headers: { Authorization: `${token}` }
         };
-        if (token){
+        if (token) {
             axios.post(api_url + '/event/eventRegisterWithUser', data, config).then(async (result) => {
                 if (result.data.status) {
                     Swal.fire('Success!', 'Please check your email for event link.', 'success');
@@ -102,47 +102,53 @@ export default function EventsCart() {
                     Swal.fire('Oops...', result.data.response.msg, 'error')
                 }
             })
-            .catch((err) => {
-                return ''
-            })
-        }else{
-            axios.post(api_url + '/event/eventRegisterWithoutUser', data, config).then(async (result) => {
-                if (result.data.status) {
-                    Swal.fire('Success!', 'Please check your email for event link.', 'success');
-                    history.push("/");
-                    // Swal.fire({
-                    //     title: 'Success!',
-                    //     icon: 'success',
-                    //     text: result.data.response.msg,
-                    //     confirmButtonText: `ok`,
-                    // }).then((result) => {
-                    //     /* Read more about isConfirmed, isDenied below */
-                    //     if (result.isConfirmed) {
-                    //         history.push("/login");
-                    //     } else {
-                    //         Swal.fire('Changes are not saved', '', 'info')
-                    //     }
-                    // })
-                } else {
-                    Swal.fire('Oops...', result.data.response.msg, 'error')
-                }
-            })
-            .catch((err) => {
-                return '';
-            })
-        }        
+                .catch((err) => {
+                    return ''
+                })
+        } else {
+            // axios.post(api_url + '/event/eventRegisterWithoutUser', data, config).then(async (result) => {
+            //     if (result.data.status) {
+            //         Swal.fire('Success!', 'Please check your email for event link.', 'success');
+            //         history.push("/");
+            //         // Swal.fire({
+            //         //     title: 'Success!',
+            //         //     icon: 'success',
+            //         //     text: result.data.response.msg,
+            //         //     confirmButtonText: `ok`,
+            //         // }).then((result) => {
+            //         //     /* Read more about isConfirmed, isDenied below */
+            //         //     if (result.isConfirmed) {
+            //         //         history.push("/login");
+            //         //     } else {
+            //         //         Swal.fire('Changes are not saved', '', 'info')
+            //         //     }
+            //         // })
+            //     } else {
+            //         Swal.fire('Oops...', result.data.response.msg, 'error')
+            //     }
+            // })
+            // .catch((err) => {
+            //     return '';
+            // })
+            history.push({
+                pathname: '/event-payment',
+                price: eventDetail.cost,
+                data: data,
+                config: config
+            });
+        }
     }
 
-    const loginClick = (event_id) => {        
+    const loginClick = (event_id) => {
         localStorage.setItem('last_visit_url', '/event-cart');
         history.push("/login");
     }
 
-    
 
-    return(
+
+    return (
         <div>
-            <Header/>
+            <Header />
             <section className="inner-header">
                 <div className="container">
                     <div className="row">
@@ -152,14 +158,14 @@ export default function EventsCart() {
                     </div>
                 </div>
             </section>
-            
-             <section className="dashboard-card">
+
+            <section className="dashboard-card">
                 <div className="container-fluid">
-                    <div className="row"> 
+                    <div className="row">
                         <div className="col-md-2 side-col">
                             <Sidebar />
                         </div>
-                        
+
                         <div className="col-md-10">
                             <div className="Event-List">
                                 <div className="row">
@@ -167,27 +173,27 @@ export default function EventsCart() {
 
                                         <div className="event-cart">
                                             <span>1 x {eventDetail.title}</span>
-                                            <hr/>
+                                            <hr />
 
-                                            {eventDetail.purchase_type == 'paid' && 
-                                            <div>
-                                                <div>Price : ${eventDetail.cost}.00</div>
-                                                <div>Total  ${eventDetail.cost}.00</div>
-                                            </div>}
+                                            {eventDetail.purchase_type == 'paid' &&
+                                                <div>
+                                                    <div>Price : ${eventDetail.cost}.00</div>
+                                                    <div>Total  ${eventDetail.cost}.00</div>
+                                                </div>}
 
                                             {eventDetail.purchase_type == 'unpaid' &&
                                                 <div>
                                                     <div>Price : Free</div>
-                                                <div>Total  Free</div>
-                                                </div>}                                            
-                                            
-                                            <hr/>
-                                            
+                                                    <div>Total  Free</div>
+                                                </div>}
+
+                                            <hr />
+
                                             <h4>Contact information</h4>
 
                                             {!token && <h5>Continue as guest or <a onClick={(e) => loginClick(eventDetail.event_id)}>login</a> for a faster experience.</h5>}
 
-                                            <hr/>
+                                            <hr />
 
                                             <div>
                                                 <div className="login-box">
@@ -209,7 +215,7 @@ export default function EventsCart() {
                                                                         />
                                                                     )}
                                                                 ></Controller>
-                                                                
+
                                                                 {errors.first_name && errors.first_name.type === "required" && (
                                                                     <small className="error">First Name is required.</small>
                                                                 )}
@@ -243,7 +249,7 @@ export default function EventsCart() {
                                                                         pattern: {
                                                                             value: /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i,
                                                                         },
-                                                                    }}                                                                    
+                                                                    }}
                                                                     render={({ field: { onChange, value } }) => (
                                                                         <input
                                                                             type="email"
@@ -306,7 +312,7 @@ export default function EventsCart() {
                                                                             inputRef={ref}
                                                                         />
                                                                     )}
-                                                                />                                                                
+                                                                />
                                                                 <span>&nbsp;Keep me updated on more events and news from this event organizer.</span><br />
                                                                 {errors.terms_condition && errors.terms_condition.type === "required" && (
                                                                     <small className="error">This is required.</small>
@@ -341,22 +347,22 @@ export default function EventsCart() {
 
                                                     </form>
                                                 </div>
-                                                
+
                                             </div>
-                                            
+
                                         </div>
 
-                                    </div>                                        
+                                    </div>
                                 </div>
                             </div>
-                        </div>                       
-                       
+                        </div>
+
 
                     </div>
                 </div>
-            </section>           
+            </section>
 
-            <Footer/>
+            <Footer />
         </div>
     )
 }
