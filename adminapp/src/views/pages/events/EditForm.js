@@ -44,13 +44,13 @@ const AddEditForm = ({ match }) => {
   const {
     handleSubmit,
     setValue: setFormValue,
-    control,    
+    control,
     trigger,
     getValues,
     reset,
     watch,
     formState: { errors },
-  } = useForm({    
+  } = useForm({
     defaultValues: {
       sessionTitle: [{ name: "default Value" }],
       sessionDescription: [{ name: "default Value" }],
@@ -62,7 +62,7 @@ const AddEditForm = ({ match }) => {
 
   const purchase_type_selected = watch("purchase_type");
   const event_type_selected = watch("event_type");
- 
+
   const [eventId, setEventId] = React.useState(0);
   const [setectimage, setSetectimage] = React.useState(0);
   const [selectedFile, setSelectedFile] = useState();
@@ -108,9 +108,9 @@ const AddEditForm = ({ match }) => {
   };
 
   //const initialText = ``;
-  const { fields: session, insert:sessionInsert, append: sessionAppend, remove: sessionRemove } = useFieldArray({
-    control,    
-    name: 'sessionURL',   
+  const { fields: session, insert: sessionInsert, append: sessionAppend, remove: sessionRemove } = useFieldArray({
+    control,
+    name: 'sessionURL',
     name: 'sessionDescription',
     name: 'sessionTitle',
   });
@@ -241,14 +241,14 @@ const AddEditForm = ({ match }) => {
   };
 
 
-  React.useEffect(() => {    
-   
+  React.useEffect(() => {
+
     if (match.params.id) {
-      setEventId(match.params.id)      
+      setEventId(match.params.id)
       axios.post(api_url + "/event/getEventDataById", { event_id: match.params.id }, {})
         .then((result) => {
           if (result.data.status) {
-            var eventdata = result.data.response.data;            
+            var eventdata = result.data.response.data;
             setFormValue("title", eventdata.title);
             $("#start_date").val(eventdata.start_date)
             $("#end_date").val(eventdata.end_date)
@@ -270,10 +270,10 @@ const AddEditForm = ({ match }) => {
             setFormValue("cost", eventdata.cost);
             setFormValue("event_type", eventdata.event_type);
             setFormValue("video_link", eventdata.video_link);
-            if (eventdata.timezone){
-              setSelectedTimezone(eventdata.timezone)
+            if (eventdata.timezone) {
+              setSelectedTimezone(JSON.parse(eventdata.timezone))
             }
-            
+
 
             // var sessionTitle = [{ "name": "default Value", "value": "Group Session 1" }, { "value": "Group Session 2" }];
             // var sessionDescription = [{ "name": "default Value", "value": "Group Description 1" }, { "value": "Group Description 2" }];
@@ -311,23 +311,23 @@ const AddEditForm = ({ match }) => {
             //   }
             // });           
 
-            if (eventdata.group_session.length > 0){
+            if (eventdata.group_session.length > 0) {
               var sessionTitle = [];
               var sessionDescription = [];
               var sessionURL = [];
               eventdata.group_session.forEach((item, index) => {
-                if (index == 0){
+                if (index == 0) {
                   sessionTitle.push({ "name": "default Value", "value": item.title })
                   sessionDescription.push({ "name": "default Value", "value": item.description })
                   sessionURL.push({ "name": "default Value", "value": item.url })
-                }else{
+                } else {
                   sessionTitle.push({ "value": item.title })
                   sessionDescription.push({ "value": item.description })
                   sessionURL.push({ "value": item.url })
-                }                
+                }
               });
 
-              if ((sessionTitle.length > 0) || (sessionDescription.length > 0) || (sessionURL.length > 0)){
+              if ((sessionTitle.length > 0) || (sessionDescription.length > 0) || (sessionURL.length > 0)) {
                 sessionTitle.forEach((item, index) => {
                   if (index > 0) {
                     sessionAppend({})
@@ -372,7 +372,7 @@ const AddEditForm = ({ match }) => {
 
             if (eventdata.webPageUrl.length > 0) {
               var webPageUrl = [];
-              eventdata.webPageUrl.forEach((item, index) => {                
+              eventdata.webPageUrl.forEach((item, index) => {
                 if (index == 0) {
                   webPageUrl.push({ "name": "default Value", "value": item.path })
                 } else {
@@ -392,15 +392,15 @@ const AddEditForm = ({ match }) => {
                 }, 500);
               }
             }
-    
+
             if (eventdata.resource.length > 0) {
               setDisplayImage(eventdata.resource)
             }
-            
+
             setTimeout(() => {
               clearSuggestions();
             }, 800);
-            
+
           } else {
             Swal.fire("Oops...", result.data.response.msg, "error");
           }
@@ -409,6 +409,7 @@ const AddEditForm = ({ match }) => {
     }
   }, []);
 
+
   const updateInformationAct = (data) => {
     data.timezone = selectedTimezone;
     data.description = contentEditor;
@@ -416,7 +417,7 @@ const AddEditForm = ({ match }) => {
     data.event_id = eventId;
     data.deleteresources = deleteresources;
     data.location = city;
-   
+
     const formData = new FormData();
     formData.append("data", JSON.stringify(data));
     if (selectedFile) {
@@ -431,10 +432,10 @@ const AddEditForm = ({ match }) => {
     if (selectedPromoFile) {
       formData.append("promo_image", selectedPromoFile, selectedPromoFile.name);
     }
-    
+
     if (finalFile && finalFile.length > 0) {
       for (var i = 0; i < finalFile.length; i++) {
-        if (finalFile[i].name){
+        if (finalFile[i].name) {
           formData.append("resources[]", finalFile[i], finalFile[i].name);
         }
       }
@@ -452,12 +453,12 @@ const AddEditForm = ({ match }) => {
   };
 
   const nextTab = async (tab) => {
-    if (tab == 1){
+    if (tab == 1) {
       const result = await trigger(["title", "start_date", "end_date"]);
-      if (result){
+      if (result) {
         setActive(tab);
       }
-    }else{
+    } else {
       setActive(tab);
     }
   }
@@ -465,24 +466,24 @@ const AddEditForm = ({ match }) => {
   const deleteImage = async (event_resource_id) => {
     setDisplayImage(displayImage.filter((item, index) => item.event_resource_id !== event_resource_id));
     var image = displayImage.filter((item, index) => item.event_resource_id == event_resource_id);
-    if (deleteresources.length > 0){
+    if (deleteresources.length > 0) {
       setDeleteresources(oldArray => [...oldArray, image]);
-    }else{
+    } else {
       setDeleteresources([image]);
     }
-    
+
 
   }
-  
 
- 
 
- 
+
+
+
 
   return (
-    <CRow>             
-        <CCol xs="12" md="12" className="mb-4">
-          <CCard>
+    <CRow>
+      <CCol xs="12" md="12" className="mb-4">
+        <CCard>
           <CCardHeader>
             Edit Event
           </CCardHeader>
@@ -492,19 +493,19 @@ const AddEditForm = ({ match }) => {
                 <CNav variant="tabs">
                   <CNavItem>
                     <CNavLink>
-                    Event
+                      Event
                       {active === 0 && ' '}
                     </CNavLink>
                   </CNavItem>
                   <CNavItem>
                     <CNavLink>
-                    Group Session
+                      Group Session
                       {active === 1 && ' '}
                     </CNavLink>
                   </CNavItem>
                   <CNavItem>
                     <CNavLink>
-                   Resources
+                      Resources
                       {active === 2 && ' '}
                     </CNavLink>
                   </CNavItem>
@@ -529,9 +530,9 @@ const AddEditForm = ({ match }) => {
                               rules={{ required: true }}
                               render={({ field: { onChange, value } }) => (
                                 <CInput
-                                  type="text"                                  
+                                  type="text"
                                   onChange={onChange}
-                                  value={value}                                   
+                                  value={value}
                                   placeholder={`Enter event title`}
                                 />
                               )}
@@ -541,7 +542,7 @@ const AddEditForm = ({ match }) => {
                             <p style={{ color: "red", fontSize: "12px" }}>Title is required.</p>
                           )}
                         </CCol>
-                      </CRow>    
+                      </CRow>
 
                       <CRow>
                         <CCol xs="6">
@@ -569,7 +570,7 @@ const AddEditForm = ({ match }) => {
                                   placeholderText="Start date"
                                 />
                               )}
-                            ></Controller>                            
+                            ></Controller>
                           </CFormGroup>
                           {errors.start_date && errors.start_date.type === "required" && (
                             <p style={{ color: "red", fontSize: "12px" }}>Start date is required.</p>
@@ -604,7 +605,7 @@ const AddEditForm = ({ match }) => {
                           {errors.end_date && errors.end_date.type === "required" && (
                             <p style={{ color: "red", fontSize: "12px" }}>End date is required.</p>
                           )}
-                        </CCol>                       
+                        </CCol>
                       </CRow>
 
                       {/* <CRow>
@@ -647,7 +648,7 @@ const AddEditForm = ({ match }) => {
                             />
                           </CFormGroup>
                         </CCol>
-                      </CRow> 
+                      </CRow>
 
 
                       <CRow>
@@ -774,7 +775,7 @@ const AddEditForm = ({ match }) => {
                           </CCol>
                         </CRow>}
 
-                      {event_type_selected === 'online' &&
+                      {/* {event_type_selected === 'online' &&
                         <CRow>
                           <CCol xs="12">
                             <CFormGroup>
@@ -797,7 +798,7 @@ const AddEditForm = ({ match }) => {
                               <p style={{ color: "red", fontSize: "12px" }}>Video link is required.</p>
                             )}
                           </CCol>
-                        </CRow>}
+                        </CRow>} */}
 
 
                       {/* <CRow>
@@ -818,8 +819,8 @@ const AddEditForm = ({ match }) => {
                           </CFormGroup>
                         </CCol>
                       </CRow> */}
-                      
-                     
+
+
 
                       <CRow>
                         <CCol xs="12">
@@ -831,7 +832,7 @@ const AddEditForm = ({ match }) => {
                               accept=".png,.PNG,.JPG,.jpg,.jpeg"
                               name="myfile"
                               onChange={changeFileHandler}
-                            />                            
+                            />
                             <span>
                               {!setectimage && <img style={{ width: "100px" }} alt="avatar" src="company-logo.png" />}
                               {setectimage && <img style={{ width: "100px" }} src={setectimage} alt="user-image" />}
@@ -889,18 +890,18 @@ const AddEditForm = ({ match }) => {
                         </CRow>}
 
 
-                     
+
                       <CRow>
                         <CCol xs="12">
-                          <button className="btn btn-outline-primary" type="button" onClick={() => nextTab(1)}>Next</button>                          
+                          <button className="btn btn-outline-primary" type="button" onClick={() => nextTab(1)}>Next</button>
                         </CCol>
-                      </CRow>  
-                    </CCol>                    
+                      </CRow>
+                    </CCol>
                   </CTabPane>
 
                   <CTabPane>
                     <CCol>
-                      <br/>
+                      <br />
                       {session.map((item, index) => (
                         <div key={item.id}>
                           <CCol xs="12">
@@ -908,7 +909,7 @@ const AddEditForm = ({ match }) => {
                               <CLabel htmlFor="title">Group Session {index + 1}</CLabel>
                             </CRow>
                           </CCol>
-                          <br/>
+                          <br />
                           <CCol xs="12">
                             <CRow>
                               <CCol xs="11">
@@ -953,18 +954,18 @@ const AddEditForm = ({ match }) => {
                                 </CRow>
                               </CCol>
                               <CCol xs="1">
-                                <div className="btn btn-danger"  onClick={() => sessionRemove(index)}>Delete</div>
+                                <div className="btn btn-danger" onClick={() => sessionRemove(index)}>Delete</div>
                               </CCol>
                             </CRow>
                           </CCol>
-                          <hr/>
+                          <hr />
                         </div>
                       ))}
                       <CRow>
                         <div className="col-md-12 text-right">
                           <button type="button" className="btn btn-success" onClick={() => sessionAppend({ value: "" })}>Add More Session</button>
                         </div>
-                      </CRow>     
+                      </CRow>
                       <CRow>
                         <CCol xs="12">
                           <button className="btn btn-outline-primary" type="button" onClick={() => nextTab(2)}>Next</button>
@@ -972,7 +973,7 @@ const AddEditForm = ({ match }) => {
                       </CRow>
                     </CCol>
                   </CTabPane>
-                  <CTabPane>  
+                  <CTabPane>
 
                     <CCol>
                       <br />
@@ -1001,7 +1002,7 @@ const AddEditForm = ({ match }) => {
                           <CRow>
                             <CCol xs="12">
 
-                              
+
                               {displayImage.length > 0 &&
                                 displayImage.map((item, index) => {
                                   return (
@@ -1013,7 +1014,7 @@ const AddEditForm = ({ match }) => {
                                         </CCol>
                                         <CCol xs="6">
                                           <button type="button" className="btn btn-danger" onClick={() => deleteImage(item.event_resource_id)}>delete</button>
-                                          </CCol>
+                                        </CCol>
                                       </CRow>
                                       <hr />
                                     </div>
@@ -1032,7 +1033,7 @@ const AddEditForm = ({ match }) => {
                                               {item.type == 'doc' && item.name}
                                             </CCol>
                                             <CCol xs="6">
-                                            <button type="button" className="btn btn-danger" onClick={() => deleteFile(index, item.name)}>delete</button>
+                                              <button type="button" className="btn btn-danger" onClick={() => deleteFile(index, item.name)}>delete</button>
                                             </CCol>
                                           </CRow>
                                           <hr />
@@ -1050,14 +1051,14 @@ const AddEditForm = ({ match }) => {
                     <hr />
 
 
-                    <CCol>                      
+                    <CCol>
                       <CCol xs="12">
                         <CRow>
                           <CLabel htmlFor="title"><b>Video URL</b></CLabel>
                         </CRow>
                       </CCol>
                       {video.map((item, index) => (
-                        <div key={item.id}>  
+                        <div key={item.id}>
                           <br />
                           <CRow>
                             <CCol xs="12">
@@ -1080,9 +1081,9 @@ const AddEditForm = ({ match }) => {
                                 <CCol xs="1">
                                   <div className="btn btn-danger" onClick={() => videoRemove(index)}>Delete</div>
                                 </CCol>
-                              </CRow>    
+                              </CRow>
                             </CCol>
-                          </CRow>                          
+                          </CRow>
                         </div>
                       ))}
                       <div className="row">
@@ -1092,9 +1093,9 @@ const AddEditForm = ({ match }) => {
                       </div>
                     </CCol>
 
-                    <hr/>
+                    <hr />
 
-                    <CCol>                      
+                    <CCol>
                       <CCol xs="12">
                         <CRow>
                           <CLabel htmlFor="title"><b>Web Page URL</b></CLabel>
@@ -1155,7 +1156,7 @@ const AddEditForm = ({ match }) => {
                                 <CInput
                                   type="text"
                                   onChange={onChange}
-                                  value={value}                                  
+                                  value={value}
                                   placeholder={`Enter promo title`}
                                 />
                               )}
@@ -1208,17 +1209,17 @@ const AddEditForm = ({ match }) => {
 
                 </CTabContent>
               </CTabs>
-              <br/>
-              <hr/>
+              <br />
+              <hr />
               <center>
                 <button type="submit" className="btn btn-outline-primary">Update</button>
-              </center>              
+              </center>
             </form>
           </CCardBody>
         </CCard>
       </CCol>
 
-     
+
     </CRow>
   )
 }

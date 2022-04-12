@@ -583,7 +583,7 @@ const AddEditForm = ({ match }) => {
                           </CCol>
                         </CRow> }
 
-                      {event_type_selected === 'online' &&
+                      {/* {event_type_selected === 'online' &&
                         <CRow>
                           <CCol xs="12">
                             <CFormGroup>
@@ -606,7 +606,7 @@ const AddEditForm = ({ match }) => {
                               <p style={{ color: "red", fontSize: "12px" }}>Video link is required.</p>
                             )}
                           </CCol>
-                        </CRow> }
+                        </CRow> } */}
 
                      
 
