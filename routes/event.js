@@ -17,6 +17,8 @@ var nodemailer = require('nodemailer');
 const nodeMailerCredential = require('./../EmailCredential');
 var User = require('../models/user');
 var shortid = require('shortid');
+const rp = require('request-promise');
+const jwt = require('jsonwebtoken');
 
 
 function loggerData(req) {
@@ -33,7 +35,7 @@ router.post("/addEventByadmin", function (req, res) {
   var resources = []
 
   form.on('file', function (name, file) {
-    if (name == "resources[]") { 
+    if (name == "resources[]") {
       var type = file.name.split('.').pop(),
         filename = Date.now() + '-' + file.name;
       // Check the file type as it must be either png,jpg or jpeg
@@ -63,7 +65,7 @@ router.post("/addEventByadmin", function (req, res) {
         });
       }
     }
-    
+
   });
 
   form.parse(req, function (err, fields, files) {
@@ -85,12 +87,15 @@ router.post("/addEventByadmin", function (req, res) {
         title: parsed.title,
         description: parsed.description,
         status: parsed.status,
-        location: parsed.location,
+        location: (parsed.location) ? parsed.location: '',
        // category: parsed.category,
         speaker_name: parsed.speaker_name,
         speaker_image: '',
         about_speaker: parsed.about_speaker,
         purchase_type: parsed.purchase_type,
+        timezone: parsed.timezone,
+        event_type: parsed.event_type,
+        video_link: (parsed.video_link) ? parsed.video_link: '',
         cost: parsed.cost,
         start_date: start_date,
         end_date: end_date,
@@ -125,11 +130,11 @@ router.post("/addEventByadmin", function (req, res) {
       });
      // var filenames = Object.entries(files).filter((el) => el[0] != "image");
     }
-     
+
         let overview = {};
         asyn.waterfall(
           [
-            function (done) {              
+            function (done) {
               let overview = {};
               if (typeof files.image !== "undefined") {
                 let file_ext = files.image.name.split(".").pop();
@@ -232,7 +237,7 @@ router.post("/addEventByadmin", function (req, res) {
                     done2(err, data);
                   }
                 });
-              }, 100);          
+              }, 100);
             }
           ],
         function (error, data) {
@@ -254,11 +259,11 @@ router.get('/getEventList', function (req, res) {
   Event.getAllAdminEvent(status, function (err, result) {
     if (err) {
       return res.json({ status: 0, 'response': { msg: err } });
-    } else {      
+    } else {
       var eventList = result.map(data => {
         let retObj = {};
         retObj['event_id'] = data.event_id;
-        retObj['title'] = data.title;        
+        retObj['title'] = data.title;
         retObj['start_date'] = (data.start_date) ? moment(data.start_date).format('YYYY-MM-DD') : '';
         retObj['end_date'] = (data.end_date) ? moment(data.end_date).format('YYYY-MM-DD') : '';
         retObj['status'] = data.status;
@@ -339,7 +344,7 @@ router.post('/getEventDataById', [check('event_id', 'Event is required').notEmpt
             let event = {};
             event['event_id'] = result[0].event_id;
             event['title'] = result[0].title;
-            event['description'] = result[0].description;            
+            event['description'] = result[0].description;
             event['start_date'] = (result[0].start_date) ? moment(result[0].start_date).format('YYYY/MM/DD h:mm a') :'';
             event['end_date'] = (result[0].end_date) ? moment(result[0].end_date).format('YYYY/MM/DD h:mm a') : '';
             event['user_start_date'] = (result[0].start_date) ? moment(result[0].start_date).format('MMM Do YYYY h:mm a') : '';
@@ -347,11 +352,14 @@ router.post('/getEventDataById', [check('event_id', 'Event is required').notEmpt
             event['start_time'] = (result[0].start_date) ? moment(result[0].start_date).format('h:mm a') : '';
             event['end_time'] = (result[0].end_date) ? moment(result[0].end_date).format('h:mm a') : '';
             event['location'] = result[0].location;
-            event['about_speaker'] = result[0].about_speaker;            
+            event['about_speaker'] = result[0].about_speaker;
+            event['event_type'] = result[0].event_type;
+            event['video_link'] = result[0].video_link;
+            event['timezone'] = result[0].timezone;
             event['speaker_name'] = result[0].speaker_name;
             event['speaker_image'] = (result[0].speaker_image) ? imageLink + env.EVENT_VIEW_PATH + result[0].speaker_image : '';
             event['image'] = (result[0].image) ? imageLink + env.EVENT_VIEW_PATH + result[0].image : '';
-            event['status'] = result[0].status;  
+            event['status'] = result[0].status;
             event['cost'] = result[0].cost;
             event['purchase_type'] = result[0].purchase_type;
             event['promo_title'] = result[0].promo_title;
@@ -368,7 +376,7 @@ router.post('/getEventDataById', [check('event_id', 'Event is required').notEmpt
       function (event, done1) {
         if (event['event_id'] != '') {
           Event.getGroupSessionByEventId(event['event_id'], function (err, result) {
-            if (result && result.length > 0) {              
+            if (result && result.length > 0) {
               event['group_session'] = result;
               done1(null, event)
             } else {
@@ -382,7 +390,7 @@ router.post('/getEventDataById', [check('event_id', 'Event is required').notEmpt
       function (event, done2) {
         if (event['event_id'] != '') {
           Event.getVideoByEventId(event['event_id'], function (err, result) {
-            if (result && result.length > 0) {              
+            if (result && result.length > 0) {
               event['videoURL'] = result;
               done2(null, event)
             } else {
@@ -396,7 +404,7 @@ router.post('/getEventDataById', [check('event_id', 'Event is required').notEmpt
       function (event, done3) {
         if (event['event_id'] != '') {
           Event.getWebURLByEventId(event['event_id'], function (err, result) {
-            if (result && result.length > 0) {              
+            if (result && result.length > 0) {
               event['webPageUrl'] = result;
               done3(null, event)
             } else {
@@ -488,7 +496,7 @@ router.post("/updateEventByadmin", function (req, res) {
           }
         });
       }
-    }   
+    }
   });
 
   form.parse(req, function (err, fields, files) {
@@ -501,7 +509,7 @@ router.post("/updateEventByadmin", function (req, res) {
 
     // var start_date = (obj.start_date) ? moment(obj.start_date, "YYYY-MM-DD h:mm a").add(1, 'days').format("YYYY-MM-DD h:mm a") : ''
     // var end_date = (obj.end_date) ? moment(obj.end_date, "YYYY-MM-DD h:mm a").add(1, 'days').format("YYYY-MM-DD h:mm a") : ''
-  
+
     var event_id = obj.event_id;
     var deleteresources = obj.deleteresources;
     var record = {
@@ -514,15 +522,18 @@ router.post("/updateEventByadmin", function (req, res) {
       cost: obj.cost,
       start_date: start_date,
       end_date: end_date,
+      timezone: obj.timezone,
+      event_type: obj.event_type,
+      video_link: (obj.video_link) ? obj.video_link : '',
     };
 
-  
+
     var promo_record = {
       promo_title: obj.promo_title,
       promo_description: obj.promo_description,
     }
 
-      var update_value = [obj.title, obj.description, obj.location, obj.speaker_name, obj.about_speaker, obj.purchase_type, obj.cost, start_date, end_date];
+    var update_value = [obj.title, obj.description, obj.location, obj.speaker_name, obj.about_speaker, obj.purchase_type, obj.cost, start_date, end_date, obj.timezone, obj.event_type, obj.video_link];
       var group_session = []
 
       if (obj.sessionTitle.length > 0){
@@ -548,7 +559,7 @@ router.post("/updateEventByadmin", function (req, res) {
       }
       if (obj.webPageUrl.length > 0) {
         obj.webPageUrl.map((el) => {
-          if (el.value) { 
+          if (el.value) {
             let data = {
               path: el.value,
               type: "webPageUrl",
@@ -557,15 +568,15 @@ router.post("/updateEventByadmin", function (req, res) {
           }
         });
       }
-    
+
 
     asyn.waterfall(
-      [ function (done) {        
+      [ function (done) {
           if (typeof files.image !== "undefined") {
             let file_ext = files.image.name.split(".").pop();
             let filename = Date.now() + "-" + files.image.name.split(" ").join("");
             let tmp_path = files.image.path;
-            
+
             if (file_ext == "png" || file_ext == "PNG" ||file_ext == "jpg" ||file_ext == "JPG" ||file_ext == "jpeg" ||file_ext == "JPEG") {
               fs.rename(tmp_path,path.join(__dirname, env.EVENT_PATH + filename),function (err) {
                   gm(__dirname + env.EVENT_PATH + filename).gravity("Center").thumb(258,195,__dirname + env.EVENT_PATH_THUMB + filename,100,function (err, data) {
@@ -644,7 +655,7 @@ router.post("/updateEventByadmin", function (req, res) {
             done1(err, overview);
           }
         },
-        function (overview, done2) { 
+        function (overview, done2) {
           setTimeout(() => {
             console.log(record);
             console.log(update_value);
@@ -725,7 +736,7 @@ router.get('/getEventPromoList', function (req, res) {
 router.post("/addEventPromoByadmin", function (req, res) {
   var form = new formidable.IncomingForm();
   form.parse(req, function (err, fields, files) {
-    if (err) return res.json({ status: 1, response: { msg: err } });   
+    if (err) return res.json({ status: 1, response: { msg: err } });
     let parsed = JSON.parse(fields.data);
     var record = {
       event_id: parsed.event,
@@ -767,7 +778,7 @@ router.post("/addEventPromoByadmin", function (req, res) {
               done2(err, data);
             }
           });
-        },        
+        },
       ],
       function (error, data) {
         if (error) {
@@ -780,7 +791,7 @@ router.post("/addEventPromoByadmin", function (req, res) {
 });
 
 router.post("/updateEventPromoByadmin", function (req, res) {
-  
+
   var form = new formidable.IncomingForm();
   form.parse(req, function (err, fields, files) {
     if (err) return res.json({ status: 1, response: { msg: err } });
@@ -929,7 +940,7 @@ router.post('/getUnpaidEventList', function (req, res) {
       // var newarry = [];
       // var subarry = [];
       // Object.keys(newResult).map(function (k, index) {
-      //   subarry[k].push(newResult[k]) 
+      //   subarry[k].push(newResult[k])
       //   newarry[index].push(subarry);
       //   console.log(index);
       //   console.log("key with value: " + k + " = " + newResult[k])
@@ -949,7 +960,7 @@ function getDateArr(arr) {
   for (var i = 0, len = arr.length; i < len; i++) {
     var Month_index = arr[i].group_start_date.lastIndexOf('-');
     var group_start_date = moment(arr[i].group_start_date.substr(0, Month_index)).format('MMM YYYY');
-    
+
     if (!new_arr[group_start_date]) {
       new_arr[group_start_date] = [];
       new_arr[group_start_date].push(arr[i])
@@ -964,7 +975,7 @@ function getDateArr(arr) {
 router.post('/eventRegisterWithUser', passport.authenticate('jwt', { session: false }), function (req, res) {
   loggerData(req);
   var event_id = req.body.event_id
-  var email = req.user.email;  
+  var email = req.user.email;
   var first_name = req.user.first_name;
   var obj = {
     event_id:req.body.event_id,
@@ -977,7 +988,7 @@ router.post('/eventRegisterWithUser', passport.authenticate('jwt', { session: fa
       return res.json({ status: 0, 'response': { msg: err } });
     } else {
 
-      Event.getEventDataById(event_id, function (err, eventdata) { 
+      Event.getEventDataById(event_id, function (err, eventdata) {
         var eventLink;
         var home_url;
         var admin_app_url;
@@ -1022,7 +1033,7 @@ router.post('/eventRegisterWithUser', passport.authenticate('jwt', { session: fa
         return res.json({ status: 1, 'response': { data: eventdata } });
       });
 
-     
+
     }
   });
 });
@@ -1043,7 +1054,7 @@ router.post('/eventRegisterWithoutUser', function (req, res) {
     status: 0,
     user_read_status: 0
   }
-  
+
   User.checkUserRegistration(email, function (err, data) {
     let totalrecord = data.length;
     if (totalrecord) {
@@ -1175,10 +1186,53 @@ router.post('/eventRegisterWithoutUser', function (req, res) {
     }
   });
 
-  
-  
-  
+
+
+
 });
+
+
+router.post('/newmeeting', function (req, res) {
+console.log('in in')
+  const payload = {
+    iss: 'o4xds6wbTjiKWl7swm19aA',
+    exp: ((new Date()).getTime() + 500000)
+  };
+  const token = jwt.sign(payload, 'vKLGTPvGdubOtar8VD4UlWmVhZTAyoZIK1Td');
+
+  const email = "dipika.letsnurture@gmail.com";
+  var options = {
+    method: "POST",
+    uri: "https://api.zoom.us/v2/users/" + email + "/meetings",
+    body: {
+      topic: "test meeting title",
+      type: 1,
+      settings: {
+        host_video: "true",
+        participant_video: "true"
+      }
+    },
+    auth: {
+      bearer: token
+    },
+    headers: {
+      "User-Agent": "Zoom-api-Jwt-Request",
+      "content-type": "application/json"
+    },
+    json: true //Parse the JSON string in the response
+  };
+
+  rp(options).then(function (response) {
+      console.log("response is: ", response);
+      res.send("create meeting result: " + JSON.stringify(response));
+    })
+    .catch(function (err) {
+      // API call failed...
+      console.log("API call failed, reason ", err);
+    });
+});
+
+
 
 
 module.exports = router;

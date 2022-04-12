@@ -3133,7 +3133,7 @@ overflow: hidden;
     font-size: 25px;
 }
 
-  .Event-Search {
+    .Event-Search {
         border: solid 1px #ddd;
         position: relative;
         padding: 6px;
@@ -3352,19 +3352,19 @@ overflow: hidden;
     }
 
     ul.address-suggestion {
-    position: absolute;
-    width: 100%;
-    left: 0;
-    background: #fff;
-    top: 57px;
-    z-index: 12;
-    border: solid 1px #ddd;
-    padding: 8px;
-}
-
-.event-details {
-        margin: 30px 0;
+        position: absolute;
+        width: 100%;
+        left: 0;
+        background: #fff;
+        top: 57px;
+        z-index: 12;
+        border: solid 1px #ddd;
+        padding: 8px;
     }
+
+    .event-details {
+            margin: 30px 0;
+        }
 
     .event-details-title h3 {
         font-style: normal;
@@ -3377,191 +3377,189 @@ overflow: hidden;
         margin-bottom: 30px;
     }
 
-    .promo-event-details-title h4 {
-        font-style: normal;
-        font-weight: bold;
-        font-size: 35px;
-        line-height: 21px;
-    /* identical to box height, or 33% */
-        letter-spacing: 0.1px;
-        color: #000000;
-        margin-bottom: 30px;
-    }
+.promo-event-details-title h4 {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 23px;
+    line-height: 32px;
+/* identical to box height, or 33% */
+    letter-spacing: 0.1px;
+    color: #000000;
+    margin-bottom: 30px;
+}
 
-    .event-details-links {
-        margin: 15px 0 0;
-    }
+.event-details-links {
+    margin: 15px 0 0;
+}
 
-   .event-listing-box .btn-save{
-        background: #006577;
-        border-radius: 5px;
-        width: 235px;
-        height: 50px;
-        border: none;
-        font-family: 'Montserrat', sans-serif;
-        font-style: normal;
-        font-weight: bold;
-        font-size: 14px;
-        line-height: 21px;
-        text-align: center;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        color: #FFFFFF;
-    }
+.event-listing-box .btn-save{
+    background: #006577;
+    border-radius: 5px;
+    width: 235px;
+    height: 50px;
+    border: none;
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 21px;
+    text-align: center;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #FFFFFF;
+}
 
-    .event-details-links ul li {
-        display: inline-block;
-        margin-right: 15px;
-    }
+.event-details-links ul li {
+    display: inline-block;
+    margin-right: 15px;
+}
 
-    .event-details-links ul li a {
-        background: #D6EBEE;
-        border-radius: 100px;
-        display: block;
-        padding: 17px 40px;
-        font-style: normal;
-        font-weight: normal;
-        font-size: 18px;
-        line-height: 21px;
-    /* identical to box height, or 117% */
-        letter-spacing: 0.1px;
-        color: #000000;
-    }
+.event-details-links ul li a {
+    background: #D6EBEE;
+    border-radius: 100px;
+    display: block;
+    padding: 17px 40px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 21px;
+/* identical to box height, or 117% */
+    letter-spacing: 0.1px;
+    color: #000000;
+}
 
-    .event-details-links ul li.active a {
-        background: #fff !important;
-    }
-    .event-details-content .event-content-img {
-        margin-bottom: 30px;
-    }
+.event-details-links ul li.active a {
+    background: #fff !important;
+}
+.event-details-content .event-content-img {
+    margin-bottom: 30px;
+}
 
-    .event-details-content .event-content-img img {
-        width: 100%;
-        height: 100%;
-    }
+.event-details-content .event-content-img img {
+    width: 100%;
+    height: 100%;
+}
 
-    .event-details-content {
-        background: #fff;
-        padding: 30px;
-        margin: 30px 0;
-    }
+.event-details-content {
+    background: #fff;
+    padding: 30px;
+    margin: 30px 0;
+}
 
-    .event-details-content .event-content-list p {
-        font-style: normal;
-        font-weight: 500;
-        font-size: 16px;
-        line-height: 24px;
-    /* or 117% */
-        letter-spacing: 0.1px;
-        color: #000000;
-        margin: 0 0 20px;
-    }
+.event-details-content .event-content-list p {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+/* or 117% */
+    letter-spacing: 0.1px;
+    color: #000000;
+    margin: 0 0 20px;
+}
 
-    .event-listing-box .event-listing-text {
-        min-height: 70px;
-    }
+.event-listing-box .event-listing-text {
+    min-height: 70px;
+}
 
-    .event-listing-box .event-listing-text .event-text-icon {
-        width: 35px;
-        height: 35px;
-        background:transparent;
-        text-align: center;
-        line-height: 35px;
-        float: left;
-        margin-right: 15px;
-    }
+.event-listing-box .event-listing-text .event-text-icon {
+    width: 35px;
+    height: 35px;
+    background:transparent;
+    text-align: center;
+    line-height: 35px;
+    float: left;
+    margin-right: 15px;
+}
 
-    .event-listing-box .event-listing-text .event-text-word {
-        overflow: hidden;
-    }
+.event-listing-box .event-listing-text .event-text-word {
+    overflow: hidden;
+}
 
-    .event-listing-box .event-listing-text .event-text-word h3 {
-        font-style: normal;
-        font-weight: 500;
-        font-size: 18px;
-        line-height: 23px;
-    /* identical to box height, or 150% */
-        letter-spacing: 0.1px;
-        color: #000000;
-        margin: 0px 0px 5px;
-    }
+.event-listing-box .event-listing-text .event-text-word h3 {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 23px;
+/* identical to box height, or 150% */
+    letter-spacing: 0.1px;
+    color: #000000;
+    margin: 0px 0px 5px;
+}
 
-    .event-listing-box .event-listing-text .event-text-word span {
-        display: block;
-        font-style: normal;
-        font-weight: 500;
-        font-size: 16px;
-        line-height: 21px;
-    /* identical to box height, or 117% */
-        letter-spacing: 0.1px;
-        color: #4d5156;
-    }
+.event-listing-box .event-listing-text .event-text-word span {
+    display: block;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 21px;
+/* identical to box height, or 117% */
+    letter-spacing: 0.1px;
+    color: #4d5156;
+}
 
-    .event-joining {
-        background: #EEF9FB;
-        border-radius: 5px;
-        margin-bottom: 15px;
-    }
+.event-joining {
+    background: #EEF9FB;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
 
-    .event-joining h3 {
-        font-style: normal;
-        font-weight: bold;
-        font-size: 18px;
-        line-height: 21px;
-    /* identical to box height, or 87% */
-        letter-spacing: 0.1px;
-        color: #000000;
-    }
+.event-joining h3 {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 21px;
+/* identical to box height, or 87% */
+    letter-spacing: 0.1px;
+    color: #000000;
+}
 
-    .event-joining p {
-        font-style: normal;
-        font-weight: normal;
-        font-size: 16px;
-        line-height: 21px;
-    /* or 131% */
-        letter-spacing: 0.1px;
-        color: #000000;
-        margin: 10px 0px !important;
-    }
+.event-joining p {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 21px;
+/* or 131% */
+    letter-spacing: 0.1px;
+    color: #000000;
+    margin: 10px 0px !important;
+}
 
-    .event-joining span {
-        color: #1e6e80;
-    }
-    .event-joining .joining-card {
-        padding: 15px;
-    }
-    .joining-btn-card {
-        text-align: center;
-        display: block;
-        vertical-align: middle;
-        background: #036E80;
-        border-radius: 0px 5px 5px 0px;
-        color: #fff;
-        min-height: 142px;
-        position: relative;
-    }
+.event-joining span {
+    color: #1e6e80;
+}
+.event-joining .joining-card {
+    padding: 15px;
+}
+.joining-btn-card {
+    text-align: center;
+    display: block;
+    vertical-align: middle;
+    background: #036E80;
+    border-radius: 0px 5px 5px 0px;
+    color: #fff;
+    min-height: 142px;
+    position: relative;
+}
 
-    .joining-btn-card a {
-        font-style: normal;
-        font-weight: bold;
-        font-size: 18px;
-        text-align: center;
-        letter-spacing: 0.1px;
-        color: #FFF1F1;
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        line-height: 130px;
-    }
+.joining-btn-card a {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    text-align: center;
+    letter-spacing: 0.1px;
+    color: #FFF1F1;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    line-height: 130px;
+}
     /* 5 Columns */
 .event-joining .joining-card h3 {
     margin: 0  !important;
     font-size: 20px;
 }
-
-
 .resources-box {
     background: #E5F6F9;
     border-radius: 5px;

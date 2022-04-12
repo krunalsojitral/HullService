@@ -26,7 +26,7 @@ import api_url from './../../Apiurl';
 import axios from "axios";
 import Swal from "sweetalert2";
 import usePlacesAutocomplete, { getGeocode, getLatLng, } from "use-places-autocomplete";
-
+import TimezoneSelect from 'react-timezone-select'
 
 const AddEditForm = ({ match }) => {
   const [active, setActive] = useState(0)
@@ -53,8 +53,10 @@ const AddEditForm = ({ match }) => {
       webPageUrl: [{ name: "default Value" }],
     }
   });
+  const [selectedTimezone, setSelectedTimezone] = useState({})
 
   const purchase_type_selected = watch("purchase_type");
+  const event_type_selected = watch("event_type");
 
   const [selectimage, setSelectimage] = React.useState(0);
   const [selectedFile, setSelectedFile] = useState();
@@ -135,8 +137,8 @@ const AddEditForm = ({ match }) => {
     }
     axios.post(api_url + "/common/addPreview", formData).then((result) => {
       if (result.data.status) {
-        //window.open(result.data.response.preview + "preview-module");
-        window.open("http://localhost:4200/preview-module");
+        window.open(result.data.response.preview + "preview-module");
+        //window.open("http://localhost:4200/preview-module");
       } else {
         Swal.fire("Oops...", result.data.response.msg, "error");
       }
@@ -145,6 +147,7 @@ const AddEditForm = ({ match }) => {
   }
 
   const addInformationAct = async (data) => {
+    data.timezone = selectedTimezone;
     data.location = city;
     data.description = contentEditor;
     data.promo_description = contentPromoEditor;
@@ -396,7 +399,7 @@ const AddEditForm = ({ match }) => {
                                   onChange={onChange}
                                   dateFormat="yyyy/MM/dd h:mm a"
                                   dateFormatCalendar="yyyy/MM/dd h:mm a"
-                                  minDate={new Date(2022, 11)}
+                                  minDate={new Date()}
                                   maxDate={new Date(2030, 11)}
                                   peekNextMonth
                                   showMonthDropdown
@@ -427,7 +430,7 @@ const AddEditForm = ({ match }) => {
                                   onChange={onChange}
                                   dateFormat="yyyy/MM/dd h:mm a"
                                   dateFormatCalendar="yyyy/MM/dd h:mm a"
-                                  minDate={new Date(2022, 11)}
+                                  minDate={new Date()}
                                   maxDate={new Date(2030, 11)}
                                   peekNextMonth
                                   showMonthDropdown
@@ -444,8 +447,18 @@ const AddEditForm = ({ match }) => {
                           )}
                         </CCol>                     
                       </CRow>
-
-                     
+                      
+                      <CRow>
+                        <CCol xs="12">
+                          <CFormGroup>
+                            <CLabel htmlFor="password">Select timezone</CLabel>
+                            <TimezoneSelect
+                              value={selectedTimezone}
+                              onChange={setSelectedTimezone}
+                            />
+                          </CFormGroup>
+                        </CCol>
+                      </CRow>                     
 
                       <CRow>
                         <CCol xs="12">
@@ -525,53 +538,77 @@ const AddEditForm = ({ match }) => {
                           </CFormGroup>
                         </CCol>
                       </CRow>
-                      
 
-                      
-                      {/* <div className="form-group google-serach">
-                        <div ref={ref}>
-                          <input
-                            value={cityValue}
-                            onChange={handleInput}
-                            disabled={!ready}
-                            placeholder="Address *"
-                            className="form-control input"
-                          />
-                          {status === "OK" && <ul className="suggestion">{renderSuggestions()}</ul>}
-                          {cityError && <small className="error">{cityError}</small>}
-                        </div>
-                      </div> */}
 
                       <CRow>
                         <CCol xs="12">
                           <CFormGroup>
-                            <CLabel htmlFor="title">Location</CLabel>
-                            <div ref={ref}>
-                              <input
-                                value={cityValue}
-                                onChange={handleInput}
-                                disabled={!ready}
-                                placeholder="Address *"
-                                className="form-control input"
-                              />
-                              {status === "OK" && <ul className="suggestion">{renderSuggestions()}</ul>}
-                              {cityError && <small className="error">{cityError}</small>}
-                            </div>
-                            {/* <Controller
-                              name={"location"}
+                            <CLabel htmlFor="role">Online & Offline <span className="label-validation">*</span></CLabel>
+                            <Controller
+                              name="event_type"
                               control={control}
+                              rules={{ required: true }}
                               render={({ field: { onChange, value } }) => (
-                                <CInput
-                                  type="location"
-                                  onChange={onChange}
-                                  value={value}
-                                  placeholder={`Enter event location`}
-                                />
+                                <select className="form-control" onChange={onChange} value={value}>
+                                  <option key="0" value="">select value</option>
+                                  <option key="1" value="online">Online</option>
+                                  <option key="2" value="offline">Offline</option>
+                                </select>
                               )}
-                            ></Controller> */}
+                            ></Controller>
                           </CFormGroup>
+                          {errors.event_type && errors.event_type.type === "required" && (
+                            <p style={{ color: "red", fontSize: "12px" }}>Type is required.</p>
+                          )}
                         </CCol>
                       </CRow>
+
+                      {event_type_selected === 'offline' &&
+                        <CRow>
+                          <CCol xs="12">
+                            <CFormGroup>
+                              <CLabel htmlFor="title">Location</CLabel>
+                              <div ref={ref}>
+                                <input
+                                  value={cityValue}
+                                  onChange={handleInput}
+                                  disabled={!ready}
+                                  placeholder="Address *"
+                                  className="form-control input"
+                                />
+                                {status === "OK" && <ul className="suggestion">{renderSuggestions()}</ul>}
+                                {cityError && <small className="error">{cityError}</small>}
+                              </div>
+                            </CFormGroup>
+                          </CCol>
+                        </CRow> }
+
+                      {event_type_selected === 'online' &&
+                        <CRow>
+                          <CCol xs="12">
+                            <CFormGroup>
+                              <CLabel htmlFor="video_link">Video link <span className="label-validation">*</span></CLabel>
+                              <Controller
+                                name={"video_link"}
+                                control={control}
+                                rules={{ required: true }}
+                                render={({ field: { onChange, value } }) => (
+                                  <CInput
+                                    type="text"
+                                    onChange={onChange}
+                                    value={value}
+                                    placeholder={`Enter your video link`}
+                                  />
+                                )}
+                              ></Controller>
+                            </CFormGroup>
+                            {errors.video_link && errors.video_link.type === "required" && (
+                              <p style={{ color: "red", fontSize: "12px" }}>Video link is required.</p>
+                            )}
+                          </CCol>
+                        </CRow> }
+
+                     
 
                       <CRow>
                         <CCol xs="12">
