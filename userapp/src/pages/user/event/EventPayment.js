@@ -8,17 +8,21 @@ import Footer from './../../../sections/Footer';
 
 export default function EventPayment(props) {
 
+    const [eventdata, setEventdata] = useState();
+
     let history = useHistory();
     let payPalRef = useRef();
+    
 
     useEffect(() => {
+        setEventdata(props.location.data)
         window.paypal
             .Buttons({
                 createOrder: (data, actions) => {
                     return actions.order.create({
                         purchase_units: [
                             {
-                                //description: description,
+                                description: props.location.event_title,
                                 amount: {
                                     currency_code: 'USD',
                                     value: props.location.price
@@ -30,8 +34,11 @@ export default function EventPayment(props) {
                 onApprove: async (data, actions) => {
                     return actions.order.capture().then(function (details) {
                         console.log('details',details);
+                        
                         if (details.status === 'COMPLETED') {
-                            eventPayment(details);
+                            console.log(details.id);
+                            console.log(details.status);
+                            eventPayment(details.id);
                         } else {
                             Swal.fire('Oops...', 'Payment cancelled, please try again.', 'error');
                         }
@@ -44,23 +51,44 @@ export default function EventPayment(props) {
                 },
             })
             .render(payPalRef)
-    }, [props.location.price]);
+    }, [props.location.event_title, props.location.price]);
 
     const eventPayment = (paymentDetail) => {
-        const registerData = props.location.data;
-        var data = JSON.parse(registerData);
+        
+        //console.log(props.location.data);
 
-        console.log('paymentDetail', paymentDetail);
-        axios.post(api_url + '/event/eventRegisterWithoutUser', data, props.location.config).then(async (result) => {
-            if (result.data.status) {
-                Swal.fire('Success!', 'Please check your email for event link.', 'success');
-                history.push("/");
-            } else {
-                Swal.fire('Oops...', result.data.response.msg, 'error')
-            }
-        }).catch((err) => {
-                return '';
-        })
+        // const registerData = props.location.data;
+        // var data = JSON.parse(registerData);
+
+        const tokenString = localStorage.getItem('token');
+        var token = JSON.parse(tokenString);
+        const config = { headers: { Authorization: `${token}` } };
+        
+        var data = eventdata;
+        data.payment_id = paymentDetail
+
+        console.log(data);
+        console.log(config);
+        
+        if (token) {
+            axios.post(api_url + '/event/eventRegisterWithUser', data, config).then(async (result) => {
+                if (result.data.status) {
+                    Swal.fire('Success!', 'Please check your email for event link.', 'success');
+                    history.push("/");                   
+                } else {
+                    Swal.fire('Oops...', result.data.response.msg, 'error')
+                }
+            }).catch((err) => { return '' })
+        } else {
+            axios.post(api_url + '/event/eventRegisterWithoutUser', data, config).then(async (result) => {
+                if (result.data.status) {
+                    Swal.fire('Success!', 'Please check your email for event link.', 'success');
+                    history.push("/");
+                } else {
+                    Swal.fire('Oops...', result.data.response.msg, 'error')
+                }
+            }).catch((err) => { return ''; })
+        }
     }
 
     return (

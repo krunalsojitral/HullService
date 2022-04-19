@@ -3,6 +3,7 @@ var connection = require("../config/database");
 var env = require("../config/env");
 var asyn = require("async");
 var moment = require("moment");
+var CryptoJS = require("crypto-js");
 
 function User() {
   connection.init();
@@ -10,7 +11,7 @@ function User() {
   this.addEventByadmin = function (record, resources, callback) {
     connection.acquire(function (err, con) {
       const sql =
-        "INSERT INTO event(title,description,location,event_type,video_link,timezone,image,speaker_name,speaker_image,start_date,end_date,purchase_type,cost,about_speaker,status,created_at) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16) RETURNING *";
+        "INSERT INTO event(title,description,location,event_type,video_link,timezone,image,speaker_name,speaker_image,start_date,end_date,purchase_type,cost,about_speaker,status,created_at,session_title,session_about,session_group_count,session_count,session_type,session_location,session_image,session_purchase_type,session_cost) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25) RETURNING *";
       const values = [
         record.title,
         record.description,
@@ -29,6 +30,15 @@ function User() {
         record.about_speaker,
         1,
         record.created_at,
+        record.session_title,
+        record.session_about,
+        record.session_group_count,
+        record.session_count,
+        record.session_type,
+        record.session_location,
+        record.session_image,
+        record.session_purchase_type,
+        record.session_cost
       ];
       con.query(sql, values, function (err, result) {
         if (err) {
@@ -39,24 +49,27 @@ function User() {
           callback(err, null);
         } else {
           if (record.group_session.length > 0) {
-            record.group_session.map((data) => {
+            record.group_session.map((data, index) => {
               var records = {
-                title: data.title,
-                description: data.description,
-                url: data.url,
+                session_start_time: data.session_start_time,
+                session_end_time: data.session_end_time,
+                session_timezone: data.session_timezone,
+                session_no_of_participate: data.session_no_of_participate,
+                session_data: data.session_data,
+                group_number:(index+1),
                 event_id: result.rows[0].event_id,
               };
               const sql =
-                "INSERT INTO event_group_session(title,description,url,event_id) VALUES($1,$2,$3,$4) RETURNING *";
+                "INSERT INTO event_group_session(session_start_time,session_end_time,session_timezone,session_no_of_participate,session_data,event_id) VALUES($1,$2,$3,$4,$5,$6) RETURNING *";
               const values = [
-                records.title,
-                records.description,
-                records.url,
+                records.session_start_time,
+                records.session_end_time,
+                records.session_timezone,
+                records.session_no_of_participate,
+                records.session_data,
                 records.event_id,
               ];
-              con.query(sql, values, function (err, result) {
-              
-              });
+              con.query(sql, values, function (err, result) {});
             });
           }
           if (resources.length > 0) {
@@ -77,11 +90,11 @@ function User() {
             });
           }
 
-          if (resources.length > 0) {
-            const promosql ="INSERT INTO event_promo(promo_title,promo_image,promo_description,event_id) VALUES($1,$2,$3,$4) RETURNING *";
-            const promovalues = [record.promo_title, record.promo_image, record.promo_description, result.rows[0].event_id];
-            con.query(promosql, promovalues, function (err, result) { });
-          }
+          // if (resources.length > 0) {
+          //   const promosql ="INSERT INTO event_promo(promo_title,promo_image,promo_description,event_id) VALUES($1,$2,$3,$4) RETURNING *";
+          //   const promovalues = [record.promo_title, record.promo_image, record.promo_description, result.rows[0].event_id];
+          //   con.query(promosql, promovalues, function (err, result) { });
+          // }
 
           con.release();
           callback(null, result.rows[0]);
@@ -113,9 +126,6 @@ function User() {
 
   this.updateEventByadmin = function (record, promo_record, event_id, update_value, group_session, resources, deleteresources, videoURL, webPageUrl, callback) {
       connection.acquire(function (err, con) {
-
-        
-        
         if (err) {
           callback(err, null);
         } else {
@@ -285,7 +295,26 @@ function User() {
         if (result.rows.length === 0) {
           callback('session does not exist.', null);
         } else {
-          callback(null, result.rows);
+          var array = result.rows.map((data) => {
+            var bytes = CryptoJS.AES.decrypt(data.session_data, 'mypassword');
+            var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8)); 
+            
+            console.log(data.session_start_time);
+            console.log(moment(data.session_start_time, 'HH:mm:ss').format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"));
+            console.log(new Date());
+            let retObj = {};
+            retObj['event_resource_id'] = data.event_resource_id;
+            retObj['session_no_of_participate'] = data.session_no_of_participate;
+            retObj['session_timezone'] = data.session_timezone;
+            retObj['group_number'] = data.group_number;
+            //retObj['session_start_time'] = moment(data.session_start_time, 'HH:mm:ss').format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
+            retObj['session_start_time'] = new Date();
+            retObj['session_end_time'] = moment(data.session_end_time, 'HH:mm:ss').format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
+            retObj['session_data'] = decryptedData;
+            retObj['event_id'] = data.event_id;
+            return retObj;
+          });
+          callback(null, array);
         }
       });
     });

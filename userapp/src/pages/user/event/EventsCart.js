@@ -77,65 +77,46 @@ export default function EventsCart() {
     const onSubmit = (data) => {
         data.event_id = eventId
         data.event_title = eventDetail.title
-        const config = {
-            headers: { Authorization: `${token}` }
-        };
-        if (token) {
-            axios.post(api_url + '/event/eventRegisterWithUser', data, config).then(async (result) => {
-                if (result.data.status) {
-                    Swal.fire('Success!', 'Please check your email for event link.', 'success');
-                    history.push("/");
-                    // Swal.fire({
-                    //     title: 'Success!',
-                    //     icon: 'success',
-                    //     text: result.data.response.msg,
-                    //     confirmButtonText: `ok`,
-                    // }).then((result) => {
-                    //     /* Read more about isConfirmed, isDenied below */
-                    //     if (result.isConfirmed) {
-                    //         history.push("/login");
-                    //     } else {
-                    //         Swal.fire('Changes are not saved', '', 'info')
-                    //     }
-                    // })
-                } else {
-                    Swal.fire('Oops...', result.data.response.msg, 'error')
-                }
-            })
-                .catch((err) => {
-                    return ''
-                })
-        } else {
-            // axios.post(api_url + '/event/eventRegisterWithoutUser', data, config).then(async (result) => {
-            //     if (result.data.status) {
-            //         Swal.fire('Success!', 'Please check your email for event link.', 'success');
-            //         history.push("/");
-            //         // Swal.fire({
-            //         //     title: 'Success!',
-            //         //     icon: 'success',
-            //         //     text: result.data.response.msg,
-            //         //     confirmButtonText: `ok`,
-            //         // }).then((result) => {
-            //         //     /* Read more about isConfirmed, isDenied below */
-            //         //     if (result.isConfirmed) {
-            //         //         history.push("/login");
-            //         //     } else {
-            //         //         Swal.fire('Changes are not saved', '', 'info')
-            //         //     }
-            //         // })
-            //     } else {
-            //         Swal.fire('Oops...', result.data.response.msg, 'error')
-            //     }
-            // })
-            // .catch((err) => {
-            //     return '';
-            // })
+        if (eventDetail.purchase_type == 'paid'){
             history.push({
                 pathname: '/event-payment',
                 price: eventDetail.cost,
-                data: data,
-                config: config
+                data: data
             });
+        }else{
+            const config = { headers: { Authorization: `${token}` } };
+            if (token) {
+                axios.post(api_url + '/event/eventRegisterWithUser', data, config).then(async (result) => {
+                    if (result.data.status) {
+                        Swal.fire('Success!', 'Please check your email for event link.', 'success');
+                        history.push("/");
+                        // Swal.fire({
+                        //     title: 'Success!',
+                        //     icon: 'success',
+                        //     text: result.data.response.msg,
+                        //     confirmButtonText: `ok`,
+                        // }).then((result) => {
+                        //     /* Read more about isConfirmed, isDenied below */
+                        //     if (result.isConfirmed) {
+                        //         history.push("/login");
+                        //     } else {
+                        //         Swal.fire('Changes are not saved', '', 'info')
+                        //     }
+                        // })
+                    } else {
+                        Swal.fire('Oops...', result.data.response.msg, 'error')
+                    }
+                }).catch((err) => { return '' })
+            } else {
+                axios.post(api_url + '/event/eventRegisterWithoutUser', data, config).then(async (result) => {
+                    if (result.data.status) {
+                        Swal.fire('Success!', 'Please check your email for event link.', 'success');
+                        history.push("/");                   
+                    } else {
+                        Swal.fire('Oops...', result.data.response.msg, 'error')
+                    }
+                }).catch((err) => { return ''; })
+            }
         }
     }
 

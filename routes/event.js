@@ -19,6 +19,7 @@ var User = require('../models/user');
 var shortid = require('shortid');
 const rp = require('request-promise');
 const jwt = require('jsonwebtoken');
+var CryptoJS = require("crypto-js");
 
 
 function loggerData(req) {
@@ -93,7 +94,7 @@ router.post("/addEventByadmin", function (req, res) {
         speaker_image: '',
         about_speaker: parsed.about_speaker,
         purchase_type: parsed.purchase_type,
-        timezone: parsed.timezone,
+        timezone: parsed.event_timezone,
         event_type: parsed.event_type,
         video_link: (parsed.video_link) ? parsed.video_link: '',
         cost: parsed.cost,
@@ -102,18 +103,39 @@ router.post("/addEventByadmin", function (req, res) {
         created_at: moment().format("YYYY-MM-DD"),
         group_session: [],
         image: "",
-        promo_image:"",
-        promo_title: parsed.promo_title,
-        promo_description: parsed.promo_description,
+        session_title: parsed.session_title,
+        session_about: parsed.session_about,
+        session_group_count: parsed.no_of_group,
+        session_count: parsed.no_of_sessions,
+        session_type: parsed.session_type,
+        session_location: parsed.session_location,
+        session_image: parsed.session_image,
+        session_purchase_type: parsed.session_purchase_type,
+        session_cost: parsed.session_cost
       };
-      for (let i = 0; i < parsed.sessionTitle.length; i++) {
+
+      console.log(parsed.sessionStartTime);
+      for (let i = 0; i < parsed.sessionStartTime.length; i++) {
+        var session_d = [];
+        for (let m = 0; m < parsed.time[i].nestedArray.length; m++) {
+          let datas = {
+            value: parsed.time[i].nestedArray[m].value  
+          };
+          session_d.push(datas);
+        }
+        var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(session_d), 'mypassword').toString();
+        console.log(parsed.sessionStartTime[i].value);
         let data = {
-          title: parsed.sessionTitle[i].value,
-          description: parsed.sessionDescription[i].value,
-          url: parsed.sessionURL[i].value,
+          session_start_time: (parsed.sessionStartTime[i].value) ? moment(parsed.sessionStartTime[i].value).format("h:mm a") : '' ,
+          session_end_time: (parsed.sessionEndTime[i].value) ? moment(parsed.sessionEndTime[i].value).format("h:mm a") : '',
+          session_no_of_participate: parsed.sessionNoOfParticipate[i].value,
+          session_timezone: parsed.sessionTimezone[i].value,
+          session_data: ciphertext
         };
         record.group_session.push(data);
       }
+      console.log(record);
+      console.log('=============');
       parsed.videoURL.map((el) => {
         let data = {
           path: el.value,
@@ -179,25 +201,48 @@ router.post("/addEventByadmin", function (req, res) {
                 done(err, overview);
               }
             },
-
+            // function (overview, done1) {
+            //   if (typeof files.promo_image !== "undefined") {
+            //     let file_ext = files.promo_image.name.split(".").pop();
+            //     let filename = Date.now() + "-" + files.promo_image.name.split(" ").join("");
+            //     let tmp_path = files.promo_image.path;
+            //     if (file_ext == "png" || file_ext == "PNG" || file_ext == "jpg" || file_ext == "JPG" || file_ext == "jpeg" || file_ext == "JPEG") {
+            //       fs.rename(tmp_path, path.join(__dirname, env.EVENT_PATH + filename),function (err) {
+            //         if (err) {
+            //           record.promo_image = filename;
+            //           done1("Image upload error", overview)
+            //         } else {
+            //           record.promo_image = filename;
+            //           overview["promo_image"] = filename;
+            //           done1(err, overview);
+            //         }
+            //       });
+            //     } else {
+            //       return res.json({ status: 0,response: {msg: "Only image with jpg, jpeg and png format are allowed",} });
+            //     }
+            //   } else {
+            //     overview["image"] = "";
+            //     done1(err, overview);
+            //   }
+            // },
             function (overview, done1) {
-              if (typeof files.promo_image !== "undefined") {
-                let file_ext = files.promo_image.name.split(".").pop();
-                let filename = Date.now() + "-" + files.promo_image.name.split(" ").join("");
-                let tmp_path = files.promo_image.path;
+              if (typeof files.session_image !== "undefined") {
+                let file_ext = files.session_image.name.split(".").pop();
+                let filename = Date.now() + "-" + files.session_image.name.split(" ").join("");
+                let tmp_path = files.session_image.path;
                 if (file_ext == "png" || file_ext == "PNG" || file_ext == "jpg" || file_ext == "JPG" || file_ext == "jpeg" || file_ext == "JPEG") {
-                  fs.rename(tmp_path, path.join(__dirname, env.EVENT_PATH + filename),function (err) {
+                  fs.rename(tmp_path, path.join(__dirname, env.EVENT_PATH + filename), function (err) {
                     if (err) {
-                      record.promo_image = filename;
+                      record.session_image = filename;
                       done1("Image upload error", overview)
                     } else {
-                      record.promo_image = filename;
-                      overview["promo_image"] = filename;
+                      record.session_image = filename;
+                      overview["session_image"] = filename;
                       done1(err, overview);
                     }
                   });
                 } else {
-                  return res.json({ status: 0,response: {msg: "Only image with jpg, jpeg and png format are allowed",} });
+                  return res.json({ status: 0, response: { msg: "Only image with jpg, jpeg and png format are allowed", } });
                 }
               } else {
                 overview["image"] = "";
@@ -330,8 +375,8 @@ router.post('/getEventDataById', [check('event_id', 'Event is required').notEmpt
     let event_id = req.body.event_id;
     asyn.waterfall([
       function (done) {
-
         Event.getEventDataById(event_id, function (err, result) {
+          console.log(result);
           if (err) {
             done({ 'status': 0, 'response': { 'msg': 'Something went wrong.' } });
           } else {
@@ -342,7 +387,7 @@ router.post('/getEventDataById', [check('event_id', 'Event is required').notEmpt
               imageLink = env.ADMIN_LIVE_URL;
             }
             let event = {};
-            event['event_id'] = result[0].event_id;
+            event['event_id'] = event_id;
             event['title'] = result[0].title;
             event['description'] = result[0].description;
             event['start_date'] = (result[0].start_date) ? moment(result[0].start_date).format('YYYY/MM/DD h:mm a') :'';
@@ -362,9 +407,15 @@ router.post('/getEventDataById', [check('event_id', 'Event is required').notEmpt
             event['status'] = result[0].status;
             event['cost'] = result[0].cost;
             event['purchase_type'] = result[0].purchase_type;
-            event['promo_title'] = result[0].promo_title;
-            event['promo_image'] = (result[0].promo_image) ? imageLink + env.EVENT_VIEW_PATH + result[0].promo_image : '';
-            event['promo_description'] = result[0].promo_description;
+            event['session_title'] = result[0].session_title;
+            event['session_image'] = (result[0].session_image) ? imageLink + env.EVENT_VIEW_PATH + result[0].session_image : '';
+            event['session_about'] = result[0].session_about;
+            event['session_group_count'] = result[0].session_group_count;
+            event['session_count'] = result[0].session_count;
+            event['session_type'] = result[0].session_type;
+            event['session_location'] = result[0].session_location;
+            event['session_purchase_type'] = result[0].session_purchase_type;
+            event['session_cost'] = result[0].session_cost;
             event['group_session'] = [];
             event['videoURL'] = [];
             event['webPageUrl'] = [];
@@ -980,28 +1031,27 @@ router.post('/eventRegisterWithUser', passport.authenticate('jwt', { session: fa
   var obj = {
     event_id:req.body.event_id,
     user_id:req.user.id,
-    payment_id:'',
+    payment_id: (req.body.payment_id) ? req.body.payment_id: '',
     event_purchase_date: moment().format('YYYY-MM-DD')
   }
   Event.addEventPurchase(obj, function (err, result) {
     if (err) {
       return res.json({ status: 0, 'response': { msg: err } });
     } else {
-
       Event.getEventDataById(event_id, function (err, eventdata) {
         var eventLink;
         var home_url;
         var admin_app_url;
         var hostname = req.headers.host;
-
+        
         if (hostname == env.LOCAL_HOST_USER_APP) {
           home_url = env.APP_URL;
           eventLink = env.APP_URL + 'event-detail?id=' + event_id;
-          admin_app_url = env.ADMIN_APP_URL
+          admin_app_url = env.ADMIN_APP_URL;
         } else {
           home_url = env.APP_URL;
           eventLink = env.APP_URL + 'event-detail?id=' + event_id;
-          admin_app_url = env.ADMIN_APP_URL
+          admin_app_url = env.ADMIN_APP_URL;
         }
 
         var htmlUser = fs.readFileSync(__dirname + '/templates/event/EventInvitation.html', 'utf8');
@@ -1009,7 +1059,11 @@ router.post('/eventRegisterWithUser', passport.authenticate('jwt', { session: fa
         var dynamicHtml = {
           home_url: home_url,
           fullname: first_name,
-          eventLink: eventLink
+          eventLink: eventLink,
+          event_title: eventdata[0].title,
+          start_date: eventdata[0].start_date,
+          event_price: eventdata[0].cost,
+          event_image: eventdata[0].event_image,
         }
 
         var view = { data: dynamicHtml };
@@ -1062,7 +1116,7 @@ router.post('/eventRegisterWithoutUser', function (req, res) {
       var eventobj = {
         event_id: event_id,
         user_id: data[0].id,
-        payment_id: '',
+        payment_id: (req.body.payment_id) ? req.body.payment_id: '',
         event_purchase_date: moment().format('YYYY-MM-DD')
       }
       Event.addEventPurchase(eventobj, function (err, result) {
@@ -1070,51 +1124,57 @@ router.post('/eventRegisterWithoutUser', function (req, res) {
           return res.json({ status: 0, 'response': { msg: err } });
         } else {
 
-          var eventLink;
-          var registerURL;
-          var home_url;
-          var admin_app_url;
-          var hostname = req.headers.host;
+          Event.getEventDataById(event_id, function (err, eventdata) { 
+            var eventLink;
+            var registerURL;
+            var home_url;
+            var admin_app_url;
+            var hostname = req.headers.host;
 
-          if (hostname == env.LOCAL_HOST_USER_APP) {
-            home_url = env.APP_URL;
-            eventLink = env.APP_URL + 'event-detail?id=' + event_id;
-            registerURL = env.APP_URL + 'register?code=' + data[0].email_verification_token
-            admin_app_url = env.ADMIN_APP_URL
-          } else {
-            home_url = env.APP_URL;
-            eventLink = env.APP_URL + 'event-detail?id=' + event_id;
-            registerURL = env.APP_URL + 'register?code=' + data[0].email_verification_token
-            admin_app_url = env.ADMIN_APP_URL
-          }
-
-          var htmlUser = fs.readFileSync(__dirname + '/templates/event/EventInvitation.html', 'utf8');
-
-          var dynamicHtml = {
-            home_url: home_url,
-            fullname: first_name,
-            eventLink: eventLink
-          }
-
-          if (data[0].role == 4 && data[0].email_verification_token) {
-            dynamicHtml.registerURL = registerURL;
-          }
-
-          var view = { data: dynamicHtml };
-          var finalHtmlUser = mustache.render(htmlUser, view);
-          let transporter = nodemailer.createTransport(nodeMailerCredential); // node mailer credentials
-          let mailOptions1 = {
-            from: env.MAIL_FROM, // sender address
-            to: email,
-            subject: 'Your Tickets for' + event_title,
-            html: finalHtmlUser.replace(/&#x2F;/g, '/')
-          };
-          transporter.sendMail(mailOptions1, (error, info) => {
-            if (error) {
-              console.log(error);
-              //return res.json({status: 0, response : { msg: 'There was an email error',}  });
+            if (hostname == env.LOCAL_HOST_USER_APP) {
+              home_url = env.APP_URL;
+              eventLink = env.APP_URL + 'event-detail?id=' + event_id;
+              registerURL = env.APP_URL + 'register?code=' + data[0].email_verification_token
+              admin_app_url = env.ADMIN_APP_URL
             } else {
+              home_url = env.APP_URL;
+              eventLink = env.APP_URL + 'event-detail?id=' + event_id;
+              registerURL = env.APP_URL + 'register?code=' + data[0].email_verification_token
+              admin_app_url = env.ADMIN_APP_URL
             }
+
+            var htmlUser = fs.readFileSync(__dirname + '/templates/event/EventInvitationNewUser.html', 'utf8');
+
+            var dynamicHtml = {
+              home_url: home_url,
+              fullname: first_name,
+              eventLink: eventLink,
+              event_title: eventdata[0].title,
+              start_date: eventdata[0].start_date,
+              event_price: eventdata[0].cost,
+              event_image: eventdata[0].event_image,
+            }
+
+            if (data[0].role == 4 && data[0].email_verification_token) {
+              dynamicHtml.registerURL = registerURL;
+            }
+
+            var view = { data: dynamicHtml };
+            var finalHtmlUser = mustache.render(htmlUser, view);
+            let transporter = nodemailer.createTransport(nodeMailerCredential); // node mailer credentials
+            let mailOptions1 = {
+              from: env.MAIL_FROM, // sender address
+              to: email,
+              subject: 'Your Tickets for' + eventdata[0].title,
+              html: finalHtmlUser.replace(/&#x2F;/g, '/')
+            };
+            transporter.sendMail(mailOptions1, (error, info) => {
+              if (error) {
+                console.log(error);
+                //return res.json({status: 0, response : { msg: 'There was an email error',}  });
+              } else {
+              }
+            });
           });
           return res.json({ status: 1, 'response': { data: result } });
         }
@@ -1125,7 +1185,7 @@ router.post('/eventRegisterWithoutUser', function (req, res) {
         User.addUser(obj, async function (err, data) {
           var eventobj = {
             event_id: event_id,
-            payment_id: '',
+            payment_id: (req.body.payment_id) ? req.body.payment_id : '',
             event_purchase_date: moment().format('YYYY-MM-DD')
           }
           Event.addEventPurchase(eventobj, function (err, result) {
@@ -1151,7 +1211,6 @@ router.post('/eventRegisterWithoutUser', function (req, res) {
                   admin_app_url = env.ADMIN_APP_URL
                   registerURL = env.APP_URL + 'register?code=' + obj.email_verification_token
                 }
-
                 var htmlUser = fs.readFileSync(__dirname + '/templates/event/EventInvitation.html', 'utf8');
 
                 var dynamicHtml = {
@@ -1160,7 +1219,6 @@ router.post('/eventRegisterWithoutUser', function (req, res) {
                   eventLink: eventLink,
                   registerURL: registerURL
                 }
-
                 var view = { data: dynamicHtml };
                 var finalHtmlUser = mustache.render(htmlUser, view);
                 let transporter = nodemailer.createTransport(nodeMailerCredential); // node mailer credentials
@@ -1177,7 +1235,6 @@ router.post('/eventRegisterWithoutUser', function (req, res) {
                   } else {
                   }
                 });
-
                 return res.json({ status: 1, 'response': { data: result } });
               });
             }
@@ -1185,10 +1242,6 @@ router.post('/eventRegisterWithoutUser', function (req, res) {
         });
     }
   });
-
-
-
-
 });
 
 
