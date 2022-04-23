@@ -6,16 +6,13 @@ import { useHistory } from 'react-router-dom';
 import Header from './../../../sections/Header';
 import Footer from './../../../sections/Footer';
 
-export default function EventPayment(props) {
-
-    const [eventdata, setEventdata] = useState();
+export default function EventPayment(props) {    
 
     let history = useHistory();
     let payPalRef = useRef();
-    
 
     useEffect(() => {
-        setEventdata(props.location.data)
+        
         window.paypal
             .Buttons({
                 createOrder: (data, actions) => {
@@ -36,9 +33,7 @@ export default function EventPayment(props) {
                         console.log('details',details);
                         
                         if (details.status === 'COMPLETED') {
-                            console.log(details.id);
-                            console.log(details.status);
-                            eventPayment(details.id);
+                            eventPayment(details);
                         } else {
                             Swal.fire('Oops...', 'Payment cancelled, please try again.', 'error');
                         }
@@ -54,21 +49,21 @@ export default function EventPayment(props) {
     }, [props.location.event_title, props.location.price]);
 
     const eventPayment = (paymentDetail) => {
+        console.log('=================');
+        console.log(props);
+       
         
-        //console.log(props.location.data);
+        console.log(props.location);
 
-        // const registerData = props.location.data;
-        // var data = JSON.parse(registerData);
+        const registerData = props.location;
+        console.log(registerData.data);
 
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
         const config = { headers: { Authorization: `${token}` } };
         
-        var data = eventdata;
-        data.payment_id = paymentDetail
-
-        console.log(data);
-        console.log(config);
+        var data = registerData.data;
+        data.payment_id = paymentDetail.id
         
         if (token) {
             axios.post(api_url + '/event/eventRegisterWithUser', data, config).then(async (result) => {

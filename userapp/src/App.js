@@ -8,7 +8,6 @@ import { WebsiteLoader } from "./components";
 import useAutoLogout from "./useAutoLogout";
 import { browserHistory } from 'react-router';
 
-
 const Register = lazy(() => import("./pages/Register"));
 const PublicUserRegister = lazy(() => import("./pages/PublicUserRegister"));
 const ResearchRequestForm = lazy(() => import("./pages/ResearchRequestForm"));

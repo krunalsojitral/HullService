@@ -77,6 +77,7 @@ export default function EventsCart() {
     const onSubmit = (data) => {
         data.event_id = eventId
         data.event_title = eventDetail.title
+        data.payment_id = ''
         if (eventDetail.purchase_type == 'paid'){
             history.push({
                 pathname: '/event-payment',

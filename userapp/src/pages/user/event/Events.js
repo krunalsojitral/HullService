@@ -78,11 +78,7 @@ export default function Events() {
         axios.post(api_url + '/event/getUnpaidEventList', obj).then((result) => {
             if (result.data.status) {
                 var eventdatas = result.data.response.data;
-                console.log(eventdatas);
-                setEventData(eventdatas);
                 if (eventdatas.length > 0) {
-                    console.log('tetse');
-                    console.log(eventdatas);
                     setEventData(eventdatas);
                     setNoresult(false);
                 } else {
@@ -188,18 +184,71 @@ export default function Events() {
 
     return(
         <div>
-            <Header/>
-            <section className="inner-header">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-md-12">
-                            <h2>Events</h2>
+            <Header/>           
+
+            <section class="hero-banner-inner">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-sm-12 col-md-7">
+                            <div class="banner-text">
+                                <h1>Our Events</h1>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lectus tincidunt vel sed egestas sit scelerisque sollicitudin. Facilisi at viverra gravida at euismod ultrices consequat neque non. Aliquet aliquam sapien non fermentum ut.</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-5">
+                            <div class="img-right">
+                                <img src="images/brain.png" alt="brain"/>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </section>         
+            </section> 
+
+            <section class="event-main">
+                <div class="container">
+                    <div class="row">
+                        <div className="col-md-2 side-col">
+                            <Sidebar />
+                        </div>
+                        <div class="col-sm-10">
+                            {eventdata &&
+                                eventdata.map((data, index) => ( 
+                                    <div class="media">
+                                        {!data.image && <img alt="event-page" src="images/event-page.png" />}
+                                        {data.image && <img alt="event-page" src={data.image} />}
+                                        <div class="media-body">
+                                            <div class="media-left">
+                                                <div class="avatar">
+                                                    <img alt="avatar" src="images/avatar.png" />
+                                                    {/* {!data.speaker_image && <img alt="avatar" src="images/avatar.png" />}
+                                                    {data.speaker_image && <img alt="avatar" src={data.speaker_image} />} */}
+                                                    <h2>{data.speaker_name}</h2>
+                                                </div>
+                                                <div class="event-icons">
+                                                    <label><img src="images/date.png" alt="date" />{data.start_date}</label>
+                                                    <label><img src="images/time.png" alt="time" />{data.start_time} - {data.end_time}</label>
+                                                    {data.location && <label><img src="images/location.png" alt="location" />{data.location}</label>}
+                                                </div>
+                                                <h3> {data.title}</h3>
+                                                <Link to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}>
+                                                    Read more...
+                                                </Link>                                                
+                                            </div>
+                                            <div class="media-right">
+                                                {data.cost && <h4>${data.cost}</h4>}
+                                                <Link class="thm-btn" to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}>
+                                                    Buy
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}                            
+                        </div>
+                    </div>
+                </div>
+            </section>     
             
-             <section className="dashboard-card">
+             {/* <section className="dashboard-card">
                 <div className="container-fluid">
                     <div className="row"> 
                         <div className="col-md-2 side-col">
@@ -235,7 +284,7 @@ export default function Events() {
                                                                 <option>List</option>
                                                             </select>
                                                         </div>
-                                                    </div> */}
+                                                    </div> 
                                                 </div>
                                             </div>
                                         </div>
@@ -316,7 +365,7 @@ export default function Events() {
                         }
                     </div>
                 </div>
-            </section>           
+            </section>            */}
 
             <Footer/>
         </div>

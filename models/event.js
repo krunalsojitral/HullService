@@ -484,7 +484,7 @@ function User() {
         array = [1];
       } if (search.search) {        
         //start_date::date >= now() and
-        sql = 'SELECT * FROM event where title ILIKE $1  and status = $2 order by event_id DESC';
+        sql = 'SELECT * FROM event where title ILIKE $1 and status = $2 order by event_id DESC';
         array = ['%' + search.search + '%', 1];
       } else{
         //sql = `SELECT DATE_TRUNC('month', "created_at") AS "month", COUNT(*) FROM event GROUP BY DATE_TRUNC('month', "created_at")`;
@@ -492,6 +492,24 @@ function User() {
         array = [1];
       }
       
+      con.query(sql, array, function (err, result) {
+        con.release()
+        if (err) {
+          if (env.DEBUG) { console.log(err); }
+          callback(err, null);
+        } else {
+          callback(null, result.rows);
+        }
+      });
+    });
+  };
+
+  this.getMyEventList = function (user_id, callback) {
+    connection.acquire(function (err, con) {
+      var sql = '';
+      var array = [];
+      sql = 'SELECT * FROM event_purchase inner join event on event.event_id = event_purchase.event_id where event.status = $1 and event_purchase.user_id = $2 order by event.event_id DESC';
+      array = [1, user_id];
       con.query(sql, array, function (err, result) {
         con.release()
         if (err) {

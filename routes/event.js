@@ -975,18 +975,21 @@ router.post('/getUnpaidEventList', function (req, res) {
         retObj['title'] = data.title;
         retObj['description'] = data.description;
         retObj['location'] = data.location;
+        retObj['speaker_name'] = data.speaker_name;
+        retObj['speaker_image'] = (data.speaker_image) ? imageLink + env.EVENT_VIEW_PATH + data.speaker_image : '';
+        retObj['cost'] = data.cost;
         retObj['image'] = (data.image) ? imageLink + env.EVENT_VIEW_PATH + data.image : '';
         retObj['day'] = (data.start_date) ? moment(data.start_date).format('ddd') : '';
         retObj['date'] = (data.start_date) ? moment(data.start_date).format('DD') : '';
         retObj['group_start_date'] = (data.start_date) ? moment(data.start_date).format('YYYY-MM-DD') : '';
-        retObj['start_date'] = (data.start_date) ? moment(data.start_date).format('MMM Do YYYY') : '';
-        retObj['end_date'] = (data.end_date) ? moment(data.end_date).format('MMM Do YYYY') : '';
+        retObj['start_date'] = (data.start_date) ? moment(data.start_date).format('MM-DD-YYYY') : '';
+        retObj['end_date'] = (data.end_date) ? moment(data.end_date).format('MM-DD-YYYY') : '';
         retObj['start_time'] = (data.start_date) ? moment(data.start_date).format('h:mm a') : '';
         retObj['end_time'] = (data.end_date) ? moment(data.end_date).format('h:mm a') : '';
         retObj['status'] = data.status;
         return retObj;
       });
-      var newResult = getDateArr(eventList)
+    //  var newResult = getDateArr(eventList)
 
       // var newarry = [];
       // var subarry = [];
@@ -1000,10 +1003,51 @@ router.post('/getUnpaidEventList', function (req, res) {
 
       // console.log(newarry);
 
-      return res.json({ status: 1, 'response': { data: newResult } });
+      return res.json({ status: 1, 'response': { data: eventList } });
     }
   });
 });
+
+router.get('/getMyEventList', function (req, res) {
+  loggerData(req);
+  
+  var user_id = 24;
+  Event.getMyEventList(user_id, function (err, result) {
+    if (err) {
+      return res.json({ status: 0, 'response': { msg: err } });
+    } else {
+      var imageLink;
+      if (req.headers.host == env.ADMIN_LIVE_URL) {
+        imageLink = env.ADMIN_LIVE_URL;
+      } else {
+        imageLink = env.ADMIN_LIVE_URL;
+      }
+      var eventList = result.map(data => {
+        let retObj = {};
+        retObj['event_id'] = data.event_id;
+        retObj['title'] = data.title;
+        retObj['description'] = data.description;
+        retObj['location'] = data.location;
+        retObj['speaker_name'] = data.speaker_name;
+        retObj['speaker_image'] = (data.speaker_image) ? imageLink + env.EVENT_VIEW_PATH + data.speaker_image : '';
+        retObj['cost'] = data.cost;
+        retObj['image'] = (data.image) ? imageLink + env.EVENT_VIEW_PATH + data.image : '';
+        retObj['day'] = (data.start_date) ? moment(data.start_date).format('ddd') : '';
+        retObj['date'] = (data.start_date) ? moment(data.start_date).format('DD') : '';
+        retObj['group_start_date'] = (data.start_date) ? moment(data.start_date).format('YYYY-MM-DD') : '';
+        retObj['start_date'] = (data.start_date) ? moment(data.start_date).format('MM-DD-YYYY') : '';
+        retObj['end_date'] = (data.end_date) ? moment(data.end_date).format('MM-DD-YYYY') : '';
+        retObj['start_time'] = (data.start_date) ? moment(data.start_date).format('h:mm a') : '';
+        retObj['end_time'] = (data.end_date) ? moment(data.end_date).format('h:mm a') : '';
+        retObj['status'] = data.status;
+        return retObj;
+      });
+      return res.json({ status: 1, 'response': { data: eventList } });
+    }
+  });
+});
+
+
 
 
 function getDateArr(arr) {
@@ -1217,7 +1261,11 @@ router.post('/eventRegisterWithoutUser', function (req, res) {
                   home_url: home_url,
                   fullname: data[0].first_name,
                   eventLink: eventLink,
-                  registerURL: registerURL
+                  registerURL: registerURL,
+                  event_title: eventdata[0].title,
+                  start_date: eventdata[0].start_date,
+                  event_price: eventdata[0].cost,
+                  event_image: eventdata[0].event_image,
                 }
                 var view = { data: dynamicHtml };
                 var finalHtmlUser = mustache.render(htmlUser, view);

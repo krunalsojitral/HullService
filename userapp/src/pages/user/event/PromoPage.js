@@ -57,113 +57,132 @@ export default function PromoPage() {
     return (
         <div>
             <Header />
-            <section className="inner-header">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-md-12">
-                            <h2>Events</h2>
+
+            {/* <Sidebar /> */}
+            <section class="hero-banner-inner">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-sm-12 col-md-7">
+                            <div class="banner-text">
+                                <h1>{eventDetail.title}</h1>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </section>
-            <section className="dashboard-card">
-                <div className="container-fluid">
-                    <div className="row">
-                        <div className="col-md-2 side-col">
-                            <Sidebar />
-                        </div>
-                        <div className="col-md-10">
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <div className="event-details-content">
-                                        <div className="promo-event-details-title">
-                                            <h4>{eventDetail.title}</h4>
-                                        </div>
-                                        <div className="row">
-                                            <div className="col-md-9">
-                                                {eventDetail.image && <div className="event-content-img">
-                                                    <img src={eventDetail.image} />
-                                                </div>}
-                                                <div className="event-content-list">
-                                                    <p dangerouslySetInnerHTML={{ __html: eventDetail.description }}></p>
-                                                </div>
-                                            </div>
-                                            <div className="col-md-3">
-                                                <div className="event-listing-box">
-                                                    <div className="event-listing-text">
-                                                        <div className="event-text-icon">
-                                                            <img src="images/cal.png" />
-                                                        </div>
-                                                        <div className="event-text-word">
-                                                            <h3>START DATE</h3>
-                                                            {/* {eventDetail.start_date} */}
-                                                            <span>{eventDetail.user_start_date} </span>
-                                                        </div>
-                                                    </div>
-                                                    <br />
-                                                    <div className="event-listing-text">
-                                                        <div className="event-text-icon">
-                                                            <img src="images/cal.png" />
-                                                        </div>
-                                                        <div className="event-text-word">
-                                                            <h3>END DATE</h3>
-                                                            {/* {eventDetail.end_date} */}
-                                                            <span>{eventDetail.user_end_date} </span>
-                                                        </div>
-                                                    </div>
-                                                    <br />
-                                                    <div className="event-listing-text">
-                                                        <div className="event-text-icon">
-                                                            <img src="images/checking.png" />
-                                                        </div>
-                                                        <div className="event-text-word">
-                                                            <h3>STATUS</h3>
-                                                            <span>Showing</span>
-                                                        </div>
-                                                    </div>
-                                                    <br />
-                                                    <div className="event-listing-text">
-                                                        <div className="event-text-icon">
-                                                            <img src="images/checking.png" />
-                                                        </div>
-                                                        <div className="event-text-word">
-                                                            <h3>Speaker’s Name</h3>
-                                                            <span>{eventDetail.speaker_name}</span>
-                                                        </div>
-                                                    </div>
-                                                    {eventDetail.location && <div className="event-listing-text">
-                                                        <div className="event-text-icon">
-                                                            <img src="images/marker-event.png" />
-                                                        </div>
-                                                        <div className="event-text-word">
-                                                            <h3>LOCATION</h3>
-                                                            <span>{eventDetail.location}</span>
-                                                        </div>
-                                                    </div>}
-                                                    <br />
-                                                    {/* <div className="event-listing-text">
-                                                                    <div className="event-text-icon">
-                                                                        <img src="images/box.png" />
-                                                                    </div>
-                                                                    <div className="event-text-word">
-                                                                        <h3>CATEGORY</h3>
-                                                                        <span>Business</span>
-                                                                    </div>
-                                                                </div> */}
-                                                    <div className="event-listing-text">
-                                                        <button type="button" onClick={(e) => cartEvent(eventDetail.event_id)} class="btn-save">Purchase</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="col-sm-12 col-md-5">
+                            <div class="img-right">
+                                <img src="images/brain.png" alt="brain"/>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
+            <section class="event-main event-detail">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Event</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Reflective Practice Sessions</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="media">
+                                                <img src="images/event-page.png" alt="event-page"/>
+                                                    <div class="media-body">
+                                                        <div class="media-left">
+                                                            <div class="avatar">
+                                                                <img src="images/avatar.png" alt="avatar"/>
+                                                                <h2>{eventDetail.speaker_name}</h2>
+                                                            </div>
+                                                            <h3>{eventDetail.title}</h3>
 
+                                                            <div class="event-icons">
+                                                                <label><img src="images/date.png" alt="date"/>{eventDetail.start_date}</label>
+                                                                <label><img src="images/time.png" alt="time"/>{eventDetail.start_time} - {eventDetail.end_time}</label>
+                                                                {eventDetail.location && <label><img src="images/location.png" alt="location"/>{eventDetail.location}</label>}
+                                                            </div>
+                                                        </div>
+                                                        <div class="media-right">
+                                                            <h4>${eventDetail.cost}</h4>
+                                                            <div class="media-button">
+                                                                <a onClick={(e) => cartEvent(eventDetail.event_id)}  class="thm-btn">Register for <br/>events only</a>
+                                                                <a href="javascript:;" class="thm-btn-outline">Back</a>
+                                                                <a href="javascript:;" class="thm-btn-outline">Register for Event and <br/>
+                                                                    Reflection Pracice Session</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="event-texyt">
+                                                <p dangerouslySetInnerHTML={{ __html: eventDetail.description }}></p>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="event-media">
+                                                <div class="media">
+                                                    <img src="images/event-detail.png" alt=""/>
+                                                        <div class="media-body">
+                                                            <h5>About {eventDetail.speaker_name}</h5>
+                                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tincidunt placerat felis ullamcorper et. Et nunc dui quis nunc amet mattis. Cursus facilisis nullam erat eu dolor porttitor sed netus. Non vitae quis neque et ut pretium, non sit mattis. Leo, tincidunt nulla venenatis, egestas sed eget. Volutpat facilisi et vel placerat ac placerat varius elit et. Faucibus aliquam nunc tortor odio non sagittis, lectus fusce.</p>
+                                                            <p>
+                                                                Duis in purus nibh sagittis malesuada nisl velit eget. Nisi, morbi cras senectus nec proin non velit. Nec eget aliquam ipsum interdum ullamcorper. Proin nunc etiam vitae enim aliquet euismod vitae tempor. Lobortis commodo, arcu, amet ipsum eu eget feugiat. Diam lectus dictumst sit tempor, tellus proin morbi augue.</p>
+                                                            <p>
+                                                                Vulputate eleifend pellentesque ipsum vitae nibh leo volutpat condimentum. Non arcu sapien rhoncus amet vulputate nunc integer. Eget hac massa, lectus mollis bibendum rutrum. Quis pulvinar aliquam libero leo posuere. Nunc quam neque ullamcorper fermentum, est libero. Diam aliquet vitae gravida aliquet diam condimentum aliquam. Tortor faucibus pellentesque posuere eleifend in hendrerit cursus. Enim, velit quam donec eu, ultricies. Diam eu senectus pretium commodo ut quis nunc. Non id neque, nulla at ornare nisi. Lorem nisl id in ante in sed et. Dignissim nam cras velit lacinia fames. Viverra at urna amet iaculis dignissim mi orci ut. Egestas id massa amet
+                                                            </p>
+                                                        </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                    <div class="col-sm-12">
+                                        <div class="event-media event-session">
+                                            <h5 class="media-body-session-title">16th Annual Society of Consulting Psychology Winter Conference</h5>
+                                            <br/>
+                                            <img src="images/event-detail.png" alt="" />
+                                            <div class="media-body-desc">                                                
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lectus tincidunt vel sed egestas sit scelerisque sollicitudin. Facilisi at viverra gravida at euismod ultrices consequat neque non. Aliquet aliquam sapien non</p>
+                                            </div>
+
+                                            <div>
+                                                <div>
+                                                    <h4 class="media-body-session-title">Duration : 4 Months(21 APRIL to 21 July)</h4>
+                                                </div>
+
+                                                <div class="session-week">
+                                                    <div>Mon</div>
+                                                    <div>Tue</div>
+                                                    <div>Wed</div>
+                                                    <div>Thu</div>
+                                                    <div>Fri</div>
+                                                </div>
+                                                <hr/>
+
+                                                <div class="session-checkbox">
+                                                    <div><input type="checkbox" name="" /> 10am to 12pm</div>
+                                                    <div><input type="checkbox" name="" /> 2am to 5pm</div>
+                                                    <div><input type="checkbox" name="" /> 2am to 5pm</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div>                            
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+           
             <Footer />
         </div>
     )
