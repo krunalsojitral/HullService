@@ -17,9 +17,10 @@ var nodemailer = require('nodemailer');
 const nodeMailerCredential = require('./../EmailCredential');
 var User = require('../models/user');
 var shortid = require('shortid');
-const rp = require('request-promise');
+const requestPromise = require('request-promise');
 const jwt = require('jsonwebtoken');
 var CryptoJS = require("crypto-js");
+const crypto = require("crypto");
 
 
 function loggerData(req) {
@@ -407,6 +408,7 @@ router.post('/getEventDataById', [check('event_id', 'Event is required').notEmpt
             event['status'] = result[0].status;
             event['cost'] = result[0].cost;
             event['purchase_type'] = result[0].purchase_type;
+            event['event_purchase_id'] = result[0].event_purchase_id;
             event['session_title'] = result[0].session_title;
             event['session_image'] = (result[0].session_image) ? imageLink + env.EVENT_VIEW_PATH + result[0].session_image : '';
             event['session_about'] = result[0].session_about;
@@ -987,6 +989,8 @@ router.post('/getUnpaidEventList', function (req, res) {
         retObj['start_time'] = (data.start_date) ? moment(data.start_date).format('h:mm a') : '';
         retObj['end_time'] = (data.end_date) ? moment(data.end_date).format('h:mm a') : '';
         retObj['status'] = data.status;
+        retObj['event_purchase_id'] = data.event_purchase_id;
+        
         return retObj;
       });
     //  var newResult = getDateArr(eventList)
@@ -1008,10 +1012,10 @@ router.post('/getUnpaidEventList', function (req, res) {
   });
 });
 
-router.get('/getMyEventList', function (req, res) {
+router.post('/getMyEventList', passport.authenticate('jwt', { session: false }), function (req, res) {
   loggerData(req);
   
-  var user_id = 24;
+  var user_id = req.user.id;
   Event.getMyEventList(user_id, function (err, result) {
     if (err) {
       return res.json({ status: 0, 'response': { msg: err } });
@@ -1105,8 +1109,8 @@ router.post('/eventRegisterWithUser', passport.authenticate('jwt', { session: fa
           fullname: first_name,
           eventLink: eventLink,
           event_title: eventdata[0].title,
-          start_date: eventdata[0].start_date,
-          event_price: eventdata[0].cost,
+          start_date: moment(eventdata[0].start_date).format('MMM DD, YYYY') + "at" + moment(eventdata[0].start_time).format('hh:mm a') + "-" + moment(eventdata[0].end_date).format('MMM DD, YYYY') + "at" + moment(eventdata[0].end_time).format('hh:mm a') ,
+          event_price: (eventdata[0].cost > 0) ? eventdata[0].cost : 'Free',
           event_image: eventdata[0].event_image,
         }
 
@@ -1194,8 +1198,8 @@ router.post('/eventRegisterWithoutUser', function (req, res) {
               fullname: first_name,
               eventLink: eventLink,
               event_title: eventdata[0].title,
-              start_date: eventdata[0].start_date,
-              event_price: eventdata[0].cost,
+              start_date: moment(eventdata[0].start_date).format('MMM DD, YYYY') + "at" + moment(eventdata[0].start_time).format('hh:mm a') + "-" + moment(eventdata[0].end_date).format('MMM DD, YYYY') + "at" + moment(eventdata[0].end_time).format('hh:mm a'),
+              event_price: (eventdata[0].cost > 0) ? eventdata[0].cost : 'Free',
               event_image: eventdata[0].event_image,
             }
 
@@ -1263,8 +1267,8 @@ router.post('/eventRegisterWithoutUser', function (req, res) {
                   eventLink: eventLink,
                   registerURL: registerURL,
                   event_title: eventdata[0].title,
-                  start_date: eventdata[0].start_date,
-                  event_price: eventdata[0].cost,
+                  start_date: moment(eventdata[0].start_date).format('MMM DD, YYYY') + "at" + moment(eventdata[0].start_time).format('hh:mm a') + "-" + moment(eventdata[0].end_date).format('MMM DD, YYYY') + "at" + moment(eventdata[0].end_time).format('hh:mm a'),
+                  event_price: (eventdata[0].cost > 0) ? eventdata[0].cost : 'Free',
                   event_image: eventdata[0].event_image,
                 }
                 var view = { data: dynamicHtml };
@@ -1292,16 +1296,124 @@ router.post('/eventRegisterWithoutUser', function (req, res) {
   });
 });
 
+function generateSignature(apiKey, apiSecret, meetingNumber, role) {
+  return new Promise((res, rej) => {
+    // Prevent time sync issue between client signature generation and zoom
+    const timestamp = new Date().getTime() - 30000;
+    const msg = Buffer.from(apiKey + meetingNumber + timestamp + role).toString(
+      "base64"
+    );
+    const hash = crypto
+      .createHmac("sha256", apiSecret)
+      .update(msg)
+      .digest("base64");
+    const signature = Buffer.from(
+      `${apiKey}.${meetingNumber}.${timestamp}.${role}.${hash}`
+    ).toString("base64");
+
+    res(signature);
+  });
+}
+
+
+function generateSignature(apiKey, apiSecret, meetingNumber, role) {
+  return new Promise((res, rej) => {
+    // Prevent time sync issue between client signature generation and zoom
+    const timestamp = new Date().getTime() - 30000;
+    const msg = Buffer.from(apiKey + meetingNumber + timestamp + role).toString(
+      "base64"
+    );
+    const hash = crypto
+      .createHmac("sha256", apiSecret)
+      .update(msg)
+      .digest("base64");
+    const signature = Buffer.from(
+      `${apiKey}.${meetingNumber}.${timestamp}.${role}.${hash}`
+    ).toString("base64");
+
+    res(signature);
+  });
+}
+
+
+
+
+
+
+router.post("/joinmeeting", (req, res) => {
+  var apiSecret = "vKLGTPvGdubOtar8VD4UlWmVhZTAyoZIK1Td";
+  var apiKey = "o4xds6wbTjiKWl7swm19aA";
+  var meetingNumber = req.body.meetingNumber;
+
+  var signature = "";
+  generateSignature(apiKey, apiSecret, meetingNumber, 0).then((res) => {
+      signature = res
+  });
+
+  console.log("body", req.body);
+  var userEmail = req.body.userEmail;
+  var userName = req.body.userName;
+  var passWord = req.body.passWord;
+
+  setTimeout(() => {
+    res.json({
+      signature: signature,
+      userName: userName,
+      apiKey: apiKey,
+      userEmail: userEmail,
+      passWord: passWord,
+      meetingNumber: meetingNumber,
+    })  
+  }, 100);
+ 
+  
+});
+
+
+
 
 router.post('/newmeeting', function (req, res) {
-console.log('in in')
+
   const payload = {
     iss: 'o4xds6wbTjiKWl7swm19aA',
-    exp: ((new Date()).getTime() + 500000)
+    exp: ((new Date()).getTime() + 500000000000)
   };
   const token = jwt.sign(payload, 'vKLGTPvGdubOtar8VD4UlWmVhZTAyoZIK1Td');
 
+  // var options = {
+  //   method: "POST",
+  //   uri: "https://api.zoom.us/v2/users",
+  //   body: {
+  //     "action": "create",
+  //     "user_info": {
+  //       "email": "jchill@example.com",
+  //       "first_name": "Jill",
+  //       "last_name": "Chill",
+  //       "password": "if42!LfH@",
+  //       "type": 1,
+  //       "feature": {
+  //         "zoom_phone": ""
+  //       }
+  //     }
+  //   },  
+  //   auth: {
+  //     bearer: token
+  //   },
+  //   headers: {
+  //     "content-type": "application/json"
+  //   },
+  //   json: true //Parse the JSON string in the response
+  // };
+
+  // requestPromise(options).then(function (user_res) { 
+  //   console.log(user_res);
+
+  // });
+
+  var apiSecret = "vKLGTPvGdubOtar8VD4UlWmVhZTAyoZIK1Td";
+  var apiKey = "o4xds6wbTjiKWl7swm19aA"; 
   const email = "dipika.letsnurture@gmail.com";
+  
   var options = {
     method: "POST",
     uri: "https://api.zoom.us/v2/users/" + email + "/meetings",
@@ -1323,9 +1435,21 @@ console.log('in in')
     json: true //Parse the JSON string in the response
   };
 
-  rp(options).then(function (response) {
-      console.log("response is: ", response);
-      res.send("create meeting result: " + JSON.stringify(response));
+  requestPromise(options).then(function (response) {
+
+    return res.json({ status: 1, 'response': { data: (response) } });
+      
+    console.log(response.id);
+    var signature = '';
+
+    // generateSignature(apiKey, apiSecret, response.id, 0).then((res) => {
+    //   signature = res
+    // });
+
+    // setTimeout(() => {
+    //   return res.json({ status: 1, 'response': { data: (response), signatures: signature } });
+    // }, 50);
+    
     })
     .catch(function (err) {
       // API call failed...

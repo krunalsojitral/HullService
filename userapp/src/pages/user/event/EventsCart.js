@@ -16,6 +16,7 @@ export default function EventsCart() {
 
     const [eventdata, setEventData] = useState([]);
     const [eventId, setEventId] = useState('');
+    const [eventCost, setEventCost] = useState(0);
     const [token, setToken] = useState('');
     const [eventDetail, seteventDetail] = React.useState({})
 
@@ -35,6 +36,7 @@ export default function EventsCart() {
         const eventString = localStorage.getItem('eventPurchaseData');
         var eventID = JSON.parse(eventString);
         setEventId(eventID.event_id)
+        setEventCost(eventID.cost)
 
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
@@ -78,10 +80,10 @@ export default function EventsCart() {
         data.event_id = eventId
         data.event_title = eventDetail.title
         data.payment_id = ''
-        if (eventDetail.purchase_type == 'paid'){
+        if (eventCost > 0){
             history.push({
                 pathname: '/event-payment',
-                price: eventDetail.cost,
+                price: eventCost,
                 data: data
             });
         }else{
@@ -157,13 +159,13 @@ export default function EventsCart() {
                                             <span>1 x {eventDetail.title}</span>
                                             <hr />
 
-                                            {eventDetail.purchase_type == 'paid' &&
+                                            {eventCost > 0 &&
                                                 <div>
-                                                    <div>Price : ${eventDetail.cost}.00</div>
-                                                    <div>Total  ${eventDetail.cost}.00</div>
+                                                    <div>Price : ${eventCost}.00</div>
+                                                    <div>Total  ${eventCost}.00</div>
                                                 </div>}
 
-                                            {eventDetail.purchase_type == 'unpaid' &&
+                                            {eventCost == 0 &&
                                                 <div>
                                                     <div>Price : Free</div>
                                                     <div>Total  Free</div>

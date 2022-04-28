@@ -17,13 +17,6 @@ export default function MyEvents() {
     const [token, setToken] = useState('');
     const [noresult, setNoresult] = React.useState(false)
 
-    const [city, setCity] = React.useState('');
-    const [cityError, setCityError] = React.useState('');
-    const [latitude, setLatitude] = React.useState('');
-    const [longitude, setLongitude] = React.useState('');
-    const [country, setCountry] = React.useState('');
-    const [searchtext, setSearchtext] = React.useState('')
-
     
     React.useEffect(() => {
         getEventData();
@@ -33,7 +26,7 @@ export default function MyEvents() {
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
         const config = { headers: { Authorization: `${token}` } };
-        axios.get(api_url + '/event/getMyEventList', config).then((result) => {
+        axios.post(api_url + '/event/getMyEventList',{}, config).then((result) => {
             if (result.data.status) {
                 var eventdatas = result.data.response.data;
                 setEventData(eventdatas);

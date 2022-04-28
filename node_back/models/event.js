@@ -450,7 +450,7 @@ function User() {
         sql = 'SELECT * FROM event where title ILIKE $1  and status = $2 order by event_id DESC';
         array = ['%' + search.search + '%', 1];
       } else{
-        sql = 'SELECT * FROM event where status = $1 order by event_id DESC';
+        sql = 'SELECT * FROM event as ent left join event_purchase as ept on ent.event_id = ept.event_id where ent.status = $1 order by ent.event_id DESC';
         array = [1];
       }
       

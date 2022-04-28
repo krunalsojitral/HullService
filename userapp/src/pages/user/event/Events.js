@@ -207,10 +207,10 @@ export default function Events() {
             <section class="event-main">
                 <div class="container">
                     <div class="row">
-                        <div className="col-md-2 side-col">
+                        {/* <div className="col-md-2 side-col">
                             <Sidebar />
-                        </div>
-                        <div class="col-sm-10">
+                        </div> */}
+                        <div class="col-sm-12">
                             {eventdata &&
                                 eventdata.map((data, index) => ( 
                                     <div class="media">
@@ -236,9 +236,12 @@ export default function Events() {
                                             </div>
                                             <div class="media-right">
                                                 {data.cost && <h4>${data.cost}</h4>}
-                                                <Link class="thm-btn" to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}>
+                                                {data.event_purchase_id && <Link class="thm-btn" to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}>
+                                                    View
+                                                </Link>}
+                                                {!data.event_purchase_id && <Link class="thm-btn" to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}>
                                                     Buy
-                                                </Link>
+                                                </Link>}
                                             </div>
                                         </div>
                                     </div>

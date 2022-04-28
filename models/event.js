@@ -277,7 +277,7 @@ function User() {
 
   this.getEventDataById = function (id, callback) {
     connection.acquire(function (err, con) {
-      con.query('SELECT * FROM event left join event_promo on event.event_id = event_promo.event_id where event.event_id = $1', [id], function (err, result) {
+      con.query('SELECT * FROM event left join event_purchase on event.event_id = event_purchase.event_id where event.event_id = $1', [id], function (err, result) {
         con.release();
         if (err) {
           callback(err, null);
