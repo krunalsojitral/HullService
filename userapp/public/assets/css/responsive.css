@@ -1,0 +1,2164 @@
+@media (min-width: 1441px) {
+    .container {
+        max-width: 1654px;
+    }
+}
+
+@media (max-width: 1890px) {
+    
+    .ringLeft {
+        max-width: 400px;
+    }
+    .ringLeft .ellipse {
+        left: -84px;
+        max-width: 360px;
+    }
+   
+
+}
+@media (max-width: 1800px) {
+    header {
+        padding: 20px 0;
+    }
+    .banner-inner .text-box {
+        padding-left: 50px;
+    }
+    .banner-bg {
+        left: 0px;
+    }
+    .banner-inner .text-box h1 {
+        font-size: 52px;
+        line-height: 120%;
+    }
+    .banner-inner .text-box p {
+        font-size: 16px;
+        margin: 15px 0 30px;
+    }
+    .banner-inner .image-holder {
+        margin: 10px 5px 0 0px;
+        max-width: 690px;
+    }
+    .banner-sec {
+        padding: 40px 0 0 0;
+        margin: 0 0 -190px 0;
+    }
+    .event-shape {
+        left: 180px;
+        top: 60px;
+        max-width: 180px;
+    }
+    .upcoming-event-inner h3 {
+        font-size: 38px;
+        margin: 0 0 120px 0;
+    }
+    .upcoming-event-inner .image-holder {
+        max-width: 560px;
+        width: 100%;
+        margin-left: auto;
+        position: relative;
+    }
+
+    .upcoming-event-inner .text-box h4 {
+        font-size: 27px;
+        padding: 0 0 22px 0;
+    }
+    .upcoming-event-inner .text-box p {
+        font-size: 16px;
+        margin: 30px 0;
+    }
+    .image-shape {
+        left: -80px;
+        top: 50%;
+        max-width: 450px;
+        transform: translate(0, -50%);
+    }
+    .upcoming-event-inner .btn-default {
+        margin: 80px auto 0;
+    }
+    .upcoming-event-sec {
+        padding: 350px 0 170px 0;
+    }
+    .training-courses-sec {
+        padding: 0 0 50px 0;
+        margin: -90px 0 0 0;
+    }
+    .title img {
+        height: 210px;
+    }
+    .title h3 {
+        font-size: 38px;
+        margin: 30px 0 10px 0;
+    }
+    .courses-detail {
+        padding: 60px 40px;
+        margin-bottom: 30px;
+    }
+    .training-courses-box .text-box p {
+        font-size: 15px;
+        margin: 0 0 30px 0;
+    }
+    .newsletter-sec {
+        padding: 50px 0 0 0;
+        margin: 0 0 -245px 0;
+    }
+    .newsletter-inner h4 {
+        font-size: 38px;
+        margin: 0 0 30px 0;
+    }
+    .newsletter-inner {
+        padding: 70px 30px;
+    }
+    footer {
+        padding: 330px 0 50px 0;
+    }
+    .second-banner-sec {
+        padding: 125px 0;
+        background-position: bottom center !important;
+    }
+    .second-banner-sec .text-box h2 {
+        font-size: 70px;
+        margin: 0;
+    }
+    .second-banner-shape {
+        bottom: -250px;
+        left: 240px;
+        max-width: 160px;
+    }
+    .about-us-sec {
+        padding: 170px 0 0;
+    }
+    .about-advocacy-box {
+        height: 250px;
+        width: 250px;
+        margin: auto;
+    }
+    .about-read {
+        margin: 70px auto 0;
+    }
+    .about-read-box h4 {
+        font-size: 26px;
+        margin: 14px 0 0 0;
+    }
+    .about-read-box p {
+        font-size: 14px;
+        text-align: center;
+        line-height: 150%;
+    }
+    .about-read-box a {
+        font-size: 14px;
+    }
+    .about-advocacy-box span img {
+        max-width: 60px;
+    }
+    .about-advocacy-box h4 {
+        font-size: 18px;
+        margin: 18px 0 18px 0;
+    }
+    .about-hull-sec {
+        padding: 160px 0 100px;
+    }
+    .about-box .image-holder .image-shape {
+        transform: translate(0, -50%);
+        top: 50%;
+        right: -80px;
+    }
+    .contact-sec {
+        padding: 190px 0 5px;
+    }
+    .contact-info ul li {
+        font-size: 14px;
+        margin: 0 0 20px 0;
+    }
+    .contact-info ul li span {
+        margin-right: 25px;
+    }
+    .contact-info ul {
+        margin: 30px 0 0 0;
+    }
+    .contact-social {
+        margin: 70px 0 0 0;
+    }
+    .form-group .form-control {
+        height: 50px;
+        padding-left: 14px;
+        font-size: 14px;
+        border-radius: 7px;
+    }
+    .form-group textarea.form-control {
+        height: 150px;
+        padding-top: 10px;
+    }
+    .contact-right .form-group .btn-default {
+        height: 50px;
+        font-size: 14px;
+        border-radius: 7px;
+    }
+    .accordion-button {
+        padding: 18px 15px;
+        font-size: 14px;
+        border-radius: 7px;
+    }
+    .accordion-item {
+        margin-bottom: 25px;
+    }
+    .accordion-body p {
+        font-size: 14px;
+        line-height: 150%;
+        margin: 0 0 0px 0;
+    }
+    .accordion-body a {
+        font-size: 16px;
+    }
+    .accordion-button::after {
+        right: 25px;
+    }
+    .accordion-body {
+        padding: 20px;
+    }
+    .faq-sec {
+        padding: 150px 0 0px;
+    }
+    .faq-popup {
+        padding: 40px 60px 40px;
+    }
+    .faq-close-icon {
+        margin: 0 0 10px 0;
+    }
+    .faq-popup h4 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+    .faq-popup p {
+        font-size: 14px;
+        margin-bottom: 15px;
+        line-height: 170.5%;
+    }
+    .event-card .desc {
+        font-size: 20px;
+        line-height: 32px;
+        margin-bottom: 15px;
+    }
+    .event-card ul li span {
+        font-size: 14px;
+    }
+    .event-card {
+        padding: 25px 20px;
+    }
+    .event-card .price {
+        font-size: 26px;
+    }
+    .event-card ul li i img {
+        height: 25px;
+    }
+    .event-card .btn {
+        font-size: 18px;
+        height: 50px;
+        max-width: 153px;
+        margin: 0 auto;
+    }
+    .event-main {
+        padding: 120px 0 0px;
+    }
+    .our-team-sec {
+        padding: 120px 0 0;
+    }
+    .heading-second p {
+        font-size: 16px;
+    }
+    .clinical-team-sec {
+        padding: 135px 0 0 0;
+    }
+    .clinical-team-box {
+        padding: 30px;
+        max-width: 300px;
+        margin: auto;
+    }
+    .operations-team-sec {
+        padding: 10px 0 0 0;
+    }
+    .heading-second img {
+        max-width: 140px;
+    }
+    .heading-second img {
+        margin-bottom: 70px;
+    }
+    .governors-sec {
+        padding: 80px 0 60px;
+    }
+    .eventDetail .action li a {
+        padding: 10px 10px;
+        height: 65px;
+        font-size: 14px;
+    }
+    .eventDetail .action li a.cta-default-outline.back-btn {
+        width: 180px;
+    }
+    .eventDetail .action li a.cta-default-outline {
+        font-size: 14px;
+    }
+    .eventTabs li a.active {
+        border-bottom: 3px solid #f15c4e;
+    }
+    .eventTabs li a {
+        font-size: 18px;
+        line-height: 18px;
+        padding: 9px;
+    }
+    .ringLeft .ellipse {
+        left: -35px;
+        max-width: 310px;
+    }
+    .eventDetail {
+        padding: 70px 0 0;
+    }
+    .eventDetail .title {
+        margin-bottom: 15px;
+    }
+    .eventDetail .title .media-body {
+        font-size: 16px;
+    }
+    .eventDetail h3 {
+        font-size: 16px;
+        line-height: 22px;
+        padding-bottom: 7px;
+        margin-bottom: 12px;
+    }
+    .eventDetail h3:after {
+        height: 3px;
+        width: 160px;
+    }
+    .eventDetail .dateTime li i img {
+        height: 18px;
+    }
+    .eventDetail .dateTime li span {
+        font-size: 14px;
+    }
+    .eventDetail .price {
+        font-size: 24px;
+        margin: 10px 0px;
+    }
+    .eventDetail .title .avatar {
+        width: 30px;
+        height: 30px;
+    }
+    .eventDetail .detail {
+        margin-top: 80px;
+    }
+    .eventDetail hr {
+        margin: 50px 0;
+    }
+    .about-event h4 {
+        font-weight: 700;
+        font-size: 21px;
+        line-height: 1;
+        margin-bottom: 16px;
+        color: #036e80;
+    }
+    .eventDetail .detail p,
+    .about-event p {
+        font-size: 14px;
+    }
+    .reflective-card h4 {
+        font-size: 21px;
+        line-height: 32px;
+        margin-bottom: 12px;
+    }
+    .reflective-card p {
+        font-size: 16px;
+    }
+    .reflective-card p {
+        margin-bottom: 50px;
+    }
+    .reflective-duration {
+        padding: 55px 0;
+    }
+    .eventTabs li {
+        margin: 0 25px -5px;
+    }
+    .reflective-card {
+        padding: 50px 0 0;
+    }
+    .duration-inner ul {
+        padding: 35px 0;
+    }
+
+    .about-researcher .img-holder {
+        margin-bottom: 100px;
+        max-width: 400px;
+        float: right;
+    }
+    .about-inner  .about-researcher {
+        padding: 100px 0 60px 0;
+    }
+    .about-researcher p {
+        font-size: 14px;
+        margin-bottom: 10px;
+        line-height: 145%;
+    }
+    .researcher-sec {
+        padding: 170px 0;
+    }
+    .contact {
+        margin: 30px auto 0;
+    }
+    .contact h4 {
+        font-size: 26px;
+        margin: 0 0 30px 0;
+    }
+    .form-group .btn-default {
+        height: 50px;
+        border-radius: 7px;
+    }
+    .form-group {
+        margin: 10px 0;
+    }
+    .training-course-sec {
+        padding: 170px 0 65px;
+    }
+    .popup-courses {
+        padding: 50px 50px 50px 50px;
+        margin-top: 40px;
+        position: relative;
+    }
+    .title-course .media-body h3 {
+        font-size: 18px;
+    }
+    .title-course .card-title.card-title-courses {
+        max-width: 100px;
+        height: 100px;
+    }
+    .researcher-heading h3:after {
+        height: 3px;
+        max-width: 165px;
+    }
+    .title-course .card-title.card-title-courses img {
+        max-width: 50px;
+    }
+    .title-course .card-title {
+        margin-right: 30px;
+    }
+    .popup-courses .cardBody {
+        margin-bottom: 10px;
+    }
+    .popupFooter ul {
+        margin-bottom: 20px;
+    }
+    .researcher-heading h3 {
+        font-size: 24px;
+        padding-bottom: 9px;
+        margin-bottom: 15px;
+    }
+    .title-course {
+        margin-bottom: 20px;
+    }
+    .popup-courses .cardBody p {
+        font-size: 14px;
+    }
+    .popupFooter ul li span {
+        font-size: 14px;
+    }
+    .popupFooter ul li.price {
+        font-size: 26px;
+    }
+    .popupFooter ul li i img {
+        height: 18px;
+    }
+    .trainingCourses, .courses-description {
+        padding: 40px 0;
+    }
+    .trainingCourses .caption {
+        margin-bottom: 50px;
+    }
+    .event-card {
+        margin-bottom: 30px;
+    }
+    .researcher-sec {
+        padding: 75px 0;
+    }
+    .researchContact .researcher-heading {
+        margin-top: 0;
+    }
+
+    .courses-description .row {
+        margin: 0 -15px;
+    }
+    .courses-description .row [class*="col-"] {
+        margin-top:30px;
+        padding: 0 15px;
+    }
+    .card-course h2 {
+        font-size: 16px;
+    }
+    .training-course-sec{
+        padding: 130px 0 0;
+    }
+    .card-course .icon {
+        margin-bottom: 25px;
+    }
+    .courses-description .card-course {
+        max-width: 250px;
+        padding: 30px 25px;
+        margin: auto;
+    }
+     /*=== test ===*/
+     .popup-courses .close {
+        width: 35px;
+    }
+     .login-btn {
+        height: 45px;
+        width: 115px;
+        font-size: 15px;
+        margin: 0 0 0 0px;
+    }
+    .banner-inner .text-box h1 {
+        font-size: 42px;
+        line-height: 120%;
+    }
+    .banner-inner .text-box p {
+        font-size: 14px;
+    }
+    .btn-default {
+        max-width: 228px;
+        height: 60px;
+        font-size: 16px;
+    }
+    .banner-inner .image-holder {
+        max-width: 525px;
+    }
+    .event-shape {
+        max-width: 125px;
+    }
+    .upcoming-event-sec {
+        padding: 245px 0 170px 0;
+    }
+    .upcoming-event-inner h3 {
+        font-size: 30px;
+        margin: 0 0 120px 0;
+    }
+    .upcoming-event-inner .text-box h4 {
+        font-size: 20px;
+        padding: 0 0 22px 0;
+    }
+    .upcoming-event-inner .text-box a {
+        font-size: 16px;
+    }
+    .upcoming-event-inner .btn-default {
+        max-width: 325px;
+        font-size: 20px;
+        height: 55px;
+    }
+    .upcoming-event-inner h3 {
+        font-size: 30px;
+        margin: 0 0 55px 0;
+    }
+    .courses-detail {
+        padding: 30px 25px;
+        margin-bottom: 30px;
+        max-width: 250px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .courses-detail h4 {
+        font-size: 16px;
+        margin-top: 27px;
+    }
+    .training-courses-box .text-box p {
+        font-size: 12px;
+        margin: 0 0 15px 0;
+    }
+    .training-courses-inner .text-box {
+        max-width: 250px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .newsletter-inner h4 {
+        font-size: 25px;
+        margin: 0 0 30px 0;
+    }
+    .newsletter-inner form .form-control {
+        font-size: 14px;
+        height: 50px;
+        border: 1px solid transparent;
+    }
+    .newsletter-inner form a {
+        height: 43px;
+        max-width: 158px;
+        right: 5px;
+        font-size: 16px;
+    }
+    .newsletter-inner form {
+        max-width: 440px;
+    }
+    .footer-text p {
+        font-size: 14px;
+        line-height: 140%;
+    }
+    .copyright p {
+        font-size: 14px;
+    }
+    .newsletter-inner h4 {
+        font-size: 30px;
+    }
+    .second-banner-sec {
+        padding: 100px 0;
+    }
+    .second-banner-sec .image-holder img {
+        max-width: 348px;
+    }
+    .second-banner-sec .text-box h2 {
+        font-size: 50px;
+        margin-top: 40px;
+    }
+    .second-banner-shape {
+        bottom: -195px;
+        left: 210px;
+        max-width: 130px;
+    }
+    .about-us-top .text-box p {
+        font-size: 16px;
+        line-height: 140%;
+    }
+    .about-us-top .text-inner ul li {
+        font-size: 14px;
+        margin: 0px 0 15px 0;
+    }
+    .about-vision-box {
+        border-radius: 175px 0px;
+        padding: 44px 80px;
+        max-width: 875px;
+    }
+    .about-vision-box .text-box h4 {
+        font-size: 24px;
+        padding: 0 0 12px 0;
+    }
+    .about-vision-box .text-box p {
+        line-height: 165%;
+        margin: 5px 0 0 0;
+        font-size: 16px;
+    }
+    .about-advocacy {
+        max-width: 1700px;
+        padding: 75px 0 0 0;
+    }
+    .support-governors-sec .governors-inner .text-box h4 {
+        font-size: 26px;
+        padding: 0px 0 20px 0;
+    }
+    .support-governors-sec .governors-inner .text-box p {
+        margin: 10px 0 20px 0;
+        font-size: 14px;
+    }
+    .support-governors-sec .governors-inner .text-box .btn-default {
+        max-width: 190px;
+    }
+    .about-hull-logo {
+        margin: 50px 0 70px;
+    }
+    .about-text p {
+        font-size: 14px;
+        line-height: 160.5%;
+    }
+    .about-bottom {
+        margin: 75px 0 0 0;
+    }
+    .about-box .text-box p {
+        font-size: 14px;
+        line-height: 180.5%;
+    }
+    .contact-left .heading-second h3{
+        font-size: 24px;
+        padding: 0 0 10px 0;
+    }
+    .heading-second h3:after {
+        height: 3px;
+        max-width: 187px;
+    }
+    .contact-inner .text-box {
+        margin: 40px 0 0 0;
+    }
+    .contact-inner .text-box h4 {
+        font-size: 18px;
+        line-height: 170.5%;
+    }
+    .accordion-item:first-of-type .accordion-button {
+        border-top-left-radius: 7px;
+        border-top-right-radius: 7px;
+    }
+    .our-team-box {
+        padding: 35px 0px;
+    }
+    .heading-second h3 {
+        font-size: 30px;
+        padding: 0 0 18px 0;
+    }
+    .our-team-box .image-holder {
+        margin: 35px 0 0 0;
+    }
+    .clinical-team-list {
+        max-width: 250px;
+    }
+    .clinical-team-box .text-box h4 {
+        font-size: 18px;
+    }
+    .clinical-team-box .text-box p {
+        font-size: 14px;
+        margin: 10px 0;
+    }
+    .about-researcher {
+        padding: 160px 0 80px 0;
+    }
+    .media-participate .media-body h3 {
+        font-size: 18px;
+        line-height: 20px;
+    }
+    .second-banner-sec .text-box p {
+        font-size: 16px;
+        line-height: 150%;
+    }
+    .researcher-heading p {
+        font-size: 14px;
+        line-height: 180%;
+    }
+    .training-course-sec .content p {
+        font-size: 14px;
+        line-height: 150%;
+        margin-bottom: 20px;
+    }
+}
+@media (max-width: 1300px) {
+    
+    .navbar-nav .nav-item .nav-link {
+        font-size: 14px;
+    }
+    .navbar-nav .nav-item {
+        margin-left: 30px;
+    }
+    .banner-inner .image-holder {
+        margin: 30px -5px 0 0px;
+        max-width: 630px;
+    }
+    .banner-bg {
+        top: 60px;
+        max-width: 570px;
+    }
+    .upcoming-event-inner .image-holder {
+        max-width: 480px;
+        width: 100%;
+        margin-left: auto;
+        position: relative;
+    }
+    .image-shape {
+        left: -82px;
+        max-width: 350px;
+    }
+    .second-banner-sec .image-holder {
+        padding-right: 0;
+        margin-bottom: -200px;
+    }
+    .about-us-sec {
+        padding: 130px 0 0;
+    }
+    .about-box .image-holder {
+        max-width: 480px;
+    }
+    .governors-inner .text-box h4 {
+        font-size: 32px;
+    }
+    .governors-inner .text-box h4:after {
+        height: 3px;
+        max-width: 220px;
+    }
+    .governors-inner .text-box p {
+        line-height: 120.5%;
+        margin: 10px 0 15px 0;
+        font-size: 14px;
+    }
+    .governors-inner .text-box span,.governors-inner .text-box strong {
+        font-size: 14px;
+    }
+    .governors-inner .image-holder {
+        max-width: 230px;
+        height: 230px;
+    }
+    .governors-inner .image-holder img {
+        max-width: 120px;
+    }
+}
+@media (max-width: 1199px) {
+    .login-btn {
+        height: 50px;
+        width: 110px;
+        font-size: 14px;
+        margin: 0 0 0 10px;
+    }
+    .navbar-nav .nav-item {
+        margin-left: 20px;
+    }
+    .navbar-brand {
+        max-width: 155px;
+    }
+    .banner-inner .text-box {
+        padding-left: 20px;
+    }
+    .banner-inner .text-box h1 {
+        font-size: 44px;
+    }
+    .banner-inner .text-box p {
+        font-size: 14px;
+        margin: 15px 0;
+        max-width: 435px;
+    }
+    .banner-inner .image-holder {
+        margin: 51px -5px 0 0px;
+        max-width: 525px;
+    }
+    .banner-bg {
+        top: 80px;
+        max-width: 470px;
+        left: -10px;
+    }
+    .banner-sec {
+        padding: 30px 0 0 0;
+        margin: 0 0 -140px 0;
+    }
+    .event-shape {
+        left: 340px;
+        top: 5px;
+        max-width: 110px;
+    }
+    .upcoming-event-inner .image-holder {
+        max-width: 390px;
+    }
+    .image-shape {
+        left: -65px;
+        max-width: 300px;
+    }
+    .upcoming-event-inner .text-box {
+        margin: 0;
+    }
+    .upcoming-event-inner .text-box h4 {
+        font-size: 24px;
+        padding: 0 0 20px 0;
+    }
+    .upcoming-event-inner .text-box p {
+        font-size: 14px;
+        margin: 15px 0;
+    }
+    .upcoming-event-inner .btn-default {
+        margin: 150px auto 0;
+        max-width: 320px;
+        margin: 60px auto 0;
+        font-size: 20px;
+    }
+    .upcoming-event-inner h3 {
+        margin: 0 0 90px 0;
+    }
+    .upcoming-event-sec {
+        padding: 220px 0 120px 0;
+    }
+    .training-courses-sec {
+        margin: -70px 0 0 0;
+    }
+    .title img {
+        height: 160px;
+    }
+    .courses-detail {
+        padding: 40px 20px;
+        margin-bottom: 30px;
+    }
+    .courses-detail h4 {
+        font-size: 18px;
+        margin-top: 40px;
+    }
+    .training-courses-box .text-box p {
+        font-size: 14px;
+        margin: 0 0 24px 0;
+    }
+    .training-courses-box .btn-default {
+        max-width: 280px;
+        height: 65px;
+        font-size: 18px;
+    }
+    .newsletter-inner h4 {
+        font-size: 32px;
+        margin: 0 0 25px 0;
+    }
+    .newsletter-inner {
+        padding: 60px 30px;
+        border-radius: 180px 0px;
+    }
+    footer {
+        padding: 300px 0 50px 0;
+    }
+    .footer-text p {
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+    .footer-text {
+        margin: 0 0 60px 0;
+    }
+    .footer-detail {
+        margin: 0 0 50px 0;
+    }
+    .about-us-top .text-box p {
+        font-size: 16px;
+        line-height: 184%;
+    }
+    .about-us-top .text-inner ul li span {
+        margin-right: 20px;
+    }
+    .about-us-top .text-inner ul li {
+        font-size: 14px;
+        margin: 0 0 20px 0;
+    }
+    .about-researcher p {
+        font-size: 14px;
+    }
+    .about-inner .about-researcher .content h4 {
+        margin-bottom: 10px;
+        font-size: 28px;
+    }
+    .about-researcher .img-holder .ellipse {
+        top: 50%;
+        transform: translate(0, -50%);
+    }
+    .about-inner .about-researcher {
+        padding: 100px 0;
+    }
+    .about-vision-box {
+        border-radius: 150px 0px;
+        padding: 60px 40px;
+        max-width: 800px;
+    }
+    .about-advocacy-box {
+        height: 306px;
+        width: 306px;
+    }
+    .about-advocacy-box h4 {
+        font-size: 20px;
+        margin: 20px 0;
+    }
+    .about-read-box h4 {
+        font-size: 24px;
+    }
+    .about-read-box p {
+        margin: 15px auto;
+        font-size: 14px;
+    }
+    .support-governors-sec .governors-inner .text-box h4 {
+        font-size: 26px;
+        padding: 0 0 20px 0;
+    }
+    .about-hull-logo {
+        margin: 70px 0;
+    }
+    .about-box .text-box p {
+        font-size: 14px;
+        line-height: 24px;
+    }
+    .about-box .image-holder .image-shape {
+        transform: translate(0, -50%);
+        top: 50%;
+        right: -80px;
+        max-width: 270px;
+    }
+    .about-box .image-holder {
+        max-width: 380px;
+    }
+    .second-banner-sec .text-box h2 {
+        font-size: 38px;
+    }
+    .about-hull-sec {
+        padding: 120px 0 100px;
+    }
+    .about-text h4 {
+        font-size: 30px;
+        margin-bottom: 25px;
+        padding: 0 0 20px 0;
+    }
+    .about-text h4:after {
+        max-width: 210px;
+    }
+    .about-box .image-holder .image-shape {
+        right: -70px;
+    }
+    .about-box .image-holder .image-shape {
+        right: -70px;
+        max-width: 310px;
+    }
+    .about-bottom {
+        margin: 70px 0 0 0;
+    }
+    .contact-info ul li {
+        font-size: 18px;
+        margin: 0 0 26px 0;
+    }
+    .heading-second h3 {
+        font-size: 28px;
+        padding-bottom: 24px;
+    }
+    .heading-second h3:after {
+        max-width: 160px;
+    }
+    .contact-sec {
+        padding: 150px 0 5px;
+    }
+    .accordion-button {
+        padding: 25px 15px;
+        font-size: 16px;
+    }
+    .accordion-button::after {
+        right: 15px;
+    }
+    .accordion-body p {
+        font-size: 14px;
+        margin: 0 0 10px 0;
+    }
+    .accordion-body a {
+        font-size: 18px;
+    }
+    .event-card-left {
+        padding-right: 15px;
+    }
+    .event-card .desc {
+        font-size: 21px;
+        line-height: 28px;
+        margin-bottom: 15px;
+    }
+    .event-card ul li {
+        padding: 0 10px;
+    }
+    .event-card ul li i {
+        margin-right: 10px;
+    }
+    .event-card .price {
+        font-size: 30px;
+    }
+    .event-card .btn {
+        font-size: 25px;
+        height: 60px;
+        max-width: 200px;
+        margin: 0 auto;
+    }
+    .our-team-sec {
+        padding: 100px 0 0;
+    }
+    .our-team-box .image-holder {
+        margin-top: 50px;
+    }
+    .clinical-team-box {
+        padding: 15px;
+    }
+    .heading-second p {
+        font-size: 18px;
+    }
+    .heading-second p br {
+        display: none;
+    }
+    .eventDetail .action li a.cta-default-outline {
+        max-width: 186px;
+        font-size: 14px;
+    }
+    .media-participate .participant {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .popupFooter ul {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .popupFooter ul li {
+        padding: 10px 0;
+    }
+    .event-card ul li span {
+        font-size: 16px;
+    }
+    .event-card ul li i img {
+        height: 16px;
+    }
+}
+@media (max-width: 991px) {
+    .navbar-toggler {
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        border: none;
+        border-radius: 0;
+    }
+    body {
+        padding-top: 85px;
+    }
+    .navbar-toggler-icon {
+        background-color: #f15c4e;
+        width: 24px;
+        height: 2px;
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+    .navbar-toggler:focus {
+        box-shadow: none;
+    }
+    .navbar-collapse {
+        align-items: center;
+        position: absolute;
+        left: 0;
+        top: 60px;
+        width: 100%;
+        background-color: #fff;
+        z-index: 100;
+        padding: 5px 0 20px;
+    }
+    .navbar-nav .nav-item {
+        margin-left: 0;
+        display: block;
+        width: 100%;
+    }
+    .navbar-nav .nav-item .nav-link {
+        font-size: 16px;
+        padding: 10px 20px;
+    }
+    .login-btn {
+        height: 55px;
+        width: 180px;
+        font-size: 16px;
+        margin: 10px 0 0 15px;
+    }
+    .banner-inner .text-box h1 {
+        font-size: 38px;
+    }
+    .banner-inner .text-box p {
+        font-size: 13px;
+        margin: 10px 0;
+        max-width: 435px;
+        line-height: 21px;
+    }
+    .about-researcher .img-holder {
+        float: none;
+    }
+    .banner-inner .text-box .btn-default {
+        border-radius: 45px 5px;
+        max-width: 200px;
+        height: 62px;
+        font-size: 18px;
+    }
+    .banner-inner .image-holder {
+        max-width: 375px;
+    }
+    .banner-sec {
+        margin: 0 0 -70px 0;
+    }
+    .banner-bg {
+        top: 86px;
+        max-width: 390px;
+        left: -12px;
+    }
+    .event-shape {
+        left: 270px;
+        top: -4px;
+        max-width: 90px;
+    }
+    .upcoming-event-inner .text-box h4 {
+        font-size: 20px;
+        padding: 0 0 15px 0;
+    }
+    .upcoming-event-inner .text-box p {
+        font-size: 14px;
+        margin: 10px 0;
+        line-height: 20px;
+    }
+    .upcoming-event-inner .text-box a {
+        font-size: 16px;
+    }
+    .upcoming-event-inner .image-holder {
+        max-width: 310px;
+    }
+    .image-shape {
+        left: -45px;
+        max-width: 260px;
+    }
+    .upcoming-event-inner .btn-default {
+        max-width: 260px;
+        margin: 60px auto 0;
+        font-size: 18px;
+        height: 60px;
+    }
+    .upcoming-event-sec {
+        padding: 160px 0 100px 0;
+    }
+    .training-courses-sec {
+        margin: -60px 0 0 0;
+    }
+    .title h3 {
+        font-size: 30px;
+        margin: 20px 0 10px 0;
+    }
+    .title p {
+        font-size: 16px;
+    }
+    .courses-detail span {
+        display: flex;
+    }
+    .courses-detail {
+        padding: 35px 15px;
+        margin-bottom: 25px;
+    }
+    .courses-detail span {
+        display: flex;
+        align-items: center;
+        max-width: 80px;
+    }
+    .courses-detail h4 {
+        font-size: 16px;
+        margin-top: 30px;
+    }
+    .training-courses-box .text-box p {
+        line-height: 20px;
+    }
+    .courses-box-first {
+        margin: 50px 0 0 0;
+    }
+    .training-courses-inner {
+        margin: 50px auto 0;
+    }
+    .training-courses-box .btn-default {
+        height: 55px;
+        font-size: 14px;
+    }
+    .newsletter-sec {
+        margin: 0 0 -170px 0;
+    }
+    .newsletter-inner h4 {
+        font-size: 24px;
+        margin: 0 0 20px 0;
+    }
+    .newsletter-inner form {
+        max-width: 500px;
+    }
+    .newsletter-inner form .form-control {
+        font-size: 18px;
+        height: 70px;
+    }
+    .newsletter-inner form a {
+        height: 55px;
+        max-width: 130px;
+        font-size: 16px;
+    }
+    .newsletter-inner {
+        padding: 50px 30px;
+        border-radius: 150px 0px;
+    }
+    footer {
+        padding: 200px 0 50px 0;
+    }
+    .footer-link {
+        padding: 0 0 0 30px;
+    }
+    .second-banner-sec {
+        padding: 60px 0;
+    }
+    .second-banner-sec .image-holder {
+        padding-right: 0;
+        margin-bottom: -140px;
+    }
+    .second-banner-shape {
+        bottom: -135px;
+        left: 190px;
+        max-width: 90px;
+    }
+    .about-us-sec {
+        padding: 90px 0 0;
+    }
+    .about-us-top .text-inner ul li span {
+        max-width: 65px;
+        width: 100%;
+    }
+    .about-us-top .text-inner {
+        margin: 30px 0 0 0;
+    }
+    .about-inner .about-researcher {
+        padding: 50px 0;
+    }
+    .about-researcher .img-holder {
+        max-width: 440px;
+        margin: 50px auto;
+    }
+    .about-researcher .img-holder .ellipse {
+        top: 50%;
+        transform: translate(0, -50%);
+        max-width: 390px;
+        left: -100px;
+    }
+    .about-vision-box span {
+        max-width: 120px;
+    }
+    .about-vision-box .text-box {
+        padding-left: 20px;
+    }
+    .about-vision-box .text-box h4 {
+        font-size: 28px;
+        padding: 0 0 15px 0;
+    }
+    .about-vision-box .text-box p {
+        margin: 15px 0 0 0;
+        font-size: 14px;
+    }
+    .about-vision-box.about-vision-box-second {
+        margin-top: 30px;
+    }
+    .about-vision-box {
+        padding: 50px 40px;
+        max-width: 580px;
+    }
+    .about-advocacy-box {
+        height: 232px;
+        width: 232px;
+    }
+    .about-advocacy-box span {
+        max-width: 60px;
+    }
+    .about-advocacy-box h4 {
+        font-size: 18px;
+        margin: 14px 0;
+    }
+    .governors-inner .image-holder {
+        max-width: 230px;
+        height: 230px;
+        padding: 50px;
+    }
+    .governors-inner .text-box {
+        padding-left: 15px;
+    }
+    .governors-sec {
+        padding: 50px 0;
+    }
+    .support-governors-sec .governors-inner .text-box .btn-default {
+        margin: 0;
+        max-width: 205px;
+        height: 60px;
+    }
+    .about-hull-logo {
+        margin: 40px 0;
+    }
+    .about-text p {
+        font-size: 14px;
+    }
+    .about-box .image-holder {
+        max-width: 300px;
+        margin: 0px auto 60px;
+    }
+    .about-box .image-holder .image-shape {
+        right: -40px;
+        max-width: 270px;
+    }
+    .about-hull-sec {
+        padding: 120px 0 0;
+    }
+    .contact-sec {
+        padding: 110px 0 5px;
+    }
+    .contact-social {
+        margin: 30px 0 50px 0;
+    }
+    .contact-inner .text-box h4 {
+        font-size: 16px;
+    }
+    .contact-inner .text-box {
+        margin: 15px 0 0 0;
+    }
+    .faq-sec {
+        padding: 110px 0 0;
+    }
+    .accordion-item {
+        margin-bottom: 15px;
+    }
+    .faq-popup {
+        padding: 30px;
+    }
+    .faq-popup h4 {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+    .faq-popup p {
+        font-size: 14px;
+        margin-bottom: 20px;
+        line-height: 26px;
+    }
+    .event-main {
+        padding: 110px 0 0px;
+    }
+    .event-card .btn {
+        font-size: 20px;
+        height: 50px;
+        border-radius: 25px 5px;
+        max-width: 160px;
+        margin: 0 auto;
+    }
+    .event-card-right {
+        max-width: 170px;
+        width: 100%;
+        text-align: center;
+    }
+    .event-card ul li span {
+        font-size: 14px;
+    }
+    .event-card {
+        padding: 30px 30px;
+    }
+    .our-team-box,
+    .our-team-box.educational-box {
+        padding: 62px 0;
+    }
+    .clinical-team-box .text-box h4 {
+        font-size: 18px;
+    }
+    .clinical-team-box .text-box p {
+        font-size: 16px;
+        margin: 8px 0;
+    }
+    .governors-inner .text-box h4 {
+        font-size: 36px;
+    }
+    .governors-inner .image-holder {
+        max-width: 160px;
+        height: 160px;
+        padding: 30px;
+    }
+    .ringLeft {
+        max-width: 100%;
+    }
+    .ringLeft img {
+        width: 100%;
+    }
+
+    .ringLeft .ellipse {
+        left: -35px;
+        max-width: 100%;
+    }
+    .eventDetail .ringLeft {
+        margin-bottom: 100px;
+    }
+    .eventDetail .detail {
+        margin-top: 40px;
+    }
+    .about-event .img-holder {
+        margin-bottom: 40px;
+    }
+    .about-event .img-holder img {
+        width: 100%;
+    }
+    .eventDetail-right {
+        padding: 0;
+    }
+    .media-participate {
+        flex-direction: column;
+    }
+    .media-participate .participant {
+        flex: inherit;
+    }
+    .training-course-sec {
+        padding: 120px 0 65px;
+    }
+    .training-course-sec .content p {
+        font-size: 16px;
+    }
+}
+@media (max-width: 767px) {
+    .container,
+    .container-sm {
+        max-width: 100%;
+    }
+    .banner-sec {
+        margin: 0 0 -250px 0;
+    }
+    .banner-inner .text-box {
+        padding-left: 0;
+    }
+    .banner-inner .text-box h1 {
+        font-size: 40px;
+    }
+    .banner-inner .text-box p {
+        font-size: 16px;
+        margin: 10px 0;
+        max-width: 100%;
+        line-height: 26px;
+    }
+    .banner-bg {
+        top: 45px;
+        max-width: 430px;
+        left: -12px;
+    }
+    .banner-inner .image-holder {
+        float: none;
+        margin: 40px auto 0px;
+        max-width: 500px;
+    }
+    .banner-inner .image-holder img {
+        max-width: 100%;
+    }
+    .event-shape {
+        display: none;
+    }
+    .upcoming-event-sec {
+        padding: 270px 0 100px 0;
+    }
+    .upcoming-event-inner h3 {
+        margin: 0 0 50px 0;
+        font-size: 28px;
+    }
+    .upcoming-event-inner .text-box span {
+        font-size: 14px;
+    }
+    .upcoming-event-inner .image-holder {
+        max-width: 400px;
+        margin: 40px auto 0;
+    }
+    .image-shape {
+        left: -63px;
+        max-width: 310px;
+    }
+    .title img {
+        height: 120px;
+    }
+    .title h3 {
+        font-size: 24px;
+    }
+    .title p {
+        font-size: 14px;
+    }
+    .courses-box-first {
+        margin: 0 0 30px 0;
+    }
+    .courses-box-last {
+        margin: 0;
+    }
+    .courses-detail {
+        padding: 50px 20px;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+    .courses-detail span {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    .courses-detail h4 {
+        font-size: 22px;
+        margin-top: 40px;
+    }
+    .training-courses-box .text-box p {
+        line-height: 24px;
+        font-size: 16px;
+    }
+    .newsletter-inner h4 {
+        font-size: 20px;
+        margin: 0 0 20px 0;
+    }
+    .newsletter-inner form {
+        max-width: 400px;
+    }
+    .newsletter-inner {
+        padding: 40px 30px;
+        border-radius: 120px 0px;
+    }
+    .footer-link {
+        padding: 0;
+    }
+    .footer-text {
+        margin: 0 0 30px 0;
+    }
+    .text-footer {
+        margin: 0 0 30px 0;
+    }
+    .copyright p {
+        font-size: 16px;
+    }
+    .second-banner-sec .text-box {
+        padding-left: 0;
+    }
+    .second-banner-sec {
+        padding: 30px 0;
+    }
+    .second-banner-sec .text-box h2 {
+        font-size: 40px;
+    }
+    .second-banner-sec .image-holder {
+        padding-right: 0;
+        max-width: 340px;
+        margin: 20px auto -150px;
+    }
+    .second-banner-shape {
+        display: none;
+    }
+    .about-us-sec {
+        padding: 140px 0 0;
+    }
+    .about-researcher .img-holder {
+        max-width: 330px;
+        margin: 50px auto;
+    }
+    .about-researcher .img-holder .ellipse {
+        max-width: 290px;
+        left: -80px;
+    }
+    .about-vision-box span {
+        max-width: 100px;
+    }
+    .about-vision-box .text-box {
+        padding-left: 15px;
+    }
+    .about-vision-box {
+        padding: 40px 20px;
+        border-radius: 100px 0px;
+        max-width: 580px;
+    }
+    .about-advocacy {
+        padding: 50px 0 0 0;
+    }
+    .about-advocacy-box {
+        height: 240px;
+        width: 240px;
+        margin: 15px auto;
+    }
+    .about-read {
+        margin: 30px auto 0;
+    }
+    .about-read-box h4 {
+        font-size: 20px;
+    }
+    .about-read-box p br {
+        display: none;
+    }
+    .governors-inner {
+        flex-direction: column;
+    }
+    .governors-inner .image-holder {
+        margin-bottom: 30px;
+    }
+    .support-governors-sec .governors-inner .text-box p {
+        margin: 15px 0;
+        font-size: 14px;
+    }
+    .governors-sec {
+        padding: 50px 0 0;
+    }
+    .about-box .image-holder {
+        max-width: 360px;
+        margin: 0px auto 60px;
+    }
+    .about-box .image-holder .image-shape {
+        right: -50px;
+        max-width: 310px;
+    }
+    .faq-sec {
+        padding: 140px 0 0;
+    }
+    .faq-popup {
+        padding: 30px 15px;
+    }
+    .faq-close-icon img {
+        height: 25px;
+    }
+    .faq-close-icon {
+        margin: 0 0 39px 0;
+    }
+    .event-card {
+        padding: 30px 30px;
+        flex-direction: column;
+    }
+    .event-card-right {
+        max-width: 100%;
+        width: 100%;
+        text-align: center;
+        margin: 30px 0 0 0;
+    }
+    .event-main {
+        padding: 150px 0 0px;
+    }
+    .event-card ul {
+        margin: 0 -10px;
+    }
+    .eventTabs li {
+        margin: 0 8px -5px;
+    }
+    .eventTabs li a {
+        font-size: 18px;
+        line-height: 24px;
+        padding: 9px;
+    }
+    .ringLeft .ellipse {
+        left: -15px;
+    }
+    .eventDetail .action {
+        flex-wrap: wrap;
+    }
+    .eventDetail .action li {
+        padding: 10px;
+    }
+    .card-warning {
+        padding: 15px;
+    }
+    .card-warning i {
+        line-height: 1;
+        width: 30px;
+        margin-right: 15px;
+    }
+    .card-warning .media-body {
+        font-size: 14px;
+    }
+    .reflective-duration .nav-pills .nav-item {
+        margin: 0 8px;
+    }
+    .about-researcher {
+        padding: 112px 0 75px 0;
+    }
+    .popup-courses {
+        padding: 58px 30px 30px 30px;
+    }
+    .popup-courses .close {
+        position: absolute;
+        top: 8px;
+        right: 20px;
+    }
+    .popup-courses .close img {
+        height: 30px;
+    }
+    .title-course {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .title-course .card-title.card-title-courses {
+        margin-bottom: 20px;
+    }
+}
+@media (max-width: 575px) {
+    .upcoming-event-inner .image-holder {
+        max-width: 260px;
+        margin: 40px auto 0;
+    }
+    .image-shape {
+        left: -39px;
+        max-width: 200px;
+    }
+    .training-courses-sec {
+        padding: 0;
+    }
+    .newsletter-inner {
+        padding: 30px 20px;
+        border-radius: 50px 0px;
+    }
+    .newsletter-inner h4 {
+        font-size: 18px;
+        margin: 0 0 15px 0;
+    }
+    .newsletter-inner form .form-control {
+        font-size: 16px;
+        height: 55px;
+    }
+    .newsletter-inner form a {
+        height: 45px;
+        max-width: 90px;
+        right: 5px;
+        font-size: 13px;
+    }
+    .footer-text p {
+        font-size: 14px;
+        margin-bottom: 15px;
+        line-height: 20px;
+    }
+    .footer-link ul li {
+        margin: 0 0 10px 0;
+    }
+    .footer-link {
+        margin-bottom: 30px;
+    }
+    .footer-social h4 {
+        margin-bottom: 15px;
+    }
+    .footer-detail {
+        margin: 0 0 30px 0;
+    }
+    .about-us-top .text-box p {
+        font-size: 14px;
+        line-height: 24px;
+    }
+    .about-researcher .img-holder {
+        max-width: 230px;
+        margin: 50px auto 0;
+    }
+    .about-researcher .img-holder .ellipse {
+        max-width: 200px;
+        left: -50px;
+    }
+    .about-vision-box {
+        padding: 30px 20px;
+        border-radius: 65px 0px;
+    }
+    .about-vision-box span {
+        max-width: 75px;
+    }
+    .about-vision-box .text-box h4 {
+        font-size: 22px;
+        padding: 0 0 10px 0;
+    }
+    .about-vision-box .text-box h4:after {
+        height: 3px;
+        max-width: 170px;
+    }
+    .about-vision-box .text-box p {
+        margin: 10px 0 0 0;
+        font-size: 14px;
+        line-height: 18px;
+    }
+    .about-box .image-holder {
+        max-width: 250px;
+        margin: 0px auto 60px;
+    }
+    .about-box .image-holder .image-shape {
+        right: -35px;
+        max-width: 220px;
+    }
+    .about-text h4 {
+        font-size: 22px;
+        margin-bottom: 20px;
+        padding: 0 0 15px 0;
+    }
+    .about-text h4:after {
+        max-width: 160px;
+    }
+    .contact-sec {
+        padding: 140px 0 5px;
+    }
+    .contact-left .heading-second h3 {
+        padding: 0 0 14px 0;
+        font-size: 22px;
+    }
+    .contact-info ul li span {
+        margin-right: 15px;
+    }
+    .form-group .form-control {
+        height: 65px;
+        padding-left: 15px;
+        font-size: 14px;
+    }
+    .form-group textarea.form-control {
+        height: 140px;
+        padding-top: 20px;
+    }
+    .contact-right .form-group .btn-default {
+        height: 65px;
+    }
+    .second-banner-sec .text-box h2 {
+        font-size: 30px;
+    }
+    .accordion-button::after {
+        width: 13px;
+        height: 8px;
+        right: 10px;
+    }
+    .accordion-button {
+        padding: 20px 30px 20px 15px;
+        font-size: 16px;
+    }
+    .accordion-body p {
+        line-height: 20px;
+    }
+    .faq-close-icon {
+        margin: 0 0 25px 0;
+    }
+    .event-card {
+        padding: 30px 15px;
+        margin: 0 auto 30px;
+        flex-direction: column;
+    }
+    .event-card .desc {
+        font-size: 18px;
+        line-height: 26px;
+        margin-bottom: 15px;
+    }
+    .event-card ul li {
+        padding: 10px 10px;
+    }
+    .our-team-box .image-holder {
+        margin-top: 30px;
+    }
+    .heading-second p {
+        font-size: 16px;
+    }
+    .heading-second h3 {
+        font-size: 28px;
+        padding-bottom: 12px;
+    }
+    .clinical-team-box {
+        padding: 15px 0;
+    }
+    .operations-team-sec {
+        padding: 40px 0 0 0;
+    }
+    .governors-inner .text-box h4 {
+        font-size: 30px;
+    }
+    .governors-inner .text-box p {
+        margin: 20px 0 20px 0;
+    }
+    .eventTabs li {
+        margin: 0 4px -5px;
+    }
+    .eventTabs li a {
+        font-size: 16px;
+        line-height: 22px;
+        padding: 9px;
+    }
+    .eventDetail .dateTime {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .eventDetail .dateTime li {
+        margin-bottom: 8px;
+    }
+    .eventDetail .action li {
+        flex: 0 0 100%;
+        width: 100%;
+    }
+    .eventDetail .action li a.cta-default-outline,
+    .eventDetail .action li a,
+    .eventDetail .action li a.cta-default-outline.back-btn {
+        width: 100%;
+        max-width: 100%;
+    }
+    .reflective-card p {
+        font-size: 14px;
+    }
+    .card-warning {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .card-warning i {
+        margin-bottom: 14px;
+    }
+    .reflective-duration h5 {
+        font-size: 16px;
+    }
+    .reflective-duration h5 img {
+        height: 18px;
+    }
+    .reflective-duration .nav-pills .nav-item .nav-link {
+        font-size: 16px;
+    }
+    .check {
+        font-size: 14px;
+    }
+    .duration-inner ul li {
+        margin: 0 4px;
+    }
+    .btn-default {
+        max-width: 184px;
+        height: 50px;
+        font-size: 16px;
+    }
+    .media-participate .media-body,
+    .media-participate .participant {
+        padding: 20px;
+    }
+    .researcher-heading p {
+        font-size: 14px;
+    }
+    .media-participate {
+        margin-bottom: 20px;
+    }
+    .participate-research .researcher-heading h3,
+    .participate-research .researcher-heading {
+        margin-bottom: 30px;
+    }
+    .form-group .form-control {
+        height: 50px;
+        padding-left: 15px;
+        font-size: 14px;
+    }
+    .form-group {
+        margin: 8px 0;
+    }
+    .researchContact .researcher-heading h3 {
+        font-size: 26px;
+        text-transform: capitalize;
+        margin-bottom: 10px;
+    }
+    .researchContact .researcher-heading {
+        margin: 35px 0;
+    }
+    .form-group .btn-default {
+        height: 60px;
+    }
+    .contact h4,
+    .researcher-heading h3 {
+        font-size: 26px;
+        text-transform: capitalize;
+    }
+    .second-banner-sec .text-box p {
+        font-size: 14px;
+    }
+    .trainingCourses,
+    .courses-description {
+        padding: 40px 0;
+    }
+    .popup-courses {
+        padding: 30px 20px;
+    }
+    .training-course-sec .content p{
+        font-size: 14px;
+        margin-bottom: 20px;
+    }.training-course-sec {
+        padding: 120px  0 0;
+    }
+    .courses-description{
+        padding-top: 0;
+    }
+    .researcher-heading h3{
+        margin-bottom: 20px;
+    }
+    .event-card{
+        padding: 10px;
+    }
+    .courses-description .researcher-heading{
+        margin-bottom: 0;
+    }
+    .researcher-sec{
+        padding: 0 0 35px;
+    }
+    .trainingCourses{
+        padding-bottom: 0;
+    }
+}
+@media (max-width: 374px) {
+    .banner-inner .text-box h1 {
+        font-size: 30px;
+    }
+    .banner-inner .text-box p {
+        font-size: 14px;
+        margin: 10px 0;
+        line-height: 22px;
+    }
+    .banner-sec {
+        margin: 0 0 -150px 0;
+    }
+    .upcoming-event-sec {
+        padding: 180px 0 100px 0;
+    }
+    .upcoming-event-inner h3 {
+        margin: 0 0 30px 0;
+        font-size: 28px;
+    }
+    .upcoming-event-inner .image-holder {
+        max-width: 210px;
+        margin: 40px auto 0;
+    }
+    .image-shape {
+        left: -31px;
+        max-width: 170px;
+    }
+    .newsletter-inner form .form-control {
+        font-size: 14px;
+    }
+    .second-banner-sec .image-holder {
+        padding-right: 0;
+        max-width: 260px;
+        margin: 20px auto -110px;
+    }
+    .about-us-sec {
+        padding: 90px 0 0;
+    }
+    .about-us-top .text-inner ul li span {
+        max-width: 50px;
+        width: 100%;
+        margin-right: 10px;
+    }
+    .about-inner .about-researcher .content h4 {
+        margin-bottom: 10px;
+        font-size: 20px;
+    }
+    .about-researcher .img-holder {
+        max-width: 200px;
+        margin: 50px auto 0;
+    }
+    .about-researcher .img-holder .ellipse {
+        max-width: 190px;
+        left: -40px;
+    }
+    .about-vision-box {
+        padding: 25px 15px;
+        border-radius: 45px 0px;
+    }
+    .about-vision-box {
+        padding: 25px 15px;
+        border-radius: 45px 0px;
+    }
+    .about-vision-box .text-box h4 {
+        font-size: 18px;
+    }
+    .support-governors-sec .governors-inner .text-box h4 {
+        font-size: 20px;
+        padding: 0 0 20px 0;
+    }
+    .about-box .image-holder {
+        max-width: 220px;
+        margin: 0px auto 60px;
+    }
+    .about-box .image-holder .image-shape {
+        right: -35px;
+        max-width: 200px;
+    }
+    .contact-sec {
+        padding: 105px 0 5px;
+    }
+    .contact-info ul li {
+        font-size: 14px;
+        margin: 0 0 20px 0;
+    }
+    .contact-socail-media {
+        margin: 20px 0 0 0;
+    }
+    .contact-inner .text-box h4 {
+        font-size: 14px;
+        line-height: 24px;
+    }
+    .faq-sec {
+        padding: 100px 0 0;
+    }
+    .accordion-button {
+        font-size: 14px;
+    }
+    .accordion-body {
+        padding: 15px;
+    }
+    .accordion-body p {
+        font-size: 12px;
+        margin: 0 0 5px 0;
+    }
+    .accordion-body a {
+        font-size: 14px;
+    }
+    .faq-popup h4 {
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+    .faq-popup p {
+        font-size: 14px;
+        margin-bottom: 20px;
+        line-height: 24px;
+    }
+    .faq-popup p {
+        font-size: 14px;
+        margin-bottom: 20px;
+        line-height: 24px;
+    }
+    .check {
+        font-size: 12px;
+    }
+}
