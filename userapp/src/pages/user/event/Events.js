@@ -227,15 +227,16 @@ export default function Events() {
                                                 <div class="event-icons">
                                                     <label><img src="images/date.png" alt="date" />{data.start_date}</label>
                                                     <label><img src="images/time.png" alt="time" />{data.start_time} - {data.end_time}</label>
-                                                    {data.location && <label><img src="images/location.png" alt="location" />{data.location}</label>}
+                                                    {data.location && <label><img src="images/location.png" alt="location" />{data.location.substring(0, 10)}</label>}
                                                 </div>
-                                                <h3> {data.title}</h3>
+                                                {data.title && <h3>{data.title.substring(0, 120)} </h3>}
                                                 <Link to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}>
                                                     Read more...
                                                 </Link>                                                
                                             </div>
                                             <div class="media-right">
                                                 {data.cost && <h4>${data.cost}</h4>}
+                                                {(data.purchase_type == 'unpaid') && <h4>Free</h4>}
                                                 {data.event_purchase_id && <Link class="thm-btn" to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}>
                                                     View
                                                 </Link>}

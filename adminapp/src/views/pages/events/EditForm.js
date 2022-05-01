@@ -29,7 +29,7 @@ import $ from 'jquery';
 import usePlacesAutocomplete, { getGeocode, getLatLng, } from "use-places-autocomplete";
 import { setTimeout } from 'core-js/web';
 import TimezoneSelect from 'react-timezone-select'
-import NestedArray from "./nestedFieldArray";
+import NestedArray from "./EditnestedFieldArray";
 
 const AddEditForm = ({ match }) => {
   const [active, setActive] = useState(0)
@@ -71,6 +71,8 @@ const AddEditForm = ({ match }) => {
   const session_purchase_type_selected = watch("session_purchase_type");
   const session_type_selected = watch("session_type"); 
 
+  const [groupSessionData, setGroupSessionData] = useState([]);
+
   const [eventId, setEventId] = React.useState(0);
   const [setectimage, setSetectimage] = React.useState(0);
   const [selectedFile, setSelectedFile] = useState();
@@ -79,8 +81,8 @@ const AddEditForm = ({ match }) => {
   const [selectedSpeakerFile, setSelectedSpeakerFile] = useState();
   const [showReflect, setShowReflect] = React.useState(0);
 
-  const [selectSessionimage, setSelectSessionimage] = React.useState(0);
-  const [selectedSessionFile, setSelectedSessionFile] = useState();
+  // const [selectSessionimage, setSelectSessionimage] = React.useState(0);
+  // const [selectedSessionFile, setSelectedSessionFile] = useState();
   
 
   const [contentEditor, setContentEditor] = useState();
@@ -90,16 +92,16 @@ const AddEditForm = ({ match }) => {
     setContentEditor(content);
   }
 
-  const changeSessionImageFileHandler = (event) => {
-    if (event.target.files && event.target.files[0]) {
-      var reader = new FileReader();
-      reader.onload = (event) => {
-        setSelectSessionimage(event.target.result);
-      };
-      reader.readAsDataURL(event.target.files[0]);
-      setSelectedSessionFile(event.target.files[0]);
-    }
-  };  
+  // const changeSessionImageFileHandler = (event) => {
+  //   if (event.target.files && event.target.files[0]) {
+  //     var reader = new FileReader();
+  //     reader.onload = (event) => {
+  //       setSelectSessionimage(event.target.result);
+  //     };
+  //     reader.readAsDataURL(event.target.files[0]);
+  //     setSelectedSessionFile(event.target.files[0]);
+  //   }
+  // };  
 
   const changeFileHandler = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -267,7 +269,10 @@ const AddEditForm = ({ match }) => {
       axios.post(api_url + "/event/getEventDataById", { event_id: match.params.id }, {})
         .then((result) => {
           if (result.data.status) {
+
+            
             var eventdata = result.data.response.data;
+            console.log(eventdata.start_date);
             setFormValue("title", eventdata.title);
             $("#start_date").val(eventdata.start_date)
             $("#end_date").val(eventdata.end_date)
@@ -295,6 +300,8 @@ const AddEditForm = ({ match }) => {
             setFormValue("session_image", eventdata.session_image);
             setFormValue("session_purchase_type", eventdata.session_purchase_type);
             setFormValue("session_cost", eventdata.session_cost);
+
+            setGroupSessionData(eventdata.group_session)
 
             // if (eventdata.timezone) {
             //   setSelectedTimezone(JSON.parse(eventdata.timezone))
@@ -335,7 +342,7 @@ const AddEditForm = ({ match }) => {
             //   if (index > 0) {
             //     webPageAppend({})
             //   }
-            // });           
+            // });
 
             if (eventdata.group_session.length > 0) {
               setShowReflect(1)
@@ -346,8 +353,6 @@ const AddEditForm = ({ match }) => {
               eventdata.group_session.forEach((item, index) => {
                // $("#start_time_" + index).val(item.session_start_time)
                // $("#end_date").val(eventdata.end_date)
-                console.log(item.session_start_time);
-
                 session_start_time.push({ "value": item.session_start_time })
                 session_end_time.push({ "value": item.session_end_time })
                 session_timezone.push({ "value": item.session_timezone })
@@ -360,13 +365,11 @@ const AddEditForm = ({ match }) => {
                 });
                 setTimeout(() => {
                   session_start_time.forEach((item, index) => {
-                    console.log('===============');
-                    console.log(item.value);
-                    setFormValue(`sessionStartTime.${index}.value`, item.value);
+                    setFormValue(`sessionStartTime.${index}.value`, new Date(Date.parse(item.value)));
                   });
-                  // session_end_time.forEach((item, index) => {
-                  //   setFormValue(`sessionEndTime.${index}.value`, item.value);
-                  // });
+                  session_end_time.forEach((item, index) => {
+                    setFormValue(`sessionEndTime.${index}.value`, new Date(Date.parse(item.value)));
+                  });
                   session_timezone.forEach((item, index) => {
                     setFormValue(`sessionTimezone.${index}.value`, item.value);
                   });
@@ -995,7 +998,7 @@ const AddEditForm = ({ match }) => {
                             ></Controller>
                           </CFormGroup>
                         </CCol>
-                        <CCol xs="4">
+                        {/* <CCol xs="4">
                           <CFormGroup>
                             <CLabel htmlFor="title">No of sessions <span className="label-validation">*</span></CLabel>
                             <Controller
@@ -1011,7 +1014,7 @@ const AddEditForm = ({ match }) => {
                               )}
                             ></Controller>
                           </CFormGroup>
-                        </CCol>
+                        </CCol> */}
                         <CCol xs="4">
                           <button type="button" className="btn btn-success mt-4" onClick={() => addReflectiveSessions()}>Submit</button>
                         </CCol>
@@ -1032,9 +1035,8 @@ const AddEditForm = ({ match }) => {
 
                               <NestedArray
                                 nestIndex={index}
-                                no_of_sessions_selected={no_of_sessions_selected}
-                                editdata={item.session_data}
-                                {...{ control, register, errors }}
+                                editdata={groupSessionData}
+                                {...{ setFormValue, control, register, errors }}
                               />
 
                               <CCol xs="12">
@@ -1176,7 +1178,7 @@ const AddEditForm = ({ match }) => {
                           </CCol>
                         </CRow>}
 
-                      <CRow>
+                      {/* <CRow>
                         <CCol xs="12">
                           <CFormGroup>
                             <CLabel htmlFor="ccnumber">Sessions Image</CLabel>
@@ -1193,7 +1195,7 @@ const AddEditForm = ({ match }) => {
                             </span>
                           </CFormGroup>
                         </CCol>
-                      </CRow>
+                      </CRow> */}
 
                       <CRow>
                         <CCol xs="12">

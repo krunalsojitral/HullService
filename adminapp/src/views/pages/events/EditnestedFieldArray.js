@@ -1,25 +1,38 @@
 import React from "react";
-import { useFieldArray, Controller } from "react-hook-form";
-import {   
+import { useForm, useFieldArray, Controller } from "react-hook-form";
+import {    
   CCol,
-  CFormGroup,
+  CFormGroup,  
   CRow
 } from '@coreui/react'
 import ReactDatePicker from 'react-datepicker';
+import { setTimeout } from "core-js/web/immediate";
+import $ from 'jquery';
+//no_of_sessions_selected
+export default ({ nestIndex, editdata, setFormValue, control, register, errors }) => {
 
-export default ({ nestIndex, control, register, errors }) => {
+  React.useEffect(() => {   
 
-  React.useEffect(() => { 
+    if (editdata[nestIndex] && editdata[nestIndex].session_data && editdata[nestIndex].session_data.length > 0){
+      var datas = editdata[nestIndex].session_data;
+      var session_date = [];
 
-      //let arr = Array.apply(null, { length: (no_of_sessions_selected) }).map(Number.call, Number);
-      // fields.forEach((item, index) => {
-      //   remove()
-      // });
-      let arr = [1]
-
-      arr.forEach((item, index) => {
-        append({ field1: "field1" })
+      datas.forEach((item, index) => {
+        $("#time_" + nestIndex + index).val(item.value)
+        session_date.push({ "value": item.value })
       });
+
+      if (session_date.length > 0) {
+        session_date.forEach((item, index) => {
+          append({})
+        });
+        setTimeout(() => {
+          session_date.forEach((item, index) => {
+            setFormValue(`time[${nestIndex}].nestedArray[${index}].value`, new Date(Date.parse(item.value)));
+          });
+        }, 500);
+      }
+    }  
     
   }, []);
 
@@ -47,7 +60,7 @@ export default ({ nestIndex, control, register, errors }) => {
                       <Controller
                         name={`time[${nestIndex}].nestedArray[${k}].value`}
                         control={control}
-                        id={"time_" + k}
+                        id={"time_" + nestIndex + k}
                         render={({ field: { onChange, value } }) => (
                           <ReactDatePicker
                             className="form-control"

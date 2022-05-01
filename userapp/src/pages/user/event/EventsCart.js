@@ -144,13 +144,15 @@ export default function EventsCart() {
             </section>
 
             <section className="dashboard-card">
-                <div className="container-fluid">
+                <div className="container-fluid" style={{'background':'#fff'}}>
                     <div className="row">
-                        <div className="col-md-2 side-col">
+                        {/* <div className="col-md-2 side-col">
                             <Sidebar />
-                        </div>
+                        </div> */}
+                        <div className="col-md-1"></div>
 
                         <div className="col-md-10">
+                            <br/>
                             <div className="Event-List">
                                 <div className="row">
                                     <div className="col-md-12">
@@ -175,7 +177,7 @@ export default function EventsCart() {
 
                                             <h4>Contact information</h4>
 
-                                            {!token && <h5>Continue as guest or <a onClick={(e) => loginClick(eventDetail.event_id)}>login</a> for a faster experience.</h5>}
+                                            {!token && <h5>Continue as guest or <a style={{'cursor':'pointer', 'color':'blue'}} onClick={(e) => loginClick(eventDetail.event_id)}>login</a> for a faster experience.</h5>}
 
                                             <hr />
 
@@ -278,7 +280,7 @@ export default function EventsCart() {
 
 
 
-                                                            <div className="form-group checkbox">
+                                                            {/* <div className="form-group checkbox">
                                                                 <Controller
                                                                     control={control}
                                                                     name="terms_condition"
@@ -301,9 +303,9 @@ export default function EventsCart() {
                                                                 {errors.terms_condition && errors.terms_condition.type === "required" && (
                                                                     <small className="error">This is required.</small>
                                                                 )}
-                                                            </div>
+                                                            </div> */}
 
-                                                            <div className="form-group checkbox">
+                                                            {/* <div className="form-group checkbox">
                                                                 <Controller
                                                                     control={control}
                                                                     name="subscribe"
@@ -322,7 +324,7 @@ export default function EventsCart() {
                                                                     )}
                                                                 />
                                                                 <span>&nbsp;Send me emails about the best events happening nearby or online.</span><br />
-                                                            </div>
+                                                            </div> */}
 
 
                                                             <button type="submit" className="sign-btn">Register</button>
@@ -331,15 +333,14 @@ export default function EventsCart() {
 
                                                     </form>
                                                 </div>
-
                                             </div>
-
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        <div className="col-md-2"></div>
 
 
                     </div>

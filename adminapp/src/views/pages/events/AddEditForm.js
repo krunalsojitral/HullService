@@ -28,6 +28,7 @@ import Swal from "sweetalert2";
 import usePlacesAutocomplete, { getGeocode, getLatLng, } from "use-places-autocomplete";
 import TimezoneSelect from 'react-timezone-select'
 import NestedArray from "./nestedFieldArray";
+import Search from "./search";
 
 const AddEditForm = ({ match }) => {
   const [active, setActive] = useState(0)
@@ -35,7 +36,6 @@ const AddEditForm = ({ match }) => {
   const [cityError, setCityError] = React.useState('');
   const [showReflect, setShowReflect] = React.useState(0);
 
-  const [sessionCity, setSessionCity] = React.useState('');
   const [timezoneList, setTimezoneList] = React.useState([]);
 
   React.useEffect(() => {
@@ -70,15 +70,15 @@ const AddEditForm = ({ match }) => {
   const purchase_type_selected = watch("purchase_type");
   const event_type_selected = watch("event_type");
   const session_type_selected = watch("session_type");  
-  const no_of_sessions_selected = watch("no_of_sessions");
+  //const no_of_sessions_selected = watch("no_of_sessions");
   const no_of_group_selected = watch("no_of_group");  
   const session_purchase_type_selected = watch("session_purchase_type");
 
   const [selectimage, setSelectimage] = React.useState(0);
   const [selectedFile, setSelectedFile] = useState();
 
-  const [selectSessionimage, setSelectSessionimage] = React.useState(0);
-  const [selectedSessionFile, setSelectedSessionFile] = useState();
+  // const [selectSessionimage, setSelectSessionimage] = React.useState(0);
+  // const [selectedSessionFile, setSelectedSessionFile] = useState();
 
   const [selectSpeakerImage, setSelectSpeakerImage] = React.useState(0);
   const [selectedSpeakerFile, setSelectedSpeakerFile] = useState();
@@ -99,16 +99,16 @@ const AddEditForm = ({ match }) => {
     }
   };
 
-  const changeSessionImageFileHandler = (event) => {
-    if (event.target.files && event.target.files[0]) {
-      var reader = new FileReader();
-      reader.onload = (event) => {
-        setSelectSessionimage(event.target.result);
-      };
-      reader.readAsDataURL(event.target.files[0]);
-      setSelectedSessionFile(event.target.files[0]);
-    }
-  };
+  // const changeSessionImageFileHandler = (event) => {
+  //   if (event.target.files && event.target.files[0]) {
+  //     var reader = new FileReader();
+  //     reader.onload = (event) => {
+  //       setSelectSessionimage(event.target.result);
+  //     };
+  //     reader.readAsDataURL(event.target.files[0]);
+  //     setSelectedSessionFile(event.target.files[0]);
+  //   }
+  // };
 
   const changeSpeakerFileHandler = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -159,12 +159,13 @@ const AddEditForm = ({ match }) => {
   }
 
   const addInformationAct = async (data) => {
+
+    console.log(data);
+    return;
     data.timezone = selectedTimezone;
     data.location = city;
     data.description = contentEditor;
     
-
-    console.log(data);
     const formData = new FormData();
     formData.append("data", JSON.stringify(data));
     if (selectedFile) {
@@ -175,9 +176,9 @@ const AddEditForm = ({ match }) => {
       formData.append("speaker_image", selectedSpeakerFile, selectedSpeakerFile.name);
     }
 
-    if (selectedSessionFile) {
-      formData.append("session_image", selectedSessionFile, selectedSessionFile.name);
-    }
+    // if (selectedSessionFile) {
+    //   formData.append("session_image", selectedSessionFile, selectedSessionFile.name);
+    // }
 
    
 
@@ -189,12 +190,11 @@ const AddEditForm = ({ match }) => {
       }
     }
 
-    console.log(formData);
 
     axios.post(api_url + "/event/addEventByadmin", formData, {}).then((result) => {
       if (result.data.status) {
         Swal.fire("Success!", result.data.response.msg, "success");
-        history.push("/events");
+       // history.push("/events");
       } else {
         Swal.fire("Oops...", result.data.response.msg, "error");
       }
@@ -213,8 +213,6 @@ const AddEditForm = ({ match }) => {
       setActive(tab);
     }
   }
-
-
 
   const { fields: session, append: sessionAppend, remove: sessionRemove } = useFieldArray({
     control,
@@ -289,9 +287,9 @@ const AddEditForm = ({ match }) => {
     }
   };
 
-  const sessionhandleInput = (e) => {
-    setValue(e.target.value);
-    setSessionCity(e.target.value);
+  const sessionLocationhandleInput = (e) => {
+    console.log(e);
+    //setValue(e.target.value);
   };
 
   const addReflectiveSessions = () => {   
@@ -326,13 +324,11 @@ const AddEditForm = ({ match }) => {
     ({ description }) =>
       () => {
         // When user selects a place, we can replace the keyword without request data from API
-        // by setting the second parameter to "false"    
-        console.log(description);
-
+        // by setting the second parameter to "false"
+            
         setValue(description, false);
         setCity(description);
         clearSuggestions();
-
 
         // Get latitude and longitude via utility functions
         getGeocode({ address: description })
@@ -541,12 +537,36 @@ const AddEditForm = ({ match }) => {
                             <Controller
                               name={"speaker_name"}
                               control={control}
+                             // rules={{ required: true }}
                               render={({ field: { onChange, value } }) => (
                                 <CInput
                                   type="text"
                                   onChange={onChange}
                                   value={value}
                                   placeholder={`Enter speaker name`}
+                                />
+                              )}
+                            ></Controller>
+                          </CFormGroup>
+                          {/* {errors.speaker_name && errors.speaker_name.type === "required" && (
+                            <p style={{ color: "red", fontSize: "12px" }}>Speaker name is required.</p>
+                          )} */}
+                        </CCol>
+                      </CRow>
+
+                      <CRow>
+                        <CCol xs="12">
+                          <CFormGroup>
+                            <CLabel htmlFor="Organization">Speaker Email</CLabel>
+                            <Controller
+                              name={"speaker_email"}
+                              control={control}
+                              render={({ field: { onChange, value } }) => (
+                                <CInput
+                                  type="text"
+                                  onChange={onChange}
+                                  value={value}
+                                  placeholder={`Enter speaker email`}
                                 />
                               )}
                             ></Controller>
@@ -617,24 +637,55 @@ const AddEditForm = ({ match }) => {
                           )}
                         </CCol>
                       </CRow>
-
+                     
                       {event_type_selected === 'offline' &&
                         <CRow>
                           <CCol xs="12">
                             <CFormGroup>
-                              <CLabel htmlFor="title">Location</CLabel>
+                              <CLabel htmlFor="role">Location</CLabel>
+                              <Controller
+                                name={"session_location"}
+                                control={control}
+                                render={({ field: { onChange, value } }) => (
+                                  <Search 
+                                    value={value}
+                                    onChange={onChange} />
+                                )}
+                              ></Controller>
+                            </CFormGroup>
+
+                            {/* <CFormGroup>
+                              <CLabel htmlFor="title"> Session Location</CLabel>
                               <div ref={ref}>
                                 <input
                                   value={cityValue}
-                                  onChange={handleInput}
+                                  onChange={sessionLocationhandleInput}
                                   disabled={!ready}
                                   placeholder="Address *"
                                   className="form-control input"
                                 />
-                                {status === "OK" && <ul className="suggestion">{renderSuggestions()}</ul>}
+                                {status === "OK" && <ul className="suggestion">{renderSuggestions('session_location')}</ul>}
                                 {cityError && <small className="error">{cityError}</small>}
                               </div>
-                            </CFormGroup>
+                            </CFormGroup> */}
+
+                            
+                            {/* <CFormGroup>
+                              <CLabel htmlFor="Location">Location <span className="label-validation">*</span></CLabel>
+                              <Controller
+                                name={"session_location"}
+                                control={control}
+                                rules={{ required: true }}
+                                render={({ field: { onChange, value } }) => (
+                                  <CInput
+                                    type="text"
+                                    onChange={onChange}
+                                    value={value}
+                                    placeholder={`Enter your location`}
+                                  />
+                                )}
+                              ></Controller>
+                            </CFormGroup> */}                           
                           </CCol>
                         </CRow> }
                      
@@ -779,7 +830,7 @@ const AddEditForm = ({ match }) => {
                             ></Controller>
                           </CFormGroup>                          
                         </CCol>
-                        <CCol xs="4">
+                        {/* <CCol xs="4">
                           <CFormGroup>
                             <CLabel htmlFor="title">No of sessions <span className="label-validation">*</span></CLabel>
                             <Controller
@@ -795,7 +846,7 @@ const AddEditForm = ({ match }) => {
                               )}
                             ></Controller>
                           </CFormGroup>                          
-                        </CCol>
+                        </CCol> */}
                         <CCol xs="4">                          
                           <button type="button" className="btn btn-success mt-4" onClick={() => addReflectiveSessions()}>Submit</button>
                         </CCol>
@@ -815,10 +866,11 @@ const AddEditForm = ({ match }) => {
 
                               <NestedArray
                                 nestIndex={index}
-                                item={item.id}
-                                no_of_sessions_selected={no_of_sessions_selected}
+                                editdata=""
+                               // no_of_sessions_selected={2}
                                 {...{ control, register, errors }}
                               />
+                              
 
                               <CCol xs="12">
                                 <CRow>
@@ -912,6 +964,10 @@ const AddEditForm = ({ match }) => {
 
                                 </CRow>
                               </CCol>
+
+                             
+
+
                               <hr />
                             </div>
                           ))}
@@ -946,7 +1002,7 @@ const AddEditForm = ({ match }) => {
                               <div ref={ref}>
                                 <input
                                   value={cityValue}
-                                  onChange={sessionhandleInput}
+                                  onChange={handleInput}
                                   disabled={!ready}
                                   placeholder="Address *"
                                   className="form-control input"
@@ -958,7 +1014,7 @@ const AddEditForm = ({ match }) => {
                           </CCol>
                         </CRow>}
 
-                      <CRow>
+                      {/* <CRow>
                         <CCol xs="12">
                           <CFormGroup>
                             <CLabel htmlFor="ccnumber">Sessions Image</CLabel>
@@ -975,7 +1031,7 @@ const AddEditForm = ({ match }) => {
                             </span>
                           </CFormGroup>
                         </CCol>
-                      </CRow>
+                      </CRow> */}
 
                       <CRow>
                         <CCol xs="12">

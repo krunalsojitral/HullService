@@ -33,7 +33,9 @@ export default function MyEvents() {
                 if (eventdatas.length > 0) {
                     setEventData(eventdatas);
                     setNoresult(false);
-                } 
+                } else{
+                    setNoresult(true);
+                }
             } else {
                 Swal.fire('Oops...', result.data.response.msg, 'error')
             }
@@ -81,6 +83,21 @@ export default function MyEvents() {
                                         </div>
                                     </div>
                                 ))}
+
+                            {noresult &&
+                                // <div className="blog-box">
+                                //     <div className="no-data">
+                                //         <img src="images/hull-no-results.png" alt="author" />
+                                //         No blog available.
+                                //     </div>
+                                // </div>
+                                <div>
+                                    <center>
+                                        <img height="250px" width="350px" src="images/hull-no-results.png" alt="author" />
+                                        <div className="no-data">No results found.</div>
+                                    </center>
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>

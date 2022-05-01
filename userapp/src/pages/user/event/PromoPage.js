@@ -33,16 +33,33 @@ export default function PromoPage() {
             headers: { Authorization: `${token}` }
         };
 
-        axios.post(api_url + '/event/getEventDataById', { event_id: event_id }).then((result) => {
-            if (result.data.status) {
-                var eventdata = result.data.response.data;
-                seteventDetail(eventdata);
-            } else {
-                Swal.fire('Oops...', result.data.response.msg, 'error')
-            }
-        }).catch((err) => {
-            console.log(err);
-        })
+        if (token) { 
+            axios.post(api_url + '/event/getEventDataByIdWithLogin', { event_id: event_id }, config).then((result) => {
+                if (result.data.status) {
+                    var eventdata = result.data.response.data;
+                    seteventDetail(eventdata);
+                } else {
+                    Swal.fire('Oops...', result.data.response.msg, 'error')
+                }
+            }).catch((err) => {
+                console.log(err);
+            })
+        }else{
+            axios.post(api_url + '/event/getEventDataById', { event_id: event_id }).then((result) => {
+                if (result.data.status) {
+                    var eventdata = result.data.response.data;
+                    seteventDetail(eventdata);
+                } else {
+                    Swal.fire('Oops...', result.data.response.msg, 'error')
+                }
+            }).catch((err) => {
+                console.log(err);
+            })
+        }
+
+   
+
+        
 
     }, [])
 
@@ -105,7 +122,8 @@ export default function PromoPage() {
                                     <div className="row">
                                         <div className="col-sm-12">
                                             <div className="media">
-                                                <img src="images/event-page.png" alt="event-page"/>
+                                                {!eventDetail.image && <img alt="event-page" src="images/event-page.png" />}
+                                                {eventDetail.image && <img alt="event-page" src={eventDetail.image} />}
                                                     <div className="media-body">
                                                         <div className="media-left">
                                                             <div className="avatar">
@@ -117,27 +135,29 @@ export default function PromoPage() {
                                                             <div className="event-icons">
                                                                 <label><img src="images/date.png" alt="date"/>{eventDetail.start_date}</label>
                                                                 <label><img src="images/time.png" alt="time"/>{eventDetail.start_time} - {eventDetail.end_time}</label>
-                                                                {eventDetail.location && <label><img src="images/location.png" alt="location"/>{eventDetail.location}</label>}
+                                                            {eventDetail.location && <label><img src="images/location.png" alt="location" />{eventDetail.location.substring(0, 40)}</label>}
                                                             </div>
                                                         </div>
                                                         <div className="media-right">
-                                                            <h4>${eventDetail.cost}</h4>                                                         
+                                                            {eventDetail.cost && <h4>${eventDetail.cost}</h4>}                                                         
+                                                            {eventDetail.purchase_type == 'unpaid' && <h4>Free</h4>}                                                         
                                                             {eventDetail.event_purchase_id && <div className="media-button">
                                                             
                                                             {/* onClick={(e) => zoomJoin(eventDetail.event_id)}  */}
-                                                            <a target="_blank" href='https://us05web.zoom.us/j/83577607247?pwd=Zy9hYlpKa2RUV0l2OGxCZlBOUXhWQT09' className="thm-btn">Join Meeting</a>
+                                                            {/* <a target="_blank" href='https://us05web.zoom.us/j/83577607247?pwd=Zy9hYlpKa2RUV0l2OGxCZlBOUXhWQT09' className="thm-btn">Join Meeting</a> */}
+                                                            <a target="_blank" href='javascript:;' className="thm-btn">Join Meeting</a>
                                                             </div>}
                                                             {!eventDetail.event_purchase_id && <div className="media-button">
                                                                 <a onClick={(e) => cartEvent(eventDetail.event_id, eventDetail.cost)} className="thm-btn">Register for <br />events only</a>
-                                                                <a href="javascript:;" onClick={() => history.goBack()} className="thm-btn-outline">Back</a>
+                                                                {/* <a href="javascript:;" onClick={() => history.goBack()} className="thm-btn-outline">Back</a> */}
                                                                 <a href="javascript:;" onClick={(e) => cartEvent(eventDetail.event_id, (eventDetail.cost + eventDetail.session_cost))} className="thm-btn-outline">Register for Event and <br />
                                                                     Reflection Pracice Session</a>
                                                             </div>}
                                                         </div>
 
-                                                        <div>
+                                                        {/* <div>
                                                             {joinMeeting ? (
-                                                                <div> dfsdfsdfsdf
+                                                                <div> 
                                                                     <Zoom />
                                                                 </div>
                                                             ) : (
@@ -145,7 +165,7 @@ export default function PromoPage() {
                                                                     <button style={{ border: '1px solid #fff' }} onClick={() => setJoinMeeting(true)}>Join Meeting</button>
                                                                 </div>
                                                             )}
-                                                        </div> 
+                                                        </div>  */}
                                                         
                                                     </div>
                                             </div>
@@ -158,7 +178,11 @@ export default function PromoPage() {
                                         <div className="col-sm-12">
                                             <div className="event-media">
                                                 <div className="media">
-                                                    <img src="images/event-detail.png" alt=""/>
+
+                                                    
+                                                    {!eventDetail.speaker_image && <img alt="event-page" src="images/event-detail.png" />}
+                                                    {eventDetail.speaker_image && <img alt="event-page" src={eventDetail.speaker_image} />}
+                                                    {/* <img src="images/event-detail.png" alt=""/> */}
                                                         <div className="media-body">
                                                             <h5>About {eventDetail.speaker_name}</h5>
                                                             <p dangerouslySetInnerHTML={{ __html: eventDetail.session_about }}></p>

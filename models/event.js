@@ -11,16 +11,18 @@ function User() {
   this.addEventByadmin = function (record, resources, callback) {
     connection.acquire(function (err, con) {
       const sql =
-        "INSERT INTO event(title,description,location,event_type,video_link,timezone,image,speaker_name,speaker_image,start_date,end_date,purchase_type,cost,about_speaker,status,created_at,session_title,session_about,session_group_count,session_count,session_type,session_location,session_image,session_purchase_type,session_cost) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25) RETURNING *";
+        "INSERT INTO event(title,description,location,event_type,zoom_host_link,zoom_join_link,timezone,image,speaker_name,speaker_email,speaker_image,start_date,end_date,purchase_type,cost,about_speaker,status,created_at,session_title,session_about,session_group_count,session_count,session_type,session_location,session_purchase_type,session_cost) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26) RETURNING *";
       const values = [
         record.title,
         record.description,
         record.location,
         record.event_type,
-        record.video_link,
+        record.zoom_host_link,
+        record.zoom_join_link,
         record.timezone,
         record.image,
         record.speaker_name,
+        record.speaker_email,
         record.speaker_image,
         //record.category,
         record.start_date,
@@ -36,7 +38,6 @@ function User() {
         record.session_count,
         record.session_type,
         record.session_location,
-        record.session_image,
         record.session_purchase_type,
         record.session_cost
       ];
@@ -136,8 +137,8 @@ function User() {
               callback(err, null);
             }else{
 
-              var sqlevent = "UPDATE event_promo SET promo_title =$1,promo_description =$2,promo_image=$3 where event_id = $3";
-              con.query(sqlevent, [promo_record.promo_title, promo_record.promo_description, promo_record.promo_image, event_id], function (err, results) {});
+              // var sqlevent = "UPDATE event_promo SET promo_title =$1,promo_description =$2,promo_image=$3 where event_id = $3";
+              // con.query(sqlevent, [promo_record.promo_title, promo_record.promo_description, promo_record.promo_image, event_id], function (err, results) {});
 
               if (group_session.length > 0) {
                 sqlq = 'SELECT * FROM event_group_session where event_id = $1';
@@ -145,10 +146,30 @@ function User() {
                   if (groupresult.rows.length > 0){
                     con.query('DELETE FROM event_group_session where event_id = $1', [event_id], function (err, results) { 
                       group_session.map((data) => {
-                        var records = { title: data.title, description: data.description, url: data.url, event_id: event_id, };
-                        const sql = "INSERT INTO event_group_session(title,description,url,event_id) VALUES($1,$2,$3,$4) RETURNING *";
-                        const values = [records.title, records.description, records.url, event_id,];
+
+                        var records = {
+                          session_start_time: data.session_start_time,
+                          session_end_time: data.session_end_time,
+                          session_timezone: data.session_timezone,
+                          session_no_of_participate: data.session_no_of_participate,
+                          session_data: data.session_data,
+                          event_id: result.rows[0].event_id,
+                        };
+                        const sql = "INSERT INTO event_group_session(session_start_time,session_end_time,session_timezone,session_no_of_participate,session_data,event_id) VALUES($1,$2,$3,$4,$5,$6) RETURNING *";
+                        const values = [
+                          records.session_start_time,
+                          records.session_end_time,
+                          records.session_timezone,
+                          records.session_no_of_participate,
+                          records.session_data,
+                          records.event_id,
+                        ];
                         con.query(sql, values, function (err, result) { });
+
+                        // var records = { title: data.title, description: data.description, url: data.url, event_id: event_id, };
+                        // const sql = "INSERT INTO event_group_session(title,description,url,event_id) VALUES($1,$2,$3,$4) RETURNING *";
+                        // const values = [records.title, records.description, records.url, event_id,];
+                        // con.query(sql, values, function (err, result) { });
                       });
                     });
                   }else{
@@ -277,7 +298,20 @@ function User() {
 
   this.getEventDataById = function (id, callback) {
     connection.acquire(function (err, con) {
-      con.query('SELECT * FROM event left join event_purchase on event.event_id = event_purchase.event_id where event.event_id = $1', [id], function (err, result) {
+      con.query('SELECT * FROM event where event.event_id = $1', [id], function (err, result) {
+        con.release();
+        if (err) {
+          callback(err, null);
+        } else {
+          callback(null, result.rows);
+        }
+      });
+    });
+  }
+
+  this.getEventDataByIdWithLogin = function (user_id, id, callback) {
+    connection.acquire(function (err, con) {
+      con.query('SELECT * FROM event left join event_purchase on event.event_id = event_purchase.event_id and event_purchase.user_id = $1 where event.event_id = $2', [user_id, id], function (err, result) {
         con.release();
         if (err) {
           callback(err, null);

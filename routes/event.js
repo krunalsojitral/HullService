@@ -67,7 +67,6 @@ router.post("/addEventByadmin", function (req, res) {
         });
       }
     }
-
   });
 
   form.parse(req, function (err, fields, files) {
@@ -87,35 +86,35 @@ router.post("/addEventByadmin", function (req, res) {
 
       var record = {
         title: parsed.title,
-        description: parsed.description,
-        status: parsed.status,
-        location: (parsed.location) ? parsed.location: '',
-       // category: parsed.category,
-        speaker_name: parsed.speaker_name,
-        speaker_image: '',
-        about_speaker: parsed.about_speaker,
-        purchase_type: parsed.purchase_type,
-        timezone: parsed.event_timezone,
-        event_type: parsed.event_type,
-        video_link: (parsed.video_link) ? parsed.video_link: '',
-        cost: parsed.cost,
         start_date: start_date,
         end_date: end_date,
-        created_at: moment().format("YYYY-MM-DD"),
-        group_session: [],
+        timezone: parsed.event_timezone,
+        description: parsed.description,
+        speaker_name: parsed.speaker_name,
+        speaker_email: parsed.speaker_email,
+        speaker_image: '',        
+        about_speaker: parsed.about_speaker,
+        event_type: parsed.event_type,
+        location: (parsed.location) ? parsed.location : '',
         image: "",
+        purchase_type: parsed.purchase_type,
+        cost: parsed.cost,
+        zoom_host_link: '',
+        zoom_join_link:'',
+        status: parsed.status,        
+        group_session: [],        
         session_title: parsed.session_title,
         session_about: parsed.session_about,
         session_group_count: parsed.no_of_group,
-        session_count: parsed.no_of_sessions,
         session_type: parsed.session_type,
         session_location: parsed.session_location,
         session_image: parsed.session_image,
         session_purchase_type: parsed.session_purchase_type,
-        session_cost: parsed.session_cost
+        session_cost: parsed.session_cost,
+        created_at: moment().format("YYYY-MM-DD"),
       };
 
-      console.log(parsed.sessionStartTime);
+      //console.log(parsed.sessionStartTime);
       for (let i = 0; i < parsed.sessionStartTime.length; i++) {
         var session_d = [];
         for (let m = 0; m < parsed.time[i].nestedArray.length; m++) {
@@ -125,7 +124,7 @@ router.post("/addEventByadmin", function (req, res) {
           session_d.push(datas);
         }
         var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(session_d), 'mypassword').toString();
-        console.log(parsed.sessionStartTime[i].value);
+        //console.log(parsed.sessionStartTime[i].value);
         let data = {
           session_start_time: (parsed.sessionStartTime[i].value) ? moment(parsed.sessionStartTime[i].value).format("h:mm a") : '' ,
           session_end_time: (parsed.sessionEndTime[i].value) ? moment(parsed.sessionEndTime[i].value).format("h:mm a") : '',
@@ -135,8 +134,8 @@ router.post("/addEventByadmin", function (req, res) {
         };
         record.group_session.push(data);
       }
-      console.log(record);
-      console.log('=============');
+      // console.log(record);
+      // console.log('=============');
       parsed.videoURL.map((el) => {
         let data = {
           path: el.value,
@@ -226,31 +225,31 @@ router.post("/addEventByadmin", function (req, res) {
             //     done1(err, overview);
             //   }
             // },
-            function (overview, done1) {
-              if (typeof files.session_image !== "undefined") {
-                let file_ext = files.session_image.name.split(".").pop();
-                let filename = Date.now() + "-" + files.session_image.name.split(" ").join("");
-                let tmp_path = files.session_image.path;
-                if (file_ext == "png" || file_ext == "PNG" || file_ext == "jpg" || file_ext == "JPG" || file_ext == "jpeg" || file_ext == "JPEG") {
-                  fs.rename(tmp_path, path.join(__dirname, env.EVENT_PATH + filename), function (err) {
-                    if (err) {
-                      record.session_image = filename;
-                      done1("Image upload error", overview)
-                    } else {
-                      record.session_image = filename;
-                      overview["session_image"] = filename;
-                      done1(err, overview);
-                    }
-                  });
-                } else {
-                  return res.json({ status: 0, response: { msg: "Only image with jpg, jpeg and png format are allowed", } });
-                }
-              } else {
-                overview["image"] = "";
-                done1(err, overview);
-              }
-            },
-            function (overview, done1) {
+            // function (overview, done1) {
+            //   if (typeof files.session_image !== "undefined") {
+            //     let file_ext = files.session_image.name.split(".").pop();
+            //     let filename = Date.now() + "-" + files.session_image.name.split(" ").join("");
+            //     let tmp_path = files.session_image.path;
+            //     if (file_ext == "png" || file_ext == "PNG" || file_ext == "jpg" || file_ext == "JPG" || file_ext == "jpeg" || file_ext == "JPEG") {
+            //       fs.rename(tmp_path, path.join(__dirname, env.EVENT_PATH + filename), function (err) {
+            //         if (err) {
+            //           record.session_image = filename;
+            //           done1("Image upload error", overview)
+            //         } else {
+            //           record.session_image = filename;
+            //           overview["session_image"] = filename;
+            //           done1(err, overview);
+            //         }
+            //       });
+            //     } else {
+            //       return res.json({ status: 0, response: { msg: "Only image with jpg, jpeg and png format are allowed", } });
+            //     }
+            //   } else {
+            //     overview["image"] = "";
+            //     done1(err, overview);
+            //   }
+            // },
+            function (overview, done2) {
               if (typeof files.speaker_image !== "undefined") {
                 let file_ext = files.speaker_image.name.split(".").pop();
                 let filename = Date.now() + "-" + files.speaker_image.name.split(" ").join("");
@@ -259,11 +258,11 @@ router.post("/addEventByadmin", function (req, res) {
                   fs.rename(tmp_path, path.join(__dirname, env.EVENT_PATH + filename), function (err) {
                     if (err) {
                       record.speaker_image = filename;
-                      done1("Image upload error", overview)
+                      done2("Image upload error", overview)
                     } else {
                       record.speaker_image = filename;
                       overview["speaker_image"] = filename;
-                      done1(err, overview);
+                      done2(err, overview);
                     }
                   });
                 } else {
@@ -271,16 +270,90 @@ router.post("/addEventByadmin", function (req, res) {
                 }
               } else {
                 overview["speaker_image"] = "";
-                done1(err, overview);
+                done2(err, overview);
               }
             },
-            function (overview, done2) {
+            function (overview, done3) { 
+
+              if (record.event_type == 'online'){
+                const payload = {
+                  iss: 'o4xds6wbTjiKWl7swm19aA',
+                  exp: ((new Date()).getTime() + 500000000000)
+                };
+                const token = jwt.sign(payload, 'vKLGTPvGdubOtar8VD4UlWmVhZTAyoZIK1Td');
+                const email = "dipika.letsnurture@gmail.com";
+                var options = {
+                  method: "POST",
+                  uri: "https://api.zoom.us/v2/users/" + email + "/meetings",
+                  body: {
+                    topic: record.title,
+                    type: 1,
+                    settings: {
+                      host_video: "true",
+                      participant_video: "true"
+                    }
+                  },
+                  auth: {
+                    bearer: token
+                  },
+                  headers: {
+                    "User-Agent": "Zoom-api-Jwt-Request",
+                    "content-type": "application/json"
+                  },
+                  json: true //Parse the JSON string in the response
+                };
+                requestPromise(options).then(function (response) {
+                  console.log('=================');
+                  console.log(response);
+                  record.zoom_host_link = response.start_url
+                  record.zoom_join_link = response.join_url
+
+                  var eventLink;
+                  var home_url;
+                  var hostname = req.headers.host;
+
+                  if (hostname == env.LOCAL_HOST_USER_APP) {
+                    home_url = env.APP_URL;
+                    eventLink = response.start_url;
+                  } else {
+                    home_url = env.APP_URL;
+                    eventLink = response.start_url;
+                  }
+
+                  var htmlUser = fs.readFileSync(__dirname + '/templates/event/EventSpeakerURL.html', 'utf8');
+                  var dynamicHtml = {
+                    home_url: home_url,
+                    fullname: record.speaker_name,
+                    eventLink: eventLink
+                  }
+                  var view = { data: dynamicHtml };
+                  var finalHtmlUser = mustache.render(htmlUser, view);
+                  let transporter = nodemailer.createTransport(nodeMailerCredential); // node mailer credentials
+                  let mailOptions1 = {
+                    from: env.MAIL_FROM, // sender address
+                    to: record.speaker_email,
+                    subject: 'Your Event Join Link',
+                    html: finalHtmlUser.replace(/&#x2F;/g, '/')
+                  };
+                  transporter.sendMail(mailOptions1, (error, info) => {
+                    if (error) {} else {}
+                  });
+                  done3(err, overview);
+                })
+                .catch(function (err) {
+                  done3(err, overview);
+                });
+              }else{
+                done3(err, overview);
+              }
+            },
+            function (overview, done4) {
               setTimeout(() => {
                 Event.addEventByadmin(record, resources, function (err, data) {
                   if (err) {
-                    done2(err, data);
+                    done4(err, data);
                   } else {
-                    done2(err, data);
+                    done4(err, data);
                   }
                 });
               }, 100);
@@ -377,7 +450,7 @@ router.post('/getEventDataById', [check('event_id', 'Event is required').notEmpt
     asyn.waterfall([
       function (done) {
         Event.getEventDataById(event_id, function (err, result) {
-          console.log(result);
+          
           if (err) {
             done({ 'status': 0, 'response': { 'msg': 'Something went wrong.' } });
           } else {
@@ -509,6 +582,150 @@ router.post('/getEventDataById', [check('event_id', 'Event is required').notEmpt
   }
 });
 
+router.post('/getEventDataByIdWithLogin', passport.authenticate('jwt', { session: false }), [check('event_id', 'Event is required').notEmpty()], (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    var error = errors.array();
+    res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+  } else {
+    let event_id = req.body.event_id;
+    asyn.waterfall([
+      function (done) {
+        var user_id = req.user.id;
+        Event.getEventDataByIdWithLogin(user_id, event_id, function (err, result) {
+
+          if (err) {
+            done({ 'status': 0, 'response': { 'msg': 'Something went wrong.' } });
+          } else {
+            var imageLink;
+            if (req.headers.host == env.ADMIN_LIVE_URL) {
+              imageLink = env.ADMIN_LIVE_URL;
+            } else {
+              imageLink = env.ADMIN_LIVE_URL;
+            }
+            let event = {};
+            event['event_id'] = event_id;
+            event['title'] = result[0].title;
+            event['description'] = result[0].description;
+            event['start_date'] = (result[0].start_date) ? moment(result[0].start_date).format('YYYY/MM/DD h:mm a') : '';
+            event['end_date'] = (result[0].end_date) ? moment(result[0].end_date).format('YYYY/MM/DD h:mm a') : '';
+            event['user_start_date'] = (result[0].start_date) ? moment(result[0].start_date).format('MMM Do YYYY h:mm a') : '';
+            event['user_end_date'] = (result[0].end_date) ? moment(result[0].end_date).format('MMM Do YYYY h:mm a') : '';
+            event['start_time'] = (result[0].start_date) ? moment(result[0].start_date).format('h:mm a') : '';
+            event['end_time'] = (result[0].end_date) ? moment(result[0].end_date).format('h:mm a') : '';
+            event['location'] = result[0].location;
+            event['about_speaker'] = result[0].about_speaker;
+            event['event_type'] = result[0].event_type;
+            event['video_link'] = result[0].video_link;
+            event['timezone'] = result[0].timezone;
+            event['speaker_name'] = result[0].speaker_name;
+            event['speaker_image'] = (result[0].speaker_image) ? imageLink + env.EVENT_VIEW_PATH + result[0].speaker_image : '';
+            event['image'] = (result[0].image) ? imageLink + env.EVENT_VIEW_PATH + result[0].image : '';
+            event['status'] = result[0].status;
+            event['cost'] = result[0].cost;
+            event['purchase_type'] = result[0].purchase_type;
+            event['event_purchase_id'] = result[0].event_purchase_id;
+            event['session_title'] = result[0].session_title;
+            event['session_image'] = (result[0].session_image) ? imageLink + env.EVENT_VIEW_PATH + result[0].session_image : '';
+            event['session_about'] = result[0].session_about;
+            event['session_group_count'] = result[0].session_group_count;
+            event['session_count'] = result[0].session_count;
+            event['session_type'] = result[0].session_type;
+            event['session_location'] = result[0].session_location;
+            event['session_purchase_type'] = result[0].session_purchase_type;
+            event['session_cost'] = result[0].session_cost;
+            event['group_session'] = [];
+            event['videoURL'] = [];
+            event['webPageUrl'] = [];
+            event['resource'] = [];
+            done(err, event)
+          }
+        });
+      },
+      function (event, done1) {
+        if (event['event_id'] != '') {
+          Event.getGroupSessionByEventId(event['event_id'], function (err, result) {
+            if (result && result.length > 0) {
+              event['group_session'] = result;
+              done1(null, event)
+            } else {
+              done1(null, event)
+            }
+          });
+        } else {
+          done1(null, event)
+        }
+      },
+      function (event, done2) {
+        if (event['event_id'] != '') {
+          Event.getVideoByEventId(event['event_id'], function (err, result) {
+            if (result && result.length > 0) {
+              event['videoURL'] = result;
+              done2(null, event)
+            } else {
+              done2(null, event)
+            }
+          });
+        } else {
+          done2(null, event)
+        }
+      },
+      function (event, done3) {
+        if (event['event_id'] != '') {
+          Event.getWebURLByEventId(event['event_id'], function (err, result) {
+            if (result && result.length > 0) {
+              event['webPageUrl'] = result;
+              done3(null, event)
+            } else {
+              done3(null, event)
+            }
+          });
+        } else {
+          done3(null, event)
+        }
+      },
+      function (event, done4) {
+        if (event['event_id'] != '') {
+          Event.getResourceByEventId(event['event_id'], function (err, result) {
+            if (result && result.length > 0) {
+              var imageLink;
+              if (req.headers.host == env.ADMIN_LIVE_URL) {
+                imageLink = env.ADMIN_LIVE_URL;
+              } else {
+                imageLink = env.ADMIN_LIVE_URL;
+              }
+              var obj = result.map((data, index) => {
+                let retObj = {};
+                retObj['event_resource_id'] = data.event_resource_id;
+                retObj['file'] = (data.path) ? imageLink + env.EVENT_VIEW_PATH + data.path : '';
+                retObj['name'] = data.path;
+                retObj['type'] = data.file_type;
+                retObj['event_id'] = data.event_id;
+                return retObj;
+              });
+              event['resource'] = obj;
+              done4(null, event)
+            } else {
+              done4(null, event)
+            }
+          });
+        } else {
+          done4(null, event)
+        }
+      }
+    ],
+      function (error, event) {
+        if (error) {
+          return res.json({ 'status': 0, 'response': { 'msg': error } });
+        } else {
+          return res.json({ 'status': 1, 'response': { 'data': event, 'msg': 'data found' } });
+        }
+      });
+
+  }
+});
+
+
 router.post("/updateEventByadmin", function (req, res) {
   var form = new formidable.IncomingForm();
   form.multiples = true;
@@ -589,16 +806,36 @@ router.post("/updateEventByadmin", function (req, res) {
     var update_value = [obj.title, obj.description, obj.location, obj.speaker_name, obj.about_speaker, obj.purchase_type, obj.cost, start_date, end_date, obj.timezone, obj.event_type, obj.video_link];
       var group_session = []
 
-      if (obj.sessionTitle.length > 0){
-        for (let i = 0; i < obj.sessionTitle.length; i++) {
-          let data = {
-            title: obj.sessionTitle[i].value,
-            description: obj.sessionDescription[i].value,
-            url: obj.sessionURL[i].value,
-          };
-          group_session.push(data);
-        }
+    for (let i = 0; i < obj.sessionStartTime.length; i++) {
+      var session_d = [];
+      for (let m = 0; m < obj.time[i].nestedArray.length; m++) {
+        let datas = {
+          value: obj.time[i].nestedArray[m].value
+        };
+        session_d.push(datas);
       }
+      var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(session_d), 'mypassword').toString();
+      //console.log(obj.sessionStartTime[i].value);
+      let data = {
+        session_start_time: (obj.sessionStartTime[i].value) ? moment(obj.sessionStartTime[i].value).format("h:mm a") : '',
+        session_end_time: (obj.sessionEndTime[i].value) ? moment(obj.sessionEndTime[i].value).format("h:mm a") : '',
+        session_no_of_participate: obj.sessionNoOfParticipate[i].value,
+        session_timezone: obj.sessionTimezone[i].value,
+        session_data: ciphertext
+      };
+      record.group_session.push(data);
+    }
+
+      // if (obj.sessionTitle.length > 0){
+      //   for (let i = 0; i < obj.sessionTitle.length; i++) {
+      //     let data = {
+      //       title: obj.sessionTitle[i].value,
+      //       description: obj.sessionDescription[i].value,
+      //       url: obj.sessionURL[i].value,
+      //     };
+      //     group_session.push(data);
+      //   }
+      // }
       if (obj.videoURL.length > 0) {
         obj.videoURL.map((el) => {
           if (el.value){
@@ -656,31 +893,31 @@ router.post("/updateEventByadmin", function (req, res) {
             done(err, overview);
           }
         },
-        function (overview, done1) {
-          if (typeof files.promo_image !== "undefined") {
-            let file_ext = files.promo_image.name.split(".").pop();
-            let filename = Date.now() + "-" + files.promo_image.name.split(" ").join("");
-            let tmp_path = files.promo_image.path;
+        // function (overview, done1) {
+        //   if (typeof files.promo_image !== "undefined") {
+        //     let file_ext = files.promo_image.name.split(".").pop();
+        //     let filename = Date.now() + "-" + files.promo_image.name.split(" ").join("");
+        //     let tmp_path = files.promo_image.path;
 
-            if (file_ext == "png" || file_ext == "PNG" || file_ext == "jpg" || file_ext == "JPG" || file_ext == "jpeg" || file_ext == "JPEG") {
-              fs.rename(tmp_path, path.join(__dirname, env.EVENT_PATH + filename), function (err) {
-                if (err) {
-                  promo_record.promo_image = filename;
-                  done1("Image upload error", overview)
-                } else {
-                  promo_record.promo_image = filename;
-                  overview["promo_image"] = filename;
-                  done1(err, overview);
-                }
-              });
-            } else {
-              return res.json({ status: 0, response: { msg: "Only image with jpg, jpeg and png format are allowed" } });
-            }
-          } else {
-            overview["promo_image"] = "";
-            done1(err, overview);
-          }
-        },
+        //     if (file_ext == "png" || file_ext == "PNG" || file_ext == "jpg" || file_ext == "JPG" || file_ext == "jpeg" || file_ext == "JPEG") {
+        //       fs.rename(tmp_path, path.join(__dirname, env.EVENT_PATH + filename), function (err) {
+        //         if (err) {
+        //           promo_record.promo_image = filename;
+        //           done1("Image upload error", overview)
+        //         } else {
+        //           promo_record.promo_image = filename;
+        //           overview["promo_image"] = filename;
+        //           done1(err, overview);
+        //         }
+        //       });
+        //     } else {
+        //       return res.json({ status: 0, response: { msg: "Only image with jpg, jpeg and png format are allowed" } });
+        //     }
+        //   } else {
+        //     overview["promo_image"] = "";
+        //     done1(err, overview);
+        //   }
+        // },
         function (overview, done1) {
           if (typeof files.speaker_image !== "undefined") {
             let file_ext = files.speaker_image.name.split(".").pop();
@@ -977,6 +1214,7 @@ router.post('/getUnpaidEventList', function (req, res) {
         retObj['title'] = data.title;
         retObj['description'] = data.description;
         retObj['location'] = data.location;
+        retObj['purchase_type'] = data.purchase_type;
         retObj['speaker_name'] = data.speaker_name;
         retObj['speaker_image'] = (data.speaker_image) ? imageLink + env.EVENT_VIEW_PATH + data.speaker_image : '';
         retObj['cost'] = data.cost;
@@ -1073,6 +1311,14 @@ function getDateArr(arr) {
 
 router.post('/eventRegisterWithUser', passport.authenticate('jwt', { session: false }), function (req, res) {
   loggerData(req);
+
+  var imageLink;
+  if (req.headers.host == env.ADMIN_LIVE_URL) {
+    imageLink = env.ADMIN_LIVE_URL;
+  } else {
+    imageLink = env.ADMIN_LIVE_URL;
+  }
+
   var event_id = req.body.event_id
   var email = req.user.email;
   var first_name = req.user.first_name;
@@ -1094,11 +1340,11 @@ router.post('/eventRegisterWithUser', passport.authenticate('jwt', { session: fa
         
         if (hostname == env.LOCAL_HOST_USER_APP) {
           home_url = env.APP_URL;
-          eventLink = env.APP_URL + 'event-detail?id=' + event_id;
+          eventLink = env.APP_URL + 'event-promo?id=' + event_id;
           admin_app_url = env.ADMIN_APP_URL;
         } else {
           home_url = env.APP_URL;
-          eventLink = env.APP_URL + 'event-detail?id=' + event_id;
+          eventLink = env.APP_URL + 'event-promo?id=' + event_id;
           admin_app_url = env.ADMIN_APP_URL;
         }
 
@@ -1109,9 +1355,9 @@ router.post('/eventRegisterWithUser', passport.authenticate('jwt', { session: fa
           fullname: first_name,
           eventLink: eventLink,
           event_title: eventdata[0].title,
-          start_date: moment(eventdata[0].start_date).format('MMM DD, YYYY') + "at" + moment(eventdata[0].start_time).format('hh:mm a') + "-" + moment(eventdata[0].end_date).format('MMM DD, YYYY') + "at" + moment(eventdata[0].end_time).format('hh:mm a') ,
-          event_price: (eventdata[0].cost > 0) ? eventdata[0].cost : 'Free',
-          event_image: eventdata[0].event_image,
+          start_date: moment(eventdata[0].start_date).format('MMM DD, YYYY') + " at " + moment(eventdata[0].start_date).format('hh:mm a') + "  -  " + moment(eventdata[0].end_date).format('MMM DD, YYYY') + " at " + moment(eventdata[0].end_date).format('hh:mm a') ,
+          event_price: (eventdata[0].cost > 0) ? '$'+eventdata[0].cost : 'Free',
+          event_image: (eventdata[0].image) ? imageLink + env.EVENT_VIEW_PATH + eventdata[0].image : ''
         }
 
         var view = { data: dynamicHtml };
@@ -1124,7 +1370,7 @@ router.post('/eventRegisterWithUser', passport.authenticate('jwt', { session: fa
           html: finalHtmlUser.replace(/&#x2F;/g, '/')
         };
 
-        console.log(mailOptions1);
+       
         transporter.sendMail(mailOptions1, (error, info) => {
           if (error) {
             //return res.json({status: 0, response : { msg: 'There was an email error',}  });
@@ -1141,6 +1387,14 @@ router.post('/eventRegisterWithUser', passport.authenticate('jwt', { session: fa
 });
 
 router.post('/eventRegisterWithoutUser', function (req, res) {
+
+  var imageLink;
+  if (req.headers.host == env.ADMIN_LIVE_URL) {
+    imageLink = env.ADMIN_LIVE_URL;
+  } else {
+    imageLink = env.ADMIN_LIVE_URL;
+  }
+
   loggerData(req);
   var event_id = req.body.event_id
   var email = req.body.email;
@@ -1181,26 +1435,26 @@ router.post('/eventRegisterWithoutUser', function (req, res) {
 
             if (hostname == env.LOCAL_HOST_USER_APP) {
               home_url = env.APP_URL;
-              eventLink = env.APP_URL + 'event-detail?id=' + event_id;
+              eventLink = env.APP_URL + 'event-promo?id=' + event_id;
               registerURL = env.APP_URL + 'register?code=' + data[0].email_verification_token
               admin_app_url = env.ADMIN_APP_URL
             } else {
               home_url = env.APP_URL;
-              eventLink = env.APP_URL + 'event-detail?id=' + event_id;
+              eventLink = env.APP_URL + 'event-promo?id=' + event_id;
               registerURL = env.APP_URL + 'register?code=' + data[0].email_verification_token
               admin_app_url = env.ADMIN_APP_URL
             }
 
-            var htmlUser = fs.readFileSync(__dirname + '/templates/event/EventInvitationNewUser.html', 'utf8');
+            var htmlUser = fs.readFileSync(__dirname + '/templates/event/EventInvitation.html', 'utf8');
 
             var dynamicHtml = {
               home_url: home_url,
               fullname: first_name,
-              eventLink: eventLink,
+              eventLink: (eventdata[0].zoom_join_link) ? eventdata[0].zoom_join_link: eventLink,
               event_title: eventdata[0].title,
-              start_date: moment(eventdata[0].start_date).format('MMM DD, YYYY') + "at" + moment(eventdata[0].start_time).format('hh:mm a') + "-" + moment(eventdata[0].end_date).format('MMM DD, YYYY') + "at" + moment(eventdata[0].end_time).format('hh:mm a'),
-              event_price: (eventdata[0].cost > 0) ? eventdata[0].cost : 'Free',
-              event_image: eventdata[0].event_image,
+              start_date: moment(eventdata[0].start_date).format('MMM DD, YYYY') + " at " + moment(eventdata[0].start_date).format('hh:mm a') + "  -  " + moment(eventdata[0].end_date).format('MMM DD, YYYY') + " at " + moment(eventdata[0].end_date).format('hh:mm a'),
+              event_price: (eventdata[0].cost > 0) ? '$'+eventdata[0].cost : 'Free',
+              event_image: (eventdata[0].image) ? imageLink + env.EVENT_VIEW_PATH + eventdata[0].image : ''
             }
 
             if (data[0].role == 4 && data[0].email_verification_token) {
@@ -1233,6 +1487,7 @@ router.post('/eventRegisterWithoutUser', function (req, res) {
         User.addUser(obj, async function (err, data) {
           var eventobj = {
             event_id: event_id,
+            user_id: data[0].id,
             payment_id: (req.body.payment_id) ? req.body.payment_id : '',
             event_purchase_date: moment().format('YYYY-MM-DD')
           }
@@ -1250,27 +1505,28 @@ router.post('/eventRegisterWithoutUser', function (req, res) {
 
                 if (hostname == env.LOCAL_HOST_USER_APP) {
                   home_url = env.APP_URL;
-                  eventLink = env.APP_URL + 'event-detail?id=' + event_id;
+                  eventLink = env.APP_URL + 'event-promo?id=' + event_id;
                   admin_app_url = env.ADMIN_APP_URL
                   registerURL = env.APP_URL + 'register?code=' + obj.email_verification_token
                 } else {
                   home_url = env.APP_URL;
-                  eventLink = env.APP_URL + 'event-detail?id=' + event_id;
+                  eventLink = env.APP_URL + 'event-promo?id=' + event_id;
                   admin_app_url = env.ADMIN_APP_URL
                   registerURL = env.APP_URL + 'register?code=' + obj.email_verification_token
                 }
-                var htmlUser = fs.readFileSync(__dirname + '/templates/event/EventInvitation.html', 'utf8');
-
+                var htmlUser = fs.readFileSync(__dirname + '/templates/event/EventInvitationNewUser.html', 'utf8');
+                
                 var dynamicHtml = {
                   home_url: home_url,
                   fullname: data[0].first_name,
-                  eventLink: eventLink,
+                  eventLink: (eventdata[0].zoom_join_link) ? eventdata[0].zoom_join_link : eventLink, 
                   registerURL: registerURL,
                   event_title: eventdata[0].title,
-                  start_date: moment(eventdata[0].start_date).format('MMM DD, YYYY') + "at" + moment(eventdata[0].start_time).format('hh:mm a') + "-" + moment(eventdata[0].end_date).format('MMM DD, YYYY') + "at" + moment(eventdata[0].end_time).format('hh:mm a'),
-                  event_price: (eventdata[0].cost > 0) ? eventdata[0].cost : 'Free',
-                  event_image: eventdata[0].event_image,
+                  start_date: moment(eventdata[0].start_date).format('MMM DD, YYYY') + " at " + moment(eventdata[0].start_date).format('hh:mm a') + "  -  " + moment(eventdata[0].end_date).format('MMM DD, YYYY') + " at " + moment(eventdata[0].end_date).format('hh:mm a'),
+                  event_price: (eventdata[0].cost > 0) ? '$'+eventdata[0].cost : 'Free',
+                  event_image: (eventdata[0].image) ? imageLink + env.EVENT_VIEW_PATH + eventdata[0].image : ''
                 }
+
                 var view = { data: dynamicHtml };
                 var finalHtmlUser = mustache.render(htmlUser, view);
                 let transporter = nodemailer.createTransport(nodeMailerCredential); // node mailer credentials
@@ -1340,7 +1596,7 @@ function generateSignature(apiKey, apiSecret, meetingNumber, role) {
 
 
 
-router.post("/joinmeeting", (req, res) => {
+router.post("/createSignature", (req, res) => {
   var apiSecret = "vKLGTPvGdubOtar8VD4UlWmVhZTAyoZIK1Td";
   var apiKey = "o4xds6wbTjiKWl7swm19aA";
   var meetingNumber = req.body.meetingNumber;
