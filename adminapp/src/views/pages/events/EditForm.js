@@ -30,6 +30,7 @@ import usePlacesAutocomplete, { getGeocode, getLatLng, } from "use-places-autoco
 import { setTimeout } from 'core-js/web';
 import TimezoneSelect from 'react-timezone-select'
 import NestedArray from "./EditnestedFieldArray";
+import EventSubscribtionDemoTable from './EventSubscribtionDemoTable'
 
 const AddEditForm = ({ match }) => {
   const [active, setActive] = useState(0)
@@ -1422,10 +1423,9 @@ const AddEditForm = ({ match }) => {
                   </CTabPane>
 
                   <CTabPane>
-
                     <CCol>
                       <br />
-                    
+                      <EventSubscribtionDemoTable eventid={eventId} />
                     </CCol>
                   </CTabPane>
 

@@ -309,6 +309,19 @@ function User() {
     });
   }
 
+  this.getUserPurchaseEventList = function (id, callback) { 
+    connection.acquire(function (err, con) {
+      con.query('SELECT *,event_purchase.payment_id as event_purchase_id FROM event_purchase inner join users on event_purchase.user_id = users.id where event_purchase.event_id = $1', [id], function (err, result) {
+        con.release();
+        if (err) {
+          callback(err, null);
+        } else {
+          callback(null, result.rows);
+        }
+      });
+    });
+  }
+
   this.getEventDataByIdWithLogin = function (user_id, id, callback) {
     connection.acquire(function (err, con) {
       con.query('SELECT * FROM event left join event_purchase on event.event_id = event_purchase.event_id and event_purchase.user_id = $1 where event.event_id = $2', [user_id, id], function (err, result) {

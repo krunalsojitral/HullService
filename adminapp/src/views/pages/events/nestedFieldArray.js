@@ -32,7 +32,7 @@ export default ({ nestIndex, control, register, errors }) => {
     <CRow key={nestIndex}>
       <CCol xs="12">
         <CRow>
-          <button style={{'margin-left':'18px'}} type="button" class="btn btn-outline-primary" onClick={() => append({ field1: "field1" })} >
+          <button style={{ 'marginLeft': '18px' }} type="button" className="btn btn-outline-primary" onClick={() => append({ field1: "field1" })} >
             Add Session
           </button>
         </CRow>  
@@ -69,7 +69,7 @@ export default ({ nestIndex, control, register, errors }) => {
                     </CFormGroup>  
                   </CCol>
                   <CCol xs="2">
-                    <button type="button" onClick={() => remove(k)} class="btn btn-outline-primary">
+                    <button type="button" onClick={() => remove(k)} className="btn btn-outline-primary">
                       X
                     </button>
                   </CCol>

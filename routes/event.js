@@ -393,6 +393,31 @@ router.get('/getEventList', function (req, res) {
   });
 });
 
+router.post('/getUserPurchaseEventList', function (req, res) {
+  loggerData(req);
+  var event_id = req.body.event_id;
+  Event.getUserPurchaseEventList(event_id, function (err, result) {
+    if (err) {
+      return res.json({ status: 0, 'response': { msg: err } });
+    } else {
+      var eventList = result.map((data,index) => {
+        let retObj = {};
+        retObj['s_no'] = index+1;
+        retObj['name'] = (data.first_namse) ? data.first_namse : '' + ' ' + (data.last_name) ? data.last_name:'';
+        retObj['email'] = data.email;
+        retObj['payment_id'] = data.event_purchase_id;
+        retObj['event_purchase_date'] = moment(data.event_purchase_date).format('YYYY-MM-DD');
+        retObj['event_registration'] = (data.event_registration) ? 'Yes': 'No';
+        retObj['session_registration'] = (data.session_registration)?'Yes':'No';
+        retObj['member'] = data.role;
+        return retObj;
+      });
+      return res.json({ status: 1, 'response': { data: eventList } });
+    }
+  });
+});
+
+
 router.post('/changeEventStatus', [
   check('event_id', 'Event id is required').notEmpty(),
   check('status', 'Please enter status').notEmpty(),
@@ -795,6 +820,7 @@ router.post("/updateEventByadmin", function (req, res) {
       timezone: obj.timezone,
       event_type: obj.event_type,
       video_link: (obj.video_link) ? obj.video_link : '',
+      group_session:[]
     };
 
 
@@ -804,7 +830,7 @@ router.post("/updateEventByadmin", function (req, res) {
     }
 
     var update_value = [obj.title, obj.description, obj.location, obj.speaker_name, obj.about_speaker, obj.purchase_type, obj.cost, start_date, end_date, obj.timezone, obj.event_type, obj.video_link];
-      var group_session = []
+    var group_session = []
 
     for (let i = 0; i < obj.sessionStartTime.length; i++) {
       var session_d = [];

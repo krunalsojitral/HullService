@@ -30,6 +30,7 @@ import TimezoneSelect from 'react-timezone-select'
 import NestedArray from "./nestedFieldArray";
 import Search from "./search";
 
+
 const AddEditForm = ({ match }) => {
   const [active, setActive] = useState(0)
   const [city, setCity] = React.useState('');
@@ -386,13 +387,7 @@ const AddEditForm = ({ match }) => {
                       Resources
                       {active === 2 && ' '}
                     </CNavLink>
-                  </CNavItem>
-                  <CNavItem>
-                    <CNavLink>
-                      Event Subscribe USer
-                      {active === 3 && ' '}
-                    </CNavLink>
-                  </CNavItem>
+                  </CNavItem>                  
                 </CNav>
                 <CTabContent>
 
@@ -1243,13 +1238,7 @@ const AddEditForm = ({ match }) => {
 
                   </CTabPane>
 
-                  <CTabPane>
-
-                    <CCol>
-                      <br />
-                     
-                    </CCol>
-                  </CTabPane>
+                  
 
                 </CTabContent>
               </CTabs>
