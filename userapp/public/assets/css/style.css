@@ -3001,15 +3001,205 @@ transition: all .25s ease;
 }
 
 .dashabord-partner .news-card h3 {
-
     font-style: normal;
     font-weight: bold;
     font-size: 18px;
-    line-height: 28px;
-    /* or 156% */
+    line-height: 28px;    
     color: #000000;
     margin: 15px 0;
 }
+
+
+.view-profile-card {
+    margin: 20px 0;
+}
+
+.view-profile-header .user-image {
+    width: 140px;
+    height: 140px;
+    overflow: hidden;
+    border-radius: 100px;
+    background: #fff;
+    margin: 0 auto;
+    display: block;
+}
+
+.view-profile-header .user-image img {
+    width: 100%;
+    height: 100%;
+}
+
+.view-pro-button {    
+    margin-top: 20px;
+}
+
+.view-pro-button .view-profile-title-icon {
+    width: 130px;
+    height: 130px;
+    float: left;
+    margin: 0 20px 0 0;
+    border-radius: 100px;
+    overflow: hidden;
+}
+
+.view-pro-button .view-profile-title-text {
+    overflow: hidden;
+    padding: 15px 0;
+}
+
+.view-pro-button .view-profile-title-text h3 {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 22px;
+    color: #000000;
+    margin-bottom: 10px;
+}
+
+.view-pro-button .view-profile-title-text p {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 24px;
+    color: #000000;
+}
+
+.view-profile-title-icon img {
+    height: 100%;
+    width: 100%;
+}
+
+.view-profile-card .view-profile-header .view-profile-button {
+    text-align: right;
+    padding-bottom: 25px;
+}
+
+.pofile-view {
+    background: #fff;
+}
+
+.view-profile-card .view-profile-header .view-profile-button .btn-edit {
+    background: #006577;
+    border-radius: 5px;
+    width: 150px;
+    height: 50px;
+    border: none;
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 21px;
+    text-align: center;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    padding-top: 15px;
+}
+
+.view-profile-card .view-profile-body {
+    padding: 30px;
+    background: #fff;
+}
+
+.view-profile-card .view-profile-body .view-profile-details ul li {
+    border-bottom: 2px #dbf1f4 dotted;
+    padding: 15px 0;
+    display: inline-block;
+    width: 49%;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 19px;
+    color: #000000;
+}
+
+.view-profile-card .view-profile-body .view-profile-details ul li i {
+    margin-right: 10px;
+    color: #ababab;
+    width: 14px;
+    height: 14px;
+    text-align: center;
+}
+
+.view-profile-card .view-profile-body .view-profile-details {
+    width: 774px;
+    margin: 0 auto;
+}
+
+.edit-profile {
+    position: relative;
+    margin-bottom: 25px;
+}
+.edit-profile .remove-image {
+    color: red;
+    font-size: 15px;
+    cursor: pointer;
+}
+.edit-profile span {    
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+}
+.edit-profile .browse-img {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 17px;
+    width: 25px;
+    vertical-align: revert;
+    height: 25px;
+    margin-right: 6px;
+    display: inline-block;
+    cursor: pointer;
+}
+.edit-profile.image-section {
+    margin-top: 35px;
+}
+
+.edit-profile .profile-img {
+    padding: 10px 15px;
+    background: #fff;
+    border: solid 1px #ddd;
+    border-radius: 5px;
+    position: absolute;
+    width: 100%;
+    height: 45px;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    cursor: pointer;
+}
+
+.edit-profile .browse-img {    
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    width: 25px;
+    vertical-align: revert;
+    height: 25px;
+    margin-right: 18px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.edit-profile .edit-avatar-image {
+    opacity: 0;
+    position: relative;
+    z-index: 1;
+    cursor: pointer !important;
+}
+.edit-profile .user-image {
+    padding: 25px 0 0;
+}
+.view-profile-header .edit-profile small {
+    word-break: break-all;
+}
+.view-profile-header .edit-profile img {
+    overflow: hidden;
+    border-radius: 50%;
+    height: 100%;
+    width: 100%;
+}
+
 
 .mt-1 {
 	margin-top:10px;

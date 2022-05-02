@@ -502,7 +502,7 @@ export default function ResearchRequestForm() {
                                                                 ></Controller>
                                                             </div>
 
-                                                            <button type="submit" className="sign-btn">Submit</button>
+                                                            <button type="submit" className="btn btn-default signin-btn">Submit</button>
                                                         </div>
                                                     </form>
                                                 </div>

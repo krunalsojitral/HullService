@@ -84,8 +84,10 @@ export default function ViewProfile() {
                 </div >
             </section>
 
+
            
-            <section className="dashboard-card pofile-view">
+           
+            <section className="researcher-sec researchContact dashboard-card pofile-view">
                 <div className="container">
                     <div className="row">
 
@@ -123,7 +125,7 @@ export default function ViewProfile() {
                                             </div>
                                             <div className="col-md-6">
                                                 <div className="view-profile-button">
-                                                    <Link className="btn-edit" to={{ pathname: "/edit-profile" }}>
+                                                    <Link className="btn btn-default signin-btn" to={{ pathname: "/edit-profile" }}>
                                                         EDIT
                                                 </Link>
                                                 </div>
@@ -134,7 +136,7 @@ export default function ViewProfile() {
                                     {showEdit && users.role == 4 && <div className="row">
                                         <div className="col-md-12 upper-section">
                                             <div className="view-profile-button">
-                                                <Link className="btn-edit" to={{ pathname: "/edit-profile" }}>
+                                                <Link className="btn btn-default signin-btn" to={{ pathname: "/edit-profile" }}>
                                                     EDIT
                                                 </Link>
                                             </div>
@@ -190,7 +192,7 @@ export default function ViewProfile() {
                 </div>
             </section>   
 
-            
+
         <Footer/>
     </div>
     )

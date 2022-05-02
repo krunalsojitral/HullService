@@ -584,439 +584,291 @@ export default function EditProfile() {
             </section>
 
 
-            <section class="login-sec">
+            
+            <section class="researcher-sec researchContact">
                 <div class="container">
-                    <div class="researcher-heading">
-                        <h3 class="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="1000ms" style={{ "visibility": "visible", "animation-duration": "500ms", "animation-name": "fadeInUp" }}>Edit Profile</h3>
-                    </div>
                     <div class="row">
-                        <div class="col-lg-12">
-                            <div class="login-content mt-6">
+                        <div class="col-12">
+                            <div class="researcher-heading" style={{ "background-color": "#F7F7F7", "text-align": "center", "padding": "50px", "border-radius": "25px" }}>
+                                {/* <strong class="wow animate__fadeInUp" data-wow-duration="1400ms" data-wow-delay="1000ms" style={{"visibility": "visible", "animation-duration": "1400ms", "animation-name": "fadeInUp", "font-size":"19px"}}>Registrations for the Researchers coming soon</strong> */}
+                                <div className="login-section">
+                                    <div className="container">
+                                        <div className="row">
+                                            <div className="col-md-12">
+                                                <div className="login-box">
 
-                                <form onSubmit={handleSubmit(onSubmit)}>
-                                    <div className="view-profile-card">
-                                        <div className="view-profile-header">
+                                                    <form onSubmit={handleSubmit(onSubmit)}>
+                                                        <div className="view-profile-card">
+                                                            <div className="view-profile-header">
 
-                                            <div className="row">
-                                                <div className="col-md-9">
-                                                    <div className="row">
-                                                        <div className="col-md-6">
-                                                            <div className="form-group edit-profile">
-                                                                <Controller
-                                                                    name={"first_name"}
-                                                                    control={control}
-                                                                    rules={{ required: true }}
-                                                                    render={({ field: { onChange, value } }) => (
-                                                                        <input
-                                                                            type="text"
-                                                                            onChange={onChange}
-                                                                            value={value}
-                                                                            className="form-control"
-                                                                            placeholder={`First Name *`}
-                                                                        />
-                                                                    )}
-                                                                ></Controller>
-                                                                {errors.first_name && errors.first_name.type === "required" && (
-                                                                    <small className="error">First Name is required.</small>
-                                                                )}
+                                                                <div className="row">
+                                                                    <div className="col-md-9">
+                                                                        <div className="row">
+                                                                            <div className="col-md-6">
+                                                                                <div className="form-group edit-profile">
+                                                                                    <Controller
+                                                                                        name={"first_name"}
+                                                                                        control={control}
+                                                                                        rules={{ required: true }}
+                                                                                        render={({ field: { onChange, value } }) => (
+                                                                                            <input
+                                                                                                type="text"
+                                                                                                onChange={onChange}
+                                                                                                value={value}
+                                                                                                className="form-control"
+                                                                                                placeholder={`First Name *`}
+                                                                                            />
+                                                                                        )}
+                                                                                    ></Controller>
+                                                                                    {errors.first_name && errors.first_name.type === "required" && (
+                                                                                        <small className="error">First Name is required.</small>
+                                                                                    )}
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="col-md-6">
+                                                                                <div className="form-group edit-profile">
+                                                                                    <Controller
+                                                                                        name={"last_name"}
+                                                                                        control={control}
+                                                                                        rules={{ required: true }}
+                                                                                        render={({ field: { onChange, value } }) => (
+                                                                                            <input
+                                                                                                type="text"
+                                                                                                onChange={onChange}
+                                                                                                value={value}
+                                                                                                className="form-control"
+                                                                                                placeholder={`Last Name *`}
+                                                                                            />
+                                                                                        )}
+                                                                                    ></Controller>
+                                                                                    {errors.last_name && errors.last_name.type === "required" && (
+                                                                                        <small className="error">Last Name is required.</small>
+                                                                                    )}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+
+                                                                    </div>
+                                                                    <div className="col-md-3">
+                                                                        <div className="form-group edit-profile">
+
+                                                                            <input type="file" className="form-control edit-avatar-image" name="myfile" accept=".png,.jpg" onChange={changeFileHandler} />
+                                                                            <div className="profile-img">
+                                                                                <span className="browse-img">
+                                                                                    {!setectavatar && <img alt="avatar" src="images/user.png" />}
+                                                                                    {setectavatar && <img alt="avatar" src={setectavatar} alt="user-image" />}
+                                                                                </span>
+                                                                                UPLOAD IMAGE
+                                                                            </div>
+                                                                            <small>{selectedFile && selectedFile.name}</small>
+                                                                            <br />
+                                                                            {setectavatar && <span className="remove-image" onClick={(e) => removeImage()}>Remove<i className="fa fa-times" aria-hidden="true"></i></span>}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="view-profile-body">
+                                                                <div className="row">
+                                                                    <div className="col-md-12">
+                                                                        {(userTypeList == 3 || userTypeList == 2) &&
+                                                                            <div>
+                                                                                <div className="form-group edit-profile">
+                                                                                    <Controller
+                                                                                        name={"about_us"}
+                                                                                        control={control}
+                                                                                        render={({ field: { onChange, value } }) => (
+                                                                                            <textarea
+                                                                                                type="text"
+                                                                                                onChange={onChange}
+                                                                                                value={value}
+                                                                                                className="form-control"
+                                                                                                placeholder={`Tell us something about yourself `}
+                                                                                            />
+                                                                                        )}
+                                                                                    ></Controller>
+                                                                                </div>
+
+                                                                            </div>
+                                                                        }
+                                                                        <div className="form-group edit-profile">
+                                                                            <Controller
+                                                                                name={"email"}
+                                                                                control={control}
+                                                                                rules={{
+                                                                                    required: true,
+                                                                                    pattern: {
+                                                                                        value: /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i,
+                                                                                    },
+                                                                                }}
+                                                                                render={({ field: { onChange, value } }) => (
+                                                                                    <input
+                                                                                        type="email"
+                                                                                        disabled
+                                                                                        onChange={onChange}
+                                                                                        className="form-control"
+                                                                                        value={value}
+                                                                                        placeholder={`Email *`}
+                                                                                    />
+                                                                                )}
+                                                                            ></Controller>
+                                                                            {errors?.email?.type === "required" && <small className="error">Email is required</small>}
+                                                                            {errors?.email?.type === "pattern" && (<small className="error">Invalid email address</small>)}
+                                                                        </div>
+                                                                        {userTypeList !== 4 && <div className="form-group edit-profile">
+                                                                            <Controller
+                                                                                name={"phone"}
+                                                                                control={control}
+                                                                                rules={{
+                                                                                    required: true,
+                                                                                    pattern: {
+                                                                                        value: /^[0-9]+$/i,
+                                                                                    },
+                                                                                }}
+                                                                                render={({ field: { onChange, value } }) => (
+                                                                                    <input
+                                                                                        type="phone"
+                                                                                        onChange={onChange}
+                                                                                        className="form-control"
+                                                                                        value={value}
+                                                                                        placeholder={`Phone *`}
+                                                                                    />
+                                                                                )}
+                                                                            ></Controller>
+                                                                            {errors?.phone?.type === "required" && <small className="error">Phone is required</small>}
+                                                                            {errors?.phone?.type === "pattern" && (<small className="error">Invalid phone address</small>)}
+                                                                        </div>}
+                                                                    </div>
+                                                                </div>
+                                                                <hr />
+
+                                                                {userTypeList !== 4 && <div className="row">
+                                                                    <div className="col-md-6">
+                                                                        <div className="form-group edit-profile autosuggestion">
+                                                                            <div>
+                                                                                <Controller
+                                                                                    name={"organization"}
+                                                                                    control={control}
+                                                                                    rules={{ required: true }}
+                                                                                    render={({ field: { onChange, value } }) => (
+                                                                                        <Autosuggest
+                                                                                            suggestions={suggestion}
+                                                                                            onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+                                                                                            onSuggestionsClearRequested={onSuggestionsClearRequested}
+                                                                                            getSuggestionValue={getSuggestionValue}
+                                                                                            renderSuggestion={renderSuggestion}
+                                                                                            renderSectionTitle={renderSectionTitle}
+                                                                                            getSectionSuggestions={getSectionSuggestions}
+                                                                                            inputProps={inputProps}
+                                                                                            className="form-control"
+                                                                                            multiSection={true}
+                                                                                        />
+                                                                                    )}
+                                                                                />
+                                                                                {errors.suggestion && errors.suggestion.type === "required" && (
+                                                                                    <small className="error">suggestion is required.</small>
+                                                                                )}
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="col-md-6">
+                                                                        <div className="form-group edit-profile">
+                                                                            <Controller
+                                                                                name="academic_discipline"
+                                                                                control={control}
+                                                                                rules={{ required: true }}
+                                                                                render={({ field: { onChange, value } }) => (
+                                                                                    <select className="form-control" onChange={onChange} value={value}>
+                                                                                        <option key="0" value="">Academic Discipline *</option>
+                                                                                        {academicDisciplineList.map((item) => (
+                                                                                            <option key={item.academic_discipline_id} value={item.academic_discipline_id}>
+                                                                                                {item.name}
+                                                                                            </option>
+                                                                                        ))}
+                                                                                        <option key="01" value="0">Other academic discipline</option>
+                                                                                    </select>
+                                                                                )}
+                                                                            ></Controller>
+                                                                            {errors.academic_discipline && errors.academic_discipline.type === "required" && (
+                                                                                <small className="error">Academic Discipline is required.</small>
+                                                                            )}
+
+                                                                            {academic_discipline_selected == 0 && <div><br />
+                                                                                <Controller
+                                                                                    name={"other_academic_discipline"}
+                                                                                    control={control}
+                                                                                    rules={{ required: true }}
+                                                                                    render={({ field: { onChange, value } }) => (
+                                                                                        <input
+                                                                                            type="text"
+                                                                                            onChange={onChange}
+                                                                                            value={value}
+                                                                                            className="form-control"
+                                                                                            placeholder={`Other Academic Discipline *`}
+                                                                                        />
+                                                                                    )}
+                                                                                ></Controller>
+                                                                                {errors.other_academic_discipline && errors.other_academic_discipline.type === "required" && (
+                                                                                    <small className="error">Academic Discipline is required.</small>
+                                                                                )}
+                                                                            </div>}
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>}
+
+
+                                                                <div className="row">
+                                                                    <div className="col-md-12">
+                                                                        <div className="form-group">
+                                                                            <Controller
+                                                                                control={control}
+                                                                                name="subscribe"
+                                                                                render={({
+                                                                                    field: { onChange, onBlur, value, name, ref },
+                                                                                    fieldState: { invalid, isTouched, isDirty, error },
+                                                                                    formState,
+                                                                                }) => (
+                                                                                    <input
+                                                                                        type="checkbox"
+                                                                                        onBlur={onBlur} // notify when input is touched
+                                                                                        onChange={onChange} // send value to hook form
+                                                                                        checked={value}
+                                                                                        inputRef={ref}
+                                                                                    />
+                                                                                )}
+                                                                            />
+                                                                            <span>&nbsp;Subscribe to Pathways To Preventions Email</span><br />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div className="row">
+                                                                    <div className="col-md-12">
+                                                                        <div className="edit-btn">
+                                                                            <center><button type="submit" className="btn btn-default signin-btn">Save</button></center>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <div className="col-md-6">
-                                                            <div className="form-group edit-profile">
-                                                                <Controller
-                                                                    name={"last_name"}
-                                                                    control={control}
-                                                                    rules={{ required: true }}
-                                                                    render={({ field: { onChange, value } }) => (
-                                                                        <input
-                                                                            type="text"
-                                                                            onChange={onChange}
-                                                                            value={value}
-                                                                            className="form-control"
-                                                                            placeholder={`Last Name *`}
-                                                                        />
-                                                                    )}
-                                                                ></Controller>
-                                                                {errors.last_name && errors.last_name.type === "required" && (
-                                                                    <small className="error">Last Name is required.</small>
-                                                                )}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-
-                                                </div>
-                                                <div className="col-md-3">
-                                                    <div className="form-group edit-profile">
-
-                                                        <input type="file" className="form-control edit-avatar-image" name="myfile" accept=".png,.jpg" onChange={changeFileHandler} />
-                                                        <div className="profile-img">
-                                                            <span className="browse-img">
-                                                                {!setectavatar && <img alt="avatar" src="images/user.png" />}
-                                                                {setectavatar && <img alt="avatar" src={setectavatar} alt="user-image" />}
-                                                            </span>
-                                                            UPLOAD IMAGE
-                                                        </div>
-                                                        <small>{selectedFile && selectedFile.name}</small>
-                                                        <br />
-                                                        {setectavatar && <span className="remove-image" onClick={(e) => removeImage()}>Remove<i className="fa fa-times" aria-hidden="true"></i></span>}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="view-profile-body">
-                                            <div className="row">
-                                                <div className="col-md-12">
-                                                    {(userTypeList == 3 || userTypeList == 2) &&
-                                                        <div>
-                                                            <div className="form-group edit-profile">
-                                                                <Controller
-                                                                    name={"about_us"}
-                                                                    control={control}
-                                                                    render={({ field: { onChange, value } }) => (
-                                                                        <textarea
-                                                                            type="text"
-                                                                            onChange={onChange}
-                                                                            value={value}
-                                                                            className="form-control"
-                                                                            placeholder={`Tell us something about yourself `}
-                                                                        />
-                                                                    )}
-                                                                ></Controller>
-                                                            </div>
-                                                            
-                                                        </div>
-                                                    }
-                                                    <div className="form-group edit-profile">
-                                                        <Controller
-                                                            name={"email"}
-                                                            control={control}
-                                                            rules={{
-                                                                required: true,
-                                                                pattern: {
-                                                                    value: /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i,
-                                                                },
-                                                            }}
-                                                            render={({ field: { onChange, value } }) => (
-                                                                <input
-                                                                    type="email"
-                                                                    disabled
-                                                                    onChange={onChange}
-                                                                    className="form-control"
-                                                                    value={value}
-                                                                    placeholder={`Email *`}
-                                                                />
-                                                            )}
-                                                        ></Controller>
-                                                        {errors?.email?.type === "required" && <small className="error">Email is required</small>}
-                                                        {errors?.email?.type === "pattern" && (<small className="error">Invalid email address</small>)}
-                                                    </div>
-                                                    <div className="form-group edit-profile">
-                                                        <Controller
-                                                            name={"phone"}
-                                                            control={control}
-                                                            rules={{
-                                                                required: true,
-                                                                pattern: {
-                                                                    value: /^[0-9]+$/i,
-                                                                },
-                                                            }}
-                                                            render={({ field: { onChange, value } }) => (
-                                                                <input
-                                                                    type="phone"
-                                                                    onChange={onChange}
-                                                                    className="form-control"
-                                                                    value={value}
-                                                                    placeholder={`Phone *`}
-                                                                />
-                                                            )}
-                                                        ></Controller>
-                                                        {errors?.phone?.type === "required" && <small className="error">Phone is required</small>}
-                                                        {errors?.phone?.type === "pattern" && (<small className="error">Invalid phone address</small>)}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <hr />
-
-                                            <div className="row">
-                                               
-                                                <div className="col-md-6">
-                                                    <div className="form-group edit-profile autosuggestion">
-                                                        {userTypeList !== 4 && <div>
-                                                            <Controller
-                                                                name={"organization"}
-                                                                control={control}
-                                                                rules={{ required: true }}
-                                                                render={({ field: { onChange, value } }) => (
-                                                                    <Autosuggest
-                                                                        suggestions={suggestion}
-                                                                        onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-                                                                        onSuggestionsClearRequested={onSuggestionsClearRequested}
-                                                                        getSuggestionValue={getSuggestionValue}
-                                                                        renderSuggestion={renderSuggestion}
-                                                                        renderSectionTitle={renderSectionTitle}
-                                                                        getSectionSuggestions={getSectionSuggestions}
-                                                                        inputProps={inputProps}
-                                                                        className="form-control"
-                                                                        multiSection={true}
-                                                                    />
-                                                                )}
-                                                            />
-                                                            {errors.suggestion && errors.suggestion.type === "required" && (
-                                                                <small className="error">suggestion is required.</small>
-                                                            )}
-                                                        </div>}
-
-                                                    </div>
-                                                </div>
-                                                <div className="col-md-6">
-                                                    <div className="form-group edit-profile">
-                                                        <Controller
-                                                            name="academic_discipline"
-                                                            control={control}
-                                                            rules={{ required: true }}
-                                                            render={({ field: { onChange, value } }) => (
-                                                                <select className="form-control" onChange={onChange} value={value}>
-                                                                    <option key="0" value="">Academic Discipline *</option>
-                                                                    {academicDisciplineList.map((item) => (
-                                                                        <option key={item.academic_discipline_id} value={item.academic_discipline_id}>
-                                                                            {item.name}
-                                                                        </option>
-                                                                    ))}
-                                                                    <option key="01" value="0">Other academic discipline</option>
-                                                                </select>
-                                                            )}
-                                                        ></Controller>
-                                                        {errors.academic_discipline && errors.academic_discipline.type === "required" && (
-                                                            <small className="error">Academic Discipline is required.</small>
-                                                        )}
-
-                                                        {academic_discipline_selected == 0 && <div><br />
-                                                            <Controller
-                                                                name={"other_academic_discipline"}
-                                                                control={control}
-                                                                rules={{ required: true }}
-                                                                render={({ field: { onChange, value } }) => (
-                                                                    <input
-                                                                        type="text"
-                                                                        onChange={onChange}
-                                                                        value={value}
-                                                                        className="form-control"
-                                                                        placeholder={`Other Academic Discipline *`}
-                                                                    />
-                                                                )}
-                                                            ></Controller>
-                                                            {errors.other_academic_discipline && errors.other_academic_discipline.type === "required" && (
-                                                                <small className="error">Academic Discipline is required.</small>
-                                                            )}
-                                                        </div>}
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-
-                                            {userTypeList == 2 && <div>
-
-                                                <div className="row">
-                                                    <div className="col-md-6">
-                                                        <div className="form-group edit-profile select-dropdown">
-                                                            <Controller
-                                                                name="sector"
-                                                                control={control}
-                                                                rules={{ required: true }}
-                                                                render={({ field: { onChange, value } }) => (
-                                                                    <select className="form-control" onChange={onChange} value={value}>
-                                                                        <option key="0" value="">Sector *</option>
-                                                                        {sectorList.map((item) => (
-                                                                            <option key={item.sector_id} value={item.sector_id}>
-                                                                                {item.name}
-                                                                            </option>
-                                                                        ))}
-                                                                        <option key="01" value="0">Other Sector</option>
-                                                                    </select>
-                                                                )}
-                                                            ></Controller>
-                                                            {errors.sector && errors.sector.type === "required" && (
-                                                                <small className="error">Sector is required.</small>
-                                                            )}
-
-                                                            {sector_selected == 0 && <div >
-                                                                <br />
-                                                                <Controller
-                                                                    name={"other_sector"}
-                                                                    control={control}
-                                                                    rules={{ required: true }}
-                                                                    render={({ field: { onChange, value } }) => (
-                                                                        <input
-                                                                            type="text"
-                                                                            onChange={onChange}
-                                                                            value={value}
-                                                                            className="form-control"
-                                                                            placeholder={`Other Sector *`}
-                                                                        />
-                                                                    )}
-                                                                ></Controller>
-                                                                {errors.other_sector && errors.other_sector.type === "required" && (
-                                                                    <small className="error">Sector is required.</small>
-                                                                )}
-                                                            </div>}
-
-
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-6">
-                                                        <div className="form-group edit-profile select-dropdown">
-                                                            <Controller
-                                                                name="occupation"
-                                                                control={control}
-                                                                rules={{ required: true }}
-                                                                render={({ field: { onChange, value } }) => (
-                                                                    <select className="form-control" onChange={onChange} value={value}>
-                                                                        <option key="0" value="">Occupation *</option>
-                                                                        {occupationList.map((item) => (
-                                                                            <option key={item.occupation_id} value={item.occupation_id}>
-                                                                                {item.name}
-                                                                            </option>
-                                                                        ))}
-                                                                        <option key="01" value="0">Other Occupation</option>
-                                                                    </select>
-                                                                )}
-                                                            ></Controller>
-                                                            {errors.occupation && errors.occupation.type === "required" && (
-                                                                <small className="error">Occupation is required.</small>
-                                                            )}
-
-                                                            {occupation_selected == 0 && <div><br />
-                                                                <Controller
-                                                                    name={"other_occupation"}
-                                                                    control={control}
-                                                                    rules={{ required: true }}
-                                                                    render={({ field: { onChange, value } }) => (
-                                                                        <input
-                                                                            type="text"
-                                                                            onChange={onChange}
-                                                                            value={value}
-                                                                            className="form-control"
-                                                                            placeholder={`Other Occupation *`}
-                                                                        />
-                                                                    )}
-                                                                ></Controller>
-                                                                {errors.other_occupation && errors.other_occupation.type === "required" && (
-                                                                    <small className="error">Occupation is required.</small>
-                                                                )}
-                                                            </div>}
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div className="row">
-                                                    <div className="col-md-6">
-                                                        <div className="form-group edit-profile select-dropdown">
-                                                            <Controller
-                                                                name="level_of_education"
-                                                                control={control}
-                                                                rules={{ required: true }}
-                                                                render={({ field: { onChange, value } }) => (
-                                                                    <select className="form-control" onChange={onChange} value={value}>
-                                                                        <option key="0" value="">Level of education *</option>
-                                                                        <option key="1" value="high_school">High School</option>
-                                                                        <option key="2" value="diploma">Diploma</option>
-                                                                        <option key="3" value="professional_degree">Professional Degree</option>
-                                                                        <option key="4" value="undergrad">Undergrad</option>
-                                                                        <option key="5" value="masters">Masters</option>
-                                                                        <option key="6" value="doctorate">Doctorate</option>
-                                                                    </select>
-                                                                )}
-                                                            ></Controller>
-                                                            {errors.level_of_education && errors.level_of_education.type === "required" && (
-                                                                <small className="error">Level of education is required.</small>
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-6">
-                                                        <div className="form-group edit-profile">
-                                                            <MultiSelect
-                                                                options={professionalInterestAreaDropdown}
-                                                                value={selectedProfessionalInterestArea}
-                                                                hasSelectAll={false}
-                                                                //onChange={setSelectedProfessionalInterestArea}
-                                                                onChange={(e) => {
-                                                                    changeSelectedProfessionalInterestArea(e);
-                                                                    setSelectedProfessionalInterestArea(e);
-                                                                }}
-                                                                labelledBy="Interest area"
-                                                            />
-                                                            {selectedProfessionalInterestArea.filter(item => item.label !== 'Other Interest Area').map(item => (
-                                                                <span className="interest-area">{item.label}<i onClick={(e) => removeProfessionalInterest(item.value)} className="fa fa-times"></i></span>
-                                                            ))}
-
-                                                            {otherProfessionalInterestArea && <div>
-                                                                <br />
-                                                                <Controller
-                                                                    name={"other_professional_interest_area"}
-                                                                    control={control}
-                                                                    render={({ field: { onChange, value } }) => (
-                                                                        <input
-                                                                            type="text"
-                                                                            onChange={onChange}
-                                                                            value={value}
-                                                                            className="form-control"
-                                                                            placeholder={`Other Interest Area`}
-                                                                        />
-                                                                    )}
-                                                                ></Controller>
-                                                            </div>}
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>}
-
-
-                                            <div className="row">
-                                                <div className="col-md-12">
-                                                    <div className="form-group">
-                                                        <Controller
-                                                            control={control}
-                                                            name="subscribe"
-                                                            render={({
-                                                                field: { onChange, onBlur, value, name, ref },
-                                                                fieldState: { invalid, isTouched, isDirty, error },
-                                                                formState,
-                                                            }) => (
-                                                                <input
-                                                                    type="checkbox"
-                                                                    onBlur={onBlur} // notify when input is touched
-                                                                    onChange={onChange} // send value to hook form
-                                                                    checked={value}
-                                                                    inputRef={ref}
-                                                                />
-                                                            )}
-                                                        />
-                                                        <span>&nbsp;Subscribe to Pathways To Preventions Email</span><br />
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                            <div className="row">
-                                                <div className="col-md-12">
-                                                    <div className="edit-btn">
-                                                        <center><button type="submit" className="btn-save">Save</button></center>
-                                                    </div>
+                                                    </form>
+                                                    
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </form>
-                                
+                                </div>
+
                             </div>
                         </div>
-                    </div >
-                </div >
-            </section >
+                    </div>
+                </div>
+            </section>
+
+
+
 
            
 
