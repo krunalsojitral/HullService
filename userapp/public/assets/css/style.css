@@ -2894,7 +2894,7 @@ transition: all .25s ease;
 }
 
 .dashboard-card .side-bar ul li a {
-    padding: 15px 30px;
+    padding: 15px 10px;
     display: block;
     font-style: normal;
     font-weight: 600;
@@ -3078,13 +3078,19 @@ transition: all .25s ease;
     background: #fff;
 }
 
+.view-profile-header{
+    width: 870px;
+    margin: 0 auto;
+    background: #DBF1F4;
+    padding: 13px 35px;
+}
+
 .view-profile-card .view-profile-header .view-profile-button .btn-edit {
     background: #006577;
     border-radius: 5px;
     width: 150px;
     height: 50px;
     border: none;
-    font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 14px;
@@ -3098,7 +3104,6 @@ transition: all .25s ease;
 
 .view-profile-card .view-profile-body {
     padding: 30px;
-    background: #fff;
 }
 
 .view-profile-card .view-profile-body .view-profile-details ul li {
@@ -3135,38 +3140,23 @@ transition: all .25s ease;
     font-size: 15px;
     cursor: pointer;
 }
-.edit-profile span {    
-    font-style: normal;
-    font-weight: 500;
-    font-size: 14px;
-}
-.edit-profile .browse-img {
-    font-style: normal;
-    font-weight: 500;
-    font-size: 17px;
-    width: 25px;
-    vertical-align: revert;
-    height: 25px;
-    margin-right: 6px;
-    display: inline-block;
-    cursor: pointer;
-}
 .edit-profile.image-section {
     margin-top: 35px;
 }
 
 .edit-profile .profile-img {
-    padding: 10px 15px;
+    padding: 11px 3px;
     background: #fff;
-    border: solid 1px #ddd;
+    border: 1px solid #aaa6a6;
     border-radius: 5px;
     position: absolute;
     width: 100%;
-    height: 45px;
+    height: 48px;
     top: 0;
     left: 0;
     z-index: 0;
     cursor: pointer;
+    font-size: 13px;
 }
 
 .edit-profile .browse-img {    

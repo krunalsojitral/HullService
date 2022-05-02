@@ -53,11 +53,9 @@ export default function Dashboard() {
                         </div>
                     </div>
                 </div >
-            </section>
+            </section>     
 
-
-           
-            <section className="dashboard-card">
+            <section className="researcher-sec researchContact dashboard-card">
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-md-2 side-col">

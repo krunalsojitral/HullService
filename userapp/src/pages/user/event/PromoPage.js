@@ -151,12 +151,24 @@ export default function PromoPage() {
                                                     <li><i><img src="images/clarity_date-solid.svg" alt="" /></i><span>{eventDetail.start_date}</span></li>
                                                     <li><i><img src="images/bxs_time.svg" alt="" /></i><span>{eventDetail.start_time} - {eventDetail.end_time}</span></li>
                                                     {eventDetail.location && <li><i><img src="images/loc.svg" alt="" /></i><span>{eventDetail.location}</span></li>}
-                                                </ul>
+                                                </ul>            
 
-                                                <div class="rate-btn mt-3"><a href="#" class="btn btn-default w-100">
-                                                    {eventDetail.cost && <span>${eventDetail.cost}</span>}
-                                                    <span>Register for events only</span></a></div>
-                                                <div class="rate-btn mt-3"><a href="#" class="btn btn-default white w-100">{eventDetail.cost && <span>${eventDetail.cost}</span>} <span>Register for Event and Reflection <br />Pracice Session</span></a></div>
+                                                {!eventDetail.event_purchase_id && <div>
+                                                    <div class="rate-btn mt-3">
+                                                        <a onClick={(e) => cartEvent(eventDetail.event_id, eventDetail.cost)} class="btn btn-default w-100">
+                                                            {eventDetail.cost && <span>${eventDetail.cost}</span>}
+                                                            <span>Register for events only</span>
+                                                        </a>
+                                                    </div>
+                                                    <div class="rate-btn mt-3">
+                                                        <a href="javascript:;" onClick={(e) => cartEvent(eventDetail.event_id, (eventDetail.cost + eventDetail.session_cost))} class="btn btn-default white w-100">
+                                                            {eventDetail.cost && <span>${eventDetail.cost}</span>}
+                                                            <span>Register for Event and Reflection <br />Pracice Session</span>
+                                                        </a>
+                                                    </div>
+                                                </div>}
+                                                
+
                                             </div>
                                         </div>
                                     </div>
