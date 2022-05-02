@@ -264,8 +264,8 @@ li.nav-item a.login-btn:after {
     left: 40px;
 }
 /****** UPCOMING EVENTS *******/
-.upcoming-event-sec {
-    background: url(../images/event-bg.png) no-repeat;
+.upcoming-event-sec {    
+    background: url(../../images/event-bg.png) no-repeat;
     background-size: cover;
     background-position: top center;
     padding: 570px 0 236px 0;
@@ -502,7 +502,7 @@ li.nav-item a.login-btn:after {
 
 /***** FOOTER *****/
 footer {
-    background: url(../images/footer-bg.png) no-repeat;
+    background: url(../../images/footer-bg.png) no-repeat;
     background-size: cover;
     background-position: top center;
     padding: 475px 0 63px 0;
@@ -943,7 +943,7 @@ section.training-courses-sec h3 {
 }
 
 .accordion-button::after {
-    background-image: url(../images/down-arrow.svg);
+    background-image: url(../../images/down-arrow.svg);
     background-repeat: no-repeat;
     background-size: 100%;
     position: absolute;
@@ -955,7 +955,7 @@ section.training-courses-sec h3 {
     height: 10px;
 }
 .accordion-button:not(.collapsed)::after {
-    background-image: url(../images/top-arrow-long.svg);
+    background-image: url(../../images/top-arrow-long.svg);
     background-repeat: no-repeat;
     background-size: 100%;
     height: 30px;
@@ -1605,7 +1605,7 @@ section.training-courses-sec h3 {
 .event-card ul li {
     display: flex;
     align-items: center;
-    padding: 0 15px;
+    padding: 6px 15px;
 }
 .event-card ul li i {
     line-height: 1;
@@ -1669,7 +1669,7 @@ section.training-courses-sec h3 {
     align-items: center;
     background: #FFFFFF; 
     padding: 72px 30px;
-    justify-content: center;
+    justify-content: flex-start;
     max-width: 1406px;
     width:  100%;
     margin: 0 auto 70px;
@@ -1727,7 +1727,7 @@ section.training-courses-sec h3 {
     justify-content: center;
     border-radius: 50%;
     margin-right: 15px;
-    background-image: url(../images/image6.png);
+    background-image: url(../../images/image6.png);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -2546,6 +2546,12 @@ transition: all .25s ease;
 	color:#0A0A0A;
 	font-weight:600;
 }
+.event-name-title .speaker-image{
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    margin-right: 12px;
+}
 
 .event-readmore-btn {
 	font-size:13px;
@@ -2563,6 +2569,16 @@ transition: all .25s ease;
 
 .event-card-left1 {
 	padding-right:40px;
+}
+
+.event-card-left1 .img-event-fluid{
+    width: 354px;
+    height: 267px;
+}
+.event-detail-image{
+    height: 312px;
+    border-radius: 10px;
+    width: 368px;
 }
 
 .event-card-right1 {
@@ -2701,6 +2717,300 @@ transition: all .25s ease;
 	margin:auto !important;
 }
 
+.autosuggestion input {
+    background: #FFFFFF;
+    border: 1px solid #B8B8B8;
+    box-sizing: border-box;
+    border-radius: 5px;
+    height: 50px;
+    box-shadow: none;
+    width: 100%;
+    padding: 6px 12px;
+    color: #000;
+    font-size: 14px;
+}
+
+/* .autosuggestion .react-autosuggest__input--focused {
+    border: 1px solid #B8B8B8;
+    outline: 0px solid #B8B8B8;
+} */
+
+.autosuggestion .react-autosuggest__suggestions-container--open {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+    background: #fff;
+    height: auto;
+    /* overflow: auto; */
+}
+
+.autosuggestion {
+    position: relative;
+}
+
+.user-dropdown {
+    width: 200px;
+    margin-left: 12px;
+}
+
+.loged-user-link .loged-user-details .loged-user-name {
+    overflow: hidden;
+    padding-top: 6px;
+}
+
+.loged-user-link .loged-user-details .loged-user-name h3 {
+    color: #1c1717;
+    font-size: 16px;
+    line-height: 25px;
+    font-weight: 700px;
+}
+
+.loged-user-link .loged-user-details .loged-user-name small {
+    display: block;
+    color: #777;
+    font-size: 12px;
+}
+
+.user-dropdown .loged-user-menu {
+    top: 63px;
+    border: solid 1px #ddd;
+    background: #fff;
+    min-width: 180px;
+    padding: 0;
+    margin: 0;
+}
+
+.user-dropdown .loged-user-menu li {
+    border-bottom: solid 1px #f1f1f1;
+}
+
+.user-dropdown .loged-user-menu li:last-child {
+    border-bottom: none;
+    cursor: pointer;
+}
+
+.user-dropdown .loged-user-menu li a {
+    display: block;
+    padding: 10px 20px;
+    font-weight: 700;
+    color: #1c1717;
+    font-size: 16px;
+}
+
+.loged-user-link {
+    display: block;
+}
+
+.loged-user-link .loged-user-details .loged-user-icon {
+    float: left;
+    margin-right: 10px;
+}
+
+.loged-user-link .loged-user-details .loged-user-icon img {
+    width: 50px;
+    height: 50px;
+    border: solid 2px #f9b92a;
+    overflow: hidden;
+    border-radius: 100px;
+}
+
+.user-dropdown .dropdown-toggle::after{
+    display: none;
+}
+
+
+
+.password_error_list {
+    padding: 5px;
+    background: #fefefe;
+    font-size: .750em;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px #ccc;
+    border: 1px solid #ddd;
+}
+
+.password_error_list h4 {
+    margin: 0 0 10px 0;
+    padding: 0;
+    font-weight: normal;
+}
+
+.password_error_list::before {
+    content: "\25b6";
+    position: absolute;
+    top: 62px;
+    right: 95%;
+    font-size: 30px;
+    line-height: 14px;
+    color: white;
+    text-shadow: none;
+    display: block;
+}
+
+.invalid {
+    background: url('../../images/invalid.png') no-repeat 0 50%;
+    padding-left: 22px;
+    line-height: 24px;
+    color: red;
+}
+
+.valid {
+    background: url('../../images/valid.png') no-repeat 0 50%;
+    padding-left: 22px;
+    line-height: 24px;
+    color: green !important;
+
+}
+
+.password_error_list {
+    display: none;
+}
+
+.password_error_list ul {
+    padding: 0px;
+}
+
+.password_error_list li {
+    list-style: none;
+    text-align: left;
+    font-size: 13px;
+}
+
+
+.dashboard-card {
+    background: #F7F7FC;
+}
+
+.dashboard-card .side-bar {
+    background: #fff;
+    padding: 23px;
+    border-radius: 0 20px 20px 0;
+}
+
+.dashboard-card .side-bar ul li {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.dashboard-card .side-bar ul li a {
+    padding: 15px 30px;
+    display: block;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 17px;
+    line-height: 120%;
+    /* or 19px */
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.005em;
+    color: #000000;
+}
+
+.dashboard-card .side-bar ul li a img {
+    width: 20px;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.dashboard-card .side-bar ul li a svg {
+    width: 30px;
+    height: 30px;
+    top: 2px;
+    position: relative;
+    display: inline-block;
+
+}
+
+.dashboard-content a.Support-card {
+    min-height: 247px;
+}
+
+.dashboard-card .side-bar ul li a span {
+    margin-left: 10px;
+    width: 100%;
+}
+
+.dashboard-card .side-bar ul li a .icon {
+    fill: #9A9AB0;
+}
+
+.dashboard-card .side-bar ul li a.active .icon,
+.dashboard-card .side-bar ul li a:hover .icon {
+    fill: #fff;
+}
+
+.dashboard-card .side-bar ul li a.active,
+.dashboard-card .side-bar ul li a:hover {
+    background: #006577;
+    border-radius: 8px;
+    color: #fff;
+}
+
+.dashboard-card .side-col {
+    padding-left: 0;
+    margin: 25px 0;
+}
+
+.Support-card {
+    background: #FFFFFF;
+    border: 1px solid #D2D2D2;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.151033);
+    border-radius: 6px;
+    height: 100%;
+    padding-bottom: 30px;
+    display: inline-block;
+}
+
+.Support-card h3 {
+
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 25px;
+    /* identical to box height */
+    color: #000000;
+    text-align: left;
+    margin: 15px 10px;
+}
+
+.Support-card .support-img {
+    height: auto;
+}
+
+.dashboard-content {
+    margin: 30px 0;
+}
+
+.dashboard-innovation {
+    padding: 0 !important;
+}
+
+.dashboard-innovation .Health-img {
+    width: 250px !important;
+    margin: 0 auto;
+}
+
+.dashboard-innovation .Health-Text {
+    padding: 80px 0 60px;
+}
+
+.dashabord-partner .item.news-card {
+    height: auto;
+    background: #fff;
+}
+
+.dashabord-partner .news-card h3 {
+
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 28px;
+    /* or 156% */
+    color: #000000;
+    margin: 15px 0;
+}
+
 .mt-1 {
 	margin-top:10px;
 }
@@ -2737,6 +3047,7 @@ transition: all .25s ease;
 .mt-10 {
 	margin-top:100px;
 }
+
 
 
 

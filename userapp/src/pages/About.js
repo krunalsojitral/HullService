@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 // import useAuth from './../../hooks/useAuth';
 import Header from './../sections/Header';
 import Footer from './../sections/Footer';
-
 //import { useForm } from "react-hook-form";
 
 
@@ -28,11 +27,10 @@ export default function About() {
     //     }
 
     return (
-        <body>
+        <div>
             <div className="wrapper">
                 <Header />
-                {/* style={{ background: `url(${require('./images/about-banner-bg.png')}) no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }} */}
-                <section className="second-banner-sec" >
+                <section className="second-banner-sec" style={{ background: `url('images/about-banner-bg.png') no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
                     <div className="container">
                         <div className="second-banner-inner">
                             <div className="row">
@@ -43,13 +41,13 @@ export default function About() {
                                 </div>
                                 <div className="col-md-5">
                                     <div className="image-holder">
-                                        <img src={require("./images/second-banner-img.png")} alt="" className="img-fluid wow animate__flipInX" data-wow-duration="1500ms" data-wow-delay="1000ms" />
+                                        <img src="images/second-banner-img.png" alt="" className="img-fluid wow animate__flipInX" data-wow-duration="1500ms" data-wow-delay="1000ms" />
                                     </div>
                                 </div>
                             </div>
 
                             <div className="second-banner-shape wow animate__zoomIn" data-wow-duration="1500ms" data-wow-delay="1000ms">
-                                <img src={require("./images/second-banner-shape.png")} alt="" className="img-fluid" />
+                                <img src="images/second-banner-shape.png" alt="" className="img-fluid" />
                             </div>
                         </div>
                     </div>
@@ -108,8 +106,8 @@ export default function About() {
                                             </div>
                                             <div className="col-lg-6">
                                                 <div className="img-holder text-end">
-                                                    <img src={require("./images/imageResearch.png")} alt="" />
-                                                    {/* <img src={require("./images/Ellipse48.png")} alt="" className="ellipse" /> */}
+                                                    <img src="images/imageResearch.png" alt="" />
+                                                    <img src="images/Ellipse48.png" alt="" className="ellipse" />
                                                 </div>
                                             </div>
                                         </div>
@@ -209,21 +207,7 @@ export default function About() {
                         </div>
                     </div>
                 </div>
-                <section className="newsletter-sec">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-12">
-                                <div className="newsletter-inner  wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">
-                                    <h4>Subscribe to get the latest news from us</h4>
-                                    <form>
-                                        <input type="text" className="form-control" placeholder="Email Address" />
-                                        <a href="#">Submit</a>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+              
                 <Footer />
             </div>
 
@@ -248,6 +232,6 @@ export default function About() {
                     </div>
                 </div>
             </div>
-        </body>
+        </div>
     )
     }

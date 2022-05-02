@@ -116,7 +116,7 @@ function App() {
           <Route path="/view-profile" component={ViewProfile} />
           <Route path="/edit-profile" component={EditProfile} />
           <Route path="/terms-condition" component={TermsCondition} />
-            <Route path="/about-hull" component={AboutHull} />
+          <Route path="/about-hull" component={AboutHull} />
           
         </Switch>
         </Suspense>

@@ -1,12 +1,12 @@
 import React from 'react'
-import Header from './sections/header'
-import Footer from './sections/footer'
-require('../../assets/css/style.css')
-require('../../assets/css/responsive.css') 
+import Header from './../sections/Header';
+import Footer from './../sections/Footer';
+
+
 
 const LandingPage = () => {
     return (
-        <body>
+        <div>
             <div className="wrapper">
                 <Header />
                 <section className="banner-sec">
@@ -22,12 +22,12 @@ const LandingPage = () => {
                                 </div>
                                 <div className="col-md-6">
                                     <div className="image-holder  wow animate__fadeInRight" data-wow-duration="1000ms" data-wow-delay="1000ms">
-                                        <img src={require("./images/banner-img.png")} alt="" className="img-fluid" />
+                                        <img src="images/banner-img.png" alt="" className="img-fluid" />
                                     </div>
                                 </div>
                             </div>
                             <div className="banner-bg">
-                                <img src={require("./images/banner-bg.png")} alt="" className="img-fluid  wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" />
+                                <img src="images/banner-bg.png" alt="" className="img-fluid  wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" />
                             </div>
                         </div>
                     </div>
@@ -41,9 +41,9 @@ const LandingPage = () => {
                                     <div className="row">
                                         <div className="col-md-6 order-md-first order-last">
                                             <div className="image-holder">
-                                                <img src={require("./images/upcoming-img.png")} alt="" className="img-fluid wow animate__fadeInLeft" data-wow-duration="1000ms" data-wow-delay="1000ms" />
+                                                <img src="images/upcoming-img.png" alt="" className="img-fluid wow animate__fadeInLeft" data-wow-duration="1000ms" data-wow-delay="1000ms" />
                                                 <div className="image-shape">
-                                                    <img src={require("./images/upcoming-round.png")} alt="" className="img-fluid wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" />
+                                                    <img src="images/upcoming-round.png" alt="" className="img-fluid wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" />
                                                 </div>
                                             </div>
                                         </div>
@@ -65,7 +65,7 @@ const LandingPage = () => {
                         </div>
                     </div>
                     <div className="event-shape">
-                        <img src={require("./images/upcoming-event-shape.png")} alt="" className="img-fluid  wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" />
+                        <img src="images/upcoming-event-shape.png" alt="" className="img-fluid  wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" />
                     </div>
                 </section>
                 <section className="training-courses-sec">
@@ -73,7 +73,7 @@ const LandingPage = () => {
                         <div className="row">
                             <div className="col-12">
                                 <div className="title">
-                                    <img src={require("./images/title-img.png")} alt="" className="img-fluid  wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" />
+                                    <img src="images/title-img.png" alt="" className="img-fluid  wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" />
                                     <h3 className="wow animate__fadeInUp" data-wow-duration="1000ms">Explore our training and courses</h3>
                                     <p className="wow animate__fadeInUp" data-wow-duration="1000ms">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eu sed eu varius ut. Faucibus suscipit ultrices pretium tincidunt turpis. Vulputate pharetra in lectus sit et. </p>
                                 </div>
@@ -133,24 +133,10 @@ const LandingPage = () => {
                         </div>
                     </div>
                 </section>
-                <section className="newsletter-sec">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-12">
-                                <div className="newsletter-inner  wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">
-                                    <h4>Subscribe to get the latest news from us</h4>
-                                    <form>
-                                        <input type="text" className="form-control" placeholder="Email Address" />
-                                        <a href="#">Submit</a>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                
                 <Footer />
             </div>
-        </body>
+        </div>
     )
 }
 export default LandingPage;

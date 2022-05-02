@@ -1,9 +1,8 @@
 import React from "react";
-import Header from './sections/header'
-import Footer from './sections/footer'
-require('../../assets/css/style.css')
-require('../../assets/css/responsive.css') 
-// const imgLogo = require('./images/second-banner-bg.png') 
+import Header from './../sections/Header';
+import Footer from './../sections/Footer';
+
+// const imgLogo = require('images/second-banner-bg.png') 
 
 export default function Contact() {
 
@@ -25,10 +24,10 @@ export default function Contact() {
     //     }
 
     return (
-        <body>
+        <div>
             <div className="wrapper">
                 <Header />
-                <section className="second-banner-sec" style={{ background: `url(${require('./images/contact-banner-bg.png')}) no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
+                <section className="second-banner-sec" style={{ background: `url('images/contact-banner-bg.png') no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
                     <div className="container">
                         <div className="second-banner-inner">
                             <div className="row">
@@ -39,12 +38,12 @@ export default function Contact() {
                                 </div>
                                 <div className="col-md-6">
                                     <div className="image-holder">
-                                        <img src={require("./images/second-banner-img.png")} alt="" className="img-fluid wow animate__flipInX" data-wow-duration="1500ms" data-wow-delay="1000ms" />
+                                        <img src="images/second-banner-img.png" alt="" className="img-fluid wow animate__flipInX" data-wow-duration="1500ms" data-wow-delay="1000ms" />
                                     </div>
                                 </div>
                             </div>
                             <div className="second-banner-shape wow animate__zoomIn" data-wow-duration="1500ms" data-wow-delay="1000ms">
-                                <img src={require("./images/second-banner-shape.png")} alt="" className="img-fluid" />
+                                <img src="images/second-banner-shape.png" alt="" className="img-fluid" />
                             </div>
                         </div>
                     </div>
@@ -186,21 +185,7 @@ export default function Contact() {
                         </div>
                     </div>
                 </section>
-                <section className="newsletter-sec">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-12">
-                                <div className="newsletter-inner  wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">
-                                    <h4>Subscribe to get the latest news from us</h4>
-                                    <form>
-                                        <input type="text" className="form-control" placeholder="Email Address" />
-                                        <a href="#">Submit</a>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+               
                 <Footer />
             </div>
 
@@ -212,7 +197,7 @@ export default function Contact() {
                                 <a data-bs-dismiss="modal" className="close-icon" href="#"><img src="images/crose-icon.svg" alt="" /></a>
                                 <div className="team-modal-inner">
                                     <div className="image-holder">
-                                        <img src={require("./images/clinical-team-img2.png")} alt="" className="img-fluid" />
+                                        <img src="images/clinical-team-img2.png" alt="" className="img-fluid" />
                                     </div>
                                     <div className="text-box">
                                         <h4>Bailey Lawson  </h4>
@@ -289,7 +274,7 @@ export default function Contact() {
 
 
 
-        </body>
+        </div>
     )
 }
 

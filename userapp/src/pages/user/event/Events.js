@@ -184,194 +184,158 @@ export default function Events() {
 
     return(
         <div>
-            <Header/>           
+            <Header/>      
 
-            <section class="hero-banner-inner">
+
+            <section class="second-banner-sec" style={{ background: `url('images/event-banner.png') no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
                 <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-sm-12 col-md-7">
-                            <div class="banner-text">
-                                <h1>Our Events</h1>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lectus tincidunt vel sed egestas sit scelerisque sollicitudin. Facilisi at viverra gravida at euismod ultrices consequat neque non. Aliquet aliquam sapien non fermentum ut.</p>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-md-5">
-                            <div class="img-right">
-                                <img src="images/brain.png" alt="brain"/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section> 
-
-            <section class="event-main">
-                <div class="container">
-                    <div class="row">
-                        {/* <div className="col-md-2 side-col">
-                            <Sidebar />
-                        </div> */}
-                        <div class="col-sm-12">
-                            {eventdata &&
-                                eventdata.map((data, index) => ( 
-                                    <div class="media">
-                                        {!data.image && <img alt="event-page" src="images/event-page.png" />}
-                                        {data.image && <img alt="event-page" src={data.image} />}
-                                        <div class="media-body">
-                                            <div class="media-left">
-                                                <div class="avatar">
-                                                    <img alt="avatar" src="images/avatar.png" />
-                                                    {/* {!data.speaker_image && <img alt="avatar" src="images/avatar.png" />}
-                                                    {data.speaker_image && <img alt="avatar" src={data.speaker_image} />} */}
-                                                    <h2>{data.speaker_name}</h2>
-                                                </div>
-                                                <div class="event-icons">
-                                                    <label><img src="images/date.png" alt="date" />{data.start_date}</label>
-                                                    <label><img src="images/time.png" alt="time" />{data.start_time} - {data.end_time}</label>
-                                                    {data.location && <label><img src="images/location.png" alt="location" />{data.location.substring(0, 10)}</label>}
-                                                </div>
-                                                {data.title && <h3>{data.title.substring(0, 120)} </h3>}
-                                                <Link to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}>
-                                                    Read more...
-                                                </Link>                                                
-                                            </div>
-                                            <div class="media-right">
-                                                {data.cost && <h4>${data.cost}</h4>}
-                                                {(data.purchase_type == 'unpaid') && <h4>Free</h4>}
-                                                {data.event_purchase_id && <Link class="thm-btn" to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}>
-                                                    View
-                                                </Link>}
-                                                {!data.event_purchase_id && <Link class="thm-btn" to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}>
-                                                    Buy
-                                                </Link>}
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}                            
-                        </div>
-                    </div>
-                </div>
-            </section>     
-            
-             {/* <section className="dashboard-card">
-                <div className="container-fluid">
-                    <div className="row"> 
-                        <div className="col-md-2 side-col">
-                            <Sidebar />
-                        </div>
-                        
-                        <div className="col-md-10">
-                                <div className="Event-List">
-                                    <div className="row">
-                                        <div className="col-md-12">
-                                            <div className="Event-Search">
-                                                <div className="row">
-                                                    <div className="col-md-12">
-                                                        <form onSubmit={handleSubmit(search)}>
-                                                            <input type="text" onChange={onChangeSearch} className="form-control" name="search_name" placeholder="Search for Events" />
-                                                            <img className="search-icon" src="images/search-icon.png" />
-                                                        </form>
-                                                    </div>
-                                                    {/* <div className="col-md-6">
-                                                    <div className="filter-address" ref={ref}>
-                                                            <input
-                                                                value={cityValue}
-                                                                disabled={!ready}
-                                                                onChange={handleInput}
-                                                                placeholder="Search for Events"
-                                                                className="form-control"
-                                                            />
-                                                            {status === "OK" && <ul className="address-suggestion">{renderSuggestions()}</ul>}
-                                                        </div>                                                        
-                                                        <img src="images/Mask.png" />
-                                                        <div className="select-listing">
-                                                            <select className="form-control">
-                                                                <option>List</option>
-                                                            </select>
-                                                        </div>
-                                                    </div> 
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="col-md-12">
-                                            <div className="filer-option">
-                                                <div className="page-change-btn">
-                                                    <a href="#" className="left-arrow">
-                                                        <i className="fa fa-angle-left"></i>
-                                                    </a>
-                                                    <a href="#" className="right-arrow">
-                                                        <i className="fa fa-angle-right"></i>
-                                                    </a>
-                                                </div>
-                                                <div className="page-change-label" onClick={(e) => todayEvent()}>
-                                                    <label>Today</label>
-                                                </div>
-                                                <div className="page-change-select">
-                                                    <select className="form-control">
-                                                        <option>Upcoming</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="col-md-12">  
-
-                                        {eventdata && <div className="event-back">
-                                              {!noresult && 
-                                                Object.entries(eventdata).map(([key, value], i) =>
-                                                    <div key={i}>
-                                                    <div className="event-month">
-                                                        <span>{key}</span>
-                                                    </div>
-                                                        {value.map((data, index) => (
-                                                            <div className="event-card">
-                                                                <div className="row">
-                                                                    <div className="col-md-8">
-                                                                        <div className="event-message">
-                                                                            <div className="event-date">
-                                                                                <small>{data.day}</small>
-                                                                                <span>{data.date}</span>
-                                                                            </div>
-                                                                            <div className="event-text">
-                                                                                <span>{data.start_date} @ {data.start_time} - {data.end_date} @ {data.end_time}</span>
-                                                                                <h3>
-                                                                                    <Link to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}>
-                                                                                        {data.title}
-                                                                                    </Link>
-                                                                                </h3>
-                                                                                {data.description && <p dangerouslySetInnerHTML={{ __html: data.description.substring(0, 350) }}></p>}
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="col-md-4">
-                                                                        <div className="event-img">
-                                                                            {!data.image && <img width="200px" src="images/Rectangle.png" />}
-                                                                            {data.image && <img width="200px" src={data.image} />}
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        ))}
-                                                    <br/>   
-                                                </div>
-                                              )}                                                  
-                                            </div>}                                            
-                                        </div>
-                                    </div>
+                    <div class="second-banner-inner">
+                        <div class="row">
+                            <div class="col-md-7">
+                                    <div class="text-box">
+                                        <h2 class="wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">Our Events </h2>
                                 </div>
                             </div>
-                        
-                        {noresult &&
-                            <div>
-                                <center>
-                                    <img height="250px" width="350px" src="images/hull-no-results.png" alt="author" />
-                                    <div className="no-data">No results found.</div>
-                                </center>
+                            <div class="col-md-5">
+                                <div class="image-holder">
+                                    <img src="images/second-banner-img.png" alt="" class="img-fluid wow animate__flipInX" data-wow-duration="1500ms" data-wow-delay="1000ms" />
+                                </div>
                             </div>
-                        }
+                        </div>
+                        <div class="second-banner-shape wow animate__zoomIn" data-wow-duration="1500ms" data-wow-delay="1000ms">
+                            <img src="images/second-banner-shape.png" alt="" class="img-fluid" />
+                        </div>
+                   </div>
+                </div >
+            </section >
+
+            <section class="training-course-sec">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="content  wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">
+                                <p>Pathways to Prevention’s work with the Neurosequential Model (NM) has given us a strong presence as leaders in trauma-informed care in the community and worldwide.  We train and educate service providers and experts from many disciplines — education, health care, the legal community, social services, early childhood development — and arm them with the most current information about developmental trauma, its impact on children and how to respond, thus equipping them with the skills to deliver best possible practice.  </p>
+                                <p>Our commitment to the continued growth of knowledge through targeted research and training will continue to position Pathways to Prevention as having the expertise to train and build the capacity of other organizations and systems to more effectively identify and respond to developmental trauma in the populations they serve.  </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </section>            */}
+            </section>
+			
+            <div class="event-main">
+                <div class="container">
+					<div class="researcher-heading">
+                        <h3  class="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="1000ms">Our Events</h3>
+                        <p  class="wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="1000ms">Training and courses are available for... 
+                        </p>
+                    </div>
+                    <div class="row" style={{"margin-top":"60px"}}>
+                        <div class="col-12">
 
-            <Footer/>
+                            {eventdata && eventdata.map((data, index) => ( 
+
+                                <div class="event-card wow animate__fadeIn  " data-wow-duration="1000ms" data-wow-delay="1000ms" >
+                                    <div class="event-card-left1">
+                                        {!data.image && <img class="img-fluid img-event-fluid img-radius" alt="event-page" src="images/event-img.png" />}
+                                        {data.image && <img class="img-fluid img-event-fluid img-radius" alt="event-page" src={data.image} />}
+                                    </div>
+                                    <div class="event-card-left1">
+                                        <div class="event-name-title"><img src="images/user-icon.svg" alt="" class="img-fluid" /> {data.speaker_name} </div>
+                                        <ul>
+                                            <li><i><img src="images/clarity_date-solid.svg" alt="" /></i><span>{data.start_date}</span></li>
+                                            <li><i><img src="images/bxs_time.svg" alt="" /></i><span>{data.start_time} - {data.end_time}</span></li>
+                                            <li><i><img src="images/loc.svg" alt="" /></i><span>{data.location.substring(0, 15)}</span></li>
+                                        </ul>
+                                        <div class="desc event-list-line">
+                                            <Link to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}>
+                                                {data.title && data.title.substring(0, 120)}
+                                            </Link>
+                                        </div>
+                                        <div class="event-readmore-btn"><Link to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}> readmore...</Link></div>	
+                                    </div>
+                                    <div class="event-card-right1">
+                                        <div class="price">
+                                            {data.cost && <h4>${data.cost}</h4>}
+                                            {(data.purchase_type == 'unpaid') && <h4>Free</h4>}        
+                                        </div>
+                                        {data.event_purchase_id && <Link class="btn btn-default w-100" to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}>
+                                            View
+                                        </Link>}
+                                        {!data.event_purchase_id && <Link class="btn btn-default w-100" to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}>
+                                            Buy
+                                        </Link>}
+                                    </div> 
+                                </div>
+                            ))}   
+      
+							
+                        </div >
+                    </div > 
+                </div >
+            </div>
+
+           
+
+            <Footer />
+        
         </div>
+            
     )
 }
+
+
+
+
+// <section class="event-main">
+//     <div class="container">
+//         <div class="row">
+//             {/* <div className="col-md-2 side-col">
+//                 <Sidebar />
+//             </div> */}
+//             <div class="col-sm-12">
+//                 {eventdata &&
+//                     eventdata.map((data, index) => ( 
+//                         <div class="media">
+//                             {!data.image && <img alt="event-page" src="images/event-page.png" />}
+//                             {data.image && <img alt="event-page" src={data.image} />}
+//                             <div class="media-body">
+//                                 <div class="media-left">
+//                                     <div class="avatar">
+//                                         <img alt="avatar" src="images/avatar.png" />
+//                                         {/* {!data.speaker_image && <img alt="avatar" src="images/avatar.png" />}
+//                                         {data.speaker_image && <img alt="avatar" src={data.speaker_image} />} */}
+//                                         <h2>{data.speaker_name}</h2>
+//                                     </div>
+//                                     <div class="event-icons">
+//                                         <label><img src="images/date.png" alt="date" />{data.start_date}</label>
+//                                         <label><img src="images/time.png" alt="time" />{data.start_time} - {data.end_time}</label>
+//                                         {data.location && <label><img src="images/location.png" alt="location" />{data.location.substring(0, 10)}</label>}
+//                                     </div>
+//                                     {data.title && <h3>{data.title.substring(0, 120)} </h3>}
+//                                     <Link to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}>
+//                                         Read more...
+//                                     </Link>                                                
+//                                 </div>
+//                                 <div class="media-right">
+//                                     {data.cost && <h4>${data.cost}</h4>}
+//                                     {(data.purchase_type == 'unpaid') && <h4>Free</h4>}
+//                                     {data.event_purchase_id && <Link class="thm-btn" to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}>
+//                                         View
+//                                     </Link>}
+//                                     {!data.event_purchase_id && <Link class="thm-btn" to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}>
+//                                         Buy
+//                                     </Link>}
+//                                 </div>
+//                             </div>
+//                         </div>
+//                     ))}                            
+//             </div>
+//         </div>
+//     </div>
+// </section> 
+
+
+
+
+
+

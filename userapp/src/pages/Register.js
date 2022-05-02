@@ -591,54 +591,80 @@ export default function Register() {
         <div>
             <Header />
 
+            <section class="second-banner-sec" style={{ background: `url('images/contact-banner-bg.png') no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
+                <div class="container">
+                    <div class="second-banner-inner">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="text-box">
+                                    <h2 class="wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">Register</h2>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="image-holder">
+                                    <img src="images/second-banner-img.png" alt="" class="img-fluid wow animate__flipInX" data-wow-duration="1500ms" data-wow-delay="1000ms" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="second-banner-shape wow animate__zoomIn" data-wow-duration="1500ms" data-wow-delay="1000ms">
+                            <img src="images/second-banner-shape.png" alt="" class="img-fluid" />
+                        </div>
+                    </div>
+                </div >
+            </section>
 
-            <div className="login-section">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-md-12">
-                            <div className="login-box">                                
-                                <form onSubmit={handleSubmit(onSubmit)}>
-                                    <div className="login-details">
-                                        <h2>Welcome to the Virtual Centre for the Study and Prevention of Developmental Trauma</h2>
-                                        <div className="sub-title">Please Tell Us About Yourself</div>
-
-                                        <div className="form-group">
-                                            <Controller
-                                                name={"first_name"}
-                                                control={control}
-                                                rules={{ required: true }}
-                                                render={({ field: { onChange, value } }) => (
-                                                    <input
-                                                        type="text"
-                                                        onChange={onChange}
-                                                        value={value}
-                                                        className="form-control"
-                                                        placeholder={`First Name *`}
-                                                    />
+            <section class="login-sec">
+                <div class="container">
+                    <div class="researcher-heading">
+                        <h3 class="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="1000ms" style={{ "visibility": "visible", "animation-duration": "500ms", "animation-name": "fadeInUp" }}>Register</h3>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="login-content mt-6">
+                                <div class="login-title">Welcome to the Virtual Center for the Study and Prevention of Developmental Trauma</div>
+                                <form onSubmit={handleSubmit(onSubmit)} class="wow animate__fadeIn mt-4" data-wow-duration="1000ms" data-wow-delay="1000ms">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div className="form-group">
+                                                <Controller
+                                                    name={"first_name"}
+                                                    control={control}
+                                                    rules={{ required: true }}
+                                                    render={({ field: { onChange, value } }) => (
+                                                        <input
+                                                            type="text"
+                                                            onChange={onChange}
+                                                            value={value}
+                                                            className="form-control"
+                                                            placeholder={`First Name *`}
+                                                        />
+                                                    )}
+                                                ></Controller>
+                                                {errors.first_name && errors.first_name.type === "required" && (
+                                                    <small className="error">First Name is required.</small>
                                                 )}
-                                            ></Controller>
-                                            {errors.first_name && errors.first_name.type === "required" && (
-                                                <small className="error">First Name is required.</small>
-                                            )}
+                                            </div>
                                         </div>
-                                        <div className="form-group">
-                                            <Controller
-                                                name={"last_name"}
-                                                control={control}
-                                                rules={{ required: true }}
-                                                render={({ field: { onChange, value } }) => (
-                                                    <input
-                                                        type="text"
-                                                        onChange={onChange}
-                                                        value={value}
-                                                        className="form-control"
-                                                        placeholder={`Last Name *`}
-                                                    />
+                                        <div class="col-md-12">
+                                            <div className="form-group">
+                                                <Controller
+                                                    name={"last_name"}
+                                                    control={control}
+                                                    rules={{ required: true }}
+                                                    render={({ field: { onChange, value } }) => (
+                                                        <input
+                                                            type="text"
+                                                            onChange={onChange}
+                                                            value={value}
+                                                            className="form-control"
+                                                            placeholder={`Last Name *`}
+                                                        />
+                                                    )}
+                                                ></Controller>
+                                                {errors.last_name && errors.last_name.type === "required" && (
+                                                    <small className="error">Last Name is required.</small>
                                                 )}
-                                            ></Controller>
-                                            {errors.last_name && errors.last_name.type === "required" && (
-                                                <small className="error">Last Name is required.</small>
-                                            )}
+                                            </div>
                                         </div>
                                         <div className="form-group">
                                             <Controller
@@ -669,10 +695,12 @@ export default function Register() {
                                             <Controller
                                                 name={"phone"}
                                                 control={control}
-                                                rules={{ required: true,
-                                                            pattern: {
-                                                                value: /^[0-9]+$/i,
-                                                            } }}
+                                                rules={{
+                                                    required: true,
+                                                    pattern: {
+                                                        value: /^[0-9]+$/i,
+                                                    }
+                                                }}
                                                 render={({ field: { onChange, value } }) => (
                                                     <input
                                                         type="text"
@@ -690,7 +718,7 @@ export default function Register() {
                                         </div>}
 
 
-                                        
+
                                         <div className="form-group">
                                             <Controller
                                                 name={"password"}
@@ -706,10 +734,10 @@ export default function Register() {
                                                 render={({ field: { onChange, value } }) => (
                                                     <input
                                                         id="new_password"
-                                                        type="password"                                                                                                                
+                                                        type="password"
                                                         onKeyUp={(e) => onKeyUpPassword(e)}
                                                         onBlur={(e) => onBlurPassword(e)}
-                                                        onFocus={(e) => onFocusPassword(e)}                                                        
+                                                        onFocus={(e) => onFocusPassword(e)}
                                                         onChange={onChange}
                                                         className="form-control"
                                                         value={value}
@@ -723,7 +751,7 @@ export default function Register() {
                                                 {(errors.password?.type === "pattern" && <small className="error">Please enter at least 8 characters, 1 numeric, 1 lowercase letter, 1 uppercase letter and 1 special character.</small>)}
                                             </div>
 
-                                            <div id="pswd_info" className="password_error_list" style={{'display':'none'}}>
+                                            <div id="pswd_info" className="password_error_list" style={{ 'display': 'none' }}>
                                                 <ul>
                                                     <li id="length" className="invalid">Must be atleast 8 characters!</li>
                                                     <li id="letter" className="invalid">Must contain atleast 1 letter in small case!</li>
@@ -766,7 +794,7 @@ export default function Register() {
                                                 {(errors.confirmpassword?.type === "required" && <small className="error">Confirm password is required</small>)}
                                                 {errors.confirmpassword && <small className="error">{errors.confirmpassword.message}</small>}
                                             </div>
-                                            
+
 
                                             <div id="confirm_pswd_info" className="password_error_list" style={{ 'display': 'none' }}>
                                                 <ul>
@@ -777,24 +805,7 @@ export default function Register() {
                                                     <li id="confirm_special" className="invalid">Must contain atleast 1 special character!</li>
                                                 </ul>
                                             </div>
-
-                                        </div>
-
-
-
-                                        {/* {userTypeList !== 'general' && <div className="form-group google-serach">
-                                            <div ref={ref}>
-                                                <input
-                                                    value={cityValue}
-                                                    onChange={handleInput}
-                                                    disabled={!ready}
-                                                    placeholder="Address *"
-                                                    className="form-control input"
-                                                />
-                                                {status === "OK" && <ul className="suggestion">{renderSuggestions()}</ul>}
-                                                {cityError && <small className="error">{cityError}</small>}
-                                            </div>
-                                        </div>} */}
+                                        </div>                                        
 
                                         {userTypeList != 'General Public' && <div className="form-group autosuggestion">
                                             <Controller
@@ -820,11 +831,11 @@ export default function Register() {
                                                 <small className="error">suggestion is required.</small>
                                             )}
                                         </div>}
-                                        
+
 
                                         {userTypeList == 'researcher' &&
                                             <div>
-                                            <div className="form-group select-dropdown open-select">
+                                                <div className="form-group select-dropdown open-select">
                                                     <Controller
                                                         name="academic_discipline"
                                                         control={control}
@@ -846,212 +857,30 @@ export default function Register() {
                                                     )}
                                                 </div>
 
-                                            {academic_discipline_selected == 0 && <div className="form-group">
-                                                <Controller
-                                                    name={"other_academic_discipline"}
-                                                    control={control}
-                                                    rules={{ required: true }}
-                                                    render={({ field: { onChange, value } }) => (
-                                                        <input
-                                                            type="text"
-                                                            onChange={onChange}
-                                                            value={value}
-                                                            className="form-control"
-                                                            placeholder={`Other Academic Discipline *`}
-                                                        />
+                                                {academic_discipline_selected == 0 && <div className="form-group">
+                                                    <Controller
+                                                        name={"other_academic_discipline"}
+                                                        control={control}
+                                                        rules={{ required: true }}
+                                                        render={({ field: { onChange, value } }) => (
+                                                            <input
+                                                                type="text"
+                                                                onChange={onChange}
+                                                                value={value}
+                                                                className="form-control"
+                                                                placeholder={`Other Academic Discipline *`}
+                                                            />
+                                                        )}
+                                                    ></Controller>
+                                                    {errors.other_academic_discipline && errors.other_academic_discipline.type === "required" && (
+                                                        <small className="error">Academic Discipline is required.</small>
                                                     )}
-                                                ></Controller>
-                                                {errors.other_academic_discipline && errors.other_academic_discipline.type === "required" && (
-                                                    <small className="error">Academic Discipline is required.</small>
-                                                )}
-                                            </div>}
-
-                                                {/* <div className="form-group">
-                                                    <MultiSelect
-                                                        options={researcherInterestAreaDropdown}
-                                                        value={selectedResearcherInterestArea}                                                
-                                                        hasSelectAll={false}
-                                                        //onChange={setSelectedResearcherInterestArea}
-                                                        onChange={(e) => {
-                                                            changeSelectedResearcherInterestArea(e);
-                                                            setSelectedResearcherInterestArea(e);
-                                                        }}
-                                                        labelledBy="Interest area"
-                                                    /> 
-                                                    {selectedResearcherInterestArea.filter(item => item.label !== 'Other').map(item => (
-                                                        <span className="interest-area">{item.label}<i onClick={(e) => removeResearcherInterest(item.value)} className="fa fa-times"></i></span>
-                                                    ))} 
-                                                </div>
-
-                                                
-                                            {otherResearcherInterestArea && <div className="form-group">
-                                                <Controller
-                                                    name={"other_research_interest_area"}
-                                                    control={control}
-                                                    render={({ field: { onChange, value } }) => (
-                                                        <input
-                                                            type="text"
-                                                            onChange={onChange}
-                                                            value={value}
-                                                            className="form-control"
-                                                            placeholder={`Other Interest Area`}
-                                                        />
-                                                    )}
-                                                ></Controller>
-                                            </div>} */}
-
+                                                </div>}
                                             </div>
                                         }
 
 
-                                        {/* {userTypeList == 'professional' && <div>
 
-                                            <div className="form-group select-dropdown">
-                                                <Controller
-                                                    name="sector"
-                                                    control={control}
-                                                    rules={{ required: true }}
-                                                    render={({ field: { onChange, value } }) => (
-                                                        <select className="form-control" onChange={onChange} value={value}>
-                                                            <option key="0" value="">Sector *</option>
-                                                            {sectorList.map((item) => (
-                                                                <option key={item.sector_id} value={item.sector_id}>
-                                                                    {item.name}
-                                                                </option>
-                                                            ))}
-                                                            <option key="01" value="0">Other</option>
-                                                        </select>
-                                                    )}
-                                                ></Controller>
-                                                {errors.sector && errors.sector.type === "required" && (
-                                                    <small className="error">Sector is required.</small>
-                                                )}
-                                            </div>
-
-                                            {sector_selected == 0 && <div className="form-group">
-                                                <Controller
-                                                    name={"other_sector"}
-                                                    control={control}
-                                                    rules={{ required: true }}
-                                                    render={({ field: { onChange, value } }) => (
-                                                        <input
-                                                            type="text"
-                                                            onChange={onChange}
-                                                            value={value}
-                                                            className="form-control"
-                                                            placeholder={`Other Sector *`}
-                                                        />
-                                                    )}
-                                                ></Controller>
-                                                {errors.other_sector && errors.other_sector.type === "required" && (
-                                                    <small className="error">Sector is required.</small>
-                                                )}
-                                            </div>}
-
-
-                                           
-                                            <div className="form-group select-dropdown">
-                                                <Controller
-                                                    name="level_of_education"
-                                                    control={control}
-                                                    rules={{ required: true }}
-                                                    render={({ field: { onChange, value } }) => (
-                                                        <select className="form-control" onChange={onChange} value={value}>
-                                                            <option key="0" value="">Level of education *</option>
-                                                            <option key="1" value="high_school">High School</option>
-                                                            <option key="2" value="diploma">Diploma</option>
-                                                            <option key="3" value="professional_degree">Professional Degree</option>
-                                                            <option key="4" value="undergrad">Undergrad</option>
-                                                            <option key="5" value="masters">Masters</option>
-                                                            <option key="6" value="doctorate">Doctorate</option>
-                                                        </select>
-                                                    )}
-                                                ></Controller>
-                                                {errors.level_of_education && errors.level_of_education.type === "required" && (
-                                                    <small className="error">Level of education is required.</small>
-                                                )}
-                                            </div>
-                                            
-                                            <div className="form-group select-dropdown">
-                                                <Controller
-                                                    name="occupation"
-                                                    control={control}
-                                                    rules={{ required: true }}
-                                                    render={({ field: { onChange, value } }) => (
-                                                        <select className="form-control" onChange={onChange} value={value}>
-                                                            <option key="0" value="">Occupation *</option>
-                                                            {occupationList.map((item) => (
-                                                                <option key={item.occupation_id} value={item.occupation_id}>
-                                                                    {item.name}
-                                                                </option>
-                                                            ))}
-                                                            <option key="01" value="0">Other</option>
-                                                        </select>
-                                                    )}
-                                                ></Controller>
-                                                {errors.occupation && errors.occupation.type === "required" && (
-                                                    <small className="error">Occupation is required.</small>
-                                                )}
-                                            </div>
-
-                                            
-                                            {occupation_selected == 0 && <div className="form-group">
-                                                <Controller
-                                                    name={"other_occupation"}
-                                                    control={control}
-                                                    rules={{ required: true }}
-                                                    render={({ field: { onChange, value } }) => (
-                                                        <input
-                                                            type="text"
-                                                            onChange={onChange}
-                                                            value={value}
-                                                            className="form-control"
-                                                            placeholder={`Other Occupation *`}
-                                                        />
-                                                    )}
-                                                ></Controller>
-                                                {errors.other_occupation && errors.other_occupation.type === "required" && (
-                                                    <small className="error">Occupation is required.</small>
-                                                )}
-                                            </div>}
-
-                                            <div className="form-group">
-                                                <MultiSelect
-                                                    options={professionalInterestAreaDropdown}
-                                                    value={selectedProfessionalInterestArea}
-                                                    hasSelectAll={false}
-                                                    //onChange={setSelectedProfessionalInterestArea}
-                                                    onChange={(e) => {
-                                                        changeSelectedProfessionalInterestArea(e);
-                                                        setSelectedProfessionalInterestArea(e);
-                                                    }}
-                                                    labelledBy="Interest area"
-                                                />
-                                                {selectedProfessionalInterestArea.filter(item => item.label !== 'Other').map(item => (
-                                                    <span className="interest-area">{item.label}<i onClick={(e) => removeProfessionalInterest(item.value)} className="fa fa-times"></i></span>
-                                                ))}
-                                            </div>
-
-
-                                            {otherProfessionalInterestArea && <div className="form-group">
-                                                <Controller
-                                                    name={"other_professional_interest_area"}
-                                                    control={control}
-                                                    render={({ field: { onChange, value } }) => (
-                                                        <input
-                                                            type="text"
-                                                            onChange={onChange}
-                                                            value={value}
-                                                            className="form-control"
-                                                            placeholder={`Other Interest Area`}
-                                                        />
-                                                    )}
-                                                ></Controller>                                                
-                                            </div>} 
-
-                                        </div>}
-
-                                         */}
                                         {userTypeList != 'General Public' && <div className="form-group">
                                             <Controller
                                                 name={"research_description"}
@@ -1131,19 +960,30 @@ export default function Register() {
                                                 )}
                                             />
                                             <span>&nbsp;Subscribe to Pathways To Preventions Email</span><br />
-                                        </div>                                        
-                                         
+                                        </div>  
 
-                                        <button type="submit" className="sign-btn">Submit</button>
-                                        
+
+                                        <div class="col-md-12">
+                                            <div class="form-group" style={{ "text-align": "center" }}>
+                                                <button class="btn btn-default signin-btn" type="submit">Sign in</button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <p class="mt-4 login-text">
+                                                <Link className="forgot-btn" to='/forgotpassword'>
+                                                    Forgot your password?
+                                                </Link>
+                                            </p>
+                                        </div>
                                     </div>
-                                    
                                 </form>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
+                    </div >
+                </div >
+            </section >  
+
+           
 
             <Footer />
         </div>

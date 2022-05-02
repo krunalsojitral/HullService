@@ -32,15 +32,31 @@ export default function Dashboard() {
     return(
         <div>
             <Header/>
-            <section className="inner-header">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-md-12">
-                            <h2>Your Dashboard</h2>
+
+            <section class="second-banner-sec" style={{ background: `url('images/contact-banner-bg.png') no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
+                <div class="container">
+                    <div class="second-banner-inner">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="text-box">
+                                    <h2 class="wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">Dashboard</h2>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="image-holder">
+                                    <img src="images/second-banner-img.png" alt="" class="img-fluid wow animate__flipInX" data-wow-duration="1500ms" data-wow-delay="1000ms" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="second-banner-shape wow animate__zoomIn" data-wow-duration="1500ms" data-wow-delay="1000ms">
+                            <img src="images/second-banner-shape.png" alt="" class="img-fluid" />
                         </div>
                     </div>
-                </div>
+                </div >
             </section>
+
+
+           
             <section className="dashboard-card">
                 <div className="container-fluid">
                     <div className="row">
@@ -67,15 +83,7 @@ export default function Dashboard() {
                                                         <img alt="support" src="images/support02.png"/>
                                                     </div>
                                                 </Link>
-                                            </div>}
-                                            {/* <div className="col-md-4">
-                                                <Link to='/my-professional-development' className="Support-card">
-                                                    <h3>My Professional Development Courses </h3>
-                                                    <div className="support-img">
-                                                         <img alt="support" src="images/support03.png"/>
-                                                    </div>
-                                                </Link>
-                                            </div> */}
+                                            </div>}                                           
                                             {users && (users.role == 3 || users.role == 2) && <div className="col-md-4">
                                                 <Link to='/my-forum' className="Support-card">
                                                     <h3>My Threads</h3>
@@ -91,31 +99,7 @@ export default function Dashboard() {
                                                         <img alt="support" src="images/support05.png"/>
                                                     </div>
                                                 </Link>
-                                            </div>}
-                                            {/* <div className="col-md-4">
-                                                <Link to='/my-blog' className="Support-card">                                                                    
-                                                    <h3>My Blogs</h3>
-                                                    <div className="support-img">                                                                            
-                                                        <img alt="support" src="images/support06.png" />                                                                            
-                                                    </div>                                                                    
-                                                </Link>
-                                            </div> */}
-                                            {/* <div className="col-md-4">
-                                                <Link to='/my-article' className="Support-card">
-                                                    <h3>My Articles</h3>
-                                                    <div className="support-img">
-                                                        <img alt="support" src="images/support06.png" />
-                                                    </div>
-                                                </Link>
-                                            </div>
-                                            <div className="col-md-4">
-                                                <Link to='/my-video' className="Support-card">
-                                                    <h3>My Informational Videos</h3>
-                                                    <div className="support-img">
-                                                        <img alt="support" src="images/support06.png" />
-                                                    </div>
-                                                </Link>
-                                            </div> */}
+                                            </div>}                                            
                                         </div>
                                     </div>
                                 </div>
@@ -124,6 +108,8 @@ export default function Dashboard() {
                     </div>
                 </div>
             </section>    
+
+            
         <Footer/>
     </div>
     )

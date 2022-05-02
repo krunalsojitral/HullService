@@ -19,49 +19,61 @@ export default function Forgotpassword() {
     return (
         <div>
             <Header />
-            <div className="login-section">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-md-12">
-                            <div className="login-box">
-                                <div className="login-img">
-                                    <img alt="logo" src="images/logo.png" />
+
+            <section class="second-banner-sec" style={{ background: `url('images/contact-banner-bg.png') no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
+                <div class="container">
+                    <div class="second-banner-inner">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="text-box">
+                                    <h2 class="wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">Forgot Password</h2>
                                 </div>
-
-                                <form onSubmit={handleSubmit(onSubmit)}>
-                                    <div className="login-details">
-                                        <h2>Forgot Password</h2>
-                                        {/* <span>Please login to continue</span> */}
-                                        <div className="form-group">
-                                            <input type="text" {...register("email", { required: true, pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i } })} className="form-control" placeholder="Email *" />
-                                            {errors?.email?.type === "required" && <small className="error">Email is required</small>}
-                                            {errors?.email?.type === "pattern" && (<small className="error">Invalid email address</small>)}
-                                        </div>                                        
-
-                                        <button disabled={isSubmitting} color="info" type="submit" className="sign-btn">
-                                            {isSubmitting && <span className="spinner-border spinner-border-sm"></span>}
-                                        Submit</button>                                       
-                                       
-                                    </div>
-                                </form>
-
-                                {/* <div className="row">
-                                    <div className="col-md-6">
-                                        <Link className="forgot-btn" to='/login'>
-                                            Sign In
-                                        </Link>
-                                    </div>
-                                    <div className="col-md-6 text-right">
-                                        <Link className="signup-btn" to='/userSelection'>
-                                            Sign Up
-                                        </Link>
-                                    </div>
-                                </div> */}
+                            </div>
+                            <div class="col-md-5">
+                                <div class="image-holder">
+                                    <img src="images/second-banner-img.png" alt="" class="img-fluid wow animate__flipInX" data-wow-duration="1500ms" data-wow-delay="1000ms" />
+                                </div>
                             </div>
                         </div>
+                        <div class="second-banner-shape wow animate__zoomIn" data-wow-duration="1500ms" data-wow-delay="1000ms">
+                            <img src="images/second-banner-shape.png" alt="" class="img-fluid" />
+                        </div>
                     </div>
-                </div>
-            </div>
+                </div >
+            </section>
+
+            <section class="login-sec">
+                <div class="container">
+                    <div class="researcher-heading">
+                        <h3 class="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="1000ms" style={{ "visibility": "visible", "animation-duration": "500ms", "animation-name": "fadeInUp" }}>Forgot Password</h3>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="login-content mt-6">
+                                <form onSubmit={handleSubmit(onSubmit)} class="wow animate__fadeIn mt-4" data-wow-duration="1000ms" data-wow-delay="1000ms">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <input type="text" {...register("email", { required: true, pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i } })} className="form-control" placeholder="Email *" />
+                                                {errors?.email?.type === "required" && <small className="error">Email is required</small>}
+                                                {errors?.email?.type === "pattern" && (<small className="error">Invalid email address</small>)}
+                                            </div>
+                                        </div>                                        
+                                        <div class="col-md-12">
+                                            <div class="form-group" style={{ "text-align": "center" }}>                                                
+                                                <button disabled={isSubmitting} type="submit" class="btn btn-default signin-btn">
+                                                    {isSubmitting && <span className="spinner-border spinner-border-sm"></span>}
+                                                    Submit</button>      
+                                            </div>
+                                        </div>                                        
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div >
+                </div >
+            </section >
+                      
             <Footer />
         </div>
     )

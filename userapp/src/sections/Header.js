@@ -75,120 +75,98 @@ export default function Header() {
  
 
     return(
-            <header>
-                <div className="container">
-                    <div className="row">
 
-                    <div className="col-md-12">
-                        <div className="header-card">
-                            <div className="logo" onClick={(e) => handleOpenDirection()}>
-                                <img alt="logo" src="images/logo.png" />
-                            </div>
-                            <div className="hull-links">
-                                <a href="javascript:void(0);" className="mob-btn">
-                                    <i className="fa fa-bars"></i>
-                                </a>
+            <header id="myHeader">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="navigation">
+                                <nav class="navbar navbar-expand-lg">
+                                    <a class="navbar-brand" href="index.html"><img src="images/logo.png" alt="" class="img-fluid" onClick={(e) => handleOpenDirection()} /></a>
+                                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                        <span class="navbar-toggler-icon"></span>
+                                        <span class="navbar-toggler-icon"></span>
+                                        <span class="navbar-toggler-icon"></span>
+                                    </button>
+                                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                        <ul class="navbar-nav ms-auto" id="menu">
+                                            <li class="nav-item"><a class="nav-link" href="about">About Us <i class="fa-solid fa-caret-down"></i></a>
+                                                <ul class="menus">
+                                                    <li>
+                                                        <NavLink activeClassName="active" to="/about-hull">
+                                                            <InlineButton name={"About Hull Services"} />
+                                                        </NavLink>
+                                                    </li>
+                                                    <li>
+                                                        <NavLink activeClassName="active" to="/ourteam">
+                                                            <InlineButton name={"Our Team"} />
+                                                        </NavLink>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="nav-item">
+                                                <NavLink class="nav-link" activeClassName="active" to="/research-request-form">
+                                                    <InlineButton name={"Research"} />
+                                                </NavLink>
+                                            </li>
+                                            <li class="nav-item">
+                                                <NavLink class="nav-link" activeClassName="active" to="/courses-training">
+                                                    <InlineButton name={"Trainings & Courses"} />
+                                                </NavLink>
+                                            </li>
+                                            <li class="nav-item">
+                                                <NavLink class="nav-link" activeClassName="active" to="/events">
+                                                    <InlineButton name={"Events"} />
+                                                </NavLink>
+                                            </li>
+                                            <li class="nav-item">
+                                                <NavLink class="nav-link" activeClassName="active" to="/partner">
+                                                    <InlineButton name={"Our Partners"} />
+                                                </NavLink>
+                                            </li>
+                                            <li class="nav-item">
+                                                <NavLink class="nav-link" activeClassName="active" to="/contact">
+                                                    <InlineButton name={"Contact Us"} />
+                                                </NavLink>
+                                            </li>
+                                            {(!token) &&  <li class="nav-item">
+                                                <NavLink class="login-btn" activeClassName="active" to="/login">
+                                                    <InlineButton name={"Login"} />
+                                                </NavLink>
+                                            </li>}
 
-                                <div className="hull-menu">
-                                    <ul>                                        
-                                        <li>
-                                            <a href="javascript:;">
-                                                <InlineButton name={"About us"} />
-                                            </a>
-                                            <ul>
-                                                <li>
-                                                    <NavLink activeClassName="active" to="/ourteam">
-                                                        <InlineButton name={"Our Team"} />
-                                                    </NavLink>
-                                                </li>
-                                                <li>
-                                                    <NavLink activeClassName="active" to="/faq">
-                                                        <InlineButton name={"FAQ"} />
-                                                    </NavLink>
-                                                </li>
-                                                <li>
-                                                    <NavLink activeClassName="active" to="/about">
-                                                        <InlineButton name={"About Hull Services"} />
-                                                    </NavLink>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        {(!token) && <li>
-                                            <a href="javascript:;">
-                                                <InlineButton name={"Research"} />
-                                            </a>
-                                            <ul>
-                                                <li>
-                                                    <NavLink activeClassName="active" to="/research-request-form">
-                                                        <InlineButton name={"Become a researcher"} />
-                                                    </NavLink>
-                                                </li>                                                
-                                            </ul>
-                                        </li>}
-                                        <li>
-                                            <NavLink activeClassName="active" to="/courses-training">
-                                                <InlineButton name={"Traning & Courses"} />
-                                            </NavLink>
-                                        </li>
-                                        <li>
-                                            <NavLink activeClassName="active" to="/events">
-                                                <InlineButton name={"Events"} />
-                                            </NavLink>
-                                        </li>
-                                        <li>
-                                            <NavLink activeClassName="active" to="/partner">
-                                                <InlineButton name={"Our Partners"} />
-                                            </NavLink>
-                                        </li>
-                                        <li>
-                                            <NavLink activeClassName="active" to="/contact">
-                                                <InlineButton name={"Contact us"} />
-                                            </NavLink>
-                                        </li> 
-                                        {(!token) && <li>
-                                            <NavLink activeClassName="active" to="/login">
-                                                <InlineButton name={"Login"} />
-                                            </NavLink>
-                                        </li>}
-                                        {/* {(!token) && <li>
-                                            <NavLink activeClassName="active" to="/public-user-register">
-                                                <InlineButton name={"Register"} />
-                                            </NavLink>
-                                        </li>} */}
-                                    </ul>
-                                </div>
 
-                                                              
-                                {(token) && <div className="user-dropdown">
-                                    <div className="dropdown">
-                                        <a href="#" className="dropdown-toggle loged-user-link" data-toggle="dropdown">
-                                            <div className="loged-user-details">
-                                                <div className="loged-user-icon">
-                                                    {!userData.avatar && <img src="images/user.png" />}
-                                                    {userData.avatar && <img src={userData.avatar} />}
-                                                </div>
-                                                <div className="loged-user-name">
-                                                    <h3 title={userData.first_name + ' ' + userData.last_name}> {(userData.first_name + ' ' + userData.last_name).substring(0, 15)}</h3>
-                                                    <small>({userTypeList})</small>
-                                                </div>
+                                        {(token) && <div className="user-dropdown">
+                                            <div class="dropdown">
+                                                <a class="dropdown-toggle loged-user-link" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <div className="loged-user-details">
+                                                        <div className="loged-user-icon">
+                                                            {!userData.avatar && <img src="images/user.png" />}
+                                                            {userData.avatar && <img src={userData.avatar} />}
+                                                        </div>
+                                                        <div className="loged-user-name">
+                                                            <h3 title={userData.first_name + ' ' + userData.last_name}> {(userData.first_name + ' ' + userData.last_name).substring(0, 15)}</h3>
+                                                            <small>({userTypeList})</small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+
+                                                <ul class="dropdown-menu loged-user-menu" aria-labelledby="dropdownMenuLink">
+                                                    <li><Link className="btn-edit" to={{ pathname: "/dashboard" }}>My Dashboard</Link></li>
+                                                    <li><Link className="btn-edit" onClick={() => { window.location.href = "/view-profile?id=" + userData.id }} >View Profile</Link></li>
+                                                    <li onClick={(e) => logoutClick()}><a className="logout">
+                                                        <InlineButton name={"Logout"} />
+                                                    </a></li>
+                                                </ul>
                                             </div>
-                                        </a>
-                                        <ul className="dropdown-menu loged-user-menu">
-                                            <li><Link className="btn-edit" to={{ pathname: "/dashboard" }}>My Dashboard</Link></li>
-                                            <li><Link className="btn-edit" onClick={() => { window.location.href = "/view-profile?id=" + userData.id }} >View Profile</Link></li>
-                                            <li onClick={(e) => logoutClick()}><a className="logout">
-                                                <InlineButton name={"Logout"} />
-                                            </a></li>
+                                        </div>   }
+
+                                            
                                         </ul>
                                     </div>
-                                </div>
-                                }
+                                </nav>
                             </div>
                         </div>
-                    </div>
-
-
-                      
                     </div>
                 </div>
             </header>

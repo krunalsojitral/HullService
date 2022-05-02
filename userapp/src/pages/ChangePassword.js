@@ -151,129 +151,147 @@ export default function Changepassword() {
     return (
         <div>
             <Header />
-            <div className="login-section">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-md-12">
-                            <div className="login-box">
-                                <div className="login-img">
-                                    <img alt="logo" src="images/logo.png" />
+
+
+            <section class="second-banner-sec" style={{ background: `url('images/contact-banner-bg.png') no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
+                <div class="container">
+                    <div class="second-banner-inner">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="text-box">
+                                    <h2 class="wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">Change Password</h2>
                                 </div>
-
-                                <form onSubmit={handleSubmit(onSubmit)}>
-                                    <div className="login-details">
-                                        <h2>Change Password</h2>                                        
-                                        <div className="form-group">
-
-                                            <Controller
-                                                name={"password"}
-                                                control={control}
-                                                rules={{
-                                                    required: true,
-                                                    pattern: { value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/ },
-                                                    minLength: {
-                                                        value: 8,
-                                                        message: "Password must have at least 8 characters",
-                                                    }
-                                                }}
-                                                render={({ field: { onChange, value } }) => (
-                                                    <input
-                                                        id="new_password"
-                                                        type="password"                                                        
-                                                        // onChange={(e) => {
-                                                        //     onChange
-                                                        //     onChangePassword(e);
-                                                        // }}
-                                                        onKeyUp={(e) => onKeyUpPassword(e)}
-                                                        onBlur={(e) => onBlurPassword(e)}
-                                                        onFocus={(e) => onFocusPassword(e)}                                                        
-                                                        onChange={onChange}
-                                                        className="form-control"
-                                                        value={value}
-                                                        placeholder={`Password *`}
-                                                    />                                                    
-                                                )}
-                                            ></Controller>
-                                            <div id="password_error">
-                                                {(errors.password?.type === "required" && <small className="error">Password is required</small>)}
-                                                {(errors.password?.type === "minLength" && <small className="error">Password is at least 8 characters </small>)}
-                                                {(errors.password?.type === "pattern" && <small className="error">Please enter at least 8 characters, 1 numeric, 1 lowercase letter, 1 uppercase letter and 1 special character.</small>)}
-                                            </div> 
-                                            <div id="pswd_info" className="password_error_list" style={{ 'display': 'none' }}>
-                                                <ul>
-                                                    <li id="length" className="invalid">Must be atleast 8 characters!</li>
-                                                    <li id="letter" className="invalid">Must contain atleast 1 letter in small case!</li>
-                                                    <li id="capital" className="invalid">Must contain atleast 1 letter in capital case!</li>
-                                                    <li id="number" className="invalid">Must contain atleast 1 number!</li>
-                                                    <li id="special" className="invalid">Must contain atleast 1 special character!</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div className="form-group">
-
-                                            <Controller
-                                                name={"confirmpassword"}
-                                                control={control}
-                                                rules={{
-                                                    validate: value => value === password.current || "The passwords do not match",
-                                                    required: true,
-                                                    pattern: { value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/ },
-                                                    minLength: {
-                                                        value: 8,
-                                                        message: "Password must have at least 8 characters",
-                                                    }
-                                                }}
-                                                render={({ field: { onChange, value } }) => (
-                                                    <input
-                                                        id="confirm_password"
-                                                        type="password"
-                                                        onChange={onChange}
-                                                        onKeyUp={(e) => onKeyUpConfirmPassword(e)}
-                                                        onBlur={(e) => onBlurConfirmPassword(e)}
-                                                        onFocus={(e) => onFocusConfirmPassword(e)}
-                                                        className="form-control"
-                                                        value={value}
-                                                        placeholder={`Confirm password *`}
-                                                    />
-                                                )}
-                                            ></Controller>
-                                            <div id="confirm_password_error">
-                                                {(errors.confirmpassword?.type === "required" && <small className="error">Confirm password is required</small>)}
-                                                {errors.confirmpassword && <small className="error">{errors.confirmpassword.message}</small>}
-                                            </div>
-                                            <div id="confirm_pswd_info" className="password_error_list" style={{ 'display': 'none' }}>
-                                                <ul>
-                                                    <li id="confirm_length" className="invalid">Must be atleast 8 characters!</li>
-                                                    <li id="confirm_letter" className="invalid">Must contain atleast 1 letter in small case!</li>
-                                                    <li id="confirm_capital" className="invalid">Must contain atleast 1 letter in capital case!</li>
-                                                    <li id="confirm_number" className="invalid">Must contain atleast 1 number!</li>
-                                                    <li id="confirm_special" className="invalid">Must contain atleast 1 special character!</li>
-                                                </ul>
-                                            </div>
-
-                                        </div>                                        
-                                        <button type="submit" className="sign-btn">Submit</button>
-
-                                    </div>
-                                </form>
-
-                                {/* <div className="row">
-                                    <div className="col-md-6">
-                                        <Link className="forgot-btn" to='/login'>
-                                            Sign In
-                                        </Link>
-                                    </div>
-                                    <div className="col-md-6 text-right">
-                                        <Link className="forgot-btn" to='/register'>
-                                            Sign Up
-                                        </Link>
-                                    </div>
-                                </div> */}
+                            </div>
+                            <div class="col-md-5">
+                                <div class="image-holder">
+                                    <img src="images/second-banner-img.png" alt="" class="img-fluid wow animate__flipInX" data-wow-duration="1500ms" data-wow-delay="1000ms" />
+                                </div>
                             </div>
                         </div>
+                        <div class="second-banner-shape wow animate__zoomIn" data-wow-duration="1500ms" data-wow-delay="1000ms">
+                            <img src="images/second-banner-shape.png" alt="" class="img-fluid" />
+                        </div>
                     </div>
-                </div>
-            </div>
+                </div >
+            </section>
+
+            <section class="login-sec">
+                <div class="container">
+                    <div class="researcher-heading">
+                        <h3 class="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="1000ms" style={{ "visibility": "visible", "animation-duration": "500ms", "animation-name": "fadeInUp" }}>Change Password</h3>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="login-content mt-6">
+                                <form onSubmit={handleSubmit(onSubmit)} class="wow animate__fadeIn mt-4" data-wow-duration="1000ms" data-wow-delay="1000ms">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <Controller
+                                                    name={"password"}
+                                                    control={control}
+                                                    rules={{
+                                                        required: true,
+                                                        pattern: { value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/ },
+                                                        minLength: {
+                                                            value: 8,
+                                                            message: "Password must have at least 8 characters",
+                                                        }
+                                                    }}
+                                                    render={({ field: { onChange, value } }) => (
+                                                        <input
+                                                            id="new_password"
+                                                            type="password"
+                                                            // onChange={(e) => {
+                                                            //     onChange
+                                                            //     onChangePassword(e);
+                                                            // }}
+                                                            onKeyUp={(e) => onKeyUpPassword(e)}
+                                                            onBlur={(e) => onBlurPassword(e)}
+                                                            onFocus={(e) => onFocusPassword(e)}
+                                                            onChange={onChange}
+                                                            className="form-control"
+                                                            value={value}
+                                                            placeholder={`Password *`}
+                                                        />
+                                                    )}
+                                                ></Controller>
+                                                <div id="password_error">
+                                                    {(errors.password?.type === "required" && <small className="error">Password is required</small>)}
+                                                    {(errors.password?.type === "minLength" && <small className="error">Password is at least 8 characters </small>)}
+                                                    {(errors.password?.type === "pattern" && <small className="error">Please enter at least 8 characters, 1 numeric, 1 lowercase letter, 1 uppercase letter and 1 special character.</small>)}
+                                                </div>
+                                                <div id="pswd_info" className="password_error_list" style={{ 'display': 'none' }}>
+                                                    <ul>
+                                                        <li id="length" className="invalid">Must be atleast 8 characters!</li>
+                                                        <li id="letter" className="invalid">Must contain atleast 1 letter in small case!</li>
+                                                        <li id="capital" className="invalid">Must contain atleast 1 letter in capital case!</li>
+                                                        <li id="number" className="invalid">Must contain atleast 1 number!</li>
+                                                        <li id="special" className="invalid">Must contain atleast 1 special character!</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <Controller
+                                                    name={"confirmpassword"}
+                                                    control={control}
+                                                    rules={{
+                                                        validate: value => value === password.current || "The passwords do not match",
+                                                        required: true,
+                                                        pattern: { value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/ },
+                                                        minLength: {
+                                                            value: 8,
+                                                            message: "Password must have at least 8 characters",
+                                                        }
+                                                    }}
+                                                    render={({ field: { onChange, value } }) => (
+                                                        <input
+                                                            id="confirm_password"
+                                                            type="password"
+                                                            onChange={onChange}
+                                                            onKeyUp={(e) => onKeyUpConfirmPassword(e)}
+                                                            onBlur={(e) => onBlurConfirmPassword(e)}
+                                                            onFocus={(e) => onFocusConfirmPassword(e)}
+                                                            className="form-control"
+                                                            value={value}
+                                                            placeholder={`Confirm password *`}
+                                                        />
+                                                    )}
+                                                ></Controller>
+                                                <div id="confirm_password_error">
+                                                    {(errors.confirmpassword?.type === "required" && <small className="error">Confirm password is required</small>)}
+                                                    {errors.confirmpassword && <small className="error">{errors.confirmpassword.message}</small>}
+                                                </div>
+                                                <div id="confirm_pswd_info" className="password_error_list" style={{ 'display': 'none' }}>
+                                                    <ul>
+                                                        <li id="confirm_length" className="invalid">Must be atleast 8 characters!</li>
+                                                        <li id="confirm_letter" className="invalid">Must contain atleast 1 letter in small case!</li>
+                                                        <li id="confirm_capital" className="invalid">Must contain atleast 1 letter in capital case!</li>
+                                                        <li id="confirm_number" className="invalid">Must contain atleast 1 number!</li>
+                                                        <li id="confirm_special" className="invalid">Must contain atleast 1 special character!</li>
+                                                    </ul>
+                                                </div>
+                                            </div>                                            
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-group" style={{ "text-align": "center" }}>
+                                                <button type="submit" className="btn btn-default signin-btn">Submit</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div >
+                </div >
+            </section >
+            
+
+           
             <Footer />
         </div>
     )

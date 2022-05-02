@@ -59,17 +59,32 @@ export default function ViewProfile() {
         <div>
             <Header/>
 
-            <section className="inner-header">
-                <div className="container">
-                    <div className="row">                        
-                        <div className="col-md-12">
-                            <h2>{showEdit && "My Profile"}
-                                {!showEdit && "View Profile"}
-                            </h2>
+            <section class="second-banner-sec" style={{ background: `url('images/contact-banner-bg.png') no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
+                <div class="container">
+                    <div class="second-banner-inner">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="text-box">
+                                    <h2 class="wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">
+                                        {showEdit && "My Profile"}
+                                        {!showEdit && "View Profile"}
+                                    </h2>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="image-holder">
+                                    <img src="images/second-banner-img.png" alt="" class="img-fluid wow animate__flipInX" data-wow-duration="1500ms" data-wow-delay="1000ms" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="second-banner-shape wow animate__zoomIn" data-wow-duration="1500ms" data-wow-delay="1000ms">
+                            <img src="images/second-banner-shape.png" alt="" class="img-fluid" />
                         </div>
                     </div>
-                </div>
+                </div >
             </section>
+
+           
             <section className="dashboard-card pofile-view">
                 <div className="container">
                     <div className="row">
@@ -79,7 +94,6 @@ export default function ViewProfile() {
                                 <div className="row"><i className="fa fa-exclamation-circle" aria-hidden="true"></i> Your profile is incomplete. Please fill your addition details to complete your profile.</div>
                             </div>
                         </div>}
-                        
                         
                         <div className="col-md-12">
                             <div className="view-profile-card">
@@ -175,6 +189,8 @@ export default function ViewProfile() {
                     </div>
                 </div>
             </section>   
+
+            
         <Footer/>
     </div>
     )
