@@ -82,7 +82,7 @@ export default function Header() {
                         <div class="col-12">
                             <div class="navigation">
                                 <nav class="navbar navbar-expand-lg">
-                                    <a class="navbar-brand" href="index.html"><img src="images/logo.png" alt="" class="img-fluid" onClick={(e) => handleOpenDirection()} /></a>
+                                <a class="navbar-brand" onClick={(e) => handleOpenDirection()}><img src="images/logo.png" alt="" class="img-fluid" onClick={(e) => handleOpenDirection()} /></a>
                                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                                         <span class="navbar-toggler-icon"></span>
                                         <span class="navbar-toggler-icon"></span>

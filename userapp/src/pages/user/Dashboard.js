@@ -90,7 +90,7 @@ export default function Dashboard() {
                                                     </div>
                                                 </Link>
                                             </div>}
-                                            {users && (users.role == 3) && <div className="col-md-4">
+                                            {users && (users.role == 3) && <div className="col-md-4 mt-4">
                                                 <Link to='/my-studies' className="Support-card">
                                                     <h3>My Studies</h3>
                                                     <div className="support-img">
