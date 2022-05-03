@@ -64,10 +64,11 @@ export default function PromoPage() {
     }, [])
 
 
-    const cartEvent = (id, cost) => {
+    const cartEvent = (id, cost, type) => {
         var data = {
             event_id: id,
-            cost: cost
+            cost: cost,
+            type: type
         }
         
         localStorage.setItem('eventPurchaseData', JSON.stringify(data));
@@ -89,79 +90,79 @@ export default function PromoPage() {
             <Header />
 
 
-            <section class="second-banner-sec" style={{ background: `url('images/event-banner.png') no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
-                <div class="container">
-                    <div class="second-banner-inner">
-                        <div class="row">
-                            <div class="col-md-7">
-                                <div class="text-box">
-                                    <h2 class="wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">Our Events</h2>
+            <section className="second-banner-sec" style={{ background: `url('images/event-banner.png') no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
+                <div className="container">
+                    <div className="second-banner-inner">
+                        <div className="row">
+                            <div className="col-md-7">
+                                <div className="text-box">
+                                    <h2 className="wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">Our Events</h2>
                                 </div>
                             </div>
-                            <div class="col-md-5">
-                                <div class="image-holder">
-                                    <img src="images/second-banner-img.png" alt="" class="img-fluid wow animate__flipInX" data-wow-duration="1500ms" data-wow-delay="1000ms" />
+                            <div className="col-md-5">
+                                <div className="image-holder">
+                                    <img src="images/second-banner-img.png" alt="" className="img-fluid wow animate__flipInX" data-wow-duration="1500ms" data-wow-delay="1000ms" />
                                 </div>
                             </div>
                         </div>
-                        <div class="second-banner-shape wow animate__zoomIn" data-wow-duration="1500ms" data-wow-delay="1000ms">
-                            <img src="images/second-banner-shape.png" alt="" class="img-fluid" />
+                        <div className="second-banner-shape wow animate__zoomIn" data-wow-duration="1500ms" data-wow-delay="1000ms">
+                            <img src="images/second-banner-shape.png" alt="" className="img-fluid" />
                         </div>
                     </div>
                 </div>
             </section>
 
-            <div class="event-main">
-                <div class="container">
-                    <ul class="nav nav-tabs eventTabs wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" id="myTab" role="tablist">
+            <div className="event-main">
+                <div className="container">
+                    <ul className="nav nav-tabs eventTabs wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" id="myTab" role="tablist">
                         <li role="presentation">
-                            <a href="#" class="active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Event</a>
+                            <a href="#" className="active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Event</a>
                         </li>
                         <li role="presentation">
                             <a href="#" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Reflective Practice Sessions</a>
                         </li>
                     </ul>
-                    <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                            <div class="row">
-                                <div class="back-btn-right clearfix" style={{"text-align":"right"}}>
-                                    <div class="rate-btn mt-5 "><a href="#" class="btn btn-default white sm-btn"><span>Back</span></a></div>
+                    <div className="tab-content" id="myTabContent">
+                        <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <div className="row">
+                                <div className="back-btn-right clearfix" style={{"text-align":"right"}}>
+                                    <div className="rate-btn mt-5 "><a href="#" className="btn btn-default white sm-btn"><span>Back</span></a></div>
                                 </div>
                             </div>
-                            <div class="eventDetail">
-                                <div class="row">
-                                    <div class="col-lg-5 text-lg-end">
-                                        <div class="img-holder ringLeft ">
-                                            {/* <img src="images/event.png" alt="" class="wow animate__fadeInLeft" data-wow-duration="1000ms" data-wow-delay="1000ms" /> */}
-                                            {!eventDetail.image && <img alt="event-page" class="event-detail-image wow animate__fadeInLeft" data-wow-duration="1000ms" data-wow-delay="1000ms" src="images/event.png" />}
-                                            {eventDetail.image && <img alt="event-page" class="event-detail-image wow animate__fadeInLeft" data-wow-duration="1000ms" data-wow-delay="1000ms" src={eventDetail.image} />}
-                                            <img src="images/Ellipse2.png" alt="" class="ellipse wow animate__fadeIn" data-wow-duration="1500ms" data-wow-delay="1000ms" />
+                            <div className="eventDetail">
+                                <div className="row">
+                                    <div className="col-lg-5 text-lg-end">
+                                        <div className="img-holder ringLeft ">
+                                            {/* <img src="images/event.png" alt="" className="wow animate__fadeInLeft" data-wow-duration="1000ms" data-wow-delay="1000ms" /> */}
+                                            {!eventDetail.image && <img alt="event-page" className="event-detail-image wow animate__fadeInLeft" data-wow-duration="1000ms" data-wow-delay="1000ms" src="images/event.png" />}
+                                            {eventDetail.image && <img alt="event-page" className="event-detail-image wow animate__fadeInLeft" data-wow-duration="1000ms" data-wow-delay="1000ms" src={eventDetail.image} />}
+                                            <img src="images/Ellipse2.png" alt="" className="ellipse wow animate__fadeIn" data-wow-duration="1500ms" data-wow-delay="1000ms" />
                                         </div>
                                     </div>
-                                    <div class="col-lg-7">
-                                        <div class="content event-card no-shadow">
-                                            <div class="event-card-left1">
-                                                <div class="event-name-title">
-                                                    {!eventDetail.speaker_image && <img src="images/user-icon.svg" alt="" class="img-fluid speaker-image" />}
-                                                    {eventDetail.speaker_image && <img src={eventDetail.speaker_image} alt="" class="img-fluid speaker-image" />}
+                                    <div className="col-lg-7">
+                                        <div className="content event-card no-shadow">
+                                            <div className="event-card-left1">
+                                                <div className="event-name-title">
+                                                    {!eventDetail.speaker_image && <img src="images/user-icon.svg" alt="" className="img-fluid speaker-image" />}
+                                                    {eventDetail.speaker_image && <img src={eventDetail.speaker_image} alt="" className="img-fluid speaker-image" />}
                                                     {eventDetail.speaker_name} 
                                                 </div>
-                                                <div class="desc event-list-line">{eventDetail.title} </div>
-                                                <ul class="mt-50">
+                                                <div className="desc event-list-line">{eventDetail.title} </div>
+                                                <ul className="mt-50">
                                                     <li><i><img src="images/clarity_date-solid.svg" alt="" /></i><span>{eventDetail.start_date}</span></li>
                                                     <li><i><img src="images/bxs_time.svg" alt="" /></i><span>{eventDetail.start_time} - {eventDetail.end_time}</span></li>
                                                     {eventDetail.location && <li><i><img src="images/loc.svg" alt="" /></i><span>{eventDetail.location}</span></li>}
                                                 </ul>            
 
                                                 {!eventDetail.event_purchase_id && <div>
-                                                    <div class="rate-btn mt-3">
-                                                        <a onClick={(e) => cartEvent(eventDetail.event_id, eventDetail.cost)} class="btn btn-default w-100">
+                                                    <div className="rate-btn mt-3">
+                                                        <a onClick={(e) => cartEvent(eventDetail.event_id, eventDetail.cost, 'event')} className="btn btn-default w-100">
                                                             {eventDetail.cost && <span>${eventDetail.cost}</span>}
                                                             <span>Register for events only</span>
                                                         </a>
                                                     </div>
-                                                    <div class="rate-btn mt-3">
-                                                        <a href="javascript:;" onClick={(e) => cartEvent(eventDetail.event_id, (eventDetail.cost + eventDetail.session_cost))} class="btn btn-default white w-100">
+                                                    <div className="rate-btn mt-3">
+                                                        <a href="javascript:;" onClick={(e) => cartEvent(eventDetail.event_id, (eventDetail.cost + eventDetail.session_cost, 'eventwithsession'))} className="btn btn-default w-100">
                                                             {eventDetail.cost && <span>${eventDetail.cost}</span>}
                                                             <span>Register for Event and Reflection <br />Pracice Session</span>
                                                         </a>
@@ -173,22 +174,22 @@ export default function PromoPage() {
                                         </div>
                                     </div>
                                 </div>
-                                <div class="detail">
-                                    <p class="wow animate__fadeInUp" data-wow-duration="1000ms" data-wow-delay="1000ms" dangerouslySetInnerHTML={{ __html: eventDetail.description }}></p>
+                                <div className="detail">
+                                    <p className="wow animate__fadeInUp" data-wow-duration="1000ms" data-wow-delay="1000ms" dangerouslySetInnerHTML={{ __html: eventDetail.description }}></p>
                                 </div>
                                 <hr />
-                                <div class="about-event">
-                                    <div class="row">
-                                        <div class="col-lg-5">
-                                            <div class="img-holder">
-                                                {!eventDetail.speaker_image && <img class="wow animate__fadeInLeft" data-wow-duration="800ms" data-wow-delay="1000ms" alt="event-page" src="images/about.png" />}
-                                                {eventDetail.speaker_image && <img class="wow animate__fadeInLeft" data-wow-duration="800ms" data-wow-delay="1000ms" alt="event-page" src={eventDetail.speaker_image} />}
+                                <div className="about-event">
+                                    <div className="row">
+                                        <div className="col-lg-5">
+                                            <div className="img-holder">
+                                                {!eventDetail.speaker_image && <img className="wow animate__fadeInLeft" data-wow-duration="800ms" data-wow-delay="1000ms" alt="event-page" src="images/about.png" />}
+                                                {eventDetail.speaker_image && <img className="wow animate__fadeInLeft" data-wow-duration="800ms" data-wow-delay="1000ms" alt="event-page" src={eventDetail.speaker_image} />}
                                             </div>
                                         </div>
-                                        <div class="col-lg-7">
-                                            <div class="content">
-                                                <h4 class="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="1000ms">About {eventDetail.speaker_name}</h4>
-                                                <p class="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="1000ms" dangerouslySetInnerHTML={{ __html: eventDetail.about_speaker }}>
+                                        <div className="col-lg-7">
+                                            <div className="content">
+                                                <h4 className="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="1000ms">About {eventDetail.speaker_name}</h4>
+                                                <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="1000ms" dangerouslySetInnerHTML={{ __html: eventDetail.about_speaker }}>
                                                 </p>
                                             </div>
                                         </div>
@@ -196,65 +197,65 @@ export default function PromoPage() {
                                 </div>
                             </div >
                         </div >
-                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                            <div class="reflective-card">
+                        <div className="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                            <div className="reflective-card">
                                 <h4>{eventDetail.session_title}</h4>
                                 <p dangerouslySetInnerHTML={{ __html: eventDetail.session_about }}></p>
-                                <div class="card-warning">
+                                <div className="card-warning">
                                     <i><img src="images/waring.svg" alt="" /></i>
-                                    <div class="media-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lectus tincidunt vel sed egestas sit scelerisque sollicitudin. Facilisi at viverra gravida at euismod ultrices consequat neque non.</div>
+                                    <div className="media-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lectus tincidunt vel sed egestas sit scelerisque sollicitudin. Facilisi at viverra gravida at euismod ultrices consequat neque non.</div>
                                 </div>
-                                <div class="reflective-duration">
+                                <div className="reflective-duration">
                                     <h5><img src="images/bxs_time.svg" alt="" />Duration : 4 Months(21 APRIL to 21 July)</h5>
-                                    <ul class="nav nav-pills" id="pills-tab" role="tablist">
-                                        <li class="nav-item" role="presentation">
-                                            <a href="#" class="nav-link" id="pills-Mon-tab" data-bs-toggle="pill" data-bs-target="#pills-Mon" role="tab" aria-controls="pills-Mon" aria-selected="true">Mon</a>
+                                    <ul className="nav nav-pills" id="pills-tab" role="tablist">
+                                        <li className="nav-item" role="presentation">
+                                            <a href="#" className="nav-link" id="pills-Mon-tab" data-bs-toggle="pill" data-bs-target="#pills-Mon" role="tab" aria-controls="pills-Mon" aria-selected="true">Mon</a>
                                         </li>
-                                        <li class="nav-item" role="presentation">
-                                            <a href="#" class="nav-link" id="pills-Tue-tab" data-bs-toggle="pill" data-bs-target="#pills-Tue" role="tab" aria-controls="pills-Tue" aria-selected="false">Tue</a>
+                                        <li className="nav-item" role="presentation">
+                                            <a href="#" className="nav-link" id="pills-Tue-tab" data-bs-toggle="pill" data-bs-target="#pills-Tue" role="tab" aria-controls="pills-Tue" aria-selected="false">Tue</a>
                                         </li>
-                                        <li class="nav-item" role="presentation">
-                                            <a href="#" class="nav-link  active" id="pills-Wed-tab" data-bs-toggle="pill" data-bs-target="#pills-Wed" role="tab" aria-controls="pills-Wed" aria-selected="false">Wed</a>
+                                        <li className="nav-item" role="presentation">
+                                            <a href="#" className="nav-link  active" id="pills-Wed-tab" data-bs-toggle="pill" data-bs-target="#pills-Wed" role="tab" aria-controls="pills-Wed" aria-selected="false">Wed</a>
                                         </li>
-                                        <li class="nav-item" role="presentation">
-                                            <a href="#" class="nav-link" id="pills-Thu-tab" data-bs-toggle="pill" data-bs-target="#pills-Thu" role="tab" aria-controls="pills-Thu" aria-selected="false">Thu</a>
+                                        <li className="nav-item" role="presentation">
+                                            <a href="#" className="nav-link" id="pills-Thu-tab" data-bs-toggle="pill" data-bs-target="#pills-Thu" role="tab" aria-controls="pills-Thu" aria-selected="false">Thu</a>
                                         </li>
-                                        <li class="nav-item" role="presentation">
-                                            <a href="#" class="nav-link" id="pills-Fri-tab" data-bs-toggle="pill" data-bs-target="#pills-Fri" role="tab" aria-controls="pills-Fri" aria-selected="false">Fri</a>
+                                        <li className="nav-item" role="presentation">
+                                            <a href="#" className="nav-link" id="pills-Fri-tab" data-bs-toggle="pill" data-bs-target="#pills-Fri" role="tab" aria-controls="pills-Fri" aria-selected="false">Fri</a>
                                         </li>
                                     </ul>
-                                    <div class="tab-content" id="pills-tabContent">
-                                        <div class="tab-pane fade" id="pills-Mon" role="tabpanel" aria-labelledby="pills-Mon-tab">...</div>
-                                        <div class="tab-pane fade" id="pills-Tue" role="tabpanel" aria-labelledby="pills-Tue-tab">...</div>
-                                        <div class="tab-pane fade  show active" id="pills-Wed" role="tabpanel" aria-labelledby="pills-Wed-tab">
-                                            <div class="duration-inner">
+                                    <div className="tab-content" id="pills-tabContent">
+                                        <div className="tab-pane fade" id="pills-Mon" role="tabpanel" aria-labelledby="pills-Mon-tab">...</div>
+                                        <div className="tab-pane fade" id="pills-Tue" role="tabpanel" aria-labelledby="pills-Tue-tab">...</div>
+                                        <div className="tab-pane fade  show active" id="pills-Wed" role="tabpanel" aria-labelledby="pills-Wed-tab">
+                                            <div className="duration-inner">
                                                 <ul>
                                                     <li>
-                                                        <label class="check ">10AM to 12PM
+                                                        <label className="check ">10AM to 12PM
                                                             <input type="checkbox" checked="checked" name="is_name" />
-                                                            <span class="checkmark"></span>
+                                                            <span className="checkmark"></span>
                                                         </label>
                                                     </li>
                                                     <li>
-                                                        <label class="check ">2pm to 5PM
+                                                        <label className="check ">2pm to 5PM
                                                             <input type="checkbox" checked="checked" name="is_name" />
-                                                            <span class="checkmark"></span>
+                                                            <span className="checkmark"></span>
                                                         </label>
                                                     </li>
                                                     <li>
-                                                        <label class="check ">2pm to 5PM
+                                                        <label className="check ">2pm to 5PM
                                                             <input type="checkbox" checked="checked" name="is_name" />
-                                                            <span class="checkmark"></span>
+                                                            <span className="checkmark"></span>
                                                         </label>
                                                     </li>
                                                 </ul>
-                                                <div class="text-center">
-                                                    <a class="btn btn-default" href="#">Submit</a>
+                                                <div className="text-center">
+                                                    <a className="btn btn-default" href="#">Submit</a>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="tab-pane fade" id="pills-Thu" role="tabpanel" aria-labelledby="pills-Thu-tab">...</div>
-                                        <div class="tab-pane fade" id="pills-Fri" role="tabpanel" aria-labelledby="pills-Fri-tab">...</div>
+                                        <div className="tab-pane fade" id="pills-Thu" role="tabpanel" aria-labelledby="pills-Thu-tab">...</div>
+                                        <div className="tab-pane fade" id="pills-Fri" role="tabpanel" aria-labelledby="pills-Fri-tab">...</div>
                                     </div>
                                 </div>
                             </div>

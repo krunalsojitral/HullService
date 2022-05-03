@@ -13,32 +13,32 @@ export default function CoursesTrainings() {
             <Header/>
 
             
-            <section class="second-banner-sec" style={{ background: `url('images/banner-training.png') no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
-                <div class="container">
-                    <div class="second-banner-inner">
-                        <div class="row">
-                            <div class="col-md-7">
-                                <div class="text-box">
-                                    <h2 class="wow animate__fadeIn" data-wow-duration="500ms" data-wow-delay="1000ms">Trainings & Courses </h2>
+            <section className="second-banner-sec" style={{ background: `url('images/banner-training.png') no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
+                <div className="container">
+                    <div className="second-banner-inner">
+                        <div className="row">
+                            <div className="col-md-7">
+                                <div className="text-box">
+                                    <h2 className="wow animate__fadeIn" data-wow-duration="500ms" data-wow-delay="1000ms">Trainings & Courses </h2>
                                 </div>
                             </div>
-                            <div class="col-md-5">
-                                <div class="image-holder">
-                                    <img src="images/second-banner-img.png" alt="" class="img-fluid wow animate__flipInX" data-wow-duration="1500ms" data-wow-delay="1000ms" />
+                            <div className="col-md-5">
+                                <div className="image-holder">
+                                    <img src="images/second-banner-img.png" alt="" className="img-fluid wow animate__flipInX" data-wow-duration="1500ms" data-wow-delay="1000ms" />
                                 </div>
                             </div>
                         </div>
-                        <div class="second-banner-shape wow animate__zoomIn" data-wow-duration="1500ms" data-wow-delay="1000ms">
-                            <img src="images/second-banner-shape.png" alt="" class="img-fluid" />
+                        <div className="second-banner-shape wow animate__zoomIn" data-wow-duration="1500ms" data-wow-delay="1000ms">
+                            <img src="images/second-banner-shape.png" alt="" className="img-fluid" />
                         </div>
                     </div>
                 </div>
             </section>
-            <section class="training-course-sec">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="content  wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">
+            <section className="training-course-sec">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-lg-12">
+                            <div className="content  wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">
                                 <p>Pathways to Prevention’s work with the Neurosequential Model (NM) has given us a strong presence as leaders in trauma-informed care in the community and worldwide.  We train and educate service providers and experts from many disciplines — education, health care, the legal community, social services, early childhood development — and arm them with the most current information about developmental trauma, its impact on children and how to respond, thus equipping them with the skills to deliver best possible practice.  </p>
                                 <p>Our commitment to the continued growth of knowledge through targeted research and training will continue to position Pathways to Prevention as having the expertise to train and build the capacity of other organizations and systems to more effectively identify and respond to developmental trauma in the populations they serve.  </p>
                             </div>
@@ -47,47 +47,47 @@ export default function CoursesTrainings() {
                 </div>
             </section>
 			
-            <section class="courses-description" style={{"max-width":"860px", "margin":"auto"}}>
-                <div class="container">
-                    <div class="researcher-heading">
-                        <h3  class="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="1000ms">Training and Courses</h3>
-                        <p  class="wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="1000ms">Training and courses are available for... 
+            <section className="courses-description" style={{"max-width":"860px", "margin":"auto"}}>
+                <div className="container">
+                    <div className="researcher-heading">
+                        <h3  className="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="1000ms">Training and Courses</h3>
+                        <p  className="wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="1000ms">Training and courses are available for... 
                         </p>
                     </div>
-                    <div class="row">
-                        <div class="col-lg-4 col-md-6">
-                            <div class="card-course wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                <div class="icon"><img src="images/nm-core-icon.svg" alt=""/></div>
+                    <div className="row">
+                        <div className="col-lg-4 col-md-6">
+                            <div className="card-course wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <div className="icon"><img src="images/nm-core-icon.svg" alt=""/></div>
                                 <h2 >NM Core <br/> Concepts</h2>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-md-6">
-                            <div class="card-course light-yellow wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                <div class="icon"><img src="images/school-cap-icon.svg" alt=""/></div>
+                        <div className="col-lg-4 col-md-6">
+                            <div className="card-course light-yellow wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <div className="icon"><img src="images/school-cap-icon.svg" alt=""/></div>
                                 <h2>Trauma Informed Schools</h2>
                             </div>
                         </div >
-                        <div class="col-lg-4 col-md-6">
-                            <div class="card-course light-green wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                <div class="icon"><img src="images/reflective-icon.svg" alt=""/></div>
+                        <div className="col-lg-4 col-md-6">
+                            <div className="card-course light-green wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <div className="icon"><img src="images/reflective-icon.svg" alt=""/></div>
                                 <h2>Reflective <br/> Practice</h2>
                             </div>
                         </div >
-                        <div class="col-lg-4 col-md-6">
-                            <div class="card-course red wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                <div class="icon"><img src="images/trauma-icon.svg" alt=""/></div>
+                        <div className="col-lg-4 col-md-6">
+                            <div className="card-course red wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <div className="icon"><img src="images/trauma-icon.svg" alt=""/></div>
                                 <h2>Trauma</h2>
                             </div>
                         </div >
-                        <div class="col-lg-4 col-md-6">
-                            <div class="card-course blue wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                <div class="icon"><img src="images/focused-icon.svg" alt=""/></div>
+                        <div className="col-lg-4 col-md-6">
+                            <div className="card-course blue wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <div className="icon"><img src="images/focused-icon.svg" alt=""/></div>
                                 <h2>NM Focused  <br/> Trauma 	 </h2>
                             </div>
                         </div >
-                        <div class="col-lg-4 col-md-6">
-                            <div class="card-course orange wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                <div class="icon"><img src="images/trauma-icon.svg" alt=""/></div>
+                        <div className="col-lg-4 col-md-6">
+                            <div className="card-course orange wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <div className="icon"><img src="images/trauma-icon.svg" alt=""/></div>
                                 <h2>Trauma</h2>
                             </div>
                         </div >
@@ -95,56 +95,56 @@ export default function CoursesTrainings() {
                 </div >
             </section >
 
-            <section class="trainingCourses">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="researcher-heading caption">
-                                <h3 class="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="1000ms">Upcoming Training and Courses
+            <section className="trainingCourses">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-12">
+                            <div className="researcher-heading caption">
+                                <h3 className="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="1000ms">Upcoming Training and Courses
                                 </h3>
-                                <p class="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="1000ms">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eu sed eu varius ut. Faucibus suscipit ultrices pretium tincidunt turpis. Vulputate pharetra in lectus sit et.
+                                <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="1000ms">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eu sed eu varius ut. Faucibus suscipit ultrices pretium tincidunt turpis. Vulputate pharetra in lectus sit et.
                                 </p>
                             </div>
-                            <div class="event-card wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">
-                                <div class="event-card-left">
-                                    <div class="desc">16th Annual Society of Consulting Psychology Winter Conference</div>
+                            <div className="event-card wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">
+                                <div className="event-card-left">
+                                    <div className="desc">16th Annual Society of Consulting Psychology Winter Conference</div>
                                     <ul>
                                         <li><i><img src="images/clarity_date-solid.svg" alt="" /></i><span>12-7-2022</span></li>
                                         <li><i><img src="images/bxs_time.svg" alt="" /></i><span>9:00pm - 10:30pm</span></li>
                                         <li><i><img src="images/loc.svg" alt="" /></i><span>United States</span></li>
                                     </ul>
                                 </div>
-                                <div class="event-card-right">
-                                    <div class="price">$99.00</div>
-                                    <a href="#" class="btn btn-default w-100 mt-0">Register</a>
+                                <div className="event-card-right">
+                                    <div className="price">$99.00</div>
+                                    <a href="#" className="btn btn-default w-100 mt-0">Register</a>
                                 </div>
                             </div>
-                            <div class="event-card wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">
-                                <div class="event-card-left">
-                                    <div class="desc">16th Annual Society of Consulting Psychology Winter Conference</div>
+                            <div className="event-card wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">
+                                <div className="event-card-left">
+                                    <div className="desc">16th Annual Society of Consulting Psychology Winter Conference</div>
                                     <ul>
                                         <li><i><img src="images/clarity_date-solid.svg" alt="" /></i><span>12-7-2022</span></li>
                                         <li><i><img src="images/bxs_time.svg" alt="" /></i><span>9:00pm - 10:30pm</span></li>
                                         <li><i><img src="images/loc.svg" alt="" /></i><span>United States</span></li>
                                     </ul>
                                 </div>
-                                <div class="event-card-right">
-                                    <div class="price">$99.00</div>
-                                    <a href="#" class="btn btn-default w-100 mt-0">Register</a>
+                                <div className="event-card-right">
+                                    <div className="price">$99.00</div>
+                                    <a href="#" className="btn btn-default w-100 mt-0">Register</a>
                                 </div>
                             </div>
-                            <div class="event-card wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" >
-                                <div class="event-card-left">
-                                    <div class="desc">16th Annual Society of Consulting Psychology Winter Conference</div>
+                            <div className="event-card wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" >
+                                <div className="event-card-left">
+                                    <div className="desc">16th Annual Society of Consulting Psychology Winter Conference</div>
                                     <ul>
                                         <li><i><img src="images/clarity_date-solid.svg" alt="" /></i><span>12-7-2022</span></li>
                                         <li><i><img src="images/bxs_time.svg" alt="" /></i><span>9:00pm - 10:30pm</span></li>
                                         <li><i><img src="images/loc.svg" alt="" /></i><span>United States</span></li>
                                     </ul>
                                 </div>
-                                <div class="event-card-right">
-                                    <div class="price">$99.00</div>
-                                    <a href="#" class="btn btn-default w-100 mt-0">Register</a>
+                                <div className="event-card-right">
+                                    <div className="price">$99.00</div>
+                                    <a href="#" className="btn btn-default w-100 mt-0">Register</a>
                                 </div>
                             </div>
                         </div>
@@ -152,56 +152,56 @@ export default function CoursesTrainings() {
                 </div>
             </section> 
 
-            <section class="researcher-sec researchContact">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="researcher-heading">
-                                <h3 class="wow animate__fadeInUp" data-wow-duration="1000ms" data-wow-delay="1000ms">Organizational Training and Speaker Request </h3>
-                                <p class="wow animate__fadeInUp" data-wow-duration="1000ms" data-wow-delay="1000ms">Are you interested in receiving personalized training for your organization? Or are you looking to book one of our clinicians for a speaking engagement? Please fill out the form below, and a member of our team will be in contact with you:
+            <section className="researcher-sec researchContact">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-12">
+                            <div className="researcher-heading">
+                                <h3 className="wow animate__fadeInUp" data-wow-duration="1000ms" data-wow-delay="1000ms">Organizational Training and Speaker Request </h3>
+                                <p className="wow animate__fadeInUp" data-wow-duration="1000ms" data-wow-delay="1000ms">Are you interested in receiving personalized training for your organization? Or are you looking to book one of our clinicians for a speaking engagement? Please fill out the form below, and a member of our team will be in contact with you:
                                 </p>
                             </div>
-                            <div class="contact mt-0">
-                                <form class="wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" placeholder="Name" />
+                            <div className="contact mt-0">
+                                <form className="wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <div className="form-group">
+                                                <input type="text" className="form-control" placeholder="Name" />
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" placeholder="Phone" />
+                                        <div className="col-md-6">
+                                            <div className="form-group">
+                                                <input type="text" className="form-control" placeholder="Phone" />
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" placeholder="Organisation" />
+                                        <div className="col-md-6">
+                                            <div className="form-group">
+                                                <input type="text" className="form-control" placeholder="Organisation" />
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" placeholder="No of People" />
+                                        <div className="col-md-6">
+                                            <div className="form-group">
+                                                <input type="text" className="form-control" placeholder="No of People" />
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" placeholder="Email" />
+                                        <div className="col-md-6">
+                                            <div className="form-group">
+                                                <input type="text" className="form-control" placeholder="Email" />
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" placeholder="Select Training" />
+                                        <div className="col-md-6">
+                                            <div className="form-group">
+                                                <input type="text" className="form-control" placeholder="Select Training" />
                                             </div>
                                         </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <textarea class="form-control" placeholder="Do you want to share more info with us?"></textarea>
+                                        <div className="col-md-12">
+                                            <div className="form-group">
+                                                <textarea className="form-control" placeholder="Do you want to share more info with us?"></textarea>
                                             </div>
                                         </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <button class="btn btn-default">SUBMIT</button>
+                                        <div className="col-md-12">
+                                            <div className="form-group">
+                                                <button className="btn btn-default">SUBMIT</button>
                                             </div>
                                         </div>
                                     </div>

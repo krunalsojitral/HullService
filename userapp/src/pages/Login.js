@@ -23,61 +23,61 @@ export default function Login() {
     return(
         <div>
         <Header/>
-            <section class="second-banner-sec" style={{ background: `url('images/contact-banner-bg.png') no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
-                <div class="container">
-                    <div class="second-banner-inner">
-                        <div class="row">
-                            <div class="col-md-7">
-                                <div class="text-box">
-                                    <h2 class="wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">Login</h2>
+            <section className="second-banner-sec" style={{ background: `url('images/contact-banner-bg.png') no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
+                <div className="container">
+                    <div className="second-banner-inner">
+                        <div className="row">
+                            <div className="col-md-7">
+                                <div className="text-box">
+                                    <h2 className="wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">Login</h2>
                                 </div>
                             </div>
-                            <div class="col-md-5">
-                                <div class="image-holder">
-                                    <img src="images/second-banner-img.png" alt="" class="img-fluid wow animate__flipInX" data-wow-duration="1500ms" data-wow-delay="1000ms" />
+                            <div className="col-md-5">
+                                <div className="image-holder">
+                                    <img src="images/second-banner-img.png" alt="" className="img-fluid wow animate__flipInX" data-wow-duration="1500ms" data-wow-delay="1000ms" />
                                 </div>
                             </div>
                         </div>
-                        <div class="second-banner-shape wow animate__zoomIn" data-wow-duration="1500ms" data-wow-delay="1000ms">
-                            <img src="images/second-banner-shape.png" alt="" class="img-fluid" />
+                        <div className="second-banner-shape wow animate__zoomIn" data-wow-duration="1500ms" data-wow-delay="1000ms">
+                            <img src="images/second-banner-shape.png" alt="" className="img-fluid" />
                         </div>
                     </div>
                 </div >
             </section>
 
            
-            <section class="login-sec">
-                <div class="container">
-					<div class="researcher-heading">
-                        <h3 class="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="1000ms" style={{"visibility": "visible", "animation-duration": "500ms", "animation-name": "fadeInUp"}}>Login</h3>                        
+            <section className="login-sec">
+                <div className="container">
+					<div className="researcher-heading">
+                        <h3 className="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="1000ms" style={{"visibility": "visible", "animation-duration": "500ms", "animation-name": "fadeInUp"}}>Login</h3>                        
                     </div>
-					<div class="row">
-						<div class="col-lg-12">
-							<div class="login-content mt-6">
-								<div class="login-title">Welcome to the Virtual Center for the Study and Prevention of Developmental Trauma</div>
+					<div className="row">
+						<div className="col-lg-12">
+							<div className="login-content mt-6">
+								<div className="login-title">Welcome to the Virtual Center for the Study and Prevention of Developmental Trauma</div>
 								
-                                <form onSubmit={handleSubmit(onSubmit)} class="wow animate__fadeIn mt-4" data-wow-duration="1000ms" data-wow-delay="1000ms">
-									<div class="row">
-										<div class="col-md-12">
-											<div class="form-group">
+                                <form onSubmit={handleSubmit(onSubmit)} className="wow animate__fadeIn mt-4" data-wow-duration="1000ms" data-wow-delay="1000ms">
+									<div className="row">
+										<div className="col-md-12">
+											<div className="form-group">
                                                 <input type="text" {...register("email", { required: true, pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i } })} className="form-control" placeholder="Email *" />
                                                 {errors?.email?.type === "required" && <small className="error">Email is required</small>}
                                                 {errors?.email?.type === "pattern" && (<small className="error">Invalid email address</small>)}
 											</div>
 										</div>
-										<div class="col-md-12">
-											<div class="form-group">
+										<div className="col-md-12">
+											<div className="form-group">
                                                 <input type="password" {...register("password", { required: true })} className="form-control" placeholder="Password *" />
                                                 {errors?.password?.type === "required" && <small className="error">Password is required</small>}
 											</div>
 										</div>
-										<div class="col-md-12">
-											<div class="form-group" style={{"text-align":"center"}}>
-                                                <button class="btn btn-default signin-btn" type="submit">Sign in</button>
+										<div className="col-md-12">
+											<div className="form-group" style={{"text-align":"center"}}>
+                                                <button className="btn btn-default signin-btn" type="submit">Sign in</button>
 											</div>
 										</div>
-										<div class="col-md-12">
-											<p class="mt-4 login-text">
+										<div className="col-md-12">
+											<p className="mt-4 login-text">
                                                 <Link className="forgot-btn" to='/forgotpassword'>
                                                     Forgot your password?
                                                 </Link>                                                  

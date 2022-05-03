@@ -59,26 +59,26 @@ export default function ViewProfile() {
         <div>
             <Header/>
 
-            <section class="second-banner-sec" style={{ background: `url('images/contact-banner-bg.png') no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
-                <div class="container">
-                    <div class="second-banner-inner">
-                        <div class="row">
-                            <div class="col-md-7">
-                                <div class="text-box">
-                                    <h2 class="wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">
+            <section className="second-banner-sec" style={{ background: `url('images/contact-banner-bg.png') no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
+                <div className="container">
+                    <div className="second-banner-inner">
+                        <div className="row">
+                            <div className="col-md-7">
+                                <div className="text-box">
+                                    <h2 className="wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">
                                         {showEdit && "My Profile"}
                                         {!showEdit && "View Profile"}
                                     </h2>
                                 </div>
                             </div>
-                            <div class="col-md-5">
-                                <div class="image-holder">
-                                    <img src="images/second-banner-img.png" alt="" class="img-fluid wow animate__flipInX" data-wow-duration="1500ms" data-wow-delay="1000ms" />
+                            <div className="col-md-5">
+                                <div className="image-holder">
+                                    <img src="images/second-banner-img.png" alt="" className="img-fluid wow animate__flipInX" data-wow-duration="1500ms" data-wow-delay="1000ms" />
                                 </div>
                             </div>
                         </div>
-                        <div class="second-banner-shape wow animate__zoomIn" data-wow-duration="1500ms" data-wow-delay="1000ms">
-                            <img src="images/second-banner-shape.png" alt="" class="img-fluid" />
+                        <div className="second-banner-shape wow animate__zoomIn" data-wow-duration="1500ms" data-wow-delay="1000ms">
+                            <img src="images/second-banner-shape.png" alt="" className="img-fluid" />
                         </div>
                     </div>
                 </div >
@@ -98,39 +98,42 @@ export default function ViewProfile() {
                         </div>}
                         
                         <div className="col-md-12">
-                            <div class="researcher-heading" style={{ "background-color": "#F7F7F7", "text-align": "center", "padding": "50px", "border-radius": "25px" }}>
+                            <div className="researcher-heading" style={{ "background-color": "#F7F7F7", "text-align": "center", "padding": "50px", "border-radius": "25px" }}>
                                 <div className="view-profile-card">
                                     <div className="view-profile-header">
 
                                         {showEdit && users.role != 4 && <div className="row">
                                             <div className="col-md-12 upper-section">
-                                                <div className="col-md-6">
-                                                    {users.joined_date && <div className="cal-date">
-                                                        <div className="cal-date-icon">
-                                                            <i className="fa fa-calendar" aria-hidden="true"></i>
+                                                <div className="row">
+                                                    <div className="col-md-6">
+                                                        {users.joined_date && <div className="cal-date">
+                                                            <div className="cal-date-icon">
+                                                                <i className="fa fa-calendar" aria-hidden="true"></i>
+                                                            </div>
+                                                            <div className="cal-date-text">
+                                                                <h3>Member Since</h3>
+                                                                <p>{users.joined_date}</p>
+                                                            </div>
+                                                        </div>}
+                                                        {users.renewal_date && <div className="cal-date">
+                                                            <div className="cal-date-icon">
+                                                                <i className="fa fa-calendar" aria-hidden="true"></i>
+                                                            </div>
+                                                            <div className="cal-date-text">
+                                                                <h3>Renewal Date</h3>
+                                                                <p>{users.renewal_date}</p>
+                                                            </div>
+                                                        </div>}
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                        <div className="view-profile-button">
+                                                            <Link className="btn btn-default signin-btn" to={{ pathname: "/edit-profile" }}>
+                                                                EDIT
+                                                            </Link>
                                                         </div>
-                                                        <div className="cal-date-text">
-                                                            <h3>Member Since</h3>
-                                                            <p>{users.joined_date}</p>
-                                                        </div>
-                                                    </div>}
-                                                    {users.renewal_date && <div className="cal-date">
-                                                        <div className="cal-date-icon">
-                                                            <i className="fa fa-calendar" aria-hidden="true"></i>
-                                                        </div>
-                                                        <div className="cal-date-text">
-                                                            <h3>Renewal Date</h3>
-                                                            <p>{users.renewal_date}</p>
-                                                        </div>
-                                                    </div>}
-                                                </div>
-                                                <div className="col-md-6">
-                                                    <div className="view-profile-button">
-                                                        <Link className="btn btn-default signin-btn" to={{ pathname: "/edit-profile" }}>
-                                                            EDIT
-                                                        </Link>
                                                     </div>
                                                 </div>
+                                                
                                             </div>
                                         </div>}
 

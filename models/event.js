@@ -322,6 +322,37 @@ function User() {
     });
   }
 
+  this.getLandingPageEvent = function (callback) {
+    connection.acquire(function (err, con) {
+      var sql = 'SELECT * FROM event where start_date::date = now()::date and status = $1 order by event_id DESC limit 1';
+      var array = [1];
+      con.query(sql, array, function (err, result) {
+        if (err) {
+          con.release();
+          callback(err, null);
+        } else {
+          if (result.rows.length > 0){
+            con.release();
+            callback(null, result.rows);
+          }else{
+            var sql = 'SELECT * FROM event where status = $1 order by event_id DESC limit 1';
+            var array = [1];
+            con.query(sql, array, function (err, result) {
+              con.release();
+              if (err) {
+                callback(err, null);
+              } else {
+                if (result.rows.length > 0) {
+                  callback(null, result.rows);
+                }
+              }
+            });
+          }          
+        }
+      });
+    });
+  }
+
   this.getEventDataByIdWithLogin = function (user_id, id, callback) {
     connection.acquire(function (err, con) {
       con.query('SELECT * FROM event left join event_purchase on event.event_id = event_purchase.event_id and event_purchase.user_id = $1 where event.event_id = $2', [user_id, id], function (err, result) {
@@ -571,8 +602,8 @@ function User() {
 
   this.addEventPurchase = function (record, callback) {
     connection.acquire(function (err, con) {
-      const eventsql = "INSERT INTO event_purchase(user_id,event_id,payment_id,event_purchase_date,status) VALUES($1,$2,$3,$4,$5) RETURNING *";
-      const eventvalues = [record.user_id, record.event_id, record.payment_id, record.event_purchase_date, 1];
+      const eventsql = "INSERT INTO event_purchase(user_id,event_id,payment_id,event_purchase_date,event_registration,session_registration,status) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING *";
+      const eventvalues = [record.user_id, record.event_id, record.payment_id, record.event_purchase_date, record.event_registration, record.session_registration, 1];
       con.query(eventsql, eventvalues, function (err, result) {
         con.release();
         if (err) {

@@ -77,21 +77,21 @@ export default function Header() {
     return(
 
             <header id="myHeader">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="navigation">
-                                <nav class="navbar navbar-expand-lg">
-                                <a class="navbar-brand" onClick={(e) => handleOpenDirection()}><img src="images/logo.png" alt="" class="img-fluid" onClick={(e) => handleOpenDirection()} /></a>
-                                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                                        <span class="navbar-toggler-icon"></span>
-                                        <span class="navbar-toggler-icon"></span>
-                                        <span class="navbar-toggler-icon"></span>
+                <div className="container-fluid">
+                    <div className="row">
+                        <div className="col-12">
+                            <div className="navigation">
+                                <nav className="navbar navbar-expand-lg">
+                                <a className="navbar-brand" onClick={(e) => handleOpenDirection()}><img src="images/logo.png" alt="" className="img-fluid" onClick={(e) => handleOpenDirection()} /></a>
+                                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                        <span className="navbar-toggler-icon"></span>
+                                        <span className="navbar-toggler-icon"></span>
+                                        <span className="navbar-toggler-icon"></span>
                                     </button>
-                                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                                        <ul class="navbar-nav ms-auto" id="menu">
-                                            <li class="nav-item"><a class="nav-link" href="about">About Us <i class="fa-solid fa-caret-down"></i></a>
-                                                <ul class="menus">
+                                    <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                                        <ul className="navbar-nav ms-auto" id="menu">
+                                            <li className="nav-item"><a className="nav-link" href="about">About Us <i className="fa-solid fa-caret-down"></i></a>
+                                                <ul className="menus">
                                                     <li>
                                                         <NavLink activeClassName="active" to="/about-hull">
                                                             <InlineButton name={"About Hull Services"} />
@@ -104,41 +104,41 @@ export default function Header() {
                                                     </li>
                                                 </ul>
                                             </li>
-                                            <li class="nav-item">
-                                                <NavLink class="nav-link" activeClassName="active" to="/research-request-form">
+                                            <li className="nav-item">
+                                                <NavLink className="nav-link" activeClassName="active" to="/research-request-form">
                                                     <InlineButton name={"Research"} />
                                                 </NavLink>
                                             </li>
-                                            <li class="nav-item">
-                                                <NavLink class="nav-link" activeClassName="active" to="/courses-training">
+                                            <li className="nav-item">
+                                                <NavLink className="nav-link" activeClassName="active" to="/courses-training">
                                                     <InlineButton name={"Trainings & Courses"} />
                                                 </NavLink>
                                             </li>
-                                            <li class="nav-item">
-                                                <NavLink class="nav-link" activeClassName="active" to="/events">
+                                            <li className="nav-item">
+                                                <NavLink className="nav-link" activeClassName="active" to="/events">
                                                     <InlineButton name={"Events"} />
                                                 </NavLink>
                                             </li>
-                                            <li class="nav-item">
-                                                <NavLink class="nav-link" activeClassName="active" to="/partner">
+                                            <li className="nav-item">
+                                                <NavLink className="nav-link" activeClassName="active" to="/partner">
                                                     <InlineButton name={"Our Partners"} />
                                                 </NavLink>
                                             </li>
-                                            <li class="nav-item">
-                                                <NavLink class="nav-link" activeClassName="active" to="/contact">
+                                            <li className="nav-item">
+                                                <NavLink className="nav-link" activeClassName="active" to="/contact">
                                                     <InlineButton name={"Contact Us"} />
                                                 </NavLink>
                                             </li>
-                                            {(!token) &&  <li class="nav-item">
-                                                <NavLink class="login-btn" activeClassName="active" to="/login">
+                                            {(!token) &&  <li className="nav-item">
+                                                <NavLink className="login-btn" activeClassName="active" to="/login">
                                                     <InlineButton name={"Login"} />
                                                 </NavLink>
                                             </li>}
 
 
                                         {(token) && <div className="user-dropdown">
-                                            <div class="dropdown">
-                                                <a class="dropdown-toggle loged-user-link" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <div className="dropdown">
+                                                <a className="dropdown-toggle loged-user-link" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                                                     <div className="loged-user-details">
                                                         <div className="loged-user-icon">
                                                             {!userData.avatar && <img src="images/user.png" />}
@@ -151,7 +151,7 @@ export default function Header() {
                                                     </div>
                                                 </a>
 
-                                                <ul class="dropdown-menu loged-user-menu" aria-labelledby="dropdownMenuLink">
+                                                <ul className="dropdown-menu loged-user-menu" aria-labelledby="dropdownMenuLink">
                                                     <li><Link className="btn-edit" to={{ pathname: "/dashboard" }}>My Dashboard</Link></li>
                                                     <li><Link className="btn-edit" onClick={() => { window.location.href = "/view-profile?id=" + userData.id }} >View Profile</Link></li>
                                                     <li onClick={(e) => logoutClick()}><a className="logout">

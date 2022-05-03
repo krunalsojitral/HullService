@@ -125,7 +125,7 @@ export default function Preview() {
                                                                     </div>
                                                                 </div> */}
                                                             <div className="event-listing-text">
-                                                                <button type="submit" class="btn-save">Purchase</button>
+                                                                <button type="submit" className="btn-save">Purchase</button>
                                                             </div>
                                                         </div>
                                                     </div>

@@ -48,66 +48,66 @@ export default function MyEvents() {
         <div>
             <Header/>
 
-            <section class="second-banner-sec" style={{ background: `url('images/event-banner.png') no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
-                <div class="container">
-                    <div class="second-banner-inner">
-                        <div class="row">
-                            <div class="col-md-7">
-                                <div class="text-box">
-                                    <h2 class="wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">My Events </h2>
+            <section className="second-banner-sec" style={{ background: `url('images/event-banner.png') no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
+                <div className="container">
+                    <div className="second-banner-inner">
+                        <div className="row">
+                            <div className="col-md-7">
+                                <div className="text-box">
+                                    <h2 className="wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">My Events </h2>
                                 </div>
                             </div>
-                            <div class="col-md-5">
-                                <div class="image-holder">
-                                    <img src="images/second-banner-img.png" alt="" class="img-fluid wow animate__flipInX" data-wow-duration="1500ms" data-wow-delay="1000ms" />
+                            <div className="col-md-5">
+                                <div className="image-holder">
+                                    <img src="images/second-banner-img.png" alt="" className="img-fluid wow animate__flipInX" data-wow-duration="1500ms" data-wow-delay="1000ms" />
                                 </div>
                             </div>
                         </div>
-                        <div class="second-banner-shape wow animate__zoomIn" data-wow-duration="1500ms" data-wow-delay="1000ms">
-                            <img src="images/second-banner-shape.png" alt="" class="img-fluid" />
+                        <div className="second-banner-shape wow animate__zoomIn" data-wow-duration="1500ms" data-wow-delay="1000ms">
+                            <img src="images/second-banner-shape.png" alt="" className="img-fluid" />
                         </div>
                     </div>
                 </div >
             </section >
 
 
-            <div class="event-main">
-                <div class="container">
-                    {/* <div class="researcher-heading">
-                        <h3 class="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="1000ms">Our Events</h3>
-                        <p class="wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="1000ms">Training and courses are available for...
+            <div className="event-main">
+                <div className="container">
+                    {/* <div className="researcher-heading">
+                        <h3 className="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="1000ms">Our Events</h3>
+                        <p className="wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="1000ms">Training and courses are available for...
                         </p>
                     </div> */}
-                    <div class="row" style={{ "margin-top": "60px" }}>
-                        <div class="col-12">
+                    <div className="row" style={{ "marginTop": "60px" }}>
+                        <div className="col-12">
 
                             {eventdata && eventdata.map((data, index) => (
 
-                                <div class="event-card wow animate__fadeIn  " data-wow-duration="1000ms" data-wow-delay="1000ms" >
-                                    <div class="event-card-left1">
-                                        {!data.image && <img class="img-fluid img-event-fluid img-radius" alt="event-page" src="images/event-img.png" />}
-                                        {data.image && <img class="img-fluid img-event-fluid img-radius" alt="event-page" src={data.image} />}
+                                <div className="event-card wow animate__fadeIn  " data-wow-duration="1000ms" data-wow-delay="1000ms" >
+                                    <div className="event-card-left1">
+                                        {!data.image && <img className="img-fluid img-event-fluid img-radius" alt="event-page" src="images/event-img.png" />}
+                                        {data.image && <img className="img-fluid img-event-fluid img-radius" alt="event-page" src={data.image} />}
                                     </div>
-                                    <div class="event-card-left1">
-                                        <div class="event-name-title"><img src="images/user-icon.svg" alt="" class="img-fluid" /> {data.speaker_name} </div>
+                                    <div className="event-card-left1">
+                                        <div className="event-name-title"><img src="images/user-icon.svg" alt="" className="img-fluid" /> {data.speaker_name} </div>
                                         <ul>
                                             <li><i><img src="images/clarity_date-solid.svg" alt="" /></i><span>{data.start_date}</span></li>
                                             <li><i><img src="images/bxs_time.svg" alt="" /></i><span>{data.start_time} - {data.end_time}</span></li>
                                             <li><i><img src="images/loc.svg" alt="" /></i><span>{data.location.substring(0, 15)}</span></li>
                                         </ul>
-                                        <div class="desc event-list-line">
+                                        <div className="desc event-list-line">
                                             <Link to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}>
                                                 {data.title && data.title.substring(0, 120)}
                                             </Link>
                                         </div>
-                                        <div class="event-readmore-btn"><Link to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}> readmore...</Link></div>
+                                        <div className="event-readmore-btn"><Link to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}> readmore...</Link></div>
                                     </div>
-                                    <div class="event-card-right1">
-                                        <div class="price">
+                                    <div className="event-card-right1">
+                                        <div className="price">
                                             {data.cost && <h4>${data.cost}</h4>}
                                             {(data.purchase_type == 'unpaid') && <h4>Free</h4>}
                                         </div>
-                                        {data.event_purchase_id && <Link class="btn btn-default w-100" to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}>
+                                        {data.event_purchase_id && <Link className="btn btn-default w-100" to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}>
                                             View
                                         </Link>}                                        
                                     </div>
@@ -131,21 +131,21 @@ export default function MyEvents() {
 
 
             {/* <section>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm-12">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-sm-12">
                             {eventdata &&
                                 eventdata.map((data, index) => (
-                                    <div class="media">
+                                    <div className="media">
                                         {!data.image && <img alt="event-page" src="images/event-page.png" />}
                                         {data.image && <img alt="event-page" src={data.image} />}
-                                        <div class="media-body">
-                                            <div class="media-left">
-                                                <div class="avatar">
+                                        <div className="media-body">
+                                            <div className="media-left">
+                                                <div className="avatar">
                                                     <img alt="avatar" src="images/avatar.png" />                                                    
                                                     <h2>{data.speaker_name}</h2>
                                                 </div>
-                                                <div class="event-icons">
+                                                <div className="event-icons">
                                                     <label><img src="images/date.png" alt="date" />{data.start_date}</label>
                                                     <label><img src="images/time.png" alt="time" />{data.start_time} - {data.end_time}</label>
                                                     {data.location && <label><img src="images/location.png" alt="location" />{data.location}</label>}
@@ -155,9 +155,9 @@ export default function MyEvents() {
                                                     Read more...
                                                 </Link>
                                             </div>
-                                            <div class="media-right">
+                                            <div className="media-right">
                                                 {data.cost && <h4>${data.cost}</h4>}
-                                                <Link class="thm-btn" to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}>
+                                                <Link className="thm-btn" to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}>
                                                     View    
                                                 </Link>
                                             </div>

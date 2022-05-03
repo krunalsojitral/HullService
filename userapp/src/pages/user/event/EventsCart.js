@@ -17,6 +17,7 @@ export default function EventsCart() {
     const [eventdata, setEventData] = useState([]);
     const [eventId, setEventId] = useState('');
     const [eventCost, setEventCost] = useState(0);
+    const [eventType, setEventType] = useState();
     const [token, setToken] = useState('');
     const [eventDetail, seteventDetail] = React.useState({})
 
@@ -34,19 +35,19 @@ export default function EventsCart() {
     React.useEffect(() => {
 
         const eventString = localStorage.getItem('eventPurchaseData');
-        var eventID = JSON.parse(eventString);
-        setEventId(eventID.event_id)
-        setEventCost(eventID.cost)
+        var eventData = JSON.parse(eventString);
+        setEventId(eventData.event_id)
+        setEventCost(eventData.cost)
+        setEventType(eventData.type)
 
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
         setToken(token);
-        getEventData(eventID.event_id);
+        getEventData(eventData.event_id);
 
         if (token) {
             const config = { headers: { Authorization: `${token}` } };
-            axios.get(api_url + "/user/getEditUserById", config)
-                .then((result) => {
+            axios.get(api_url + "/user/getEditUserById", config).then((result) => {
                     if (result.data.status) {
                         var userdata = result.data.response.data;
                         setFormValue('first_name', userdata.first_name)
@@ -54,8 +55,7 @@ export default function EventsCart() {
                         setFormValue('email', userdata.email)
                         setFormValue('confirmemail', userdata.email)
                     }
-                })
-                .catch((err) => { console.log(err); });
+                }).catch((err) => { console.log(err); });
         }
     }, [])
 
@@ -70,9 +70,7 @@ export default function EventsCart() {
             } else {
                 Swal.fire('Oops...', result.data.response.msg, 'error')
             }
-        }).catch((err) => {
-            console.log(err);
-        })
+        }).catch((err) => { console.log(err); })
 
     }
 
@@ -80,6 +78,7 @@ export default function EventsCart() {
         data.event_id = eventId
         data.event_title = eventDetail.title
         data.payment_id = ''
+        data.event_type = eventType
         if (eventCost > 0){
             history.push({
                 pathname: '/event-payment',
@@ -134,23 +133,23 @@ export default function EventsCart() {
         <div>
             <Header />
             
-            <section class="second-banner-sec" style={{ background: `url('images/event-banner.png') no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
-                <div class="container">
-                    <div class="second-banner-inner">
-                        <div class="row">
-                            <div class="col-md-7">
-                                <div class="text-box">
-                                    <h2 class="wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">Event Cart</h2>
+            <section className="second-banner-sec" style={{ background: `url('images/event-banner.png') no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
+                <div className="container">
+                    <div className="second-banner-inner">
+                        <div className="row">
+                            <div className="col-md-7">
+                                <div className="text-box">
+                                    <h2 className="wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">Event Cart</h2>
                                 </div>
                             </div>
-                            <div class="col-md-5">
-                                <div class="image-holder">
-                                    <img src="images/second-banner-img.png" alt="" class="img-fluid wow animate__flipInX" data-wow-duration="1500ms" data-wow-delay="1000ms" />
+                            <div className="col-md-5">
+                                <div className="image-holder">
+                                    <img src="images/second-banner-img.png" alt="" className="img-fluid wow animate__flipInX" data-wow-duration="1500ms" data-wow-delay="1000ms" />
                                 </div>
                             </div>
                         </div>
-                        <div class="second-banner-shape wow animate__zoomIn" data-wow-duration="1500ms" data-wow-delay="1000ms">
-                            <img src="images/second-banner-shape.png" alt="" class="img-fluid" />
+                        <div className="second-banner-shape wow animate__zoomIn" data-wow-duration="1500ms" data-wow-delay="1000ms">
+                            <img src="images/second-banner-shape.png" alt="" className="img-fluid" />
                         </div>
                     </div>
                 </div >

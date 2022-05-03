@@ -407,8 +407,8 @@ router.post('/getUserPurchaseEventList', function (req, res) {
         retObj['email'] = data.email;
         retObj['payment_id'] = data.event_purchase_id;
         retObj['event_purchase_date'] = moment(data.event_purchase_date).format('YYYY-MM-DD');
-        retObj['event_registration'] = (data.event_registration) ? 'Yes': 'No';
-        retObj['session_registration'] = (data.session_registration)?'Yes':'No';
+        retObj['event_registration'] = (data.event_registration) ? 1: 0;
+        retObj['session_registration'] = (data.session_registration)?1:0;
         retObj['member'] = data.role;
         return retObj;
       });
@@ -1316,6 +1316,30 @@ router.post('/getMyEventList', passport.authenticate('jwt', { session: false }),
 });
 
 
+router.get('/getLandingPageEvent', function (req, res) {
+  loggerData(req);
+  var imageLink;
+  if (req.headers.host == env.ADMIN_LIVE_URL) {
+    imageLink = env.ADMIN_LIVE_URL;
+  } else {
+    imageLink = env.ADMIN_LIVE_URL;
+  }
+  Event.getLandingPageEvent(function (err, result) {
+    if (err) {
+      return res.json({ status: 0, 'response': { msg: err } });
+    } else {     
+      var obj = {
+        event_id: result[0].event_id,
+        title: result[0].title,
+        description: result[0].description,
+        start_date: moment(result[0].start_date).format('MMMM DD YYYY'),
+        event_image: (result[0].image) ? imageLink + env.EVENT_VIEW_PATH + result[0].image : ''
+      }
+      return res.json({ status: 1, 'response': { data: obj } });
+    }
+  });
+});
+
 
 
 function getDateArr(arr) {
@@ -1352,7 +1376,9 @@ router.post('/eventRegisterWithUser', passport.authenticate('jwt', { session: fa
     event_id:req.body.event_id,
     user_id:req.user.id,
     payment_id: (req.body.payment_id) ? req.body.payment_id: '',
-    event_purchase_date: moment().format('YYYY-MM-DD')
+    event_purchase_date: moment().format('YYYY-MM-DD'),
+    event_registration: (req.body.event_type == 'event')? 1: 0,
+    session_registration: (req.body.event_type == 'eventwithsession') ? 1 : 0
   }
   Event.addEventPurchase(obj, function (err, result) {
     if (err) {
@@ -1383,8 +1409,11 @@ router.post('/eventRegisterWithUser', passport.authenticate('jwt', { session: fa
           event_title: eventdata[0].title,
           start_date: moment(eventdata[0].start_date).format('MMM DD, YYYY') + " at " + moment(eventdata[0].start_date).format('hh:mm a') + "  -  " + moment(eventdata[0].end_date).format('MMM DD, YYYY') + " at " + moment(eventdata[0].end_date).format('hh:mm a') ,
           event_price: (eventdata[0].cost > 0) ? '$'+eventdata[0].cost : 'Free',
-          event_image: (eventdata[0].image) ? imageLink + env.EVENT_VIEW_PATH + eventdata[0].image : ''
+          event_image: (eventdata[0].image) ? imageLink + env.EVENT_VIEW_PATH + eventdata[0].image : '',
+          event_session_url: (req.body.event_type == 'event') ? eventLink : ''
         }
+
+        
 
         var view = { data: dynamicHtml };
         var finalHtmlUser = mustache.render(htmlUser, view);
@@ -1421,6 +1450,8 @@ router.post('/eventRegisterWithoutUser', function (req, res) {
     imageLink = env.ADMIN_LIVE_URL;
   }
 
+  var event_type = req.body.event_type;
+
   loggerData(req);
   var event_id = req.body.event_id
   var email = req.body.email;
@@ -1445,7 +1476,9 @@ router.post('/eventRegisterWithoutUser', function (req, res) {
         event_id: event_id,
         user_id: data[0].id,
         payment_id: (req.body.payment_id) ? req.body.payment_id: '',
-        event_purchase_date: moment().format('YYYY-MM-DD')
+        event_purchase_date: moment().format('YYYY-MM-DD'),
+        event_registration: (req.body.event_type == 'event') ? 1 : 0,
+        session_registration: (req.body.event_type == 'eventwithsession') ? 1 : 0
       }
       Event.addEventPurchase(eventobj, function (err, result) {
         if (err) {
@@ -1480,7 +1513,8 @@ router.post('/eventRegisterWithoutUser', function (req, res) {
               event_title: eventdata[0].title,
               start_date: moment(eventdata[0].start_date).format('MMM DD, YYYY') + " at " + moment(eventdata[0].start_date).format('hh:mm a') + "  -  " + moment(eventdata[0].end_date).format('MMM DD, YYYY') + " at " + moment(eventdata[0].end_date).format('hh:mm a'),
               event_price: (eventdata[0].cost > 0) ? '$'+eventdata[0].cost : 'Free',
-              event_image: (eventdata[0].image) ? imageLink + env.EVENT_VIEW_PATH + eventdata[0].image : ''
+              event_image: (eventdata[0].image) ? imageLink + env.EVENT_VIEW_PATH + eventdata[0].image : '',
+              event_session_url: (event_type == 'event') ? eventLink : ''
             }
 
             if (data[0].role == 4 && data[0].email_verification_token) {
@@ -1515,7 +1549,9 @@ router.post('/eventRegisterWithoutUser', function (req, res) {
             event_id: event_id,
             user_id: data[0].id,
             payment_id: (req.body.payment_id) ? req.body.payment_id : '',
-            event_purchase_date: moment().format('YYYY-MM-DD')
+            event_purchase_date: moment().format('YYYY-MM-DD'),
+            event_registration: (req.body.event_type == 'event') ? 'yes' : 'no',
+            session_registration: (req.body.event_type == 'eventwithsession') ? 'yes' : 'no'
           }
           Event.addEventPurchase(eventobj, function (err, result) {
             if (err) {
@@ -1550,7 +1586,8 @@ router.post('/eventRegisterWithoutUser', function (req, res) {
                   event_title: eventdata[0].title,
                   start_date: moment(eventdata[0].start_date).format('MMM DD, YYYY') + " at " + moment(eventdata[0].start_date).format('hh:mm a') + "  -  " + moment(eventdata[0].end_date).format('MMM DD, YYYY') + " at " + moment(eventdata[0].end_date).format('hh:mm a'),
                   event_price: (eventdata[0].cost > 0) ? '$'+eventdata[0].cost : 'Free',
-                  event_image: (eventdata[0].image) ? imageLink + env.EVENT_VIEW_PATH + eventdata[0].image : ''
+                  event_image: (eventdata[0].image) ? imageLink + env.EVENT_VIEW_PATH + eventdata[0].image : '',
+                  event_session_url: (event_type == 'event') ? eventLink : ''
                 }
 
                 var view = { data: dynamicHtml };

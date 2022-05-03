@@ -21,7 +21,7 @@ export default function EventPayment(props) {
                             {
                                 description: props.location.event_title,
                                 amount: {
-                                    currency_code: 'USD',
+                                    currency_code: 'CAD',
                                     value: props.location.price
                                 }
                             }
@@ -48,21 +48,13 @@ export default function EventPayment(props) {
             .render(payPalRef)
     }, [props.location.event_title, props.location.price]);
 
-    const eventPayment = (paymentDetail) => {
-        console.log('=================');
-        console.log(props);
-       
-        
-        console.log(props.location);
-
+    const eventPayment = (paymentDetail) => {        
         const registerData = props.location;
-        console.log(registerData.data);
-
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
         const config = { headers: { Authorization: `${token}` } };
         
-        var data = registerData.data;
+        var data = registerData.data;        
         data.payment_id = paymentDetail.id
         
         if (token) {

@@ -1,10 +1,37 @@
-import React from 'react'
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Header from './../sections/Header';
 import Footer from './../sections/Footer';
-
+import axios from 'axios';
+import Swal from "sweetalert2";
+import api_url from './../components/Apiurl';
 
 
 const LandingPage = () => {
+
+    const [eventdata, setEventData] = React.useState([]);
+    const [noresult, setNoresult] = React.useState(false)
+
+    React.useEffect(() => {
+        axios.get(api_url + '/event/getLandingPageEvent').then((result) => {
+            if (result.data.status) {
+                var eventdatas = result.data.response.data;
+                setEventData(eventdatas);
+                if (eventdatas.length > 0) {
+
+                    setEventData(eventdatas);
+                    setNoresult(false);
+                } else {
+                    // setNoresult(true);
+                }
+            } else {
+                Swal.fire('Oops...', result.data.response.msg, 'error')
+            }
+        }).catch((err) => {
+            console.log(err);
+        })
+    }, [])
+
     return (
         <div>
             <div className="wrapper">
@@ -17,7 +44,9 @@ const LandingPage = () => {
                                     <div className="text-box">
                                         <h1 className="wow animate__fadeInUp" data-wow-duration="1000ms" data-wow-delay="300ms">Pathways to <br></br> prevention</h1>
                                         <p className="wow animate__fadeInUp" data-wow-duration="1000ms" data-wow-delay="600ms">Imagine a future where developmental trauma no longer exists — children need not be removed from their families, generational patterns of abuse, neglect, violence and addiction are broken, and families are empowered to meet the developmental needs of their babies from the time they learn they are pregnant.  Pathways to Prevention: A Centre for Childhood Trauma was created to achieve this goal of realizing a future free from developmental trauma.</p>
-                                        <a className="btn btn-default wow animate__fadeInUp" data-wow-duration="1000ms" data-wow-delay="900ms" href="#">Learn More</a>
+                                        <Link className="btn btn-default wow animate__fadeInUp" to="/about-hull" data-wow-duration="1000ms" data-wow-delay="900ms">
+                                            Learn More
+                                        </Link>
                                     </div>
                                 </div>
                                 <div className="col-md-6">
@@ -40,8 +69,9 @@ const LandingPage = () => {
                                     <h3 className="wow animate__fadeInUp" data-wow-duration="1000ms" data-wow-delay="1000ms">Upcoming Events</h3>
                                     <div className="row">
                                         <div className="col-md-6 order-md-first order-last">
-                                            <div className="image-holder">
-                                                <img src="images/upcoming-img.png" alt="" className="img-fluid wow animate__fadeInLeft" data-wow-duration="1000ms" data-wow-delay="1000ms" />
+                                            <div className="image-holder">                                                
+                                                {!eventdata.event_image && <img src="images/upcoming-img.png" alt="" className="img-fluid wow animate__fadeInLeft" data-wow-duration="1000ms" data-wow-delay="1000ms" />}
+                                                {eventdata.event_image && <img src={eventdata.event_image} alt="" className="img-fluid wow animate__fadeInLeft" data-wow-duration="1000ms" data-wow-delay="1000ms" />} 
                                                 <div className="image-shape">
                                                     <img src="images/upcoming-round.png" alt="" className="img-fluid wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" />
                                                 </div>
@@ -49,15 +79,19 @@ const LandingPage = () => {
                                         </div>
                                         <div className="col-md-6 order-md-last order-first">
                                             <div className="text-box">
-                                                <span className="wow animate__fadeInUp" data-wow-duration="1000ms">MAY 25 2022</span>
-                                                <h4 className="wow animate__fadeInUp" data-wow-duration="1000ms"> Luminary Speaker Series: ….with Dr. Bruce Perry</h4>
-                                                <p className="wow animate__fadeInUp" data-wow-duration="1100ms">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consectetur porttitor consequat, diam nunc adipiscing urna semper. Malesuada eu fringilla faucibus scelerisque phasellus tortor. Bibendum.</p>
-                                                <a href="#" className="detail-btn wow animate__fadeInUp" data-wow-duration="1400ms">View Details</a>
+                                                <span className="wow animate__fadeInUp" data-wow-duration="1000ms">{eventdata.start_date}</span>
+                                                <h4 className="wow animate__fadeInUp" data-wow-duration="1000ms">{eventdata.title}</h4>
+                                                <p className="wow animate__fadeInUp" data-wow-duration="1100ms" dangerouslySetInnerHTML={{ __html: eventdata.description }}></p>
+                                                <Link className="detail-btn wow animate__fadeInUp" to={{ pathname: "/event-promo", search: "?id=" + eventdata.event_id }} data-wow-duration="1000ms" data-wow-delay="900ms">
+                                                    View Details
+                                                </Link>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="text-center">
-                                        <a className="btn btn-default wow animate__fadeInUp" data-wow-duration="1000ms" href="#">All Upcoming Events</a>
+                                        <Link className="btn btn-default wow animate__fadeInUp" to="/events" data-wow-duration="1000ms">
+                                            All Upcoming Events
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
@@ -89,7 +123,9 @@ const LandingPage = () => {
                                                 </div>
                                                 <div className="text-box">
                                                     <p className="wow animate__fadeInUp" data-wow-duration="1000ms" data-wow-delay="1000ms">Pathways to Prevention is a leader in trauma-informed care in the community and worldwide. Our team of highly trained professionals facilitates public training and courses to build the capacity of other organizations and systems to more effectively identify and respond to developmental trauma in the populations they serve.</p>
-                                                    <a className="btn btn-default  wow animate__fadeInUp" data-wow-duration="1000ms" data-wow-delay="1000ms" href="#">View Training & Courses</a>
+                                                    <Link className="btn btn-default wow animate__fadeInUp" to="/courses-training" data-wow-duration="1000ms">
+                                                        View Training & Courses
+                                                    </Link>
                                                 </div>
                                             </div>
                                         </div>
