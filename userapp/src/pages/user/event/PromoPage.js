@@ -178,7 +178,7 @@ export default function PromoPage() {
                                                     </div>
                                                     <div className="rate-btn mt-3">
                                                         <a href="javascript:;"
-                                                            //onClick={(e) => cartEvent(eventDetail.event_id, (eventDetail.cost + eventDetail.session_cost, 'eventwithsession'))}
+                                                            onClick={(e) => cartEvent(eventDetail.event_id, (eventDetail.cost + eventDetail.session_cost, 'eventwithsession'))}
                                                             className="btn btn-default w-100"
                                                         >
                                                             {eventDetail.cost && <span>${eventDetail.cost}</span>}

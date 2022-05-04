@@ -19,6 +19,7 @@ export default function Header() {
     const [activeClass, setActiveClass] = useState('');
 
     const location = useLocation();
+    
 
     React.useEffect(() => {
         const userString = localStorage.getItem('userdata');
@@ -148,6 +149,50 @@ export default function Header() {
                                                 <li className="nav-item">
                                                     <NavLink className="login-btn" activeClassName="active" to="/login">
                                                         <InlineButton name={"Login"} />
+                                                    </NavLink>
+                                                </li>
+                                            </>
+                                        }
+
+                                        {(token && location.pathname == "/") && 
+                                            <>
+                                                <li className="nav-item"><a className="nav-link" href="about">About Us <i className="fa-solid fa-caret-down"></i></a>
+                                                    <ul className="menus">
+                                                        <li>
+                                                            <NavLink activeClassName="active" to="/about-hull">
+                                                                <InlineButton name={"About Hull Services"} />
+                                                            </NavLink>
+                                                        </li>
+                                                        <li>
+                                                            <NavLink activeClassName="active" to="/ourteam">
+                                                                <InlineButton name={"Our Team"} />
+                                                            </NavLink>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                <li className="nav-item">
+                                                    <NavLink className="nav-link" activeClassName="active" to="/research-request-form">
+                                                        <InlineButton name={"Research"} />
+                                                    </NavLink>
+                                                </li>
+                                                <li className="nav-item">
+                                                    <NavLink className="nav-link" activeClassName="active" to="/courses-training">
+                                                        <InlineButton name={"Trainings & Courses"} />
+                                                    </NavLink>
+                                                </li>
+                                                <li className="nav-item">
+                                                    <NavLink className="nav-link" activeClassName="active" to="/events">
+                                                        <InlineButton name={"Events"} />
+                                                    </NavLink>
+                                                </li>
+                                                <li className="nav-item">
+                                                    <NavLink className="nav-link" activeClassName="active" to="/partner">
+                                                        <InlineButton name={"Our Partners"} />
+                                                    </NavLink>
+                                                </li>
+                                                <li className="nav-item">
+                                                    <NavLink className="nav-link" activeClassName="active" to="/contact">
+                                                        <InlineButton name={"Contact Us"} />
                                                     </NavLink>
                                                 </li>
                                             </>
