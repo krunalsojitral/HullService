@@ -252,32 +252,32 @@ export default function ResearchRequestForm() {
             <Header />
 
 
-            <section class="second-banner-sec" style={{ background: `url('images/research-banner.png') no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
-                <div class="container">
-                    <div class="second-banner-inner">
-                        <div class="row">
-                            <div class="col-md-7">
-                                <div class="text-box">
-                                    <h2 class="wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">Research</h2>
+            <section className="second-banner-sec" style={{ background: `url('images/research-banner.png') no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
+                <div className="container">
+                    <div className="second-banner-inner">
+                        <div className="row">
+                            <div className="col-md-7">
+                                <div className="text-box">
+                                    <h2 className="wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">Research</h2>
                             </div>
                             </div>
-                            <div class="col-md-5">
-                                <div class="image-holder">
-                                    <img src="images/second-banner-img.png" alt="" class="img-fluid wow animate__flipInX" data-wow-duration="1500ms" data-wow-delay="1000ms" />
+                            <div className="col-md-5">
+                                <div className="image-holder">
+                                    <img src="images/second-banner-img.png" alt="" className="img-fluid wow animate__flipInX" data-wow-duration="1500ms" data-wow-delay="1000ms" />
                                 </div>
                             </div>
                         </div>
-                        <div class="second-banner-shape wow animate__zoomIn" data-wow-duration="1500ms" data-wow-delay="1000ms">
-                            <img src="images/second-banner-shape.png" alt="" class="img-fluid" />
+                        <div className="second-banner-shape wow animate__zoomIn" data-wow-duration="1500ms" data-wow-delay="1000ms">
+                            <img src="images/second-banner-shape.png" alt="" className="img-fluid" />
                         </div>
                     </div>  
                 </div >
             </section >
-            <section class="about-researcher">
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-lg-12 order-lg-1 order-2">
-                            <div class="content wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">
+            <section className="about-researcher">
+                <div className="container">
+                    <div className="row align-items-center">
+                        <div className="col-lg-12 order-lg-1 order-2">
+                            <div className="content wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">
                             <p >Pathways to Prevention works with researchers who share our dedication to better understanding the nature and impacts of childhood trauma and who seek to prevent and reduce the effects of childhood trauma.</p>
                             <p>Our researchers are experts in their field of study, affiliated with various academic and social institutions across Canada and worldwide. Pathways to Prevention offers a collaborative space where researchers can join to work together on their shared pursuits in the study, prevention, and treatment of childhood trauma.   </p>
                             <p>As new knowledge is acquired through research, Pathways to Prevention translate findings into policy recommendations and advocates for targeted, efficient, and effective precision approaches. </p>
@@ -288,15 +288,15 @@ export default function ResearchRequestForm() {
                 </div>
             </section>
 
-            <section class="researcher-sec researchContact">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="researcher-heading" style={{"background-color":"#F7F7F7", "text-align":"center", "padding":"50px", "border-radius": "25px"}}>
-                                {/* <strong class="wow animate__fadeInUp" data-wow-duration="1400ms" data-wow-delay="1000ms" style={{"visibility": "visible", "animation-duration": "1400ms", "animation-name": "fadeInUp", "font-size":"19px"}}>Registrations for the Researchers coming soon</strong> */}
+            {/*<section className="researcher-sec researchContact">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-12">
+    <div className="researcher-heading" style={{"background-color":"#F7F7F7", "text-align":"center", "padding":"50px", "border-radius": "25px"}}>*/}
+                                {/* <strong className="wow animate__fadeInUp" data-wow-duration="1400ms" data-wow-delay="1000ms" style={{"visibility": "visible", "animation-duration": "1400ms", "animation-name": "fadeInUp", "font-size":"19px"}}>Registrations for the Researchers coming soon</strong> */}
 
 
-                                <div className="login-section">
+                               {/* <div className="login-section">
                                     <div className="container">
                                         <div className="row">
                                             <div className="col-md-12">
@@ -515,10 +515,21 @@ export default function ResearchRequestForm() {
                         </div>
                     </div>
                 </div>
-            </section>
+            </section>*/}
            
+           <section className="researcher-sec researchContact">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-12">
+                            <div className="researcher-heading" style={{backgroundColor: '#F7F7F7', textAlign: 'center', padding: '50px', borderRadius: '25px'}}>
+								<strong className="wow animate__fadeInUp" data-wow-duration="1400ms" data-wow-delay="1000ms" style={{visibility: 'visible', animationDuration: '1400ms', animationName: 'fadeInUp', fontSize: '19px'}}>Registrations for the Researchers coming soon</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-
+                
             
 
             <Footer />

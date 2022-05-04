@@ -6,6 +6,7 @@ import useLogout from './../hooks/useLogout';
 import api_url from './../components/Apiurl';
 import axios from 'axios';
 import Swal from "sweetalert2";
+import react from 'react';
 //import $ from 'jquery';
 
 export default function Header() {
@@ -90,7 +91,8 @@ export default function Header() {
                                     </button>
                                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                                         <ul class="navbar-nav ms-auto" id="menu">
-                                            <li class="nav-item"><a class="nav-link" href="about">About Us <i class="fa-solid fa-caret-down"></i></a>
+                                        {(!token || pathname=='/') &&  <React.Fragment>
+                                        <li class="nav-item"><a class="nav-link" href="about">About Us <i class="fa-solid fa-caret-down"></i></a>
                                                 <ul class="menus">
                                                     <li>
                                                         <NavLink activeClassName="active" to="/about-hull">
@@ -129,11 +131,14 @@ export default function Header() {
                                                     <InlineButton name={"Contact Us"} />
                                                 </NavLink>
                                             </li>
+                                            </React.Fragment>}
                                             {(!token) &&  <li class="nav-item">
                                                 <NavLink class="login-btn" activeClassName="active" to="/login">
                                                     <InlineButton name={"Login"} />
                                                 </NavLink>
                                             </li>}
+                                            
+                                                
 
 
                                         {(token) && <div className="user-dropdown">
