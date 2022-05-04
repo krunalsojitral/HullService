@@ -117,107 +117,107 @@ const _nav = [
   //     // }
   //   ]
   // },
-  {
-    _tag: "CSidebarNavDropdown",
-    name: "Membership Form",
-    route: "/#",
-    icon: "cil-list",
-    _children: [
-      // {
-      //   _tag: "CSidebarNavDropdown",
-      //   name: "Professional",
-      //   route: "/#",
-      //   icon: "cil-list",
-      //   _children: [
-      //     {
-      //       _tag: "CSidebarNavItem",
-      //       name: "Sector",
-      //       to: "/sector",
-      //     },
-      //     {
-      //       _tag: "CSidebarNavItem",
-      //       name: "Occupation",
-      //       to: "/occupation",
-      //     },
-      //     {
-      //       _tag: "CSidebarNavItem",
-      //       name: "Interest Area",
-      //       to: "/professional-interest-area",
-      //     }
-      //     ]
-      // },
-      {
-        _tag: "CSidebarNavDropdown",
-        name: "Researcher",
-        route: "/#",
-        icon: "cil-list",
-        _children: [
-          {
-            _tag: "CSidebarNavItem",
-            name: "Academic Discipline",
-            to: "/academic-discipline",
-          }, 
-          // {
-          //   _tag: "CSidebarNavItem",
-          //   name: "Interest Area",
-          //   to: "/researcher-interest-area",
-          // }
-        ]
-      },
-      {
-        _tag: "CSidebarNavItem",
-        name: "Organization",
-        to: "/organization",
-        icon: "cil-list",
-      }
-    ]
-  },
-  {
-    _tag: "CSidebarNavDropdown",
-    name: "Forums",
-    route: "/forum",
-    icon: "cil-list",    
-    _children: [      
-      {
-        _tag: "CSidebarNavItem",
-        name: "Add Topics",
-        to: "/forumheading",        
-      },
-      {
-        _tag: "CSidebarNavItem",
-        name: "Add/View Threads",
-        to: "/forum",
-      },
-      {
-        _tag: "CSidebarNavItem",
-        name: "Thread Requests",
-        to: "/forum-request",        
-      },
-    ],
-  }, 
-  {
-    _tag: "CSidebarNavDropdown",
-    name: "Researches",
-    route: "/researches",
-    icon: "cil-list",
-    _children: [      
-      {
-        _tag: "CSidebarNavItem",
-        name: "View Researches",
-        to: "/researches-list",
-      },
-      {
-        _tag: "CSidebarNavItem",
-        name: "Research Requests",
-        to: "/research-requests",        
-      },
-      {
-        _tag: "CSidebarNavItem",
-        name: "View Future Participants",
-        to: "/future-participants",
-      },
-    ],
-  },
+  // {
+  //   _tag: "CSidebarNavDropdown",
+  //   name: "Membership Form",
+  //   route: "/#",
+  //   icon: "cil-list",
+  //   _children: [
+  //     // {
+  //     //   _tag: "CSidebarNavDropdown",
+  //     //   name: "Professional",
+  //     //   route: "/#",
+  //     //   icon: "cil-list",
+  //     //   _children: [
+  //     //     {
+  //     //       _tag: "CSidebarNavItem",
+  //     //       name: "Sector",
+  //     //       to: "/sector",
+  //     //     },
+  //     //     {
+  //     //       _tag: "CSidebarNavItem",
+  //     //       name: "Occupation",
+  //     //       to: "/occupation",
+  //     //     },
+  //     //     {
+  //     //       _tag: "CSidebarNavItem",
+  //     //       name: "Interest Area",
+  //     //       to: "/professional-interest-area",
+  //     //     }
+  //     //     ]
+  //     // },
+  //     {
+  //       _tag: "CSidebarNavDropdown",
+  //       name: "Researcher",
+  //       route: "/#",
+  //       icon: "cil-list",
+  //       _children: [
+  //         {
+  //           _tag: "CSidebarNavItem",
+  //           name: "Academic Discipline",
+  //           to: "/academic-discipline",
+  //         }, 
+  //         // {
+  //         //   _tag: "CSidebarNavItem",
+  //         //   name: "Interest Area",
+  //         //   to: "/researcher-interest-area",
+  //         // }
+  //       ]
+  //     },
+  //     {
+  //       _tag: "CSidebarNavItem",
+  //       name: "Organization",
+  //       to: "/organization",
+  //       icon: "cil-list",
+  //     }
+  //   ]
+  // },
+  // {
+  //   _tag: "CSidebarNavDropdown",
+  //   name: "Forums",
+  //   route: "/forum",
+  //   icon: "cil-list",    
+  //   _children: [      
+  //     {
+  //       _tag: "CSidebarNavItem",
+  //       name: "Add Topics",
+  //       to: "/forumheading",        
+  //     },
+  //     {
+  //       _tag: "CSidebarNavItem",
+  //       name: "Add/View Threads",
+  //       to: "/forum",
+  //     },
+  //     {
+  //       _tag: "CSidebarNavItem",
+  //       name: "Thread Requests",
+  //       to: "/forum-request",        
+  //     },
+  //   ],
+  // }, 
+  // {
+  //   _tag: "CSidebarNavDropdown",
+  //   name: "Researches",
+  //   route: "/researches",
+  //   icon: "cil-list",
+  //   _children: [      
+  //     {
+  //       _tag: "CSidebarNavItem",
+  //       name: "View Researches",
+  //       to: "/researches-list",
+  //     },
+  //     {
+  //       _tag: "CSidebarNavItem",
+  //       name: "Research Requests",
+  //       to: "/research-requests",        
+  //     },
+  //     {
+  //       _tag: "CSidebarNavItem",
+  //       name: "View Future Participants",
+  //       to: "/future-participants",
+  //     },
+  //   ],
+  // },
   {
     _tag: "CSidebarNavDropdown",
     name: "Events",
@@ -297,22 +297,34 @@ const _nav = [
   //     }
   //   ],
   // },
+  // {
+  //   _tag: "CSidebarNavItem",
+  //   name: "Tag",
+  //   route: "/#",
+  //   to: "/tag",
+  //   icon: "cil-list",
+  //   badge: {
+  //     color: "info",
+  //     text: "",
+  //   },
+  // },
+  // {
+  //   _tag: "CSidebarNavItem",
+  //   name: "Media",
+  //   route: "/#",
+  //   to: "/media",
+  //   icon: "cil-list",
+  //   badge: {
+  //     color: "info",
+  //     text: "",
+  //   },
+  // },
+
   {
     _tag: "CSidebarNavItem",
-    name: "Tag",
+    name: "Subscribe User",
     route: "/#",
-    to: "/tag",
-    icon: "cil-list",
-    badge: {
-      color: "info",
-      text: "",
-    },
-  },
-  {
-    _tag: "CSidebarNavItem",
-    name: "Media",
-    route: "/#",
-    to: "/media",
+    to: "/subscribe-user",
     icon: "cil-list",
     badge: {
       color: "info",

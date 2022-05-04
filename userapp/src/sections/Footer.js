@@ -1,7 +1,34 @@
-import React from 'react';
+import React, { useState, useRef, ref } from 'react';
 import { Link } from 'react-router-dom';
+import { useForm, Controller } from "react-hook-form";
+import api_url from './../components/Apiurl';
+import axios from "axios";
+import Swal from "sweetalert2";
+import { useHistory } from "react-router-dom";
+
+
 
 export default function Footer() {
+
+    const {
+        handleSubmit,
+        control,
+        watch,
+        setValue: setFormValue,
+        formState: { errors },
+    } = useForm();
+
+    const onSubmit = (data) => {
+        axios.post(api_url + "/user/subscribeUser", data).then((result) => {
+            if (result.data.status) {    
+                Swal.fire('Success!', 'Successfully subscribe user.', 'success');
+            }else{
+                Swal.fire('Oops...', result.data.response.msg, 'error')
+            }
+            
+        }).catch((err) => { console.log(err); });
+        
+    }
 
     return(
 
@@ -12,9 +39,26 @@ export default function Footer() {
                         <div className="col-12">
                             <div className="newsletter-inner  wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">
                                 <h4>Subscribe to get the latest news from us</h4>
-                                <form>
-                                    <input type="text" className="form-control" placeholder="Email Address" />
-                                    <a href="#">Submit</a>
+                                <form onSubmit={handleSubmit(onSubmit)}>                                   
+                                    <Controller
+                                        name={"email"}
+                                        control={control}
+                                        rules={{ required: true }}
+                                        render={({ field: { onChange, value } }) => (
+                                            <input
+                                                type="text"
+                                                onChange={onChange}
+                                                value={value}
+                                                className="form-control"
+                                                placeholder={`Email Address`}
+                                            />
+                                        )}
+                                    ></Controller>
+                                    {errors.email && errors.email.type === "required" && (
+                                        <small className="error">Email is required.</small>
+                                    )}
+                                    <button type="submit" className="btn subscription">Submit</button>
+                                    {/* <a href="#">Submit</a> */}
                                 </form>
                             </div>
                         </div>
