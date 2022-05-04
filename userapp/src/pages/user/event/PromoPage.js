@@ -33,7 +33,7 @@ export default function PromoPage() {
             headers: { Authorization: `${token}` }
         };
 
-        if (token) { 
+        if (token) {
             axios.post(api_url + '/event/getEventDataByIdWithLogin', { event_id: event_id }, config).then((result) => {
                 if (result.data.status) {
                     var eventdata = result.data.response.data;
@@ -44,7 +44,7 @@ export default function PromoPage() {
             }).catch((err) => {
                 console.log(err);
             })
-        }else{
+        } else {
             axios.post(api_url + '/event/getEventDataById', { event_id: event_id }).then((result) => {
                 if (result.data.status) {
                     var eventdata = result.data.response.data;
@@ -57,9 +57,9 @@ export default function PromoPage() {
             })
         }
 
-   
 
-        
+
+
 
     }, [])
 
@@ -70,17 +70,17 @@ export default function PromoPage() {
             cost: cost,
             type: type
         }
-        
+
         localStorage.setItem('eventPurchaseData', JSON.stringify(data));
         history.push("/event-cart");
     }
 
-    const zoomJoin = (id) => { 
+    const zoomJoin = (id) => {
         // axios.post("http://localhost:6161/api/event/newmeeting", { userName, userEmail, passWord }).then((res) => {
         //     setData(res.data.response.data);
         //     console.log("res", res.data.response.data);
         //     var datas = res.data.response.data.join_url;
-            
+
 
         // }).catch((err) => console.log("error", err));
     }
@@ -116,17 +116,32 @@ export default function PromoPage() {
                 <div className="container">
                     <ul className="nav nav-tabs eventTabs wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" id="myTab" role="tablist">
                         <li role="presentation">
-                            <a href="#" className="active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Event</a>
+                            <a href="#" className="active"
+                                id="home-tab" data-bs-toggle="tab"
+                                data-bs-target="#home" type="button"
+                                role="tab" aria-controls="home"
+                                aria-selected="true">
+                                Event
+                            </a>
                         </li>
                         <li role="presentation">
-                            <a href="#" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Reflective Practice Sessions</a>
+                            <a href="#" id="profile-tab"
+                                data-bs-toggle="tab" data-bs-target="#profile"
+                                type="button" role="tab" aria-controls="profile"
+                                aria-selected="false">
+                                Reflective Practice Sessions
+                            </a>
                         </li>
                     </ul>
                     <div className="tab-content" id="myTabContent">
                         <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                             <div className="row">
-                                <div className="back-btn-right clearfix" style={{"text-align":"right"}}>
-                                    <div className="rate-btn mt-5 "><a href="#" className="btn btn-default white sm-btn"><span>Back</span></a></div>
+                                <div className="back-btn-right clearfix" style={{ "text-align": "right" }}>
+                                    <div className="rate-btn mt-5 ">
+                                        <a href="#" className="btn btn-default white sm-btn">
+                                            <span>Back</span>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                             <div className="eventDetail">
@@ -145,14 +160,14 @@ export default function PromoPage() {
                                                 <div className="event-name-title">
                                                     {!eventDetail.speaker_image && <img src="images/user-icon.svg" alt="" className="img-fluid speaker-image" />}
                                                     {eventDetail.speaker_image && <img src={eventDetail.speaker_image} alt="" className="img-fluid speaker-image" />}
-                                                    {eventDetail.speaker_name} 
+                                                    {eventDetail.speaker_name}
                                                 </div>
                                                 <div className="desc event-list-line">{eventDetail.title} </div>
                                                 <ul className="mt-50">
                                                     <li><i><img src="images/clarity_date-solid.svg" alt="" /></i><span>{eventDetail.start_date}</span></li>
                                                     <li><i><img src="images/bxs_time.svg" alt="" /></i><span>{eventDetail.start_time} - {eventDetail.end_time}</span></li>
                                                     {eventDetail.location && <li><i><img src="images/loc.svg" alt="" /></i><span>{eventDetail.location}</span></li>}
-                                                </ul>            
+                                                </ul>
 
                                                 {!eventDetail.event_purchase_id && <div>
                                                     <div className="rate-btn mt-3">
@@ -162,13 +177,16 @@ export default function PromoPage() {
                                                         </a>
                                                     </div>
                                                     <div className="rate-btn mt-3">
-                                                        <a href="javascript:;" onClick={(e) => cartEvent(eventDetail.event_id, (eventDetail.cost + eventDetail.session_cost, 'eventwithsession'))} className="btn btn-default w-100">
+                                                        <a href="javascript:;"
+                                                            //onClick={(e) => cartEvent(eventDetail.event_id, (eventDetail.cost + eventDetail.session_cost, 'eventwithsession'))}
+                                                            className="btn btn-default w-100"
+                                                        >
                                                             {eventDetail.cost && <span>${eventDetail.cost}</span>}
-                                                            <span>Register for Event and Reflection <br />Pracice Session</span>
+                                                            <span>Register for Event and Reflection <br />Practice Session</span>
                                                         </a>
                                                     </div>
                                                 </div>}
-                                                
+
 
                                             </div>
                                         </div>
@@ -263,10 +281,10 @@ export default function PromoPage() {
                     </div >
                 </div >
             </div >
-            
-            
 
-            
+
+
+
             {/* <section className="hero-banner-inner">
                 <div className="container">
                     <div className="row align-items-center">
@@ -485,7 +503,7 @@ export default function PromoPage() {
                     </div>
                 </div>
             </section> */}
-           
+
             <Footer />
         </div>
     )
