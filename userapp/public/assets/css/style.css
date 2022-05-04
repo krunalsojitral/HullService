@@ -487,23 +487,23 @@ li.nav-item a.login-btn:after {
 .newsletter-inner form .form-control:focus{
     border-color: #007089; 
 }
-.newsletter-inner form a {
+.newsletter-inner form .subscription {
     background: #007089;
-    height: 65px;
+    height: 42px;
     max-width: 158px;
     width: 100%;
     font-weight: 700;
     position: absolute;
     top: 50%;
     transform: translate(0, -50%);
-    right: 10px;
+    right: 2px;
     font-size: 20px;
     color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.newsletter-inner form a:hover {
+.newsletter-inner form .subscription:hover {
     color: #fcfcfc;
     background: #f37346;
 }

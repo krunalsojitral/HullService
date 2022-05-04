@@ -1729,6 +1729,62 @@ router.post('/added_deactivate_reason', [
     }
 });
 
+router.post('/subscribeUser', [
+    check('email', 'email is required').notEmpty()
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {   
+        var email = req.body.email;
+        User.checkUserSubscribtion(email, function (err, data) {
+            let totalrecord = data.length;
+            if (totalrecord) {
+                return res.json({ status: 0, 'response': { msg: 'You have already register for subscribtion' } });
+            } else {
+                var obj = {
+                    email: req.body.email,
+                    created_at: moment.utc().format('YYYY-MM-DD')
+                }
+                User.subscribeUser(obj, function (err, datas) {
+                    if (err) {
+                        return res.json({ status: 0, 'msg': err, 'response': { msg: err } });
+                    } else {
+                        return res.json({ status: 1, 'msg': 'Subscribe successfully.', 'response': { data: datas } });
+                    }
+                });
+            }
+        });    
+        
+    }
+});
+
+
+router.get('/userSubscribeList', function (req, res) {
+    loggerData(req);
+    User.userSubscribeList(function (err, result) {
+        if (err) {
+            return res.json({ 'status': 0, 'response': { 'msg': err } });
+        } else {
+            if (result && result.length > 0) {
+
+                var userList = result.map(data => {
+                    let retObj = {};
+                    retObj['email'] = data.email;
+                    retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
+                    return retObj;
+                });
+
+                return res.json({ 'status': 1, 'response': { 'data': userList, 'msg': 'data found' } });
+            } else {
+                return res.json({ 'status': 0, 'response': { 'data': {}, 'msg': 'data found' } });
+            }
+        }
+    });
+});
+
+
 
 const ical = require('ical-generator');
 

@@ -462,6 +462,55 @@ function User() {
         });
     };
 
+    this.checkUserSubscribtion = function (email, callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM subscribe where LOWER(email) = $1', [email.toLowerCase()], function (err, results) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, results.rows);
+                }
+            });
+        });
+    };
+
+    this.subscribeUser = function (record, callback) {
+        connection.acquire(function (err, con) {            
+            const sql = 'INSERT INTO subscribe(email,created_at) VALUES($1,$2) RETURNING *'
+            const values = [record.email, record.created_at]
+            con.query(sql, values, function (err, result) {
+                con.release()
+                if (err) {
+                    if (env.DEBUG) {
+                        console.log(err);
+                    }
+                    callback(err, null);
+                } else {
+                    callback(null, result.rows[0]);
+                }
+            });
+        });
+    };
+
+    
+    this.userSubscribeList = function ( callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM subscribe', function (err, result) {
+                con.release();
+                if (result.rows.length === 0) {
+                    msg = 'User does not exist.';
+                    callback(msg, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    }
+
     this.checkUserOrganization = function (organization, callback) {
         connection.acquire(function (err, con) {            
             con.query('SELECT * FROM organization where LOWER(organization_name) = $1', [organization.toLowerCase()], function (err, results) {

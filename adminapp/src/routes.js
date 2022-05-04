@@ -76,6 +76,8 @@ const OrganizationAddEditForm = React.lazy(() => import('./views/pages/organizat
 
 const MembershipfeesForm = React.lazy(() => import('./views/pages/membershipfees/Membershipfees'))
 
+const SubscribeUser = React.lazy(() => import('./views/pages/subscribeuser/SubscribeUser'))
+
 
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
@@ -166,6 +168,8 @@ const routes = [
   { path: '/banneradd', name: 'Banner Add', component: BannerAddEditForm },
   { path: '/banneredit/:id', name: 'Banner Edit', component: BannerAddEditForm },
   { path: '/membership-fees', name: 'Membership Fees', component: MembershipfeesForm },
+  { path: '/subscribe-user', name: 'Subscribe User', component: SubscribeUser },
+  
   
 ]
 
