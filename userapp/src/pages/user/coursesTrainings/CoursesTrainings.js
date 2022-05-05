@@ -62,31 +62,31 @@ export default function CoursesTrainings() {
                             </div>
                         </div>
                         <div className="col-lg-4 col-md-6">
-                            <div className="card-course light-yellow wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <div className="card-course light-yellow wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" data-bs-toggle="modal" data-bs-target="#exampleModal2">
                                 <div className="icon"><img src="images/school-cap-icon.svg" alt=""/></div>
                                 <h2>Trauma Informed Schools</h2>
                             </div>
                         </div >
                         <div className="col-lg-4 col-md-6">
-                            <div className="card-course light-green wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <div className="card-course light-green wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" data-bs-toggle="modal" data-bs-target="#exampleModal3">
                                 <div className="icon"><img src="images/reflective-icon.svg" alt=""/></div>
                                 <h2>Reflective <br/> Practice</h2>
                             </div>
                         </div >
                         <div className="col-lg-4 col-md-6">
-                            <div className="card-course red wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <div className="card-course red wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" data-bs-toggle="modal" data-bs-target="#exampleModal4">
                                 <div className="icon"><img src="images/trauma-icon.svg" alt=""/></div>
                                 <h2>Trauma</h2>
                             </div>
                         </div >
                         <div className="col-lg-4 col-md-6">
-                            <div className="card-course blue wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <div className="card-course blue wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" data-bs-toggle="modal" data-bs-target="#exampleModal5">
                                 <div className="icon"><img src="images/focused-icon.svg" alt=""/></div>
                                 <h2>NM Focused  <br/> Trauma 	 </h2>
                             </div>
                         </div >
                         <div className="col-lg-4 col-md-6">
-                            <div className="card-course orange wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <div className="card-course orange wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" data-bs-toggle="modal" data-bs-target="#exampleModal6">
                                 <div className="icon"><img src="images/trauma-icon.svg" alt=""/></div>
                                 <h2>Trauma</h2>
                             </div>
@@ -216,6 +216,234 @@ export default function CoursesTrainings() {
           
        
            <Footer/>
+
+           <div className="team-modal ">
+            <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                        <div className="modal-body mobile-train">
+							<div className="popup-courses">
+								<a href="#/" data-bs-dismiss="modal" className="close-icon"><img src="images/crose-icon.svg" alt="" /></a>
+								<div className="title-course">
+									<div className="card-title card-title-courses" style={{background: '#007089'}}>
+										<img src="images/concepts-icon.svg" alt="" />
+									</div>
+									<div className="media-body">
+										<div className="researcher-heading">
+										<h3 >NM Core Concepts</h3></div>
+									</div>
+								</div>
+								<div className="cardBody">
+									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac nec cras bibendum sed blandit amet et consectetur felis. Turpis massa enim, facilisis eu ultrices. Tellus tellus quam ornare integer sit adipiscing a venenatis. Ornare tellus dictum pharetra felis amet augue commodo. Sit sed mauris duis ut at.</p>
+								</div>
+								<div className="popupFooter">
+									<ul>
+										<li className="price">$99.00</li>
+										<li><i><img src="images/clarity_date-solid.svg" alt="" /></i> <span>Upcoming Date : 12-7-2022</span></li>
+										<li><i><img src="images/bxs_time.svg" alt="" /></i> <span>Start time : 9:00AM  MDT</span></li>
+										<li><i><img src="images/bxs_time.svg" alt="" /></i> <span>Duration : 5 Hours</span></li>
+										<li><i><img src="images/loc.svg" alt="" /></i> <span>Calgary, Alberta</span></li>
+									</ul>
+									<a href="#" className="btn btn-default">Register</a>
+								</div>
+							</div>
+							
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            <div className="team-modal ">
+            <div className="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                        <div className="modal-body mobile-train">
+							<div className="popup-courses">
+								<a href="#/" data-bs-dismiss="modal" className="close-icon"><img src="images/crose-icon.svg" alt="" /></a>
+								<div className="title-course">
+									<div className="card-title card-title-courses"   style={{background: '#f9cc8a'}}>
+										<img src="images/school-cap-icon.svg" alt="" />
+									</div>
+									<div className="media-body">
+										<div className="researcher-heading">
+										<h3 >Trauma informed Schools</h3></div>
+									</div>
+								</div>
+								<div className="cardBody">
+									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac nec cras bibendum sed blandit amet et consectetur felis. Turpis massa enim, facilisis eu ultrices. Tellus tellus quam ornare integer sit adipiscing a venenatis. Ornare tellus dictum pharetra felis amet augue commodo. Sit sed mauris duis ut at.</p>
+								</div>
+								<div className="popupFooter">
+									<ul>
+										<li className="price">$99.00</li>
+										<li><i><img src="images/clarity_date-solid.svg" alt="" /></i> <span>Upcoming Date : 12-7-2022</span></li>
+										<li><i><img src="images/bxs_time.svg" alt="" /></i> <span>Start time : 9:00AM  MDT</span></li>
+										<li><i><img src="images/bxs_time.svg" alt="" /></i> <span>Duration : 5 Hours</span></li>
+										<li><i><img src="images/loc.svg" alt="" /></i> <span>Calgary, Alberta</span></li>
+									</ul>
+									<a href="#" className="btn btn-default">Register</a>
+								</div>
+							</div>
+							
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            <div className="team-modal ">
+            <div className="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                        <div className="modal-body mobile-train">
+							<div className="popup-courses">
+								<a href="#/" data-bs-dismiss="modal" className="close-icon"><img src="images/crose-icon.svg" alt="" /></a>
+								<div className="title-course">
+									<div className="card-title card-title-courses" style={{background: '#69c7b8'}}>
+										<img src="images/reflective-icon.svg" alt="" />
+									</div>
+									<div className="media-body">
+										<div className="researcher-heading">
+										<h3 >Reflective Practice</h3></div>
+									</div>
+								</div>
+								<div className="cardBody">
+									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac nec cras bibendum sed blandit amet et consectetur felis. Turpis massa enim, facilisis eu ultrices. Tellus tellus quam ornare integer sit adipiscing a venenatis. Ornare tellus dictum pharetra felis amet augue commodo. Sit sed mauris duis ut at.</p>
+								</div>
+								<div className="popupFooter">
+									<ul>
+										<li className="price">$99.00</li>
+										<li><i><img src="images/clarity_date-solid.svg" alt="" /></i> <span>Upcoming Date : 12-7-2022</span></li>
+										<li><i><img src="images/bxs_time.svg" alt="" /></i> <span>Start time : 9:00AM  MDT</span></li>
+										<li><i><img src="images/bxs_time.svg" alt="" /></i> <span>Duration : 5 Hours</span></li>
+										<li><i><img src="images/loc.svg" alt="" /></i> <span>Calgary, Alberta</span></li>
+									</ul>
+									<a href="#" className="btn btn-default">Register</a>
+								</div>
+							</div>
+							
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            <div className="team-modal ">
+            <div className="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                        <div className="modal-body mobile-train">
+							<div className="popup-courses">
+								<a href="#/" data-bs-dismiss="modal" className="close-icon"><img src="images/crose-icon.svg" alt="" /></a>
+								<div className="title-course">
+									<div className="card-title card-title-courses" style={{background: '#f15d4f'}}>
+										<img src="images/trauma-icon.svg" alt="" />
+									</div>
+									<div className="media-body">
+										<div className="researcher-heading">
+										<h3 >Trauma</h3></div>
+									</div>
+								</div>
+								<div className="cardBody">
+									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac nec cras bibendum sed blandit amet et consectetur felis. Turpis massa enim, facilisis eu ultrices. Tellus tellus quam ornare integer sit adipiscing a venenatis. Ornare tellus dictum pharetra felis amet augue commodo. Sit sed mauris duis ut at.</p>
+								</div>
+								<div className="popupFooter">
+									<ul>
+										<li className="price">$99.00</li>
+										<li><i><img src="images/clarity_date-solid.svg" alt="" /></i> <span>Upcoming Date : 12-7-2022</span></li>
+										<li><i><img src="images/bxs_time.svg" alt="" /></i> <span>Start time : 9:00AM  MDT</span></li>
+										<li><i><img src="images/bxs_time.svg" alt="" /></i> <span>Duration : 5 Hours</span></li>
+										<li><i><img src="images/loc.svg" alt="" /></i> <span>Calgary, Alberta</span></li>
+									</ul>
+									<a href="#" className="btn btn-default">Register</a>
+								</div>
+							</div>
+							
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            <div className="team-modal ">
+            <div className="modal fade" id="exampleModal5" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                        <div className="modal-body mobile-train">
+							<div className="popup-courses">
+								<a href="#/" data-bs-dismiss="modal" className="close-icon"><img src="images/crose-icon.svg" alt="" /></a>
+								<div className="title-course">
+									<div className="card-title card-title-courses" style={{background: '#339f94'}}>
+										<img src="images/focused-icon.svg" alt="" />
+									</div>
+									<div className="media-body">
+										<div className="researcher-heading">
+										<h3 >NM Focused Trauma</h3></div>
+									</div>
+								</div>
+								<div className="cardBody">
+									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac nec cras bibendum sed blandit amet et consectetur felis. Turpis massa enim, facilisis eu ultrices. Tellus tellus quam ornare integer sit adipiscing a venenatis. Ornare tellus dictum pharetra felis amet augue commodo. Sit sed mauris duis ut at.</p>
+								</div>
+								<div className="popupFooter">
+									<ul>
+										<li className="price">$99.00</li>
+										<li><i><img src="images/clarity_date-solid.svg" alt="" /></i> <span>Upcoming Date : 12-7-2022</span></li>
+										<li><i><img src="images/bxs_time.svg" alt="" /></i> <span>Start time : 9:00AM  MDT</span></li>
+										<li><i><img src="images/bxs_time.svg" alt="" /></i> <span>Duration : 5 Hours</span></li>
+										<li><i><img src="images/loc.svg" alt="" /></i> <span>Calgary, Alberta</span></li>
+									</ul>
+									<a href="#" className="btn btn-default">Register</a>
+								</div>
+							</div>
+							
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            <div className="team-modal ">
+            <div className="modal fade" id="exampleModal6" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                        <div className="modal-body mobile-train">
+							<div className="popup-courses">
+								<a href="#/" data-bs-dismiss="modal" className="close-icon"><img src="images/crose-icon.svg" alt="" /></a>
+								<div className="title-course">
+									<div className="card-title card-title-courses" style={{background: '#f89b5e'}}>
+										<img src="images/trauma-icon.svg" alt="" />
+									</div>
+									<div className="media-body">
+										<div className="researcher-heading">
+										<h3 >Trauma</h3></div>
+									</div>
+								</div>
+								<div className="cardBody">
+									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac nec cras bibendum sed blandit amet et consectetur felis. Turpis massa enim, facilisis eu ultrices. Tellus tellus quam ornare integer sit adipiscing a venenatis. Ornare tellus dictum pharetra felis amet augue commodo. Sit sed mauris duis ut at.</p>
+								</div>
+								<div className="popupFooter">
+									<ul>
+										<li className="price">$99.00</li>
+										<li><i><img src="images/clarity_date-solid.svg" alt="" /></i> <span>Upcoming Date : 12-7-2022</span></li>
+										<li><i><img src="images/bxs_time.svg" alt="" /></i> <span>Start time : 9:00AM  MDT</span></li>
+										<li><i><img src="images/bxs_time.svg" alt="" /></i> <span>Duration : 5 Hours</span></li>
+										<li><i><img src="images/loc.svg" alt="" /></i> <span>Calgary, Alberta</span></li>
+									</ul>
+									<a href="#" className="btn btn-default">Register</a>
+								</div>
+							</div>
+							
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+
+
+
+
+
         </div>
     )
 }
