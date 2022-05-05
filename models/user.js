@@ -498,7 +498,7 @@ function User() {
 
     this.contactUs = function (record, callback) {
         connection.acquire(function (err, con) {            
-            const sql = 'INSERT INTO contact(first_name,last_name,phone,email,description,created_at) VALUES($1,$2) RETURNING *'
+            const sql = 'INSERT INTO contact(first_name,last_name,phone,email,description,created_at) VALUES($1,$2,$3,$4,$5,$6) RETURNING *'
             const values = [record.first_name,record.last_name,record.phone,record.email,record.description, record.created_at]
             con.query(sql, values, function (err, result) {
                 con.release()
