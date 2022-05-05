@@ -42,7 +42,7 @@ export default function Footer() {
                                 <form onSubmit={handleSubmit(onSubmit)}>                                   
                                     <Controller
                                         name={"email"}
-                                        control={control}
+                                         control={control}
                                         rules={{ required: true }}
                                         render={({ field: { onChange, value } }) => (
                                             <input

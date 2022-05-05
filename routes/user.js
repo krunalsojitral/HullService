@@ -1760,6 +1760,45 @@ router.post('/subscribeUser', [
     }
 });
 
+router.post('/AddContactUs', [
+    check('first_name', 'first name is required').notEmpty(),
+    check('last_name', 'last name is required').notEmpty(),
+    check('phone', 'phone is required').notEmpty(),
+    check('email', 'email is required').notEmpty()
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        var error = errors.array();
+        res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+    } else {   
+        var email = req.body.email;
+
+        User.checkUserSubscribtion(email, function (err, data) {
+            let totalrecord = data.length;
+            if (totalrecord) {
+                return res.json({ status: 0, 'response': { msg: 'You have already registered.' } });
+            } else {
+                var obj = {
+                    first_name: req.body.first_name,
+                    last_name: req.body.last_name,
+                    phone: req.body.phone,
+                    email: req.body.email,
+                    description: req.body.description,
+                    created_at: moment.utc().format('YYYY-MM-DD')
+                }
+                User.contactUs(obj, function (err, datas) {
+                    if (err) {
+                        return res.json({ status: 0, 'msg': err, 'response': { msg: err } });
+                    } else {
+                        return res.json({ status: 1, 'msg': 'Request completed successfully.', 'response': { data: datas } });
+                    }
+                });
+            }
+        });    
+        
+    }
+});
+
 
 router.get('/userSubscribeList', function (req, res) {
     loggerData(req);
