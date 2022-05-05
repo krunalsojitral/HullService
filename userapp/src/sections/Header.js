@@ -54,7 +54,7 @@ export default function Header() {
             setActiveClass(activeClass);
         });
 
-        //window.scrollTo(0, 0)
+        window.scrollTo(0, 0)
 
         // axios.get(api_url + '/common/getDynamicMenu', {}).then((result) => {
         //     if (result.data.status) {

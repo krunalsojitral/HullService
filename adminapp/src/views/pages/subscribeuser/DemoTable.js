@@ -23,8 +23,11 @@ const DemoTable = () => {
     getNewList();
   }, [])
 
-  const fields = [    
-    { key: 'email', _style: { width: '20%'} },
+  const fields = [
+    { key: 'name', _style: { width: '20%' } },
+    { key: 'phone', _style: { width: '20%' } },
+    { key: 'email', _style: { width: '20%' } },
+    { key: 'description', _style: { width: '20%' } },
     { key: 'created_at', _style: { width: '20%' }, filter: false }
   ] 
   
@@ -49,7 +52,7 @@ const DemoTable = () => {
     <div>
       <CCardHeader className="custom-table-header">
         <div>
-          <CIcon name="cil-grid" /> Subscibe User
+          <CIcon name="cil-grid" /> Subsciber User
         </div>
       </CCardHeader>
       <CCardBody>

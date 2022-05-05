@@ -473,6 +473,9 @@ li.nav-item a.login-btn:after {
     width: 100%;
     margin: 0 auto;
 }
+.newsletter-inner input{
+    padding-right: 168px;
+}
 .newsletter-inner form .form-control {
     background: #ffffff;
     font-weight: 400;
@@ -2703,6 +2706,12 @@ transition: all .25s ease;
 	font-weight:600;
 	color:#036E80;
 	text-align:center;
+}
+.login-title-sub {
+    font-size: 20px;
+    font-weight: 400;
+    color: #036E80;
+    text-align: center;
 }
 
 .login-text {

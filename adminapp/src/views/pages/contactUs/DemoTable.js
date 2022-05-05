@@ -11,7 +11,7 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 
-const ContactUs = () => {
+const DemoTable = () => {
 
   const history = useHistory() 
   const [items, setItems] = useState([])
@@ -24,11 +24,10 @@ const ContactUs = () => {
   }, [])
 
   const fields = [    
-    { key: 'first_name', _style: { width: '20%'} },
-    { key: 'last_name', _style: { width: '20%'} },
-    { key: 'phone', _style: { width: '20%'} },
+    { key: 'name', _style: { width: '20%' } },
+    { key: 'phone', _style: { width: '20%' } },
     { key: 'email', _style: { width: '20%'} },
-    { key: 'description', _style: { width: '20%'} },
+    { key: 'description', _style: { width: '20%' } },
     { key: 'created_at', _style: { width: '20%' }, filter: false }
   ] 
   
@@ -38,9 +37,7 @@ const ContactUs = () => {
       if (result.data.status) {
         var usersdatas = result.data.response.data;
         setItems(usersdatas);
-      } else {
-        Swal.fire('Oops...', result.data.response.msg, 'error')
-      }
+      } 
     }).catch((err) => {
       console.log(err);
     })
@@ -53,7 +50,7 @@ const ContactUs = () => {
     <div>
       <CCardHeader className="custom-table-header">
         <div>
-          <CIcon name="cil-grid" /> Contact Us
+          <CIcon name="cil-grid" /> Contact us user
         </div>
       </CCardHeader>
       <CCardBody>
@@ -67,7 +64,17 @@ const ContactUs = () => {
           itemsPerPage={10}
           hover
           sorter
-          pagination          
+          pagination
+          // loading
+          // onRowClick={(item,index,col,e) => console.log(item,index,col,e)}
+          // onPageChange={(val) => console.log('new page:', val)}
+          // onPagesChange={(val) => console.log('new pages:', val)}
+          // onPaginationChange={(val) => console.log('new pagination:', val)}
+          // onFilteredItemsChange={(val) => console.log('new filtered items:', val)}
+          // onSorterValueChange={(val) => console.log('new sorter value:', val)}
+          // onTableFilterChange={(val) => console.log('new table filter:', val)}
+          // onColumnFilterChange={(val) => console.log('new column filter:', val)}
+          
         />
       </CCardBody>
     </div>
@@ -75,4 +82,4 @@ const ContactUs = () => {
   )
 }
 
-export default ContactUs;
+export default DemoTable

@@ -322,7 +322,7 @@ const _nav = [
   
   {
     _tag: "CSidebarNavItem",
-    name: "Subscribe User",
+    name: "Subscriber User",
     route: "/#",
     to: "/subscribe-user",
     icon: "cil-list",

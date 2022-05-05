@@ -35,12 +35,12 @@ export default function Contact() {
 
     const onSubmit = (values,e) => {
         axios.post(api_url + "/user/AddContactUs", values).then((result) => {
-            if (result.values.status) {
+            if (result.data.status) {
                 reset()
                 e.target.reset();
                 Swal.fire('Success!', 'Successfully submitted', 'success');
             } else {
-                Swal.fire('Oops...', result.values.response.msg, 'error')
+                Swal.fire('Oops...', result.data.response.msg, 'error')
             }
 
         }).catch((err) => { console.log(err); });
@@ -238,7 +238,7 @@ export default function Contact() {
                                                         <Controller
                                                             name={"email"}
                                                             control={control}
-                                                            rules={{ required: true }}
+                                                            rules={{ required: true, pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i }  }}
                                                             render={({ field: { onChange, value } }) => (
                                                                 <input
                                                                     type="text"
@@ -249,9 +249,8 @@ export default function Contact() {
                                                                 />
                                                             )}
                                                         ></Controller>
-                                                        {errors.email && errors.email.type === "required" && (
-                                                            <small className="error">Email is required.</small>
-                                                        )}
+                                                        {errors?.email?.type === "required" && <small className="error">Email is required</small>}
+                                                        {errors?.email?.type === "pattern" && (<small className="error">Invalid email address</small>)}                                                        
                                                     </div>
                                                 </div>
                                                 <div className="col-md-12">

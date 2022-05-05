@@ -529,6 +529,22 @@ function User() {
         });
     }
 
+    this.contactUsList = function (callback) {
+        connection.acquire(function (err, con) {
+            con.query('SELECT * FROM contact', function (err, result) {
+                con.release();
+                if (result.rows.length === 0) {
+                    msg = 'User does not exist.';
+                    callback(msg, null);
+                } else {
+                    callback(null, result.rows);
+                }
+            });
+        });
+    }
+
+    
+
     this.checkUserOrganization = function (organization, callback) {
         connection.acquire(function (err, con) {            
             con.query('SELECT * FROM organization where LOWER(organization_name) = $1', [organization.toLowerCase()], function (err, results) {

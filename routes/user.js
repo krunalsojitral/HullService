@@ -1790,6 +1790,47 @@ router.post('/AddContactUs', [
                     if (err) {
                         return res.json({ status: 0, 'msg': err, 'response': { msg: err } });
                     } else {
+
+                        
+                        var home_url;
+                        var admin_app_url;
+                        var hostname = req.headers.host;
+
+                        if (hostname == env.LOCAL_HOST_USER_APP) {
+                            home_url = env.APP_URL;
+                            admin_app_url = env.ADMIN_APP_URL
+                        } else {
+                            home_url = env.APP_URL;
+                            admin_app_url = env.ADMIN_APP_URL
+                        }
+
+                        var htmlUser = fs.readFileSync(__dirname + '/templates/contact/contact.html', 'utf8');
+
+                        var dynamicHtml = {
+                            home_url: home_url,
+                            fullname: obj.first_name + " " + obj.last_name,
+                            phone: obj.phone,
+                            email: obj.email,
+                            description: obj.description,
+                        }
+
+                        var view = { data: dynamicHtml };
+                        var finalHtmlUser = mustache.render(htmlUser, view);
+                        let transporter = nodemailer.createTransport(nodeMailerCredential); // node mailer credentials
+                        let mailOptions1 = {
+                            from: env.MAIL_FROM, // sender address
+                            to: 'simanpreet.kaur@albertatechworks.com',
+                            subject: 'Website Enquiry',
+                            html: finalHtmlUser.replace(/&#x2F;/g, '/')
+                        };
+                        transporter.sendMail(mailOptions1, (error, info) => {
+                            if (error) {
+                                console.log(error);
+                                //return res.json({status: 0, response : { msg: 'There was an email error',}  });
+                            } else {
+                            }
+                        });
+                        
                         return res.json({ status: 1, 'msg': 'Request completed successfully.', 'response': { data: datas } });
                     }
                 });
@@ -1825,7 +1866,7 @@ router.get('/userSubscribeList', function (req, res) {
 
 router.get('/contactUsList', function (req, res) {
     loggerData(req);
-    User.userSubscribeList(function (err, result) {
+    User.contactUsList(function (err, result) {
         if (err) {
             return res.json({ 'status': 0, 'response': { 'msg': err } });
         } else {
@@ -1833,8 +1874,7 @@ router.get('/contactUsList', function (req, res) {
 
                 var contactUsList = result.map(data => {
                     let retObj = {};
-                    retObj['first_name'] = data.first_name;
-                    retObj['last_name'] = data.last_name;
+                    retObj['name'] = (data.first_name) ? data.first_name : '' + " " + (data.last_name) ? data.last_name: '';
                     retObj['phone'] = data.phone;
                     retObj['email'] = data.email;
                     retObj['description'] = data.description;

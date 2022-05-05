@@ -14,13 +14,16 @@ export default function Footer() {
         handleSubmit,
         control,
         watch,
+        reset,
         setValue: setFormValue,
         formState: { errors },
     } = useForm();
 
-    const onSubmit = (data) => {
+    const onSubmit = (data, e) => {
         axios.post(api_url + "/user/subscribeUser", data).then((result) => {
-            if (result.data.status) {    
+            if (result.data.status) {   
+                reset()
+                e.target.reset(); 
                 Swal.fire('Success!', 'Successfully subscribe user.', 'success');
             }else{
                 Swal.fire('Oops...', result.data.response.msg, 'error')

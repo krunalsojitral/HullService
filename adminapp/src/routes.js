@@ -78,7 +78,7 @@ const MembershipfeesForm = React.lazy(() => import('./views/pages/membershipfees
 
 const SubscribeUser = React.lazy(() => import('./views/pages/subscribeuser/SubscribeUser'))
 
-const ContactUs = React.lazy(()=> import('./views/pages/contact us/ContactUsList'))
+const ContactUs = React.lazy(() => import('./views/pages/contactUs/contactUs'))
 
 
 
