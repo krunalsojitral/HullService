@@ -1,88 +1,80 @@
-import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
-import axios from 'axios';
-import api_url from './../../Apiurl';
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
+import api_url from "./../../Apiurl";
 import Swal from "sweetalert2";
-import {
-  CCardBody,  
-  CButton,  
-  CDataTable,
-  CCardHeader
-} from '@coreui/react'
-
+import { CCardBody, CButton, CDataTable, CCardHeader } from "@coreui/react";
 
 const DemoTable = () => {
-
-  const history = useHistory()
- // const [details, setDetails] = useState([])
-  const [items, setItems] = useState([])
-  const [deleteButtonDisable, setDeleteButtonDisable] = useState(true)
+  const history = useHistory();
+  // const [details, setDetails] = useState([])
+  const [items, setItems] = useState([]);
+  const [deleteButtonDisable, setDeleteButtonDisable] = useState(true);
   const ref = React.useRef();
-  const [filterstatus, setFilterStatus] = React.useState('');
+  const [filterstatus, setFilterStatus] = React.useState("");
 
   React.useEffect(() => {
-    getNewList('');
-    getNewListWrap('');
-  }, [])
+    getNewList("");
+    getNewListWrap("");
+  }, []);
 
   const fields = [
-    { key: 'checkbox', label: '', _style: { width: '1%' }, filter: false },
-    { key: 'title', _style: { width: '20%'} },   
-    { key: 'start_date', _style: { width: '20%' } },
-    { key: 'end_date', _style: { width: '20%' } },
-    { key: 'status', _style: { width: '20%'} },
+    { key: "checkbox", label: "", _style: { width: "1%" }, filter: false },
+    { key: "title", _style: { width: "20%" } },
+    { key: "start_date", _style: { width: "20%" } },
+    { key: "end_date", _style: { width: "20%" } },
+    { key: "status", _style: { width: "20%" } },
     {
-      key: 'show_details',
-      label: '',
-      _style: { width: '1%' },
-      filter: false
-    }
-  ]
-
+      key: "show_details",
+      label: "",
+      _style: { width: "1%" },
+      filter: false,
+    },
+  ];
 
   const updateItemStatus = (indexs, item, status) => {
-    var message = '';
+    var message = "";
     if (status == 1) {
-      message = 'Are you sure you want to activate the event ?'
+      message = "Are you sure you want to activate the event ?";
     } else {
-      message = 'Are you sure you want to deactivate the event ?'
+      message = "Are you sure you want to deactivate the event ?";
     }
     Swal.fire({
       //title: 'warning!',
-      icon: 'warning',
+      icon: "warning",
       text: message,
       confirmButtonText: `Yes`,
       showCancelButton: true,
-      cancelButtonText: 'No',
-      cancelButtonColor: '#e57979',
+      cancelButtonText: "No",
+      cancelButtonColor: "#e57979",
     }).then((result) => {
       if (result.isConfirmed) {
         var obj = {
           event_id: item.event_id,
           status: status,
         };
-        axios.post(api_url + "/event/changeEventStatus", obj)
+        axios
+          .post(api_url + "/event/changeEventStatus", obj)
           .then((result) => {
             if (result.data.status) {
-             // getNewListWrap('');
+              // getNewListWrap('');
 
               if (filterstatus) {
                 setItems(items.filter((data, index) => index !== indexs));
               } else {
                 let tempColl = [...items];
                 //tempColl[index].reply = [result.data.response.data, ...tempColl[index].reply]
-                tempColl[indexs].status = status
+                tempColl[indexs].status = status;
                 setItems(tempColl);
               }
 
-              var successmessage = '';
+              var successmessage = "";
               if (status == 1) {
-                successmessage = 'You have successfully activated event.'
+                successmessage = "You have successfully activated event.";
               } else {
-                successmessage = 'You have successfully deactivated event.'
+                successmessage = "You have successfully deactivated event.";
               }
               Swal.fire("Success!", successmessage, "success");
-
             } else {
               Swal.fire("Oops...", result.data.response.msg, "error");
             }
@@ -93,109 +85,127 @@ const DemoTable = () => {
           });
       }
     });
-  }
+  };
 
   const getNewList = (status) => {
-    axios.get(api_url + '/event/getEventList?status=' + status, {}).then((result) => {
-      if (result.data.status) {
-        var usersdatas = result.data.response.data;
-        setItems(usersdatas);
-      } else {
-       // Swal.fire('Oops...', result.data.response.msg, 'error')
-      }
-    }).catch((err) => {
-      console.log(err);
-    })
-  }
+    axios
+      .get(api_url + "/event/getEventList?status=" + status, {})
+      .then((result) => {
+        if (result.data.status) {
+          var usersdatas = result.data.response.data;
+          setItems(usersdatas);
+        } else {
+          // Swal.fire('Oops...', result.data.response.msg, 'error')
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const getNewListWrap = (status) => {
     getNewList(status);
   };
 
   const deleteItem = (e) => {
-    const filteredThatArray = items.filter((item) => item.isChecked == true).map(item => {
-      const container = {};
-      container['event_id'] = item.event_id;
-      return container;
-    });
+    const filteredThatArray = items
+      .filter((item) => item.isChecked == true)
+      .map((item) => {
+        const container = {};
+        container["event_id"] = item.event_id;
+        return container;
+      });
 
     if (filteredThatArray.length > 0) {
       Swal.fire({
         //title: 'warning!',
-        icon: 'warning',
-        text: 'Are you sure you want to delete the selected event(s) ?',
+        icon: "warning",
+        text: "Are you sure you want to delete the selected event(s) ?",
         confirmButtonText: `Yes`,
         showCancelButton: true,
-        cancelButtonText: 'No',
-        cancelButtonColor: '#e57979',
+        cancelButtonText: "No",
+        cancelButtonColor: "#e57979",
       }).then((result) => {
         if (result.isConfirmed) {
-          axios.post(api_url + '/event/deleteEvent', { event: filteredThatArray }).then((result) => {
-            if (result.data.status) {
-              getNewListWrap('');
-              Swal.fire('Success', result.data.response.msg, 'success')
-            } else {
-              Swal.fire('Oops...', result.data.response.msg, 'error')
-            }
-          }).catch((err) => {
-            console.log(err);
-          })
+          axios
+            .post(api_url + "/event/deleteEvent", { event: filteredThatArray })
+            .then((result) => {
+              if (result.data.status) {
+                getNewListWrap("");
+                Swal.fire("Success", result.data.response.msg, "success");
+              } else {
+                Swal.fire("Oops...", result.data.response.msg, "error");
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         }
       });
-
     } else {
-      Swal.fire('Oops...', 'Please select event', 'error')
+      Swal.fire("Oops...", "Please select event", "error");
     }
-  }
+  };
 
   const handleAddrTypeChange = (e) => {
-    if (e.target.value == '0') {
+    if (e.target.value == "0") {
       getNewListWrap(e.target.value);
-      setFilterStatus(e.target.value)
-    } else if (e.target.value == '1') {
+      setFilterStatus(e.target.value);
+    } else if (e.target.value == "1") {
       getNewListWrap(e.target.value);
-      setFilterStatus(e.target.value)
+      setFilterStatus(e.target.value);
     } else {
-      getNewListWrap('');
-      setFilterStatus('')
+      getNewListWrap("");
+      setFilterStatus("");
     }
-  }
+  };
 
   const handleOnChange = (e) => {
-    const index = e.target.name
+    const index = e.target.name;
     let itemlist = [...items];
     itemlist[index].isChecked = e.target.checked;
     setItems(itemlist);
 
-    const filteredThatArray = items.filter((item) => item.isChecked == true)
+    const filteredThatArray = items.filter((item) => item.isChecked == true);
     if (filteredThatArray.length > 0) {
-      setDeleteButtonDisable('');
+      setDeleteButtonDisable("");
     } else {
       setDeleteButtonDisable(true);
     }
   };
 
   return (
-
     <div>
-       <CCardHeader className="custom-table-header">
+      <CCardHeader className="custom-table-header">
         <div> &nbsp;&nbsp; Event </div>
-        <div>   
+        <div>
           <CButton
             color="primary"
             variant="outline"
             shape="square"
-            size="sm"            
+            size="sm"
             onClick={() => deleteItem()}
             disabled={deleteButtonDisable}
             className="d-inline-block"
-          > Delete
+          >
+            {" "}
+            Delete
           </CButton>
-          <select ref={ref} onChange={e => handleAddrTypeChange(e)} className="form-control d-inline-block" >
-            <option key="0" value="">Select Option</option>
-            <option key="1" value="1">Active</option>
-            <option key="2" value="0">Inactive</option>
-          </select>           
+          <select
+            ref={ref}
+            onChange={(e) => handleAddrTypeChange(e)}
+            className="form-control d-inline-block"
+          >
+            <option key="0" value="">
+              Select Option
+            </option>
+            <option key="1" value="1">
+              Active
+            </option>
+            <option key="2" value="0">
+              Inactive
+            </option>
+          </select>
           <CButton
             color="primary"
             variant="outline"
@@ -205,8 +215,8 @@ const DemoTable = () => {
             onClick={() => history.push(`/eventadd`)}
           >
             Add
-            </CButton>
-        </div>             
+          </CButton>
+        </div>
       </CCardHeader>
       <CCardBody>
         <CDataTable
@@ -241,67 +251,62 @@ const DemoTable = () => {
                 />
               </td>
             ),
-            status: (item,index) => (
+            status: (item, index) => (
               <td className="tooltip-box">
                 {item.status === 1 ? (
                   <p
                     href
                     style={{ cursor: "pointer", textDecoration: "underline" }}
                     onClick={() => {
-                      updateItemStatus(
-                        index,
-                        item,
-                        0,
-                        getNewListWrap
-                      );
+                      updateItemStatus(index, item, 0, getNewListWrap);
                     }}
                   >
                     Active{" "}
-                    <span className="tooltip-title">De-activating the page will remove the page from the front end.</span>
+                    <span className="tooltip-title">
+                      De-activating the page will remove the page from the front
+                      end.
+                    </span>
                   </p>
                 ) : (
                   <p
                     href
                     style={{ cursor: "pointer", textDecoration: "underline" }}
                     onClick={() => {
-                      updateItemStatus(
-                        index,
-                        item,
-                        1,
-                        getNewListWrap
-                      );
+                      updateItemStatus(index, item, 1, getNewListWrap);
                     }}
                   >
                     Inactive
-                    <span className="tooltip-title">Activating the page will add the page back on the front end.</span>
+                    <span className="tooltip-title">
+                      Activating the page will add the page back on the front
+                      end.
+                    </span>
                   </p>
                 )}
                 {/* <CBadge color={getBadge(item.status)}>{item.status}</CBadge> */}
               </td>
-            ),           
-            'show_details':
-              item => {
-                return (
-                  <td className="py-2">
-                    <CButton
-                      color="primary"
-                      variant="outline"
-                      shape="square"
-                      size="sm"
-                      onClick={() => history.push(`/eventedit/${item.event_id}`)}
-                      className="mr-1"
-                    > Edit
+            ),
+            show_details: (item) => {
+              return (
+                <td className="py-2">
+                  <CButton
+                    color="primary"
+                    variant="outline"
+                    shape="square"
+                    size="sm"
+                    onClick={() => history.push(`/eventedit/${item.event_id}`)}
+                    className="mr-1"
+                  >
+                    {" "}
+                    Edit
                   </CButton>
-
-                  </td>
-                )
-              }
+                </td>
+              );
+            },
           }}
         />
       </CCardBody>
     </div>
-    
-  )
-}
+  );
+};
 
-export default DemoTable
+export default DemoTable;

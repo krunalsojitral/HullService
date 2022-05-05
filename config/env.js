@@ -83,7 +83,7 @@ if (ip.address() == "172.31.15.131") {
 } else {
   module.exports = {
     PROJECT_NAME: "HullService",
-    APP_URL: "http://localhost:6161/",
+    APP_URL: "http://localhost:4200/",
     ADMIN_APP_URL: "http://localhost:6262/",
     HASH_APP_URL: "http://localhost:6161/",
     USER_LIVE_URL: "http://localhost:6161",

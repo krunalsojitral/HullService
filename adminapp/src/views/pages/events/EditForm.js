@@ -1,6 +1,6 @@
-import React, { useState, useRef, ref } from 'react';
+import React, { useState, useRef, ref } from "react";
 import { Editor } from "@tinymce/tinymce-react";
-import ReactDatePicker from 'react-datepicker';
+import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {
   CCard,
@@ -8,6 +8,7 @@ import {
   CCol,
   CFormGroup,
   CInput,
+  CButton,
   CLabel,
   CRow,
   CTabs,
@@ -16,33 +17,40 @@ import {
   CCardHeader,
   CNavItem,
   CNavLink,
-  CNav
-} from '@coreui/react'
+  CNav,
+} from "@coreui/react";
+
+
+
 //import { MultiSelect } from "react-multi-select-component";
-import '../TextEditors.scss'
+import "../TextEditors.scss";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { useHistory } from "react-router-dom";
-import api_url from './../../Apiurl';
+import api_url from "./../../Apiurl";
 import axios from "axios";
 import Swal from "sweetalert2";
-import $ from 'jquery';
-import usePlacesAutocomplete, { getGeocode, getLatLng, } from "use-places-autocomplete";
-import { setTimeout } from 'core-js/web';
-import TimezoneSelect from 'react-timezone-select'
+import $ from "jquery";
+import usePlacesAutocomplete, {
+  getGeocode,
+  getLatLng,
+} from "use-places-autocomplete";
+import { setTimeout } from "core-js/web";
+import TimezoneSelect from "react-timezone-select";
 import NestedArray from "./EditnestedFieldArray";
-import EventSubscribtionDemoTable from './EventSubscribtionDemoTable'
+import "./EditForm.css";
 
 const AddEditForm = ({ match }) => {
-  const [active, setActive] = useState(0)
+  const [active, setActive] = useState(0);
 
-  const [city, setCity] = React.useState('');
-  const [cityError, setCityError] = React.useState('');
-  const [latitude, setLatitude] = React.useState('');
-  const [longitude, setLongitude] = React.useState('');
-  const [country, setCountry] = React.useState('');
-  // const [selectedTimezone, setSelectedTimezone] = useState({})
+  const [city, setCity] = React.useState("");
+  const [cityError, setCityError] = React.useState("");
+  const [latitude, setLatitude] = React.useState("");
+  const [longitude, setLongitude] = React.useState("");
+  const [country, setCountry] = React.useState("");
   const [timezoneList, setTimezoneList] = React.useState([]);
-  const [sessionCity, setSessionCity] = React.useState('');
+  const [cohostlist, setCohostlist] = React.useState([]);
+  const [cohostLoop, setCohostLoop] = React.useState();
+  const [sessionCity, setSessionCity] = React.useState("");
 
   let history = useHistory();
   const {
@@ -62,7 +70,7 @@ const AddEditForm = ({ match }) => {
       sessionURL: [{ name: "default Value" }],
       videoURL: [{ name: "default Value" }],
       webPageUrl: [{ name: "default Value" }],
-    }
+    },
   });
 
   const purchase_type_selected = watch("purchase_type");
@@ -70,39 +78,34 @@ const AddEditForm = ({ match }) => {
   const no_of_sessions_selected = watch("no_of_sessions");
   const no_of_group_selected = watch("no_of_group");
   const session_purchase_type_selected = watch("session_purchase_type");
-  const session_type_selected = watch("session_type"); 
-
+  const session_type_selected = watch("session_type");
   const [groupSessionData, setGroupSessionData] = useState([]);
-
   const [eventId, setEventId] = React.useState(0);
   const [setectimage, setSetectimage] = React.useState(0);
   const [selectedFile, setSelectedFile] = useState();
-
   const [selectSpeakerImage, setSelectSpeakerImage] = React.useState(0);
   const [selectedSpeakerFile, setSelectedSpeakerFile] = useState();
   const [showReflect, setShowReflect] = React.useState(0);
-
-  // const [selectSessionimage, setSelectSessionimage] = React.useState(0);
-  // const [selectedSessionFile, setSelectedSessionFile] = useState();
-  
-
+  const [selectSessionimage, setSelectSessionimage] = React.useState(0);
+  const [selectedSessionFile, setSelectedSessionFile] = useState();
   const [contentEditor, setContentEditor] = useState();
   const [displayImage, setDisplayImage] = React.useState([]);
   const [deleteresources, setDeleteresources] = React.useState([]);
+
   const handleEditorChange = (content, editor) => {
     setContentEditor(content);
-  }
+  };
 
-  // const changeSessionImageFileHandler = (event) => {
-  //   if (event.target.files && event.target.files[0]) {
-  //     var reader = new FileReader();
-  //     reader.onload = (event) => {
-  //       setSelectSessionimage(event.target.result);
-  //     };
-  //     reader.readAsDataURL(event.target.files[0]);
-  //     setSelectedSessionFile(event.target.files[0]);
-  //   }
-  // };  
+  const changeSessionImageFileHandler = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      var reader = new FileReader();
+      reader.onload = (event) => {
+        setSelectSessionimage(event.target.result);
+      };
+      reader.readAsDataURL(event.target.files[0]);
+      setSelectedSessionFile(event.target.files[0]);
+    }
+  };
 
   const changeFileHandler = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -127,39 +130,67 @@ const AddEditForm = ({ match }) => {
   };
 
   //const initialText = ``;
-  const { fields: session, append: sessionAppend, remove: sessionRemove } = useFieldArray({
+  const {
+    fields: session,
+    append: sessionAppend,
+    remove: sessionRemove,
+  } = useFieldArray({
     control,
-    name: 'sessionStartTime',
-    name: 'sessionEndTime',
-    name: 'sessionNoOfParticipate',
-    name: 'sessionTimezone',
-    nested: [{ name: "nested" }]
+    name: "sessionStartTime",
+    name: "sessionEndTime",
+    name: "sessionNoOfParticipate",
+    name: "sessionTimezone",
+    nested: [{ name: "nested" }],
   });
 
-  const { fields: video, append: videoAppend, remove: videoRemove } = useFieldArray({
+  const {
+    fields: video,
+    append: videoAppend,
+    remove: videoRemove,
+  } = useFieldArray({
     control,
-    name: 'videoURL'
+    name: "videoURL",
   });
 
-  const { fields: webPage, append: webPageAppend, remove: webPageRemove } = useFieldArray({
+  const {
+    fields: webPage,
+    append: webPageAppend,
+    remove: webPageRemove,
+  } = useFieldArray({
     control,
-    name: 'webPageUrl'
+    name: "webPageUrl",
   });
 
-  const [file, setFile] = useState([{ type: '', name: '', file: [] }]);
+  const [file, setFile] = useState([{ type: "", name: "", file: [] }]);
   const [finalFile, setFinalFile] = useState([]);
+  const [purchaseData, setPurchaseData] = useState([]);
+  const [emailData, setEmailData] = useState([]);
+  const [eData, setEData] = useState([]);
 
   function uploadSingleFile(e) {
-    setFinalFile([...finalFile, (e.target.files[0])]);
-    var type = ''
+    setFinalFile([...finalFile, e.target.files[0]]);
+    var type = "";
     var ext = e.target.files[0].type;
-    var arrayExtensions = ['image/jpg', 'image/jpeg', 'image/png', 'image/bmp', 'image/gif'];
+    var arrayExtensions = [
+      "image/jpg",
+      "image/jpeg",
+      "image/png",
+      "image/bmp",
+      "image/gif",
+    ];
     if (arrayExtensions.lastIndexOf(ext.toLowerCase()) == -1) {
-      type = 'doc';
+      type = "doc";
     } else {
-      type = 'image';
+      type = "image";
     }
-    setFile([...file, { type: type, name: e.target.files[0].name, file: URL.createObjectURL(e.target.files[0]) }]);
+    setFile([
+      ...file,
+      {
+        type: type,
+        name: e.target.files[0].name,
+        file: URL.createObjectURL(e.target.files[0]),
+      },
+    ]);
   }
 
   function upload(e) {
@@ -181,22 +212,28 @@ const AddEditForm = ({ match }) => {
       } = suggestion;
 
       return (
-        <li className="city_suggestion" key={place_id} onClick={handleSelect(suggestion)}>
-          <p> <strong>{main_text}</strong>  {secondary_text}</p>
+        <li
+          className="city_suggestion"
+          key={place_id}
+          onClick={handleSelect(suggestion)}
+        >
+          <p>
+            {" "}
+            <strong>{main_text}</strong> {secondary_text}
+          </p>
         </li>
       );
     });
 
   const handleInput = (e) => {
-
     if (!e.target.value) {
       setValue(e.target.value);
       setCity(e.target.value);
-      setCityError('City is required.');
+      setCityError("City is required.");
     } else {
       setValue(e.target.value);
       setCity(e.target.value);
-      setCityError('');
+      setCityError("");
     }
   };
 
@@ -220,74 +257,81 @@ const AddEditForm = ({ match }) => {
 
   const handleSelect =
     ({ description }) =>
-      () => {
-        // When user selects a place, we can replace the keyword without request data from API
-        // by setting the second parameter to "false"    
+    () => {
+      setValue(description, false);
+      setCity(description);
+      clearSuggestions();
 
-        setValue(description, false);
-        setCity(description);
-        clearSuggestions();
-
-
-        // Get latitude and longitude via utility functions
-        getGeocode({ address: description })
-          .then((results) => {
-
-            const address_components = results[0].address_components;
-            var filtered_array = address_components.filter(function (address_component) {
-              return address_component.types.includes("country");
-            });
-            var country = filtered_array.length ? filtered_array[0].long_name : "";
-            if (country) { setCountry(country); }
-            return getLatLng(results[0])
-
-          })
-          .then(({ lat, lng }) => {
-            setLatitude(lat)
-            setLongitude(lng)
-          })
-          .catch((error) => {
-            setLatitude('');
-            setLongitude('');
-            setCountry('');
-            console.log("Error: ", error);
+      // Get latitude and longitude via utility functions
+      getGeocode({ address: description })
+        .then((results) => {
+          const address_components = results[0].address_components;
+          var filtered_array = address_components.filter(function (
+            address_component
+          ) {
+            return address_component.types.includes("country");
           });
-      };
-
-  
-
+          var country = filtered_array.length
+            ? filtered_array[0].long_name
+            : "";
+          if (country) {
+            setCountry(country);
+          }
+          return getLatLng(results[0]);
+        })
+        .then(({ lat, lng }) => {
+          setLatitude(lat);
+          setLongitude(lng);
+        })
+        .catch((error) => {
+          setLatitude("");
+          setLongitude("");
+          setCountry("");
+          console.log("Error: ", error);
+        });
+    };
 
   React.useEffect(() => {
+    axios
+      .get(api_url + "/common/timezone-list", {})
+      .then((result) => {
+        if (result.data.status) {
+          setTimezoneList(result.data.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
-    axios.get(api_url + "/common/timezone-list", {}).then((result) => {
-      if (result.data.status) {
-        setTimezoneList(result.data.data);
-      }
-    }).catch((err) => { console.log(err); });
+    getPurchaseData();
+    getEmailData();
 
     if (match.params.id) {
-      setEventId(match.params.id)
-      axios.post(api_url + "/event/getEventDataById", { event_id: match.params.id }, {})
-        .then((result) => {
+      setEventId(match.params.id);
+      axios
+        .post(
+          api_url + "/event/getEventDataById",
+          { event_id: match.params.id },
+          {}
+        )
+        .then(async (result) => {
           if (result.data.status) {
-
-            
             var eventdata = result.data.response.data;
-            console.log(eventdata.start_date);
             setFormValue("title", eventdata.title);
-            $("#start_date").val(eventdata.start_date)
-            $("#end_date").val(eventdata.end_date)
-            setFormValue("start_date", new Date(Date.parse(eventdata.start_date)));
+            $("#start_date").val(eventdata.start_date);
+            $("#end_date").val(eventdata.end_date);
+            setFormValue(
+              "start_date",
+              new Date(Date.parse(eventdata.start_date))
+            );
             setFormValue("end_date", new Date(Date.parse(eventdata.end_date)));
-            // setFormValue("start_time", eventdata.start_time);
-            // setFormValue("end_time", eventdata.end_time);
             setFormValue("speaker_name", eventdata.speaker_name);
             setFormValue("about_speaker", eventdata.about_speaker);
             setContentEditor(eventdata.description);
-            setCity(eventdata.location)
-            setValue(eventdata.location)
+            setCity(eventdata.location);
+            setValue(eventdata.location);
             setSetectimage(eventdata.image);
-            setSelectSpeakerImage(eventdata.speaker_image)   
+            setSelectSpeakerImage(eventdata.speaker_image);
             setFormValue("purchase_type", eventdata.purchase_type);
             setFormValue("cost", eventdata.cost);
             setFormValue("event_type", eventdata.event_type);
@@ -299,83 +343,63 @@ const AddEditForm = ({ match }) => {
             setFormValue("session_type", eventdata.session_type);
             setFormValue("session_location", eventdata.session_location);
             setFormValue("session_image", eventdata.session_image);
-            setFormValue("session_purchase_type", eventdata.session_purchase_type);
+            setFormValue(
+              "session_purchase_type",
+              eventdata.session_purchase_type
+            );
             setFormValue("session_cost", eventdata.session_cost);
-
-            setGroupSessionData(eventdata.group_session)
-
-            // if (eventdata.timezone) {
-            //   setSelectedTimezone(JSON.parse(eventdata.timezone))
-            // }
-
-
-            // var sessionTitle = [{ "name": "default Value", "value": "Group Session 1" }, { "value": "Group Session 2" }];
-            // var sessionDescription = [{ "name": "default Value", "value": "Group Description 1" }, { "value": "Group Description 2" }];
-            // var sessionURL = [{ "name": "default Value", "value": "Group URL 1" }, { "value": "Group URL 2" }];
-            // var videoURL = [{ "name": "default Value", "value": "Url 1 " }, { "value": "Url 2 " }];
-            // var webPageUrl = [{ "name": "default Value", "value": "Web Page URL 1" }, { "value": "Web Page URL 2" }];
-
-            // setTimeout(() => {
-            //   sessionTitle.forEach((item, index) => {
-            //     setValue(`sessionTitle.${index}.value`, item.value);
-            //   });
-            //   sessionDescription.forEach((item, index) => {
-            //     setValue(`sessionDescription.${index}.value`, item.value);
-            //   });
-            //   sessionURL.forEach((item, index) => {
-            //     setValue(`sessionURL.${index}.value`, item.value);
-            //   });
-            //   videoURL.forEach((item, index) => {
-            //     setValue(`videoURL.${index}.value`, item.value);
-            //   });
-            //   webPageUrl.forEach((item, index) => {
-            //     setValue(`webPageUrl.${index}.value`, item.value);
-            //   });
-            // }, 500);
-
-            // videoURL.forEach((item, index) => {
-            //   if (index > 0) {
-            //     videoAppend({})
-            //   }
-            // });
-
-            // webPageUrl.forEach((item, index) => {
-            //   if (index > 0) {
-            //     webPageAppend({})
-            //   }
-            // });
+            setCohostlist(eventdata.cohost);
+            setCohostLoop(eventdata.cohost.length);
+            for (var i = 0; i < (await eventdata.cohost.length); i++) {
+              console.log(i);
+              console.log(eventdata.cohost[i]?.cohost_name);
+              setFormValue(
+                `co_host_speaker_${i}`,
+                eventdata.cohost[i]?.cohost_name
+              );
+              setFormValue(
+                `co_host_email_${i}`,
+                eventdata.cohost[i]?.cohost_email
+              );
+            }
 
             if (eventdata.group_session.length > 0) {
-              setShowReflect(1)
+              setShowReflect(1);
               var session_start_time = [];
               var session_end_time = [];
               var session_timezone = [];
               var session_no_of_participate = [];
               eventdata.group_session.forEach((item, index) => {
-               // $("#start_time_" + index).val(item.session_start_time)
-               // $("#end_date").val(eventdata.end_date)
-                session_start_time.push({ "value": item.session_start_time })
-                session_end_time.push({ "value": item.session_end_time })
-                session_timezone.push({ "value": item.session_timezone })
-                session_no_of_participate.push({ "value": item.session_no_of_participate })
+                // $("#start_time_" + index).val(item.session_start_time)
+                // $("#end_date").val(eventdata.end_date)
+                console.log(item.session_start_time);
+
+                session_start_time.push({ value: item.session_start_time });
+                session_end_time.push({ value: item.session_end_time });
+                session_timezone.push({ value: item.session_timezone });
+                session_no_of_participate.push({
+                  value: item.session_no_of_participate,
+                });
               });
 
-              if ((session_start_time.length > 0) || (session_end_time.length > 0) || (session_timezone.length > 0) || (session_no_of_participate.length > 0)) {
+              if (
+                session_start_time.length > 0 ||
+                session_end_time.length > 0 ||
+                session_timezone.length > 0 ||
+                session_no_of_participate.length > 0
+              ) {
                 session_start_time.forEach((item, index) => {
-                  sessionAppend({})
+                  sessionAppend({});
                 });
                 setTimeout(() => {
-                  session_start_time.forEach((item, index) => {
-                    setFormValue(`sessionStartTime.${index}.value`, new Date(Date.parse(item.value)));
-                  });
-                  session_end_time.forEach((item, index) => {
-                    setFormValue(`sessionEndTime.${index}.value`, new Date(Date.parse(item.value)));
-                  });
                   session_timezone.forEach((item, index) => {
                     setFormValue(`sessionTimezone.${index}.value`, item.value);
                   });
                   session_no_of_participate.forEach((item, index) => {
-                    setFormValue(`sessionNoOfParticipate.${index}.value`, item.value);
+                    setFormValue(
+                      `sessionNoOfParticipate.${index}.value`,
+                      item.value
+                    );
                   });
                 }, 500);
               }
@@ -385,15 +409,15 @@ const AddEditForm = ({ match }) => {
               var videoURL = [];
               eventdata.videoURL.forEach((item, index) => {
                 if (index == 0) {
-                  videoURL.push({ "name": "default Value", "value": item.path })
+                  videoURL.push({ name: "default Value", value: item.path });
                 } else {
-                  videoURL.push({ "value": item.path })
+                  videoURL.push({ value: item.path });
                 }
               });
               if (videoURL.length > 0) {
                 eventdata.videoURL.forEach((item, index) => {
                   if (index > 0) {
-                    videoAppend({})
+                    videoAppend({});
                   }
                 });
                 setTimeout(() => {
@@ -408,15 +432,15 @@ const AddEditForm = ({ match }) => {
               var webPageUrl = [];
               eventdata.webPageUrl.forEach((item, index) => {
                 if (index == 0) {
-                  webPageUrl.push({ "name": "default Value", "value": item.path })
+                  webPageUrl.push({ name: "default Value", value: item.path });
                 } else {
-                  webPageUrl.push({ "value": item.path })
+                  webPageUrl.push({ value: item.path });
                 }
               });
               if (webPageUrl.length > 0) {
                 webPageUrl.forEach((item, index) => {
                   if (index > 0) {
-                    webPageAppend({})
+                    webPageAppend({});
                   }
                 });
                 setTimeout(() => {
@@ -428,25 +452,97 @@ const AddEditForm = ({ match }) => {
             }
 
             if (eventdata.resource.length > 0) {
-              setDisplayImage(eventdata.resource)
+              setDisplayImage(eventdata.resource);
             }
 
             setTimeout(() => {
               clearSuggestions();
             }, 800);
-
           } else {
             Swal.fire("Oops...", result.data.response.msg, "error");
           }
         })
-        .catch((err) => { console.log(err); });
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }, []);
 
+  const CoHostInput = () => {
+    let inputItems = [];
+    for (var i = 0; i < cohostLoop; i++) {
+      inputItems.push(
+        <div
+          style={{
+            border: "2px solid gray",
+            padding: "2%",
+            borderRadius: "10px",
+            margin: "5px",
+          }}
+        >
+          <CButton
+            color="danger"
+            shape="rounded-pill"
+            style={{
+              marginLeft: "91%",
+            }}
+            onClick={() => {
+              setCohostLoop(cohostLoop - 1);
+            }}
+          >
+            X
+          </CButton>
 
+          <CRow>
+            <CCol xs="12">
+              <CFormGroup>
+                <CLabel htmlFor={`co_host_speaker_${i}`}>
+                  Enter Co host Name
+                </CLabel>
+                <Controller
+                  name={`co_host_speaker_${i}`}
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <CInput
+                      type="text"
+                      onChange={onChange}
+                      value={value}
+                      placeholder={`Enter Co host Speaker Name`}
+                    />
+                  )}
+                ></Controller>
+              </CFormGroup>
+            </CCol>
+          </CRow>
+          <CRow>
+            <CCol xs="12">
+              <CFormGroup>
+                <CLabel htmlFor={`co_host_email_${i}`}>
+                  Enter Co host Email
+                </CLabel>
+                <Controller
+                  name={`co_host_email_${i}`}
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <CInput
+                      type="email"
+                      onChange={onChange}
+                      value={value}
+                      placeholder={`Enter Co host email`}
+                    />
+                  )}
+                ></Controller>
+              </CFormGroup>
+            </CCol>
+          </CRow>
+        </div>
+      );
+    }
+    return <div>{inputItems}</div>;
+  };
   const updateInformationAct = (data) => {
-   // data.timezone = selectedTimezone;
-    data.description = contentEditor;    
+    // data.timezone = selectedTimezone;
+    data.description = contentEditor;
     data.event_id = eventId;
     data.deleteresources = deleteresources;
     data.location = city;
@@ -458,9 +554,12 @@ const AddEditForm = ({ match }) => {
     }
 
     if (selectedSpeakerFile) {
-      formData.append("speaker_image", selectedSpeakerFile, selectedSpeakerFile.name);
+      formData.append(
+        "speaker_image",
+        selectedSpeakerFile,
+        selectedSpeakerFile.name
+      );
     }
-
 
     if (finalFile && finalFile.length > 0) {
       for (var i = 0; i < finalFile.length; i++) {
@@ -470,15 +569,19 @@ const AddEditForm = ({ match }) => {
       }
     }
 
-    axios.post(api_url + "/event/updateEventByadmin", formData, {}).then((result) => {
-      if (result.data.status) {
-        Swal.fire("Success!", result.data.response.msg, "success");
-        history.push("/events");
-      } else {
-        Swal.fire("Oops...", result.data.response.msg, "error");
-      }
-    }).catch((err) => { console.log(err); });
-
+    axios
+      .post(api_url + "/event/updateEventByadmin", formData, {})
+      .then((result) => {
+        if (result.data.status) {
+          Swal.fire("Success!", result.data.response.msg, "success");
+          history.push("/events");
+        } else {
+          Swal.fire("Oops...", result.data.response.msg, "error");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const nextTab = async (tab) => {
@@ -490,66 +593,333 @@ const AddEditForm = ({ match }) => {
     } else {
       setActive(tab);
     }
-  }
+  };
 
   const deleteImage = async (event_resource_id) => {
-    setDisplayImage(displayImage.filter((item, index) => item.event_resource_id !== event_resource_id));
-    var image = displayImage.filter((item, index) => item.event_resource_id == event_resource_id);
+    setDisplayImage(
+      displayImage.filter(
+        (item, index) => item.event_resource_id !== event_resource_id
+      )
+    );
+    var image = displayImage.filter(
+      (item, index) => item.event_resource_id == event_resource_id
+    );
     if (deleteresources.length > 0) {
-      setDeleteresources(oldArray => [...oldArray, image]);
+      setDeleteresources((oldArray) => [...oldArray, image]);
     } else {
       setDeleteresources([image]);
     }
-  }
+  };
 
   const addReflectiveSessions = () => {
-
     session.forEach((item, index) => {
       sessionRemove({});
     });
-    setShowReflect(1)
+    setShowReflect(1);
 
-    let arr = Array.apply(null, { length: (no_of_group_selected) }).map(Number.call, Number);
+    let arr = Array.apply(null, { length: no_of_group_selected }).map(
+      Number.call,
+      Number
+    );
     arr.forEach((item, index) => {
       // console.log(item);
       // console.log(session);
-      sessionAppend({})
+      sessionAppend({});
     });
+  };
+
+  const Subnested = (i) => {
+    const arr = [];
+
+    for (var k = 0; k < no_of_sessions_selected; k++) {
+      arr.push(
+        <CCol xs="4" key={k}>
+          <CRow>
+            <CCol xs="10">
+              <CFormGroup>
+                <Controller
+                  name={`time[${i + -1}].nestedArray[${k}].value`}
+                  control={control}
+                  id={"time_" + k}
+                  render={({ field: { onChange, value } }) => (
+                    <ReactDatePicker
+                      className="form-control"
+                      selected={value}
+                      onChange={onChange}
+                      dateFormat="yyyy/MM/dd"
+                      dateFormatCalendar="yyyy/MM/dd"
+                      minDate={new Date()}
+                      maxDate={new Date(2030, 11)}
+                      peekNextMonth
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      isClearable
+                      placeholderText={`Session Date`}
+                    />
+                  )}
+                ></Controller>
+              </CFormGroup>
+            </CCol>
+          </CRow>
+        </CCol>
+      );
+    }
+    return (
+      <CRow key={1}>
+        <CCol xs="12">
+          <CRow>{arr}</CRow>
+        </CCol>
+      </CRow>
+    );
+  };
+
+  const sessionInput = () => {
+    return (
+      <div>
+        <CRow>
+          {session.map((item, index) => (
+            <div key={item.id}>
+              <CCol xs="12">
+                <CRow>
+                  <CLabel htmlFor="title">Group {index + 1} Details :</CLabel>
+                </CRow>
+              </CCol>
+              <br />
+              {Subnested(index + 1)}
+              <CCol xs="12">
+                <CRow>
+                  <CCol xs="2">
+                    <CLabel htmlFor="title">Group StartTime</CLabel>
+                    <CFormGroup>
+                      <Controller
+                        name={`sessionStartTime.${index}.value`}
+                        control={control}
+                        render={({ field: { onChange, value } }) => (
+                          <ReactDatePicker
+                            selected={value}
+                            onChange={onChange}
+                            showTimeSelect
+                            showTimeSelectOnly
+                            timeIntervals={15}
+                            timeCaption="Time"
+                            dateFormat="h:mm aa"
+                            className="form-control"
+                            placeholderText={`Start Time`}
+                          />
+                        )}
+                      ></Controller>
+                    </CFormGroup>
+                  </CCol>
+                  <CCol xs="2">
+                    <CLabel htmlFor="title">Group EndTime</CLabel>
+                    <CFormGroup>
+                      <Controller
+                        name={`sessionEndTime.${index}.value`}
+                        control={control}
+                        render={({ field: { onChange, value } }) => (
+                          <ReactDatePicker
+                            selected={value}
+                            onChange={onChange}
+                            showTimeSelect
+                            showTimeSelectOnly
+                            timeIntervals={15}
+                            timeCaption="Time"
+                            dateFormat="h:mm aa"
+                            className="form-control"
+                            placeholderText={`End Time`}
+                          />
+                        )}
+                      ></Controller>
+                    </CFormGroup>
+                  </CCol>
+
+                  <CCol xs="4">
+                    <CLabel htmlFor="title">
+                      No. of Participant for Group {index + 1}
+                    </CLabel>
+                    <CFormGroup>
+                      <Controller
+                        name={`sessionNoOfParticipate.${index}.value`}
+                        control={control}
+                        defaultValue={item.value}
+                        render={({ field }) => (
+                          <input
+                            type="text"
+                            placeholder={`No. of Participant for Group`}
+                            className="form-control"
+                            {...field}
+                          />
+                        )}
+                      />
+                    </CFormGroup>
+                  </CCol>
+
+                  <CCol xs="4">
+                    <CFormGroup>
+                      <CLabel htmlFor="password">Select timezone</CLabel>
+                      <Controller
+                        name={`sessionTimezone.${index}.value`}
+                        control={control}
+                        rules={{ required: true }}
+                        render={({ field: { onChange, value } }) => (
+                          <select
+                            className="form-control"
+                            onChange={onChange}
+                            value={value}
+                          >
+                            <option key="0" value="">
+                              select value
+                            </option>
+                            {timezoneList.map((item) => (
+                              <option key={item.value} value={item.value}>
+                                {item.label}
+                              </option>
+                            ))}
+                          </select>
+                        )}
+                      ></Controller>
+                    </CFormGroup>
+                  </CCol>
+                </CRow>
+              </CCol>
+              <hr />
+            </div>
+          ))}
+        </CRow>
+      </div>
+    );
+  };
+
+  const getPurchaseData = () => {
+    axios
+      .get(api_url + "/event/listEventPurchace", {})
+      .then((result) => {
+        if (result.data.status) {
+          var data = [];
+          //match.params.id
+          setPurchaseData([]);
+          result.data.response.data.map((item, index) => {
+            // alert(match.params.id)
+            if (item.event_id+"" === match.params.id) {
+              data.push(item);
+            }
+          });
+          console.log(data);
+          setPurchaseData(data);
+
+          console.log("groupedData");
+          var data1 = groupArrayOfObjects(data, "user_email");
+          var dd = [];
+          const propertyNames = Object.values(data1);
+          console.log(propertyNames);
+          console.log(JSON.stringify(propertyNames));
+          setPurchaseData(propertyNames);
+        } else {
+          Swal.fire("Oops...", result.data.response.msg, "error");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  function groupArrayOfObjects(list, key) {
+    return list.reduce(function (rv, x) {
+      (rv[x[key]] = rv[x[key]] || []).push(x);
+      return rv;
+    }, {});
+  }
+
+  const getEmailData = () => {
+    axios
+      .get(api_url + "/event/listUserEmail", {})
+      .then((result) => {
+        if (result.data.status) {
+          var data = result.data.response.data;
+          setEmailData(data);
+          //  var d = emailData.find( (data) => data.email === "badrinr89@gmail.com")
+          //  console.log("email")
+          //  console.log(d != null)
+        } else {
+          Swal.fire("Oops...", result.data.response.msg, "error");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const email = data =>{
+    var loopvalue = "";
+    for(let i = 0;i<data.length;i++){
+      loopvalue = data[i].user_email
+    }
+  return loopvalue
+  }
+
+  const date = data =>{
+    var loopvalue;
+    for(let i = 0;i<data.length;i++){
+      loopvalue = data[i].event_purchase_date
+    }
+    return loopvalue
+  }
+  
+  const event = data =>{
+    var loopvalue = "x";
+    for(let i = 0;i<data.length;i++){
+      if (data[i].event_type === "active") {
+        loopvalue = "✓"
+      }
+    }
+    return loopvalue
+  }
+
+  const reflective = data =>{
+    var loopvalue = "x";
+    for(let i = 0;i<data.length;i++){
+      if (data[i].event_type === "reflective") {
+        loopvalue = "✓"
+      }
+    }
+    return loopvalue
   }
 
   return (
     <CRow>
       <CCol xs="12" md="12" className="mb-4">
         <CCard>
-          <CCardHeader>
-            Edit Event
-          </CCardHeader>
+          <CCardHeader>Edit Event</CCardHeader>
           <CCardBody>
             <form onSubmit={handleSubmit(updateInformationAct)}>
-              <CTabs activeTab={active} onActiveTabChange={idx => setActive(idx)}>
+              <CTabs
+                activeTab={active}
+                onActiveTabChange={(idx) => setActive(idx)}
+              >
                 <CNav variant="tabs">
                   <CNavItem>
                     <CNavLink>
                       Event
-                      {active === 0 && ' '}
+                      {active === 0 && " "}
                     </CNavLink>
                   </CNavItem>
                   <CNavItem>
                     <CNavLink>
                       Group Session
-                      {active === 1 && ' '}
+                      {active === 1 && " "}
                     </CNavLink>
                   </CNavItem>
                   <CNavItem>
                     <CNavLink>
                       Resources
-                      {active === 2 && ' '}
+                      {active === 2 && " "}
                     </CNavLink>
                   </CNavItem>
                   <CNavItem>
                     <CNavLink>
                       Subscribe user
-                      {active === 3 && ' '}
+                      {active === 3 && " "}
                     </CNavLink>
                   </CNavItem>
                 </CNav>
@@ -560,7 +930,9 @@ const AddEditForm = ({ match }) => {
                       <CRow>
                         <CCol xs="12">
                           <CFormGroup>
-                            <CLabel htmlFor="title">Title <span className="label-validation">*</span></CLabel>
+                            <CLabel htmlFor="title">
+                              Title <span className="label-validation">*</span>
+                            </CLabel>
                             <Controller
                               name={"title"}
                               control={control}
@@ -576,7 +948,9 @@ const AddEditForm = ({ match }) => {
                             ></Controller>
                           </CFormGroup>
                           {errors.title && errors.title.type === "required" && (
-                            <p style={{ color: "red", fontSize: "12px" }}>Title is required.</p>
+                            <p style={{ color: "red", fontSize: "12px" }}>
+                              Title is required.
+                            </p>
                           )}
                         </CCol>
                       </CRow>
@@ -584,7 +958,10 @@ const AddEditForm = ({ match }) => {
                       <CRow>
                         <CCol xs="6">
                           <CFormGroup>
-                            <CLabel htmlFor="title">Start Date <span className="label-validation">*</span></CLabel>
+                            <CLabel htmlFor="title">
+                              Start Date{" "}
+                              <span className="label-validation">*</span>
+                            </CLabel>
                             <Controller
                               name={"start_date"}
                               control={control}
@@ -609,13 +986,19 @@ const AddEditForm = ({ match }) => {
                               )}
                             ></Controller>
                           </CFormGroup>
-                          {errors.start_date && errors.start_date.type === "required" && (
-                            <p style={{ color: "red", fontSize: "12px" }}>Start date is required.</p>
-                          )}
+                          {errors.start_date &&
+                            errors.start_date.type === "required" && (
+                              <p style={{ color: "red", fontSize: "12px" }}>
+                                Start date is required.
+                              </p>
+                            )}
                         </CCol>
                         <CCol xs="6">
                           <CFormGroup>
-                            <CLabel htmlFor="title">End Date <span className="label-validation">*</span></CLabel>
+                            <CLabel htmlFor="title">
+                              End Date{" "}
+                              <span className="label-validation">*</span>
+                            </CLabel>
                             <Controller
                               name={"end_date"}
                               control={control}
@@ -639,55 +1022,14 @@ const AddEditForm = ({ match }) => {
                               )}
                             ></Controller>
                           </CFormGroup>
-                          {errors.end_date && errors.end_date.type === "required" && (
-                            <p style={{ color: "red", fontSize: "12px" }}>End date is required.</p>
-                          )}
+                          {errors.end_date &&
+                            errors.end_date.type === "required" && (
+                              <p style={{ color: "red", fontSize: "12px" }}>
+                                End date is required.
+                              </p>
+                            )}
                         </CCol>
                       </CRow>
-
-                      {/* <CRow>
-                       
-                       
-                        <CCol xs="6">
-                          <CFormGroup>
-                            <CLabel htmlFor="title">End Time <span className="label-validation">*</span></CLabel>
-                            <Controller
-                              name={"end_time"}
-                              control={control}
-                            //  rules={{ required: true }}
-                              render={({ field: { onChange, value } }) => (
-                                <ReactDatePicker
-                                  selected={value}
-                                  onChange={onChange}
-                                  showTimeSelect
-                                  showTimeSelectOnly
-                                  timeIntervals={15}
-                                  timeCaption="Time"
-                                  dateFormat="h:mm aa"
-                                  className="form-control"
-                                />
-                              )}
-                            ></Controller>
-                          </CFormGroup>
-                          {errors.end_time && errors.end_time.type === "required" && (
-                            <p style={{ color: "red", fontSize: "12px" }}>End time is required.</p>
-                          )}
-                        </CCol>
-                      </CRow> */}
-
-                      {/* <CRow>
-                        <CCol xs="12">
-                          <CFormGroup>
-                            <CLabel htmlFor="password">Select timezone</CLabel>
-                            <TimezoneSelect
-                              value={selectedTimezone}
-                              onChange={setSelectedTimezone}
-                            />
-                          </CFormGroup>
-                        </CCol>
-                      </CRow> */}
-
-
                       <CRow>
                         <CCol xs="12">
                           <CFormGroup>
@@ -697,17 +1039,17 @@ const AddEditForm = ({ match }) => {
                               cloudChannel="dev"
                               init={{
                                 selector: "textarea",
-                                plugins: "link image textpattern lists textcolor colorpicker",
-                                toolbar: "undo redo | styleselect | forecolor | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | link image | code forecolor backcolor",
+                                plugins:
+                                  "link image textpattern lists textcolor colorpicker",
+                                toolbar:
+                                  "undo redo | styleselect | forecolor | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | link image | code forecolor backcolor",
                               }}
                               value={contentEditor}
                               onEditorChange={handleEditorChange}
-
                             />
                           </CFormGroup>
                         </CCol>
                       </CRow>
-
 
                       <CRow>
                         <CCol xs="12">
@@ -741,8 +1083,20 @@ const AddEditForm = ({ match }) => {
                               onChange={changeSpeakerFileHandler}
                             />
                             <span>
-                              {!selectSpeakerImage && <img style={{ width: "100px" }} alt="avatar" src="/company-logo.png" />}
-                              {selectSpeakerImage && <img style={{ width: "100px" }} src={selectSpeakerImage} alt="user-image" />}
+                              {!selectSpeakerImage && (
+                                <img
+                                  style={{ width: "100px" }}
+                                  alt="avatar"
+                                  src="/company-logo.png"
+                                />
+                              )}
+                              {selectSpeakerImage && (
+                                <img
+                                  style={{ width: "100px" }}
+                                  src={selectSpeakerImage}
+                                  alt="user-image"
+                                />
+                              )}
                             </span>
                           </CFormGroup>
                         </CCol>
@@ -751,12 +1105,16 @@ const AddEditForm = ({ match }) => {
                       <CRow>
                         <CCol xs="12">
                           <CFormGroup>
-                            <CLabel className="forum-feedback"><b>About the speaker : </b> &nbsp;</CLabel>
+                            <CLabel className="forum-feedback">
+                              <b>About the speaker : </b> &nbsp;
+                            </CLabel>
                             <Controller
                               name={"about_speaker"}
                               control={control}
                               render={({ field: { onChange, value } }) => (
-                                <textarea rows="6" cols="45"
+                                <textarea
+                                  rows="6"
+                                  cols="45"
                                   type="text"
                                   onChange={onChange}
                                   value={value}
@@ -768,31 +1126,71 @@ const AddEditForm = ({ match }) => {
                           </CFormGroup>
                         </CCol>
                       </CRow>
+                      {/* Co Host */}
 
+                      <div
+                        style={{
+                          borderColor: "gray",
+                          padding: "3%",
+                          borderRadius: "20%",
+                        }}
+                      >
+                        <CButton
+                          color="info"
+                          style={{
+                            marginLeft: "91%",
+                          }}
+                          onClick={() => {
+                            console.log(cohostLoop + 1);
+                            setCohostLoop(cohostLoop + 1);
+                          }}
+                          shape="rounded-pill"
+                        >
+                          +
+                        </CButton>
+                        {CoHostInput()}
+                      </div>
+                      {/* Co HOST */}
                       <CRow>
                         <CCol xs="12">
                           <CFormGroup>
-                            <CLabel htmlFor="role">Online & Offline <span className="label-validation">*</span></CLabel>
+                            <CLabel htmlFor="role">
+                              Online & Offline{" "}
+                              <span className="label-validation">*</span>
+                            </CLabel>
                             <Controller
                               name="event_type"
                               control={control}
                               rules={{ required: true }}
                               render={({ field: { onChange, value } }) => (
-                                <select className="form-control" onChange={onChange} value={value}>
-                                  <option key="0" value="">select value</option>
-                                  <option key="1" value="online">Online</option>
-                                  <option key="2" value="offline">Offline</option>
+                                <select
+                                  className="form-control"
+                                  onChange={onChange}
+                                  value={value}
+                                >
+                                  <option key="0" value="">
+                                    select value
+                                  </option>
+                                  <option key="1" value="online">
+                                    Online
+                                  </option>
+                                  <option key="2" value="offline">
+                                    Offline
+                                  </option>
                                 </select>
                               )}
                             ></Controller>
                           </CFormGroup>
-                          {errors.event_type && errors.event_type.type === "required" && (
-                            <p style={{ color: "red", fontSize: "12px" }}>Type is required.</p>
-                          )}
+                          {errors.event_type &&
+                            errors.event_type.type === "required" && (
+                              <p style={{ color: "red", fontSize: "12px" }}>
+                                Type is required.
+                              </p>
+                            )}
                         </CCol>
                       </CRow>
 
-                      {event_type_selected === 'offline' &&
+                      {event_type_selected === "offline" && (
                         <CRow>
                           <CCol xs="12">
                             <CFormGroup>
@@ -805,12 +1203,19 @@ const AddEditForm = ({ match }) => {
                                   placeholder="Address *"
                                   className="form-control input"
                                 />
-                                {status === "OK" && <ul className="suggestion">{renderSuggestions()}</ul>}
-                                {cityError && <small className="error">{cityError}</small>}
+                                {status === "OK" && (
+                                  <ul className="suggestion">
+                                    {renderSuggestions()}
+                                  </ul>
+                                )}
+                                {cityError && (
+                                  <small className="error">{cityError}</small>
+                                )}
                               </div>
                             </CFormGroup>
                           </CCol>
-                        </CRow>}
+                        </CRow>
+                      )}
 
                       {/* {event_type_selected === 'online' &&
                         <CRow>
@@ -837,7 +1242,6 @@ const AddEditForm = ({ match }) => {
                           </CCol>
                         </CRow>} */}
 
-
                       {/* <CRow>
                         <CCol xs="12">
                           <CFormGroup>
@@ -857,8 +1261,6 @@ const AddEditForm = ({ match }) => {
                         </CCol>
                       </CRow> */}
 
-
-
                       <CRow>
                         <CCol xs="12">
                           <CFormGroup>
@@ -871,41 +1273,70 @@ const AddEditForm = ({ match }) => {
                               onChange={changeFileHandler}
                             />
                             <span>
-                              {!setectimage && <img style={{ width: "100px" }} alt="avatar" src="company-logo.png" />}
-                              {setectimage && <img style={{ width: "100px" }} src={setectimage} alt="user-image" />}
+                              {!setectimage && (
+                                <img
+                                  style={{ width: "100px" }}
+                                  alt="avatar"
+                                  src="company-logo.png"
+                                />
+                              )}
+                              {setectimage && (
+                                <img
+                                  style={{ width: "100px" }}
+                                  src={setectimage}
+                                  alt="user-image"
+                                />
+                              )}
                             </span>
                           </CFormGroup>
                         </CCol>
                       </CRow>
-
                       <CRow>
                         <CCol xs="12">
                           <CFormGroup>
-                            <CLabel htmlFor="role">Paid / Unpaid <span className="label-validation">*</span></CLabel>
+                            <CLabel htmlFor="role">
+                              Paid / Unpaid{" "}
+                              <span className="label-validation">*</span>
+                            </CLabel>
                             <Controller
                               name="purchase_type"
                               control={control}
                               rules={{ required: true }}
                               render={({ field: { onChange, value } }) => (
-                                <select className="form-control" onChange={onChange} value={value}>
-                                  <option key="0" value="">select value</option>
-                                  <option key="1" value="paid">Paid</option>
-                                  <option key="2" value="unpaid">Unpaid</option>
+                                <select
+                                  className="form-control"
+                                  onChange={onChange}
+                                  value={value}
+                                >
+                                  <option key="0" value="">
+                                    select value
+                                  </option>
+                                  <option key="1" value="paid">
+                                    Paid
+                                  </option>
+                                  <option key="2" value="unpaid">
+                                    Unpaid
+                                  </option>
                                 </select>
                               )}
                             ></Controller>
                           </CFormGroup>
-                          {errors.purchase_type && errors.purchase_type.type === "required" && (
-                            <p style={{ color: "red", fontSize: "12px" }}>Type is required.</p>
-                          )}
+                          {errors.purchase_type &&
+                            errors.purchase_type.type === "required" && (
+                              <p style={{ color: "red", fontSize: "12px" }}>
+                                Type is required.
+                              </p>
+                            )}
                         </CCol>
                       </CRow>
 
-                      {purchase_type_selected === 'paid' &&
+                      {purchase_type_selected === "paid" && (
                         <CRow>
                           <CCol xs="12">
                             <CFormGroup>
-                              <CLabel htmlFor="cost">Cost <span className="label-validation">*</span></CLabel>
+                              <CLabel htmlFor="cost">
+                                Cost <span className="label-validation">*</span>
+                              </CLabel>
                               <Controller
                                 name={"cost"}
                                 control={control}
@@ -921,16 +1352,23 @@ const AddEditForm = ({ match }) => {
                               ></Controller>
                             </CFormGroup>
                             {errors.cost && errors.cost.type === "required" && (
-                              <p style={{ color: "red", fontSize: "12px" }}>Cost is required.</p>
+                              <p style={{ color: "red", fontSize: "12px" }}>
+                                Cost is required.
+                              </p>
                             )}
                           </CCol>
-                        </CRow>}
-
-
+                        </CRow>
+                      )}
 
                       <CRow>
                         <CCol xs="12">
-                          <button className="btn btn-outline-primary" type="button" onClick={() => nextTab(1)}>Next</button>
+                          <button
+                            className="btn btn-outline-primary"
+                            type="button"
+                            onClick={() => nextTab(1)}
+                          >
+                            Next
+                          </button>
                         </CCol>
                       </CRow>
                     </CCol>
@@ -963,12 +1401,16 @@ const AddEditForm = ({ match }) => {
                       <CRow>
                         <CCol xs="12">
                           <CFormGroup>
-                            <CLabel className="forum-feedback">About the Sessions : &nbsp;</CLabel>
+                            <CLabel className="forum-feedback">
+                              About the Sessions : &nbsp;
+                            </CLabel>
                             <Controller
                               name={"session_about"}
                               control={control}
                               render={({ field: { onChange, value } }) => (
-                                <textarea rows="6" cols="45"
+                                <textarea
+                                  rows="6"
+                                  cols="45"
                                   type="text"
                                   onChange={onChange}
                                   value={value}
@@ -984,7 +1426,10 @@ const AddEditForm = ({ match }) => {
                       <CRow>
                         <CCol xs="4">
                           <CFormGroup>
-                            <CLabel htmlFor="title">No of Groups <span className="label-validation">*</span></CLabel>
+                            <CLabel htmlFor="title">
+                              No of Groups{" "}
+                              <span className="label-validation">*</span>
+                            </CLabel>
                             <Controller
                               name={"no_of_group"}
                               control={control}
@@ -999,9 +1444,12 @@ const AddEditForm = ({ match }) => {
                             ></Controller>
                           </CFormGroup>
                         </CCol>
-                        {/* <CCol xs="4">
+                        <CCol xs="4">
                           <CFormGroup>
-                            <CLabel htmlFor="title">No of sessions <span className="label-validation">*</span></CLabel>
+                            <CLabel htmlFor="title">
+                              No of sessions{" "}
+                              <span className="label-validation">*</span>
+                            </CLabel>
                             <Controller
                               name={"no_of_sessions"}
                               control={control}
@@ -1015,130 +1463,19 @@ const AddEditForm = ({ match }) => {
                               )}
                             ></Controller>
                           </CFormGroup>
-                        </CCol> */}
+                        </CCol>
                         <CCol xs="4">
-                          <button type="button" className="btn btn-success mt-4" onClick={() => addReflectiveSessions()}>Submit</button>
+                          <button
+                            type="button"
+                            className="btn btn-success mt-4"
+                            onClick={() => addReflectiveSessions()}
+                          >
+                            Submit
+                          </button>
                         </CCol>
                       </CRow>
 
-
-                      {showReflect == 1 && <div>
-                        
-                        <CRow>
-                          {session.map((item, index) => (
-                            <div key={item.id}>
-                              <CCol xs="12">
-                                <CRow>
-                                  <CLabel htmlFor="title">Group {index + 1} Details :</CLabel>
-                                </CRow>
-                              </CCol>
-                              <br />
-
-                              <NestedArray
-                                nestIndex={index}
-                                editdata={groupSessionData}
-                                {...{ setFormValue, control, register, errors }}
-                              />
-
-                              <CCol xs="12">
-                                <CRow>
-                                  <CCol xs="2">
-                                    <CLabel htmlFor="title">Group StartTime</CLabel>
-                                    <CFormGroup>
-                                      <Controller
-                                        name={`sessionStartTime.${index}.value`}
-                                        control={control}
-                                        id={"start_time_"+index}
-                                        render={({ field: { onChange, value } }) => (
-                                          <ReactDatePicker
-                                            selected={value}
-                                            onChange={onChange}
-                                            showTimeSelect
-                                            showTimeSelectOnly
-                                            timeIntervals={15}
-                                            timeCaption="Time"
-                                            dateFormat="h:mm aa"
-                                            className="form-control"
-                                            placeholderText={`Start Time`}
-                                          />
-                                        )}
-                                      ></Controller>
-                                    </CFormGroup>
-
-                                    {/* <CFormGroup>
-                                      <Controller
-                                        name={`sessionStartTime.${index}.value`}
-                                        control={control}
-                                        defaultValue={item.value}
-                                        render={({ field }) => <input type="text" placeholder={`Title`} className="form-control" {...field} />}
-                                      />
-                                    </CFormGroup> */}
-                                  </CCol>
-
-                                  <CCol xs="2">
-                                    <CLabel htmlFor="title">Group EndTime</CLabel>
-                                    <CFormGroup>
-                                      <Controller
-                                        name={`sessionEndTime.${index}.value`}
-                                        control={control}
-                                        render={({ field: { onChange, value } }) => (
-                                          <ReactDatePicker
-                                            selected={value}
-                                            onChange={onChange}
-                                            showTimeSelect
-                                            showTimeSelectOnly
-                                            timeIntervals={15}
-                                            timeCaption="Time"
-                                            dateFormat="h:mm aa"
-                                            className="form-control"
-                                            placeholderText={`End Time`}
-                                          />
-                                        )}
-                                      ></Controller>
-                                    </CFormGroup>
-                                  </CCol>
-
-                                  <CCol xs="4">
-                                    <CLabel htmlFor="title">No. of Participant for Group {index + 1}</CLabel>
-                                    <CFormGroup>
-                                      <Controller
-                                        name={`sessionNoOfParticipate.${index}.value`}
-                                        control={control}
-                                        defaultValue={item.value}
-                                        render={({ field }) => <input type="text" placeholder={`No. of Participant for Group`} className="form-control" {...field} />}
-                                      />
-                                    </CFormGroup>
-                                  </CCol>
-
-                                  <CCol xs="4">
-                                    <CFormGroup>
-                                      <CLabel htmlFor="password">Select timezone</CLabel>
-                                      <Controller
-                                        name={`sessionTimezone.${index}.value`}
-                                        control={control}
-                                        rules={{ required: true }}
-                                        render={({ field: { onChange, value } }) => (
-                                          <select className="form-control" onChange={onChange} value={value}>
-                                            <option key="0" value="">select value</option>
-                                            {timezoneList.map((item) => (
-                                              <option key={item.value} value={item.value}>
-                                                {item.label}
-                                              </option>
-                                            ))}
-                                          </select>
-                                        )}
-                                      ></Controller>
-                                    </CFormGroup>
-                                  </CCol>
-
-                                </CRow>
-                              </CCol>
-                              <hr />
-                            </div>
-                          ))}
-                        </CRow>
-                      </div>}
-
+                      {sessionInput()}
 
                       <CRow>
                         <CCol xs="12">
@@ -1148,10 +1485,20 @@ const AddEditForm = ({ match }) => {
                               name="session_type"
                               control={control}
                               render={({ field: { onChange, value } }) => (
-                                <select className="form-control" onChange={onChange} value={value}>
-                                  <option key="0" value="">select value</option>
-                                  <option key="1" value="online">Online</option>
-                                  <option key="2" value="offline">Offline</option>
+                                <select
+                                  className="form-control"
+                                  onChange={onChange}
+                                  value={value}
+                                >
+                                  <option key="0" value="">
+                                    select value
+                                  </option>
+                                  <option key="1" value="online">
+                                    Online
+                                  </option>
+                                  <option key="2" value="offline">
+                                    Offline
+                                  </option>
                                 </select>
                               )}
                             ></Controller>
@@ -1159,7 +1506,7 @@ const AddEditForm = ({ match }) => {
                         </CCol>
                       </CRow>
 
-                      {session_type_selected === 'offline' &&
+                      {session_type_selected === "offline" && (
                         <CRow>
                           <CCol xs="12">
                             <CFormGroup>
@@ -1172,14 +1519,21 @@ const AddEditForm = ({ match }) => {
                                   placeholder="Address *"
                                   className="form-control input"
                                 />
-                                {status === "OK" && <ul className="suggestion">{renderSuggestions()}</ul>}
-                                {cityError && <small className="error">{cityError}</small>}
+                                {status === "OK" && (
+                                  <ul className="suggestion">
+                                    {renderSuggestions()}
+                                  </ul>
+                                )}
+                                {cityError && (
+                                  <small className="error">{cityError}</small>
+                                )}
                               </div>
                             </CFormGroup>
                           </CCol>
-                        </CRow>}
+                        </CRow>
+                      )}
 
-                      {/* <CRow>
+                      <CRow>
                         <CCol xs="12">
                           <CFormGroup>
                             <CLabel htmlFor="ccnumber">Sessions Image</CLabel>
@@ -1191,41 +1545,73 @@ const AddEditForm = ({ match }) => {
                               onChange={changeSessionImageFileHandler}
                             />
                             <span>
-                              {!selectSessionimage && <img style={{ width: "100px" }} alt="avatar" src="company-logo.png" />}
-                              {selectSessionimage && <img style={{ width: "100px" }} src={selectSessionimage} alt="user-image" />}
+                              {!selectSessionimage && (
+                                <img
+                                  style={{ width: "100px" }}
+                                  alt="avatar"
+                                  src="company-logo.png"
+                                />
+                              )}
+                              {selectSessionimage && (
+                                <img
+                                  style={{ width: "100px" }}
+                                  src={selectSessionimage}
+                                  alt="user-image"
+                                />
+                              )}
                             </span>
                           </CFormGroup>
                         </CCol>
-                      </CRow> */}
+                      </CRow>
 
                       <CRow>
                         <CCol xs="12">
                           <CFormGroup>
-                            <CLabel htmlFor="role">Paid/Free <span className="label-validation">*</span></CLabel>
+                            <CLabel htmlFor="role">
+                              Paid/Free{" "}
+                              <span className="label-validation">*</span>
+                            </CLabel>
                             <Controller
                               name="session_purchase_type"
                               control={control}
                               rules={{ required: true }}
                               render={({ field: { onChange, value } }) => (
-                                <select className="form-control" onChange={onChange} value={value}>
-                                  <option key="0" value="">select value</option>
-                                  <option key="1" value="paid">Paid</option>
-                                  <option key="2" value="unpaid">Unpaid</option>
+                                <select
+                                  className="form-control"
+                                  onChange={onChange}
+                                  value={value}
+                                >
+                                  <option key="0" value="">
+                                    select value
+                                  </option>
+                                  <option key="1" value="paid">
+                                    Paid
+                                  </option>
+                                  <option key="2" value="unpaid">
+                                    Unpaid
+                                  </option>
                                 </select>
                               )}
                             ></Controller>
                           </CFormGroup>
-                          {errors.session_purchase_type && errors.session_purchase_type.type === "required" && (
-                            <p style={{ color: "red", fontSize: "12px" }}>Type is required.</p>
-                          )}
+                          {errors.session_purchase_type &&
+                            errors.session_purchase_type.type ===
+                              "required" && (
+                              <p style={{ color: "red", fontSize: "12px" }}>
+                                Type is required.
+                              </p>
+                            )}
                         </CCol>
                       </CRow>
 
-                      {session_purchase_type_selected === 'paid' &&
+                      {session_purchase_type_selected === "paid" && (
                         <CRow>
                           <CCol xs="12">
                             <CFormGroup>
-                              <CLabel htmlFor="cost">Price <span className="label-validation">*</span></CLabel>
+                              <CLabel htmlFor="cost">
+                                Price{" "}
+                                <span className="label-validation">*</span>
+                              </CLabel>
                               <Controller
                                 name={"session_cost"}
                                 control={control}
@@ -1240,29 +1626,38 @@ const AddEditForm = ({ match }) => {
                                 )}
                               ></Controller>
                             </CFormGroup>
-                            {errors.session_cost && errors.session_cost.type === "required" && (
-                              <p style={{ color: "red", fontSize: "12px" }}>Cost is required.</p>
-                            )}
+                            {errors.session_cost &&
+                              errors.session_cost.type === "required" && (
+                                <p style={{ color: "red", fontSize: "12px" }}>
+                                  Cost is required.
+                                </p>
+                              )}
                           </CCol>
-                        </CRow>}
-
+                        </CRow>
+                      )}
 
                       <CRow>
                         <CCol xs="12">
-                          <button className="btn btn-outline-primary" type="button" onClick={() => nextTab(2)}>Next</button>
+                          <button
+                            className="btn btn-outline-primary"
+                            type="button"
+                            onClick={() => nextTab(2)}
+                          >
+                            Next
+                          </button>
                         </CCol>
                       </CRow>
                     </CCol>
                   </CTabPane>
 
-
                   <CTabPane>
-
                     <CCol>
                       <br />
                       <CCol xs="12">
                         <CRow>
-                          <CLabel htmlFor="title"><b>Resource</b></CLabel>
+                          <CLabel htmlFor="title">
+                            <b>Resource</b>
+                          </CLabel>
                         </CRow>
                       </CCol>
                       <CRow>
@@ -1270,11 +1665,21 @@ const AddEditForm = ({ match }) => {
                           <CRow>
                             <CCol xs="9">
                               <CFormGroup>
-                                <input type="file" className="form-control" onChange={uploadSingleFile} />
+                                <input
+                                  type="file"
+                                  className="form-control"
+                                  onChange={uploadSingleFile}
+                                />
                               </CFormGroup>
                             </CCol>
                             <CCol xs="3">
-                              <button type="button" className="btn btn-outline-primary btn-block" onClick={upload}>Upload</button>
+                              <button
+                                type="button"
+                                className="btn btn-outline-primary btn-block"
+                                onClick={upload}
+                              >
+                                Upload
+                              </button>
                             </CCol>
                           </CRow>
                         </CCol>
@@ -1284,19 +1689,36 @@ const AddEditForm = ({ match }) => {
                         <CCol xs="12">
                           <CRow>
                             <CCol xs="12">
-
-
                               {displayImage.length > 0 &&
                                 displayImage.map((item, index) => {
                                   return (
                                     <div>
                                       <CRow key={index}>
                                         <CCol xs="4">
-                                          {item.type == 'image' && <img style={{ width: '50px', height: '50px' }} src={item.file} alt="" />}
-                                          {item.type == 'doc' && item.name}
+                                          {item.type == "image" && (
+                                            <img
+                                              style={{
+                                                width: "50px",
+                                                height: "50px",
+                                              }}
+                                              src={item.file}
+                                              alt=""
+                                            />
+                                          )}
+                                          {item.type == "doc" && item.name}
                                         </CCol>
                                         <CCol xs="6">
-                                          <button type="button" className="btn btn-danger" onClick={() => deleteImage(item.event_resource_id)}>delete</button>
+                                          <button
+                                            type="button"
+                                            className="btn btn-danger"
+                                            onClick={() =>
+                                              deleteImage(
+                                                item.event_resource_id
+                                              )
+                                            }
+                                          >
+                                            delete
+                                          </button>
                                         </CCol>
                                       </CRow>
                                       <hr />
@@ -1308,20 +1730,37 @@ const AddEditForm = ({ match }) => {
                                 file.map((item, index) => {
                                   return (
                                     <div>
-                                      {index > 0 &&
+                                      {index > 0 && (
                                         <div>
                                           <CRow key={index}>
                                             <CCol xs="4">
-                                              {item.type == 'image' && <img style={{ width: '50px', height: '50px' }} src={item.file} alt="" />}
-                                              {item.type == 'doc' && item.name}
+                                              {item.type == "image" && (
+                                                <img
+                                                  style={{
+                                                    width: "50px",
+                                                    height: "50px",
+                                                  }}
+                                                  src={item.file}
+                                                  alt=""
+                                                />
+                                              )}
+                                              {item.type == "doc" && item.name}
                                             </CCol>
                                             <CCol xs="6">
-                                              <button type="button" className="btn btn-danger" onClick={() => deleteFile(index, item.name)}>delete</button>
+                                              <button
+                                                type="button"
+                                                className="btn btn-danger"
+                                                onClick={() =>
+                                                  deleteFile(index, item.name)
+                                                }
+                                              >
+                                                delete
+                                              </button>
                                             </CCol>
                                           </CRow>
                                           <hr />
                                         </div>
-                                      }
+                                      )}
                                     </div>
                                   );
                                 })}
@@ -1333,11 +1772,12 @@ const AddEditForm = ({ match }) => {
 
                     <hr />
 
-
                     <CCol>
                       <CCol xs="12">
                         <CRow>
-                          <CLabel htmlFor="title"><b>Video URL</b></CLabel>
+                          <CLabel htmlFor="title">
+                            <b>Video URL</b>
+                          </CLabel>
                         </CRow>
                       </CCol>
                       {video.map((item, index) => (
@@ -1348,7 +1788,9 @@ const AddEditForm = ({ match }) => {
                               <CRow>
                                 <CCol xs="1">
                                   <CRow>
-                                    <CLabel htmlFor="title">Url {index + 1}</CLabel>
+                                    <CLabel htmlFor="title">
+                                      Url {index + 1}
+                                    </CLabel>
                                   </CRow>
                                 </CCol>
                                 <CCol xs="10">
@@ -1357,12 +1799,24 @@ const AddEditForm = ({ match }) => {
                                       name={`videoURL.${index}.value`}
                                       control={control}
                                       defaultValue={item.value}
-                                      render={({ field }) => <input type="text" placeholder={`Video url`} className="form-control" {...field} />}
+                                      render={({ field }) => (
+                                        <input
+                                          type="text"
+                                          placeholder={`Video url`}
+                                          className="form-control"
+                                          {...field}
+                                        />
+                                      )}
                                     />
                                   </CFormGroup>
                                 </CCol>
                                 <CCol xs="1">
-                                  <div className="btn btn-danger" onClick={() => videoRemove(index)}>Delete</div>
+                                  <div
+                                    className="btn btn-danger"
+                                    onClick={() => videoRemove(index)}
+                                  >
+                                    Delete
+                                  </div>
                                 </CCol>
                               </CRow>
                             </CCol>
@@ -1371,7 +1825,13 @@ const AddEditForm = ({ match }) => {
                       ))}
                       <div className="row">
                         <div className="col-md-12 text-right">
-                          <button type="button" className="btn btn-success" onClick={() => videoAppend({ value: "" })}>Add More Video</button>
+                          <button
+                            type="button"
+                            className="btn btn-success"
+                            onClick={() => videoAppend({ value: "" })}
+                          >
+                            Add More Video
+                          </button>
                         </div>
                       </div>
                     </CCol>
@@ -1381,7 +1841,9 @@ const AddEditForm = ({ match }) => {
                     <CCol>
                       <CCol xs="12">
                         <CRow>
-                          <CLabel htmlFor="title"><b>Web Page URL</b></CLabel>
+                          <CLabel htmlFor="title">
+                            <b>Web Page URL</b>
+                          </CLabel>
                         </CRow>
                       </CCol>
                       {webPage.map((item, index) => (
@@ -1392,7 +1854,9 @@ const AddEditForm = ({ match }) => {
                               <CRow>
                                 <CCol xs="1">
                                   <CRow>
-                                    <CLabel htmlFor="title">WebUrl {index + 1}</CLabel>
+                                    <CLabel htmlFor="title">
+                                      WebUrl {index + 1}
+                                    </CLabel>
                                   </CRow>
                                 </CCol>
                                 <CCol xs="10">
@@ -1401,12 +1865,24 @@ const AddEditForm = ({ match }) => {
                                       name={`webPageUrl.${index}.value`}
                                       control={control}
                                       defaultValue={item.value}
-                                      render={({ field }) => <input type="text" placeholder={`web Page url`} className="form-control" {...field} />}
+                                      render={({ field }) => (
+                                        <input
+                                          type="text"
+                                          placeholder={`web Page url`}
+                                          className="form-control"
+                                          {...field}
+                                        />
+                                      )}
                                     />
                                   </CFormGroup>
                                 </CCol>
                                 <CCol xs="1">
-                                  <div className="btn btn-danger" onClick={() => webPageRemove(index)}>Delete</div>
+                                  <div
+                                    className="btn btn-danger"
+                                    onClick={() => webPageRemove(index)}
+                                  >
+                                    Delete
+                                  </div>
                                 </CCol>
                               </CRow>
                             </CCol>
@@ -1415,36 +1891,69 @@ const AddEditForm = ({ match }) => {
                       ))}
                       <div className="row">
                         <div className="col-md-12 text-right">
-                          <button type="button" className="btn btn-success" onClick={() => webPageAppend({ value: "" })}>Add More Web Url</button>
+                          <button
+                            type="button"
+                            className="btn btn-success"
+                            onClick={() => webPageAppend({ value: "" })}
+                          >
+                            Add More Web Url
+                          </button>
                         </div>
                       </div>
                     </CCol>
-
                   </CTabPane>
 
                   <CTabPane>
                     <CCol>
+                      <table style={{ marginTop: "10px" }}>
+                        <tr>
+                          <td style={{paddingTop:"12px", paddingBottom:"12px" }}>SI No</td>
+                          <td>Email</td>
+                          <td>Paurchase Date</td>
+                          <td>Event</td>
+                          <td>Reflective</td>
+                          <td>Member</td>
+                        </tr>
+
+                        {purchaseData.map((item, index) => {
+                          return(
+                          <tr>
+                            <td style={{ fontSize: "15px", paddingTop:"20px", paddingBottom:"20px" }}>{index+1}</td>
+ 
+                            <td style={{ fontSize: "15px" }}>{email(item)}</td>
+
+                            <td style={{ fontSize: "15px" }}> {date(item)} </td>
+
+                            <td style={{ fontSize: "15px",color:event(item) === "x" ? "red" :"green" }}>{event(item)}</td>
+                                 
+                            <td style={{ fontSize: "15px", color:reflective(item) === "x" ? "red" :"green" }}>{reflective(item)}</td>
+
+                            <td style={{ fontSize: "15px", color:emailData.find((data) => data.email === email(item)) != null ? "green" :"red" }}>
+                              {emailData.find((data) => data.email === email(item)) != null
+                                ? "✓"
+                                : "x"}
+                            </td>
+                          </tr>
+                        )})}
+                      </table>
                       <br />
-                      <EventSubscribtionDemoTable eventid={eventId} />
                     </CCol>
                   </CTabPane>
-
-
                 </CTabContent>
               </CTabs>
               <br />
               <hr />
               <center>
-                <button type="submit" className="btn btn-outline-primary">Update</button>
+                <button type="submit" className="btn btn-outline-primary">
+                  Update
+                </button>
               </center>
             </form>
           </CCardBody>
         </CCard>
       </CCol>
-
-
     </CRow>
-  )
-}
+  );
+};
 
-export default AddEditForm
+export default AddEditForm;
