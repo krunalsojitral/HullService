@@ -19,6 +19,7 @@ export default function PromoPage() {
 
     const [eventId, setEventId] = React.useState(0)
     const [eventDetail, seteventDetail] = React.useState({})
+    const [activeReflective, setActiveReflective] = useState(false);
 
 
     React.useEffect(() => {
@@ -116,21 +117,10 @@ export default function PromoPage() {
                 <div className="container">
                     <ul className="nav nav-tabs eventTabs wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" id="myTab" role="tablist">
                         <li role="presentation">
-                            <a href="#" className="active"
-                                id="home-tab" data-bs-toggle="tab"
-                                data-bs-target="#home" type="button"
-                                role="tab" aria-controls="home"
-                                aria-selected="true">
-                                Event
-                            </a>
+                            <a href="#" class="active" id="home-tab" className={activeReflective ? '' : 'active'} onClick={() => setActiveReflective(false)} data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Event</a>
                         </li>
                         <li role="presentation">
-                            <a href="#" id="profile-tab"
-                                data-bs-toggle="tab" data-bs-target="#profile"
-                                type="button" role="tab" aria-controls="profile"
-                                aria-selected="false">
-                                Reflective Practice Sessions
-                            </a>
+                            <a href="#" id="profile-tab" className={activeReflective ? 'active' : ''} onClick={() => setActiveReflective(true)} data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Reflective Practice Sessions</a>
                         </li>
                     </ul>
                     <div className="tab-content" id="myTabContent">
@@ -176,11 +166,8 @@ export default function PromoPage() {
                                                             <span>Register for events only</span>
                                                         </a>
                                                     </div>
-                                                    <div className="rate-btn mt-3">
-                                                        <a href="javascript:;"
-                                                            onClick={(e) => cartEvent(eventDetail.event_id, (eventDetail.cost + eventDetail.session_cost, 'eventwithsession'))}
-                                                            className="btn btn-default w-100"
-                                                        >
+                                                    <div class="rate-btn mt-3">
+                                                        <a href="javascript:;" onClick={(e) => cartEvent(eventDetail.event_id, (eventDetail.cost + eventDetail.session_cost))} class="btn btn-default white w-100">
                                                             {eventDetail.cost && <span>${eventDetail.cost}</span>}
                                                             <span>Register for Event and Reflection <br />Practice Session</span>
                                                         </a>
@@ -255,15 +242,15 @@ export default function PromoPage() {
                                                         </label>
                                                     </li>
                                                     <li>
-                                                        <label className="check ">2pm to 5PM
+                                                        <label class="check ">2pm to 5PM
                                                             <input type="checkbox" checked="checked" name="is_name" />
-                                                            <span className="checkmark"></span>
+                                                            <span class="checkmark"></span>
                                                         </label>
                                                     </li>
                                                     <li>
-                                                        <label className="check ">2pm to 5PM
+                                                        <label class="check ">2pm to 5PM
                                                             <input type="checkbox" checked="checked" name="is_name" />
-                                                            <span className="checkmark"></span>
+                                                            <span class="checkmark"></span>
                                                         </label>
                                                     </li>
                                                 </ul>
