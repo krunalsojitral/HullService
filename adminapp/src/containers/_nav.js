@@ -319,12 +319,23 @@ const _nav = [
   //     text: "",
   //   },
   // },
-
+  
   {
     _tag: "CSidebarNavItem",
     name: "Subscribe User",
     route: "/#",
     to: "/subscribe-user",
+    icon: "cil-list",
+    badge: {
+      color: "info",
+      text: "",
+    },
+  },
+  {
+    _tag: "CSidebarNavItem",
+    name: "Contact Us",
+    route: "/#",
+    to: "/contact-us",
     icon: "cil-list",
     badge: {
       color: "info",

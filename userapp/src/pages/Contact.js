@@ -28,15 +28,16 @@ export default function Contact() {
     const {
         handleSubmit,
         control,
-        watch,
+        reset,
         setValue: setFormValue,
         formState: { errors },
     } = useForm();
 
-    const onSubmit = (values) => {
-        console.log('values', values);
+    const onSubmit = (values,e) => {
         axios.post(api_url + "/user/AddContactUs", values).then((result) => {
             if (result.values.status) {
+                reset()
+                e.target.reset();
                 Swal.fire('Success!', 'Successfully submitted', 'success');
             } else {
                 Swal.fire('Oops...', result.values.response.msg, 'error')

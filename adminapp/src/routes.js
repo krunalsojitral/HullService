@@ -78,6 +78,8 @@ const MembershipfeesForm = React.lazy(() => import('./views/pages/membershipfees
 
 const SubscribeUser = React.lazy(() => import('./views/pages/subscribeuser/SubscribeUser'))
 
+const ContactUs = React.lazy(()=> import('./views/pages/contact us/ContactUsList'))
+
 
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
@@ -85,7 +87,7 @@ const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/blog', name: 'Blog', component: Blog },
-  { path: '/draft-blog', name: 'Blog', component: DraftBlogDemoTable },
+  { path: '/draft-blog', name: 'Blog', component: DraftBlogDemoTable }, 
   { path: '/blogadd', name: 'Blog Add', component: BlogAddEditForm },
   { path: '/blogedit/:id', name: 'Blog Edit', component: BlogAddEditForm },
   { path: '/article', name: 'Article', component: Article },
@@ -169,7 +171,7 @@ const routes = [
   { path: '/banneredit/:id', name: 'Banner Edit', component: BannerAddEditForm },
   { path: '/membership-fees', name: 'Membership Fees', component: MembershipfeesForm },
   { path: '/subscribe-user', name: 'Subscribe User', component: SubscribeUser },
-  
+  { path: '/contact-us', name: 'Contact Us', component: ContactUs },
   
 ]
 

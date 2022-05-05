@@ -1823,6 +1823,33 @@ router.get('/userSubscribeList', function (req, res) {
     });
 });
 
+router.get('/contactUsList', function (req, res) {
+    loggerData(req);
+    User.userSubscribeList(function (err, result) {
+        if (err) {
+            return res.json({ 'status': 0, 'response': { 'msg': err } });
+        } else {
+            if (result && result.length > 0) {
+
+                var contactUsList = result.map(data => {
+                    let retObj = {};
+                    retObj['first_name'] = data.first_name;
+                    retObj['last_name'] = data.last_name;
+                    retObj['phone'] = data.phone;
+                    retObj['email'] = data.email;
+                    retObj['description'] = data.description;
+                    retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
+                    return retObj;
+                });
+
+                return res.json({ 'status': 1, 'response': { 'data': contactUsList, 'msg': 'data found' } });
+            } else {
+                return res.json({ 'status': 0, 'response': { 'data': {}, 'msg': 'data found' } });
+            }
+        }
+    });
+});
+
 
 
 const ical = require('ical-generator');
