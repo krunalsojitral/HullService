@@ -40,13 +40,9 @@ const AddEditFormEventPromo = ({ match }) => {
     trigger,
     formState: { errors },
   } = useForm({    
-   
   });
 
- 
-  
   const [isEditMode, setisEditMode] = React.useState(0);
-  
   const [selectimage, setSelectimage] = React.useState(0);
   const [selectedFile, setSelectedFile] = useState();
 

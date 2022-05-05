@@ -17,7 +17,6 @@ export default function MyEvents() {
     const [token, setToken] = useState('');
     const [noresult, setNoresult] = React.useState(false)
 
-    
     React.useEffect(() => {
         getEventData();
     }, [])

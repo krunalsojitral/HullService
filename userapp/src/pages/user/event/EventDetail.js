@@ -9,30 +9,23 @@ import api_url from '../../../components/Apiurl';
 import { useModal } from 'react-hooks-use-modal';
 import { useHistory } from "react-router-dom";
 export default function Events() {
-   
 
     let history = useHistory();
-
     const [eventId, setEventId] = React.useState(0)
     const [eventDetail, seteventDetail] = React.useState({})
-   
 
     React.useEffect(() => {
-
         const params = new URLSearchParams(window.location.search) // id=123
         let event_id = params.get('id')
         setEventId(event_id);
-
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
         const config = {
             headers: { Authorization: `${token}` }
         };
-
         axios.post(api_url + '/event/getEventDataById', { event_id: event_id }).then((result) => {
             if (result.data.status) {
                 var eventdata = result.data.response.data;
-                console.log(eventdata.group_session);
                 seteventDetail(eventdata);
             } else {
                 Swal.fire('Oops...', result.data.response.msg, 'error')
@@ -55,8 +48,6 @@ export default function Events() {
     return(
         <div>
             <Header/>
-
-
             <section className="second-banner-sec" style={{ background: `url('images/event-banner.png') no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
                 <div className="container">
                     <div className="second-banner-inner">

@@ -13,7 +13,6 @@ import { useForm } from "react-hook-form";
 
 export default function Events() { 
 
-    
     const [eventdata, setEventData] = useState([]);
     const [token, setToken] = useState('');
     const [noresult, setNoresult] = React.useState(false)
@@ -64,8 +63,6 @@ export default function Events() {
                 if (eventdatas.length > 0) {
                     setEventData(eventdatas);
                     setNoresult(false);
-                } else {
-                    // setNoresult(true);
                 }
             } else {
                 Swal.fire('Oops...', result.data.response.msg, 'error')
