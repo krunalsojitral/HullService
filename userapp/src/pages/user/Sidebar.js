@@ -46,7 +46,7 @@ export default function Sidebar() {
                 </li>}
                 
                 <li>
-                    <NavLink activeClassName="active" to="/my-events" isActive={() => ['/my-events'].includes(pathname)}>
+                    <NavLink activeClassName="active" to="/events">
                         <InlineButton name={"Events"} />
                     </NavLink>
                 </li>

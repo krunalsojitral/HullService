@@ -1,466 +1,571 @@
 //methods for fetching mysql data
-var connection = require('../config/database');
-var env = require('../config/env');
-var asyn = require('async');
+var connection = require("../config/database");
+var env = require("../config/env");
+var asyn = require("async");
 var CryptoJS = require("crypto-js");
 
-
-
 function Researches() {
-    connection.init();
+  connection.init();
 
-    this.getAllAdminResearches = function (status, callback) {
-        connection.acquire(function (err, con) {
+  this.getAllAdminResearches = function (status, callback) {
+    connection.acquire(function (err, con) {
+      var sql = "";
+      var array = [];
+      if (status) {
+        sql =
+          "SELECT *,c.status as research_status FROM researches as c left join users on users.id = c.created_by where c.user_status = $1 and c.status = $2 order by c.researches_id desc";
+        array = [1, status];
+      } else {
+        sql =
+          "SELECT *,c.status as research_status FROM researches as c left join users on users.id = c.created_by where c.user_status = $1 order by c.researches_id desc";
+        array = [1];
+      }
 
-            var sql = '';
-            var array = [];
-            if (status) {                
-                sql = 'SELECT *,c.status as research_status FROM researches as c left join users on users.id = c.created_by where c.user_status = $1 and c.status = $2 order by c.researches_id desc'
-                array = [1, status];
-            } else {
-                sql = 'SELECT *,c.status as research_status FROM researches as c left join users on users.id = c.created_by where c.user_status = $1 order by c.researches_id desc'
-                array = [1];
+      con.query(sql, array, function (err, result) {
+        con.release();
+        if (err) {
+          if (env.DEBUG) {
+            console.log(err);
+          }
+          callback(err, null);
+        } else {
+          callback(null, result.rows);
+        }
+      });
+    });
+  };
+
+  this.changeResearchesStatus = function (record, researches_id, callback) {
+    connection.acquire(function (err, con) {
+      con.query(
+        "UPDATE researches SET status =$1 WHERE researches_id = $2",
+        [record.status, researches_id],
+        function (err, result) {
+          con.release();
+          if (err) {
+            if (env.DEBUG) {
+              console.log(err);
             }
+            callback(err, null);
+          } else {
+            callback(null, record);
+          }
+        }
+      );
+    });
+  };
 
-            con.query(sql, array, function (err, result) {
-                con.release()
-                if (err) {
-                    if (env.DEBUG) { console.log(err); }
-                    callback(err, null);
-                } else {
-                    callback(null, result.rows);
-                }
-            });
-        });
-    };
+  function updateProductByID(researches_content_id, cols) {
+    // Setup static beginning of query
+    var query = ["UPDATE researches_content"];
+    query.push("SET");
 
-    this.changeResearchesStatus = function (record, researches_id, callback) {
-        connection.acquire(function (err, con) {
-            con.query("UPDATE researches SET status =$1 WHERE researches_id = $2", [record.status, researches_id], function (err, result) {
-                con.release()
-                if (err) {
-                    if (env.DEBUG) {
-                        console.log(err);
-                    }
-                    callback(err, null);
-                } else {
-                    callback(null, record);
-                }
-            });
-        });
-    }
-  
+    // Create another array storing each set command
+    // and assigning a number value for parameterized query
+    var set = [];
 
-    function updateProductByID(researches_content_id, cols) {
-        // Setup static beginning of query
-        var query = ['UPDATE researches_content'];
-        query.push('SET');
+    Object.keys(cols).map(function (key, i) {
+      set.push(key + " = ($" + (i + 1) + ")");
+    });
+    query.push(set.join(", "));
 
-        // Create another array storing each set command
-        // and assigning a number value for parameterized query
-        var set = [];
-        
-        Object.keys(cols).map(function (key, i) {
-            set.push(key + ' = ($' + (i + 1) + ')');
-        });
-        query.push(set.join(', '));
-        
-        // Add the WHERE statement to look up by id
-        query.push('WHERE researches_content_id = ' + researches_content_id);
+    // Add the WHERE statement to look up by id
+    query.push("WHERE researches_content_id = " + researches_content_id);
 
-        // Return a complete query string
-        return query.join(' ');
-    }
+    // Return a complete query string
+    return query.join(" ");
+  }
 
-    this.updateResearchesByadmin = function (record, researches_content_id, update_value, callback) {
-        connection.acquire(function (err, con) {            
-            var query = updateProductByID(researches_content_id, record);
-            con.query(query, update_value, function (err, result) {                
-                con.release()
-                console.log(err);
-                if (err) {
-                    if (env.DEBUG) {
-                        console.log(err);
-                    }                    
-                    callback(err, null);
-                } else {                  
-                    callback(null, record);
-                }
-            });
-        });
-    }
+  this.updateResearchesByadmin = function (
+    record,
+    researches_content_id,
+    update_value,
+    callback
+  ) {
+    connection.acquire(function (err, con) {
+      var query = updateProductByID(researches_content_id, record);
+      con.query(query, update_value, function (err, result) {
+        con.release();
+        console.log(err);
+        if (err) {
+          if (env.DEBUG) {
+            console.log(err);
+          }
+          callback(err, null);
+        } else {
+          callback(null, record);
+        }
+      });
+    });
+  };
 
-    this.changeDraftBlogStatus = function (record, blog_id, callback) {
-        connection.acquire(function (err, con) {
-            con.query("UPDATE blog SET draft_status =$1 WHERE blog_id = $2", [record.status, blog_id], function (err, result) {
-                con.release()
-                if (err) {
-                    if (env.DEBUG) {
-                        console.log(err);
-                    }
-                    callback(err, null);
-                } else {
-                    callback(null, record);
-                }
-            });
-        });
-    }
+  this.changeDraftBlogStatus = function (record, blog_id, callback) {
+    connection.acquire(function (err, con) {
+      con.query(
+        "UPDATE blog SET draft_status =$1 WHERE blog_id = $2",
+        [record.status, blog_id],
+        function (err, result) {
+          con.release();
+          if (err) {
+            if (env.DEBUG) {
+              console.log(err);
+            }
+            callback(err, null);
+          } else {
+            callback(null, record);
+          }
+        }
+      );
+    });
+  };
 
-    this.getResearchesContentDataById = function (callback) {
-        connection.acquire(function (err, con) {
-            con.query('SELECT * FROM researches_content where researches_content_id = $1', [1], function (err, result) {
+  this.getResearchesContentDataById = function (callback) {
+    connection.acquire(function (err, con) {
+      con.query(
+        "SELECT * FROM researches_content where researches_content_id = $1",
+        [1],
+        function (err, result) {
+          con.release();
+          if (err) {
+            callback(err, null);
+          } else {
+            callback(null, result.rows);
+          }
+        }
+      );
+    });
+  };
+
+  this.getResearchesDataById = function (id, callback) {
+    connection.acquire(function (err, con) {
+      con.query(
+        "SELECT *,c.status as research_status FROM researches as c left join users on users.id = c.created_by where c.researches_id = $1",
+        [id],
+        function (err, result) {
+          con.release();
+          if (err) {
+            callback(err, null);
+          } else {
+            callback(null, result.rows);
+          }
+        }
+      );
+    });
+  };
+
+  this.getFutureParticipateResearchesList = function (callback) {
+    connection.acquire(function (err, con) {
+      con.query(
+        "SELECT *,academic_discipline.name as academic FROM researches inner join users on users.id = researches.created_by inner join organization on users.organization = organization.organization_id inner join user_role on user_role.role_id = users.role left join academic_discipline on academic_discipline.academic_discipline_id = users.academic_discipline where researches.status = $1 and researches.user_status = $2 order by researches_id DESC",
+        [1, 1],
+        function (err, result) {
+          con.release();
+          if (err) {
+            callback(err, null);
+          } else {
+            callback(null, result.rows);
+          }
+        }
+      );
+    });
+  };
+
+  this.addParticipate = function (record, callback) {
+    connection.acquire(function (err, con) {
+      con.query(
+        "SELECT * FROM researches_participate WHERE researches_id = $1 and LOWER(email) = $2",
+        [record.researches_id, record.email.toLowerCase()],
+        function (err, results) {
+          if (err) {
+            if (env.DEBUG) {
+              console.log(err);
+            }
+            con.release();
+            callback(err, null);
+          } else {
+            if (results.rows.length === 0) {
+              //const message = JSON.stringify(record);
+              var ciphertext = CryptoJS.AES.encrypt(
+                JSON.stringify(record),
+                "mypassword"
+              ).toString();
+
+              const sql =
+                "INSERT INTO researches_participate(researches_id,created_at,research_data) VALUES($1,$2,$3) RETURNING *";
+              const values = [
+                record.researches_id,
+                record.created_at,
+                ciphertext,
+              ];
+              con.query(sql, values, function (err, result) {
                 con.release();
-                if (err) {                    
-                    callback(err, null);
-                } else {
-                    callback(null, result.rows);
-                }
-            });
-        });
-    }
+                callback(null, result.rows);
+              });
 
-    this.getResearchesDataById = function (id, callback) {
-        connection.acquire(function (err, con) {
-            con.query('SELECT *,c.status as research_status FROM researches as c left join users on users.id = c.created_by where c.researches_id = $1', [id], function (err, result) {
-                con.release();
-                if (err) {
-                    callback(err, null);
-                } else {
-                    callback(null, result.rows);
-                }
-            });
-        });
-    }
+              // const sql = 'INSERT INTO researches_participate(name,gender,dob,email,created_at,researches_id) VALUES($1,$2,$3,$4,$5,$6) RETURNING *'
+              // const values = [record.name, record.gender, record.dob, record.email, record.created_at, record.researches_id]
+              // con.query(sql, values, function (err, result) {
 
-    this.getFutureParticipateResearchesList = function (callback) {
-        connection.acquire(function (err, con) {
-            con.query('SELECT *,academic_discipline.name as academic FROM researches inner join users on users.id = researches.created_by inner join organization on users.organization = organization.organization_id inner join user_role on user_role.role_id = users.role left join academic_discipline on academic_discipline.academic_discipline_id = users.academic_discipline where researches.status = $1 and researches.user_status = $2 order by researches_id DESC',[1,1], function (err, result) {
-                con.release();
-                if (err) {
-                    callback(err, null);
-                } else {
-                    callback(null, result.rows);
-                }
-            });
-        });
-    }
+              //     if (err) {
+              //         if (env.DEBUG) {
+              //             console.log(err);
+              //         }
+              //         callback(err, null);
+              //     } else {
+              //         var participate_research_id = result.rows[0].researches_participate_id
+              //         if (record.childName && record.childName.length > 0) {
+              //             record.childName.forEach(function (value, index) {
+              //                 const sql = 'INSERT INTO researches_participate_child(researches_participate_id,child_name,child_gender,child_dob) VALUES($1,$2,$3,$4) RETURNING *'
+              //                 const values = [participate_research_id, value.value, (record.childGender[index] && record.childGender[index].value) ? record.childGender[index].value : '', (record.child[index] && record.child[index].value) ? record.child[index].value : '']
+              //                 con.query(sql, values, function (err, result) { });
+              //             });
+              //         }
+              //         con.release()
+              //         callback(null, result.rows);
+              //     }
+              // });
+            } else {
+              con.release();
+              var msg = "You are already participate in research.";
+              callback(msg, null);
+            }
+          }
+        }
+      );
+    });
+  };
 
-    this.addParticipate = function (record, callback) {
-        connection.acquire(function (err, con) {
-            con.query('SELECT * FROM researches_participate WHERE researches_id = $1 and LOWER(email) = $2', [record.researches_id, record.email.toLowerCase()], function (err, results) {
-                if (err) {
-                    if (env.DEBUG) {
-                        console.log(err);
-                    }
-                    con.release()
-                    callback(err, null);
-                } else {
-                    if (results.rows.length === 0) {
-                        
-                        //const message = JSON.stringify(record);
-                        var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(record), 'mypassword').toString();
+  this.participateList = function (id, callback) {
+    connection.acquire(function (err, con) {
+      con.query(
+        "SELECT * FROM researches_participate where researches_id = $1 order by researches_participate_id DESC",
+        [id],
+        function (err, result) {
+          con.release();
+          if (err) {
+            callback(err, null);
+          } else {
+            callback(null, result.rows);
+          }
+        }
+      );
+    });
+  };
 
+  this.getMyResearchesList = function (id, callback) {
+    connection.acquire(function (err, con) {
+      con.query(
+        "SELECT * FROM researches where created_by = $1 and user_status = $2 order by researches_id DESC",
+        [id, 1],
+        function (err, result) {
+          con.release();
+          if (err) {
+            callback(err, null);
+          } else {
+            callback(null, result.rows);
+          }
+        }
+      );
+    });
+  };
 
-                        const sql = 'INSERT INTO researches_participate(researches_id,created_at,research_data) VALUES($1,$2,$3) RETURNING *'
-                        const values = [record.researches_id, record.created_at, ciphertext]
-                        con.query(sql, values, function (err, result) {
-                            con.release()
-                            callback(null, result.rows);
-                        });
+  this.addResearchByuser = function (record, callback) {
+    connection.acquire(function (err, con) {
+      const sql =
+        "INSERT INTO researches(topic,start_date,created_by,status,created_at,description,user_status,read) VALUES($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *";
+      const values = [
+        record.topic,
+        record.start_date,
+        record.created_by,
+        record.status,
+        record.created_at,
+        record.description,
+        0,
+        0,
+      ];
+      con.query(sql, values, function (err, result) {
+        con.release();
+        if (err) {
+          if (env.DEBUG) {
+            console.log(err);
+          }
+          callback(err, null);
+        } else {
+          callback(null, result.rows);
+        }
+      });
+    });
+  };
 
+  this.researchRequestList = function (callback) {
+    connection.acquire(function (err, con) {
+      con.query(
+        "SELECT *, researches.created_at as c_at,researches.user_status as researches_status, researches.start_date as start_date FROM researches left join users on users.id = researches.created_by where (researches.user_status = $1 or researches.user_status = $2) order by researches_id desc",
+        [0, 2],
+        function (err, result) {
+          con.release();
+          if (err) {
+            if (env.DEBUG) {
+              console.log(err);
+            }
+            callback(err, null);
+          } else {
+            callback(null, result.rows);
+          }
+        }
+      );
+    });
+  };
 
-                      
+  this.updateComment = function (record, callback) {
+    connection.acquire(function (err, con) {
+      const values = [
+        record.status,
+        record.user_status,
+        record.admin_comment,
+        record.id,
+      ];
+      console.log(values);
+      con.query(
+        "UPDATE researches SET status =$1, user_status =$2,comment =$3 WHERE researches_id = $4",
+        values,
+        function (err, result) {
+          con.release();
+          if (err) {
+            if (env.DEBUG) {
+              console.log(err);
+            }
+            callback(err, null);
+          } else {
+            callback(null, result);
+          }
+        }
+      );
+    });
+  };
 
+  this.updateResearchRequestCount = function (callback) {
+    connection.acquire(function (err, con) {
+      con.query("UPDATE researches SET read =$1", [1], function (err, result) {
+        con.release();
+        if (err) {
+          if (env.DEBUG) {
+            console.log(err);
+          }
+          callback(err, null);
+        } else {
+          callback(null, result);
+        }
+      });
+    });
+  };
 
-                        // const sql = 'INSERT INTO researches_participate(name,gender,dob,email,created_at,researches_id) VALUES($1,$2,$3,$4,$5,$6) RETURNING *'
-                        // const values = [record.name, record.gender, record.dob, record.email, record.created_at, record.researches_id]
-                        // con.query(sql, values, function (err, result) {
-                            
-                        //     if (err) {
-                        //         if (env.DEBUG) {
-                        //             console.log(err);
-                        //         }
-                        //         callback(err, null);
-                        //     } else {
-                        //         var participate_research_id = result.rows[0].researches_participate_id
-                        //         if (record.childName && record.childName.length > 0) {
-                        //             record.childName.forEach(function (value, index) {
-                        //                 const sql = 'INSERT INTO researches_participate_child(researches_participate_id,child_name,child_gender,child_dob) VALUES($1,$2,$3,$4) RETURNING *'
-                        //                 const values = [participate_research_id, value.value, (record.childGender[index] && record.childGender[index].value) ? record.childGender[index].value : '', (record.child[index] && record.child[index].value) ? record.child[index].value : '']
-                        //                 con.query(sql, values, function (err, result) { });
-                        //             });
-                        //         }
-                        //         con.release()
-                        //         callback(null, result.rows);
-                        //     }
-                        // });
-                    } else {
-                        con.release();
-                        var msg = 'You are already participate in research.';
-                        callback(msg, null);
-                    }
-                }
-            });            
-        });
-    };
+  this.addFutureResearchByuser = function (record, callback) {
+    connection.acquire(function (err, con) {
+      var ciphertext = CryptoJS.AES.encrypt(
+        JSON.stringify(record),
+        "mypassword"
+      ).toString();
 
-    
-    this.participateList = function (id, callback) {
-        connection.acquire(function (err, con) {
-            con.query('SELECT * FROM researches_participate where researches_id = $1 order by researches_participate_id DESC', [id], function (err, result) {
-                con.release();
-                if (err) {
-                    callback(err, null);
-                } else {
-                    callback(null, result.rows);
-                }
-            });
-        });
-    }
+      const sql =
+        "INSERT INTO future_research(future_research_encrypt,created_at) VALUES($1,$2) RETURNING *";
+      const values = [ciphertext, record.created_at];
+      con.query(sql, values, function (err, result) {
+        con.release();
+        if (err) {
+          if (env.DEBUG) {
+            console.log(err);
+          }
+          callback(err, null);
+        } else {
+          callback(null, result.rows);
+        }
+      });
 
-    this.getMyResearchesList = function (id, callback) {
-        connection.acquire(function (err, con) {
-            con.query('SELECT * FROM researches where created_by = $1 and user_status = $2 order by researches_id DESC', [id, 1], function (err, result) {
-                con.release();
-                if (err) {
-                    callback(err, null);
-                } else {
-                    callback(null, result.rows);
-                }
-            });
-        });
-    }
+      // const sql = 'INSERT INTO future_research(name,dob,email,gender,created_at) VALUES($1,$2,$3,$4,$5) RETURNING *'
+      // const values = [record.name, record.dob, record.email, record.gender, record.created_at]
+      // con.query(sql, values, function (err, result) {
+      //     if (err) {
+      //         if (env.DEBUG) {
+      //             console.log(err);
+      //         }
+      //         con.release()
+      //         callback(err, null);
+      //     } else {
+      //         var research_id = result.rows[0].future_research_id
+      //         // if (record.child_name_first){
+      //         //     const sql = 'INSERT INTO future_research_child(future_research_id,child_dob,child_gender,child_name) VALUES($1,$2,$3,$4) RETURNING *'
+      //         //     const values = [research_id, record.child_age_first, record.child_gender_first, record.child_name_first]
+      //         //     con.query(sql, values, function (err, result) { });
+      //         // }
+      //         if (record.childName && record.childName.length > 0) {
+      //             record.childName.forEach(function (value,index) {
+      //                 const sql = 'INSERT INTO future_research_child(future_research_id,child_name,child_gender,child_dob) VALUES($1,$2,$3,$4) RETURNING *'
+      //                 const values = [research_id, value.value, (record.childGender[index] && record.childGender[index].value) ? record.childGender[index].value : '', (record.child[index] && record.child[index].value) ? record.child[index].value:'']
+      //                 con.query(sql, values, function (err, result) { });
+      //             });
+      //         }
+      //         con.release()
+      //         callback(null, result.rows);
+      //     }
+      // });
+    });
+  };
 
-    
-    this.addResearchByuser = function (record, callback) {
-        connection.acquire(function (err, con) {
-            const sql = 'INSERT INTO researches(topic,start_date,created_by,status,created_at,description,user_status,read) VALUES($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *'
-            const values = [record.topic, record.start_date, record.created_by, record.status, record.created_at, record.description,0,0]
-            con.query(sql, values, function (err, result) {
-                con.release()
-                if (err) {
-                    if (env.DEBUG) {
-                        console.log(err);
-                    }
-                    callback(err, null);
-                } else {
-                    callback(null, result.rows);
-                }
-            });
-        });
-    };
+  this.getFutureResearchList = function (callback) {
+    connection.acquire(function (err, con) {
+      con.query(
+        "SELECT * FROM future_research order by future_research_id desc",
+        function (err, result) {
+          con.release();
+          if (err) {
+            if (env.DEBUG) {
+              console.log(err);
+            }
+            callback(err, null);
+          } else {
+            callback(null, result.rows);
+          }
+        }
+      );
+    });
+  };
 
-    this.researchRequestList = function (callback) {
-        connection.acquire(function (err, con) {
-            con.query('SELECT *, researches.created_at as c_at,researches.user_status as researches_status, researches.start_date as start_date FROM researches left join users on users.id = researches.created_by where (researches.user_status = $1 or researches.user_status = $2) order by researches_id desc', [0, 2], function (err, result) {
-                con.release()
-                if (err) {
-                    if (env.DEBUG) { console.log(err); }
-                    callback(err, null);
-                } else {
-                    callback(null, result.rows);
-                }
-            });
-        });
-    };
+  this.getFutureResearchByID = function (id, callback) {
+    connection.acquire(function (err, con) {
+      con.query(
+        "SELECT * FROM future_research where future_research_id = $1",
+        [id],
+        function (err, result) {
+          con.release();
+          if (err) {
+            if (env.DEBUG) {
+              console.log(err);
+            }
+            callback(err, null);
+          } else {
+            callback(null, result.rows);
+          }
+        }
+      );
+    });
+  };
 
-    this.updateComment = function (record, callback) {
-        connection.acquire(function (err, con) {
-            const values = [record.status, record.user_status, record.admin_comment, record.id]
-            console.log(values);
-            con.query("UPDATE researches SET status =$1, user_status =$2,comment =$3 WHERE researches_id = $4", values, function (err, result) {
-                con.release()
-                if (err) {
-                    if (env.DEBUG) {
-                        console.log(err);
-                    }
-                    callback(err, null);
-                } else {
-                    callback(null, result);
-                }
-            });
-        });
-    };
+  this.getCurrentResearchByID = function (id, callback) {
+    connection.acquire(function (err, con) {
+      con.query(
+        "SELECT * FROM researches_participate where researches_participate_id = $1",
+        [id],
+        function (err, result) {
+          con.release();
+          if (err) {
+            if (env.DEBUG) {
+              console.log(err);
+            }
+            callback(err, null);
+          } else {
+            callback(null, result.rows);
+          }
+        }
+      );
+    });
+  };
 
-    this.updateResearchRequestCount = function (callback) {
-        connection.acquire(function (err, con) {            
-            con.query("UPDATE researches SET read =$1", [1], function (err, result) {
-                con.release()
-                if (err) {
-                    if (env.DEBUG) {
-                        console.log(err);
-                    }
-                    callback(err, null);
-                } else {
-                    callback(null, result);
-                }
-            });
-        });
-    };
+  this.getResearchesChildDataById = function (id, callback) {
+    connection.acquire(function (err, con) {
+      con.query(
+        "SELECT * FROM future_research_child where future_research_id = $1 order by future_research_child_id desc",
+        [id],
+        function (err, result) {
+          con.release();
+          if (err) {
+            if (env.DEBUG) {
+              console.log(err);
+            }
+            callback(err, null);
+          } else {
+            callback(null, result.rows);
+          }
+        }
+      );
+    });
+  };
 
-     
-    this.addFutureResearchByuser = function (record, callback) {
-        connection.acquire(function (err, con) {
+  this.getCurrentChildDataById = function (id, callback) {
+    connection.acquire(function (err, con) {
+      console.log(id);
+      con.query(
+        "SELECT * FROM researches_participate_child where researches_participate_id = $1 order by researches_participate_child_id desc",
+        [id],
+        function (err, result) {
+          con.release();
+          if (err) {
+            if (env.DEBUG) {
+              console.log(err);
+            }
+            callback(err, null);
+          } else {
+            callback(null, result.rows);
+          }
+        }
+      );
+    });
+  };
 
-            var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(record), 'mypassword').toString();
+  this.deleteResearches = function (researches, callback) {
+    connection.acquire(function (err, con) {
+      researches.map((data) => {
+        con.query(
+          "DELETE FROM researches where researches_id = $1",
+          [data.researches_id],
+          function (err, results) {
+            con.query(
+              "DELETE FROM researches_participate where researches_id = $1",
+              [data.researches_id],
+              function (err, results) {}
+            );
+          }
+        );
+      });
+      con.release();
+      callback(null, researches);
+    });
+  };
 
-            const sql = 'INSERT INTO future_research(future_research_encrypt,created_at) VALUES($1,$2) RETURNING *'
-            const values = [ciphertext, record.created_at]
-            con.query(sql, values, function (err, result) {
-            con.release()
-                if (err) {
-                    if (env.DEBUG) {
-                        console.log(err);
-                    }                    
-                    callback(err, null);
-                } else {                    
-                    callback(null, result.rows);
-                }
-            });
-            
+  this.deleteFutureParticipate = function (researches, callback) {
+    connection.acquire(function (err, con) {
+      researches.map((data) => {
+        con.query(
+          "DELETE FROM future_research where future_research_id = $1",
+          [data.future_research_id],
+          function (err, results) {}
+        );
+        con.query(
+          "DELETE FROM future_research_child where future_research_id = $1",
+          [data.future_research_id],
+          function (err, results) {}
+        );
+      });
+      con.release();
+      callback(null, researches);
+    });
+  };
 
-            // const sql = 'INSERT INTO future_research(name,dob,email,gender,created_at) VALUES($1,$2,$3,$4,$5) RETURNING *'
-            // const values = [record.name, record.dob, record.email, record.gender, record.created_at]
-            // con.query(sql, values, function (err, result) {                
-            //     if (err) {
-            //         if (env.DEBUG) {
-            //             console.log(err);
-            //         }
-            //         con.release()
-            //         callback(err, null);
-            //     } else {
-            //         var research_id = result.rows[0].future_research_id
-            //         // if (record.child_name_first){
-            //         //     const sql = 'INSERT INTO future_research_child(future_research_id,child_dob,child_gender,child_name) VALUES($1,$2,$3,$4) RETURNING *'
-            //         //     const values = [research_id, record.child_age_first, record.child_gender_first, record.child_name_first]
-            //         //     con.query(sql, values, function (err, result) { });
-            //         // }
-            //         if (record.childName && record.childName.length > 0) {                        
-            //             record.childName.forEach(function (value,index) {
-            //                 const sql = 'INSERT INTO future_research_child(future_research_id,child_name,child_gender,child_dob) VALUES($1,$2,$3,$4) RETURNING *'
-            //                 const values = [research_id, value.value, (record.childGender[index] && record.childGender[index].value) ? record.childGender[index].value : '', (record.child[index] && record.child[index].value) ? record.child[index].value:'']
-            //                 con.query(sql, values, function (err, result) { });
-            //             });                        
-            //         }
-            //         con.release()
-            //         callback(null, result.rows);
-            //     }
-            // });
-        });
-    };
-
-    
-    this.getFutureResearchList = function (callback) {
-        connection.acquire(function (err, con) {
-            con.query('SELECT * FROM future_research order by future_research_id desc', function (err, result) {
-                con.release()
-                if (err) {
-                    if (env.DEBUG) { console.log(err); }
-                    callback(err, null);
-                } else {
-                    callback(null, result.rows);
-                }
-            });
-        });
-    };
-
-    this.getFutureResearchByID = function (id, callback) {
-        connection.acquire(function (err, con) {
-            con.query('SELECT * FROM future_research where future_research_id = $1',[id], function (err, result) {
-                con.release()
-                if (err) {
-                    if (env.DEBUG) { console.log(err); }
-                    callback(err, null);
-                } else {
-                    callback(null, result.rows);
-                }
-            });
-        });
-    };
-
-    this.getCurrentResearchByID = function (id, callback) {
-        connection.acquire(function (err, con) {
-            con.query('SELECT * FROM researches_participate where researches_participate_id = $1', [id], function (err, result) {
-                con.release()
-                if (err) {
-                    if (env.DEBUG) { console.log(err); }
-                    callback(err, null);
-                } else {
-                    callback(null, result.rows);
-                }
-            });
-        });
-    };
-
-    this.getResearchesChildDataById = function (id, callback) {
-        connection.acquire(function (err, con) {
-            con.query('SELECT * FROM future_research_child where future_research_id = $1 order by future_research_child_id desc', [id], function (err, result) {
-                con.release()
-                if (err) {
-                    if (env.DEBUG) { console.log(err); }
-                    callback(err, null);
-                } else {
-                    callback(null, result.rows);
-                }
-            });
-        });
-    };
-
-    this.getCurrentChildDataById = function (id, callback) {
-        connection.acquire(function (err, con) {
-            console.log(id);
-            con.query('SELECT * FROM researches_participate_child where researches_participate_id = $1 order by researches_participate_child_id desc', [id], function (err, result) {
-                con.release()
-                if (err) {
-                    if (env.DEBUG) { console.log(err); }
-                    callback(err, null);
-                } else {
-                    callback(null, result.rows);
-                }
-            });
-        });
-    };
-    
-    this.deleteResearches = function (researches, callback) {
-        connection.acquire(function (err, con) {
-            researches.map(data => {
-                con.query('DELETE FROM researches where researches_id = $1', [data.researches_id], function (err, results) {
-                    con.query('DELETE FROM researches_participate where researches_id = $1', [data.researches_id], function (err, results) {});
-                });
-            });
-            con.release()
-            callback(null, researches);
-        });
-    };
-
-    this.deleteFutureParticipate = function (researches, callback) {
-        connection.acquire(function (err, con) {
-            researches.map(data => {
-                con.query('DELETE FROM future_research where future_research_id = $1', [data.future_research_id], function (err, results) {});
-                con.query('DELETE FROM future_research_child where future_research_id = $1', [data.future_research_id], function (err, results) { });
-            });
-            con.release()
-            callback(null, researches);
-        });
-    };
-
-    this.getResearchNotificationCount = function (callback) {
-        connection.acquire(function (err, con) {
-            var sql = 'SELECT count(*) as cnt FROM researches where read = $1';
-            con.query(sql,[0], function (err, result) {
-                con.release();
-                if (err) {
-                    if (env.DEBUG) {
-                        console.log(err);
-                    }
-                    callback(err, null);
-                } else {
-                    callback(null, result.rows);
-                }
-            });
-        });
-    };
-
-    
+  this.getResearchNotificationCount = function (callback) {
+    connection.acquire(function (err, con) {
+      var sql = "SELECT count(*) as cnt FROM researches where read = $1";
+      con.query(sql, [0], function (err, result) {
+        con.release();
+        if (err) {
+          if (env.DEBUG) {
+            console.log(err);
+          }
+          callback(err, null);
+        } else {
+          callback(null, result.rows);
+        }
+      });
+    });
+  };
 }
 module.exports = new Researches();

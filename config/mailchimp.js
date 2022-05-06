@@ -4,9 +4,7 @@ mailchimp.setConfig({
   apiKey: "6e0ddf786c5bcac05cd365cca012801a-us14",
   server: "us14",
 });
-
 var aud_Id = "077fc4deaa";
-
 const sendmail = () => {
   const footerContactInfo = {
     company: "qcodes",
@@ -50,6 +48,7 @@ const addMembers = async (data) => {
   });
   console.log(response);
 };
+
 
 module.exports = {
   sendmail,

@@ -5,7 +5,6 @@ var env = require('../config/env');
 
 function Academicdiscipline() {
     connection.init();
-
     this.getAllAdminacademicdiscipline = function (status, callback) {
         connection.acquire(function (err, con) {
             var sql = '';

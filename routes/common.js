@@ -905,16 +905,13 @@ router.post('/sendEmail', function (req, res) {
 });
 
 router.get('/access_token', function (req, res) {
-
     const appID = '076cd275e3274e84b0daa2322e5180e4';
     const appCertificate = 'd4e4ca76b2124b8ea6170c92747d4a7f';
     const channelName = req.query.channel;
     const uid = req.query.uid;
     const account = "";
     const role = RtcRole.PUBLISHER;
-
     const expirationTimeInSeconds = 3600
-
     const currentTimestamp = Math.floor(Date.now() / 1000)
 
     const privilegeExpiredTs = currentTimestamp + expirationTimeInSeconds
@@ -923,11 +920,9 @@ router.get('/access_token', function (req, res) {
 
     // Build token with uid
     const tokenA = RtcTokenBuilder.buildTokenWithUid(appID, appCertificate, channelName, uid, role, privilegeExpiredTs);
-    
 
     // Build token with user account
     const tokenB = RtcTokenBuilder.buildTokenWithAccount(appID, appCertificate, channelName, account, role, privilegeExpiredTs);
-    
 
 
     return res.json({ 'status': 0, 'response': { "token_with_integer_number_uid": tokenA, "token_with_userAccount":tokenB } });

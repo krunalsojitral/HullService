@@ -20,7 +20,6 @@ function Category() {
         });
     };
 
-    
     this.addcategoryByadmin = function (record, callback) {
         connection.acquire(function (err, con) {
             con.query('SELECT * FROM category where category_name=$1', [record.category_name], function (err, result) {

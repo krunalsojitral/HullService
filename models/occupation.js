@@ -8,7 +8,6 @@ function Occupation() {
 
     this.getAllAdminoccupation = function (status, callback) {
         connection.acquire(function (err, con) {
-
             var sql = '';
             var array = [];
             if (status) {

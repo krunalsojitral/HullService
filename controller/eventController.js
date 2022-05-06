@@ -13,10 +13,14 @@ const requestPromise = require("request-promise");
 const jwt = require("jsonwebtoken");
 var CryptoJS = require("crypto-js");
 const crypto = require("crypto");
-const { createzoom, filterkeyObject,createzoomsession } = require("./function/eventfunction");
+const {
+  createzoom,
+  filterkeyObject,
+  createzoomsession,
+} = require("./function/eventfunction");
+
 const EVENT_PATH = "/../routes/uploads/event/";
 const EVENT_PATH_THUMB = "/../routes/uploads/event/thumbnails/";
-
 const insertCohost = async (formdata, event_id, role) => {
   var cohost_name = await Object.keys(formdata[0]).filter((k) =>
     k.startsWith("co_host_speaker")
@@ -28,7 +32,14 @@ const insertCohost = async (formdata, event_id, role) => {
   const co_email = await filterkeyObject(formdata, cohost_email);
   const check = Object.values(co_speaker[0]);
   if (check.length > 0) {
-    console.log(check);
+    if (
+      co_speaker[0].co_host_speaker_0 == null ||
+      co_speaker[0].co_host_speaker_0 == undefined
+    ) {
+      return true;
+    }
+    console.log("/////////////////");
+    console.log({ co_speaker, co_email, event_id });
     if (role == 1) {
       Event.insertCohost({ co_speaker, co_email, event_id });
     } else {
@@ -43,7 +54,11 @@ const insertReflective = async (parsed, event_id, role) => {
   var record = [];
   var parsed = await parsed[0];
   var event_id = await event_id;
-  if (typeof parsed.sessionStartTime.length == undefined) {
+  if (
+    typeof parsed.sessionStartTime == undefined ||
+    parsed.sessionStartTime == null ||
+    !parsed.sessionStartTime
+  ) {
     return;
   }
 
@@ -58,7 +73,6 @@ const insertReflective = async (parsed, event_id, role) => {
               `group_${i + 1}`,
               parsed.time[i]?.nestedArray[m].value,
               3
-
             ),
           };
         }
@@ -81,13 +95,13 @@ const insertReflective = async (parsed, event_id, role) => {
       await record.push(data);
     }
   }
-
+  console.log("================");
+  console.log(record);
   if (role == 1) {
     Event.insertReflective(await record);
   } else {
     Event.updateReflective(await record);
   }
-
 };
 
 const imageUpload = async (files) => {
@@ -267,13 +281,13 @@ const addEventByadmin = async (req, res) => {
       });
 
       // console.log(Object.values(cohostemail.co_email));
-
-      await requestPromise(createzoom(parsed.title, start_date, end_date)).then(
-        async (res) => {
-          record.zoom_host_link = res?.start_url;
-          record.zoom_join_link = res?.join_url;
-        }
-      );
+      const options = await createzoom(parsed.title, start_date, end_date);
+  
+      await requestPromise(options).then(async (res) => {
+        console.log(res);
+        record.zoom_host_link = res?.start_url;
+        record.zoom_join_link = res?.join_url;
+      });
 
       record.image = await imageUpload(files?.image);
       record.session_image = await imageUpload(files?.session_image);
