@@ -1,11 +1,8 @@
 import React from "react";
 import Header from './../sections/Header';
 import Footer from './../sections/Footer';
-import { useForm, Controller } from "react-hook-form";
-import api_url from './../components/Apiurl';
-import axios from "axios";
-import Swal from "sweetalert2";
 
+// const imgLogo = require('images/second-banner-bg.png') 
 
 export default function Contact() {
 
@@ -25,26 +22,6 @@ export default function Contact() {
     //         await loginUser(obj);
 
     //     }
-    const {
-        handleSubmit,
-        control,
-        reset,
-        setValue: setFormValue,
-        formState: { errors },
-    } = useForm();
-
-    const onSubmit = (values,e) => {
-        axios.post(api_url + "/user/AddContactUs", values).then((result) => {
-            if (result.data.status) {
-                reset()
-                e.target.reset();
-                Swal.fire('Success!', 'Successfully submitted', 'success');
-            } else {
-                Swal.fire('Oops...', result.data.response.msg, 'error')
-            }
-
-        }).catch((err) => { console.log(err); });
-    }
 
     return (
         <div>
@@ -163,120 +140,36 @@ export default function Contact() {
                                 </div>
                                 <div className="col-lg-7">
                                     <div className="contact-right">
-                                        <form
-                                            className="wow animate__fadeIn"
-                                            data-wow-duration="1000ms"
-                                            data-wow-delay="1000ms"
-                                            onSubmit={handleSubmit(onSubmit)}
-                                        >
+                                        <form className="wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">
                                             <div className="row">
                                                 <div className="col-md-12">
                                                     <div className="form-group">
-                                                        <Controller
-                                                            name={"first_name"}
-                                                            control={control}
-                                                            rules={{ required: true }}
-                                                            render={({ field: { onChange, value } }) => (
-                                                                <input
-                                                                    type="text"
-                                                                    onChange={onChange}
-                                                                    value={value}
-                                                                    className="form-control"
-                                                                    placeholder={`First Name`}
-                                                                />
-                                                            )}
-                                                        ></Controller>
-                                                        {errors.first_name && errors.first_name.type === "required" && (
-                                                            <small className="error">First name is required.</small>
-                                                        )}
+                                                        <input type="text" className="form-control" placeholder="First Name" />
                                                     </div>
                                                 </div>
                                                 <div className="col-md-12">
                                                     <div className="form-group">
-                                                        <Controller
-                                                            name={"last_name"}
-                                                            control={control}
-                                                            rules={{ required: true }}
-                                                            render={({ field: { onChange, value } }) => (
-                                                                <input
-                                                                    type="text"
-                                                                    onChange={onChange}
-                                                                    value={value}
-                                                                    className="form-control"
-                                                                    placeholder={`Last Name`}
-                                                                />
-                                                            )}
-                                                        ></Controller>
-                                                        {errors.last_name && errors.last_name.type === "required" && (
-                                                            <small className="error">Last name is required.</small>
-                                                        )}
+                                                        <input type="text" className="form-control" placeholder="Last Name" />
                                                     </div>
                                                 </div>
                                                 <div className="col-md-12">
                                                     <div className="form-group">
-                                                        <Controller
-                                                            name={"phone"}
-                                                            control={control}
-                                                            rules={{ required: true }}
-                                                            render={({ field: { onChange, value } }) => (
-                                                                <input
-                                                                    type="text"
-                                                                    onChange={onChange}
-                                                                    value={value}
-                                                                    className="form-control"
-                                                                    placeholder={`Phone`}
-                                                                />
-                                                            )}
-                                                        ></Controller>
-                                                        {errors.phone && errors.phone.type === "required" && (
-                                                            <small className="error">Phone is required.</small>
-                                                        )}
+                                                        <input type="text" className="form-control" placeholder="Phone" />
                                                     </div>
                                                 </div>
                                                 <div className="col-md-12">
                                                     <div className="form-group">
-                                                        <Controller
-                                                            name={"email"}
-                                                            control={control}
-                                                            rules={{ required: true, pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i }  }}
-                                                            render={({ field: { onChange, value } }) => (
-                                                                <input
-                                                                    type="text"
-                                                                    onChange={onChange}
-                                                                    value={value}
-                                                                    className="form-control"
-                                                                    placeholder={`Email Address`}
-                                                                />
-                                                            )}
-                                                        ></Controller>
-                                                        {errors?.email?.type === "required" && <small className="error">Email is required</small>}
-                                                        {errors?.email?.type === "pattern" && (<small className="error">Invalid email address</small>)}                                                        
+                                                        <input type="text" className="form-control" placeholder="Email" />
                                                     </div>
                                                 </div>
                                                 <div className="col-md-12">
                                                     <div className="form-group">
-                                                        <Controller
-                                                            name={"description"}
-                                                            control={control}
-                                                            rules={{ required: false }}
-                                                            render={({ field: { onChange, value } }) => (
-                                                                <textarea
-                                                                    type="text"
-                                                                    onChange={onChange}
-                                                                    value={value}
-                                                                    className="form-control"
-                                                                    placeholder={`Do you want to share more info with us?`}
-                                                                />
-                                                            )}
-                                                        ></Controller>
-                                                        {errors.description && errors.description.type === "required" && (
-                                                            <small className="error">Email is required.</small>
-                                                        )}
+                                                        <textarea className="form-control" placeholder="Do you want to share more info with us?"></textarea>
                                                     </div>
                                                 </div>
                                                 <div className="col-md-12">
                                                     <div className="form-group">
-                                                        <button className="btn btn-default" type='submit'>SUBMIT</button>
+                                                        <button className="btn btn-default">SUBMIT</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -292,7 +185,7 @@ export default function Contact() {
                         </div>
                     </div>
                 </section>
-
+               
                 <Footer />
             </div>
 

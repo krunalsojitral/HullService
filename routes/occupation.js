@@ -25,7 +25,7 @@ function loggerData(req) {
 
 
 // occupation list
-//passport.authenticate('jwt', { session: false }), 
+// passport.authenticate('jwt', { session: false }), 
 router.get('/occupationList', function (req, res) {
     loggerData(req);
     var status = req.query.status;

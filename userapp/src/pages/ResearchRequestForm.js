@@ -288,15 +288,15 @@ export default function ResearchRequestForm() {
                 </div>
             </section>
 
-            {/*<section className="researcher-sec researchContact">
+            <section className="researcher-sec researchContact">
                 <div className="container">
                     <div className="row">
                         <div className="col-12">
-    <div className="researcher-heading" style={{"background-color":"#F7F7F7", "text-align":"center", "padding":"50px", "border-radius": "25px"}}>*/}
+                            <div className="researcher-heading" style={{"background-color":"#F7F7F7", "text-align":"center", "padding":"50px", "border-radius": "25px"}}>
                                 {/* <strong className="wow animate__fadeInUp" data-wow-duration="1400ms" data-wow-delay="1000ms" style={{"visibility": "visible", "animation-duration": "1400ms", "animation-name": "fadeInUp", "font-size":"19px"}}>Registrations for the Researchers coming soon</strong> */}
 
 
-                               {/* <div className="login-section">
+                                <div className="login-section">
                                     <div className="container">
                                         <div className="row">
                                             <div className="col-md-12">
@@ -515,21 +515,10 @@ export default function ResearchRequestForm() {
                         </div>
                     </div>
                 </div>
-            </section>*/}
-           
-           <section className="researcher-sec researchContact">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-12">
-                            <div className="researcher-heading" style={{backgroundColor: '#F7F7F7', textAlign: 'center', padding: '50px', borderRadius: '25px'}}>
-								<strong className="wow animate__fadeInUp" data-wow-duration="1400ms" data-wow-delay="1000ms" style={{visibility: 'visible', animationDuration: '1400ms', animationName: 'fadeInUp', fontSize: '19px'}}>Registrations for the Researchers coming soon</strong>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </section>
+           
 
-                
+
             
 
             <Footer />

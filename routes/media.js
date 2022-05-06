@@ -14,7 +14,6 @@ var formidable = require('formidable');
 function loggerData(req) {
     if (env.DEBUG) {
         var URL = "Url:-" + JSON.stringify(req.originalUrl, null, 4) + "\n";
-        //  console.log(moment().format('YYYY-MM-DD h:m:s A') + ": " + URL);
     }
 }
 

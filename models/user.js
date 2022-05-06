@@ -3,6 +3,8 @@ var connection = require('../config/database');
 var env = require('../config/env');
 var async = require('async');
 
+const {addMembers} = require('../config/mailchimp')
+
 function User() {
     connection.init();
 
@@ -410,7 +412,6 @@ function User() {
 
     // this.getCSVAdminUser = function (role, status, callback) {
     //     connection.acquire(function (err, con) {
-
     //         var sql = '';
     //         var array = [role];
     //         if (status) {
@@ -455,95 +456,12 @@ function User() {
                         console.log(err);
                     }
                     callback(err, null);
-                } else {                    
-                    callback(null, result.rows[0]);
-                }
-            });
-        });
-    };
-
-    this.checkUserSubscribtion = function (email, callback) {
-        connection.acquire(function (err, con) {
-            con.query('SELECT * FROM subscribe where LOWER(email) = $1', [email.toLowerCase()], function (err, results) {
-                con.release()
-                if (err) {
-                    if (env.DEBUG) {
-                        console.log(err);
-                    }
-                    callback(err, null);
-                } else {
-                    callback(null, results.rows);
-                }
-            });
-        });
-    };
-
-    this.subscribeUser = function (record, callback) {
-        connection.acquire(function (err, con) {            
-            const sql = 'INSERT INTO subscribe(email,created_at) VALUES($1,$2) RETURNING *'
-            const values = [record.email, record.created_at]
-            con.query(sql, values, function (err, result) {
-                con.release()
-                if (err) {
-                    if (env.DEBUG) {
-                        console.log(err);
-                    }
-                    callback(err, null);
                 } else {
                     callback(null, result.rows[0]);
                 }
             });
         });
     };
-
-    this.contactUs = function (record, callback) {
-        connection.acquire(function (err, con) {            
-            const sql = 'INSERT INTO contact(first_name,last_name,phone,email,description,created_at) VALUES($1,$2,$3,$4,$5,$6) RETURNING *'
-            const values = [record.first_name,record.last_name,record.phone,record.email,record.description, record.created_at]
-            con.query(sql, values, function (err, result) {
-                con.release()
-                if (err) {
-                    if (env.DEBUG) {
-                        console.log(err);
-                    }
-                    callback(err, null);
-                } else {
-                    callback(null, result.rows[0]);
-                }
-            });
-        });
-    };
-
-    
-    this.userSubscribeList = function ( callback) {
-        connection.acquire(function (err, con) {
-            con.query('SELECT * FROM subscribe', function (err, result) {
-                con.release();
-                if (result.rows.length === 0) {
-                    msg = 'User does not exist.';
-                    callback(msg, null);
-                } else {
-                    callback(null, result.rows);
-                }
-            });
-        });
-    }
-
-    this.contactUsList = function (callback) {
-        connection.acquire(function (err, con) {
-            con.query('SELECT * FROM contact', function (err, result) {
-                con.release();
-                if (result.rows.length === 0) {
-                    msg = 'User does not exist.';
-                    callback(msg, null);
-                } else {
-                    callback(null, result.rows);
-                }
-            });
-        });
-    }
-
-    
 
     this.checkUserOrganization = function (organization, callback) {
         connection.acquire(function (err, con) {            
@@ -591,7 +509,9 @@ function User() {
                 var values = [record.first_name, record.last_name, record.email, record.phone, record.password, record.status, record.role, record.email_verification_token, record.created_at, record.payment_id, record.joined_date, record.renewal_date, record.subscribe, record.about_us, record.research_description]
             }
             
-            
+            addMembers(record)
+
+
             con.query(sql, values, function (err, result) {
                 
                 if (err) {

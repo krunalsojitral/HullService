@@ -18,6 +18,7 @@ export default function PromoPage() {
   const [allevents, setallevents] = React.useState("");
   const [reflective, setReflectivecount] = React.useState("");
   const [reflectiveData, setReflectiveData] = useState([]);
+  const [Reflectivestate, setReflectivestate] = useState("");
 
   React.useEffect(() => {
     const params = new URLSearchParams(window.location.search); // id=123
@@ -95,25 +96,32 @@ export default function PromoPage() {
     history.push("/event-cart");
   };
 
+  const zoomJoin = (id) => {
+    // axios.post("http://localhost:6161/api/event/newmeeting", { userName, userEmail, passWord }).then((res) => {
+    //     setData(res.data.response.data);
+    //     console.log("res", res.data.response.data);
+    //     var datas = res.data.response.data.join_url;
+    // }).catch((err) => console.log("error", err));
+  };
+
+  ///maximum participate
   const checkButton = () => {
     const ref = reflective != undefined ? reflective : 0;
     const allevent = allevents != undefined ? allevents : 0;
     if (ref < allevent) {
+      // if (true) {
       return (
         <div>
           <div className="rate-btn mt-3">
             <a href="javascript:;" className="btn btn-default w-100">
               {eventDetail.cost && <span>${eventDetail.cost}</span>}
-              <span>Register for events only</span>
+              <span>maximum number of participants already reached.</span>
             </a>
           </div>
           <div className="rate-btn mt-3">
             <a href="javascript:;" className="btn btn-default w-100">
               {eventDetail.cost && <span>${eventDetail.cost}</span>}
-              <span>
-                Register for Event and Reflection <br />
-                Pracice Session
-              </span>
+              <span>maximum number of participants already achieved.</span>
             </a>
           </div>
         </div>
@@ -133,19 +141,17 @@ export default function PromoPage() {
             </a>
           </div>
           <div className="rate-btn mt-3">
-            <a
-              href="javascript:;"
-              onClick={(e) =>
-                cartEvent(
-                  eventDetail.event_id,
-                  (eventDetail.cost + eventDetail.session_cost,
-                  "eventwithsession")
-                )
-              }
-              className="btn btn-default w-100"
-            >
+            <a className="btn btn-default w-100">
               {eventDetail.cost && <span>${eventDetail.cost}</span>}
-              <span>
+              <span
+                onClick={(e) =>
+                  cartEvent(
+                    eventDetail.event_id,
+                    (eventDetail.cost + eventDetail.session_cost,
+                    "eventwithsession")
+                  )
+                }
+              >
                 Register for Event and Reflection <br />
                 Pracice Session
               </span>
@@ -219,7 +225,7 @@ export default function PromoPage() {
       return (
         <div
           className={
-            index === 0 ? "tab-pane fade  show active" : "tab-pane fade"
+            index === 0 ? "tab-pane fade show active" : "tab-pane fade"
           }
           id={"pills-Mon" + item.group_number + index}
           role="tabpanel"
@@ -242,7 +248,17 @@ export default function PromoPage() {
                 marginLeft: "15px",
               }}
             >
-              <a className="btn btn-default" href="#">
+              <a
+                href="javascript:;"
+                onClick={(e) =>
+                  cartEvent(
+                    eventDetail.event_id,
+                    (eventDetail.cost + eventDetail.session_cost,
+                    "eventwithsession")
+                  )
+                }
+                className="btn btn-default w-100"
+              >
                 Submit
               </a>
             </div>

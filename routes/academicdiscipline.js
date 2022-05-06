@@ -14,8 +14,6 @@ function loggerData(req) {
 }
 
 
-// academicdiscipline list
-//passport.authenticate('jwt', { session: false }), 
 router.get('/academicdisciplineList', function (req, res) {
     loggerData(req);
     var status = req.query.status;

@@ -9,6 +9,7 @@ import api_url from "../../../components/Apiurl";
 import $ from "jquery";
 import { useForm, Controller } from "react-hook-form";
 import { useHistory } from "react-router-dom";
+import "./EventsCart.css";
 
 export default function EventsCart() {
   let history = useHistory();
@@ -137,6 +138,9 @@ export default function EventsCart() {
       history.push("/login");
       return;
     }
+
+    eventcost = eventcost ?? eventCost;
+
     if (eventcost > 0) {
       history.push({
         pathname: "/event-payment",

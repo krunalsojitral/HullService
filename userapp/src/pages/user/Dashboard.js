@@ -33,7 +33,7 @@ export default function Dashboard() {
         <div>
             <Header/>
 
-            {/* <section className="second-banner-sec" style={{ background: `url('images/contact-banner-bg.png') no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
+            <section className="second-banner-sec" style={{ background: `url('images/contact-banner-bg.png') no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
                 <div className="container">
                     <div className="second-banner-inner">
                         <div className="row">
@@ -53,7 +53,7 @@ export default function Dashboard() {
                         </div>
                     </div>
                 </div >
-            </section>      */}
+            </section>     
 
             <section className="researcher-sec researchContact dashboard-card">
                 <div className="container-fluid">
@@ -108,7 +108,7 @@ export default function Dashboard() {
             </section>    
 
             
-        {/* <Footer/> */}
+        <Footer/>
     </div>
     )
 }
