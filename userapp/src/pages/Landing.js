@@ -61,8 +61,7 @@ const LandingPage = () => {
                         </div>
                     </div>
                 </section>
-
-                      <section className="upcoming-event-sec">
+                <section className="upcoming-event-sec">
                     <div className="container-fluid">
                         <div className="upcoming-event-inner">
                             <div className="row">

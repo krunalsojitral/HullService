@@ -357,7 +357,7 @@ font-weight: 700;
 font-family: 'Poppins', sans-serif;
 font-size: 14px;
 width: 500px !important;
-line-height: 178.5%;
+line-height: 178.5% !important;
 text-transform: capitalize;
     color: #ffffff;
     margin: 50px 0 35px;
@@ -557,7 +557,7 @@ font-weight: 700;
 font-family: 'Poppins', sans-serif;
     font-weight: 400;
     font-size: 16px;
-    line-height: 178.5%;
+    line-height: 178.5% !important;
     text-transform: capitalize;
     text-align: center;
     color: #ffffff;
@@ -627,8 +627,7 @@ text-align: justify;
 font-weight: 700;
 font-family: 'Poppins', sans-serif;
     text-align: center;
-    font-weight: 400;
-    font-size: 18px;
+font-size: 14px;
     color: #fff;
 }
 /****** OUR TEAM *****/
@@ -656,8 +655,7 @@ font-family: 'Poppins', sans-serif;
 text-align: justify;
 font-weight: 700;
 font-family: 'Poppins', sans-serif;
-    font-weight: 700;
-    font-size: 18px;
+font-size: 14px;
     line-height: 185.5%;
     color: #ffffff;
     max-width: 775px;
@@ -709,7 +707,7 @@ font-weight: 700;
 font-family: 'Poppins', sans-serif;
     font-weight: 400;
     font-size: 24px;
-    line-height: 178.5%;
+    line-height: 178.5% !important;
     text-align: center;
     text-transform: capitalize;
     color: #000000;
@@ -755,9 +753,8 @@ font-family: 'Poppins', sans-serif;
 text-align: justify;
 font-weight: 700;
 font-family: 'Poppins', sans-serif;
-    font-weight: 500;
-    color: #979797;
-    font-size: 18px;
+  color: #979797;
+    font-size: 14px;
     margin: 20px 0;
 }
 .clinical-team-box .text-box ul {
@@ -848,13 +845,12 @@ font-family: 'Poppins', sans-serif;
 }
 .governors-inner .text-box p {
 text-align: justify;
-font-weight: 700;
+font-weight: 500;
 font-family: 'Poppins', sans-serif;
-    font-weight: 400;
-    font-size: 16px;
+ font-size: 16px;
     text-transform: capitalize;
     color: #000000;
-    line-height: 178.5%;
+    line-height: 178.5% !important;
     margin: 34px 0 20px 0;
 }
 .governors-inner .text-box p a {
@@ -1029,8 +1025,8 @@ font-family: 'Poppins', sans-serif;
 text-align: justify;
 font-weight: 700;
 font-family: 'Poppins', sans-serif;
-    font-weight: 500;
-    font-size: 18px;
+    
+    font-size: 14px;
     line-height: 176.5%;
     text-transform: capitalize;
     color: #000000;
@@ -1113,15 +1109,14 @@ font-family: 'Poppins', sans-serif;
     width: 100%;
 }
 .about-text p {
-text-align: justify;
+text-align: justify !important;
 font-weight: 700;
 font-family: 'Poppins', sans-serif;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 178.5%; 
-    text-transform: capitalize;
-    color: #000000;
-    text-align: left;
+font-size: 16px;
+line-height: 178.5% !important; 
+text-transform: capitalize;
+color: #000000;
+text-align: left;
 }
 .about-hull-logo {
     text-align: center;
@@ -1137,11 +1132,10 @@ font-family: 'Poppins', sans-serif;
     justify-content: center;
 }
 .about-box .text-box p {
-text-align: justify;
+text-align: justify !important;
 font-weight: 700;
 font-family: 'Poppins', sans-serif;
-    font-weight: 400;
-    font-size: 16px;
+font-size: 16px;
     line-height: 224.5%;
     text-transform: capitalize;
     color: #000000;
@@ -1196,8 +1190,7 @@ font-family: 'Poppins', sans-serif;
 text-align: justify;
 font-weight: 700;
 font-family: 'Poppins', sans-serif;
-    font-weight: 400;
-    font-size: 16px;
+font-size: 16px;
     line-height: 215%;
     text-align: center;
     text-transform: capitalize;
@@ -1258,8 +1251,7 @@ font-family: 'Poppins', sans-serif;
 text-align: justify;
 font-weight: 700;
 font-family: 'Poppins', sans-serif;
-    font-weight: 400;
-    font-size: 18px;
+font-size: 14px;
     line-height: 185.5%;
     color: #000000;
     margin-bottom: 30px;
@@ -1271,10 +1263,10 @@ font-family: 'Poppins', sans-serif;
 font-weight: 700;
 text-align: justify;
 font-weight: 700;
-    font-size: 18px;
-    line-height: 185.5%;
-    margin-bottom: 40px;
-    color: #000000;
+font-size: 14px;
+line-height: 185.5% !important;
+margin-bottom: 40px;
+color: #000000;
 }
 .about-researcher p:last-child{
     margin: 0;
@@ -1642,7 +1634,7 @@ font-weight: 700;
 font-family: 'Poppins', sans-serif;
     font-weight: 400;
     font-size: 16px;
-    line-height: 178.5%;
+    line-height: 178.5% !important;
     text-transform: capitalize;
     color: #060606;
 }
@@ -1664,7 +1656,7 @@ font-family: 'Poppins', sans-serif;
 .popupFooter ul li.price {
     font-weight: 700;
     font-size: 40px;
-    line-height: 178.5%;
+    line-height: 178.5% !important;
     text-transform: capitalize;
     color: #020202;
 }
@@ -1755,7 +1747,7 @@ font-family: 'Poppins', sans-serif;
 .event-card .price {
     font-weight: 700;
     font-size: 64px;
-    line-height: 178.5%;
+    line-height: 178.5% !important;
     text-transform: capitalize;
     color: #262626;
 }
@@ -1897,7 +1889,7 @@ font-family: 'Poppins', sans-serif;
 .eventDetail .price {
     font-weight: 700;
     font-size: 64px;
-    line-height: 178.5%;
+    line-height: 178.5% !important;
     text-transform: capitalize;
     color: #020202;
 }
@@ -1950,7 +1942,7 @@ font-weight: 700;
 font-family: 'Poppins', sans-serif;
     font-weight: 400;
     font-size: 16px;
-    line-height: 178.5%;
+    line-height: 178.5% !important;
     text-transform: capitalize;
     color: #060606;
 }
@@ -1969,7 +1961,7 @@ font-weight: 700;
 font-family: 'Poppins', sans-serif;
     font-weight: 400;
     font-size: 16px;
-    line-height: 178.5%;
+    line-height: 178.5% !important;
     text-transform: capitalize;
     color: #060606;
 }
@@ -2001,8 +1993,8 @@ font-family: 'Poppins', sans-serif;
 text-align: justify;
 font-weight: 700;
 font-family: 'Poppins', sans-serif;
-    font-weight: 400;
-    font-size: 18px;
+    
+    font-size: 14px;
     line-height: 185.5%;
 
     text-align: center;
@@ -2196,9 +2188,8 @@ font-family: 'Poppins', sans-serif;
 .heading-second p{
 font-weight: 700;
 text-align: justify;
-    font-weight: 400;
-    font-size: 24px;
-    line-height: 178.5%;
+font-size: 24px;
+    line-height: 178.5% !important;
     color: #000000;
     text-transform: capitalize;
     text-align: center;
@@ -2372,9 +2363,9 @@ text-align: justify;
     margin-top: 50px;
 }
 .about-vision-box span{
-    max-width: 180px;
+    max-width: 150px;
     width: 100%;
-    display: block;
+    display:block;
 }
 .about-vision-box .text-box{
     padding-left: 50px;
@@ -2402,10 +2393,10 @@ font-weight: 700;
 text-align: justify;
     text-transform: capitalize;
     color: #FFFAFA;
-    font-weight: 700;
-    line-height: 178.5%; 
+   
+    line-height: 178.5% !important; 
     margin: 23px 0 0 0;
-    font-size: 18px;
+    font-size: 14px;
 }
 .about-vision-box.about-vision-box-second{
     background: #007089;
@@ -2421,8 +2412,8 @@ text-align: justify;
 .about-advocacy-box{
     background: #339F94;
     border-radius: 50%; 
-    max-width: 543px;
-    height: 543px;
+    max-width: 200px !important;
+    height: 200px !important;
     width: 100%;
     display: flex;
     align-items: center;
@@ -2431,6 +2422,7 @@ text-align: justify;
     margin: 15px 0;
     text-align: center;
     transition: all 0.5s ease-in-out;
+  
 }
 .about-advocacy-box:hover{
     transform: scale(1.05);
@@ -2444,8 +2436,8 @@ text-align: justify;
 }
 .about-advocacy-box h4 {
     color: #FFFFFF;
-    font-weight: 700;
-    font-size: 24px;
+    font-weight: 500;
+    font-size: 20px;
     margin: 37px 0 36px 0;
 }
 .about-read {
@@ -2458,13 +2450,14 @@ text-align: justify;
 }
 .about-read-box span{
     background: #68C6B7;
-    width: 99px;
-    height: 99px;
+    width: 79px;
+    height: 79px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     margin: 0 auto;
     justify-content: center;
+  
 }
 .about-read-box h4 {
     font-weight: 700;
@@ -2482,7 +2475,7 @@ font-family: 'Poppins', sans-serif;
     max-width: 424px;
     width: 100%;
     margin: 20px auto;
-    font-size: 18px;
+    font-size: 14px;
     text-align: center;
     line-height: 180%;
 }

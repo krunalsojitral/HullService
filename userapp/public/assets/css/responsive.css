@@ -17,7 +17,7 @@
 
 
 }
-@media (max-width: 1800px) {
+@media (max-width: 1800px) { 
     header {
         padding: 20px 0;
     }
@@ -58,6 +58,11 @@
         
     }
 
+.upcoming-event-inner .text-box {
+
+margin-top:-25px !important;
+
+}
 
     .upcoming-event-inner{
         top: 38px !important;
@@ -77,6 +82,7 @@
       
       
     }
+
     .upcoming-event-inner .image-shape {
         max-width: 300px !important; 
 
@@ -89,8 +95,11 @@
         font-size: 11px;
         margin: 30px 0;
     }
-    
-
+.about-researcher .img-holder .ellipse {
+margin-left:-60px !important;
+margin-top: 25px !important;
+      
+    }
 
     .image-shape{
         left: -80px;
@@ -129,9 +138,11 @@
     .newsletter-sec {
       padding: 70px 0px 0px 0px;
       margin:0  0px -245px 0px;
-     
-    
-    }
+     }
+
+.newsletter-inner{
+margin-top:5% !important;
+}
 
     .newsletter-inner h4 {
 font-size: 38px;
@@ -146,7 +157,8 @@ width: 900px !important;
         padding: 330px 0 50px 0;
     }
     .second-banner-sec {
-        padding: 125px 0;
+        margin-top:-30px !important;
+        padding: 100px 0;
         background-position: bottom center !important;
     }
     .second-banner-sec .text-box h2 {
@@ -154,23 +166,24 @@ width: 900px !important;
         margin: 0;
     }
     .second-banner-shape {
-        bottom: -250px;
-        left: 40px !important;;
+       bottom:-180px !important;
+        left: 80px !important;;
         max-width: 160px;
+        /* display: none !important; */
     }
     .about-us-sec {
         padding: 170px 0 0;
     }
     .about-advocacy-box {
-        height: 250px;
-        width: 250px;
+        height: 200px;
+        width: 200px;
         margin: auto;
     }
     .about-read {
         margin: 70px auto 0;
     }
     .about-read-box h4 {
-        font-size: 26px;
+        font-size: 20px;
         margin: 14px 0 0 0;
     }
     .about-read-box p {
@@ -182,13 +195,20 @@ width: 900px !important;
         font-size: 14px;
     }
     .about-advocacy-box span img {
-        max-width: 60px;
+        max-width: 50px;
+        display: block;
     }
     .about-advocacy-box h4 {
         font-size: 18px;
         margin: 18px 0 18px 0;
     }
-    .about-hull-sec {
+.about-advocacy-box.red-bg span {
+height:100px !important;
+width:100px !important;
+margin-right: 10px !important;
+}
+
+.about-hull-sec {
         padding: 160px 0 100px;
     }
     .about-box .image-holder .image-shape {
@@ -416,7 +436,7 @@ width: 900px !important;
         padding: 35px 0;
     }
 
-    .about-researcher .img-holder {
+.about-researcher .img-holder {
         margin-bottom: 100px;
         max-width: 400px;
         float: right;
@@ -787,8 +807,11 @@ left:40px !important;
 
  .upcoming-event-inner .text-box {
   padding-right:100px !important;
-  margin-top:-5px !important;
+  margin-bottom:-5px !important;
+ 
+
  }
+
 
  .upcoming-event-inner .image-holder {
     max-width: 480px;
@@ -802,11 +825,18 @@ left:40px !important;
     }
     .second-banner-sec .image-holder {
         padding-right: 0;
-        margin-bottom: -200px;
+        margin-bottom:-200px;
     }
     .about-us-sec {
         padding: 130px 0 0;
     }
+
+
+
+    /* .about-advocacy-box span {
+        padding:0px !important;
+        width: 40px ;
+    } */
     .about-box .image-holder {
         max-width: 480px;
     }
@@ -832,8 +862,25 @@ left:40px !important;
     .governors-inner .image-holder img {
         max-width: 120px;
     }
+.about-advocacy-box.red-bg span {
+height:100px !important;
+width:100px !important;
+margin-right: 50px !important;
 }
+.about-advocacy-box span {
+margin-left: 50px !important; 
+
+}
+#svgaboutresearch{
+    margin-right:40px !important;
+}
+.newsletter-inner{
+margin-top: 15%!important;
+}
+
+
 @media (max-width: 1199px) {
+  
     .login-btn {
         height: 50px;
         width: 110px;
@@ -903,11 +950,27 @@ left:40px !important;
     }
 
 
-    .upcoming-event-inner .text-box p{
+.about-advocacy-box span {
+        margin-left: 50px !important; 
+       }
+.about-advocacy-box h4 {
+font-size:17px !important;
+}
+.upcoming-event-inner .text-box p{
         font-size:10px !important;
         width: 400px !important;
 
     }
+
+
+.about-researcher .img-holder .ellipse {
+ margin-top:-10px !important;
+ padding-left: 10px;
+}
+.about-inner .about-researcher .content p {
+width: 400px;
+}
+
 
 
     .upcoming-event-inner .text-box h4 {
@@ -1005,8 +1068,8 @@ left:40px !important;
         max-width: 800px;
     }
     .about-advocacy-box {
-        height: 206px;
-        width: 206px;
+        height: 306px;
+        width: 306px;
     }
     .about-advocacy-box h4 {
         font-size: 20px;
@@ -1151,8 +1214,16 @@ left:40px !important;
     .event-card ul li i img {
         height: 16px;
     }
+.about-advocacy-box.red-bg span {
+height:100px !important;
+width:100px !important;
+margin-right: 50px !important;
 }
-@media (max-width: 820px) {
+}
+
+
+
+@media (max-width: 820px) {         /* ////////////////////////////////////////////////////////////////////////////////////////// */
 .upcoming-event-sec{
 width: 900px;
 height: fit-content;
@@ -1162,8 +1233,41 @@ height: fit-content;
    left:280px !important;
 bottom: 50px !important;
 }
+.about-advocacy-box.red-bg span {
+    height:100px !important;
+    width:100px !important;
+    }
+.about-advocacy-box span {
+        margin-right: 50px !important; 
+        }
+.about-researcher .img-holder .ellipse {
+margin-left:2px !important ;
 }
-@media (max-width: 991px) {
+.newsletter-sec {
+
+margin-right:40px !important;
+
+
+}
+/* .newsletter-inner{
+    padding:none !important;
+    width: 90% !important;
+    margin-left: 25% !important;
+    padding: 60px !important;
+ 
+}  */
+.title img {
+    margin-top:3% !important;
+ }
+ .upcoming-event-inner .text-box p {
+max-width: 300px !important; 
+
+}
+
+
+}
+
+@media (max-width: 991px) {                
     .navbar-toggler {
         padding: 0;
         display: flex;
@@ -1242,14 +1346,25 @@ bottom: 50px !important;
     }
     .banner-bg {
    bottom:-40px !important;
-     
-    }
+}
+.second-banner-shape {
+ margin-bottom: 60px;   
+}
+
+
+.about-researcher .img-holder {
+margin-left: 70px !important;
+}
+
+
 .event-shape {
         left: 270px;
        top:30px !important;
  max-width:90px;
 }
-    .upcoming-event-inner .text-box h4 {
+
+
+.upcoming-event-inner .text-box h4 {
         font-size: 20px;
         padding: 0 0 15px 0;
     }
@@ -1257,7 +1372,12 @@ bottom: 50px !important;
         font-size: 14px;
         margin: 10px 0;
         line-height: 20px;
+        width: 370px !important;
     }
+  .title img {
+margin-top:5% !important;
+    }
+
     .upcoming-event-inner .text-box a {
         font-size: 16px;
     }
@@ -1318,9 +1438,7 @@ bottom: 50px !important;
     }
     .newsletter-sec {
     margin: 0 0 -170px 0 ;
-    /* padding-right:300px !important; */
-     margin-left:-10px !important;
-   
+    margin-left:-200px !important;
     }
     .newsletter-inner h4 {
         font-size: 24px;
@@ -1405,8 +1523,8 @@ bottom: 50px !important;
         max-width: 580px;
     }
     .about-advocacy-box {
-        height: 132px;
-        width: 132px;
+        height: 232px;
+        width: 232px;
     }
     .about-advocacy-box span {
         max-width: 60px;
@@ -1415,6 +1533,12 @@ bottom: 50px !important;
         font-size: 18px;
         margin: 14px 0;
     }
+
+ .newsletter-inner{
+     width: 700px !important;
+     margin-left: 15% !important;
+ }
+
     .governors-inner .image-holder {
         max-width: 230px;
         height: 230px;
@@ -1556,6 +1680,18 @@ bottom: 50px !important;
     .training-course-sec .content p {
         font-size: 16px;
     }
+ .about-advocacy-box.red-bg span {
+height:100px ;
+width:100px;
+margin-right:50px;
+}
+.about-advocacy-box span {
+margin-right: 50px !important; 
+
+}
+    .about-advocacy-box span img {
+        margin-left: 50px ;
+    }
 }
 @media (max-width: 767px) {
     .container,
@@ -1653,6 +1789,12 @@ bottom: 50px !important;
     .newsletter-inner h4 {
         font-size: 20px;
         margin: 0 0 20px 0;
+    }
+
+    .newsletter-inner{
+
+margin-left: 2% !important;
+
     }
     .newsletter-inner form {
         max-width: 400px;
@@ -1831,6 +1973,14 @@ bottom: 50px !important;
     .title-course .card-title.card-title-courses {
         margin-bottom: 20px;
     }
+.about-advocacy-box.red-bg span {
+height:100px !important;
+width:100px !important;
+margin-right: 50px !important;
+}
+.about-advocacy-box span {
+    margin-right: 50px !important; 
+    }
 }
 @media (max-width: 575px) {
 
@@ -1838,8 +1988,12 @@ bottom: 50px !important;
     margin-right:200px!important;
     
 }
-
-
+.title img {
+    margin-top:5% !important;
+ }
+ .title p {
+     padding-right:20px !important;
+ }
 .upcoming-event-inner .btn-default {
 margin-left:-600px !important;
 margin-bottom: 30px !important;
@@ -2178,6 +2332,38 @@ margin-right:30px !important;
     .trainingCourses{
         padding-bottom: 0;
     }
+    .about-advocacy-box.red-bg span {
+        height:100px ;
+        width:100px;
+        margin-right:100px !important;
+        }
+        .about-advocacy-box span {
+        margin-right:100px !important; 
+        
+       }
+.newsletter-sec {
+margin-left: 40px !important;
+margin-bottom:-70px !important;
+}
+.about-researcher .img-holder .ellipse {
+top:100px !important;
+}
+
+.about-us-top .text-box p {
+    bottom: 150px !important;
+}
+
+
+.newsletter-inner{
+
+
+
+
+}
+
+/* .about-advocacy-box span img {
+            margin-right:50px !important; 
+        } */
 }
 @media (max-width: 374px) {
     .banner-inner .text-box h1 {
@@ -2324,4 +2510,33 @@ margin-bottom:-90px !important;
     .check {
         font-size: 12px;
     }
+    .about-advocacy-box.red-bg span {
+        height:100px ;
+        width:100px;
+        margin-right:50px;
+        }
+        .about-advocacy-box span {
+        margin-right:50px !important; 
+}
+#svgaboutresearch{
+    margin-right:-50px !important;
+  
+}
+
+.about-us-top .text-inner ul li p {
+padding:20px !important;
+}
+
+
+.second-banner-sec .image-holder img {
+margin-left:-30px !important;
+max-width: 300px;
+}
+
+.about-advocacy-box span {
+margin-right:100px !important;
+
+}
+
+
 }
