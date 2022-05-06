@@ -4,8 +4,8 @@ import axios from 'axios';
 import api_url from './../../Apiurl';
 import Swal from "sweetalert2";
 import {
-  CCardBody,  
-  CButton,  
+  CCardBody,
+  CButton,
   CDataTable,
   CCardHeader
 } from '@coreui/react'
@@ -13,7 +13,7 @@ import CIcon from '@coreui/icons-react'
 
 const DemoTable = () => {
 
-  const history = useHistory() 
+  const history = useHistory()
   const [items, setItems] = useState([])
   const [deleteButtonDisable, setDeleteButtonDisable] = useState(true)
   const ref = React.useRef();
@@ -23,27 +23,27 @@ const DemoTable = () => {
     getNewList();
   }, [])
 
-  const fields = [    
+  const fields = [
     { key: 'name', _style: { width: '20%' } },
     { key: 'phone', _style: { width: '20%' } },
-    { key: 'email', _style: { width: '20%'} },
+    { key: 'email', _style: { width: '20%' } },
     { key: 'description', _style: { width: '20%' } },
     { key: 'created_at', _style: { width: '20%' }, filter: false }
-  ] 
-  
-  
+  ]
+
+
   const getNewList = (status) => {
     axios.get(api_url + '/user/contactUsList').then((result) => {
       if (result.data.status) {
         var usersdatas = result.data.response.data;
         setItems(usersdatas);
-      } 
+      }
     }).catch((err) => {
       console.log(err);
     })
   }
 
-  
+
 
   return (
 
@@ -65,20 +65,20 @@ const DemoTable = () => {
           hover
           sorter
           pagination
-          // loading
-          // onRowClick={(item,index,col,e) => console.log(item,index,col,e)}
-          // onPageChange={(val) => console.log('new page:', val)}
-          // onPagesChange={(val) => console.log('new pages:', val)}
-          // onPaginationChange={(val) => console.log('new pagination:', val)}
-          // onFilteredItemsChange={(val) => console.log('new filtered items:', val)}
-          // onSorterValueChange={(val) => console.log('new sorter value:', val)}
-          // onTableFilterChange={(val) => console.log('new table filter:', val)}
-          // onColumnFilterChange={(val) => console.log('new column filter:', val)}
-          
+        // loading
+        // onRowClick={(item,index,col,e) => console.log(item,index,col,e)}
+        // onPageChange={(val) => console.log('new page:', val)}
+        // onPagesChange={(val) => console.log('new pages:', val)}
+        // onPaginationChange={(val) => console.log('new pagination:', val)}
+        // onFilteredItemsChange={(val) => console.log('new filtered items:', val)}
+        // onSorterValueChange={(val) => console.log('new sorter value:', val)}
+        // onTableFilterChange={(val) => console.log('new table filter:', val)}
+        // onColumnFilterChange={(val) => console.log('new column filter:', val)}
+
         />
       </CCardBody>
     </div>
-    
+
   )
 }
 

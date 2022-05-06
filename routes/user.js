@@ -1821,6 +1821,191 @@ router.post("/registerResearcherUser", function (req, res) {
   }
 });
 
+
+router.post('/AddContactUs', [
+  check('first_name', 'first name is required').notEmpty(),
+  check('last_name', 'last name is required').notEmpty(),
+  check('phone', 'phone is required').notEmpty(),
+  check('email', 'email is required').notEmpty()
+], (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    var error = errors.array();
+    res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+  } else {
+    var email = req.body.email;
+
+    User.checkUserSubscribtion(email, function (err, data) {
+      let totalrecord = data.length;
+      if (totalrecord) {
+        return res.json({ status: 0, 'response': { msg: 'You have already registered.' } });
+      } else {
+        var obj = {
+          first_name: req.body.first_name,
+          last_name: req.body.last_name,
+          phone: req.body.phone,
+          email: req.body.email,
+          description: req.body.description,
+          created_at: moment.utc().format('YYYY-MM-DD')
+        }
+        User.contactUs(obj, function (err, datas) {
+          if (err) {
+            return res.json({ status: 0, 'msg': err, 'response': { msg: err } });
+          } else {
+
+
+            var home_url;
+            var admin_app_url;
+            var hostname = req.headers.host;
+
+            if (hostname == env.LOCAL_HOST_USER_APP) {
+              home_url = env.APP_URL;
+              admin_app_url = env.ADMIN_APP_URL
+            } else {
+              home_url = env.APP_URL;
+              admin_app_url = env.ADMIN_APP_URL
+            }
+
+            var htmlUser = fs.readFileSync(__dirname + '/templates/contact/contact.html', 'utf8');
+
+            var dynamicHtml = {
+              home_url: home_url,
+              fullname: obj.first_name + " " + obj.last_name,
+              phone: obj.phone,
+              email: obj.email,
+              description: obj.description,
+            }
+
+            var view = { data: dynamicHtml };
+            var finalHtmlUser = mustache.render(htmlUser, view);
+            let transporter = nodemailer.createTransport(nodeMailerCredential); // node mailer credentials
+            let mailOptions1 = {
+              from: env.MAIL_FROM, // sender address
+              to: 'simanpreet.kaur@albertatechworks.com',
+              subject: 'Website Enquiry',
+              html: finalHtmlUser.replace(/&#x2F;/g, '/')
+            };
+            transporter.sendMail(mailOptions1, (error, info) => {
+              if (error) {
+                console.log(error);
+                //return res.json({status: 0, response : { msg: 'There was an email error',}  });
+              } else {
+              }
+            });
+
+            return res.json({ status: 1, 'msg': 'Request completed successfully.', 'response': { data: datas } });
+          }
+        });
+      }
+    });
+
+  }
+});
+
+
+router.get('/userSubscribeList', function (req, res) {
+  loggerData(req);
+  User.userSubscribeList(function (err, result) {
+    if (err) {
+      return res.json({ 'status': 0, 'response': { 'msg': err } });
+    } else {
+      if (result && result.length > 0) {
+
+        var userList = result.map(data => {
+          let retObj = {};
+          retObj['email'] = data.email;
+          retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
+          return retObj;
+        });
+
+        return res.json({ 'status': 1, 'response': { 'data': userList, 'msg': 'data found' } });
+      } else {
+        return res.json({ 'status': 0, 'response': { 'data': {}, 'msg': 'data found' } });
+      }
+    }
+  });
+});
+
+router.post('/subscribeUser', [
+  check('email', 'email is required').notEmpty()
+], (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    var error = errors.array();
+    res.json({ 'status': 0, 'response': { 'msg': error[0].msg, 'dev_msg': error[0].msg } });
+  } else {
+    var email = req.body.email;
+    User.checkUserSubscribtion(email, function (err, data) {
+      let totalrecord = data.length;
+      if (totalrecord) {
+        return res.json({ status: 0, 'response': { msg: 'You have already register for subscribtion' } });
+      } else {
+        var obj = {
+          email: req.body.email,
+          created_at: moment.utc().format('YYYY-MM-DD')
+        }
+        User.subscribeUser(obj, function (err, datas) {
+          if (err) {
+            return res.json({ status: 0, 'msg': err, 'response': { msg: err } });
+          } else {
+            return res.json({ status: 1, 'msg': 'Subscribe successfully.', 'response': { data: datas } });
+          }
+        });
+      }
+    });
+
+  }
+});
+
+
+router.get('/userSubscribeList', function (req, res) {
+  loggerData(req);
+  User.userSubscribeList(function (err, result) {
+    if (err) {
+      return res.json({ 'status': 0, 'response': { 'msg': err } });
+    } else {
+      if (result && result.length > 0) {
+
+        var userList = result.map(data => {
+          let retObj = {};
+          retObj['email'] = data.email;
+          retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
+          return retObj;
+        });
+
+        return res.json({ 'status': 1, 'response': { 'data': userList, 'msg': 'data found' } });
+      } else {
+        return res.json({ 'status': 0, 'response': { 'data': {}, 'msg': 'data found' } });
+      }
+    }
+  });
+});
+
+router.get('/contactUsList', function (req, res) {
+  loggerData(req);
+  User.contactUsList(function (err, result) {
+    if (err) {
+      return res.json({ 'status': 0, 'response': { 'msg': err } });
+    } else {
+      if (result && result.length > 0) {
+
+        var contactUsList = result.map(data => {
+          let retObj = {};
+          retObj['name'] = (data.first_name) ? data.first_name : '' + " " + (data.last_name) ? data.last_name : '';
+          retObj['phone'] = data.phone;
+          retObj['email'] = data.email;
+          retObj['description'] = data.description;
+          retObj['created_at'] = moment(data.created_at).format('YYYY-MM-DD');
+          return retObj;
+        });
+
+        return res.json({ 'status': 1, 'response': { 'data': contactUsList, 'msg': 'data found' } });
+      } else {
+        return res.json({ 'status': 0, 'response': { 'data': {}, 'msg': 'data found' } });
+      }
+    }
+  });
+});
 router.post(
   "/updateuserByadmin",
   passport.authenticate("jwt", { session: false }),

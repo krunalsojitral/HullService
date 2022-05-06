@@ -601,8 +601,12 @@ router.post("/getallevents", (req, res) => {
 });
 
 router.post("/getreflective", (req, res) => {
-  Event.getmemeberlimit(req.body.event_id, function (result) {
-    res.send({ data: result });
+  Event.getmemeberlimit(req.body.event_id, function (err, result) {
+    if (err){
+      return res.json({ status: 0, response: { msg: err } });
+    }else{
+      return res.send({ status: 1, data: result });
+    }
   });
 });
 
