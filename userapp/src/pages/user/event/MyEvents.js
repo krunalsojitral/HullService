@@ -17,6 +17,7 @@ export default function MyEvents() {
     const [token, setToken] = useState('');
     const [noresult, setNoresult] = React.useState(false)
 
+
     React.useEffect(() => {
         getEventData();
     }, [])
@@ -25,14 +26,14 @@ export default function MyEvents() {
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
         const config = { headers: { Authorization: `${token}` } };
-        axios.post(api_url + '/event/getMyEventList',{}, config).then((result) => {
+        axios.post(api_url + '/event/getMyEventList', {}, config).then((result) => {
             if (result.data.status) {
                 var eventdatas = result.data.response.data;
                 setEventData(eventdatas);
                 if (eventdatas.length > 0) {
                     setEventData(eventdatas);
                     setNoresult(false);
-                } else{
+                } else {
                     setNoresult(true);
                 }
             } else {
@@ -43,90 +44,74 @@ export default function MyEvents() {
         })
     }
 
-    return(
+    return (
         <div>
-            <Header/>
+            <Header />
 
-            <section className="second-banner-sec" style={{ background: `url('images/event-banner.png') no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
-                <div className="container">
-                    <div className="second-banner-inner">
-                        <div className="row">
-                            <div className="col-md-7">
-                                <div className="text-box">
-                                    <h2 className="wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">My Events </h2>
-                                </div>
-                            </div>
-                            <div className="col-md-5">
-                                <div className="image-holder">
-                                    <img src="images/second-banner-img.png" alt="" className="img-fluid wow animate__flipInX" data-wow-duration="1500ms" data-wow-delay="1000ms" />
-                                </div>
-                            </div>
+
+            <section className="researcher-sec researchContact dashboard-card">
+                <div className="container-fluid">
+                    <div className="row">
+                        <div className="col-md-2 side-col">
+                            <Sidebar />
                         </div>
-                        <div className="second-banner-shape wow animate__zoomIn" data-wow-duration="1500ms" data-wow-delay="1000ms">
-                            <img src="images/second-banner-shape.png" alt="" className="img-fluid" />
+                        <div className="col-md-10">
+                            <div className="container">
+                                <div className="row" style={{ "marginTop": "30px" }}>
+                                    <div className="col-12">
+
+                                        {eventdata && eventdata.map((data, index) => (
+
+                                            <div className="event-card wow animate__fadeIn  " data-wow-duration="1000ms" data-wow-delay="1000ms" >
+                                                <div className="event-card-left1">
+                                                    {!data.image && <img className="img-fluid img-event-fluid img-radius" alt="event-page" src="images/event-img.png" />}
+                                                    {data.image && <img className="img-fluid img-event-fluid img-radius" alt="event-page" src={data.image} />}
+                                                </div>
+                                                <div className="event-card-left1">
+                                                    <div className="event-name-title"><img src="images/user-icon.svg" alt="" className="img-fluid" /> {data.speaker_name} </div>
+                                                    <ul>
+                                                        <li><i><img src="images/clarity_date-solid.svg" alt="" /></i><span>{data.start_date}</span></li>
+                                                        <li><i><img src="images/bxs_time.svg" alt="" /></i><span>{data.start_time} - {data.end_time}</span></li>
+                                                        <li><i><img src="images/loc.svg" alt="" /></i><span>{data.location.substring(0, 15)}</span></li>
+                                                    </ul>
+                                                    <div className="desc event-list-line">
+                                                        <Link to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}>
+                                                            {data.title && data.title.substring(0, 120)}
+                                                        </Link>
+                                                    </div>
+                                                    <div className="event-readmore-btn"><Link to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}> readmore...</Link></div>
+                                                </div>
+                                                <div className="event-card-right1">
+                                                    <div className="price">
+                                                        {data.cost && <h4>${data.cost}</h4>}
+                                                        {(data.purchase_type == 'unpaid') && <h4>Free</h4>}
+                                                    </div>
+                                                    {data.event_purchase_id && <Link className="btn btn-default w-100" to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}>
+                                                        View
+                                                    </Link>}
+                                                </div>
+                                            </div>
+                                        ))}
+
+                                        {noresult &&
+                                            <div>
+                                                <center>
+                                                    <img height="250px" width="350px" src="images/hull-no-results.png" alt="author" />
+                                                    <div className="no-data">No results found.</div>
+                                                </center>
+                                            </div>
+                                        }
+
+
+                                    </div >
+                                </div >
+                            </div >
                         </div>
                     </div>
-                </div >
-            </section >
+                </div>
+            </section>
 
 
-            <div className="event-main">
-                <div className="container">
-                    {/* <div className="researcher-heading">
-                        <h3 className="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="1000ms">Our Events</h3>
-                        <p className="wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="1000ms">Training and courses are available for...
-                        </p>
-                    </div> */}
-                    <div className="row" style={{ "marginTop": "60px" }}>
-                        <div className="col-12">
-
-                            {eventdata && eventdata.map((data, index) => (
-
-                                <div className="event-card wow animate__fadeIn  " data-wow-duration="1000ms" data-wow-delay="1000ms" >
-                                    <div className="event-card-left1">
-                                        {!data.image && <img className="img-fluid img-event-fluid img-radius" alt="event-page" src="images/event-img.png" />}
-                                        {data.image && <img className="img-fluid img-event-fluid img-radius" alt="event-page" src={data.image} />}
-                                    </div>
-                                    <div className="event-card-left1">
-                                        <div className="event-name-title"><img src="images/user-icon.svg" alt="" className="img-fluid" /> {data.speaker_name} </div>
-                                        <ul>
-                                            <li><i><img src="images/clarity_date-solid.svg" alt="" /></i><span>{data.start_date}</span></li>
-                                            <li><i><img src="images/bxs_time.svg" alt="" /></i><span>{data.start_time} - {data.end_time}</span></li>
-                                            <li><i><img src="images/loc.svg" alt="" /></i><span>{data.location.substring(0, 15)}</span></li>
-                                        </ul>
-                                        <div className="desc event-list-line">
-                                            <Link to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}>
-                                                {data.title && data.title.substring(0, 120)}
-                                            </Link>
-                                        </div>
-                                        <div className="event-readmore-btn"><Link to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}> readmore...</Link></div>
-                                    </div>
-                                    <div className="event-card-right1">
-                                        <div className="price">
-                                            {data.cost && <h4>${data.cost}</h4>}
-                                            {(data.purchase_type == 'unpaid') && <h4>Free</h4>}
-                                        </div>
-                                        {data.event_purchase_id && <Link className="btn btn-default w-100" to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}>
-                                            View
-                                        </Link>}                                        
-                                    </div>
-                                </div>
-                            ))}
-
-                            {noresult &&
-                                <div>
-                                    <center>
-                                        <img height="250px" width="350px" src="images/hull-no-results.png" alt="author" />
-                                        <div className="no-data">No results found.</div>
-                                    </center>
-                                </div>
-                            }
-
-
-                        </div >
-                    </div >
-                </div >
-            </div>
 
 
             {/* <section>
@@ -169,9 +154,9 @@ export default function MyEvents() {
                     </div>
                 </div>
             </section>                         */}
-                  
 
-            <Footer/>
+
+           
         </div>
     )
 }
