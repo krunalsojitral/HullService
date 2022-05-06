@@ -21,20 +21,20 @@ function PostgresConnect() {
     };
   } else {
     this.init = function () {
-      // this.pool = new Pool({
-      //   user: 'postgres',
-      //   host: 'localhost',
-      //   database: 'hullservice',
-      //   password: 'Letsdoit@3214',
-      //   // port: { port },
-      // })
       this.pool = new Pool({
-        user: "postgres",
-        host: "localhost",
-        database: "hull_db",
-        password: "qcodes123",
+        user: 'postgres',
+        host: 'localhost',
+        database: 'hullservice',
+        password: 'Letsdoit@3214',
         // port: { port },
-      });
+      })
+      // this.pool = new Pool({
+      //   user: "postgres",
+      //   host: "localhost",
+      //   database: "hull_db",
+      //   password: "qcodes123",
+      //   // port: { port },
+      // });
     };
   }
 
