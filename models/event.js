@@ -406,7 +406,7 @@ function User() {
         function (err, result) {
           con.release();
           if (err) {
-            callback(result.rows);
+            callback(err);
           } else {
             callback(result.rows);
           }
@@ -424,7 +424,7 @@ function User() {
     function (err, result) {
       con.release();
       if (err) {
-        callback(result.rows);
+        callback(err);
       } else {
         callback(result.rows);
       }
@@ -440,7 +440,7 @@ function User() {
         function (err, result) {
           con.release();
           if (err) {
-            callback(result.rows);
+            callback(err);
           } else {
             callback(result.rows);
           }

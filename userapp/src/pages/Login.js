@@ -54,7 +54,8 @@ export default function Login() {
 					<div className="row">
 						<div className="col-lg-12">
 							<div className="login-content mt-6">
-								<div className="login-title">Welcome to the Virtual Center for the Study and Prevention of Developmental Trauma</div>
+                                <div className="login-title">Welcome to the Pathways to prevention</div>
+                                <div className="login-title-sub">A centre for childhood trauma</div>
 								
                                 <form onSubmit={handleSubmit(onSubmit)} className="wow animate__fadeIn mt-4" data-wow-duration="1000ms" data-wow-delay="1000ms">
 									<div className="row">

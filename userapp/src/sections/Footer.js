@@ -21,19 +21,19 @@ export default function Footer() {
 
     const onSubmit = (data, e) => {
         axios.post(api_url + "/user/subscribeUser", data).then((result) => {
-            if (result.data.status) {   
+            if (result.data.status) {
                 reset()
-                e.target.reset(); 
+                e.target.reset();
                 Swal.fire('Success!', 'Successfully subscribe user.', 'success');
-            }else{
+            } else {
                 Swal.fire('Oops...', result.data.response.msg, 'error')
             }
-            
+
         }).catch((err) => { console.log(err); });
-        
+
     }
 
-    return(
+    return (
 
         <div>
             <section className="newsletter-sec">
@@ -42,10 +42,10 @@ export default function Footer() {
                         <div className="col-12">
                             <div className="newsletter-inner  wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">
                                 <h4>Subscribe to get the latest news from us</h4>
-                                <form onSubmit={handleSubmit(onSubmit)}>                                   
+                                <form onSubmit={handleSubmit(onSubmit)}>
                                     <Controller
                                         name={"email"}
-                                         control={control}
+                                        control={control}
                                         rules={{ required: true }}
                                         render={({ field: { onChange, value } }) => (
                                             <input
@@ -120,8 +120,8 @@ export default function Footer() {
                 </div>
             </footer>
         </div>
-        
-        )
+
+    )
 }
 
 
