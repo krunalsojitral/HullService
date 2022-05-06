@@ -1,14 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import { Link } from 'react-router-dom';
 import useAuth from './../hooks/useAuth';
 import Header from './../sections/Header';
 import Footer from './../sections/Footer';
 import { useForm } from "react-hook-form";
 
-export default function Login() {  
+export default function Login() {
+    const ServicesRef = useRef(null);
+
+    useEffect(() => {
+        window.scrollTo({
+            top: ServicesRef.current.offsetTop,
+            behavior: "smooth",
+            // You can also assign value "auto"
+            // to the behavior parameter.
+        });
+    }, []);
 
     const { loginUser } = useAuth();
-   // const [isFirstRadioLoaded, setIsFirstRadioLoaded] = useState(false);  
+    // const [isFirstRadioLoaded, setIsFirstRadioLoaded] = useState(false);  
 
     const { register, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = async (data) => {
@@ -16,13 +26,13 @@ export default function Login() {
             email: data.email,
             password: data.password
         }
-       // setIsFirstRadioLoaded(currentIsLoaded => !currentIsLoaded)
+        // setIsFirstRadioLoaded(currentIsLoaded => !currentIsLoaded)
         await loginUser(obj);
     }
 
-    return(
+    return (
         <div>
-        <Header/>
+            <Header />
             <section className="second-banner-sec" style={{ background: `url('images/contact-banner-bg.png') no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
                 <div className="container">
                     <div className="second-banner-inner">
@@ -45,54 +55,54 @@ export default function Login() {
                 </div >
             </section>
 
-           
-            <section className="login-sec">
+
+            <section ref={ServicesRef} className="login-sec">
                 <div className="container">
-					<div className="researcher-heading">
-                        <h3 className="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="1000ms" style={{"visibility": "visible", "animation-duration": "500ms", "animation-name": "fadeInUp"}}>Login</h3>                        
+                    <div className="researcher-heading">
+                        <h3 className="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="1000ms" style={{ "visibility": "visible", "animation-duration": "500ms", "animation-name": "fadeInUp" }}>Login</h3>
                     </div>
-					<div className="row">
-						<div className="col-lg-12">
-							<div className="login-content mt-6">
-								<div className="login-title">Welcome to the Virtual Center for the Study and Prevention of Developmental Trauma</div>
-								
+                    <div className="row" >
+                        <div className="col-lg-12">
+                            <div className="login-content mt-6">
+                                <div className="login-title">Welcome to the Virtual Center for the Study and Prevention of Developmental Trauma</div>
+
                                 <form onSubmit={handleSubmit(onSubmit)} className="wow animate__fadeIn mt-4" data-wow-duration="1000ms" data-wow-delay="1000ms">
-									<div className="row">
-										<div className="col-md-12">
-											<div className="form-group">
+                                    <div className="row">
+                                        <div className="col-md-12">
+                                            <div className="form-group">
                                                 <input type="text" {...register("email", { required: true, pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i } })} className="form-control" placeholder="Email *" />
                                                 {errors?.email?.type === "required" && <small className="error">Email is required</small>}
                                                 {errors?.email?.type === "pattern" && (<small className="error">Invalid email address</small>)}
-											</div>
-										</div>
-										<div className="col-md-12">
-											<div className="form-group">
+                                            </div>
+                                        </div>
+                                        <div className="col-md-12">
+                                            <div className="form-group">
                                                 <input type="password" {...register("password", { required: true })} className="form-control" placeholder="Password *" />
                                                 {errors?.password?.type === "required" && <small className="error">Password is required</small>}
-											</div>
-										</div>
-										<div className="col-md-12">
-											<div className="form-group" style={{"text-align":"center"}}>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-12">
+                                            <div className="form-group" style={{ "text-align": "center" }}>
                                                 <button className="btn btn-default signin-btn" type="submit">Sign in</button>
-											</div>
-										</div>
-										<div className="col-md-12">
-											<p className="mt-4 login-text">
+                                            </div>
+                                        </div>
+                                        <div className="col-md-12">
+                                            <p className="mt-4 login-text">
                                                 <Link className="forgot-btn" to='/forgotpassword'>
                                                     Forgot your password?
-                                                </Link>                                                  
+                                                </Link>
                                             </p>
-										</div>
-									</div>
-								</form>
-							</div>
-						</div>
-					</div >
-				</div >
-            </section >  
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div >
+                </div >
+            </section >
 
-            
-        <Footer/>
+
+            <Footer />
         </div>
     )
 }

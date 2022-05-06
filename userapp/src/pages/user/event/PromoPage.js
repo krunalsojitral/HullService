@@ -19,6 +19,7 @@ export default function PromoPage() {
   const [reflective, setReflectivecount] = React.useState("");
   const [reflectiveData, setReflectiveData] = useState([]);
   const [Reflectivestate, setReflectivestate] = useState("");
+  const [token, setToken] = useState('');
 
   React.useEffect(() => {
     const params = new URLSearchParams(window.location.search); // id=123
@@ -27,6 +28,7 @@ export default function PromoPage() {
     getreflectiveData(event_id);
     const tokenString = localStorage.getItem("token");
     var token = JSON.parse(tokenString);
+    setToken(token);
     const config = {
       headers: { Authorization: `${token}` },
     };
@@ -270,6 +272,7 @@ export default function PromoPage() {
   return (
     <div>
       <Header />
+      {!token ? 
       <section
         className="second-banner-sec"
         style={{
@@ -317,7 +320,7 @@ export default function PromoPage() {
             </div>
           </div>
         </div>
-      </section>
+      </section> : null}
 
       <div className="event-main">
         <div className="container">
@@ -986,7 +989,8 @@ export default function PromoPage() {
                 </div>
             </section> */}
 
-      <Footer />
+{!token ?
+      <Footer /> : null }
     </div>
   );
 }

@@ -11,7 +11,7 @@ import $ from 'jquery';
 import { useForm } from "react-hook-form";
 
 
-export default function Events() { 
+export default function Events() {
 
     const [eventdata, setEventData] = useState([]);
     const [token, setToken] = useState('');
@@ -39,11 +39,11 @@ export default function Events() {
                     var eventdatas = result.data.response.data;
                     setEventData(eventdatas);
                     if (eventdatas.length > 0) {
-                        
+
                         setEventData(eventdatas);
                         setNoresult(false);
                     } else {
-                       // setNoresult(true);
+                        // setNoresult(true);
                     }
                 } else {
                     Swal.fire('Oops...', result.data.response.msg, 'error')
@@ -72,32 +72,32 @@ export default function Events() {
         })
     }
 
-    return(
+    return (
         <div>
-            <Header/>      
+            <Header />
 
-
-            <section className="second-banner-sec" style={{ background: `url('images/event-banner.png') no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
-                <div className="container">
-                    <div className="second-banner-inner">
-                        <div className="row">
-                            <div className="col-md-7">
+            {!token ?
+                <section className="second-banner-sec" style={{ background: `url('images/event-banner.png') no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
+                    <div className="container">
+                        <div className="second-banner-inner">
+                            <div className="row">
+                                <div className="col-md-7">
                                     <div className="text-box">
                                         <h2 className="wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">Our Events </h2>
+                                    </div>
+                                </div>
+                                <div className="col-md-5">
+                                    <div className="image-holder">
+                                        <img src="images/second-banner-img.png" alt="" className="img-fluid wow animate__flipInX" data-wow-duration="1500ms" data-wow-delay="1000ms" />
+                                    </div>
                                 </div>
                             </div>
-                            <div className="col-md-5">
-                                <div className="image-holder">
-                                    <img src="images/second-banner-img.png" alt="" className="img-fluid wow animate__flipInX" data-wow-duration="1500ms" data-wow-delay="1000ms" />
-                                </div>
+                            <div className="second-banner-shape wow animate__zoomIn" data-wow-duration="1500ms" data-wow-delay="1000ms">
+                                <img src="images/second-banner-shape.png" alt="" className="img-fluid" />
                             </div>
                         </div>
-                        <div className="second-banner-shape wow animate__zoomIn" data-wow-duration="1500ms" data-wow-delay="1000ms">
-                            <img src="images/second-banner-shape.png" alt="" className="img-fluid" />
-                        </div>
-                   </div>
-                </div >
-            </section >
+                    </div >
+                </section > : null}
 
             <section className="training-course-sec">
                 <div className="container">
@@ -111,18 +111,18 @@ export default function Events() {
                     </div>
                 </div>
             </section>
-			
+
             <div className="event-main">
                 <div className="container">
-					<div className="researcher-heading">
-                        <h3  className="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="1000ms">Our Events</h3>
-                        <p  className="wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="1000ms">Training and courses are available for... 
+                    <div className="researcher-heading">
+                        <h3 className="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="1000ms">Our Events</h3>
+                        <p className="wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="1000ms">Training and courses are available for...
                         </p>
                     </div>
-                    <div className="row" style={{"marginTop":"60px"}}>
+                    <div className="row" style={{ "marginTop": "60px" }}>
                         <div className="col-12">
 
-                            {eventdata && eventdata.map((data, index) => ( 
+                            {eventdata && eventdata.map((data, index) => (
 
                                 <div className="event-card wow animate__fadeIn  " data-wow-duration="1000ms" data-wow-delay="1000ms" >
                                     <div className="event-card-left1">
@@ -141,12 +141,12 @@ export default function Events() {
                                                 {data.title && data.title.substring(0, 120)}
                                             </Link>
                                         </div>
-                                        <div className="event-readmore-btn"><Link to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}> readmore...</Link></div>	
+                                        <div className="event-readmore-btn"><Link to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}> readmore...</Link></div>
                                     </div>
                                     <div className="event-card-right1">
                                         <div className="price">
                                             {data.cost && <h4>${data.cost}</h4>}
-                                            {(data.purchase_type == 'unpaid') && <h4>Free</h4>}        
+                                            {(data.purchase_type == 'unpaid') && <h4>Free</h4>}
                                         </div>
                                         {data.event_purchase_id && <Link className="btn btn-default w-100" to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}>
                                             View
@@ -154,22 +154,22 @@ export default function Events() {
                                         {!data.event_purchase_id && <Link className="btn btn-default w-100" to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}>
                                             Buy
                                         </Link>}
-                                    </div> 
+                                    </div>
                                 </div>
-                            ))}   
-      
-							
+                            ))}
+
+
                         </div >
-                    </div > 
+                    </div >
                 </div >
             </div>
 
-           
 
-            <Footer />
-        
+            {!token ?
+            <Footer /> : null}
+
         </div>
-            
+
     )
 }
 
