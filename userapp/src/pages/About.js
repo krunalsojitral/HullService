@@ -119,38 +119,27 @@ export default function About() {
                     <div className="container-fluid">
                         <div className="about-advocacy">
                             <div className="row">
-                                <div className="col-md-4 col-sm-6">
-                                    <div className="about-advocacy-box">
-                                        <span><svg width="92" height="103" viewBox="0 0 92 103" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M33.4479 45.1056C34.2893 44.2624 35.2889 43.5937 36.3895 43.1379C37.49 42.6821 38.6697 42.4482 39.8609 42.4496H70.1109C72.5177 42.4496 74.826 43.4057 76.5279 45.1076C78.2298 46.8095 79.1859 49.1178 79.1859 51.5246V75.7246C79.1859 78.1314 78.2298 80.4397 76.5279 82.1416C74.826 83.8435 72.5177 84.7996 70.1109 84.7996H49.6679L46.2799 81.4116C48.0332 77.7476 48.9408 73.7365 48.9359 69.6746V78.7496H70.1109C70.9132 78.7496 71.6826 78.4309 72.2499 77.8636C72.8172 77.2963 73.1359 76.5269 73.1359 75.7246V66.6496H48.9359V69.6746C48.946 63.4437 46.8095 57.3995 42.8859 52.5592V48.4996H39.8609C39.5638 48.4986 39.2682 48.5415 38.9836 48.6267C37.287 47.2342 35.4282 46.052 33.4479 45.1056ZM73.1359 51.5246C73.1359 50.7223 72.8172 49.9529 72.2499 49.3856C71.6826 48.8183 70.9132 48.4996 70.1109 48.4996H48.9359V60.5996H73.1359V51.5246ZM24.7359 42.613C22.7253 42.3907 20.6964 42.3907 18.6859 42.613V12.1996C18.6859 8.99049 19.9607 5.91281 22.2299 3.64362C24.4991 1.37443 27.5768 0.0996094 30.7859 0.0996094H58.5312C60.9372 0.101728 63.2439 1.05923 64.9442 2.76161L88.6299 26.4413C90.3301 28.1426 91.2854 30.4491 91.2859 32.8543V84.7996C91.2859 88.0087 90.0111 91.0864 87.7419 93.3556C85.4727 95.6248 82.395 96.8996 79.1859 96.8996H60.5216C60.0701 95.6243 59.3382 94.4666 58.3799 93.5116L55.7179 90.8496H79.1859C80.7904 90.8496 82.3293 90.2122 83.4639 89.0776C84.5985 87.943 85.2359 86.4042 85.2359 84.7996V36.3996H64.0609C61.654 36.3996 59.3458 35.4435 57.6439 33.7416C55.942 32.0397 54.9859 29.7314 54.9859 27.3246V6.14961H30.7859C29.1813 6.14961 27.6425 6.78702 26.5079 7.92161C25.3733 9.05621 24.7359 10.595 24.7359 12.1996V42.613ZM64.0609 30.3496H83.9835L61.0359 7.40196V27.3246C61.0359 28.1269 61.3546 28.8963 61.9219 29.4636C62.4892 30.0309 63.2586 30.3496 64.0609 30.3496ZM38.669 82.3554C41.875 78.068 43.338 72.7254 42.7637 67.4028C42.1893 62.0802 39.6202 57.1727 35.5734 53.668C31.5265 50.1632 26.3024 48.3214 20.9523 48.5132C15.6023 48.705 10.5234 50.9161 6.73792 54.7016C2.95242 58.4871 0.741275 63.566 0.549493 68.916C0.35771 74.2661 2.19952 79.4902 5.70426 83.5371C9.20899 87.5839 14.1165 90.153 19.4391 90.7274C24.7617 91.3018 30.1043 89.8387 34.3917 86.6327L49.8192 102.06C50.1 102.341 50.4335 102.565 50.8006 102.717C51.1678 102.869 51.5613 102.948 51.9587 102.948C52.3562 102.949 52.7498 102.871 53.1172 102.719C53.4845 102.567 53.8183 102.344 54.0996 102.063C54.3808 101.782 54.604 101.449 54.7564 101.082C54.9087 100.715 54.9873 100.321 54.9876 99.9237C54.9879 99.5262 54.9098 99.1326 54.758 98.7653C54.6061 98.398 54.3834 98.0641 54.1026 97.7829L38.6751 82.3554H38.669ZM36.8359 69.6746C36.8359 73.686 35.2424 77.5331 32.4059 80.3696C29.5694 83.2061 25.7223 84.7996 21.7109 84.7996C17.6995 84.7996 13.8524 83.2061 11.0159 80.3696C8.17941 77.5331 6.58589 73.686 6.58589 69.6746C6.58589 65.6632 8.17941 61.8161 11.0159 58.9796C13.8524 56.1431 17.6995 54.5496 21.7109 54.5496C25.7223 54.5496 29.5694 56.1431 32.4059 58.9796C35.2424 61.8161 36.8359 65.6632 36.8359 69.6746Z" fill="white" />
-                                        </svg></span>
-                                        <h4>Research</h4>
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"><svg width="17" height="15" viewBox="0 0 17 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M0.985884 7.99931C0.985884 8.26453 1.09124 8.51888 1.27878 8.70642C1.46631 8.89395 1.72067 8.99931 1.98588 8.99931H13.5719L9.27788 13.2913C9.18491 13.3843 9.11115 13.4947 9.06084 13.6161C9.01052 13.7376 8.98462 13.8678 8.98462 13.9993C8.98462 14.1308 9.01052 14.261 9.06084 14.3825C9.11115 14.504 9.18491 14.6143 9.27788 14.7073C9.37086 14.8003 9.48124 14.874 9.60272 14.9244C9.7242 14.9747 9.8544 15.0006 9.98588 15.0006C10.1174 15.0006 10.2476 14.9747 10.3691 14.9244C10.4905 14.874 10.6009 14.8003 10.6939 14.7073L16.6939 8.70731C16.787 8.61442 16.8609 8.50407 16.9113 8.38258C16.9617 8.26109 16.9877 8.13085 16.9877 7.99931C16.9877 7.86778 16.9617 7.73753 16.9113 7.61604C16.8609 7.49455 16.787 7.3842 16.6939 7.29131L10.6939 1.29131C10.5061 1.10354 10.2514 0.998047 9.98588 0.998047C9.72033 0.998047 9.46566 1.10354 9.27788 1.29131C9.09011 1.47908 8.98462 1.73376 8.98462 1.99931C8.98462 2.26486 9.09011 2.51954 9.27788 2.70731L13.5719 6.99931H1.98588C1.72067 6.99931 1.46631 7.10467 1.27878 7.2922C1.09124 7.47974 0.985884 7.73409 0.985884 7.99931Z" fill="white" />
-                                        </svg></a>
-                                    </div>
+                            <div class="col-md-4 col-sm-6">
+                                <div class="about-advocacy-box" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    <span><img src="images/research-icon2.svg" alt="" /></span>
+                                    <h4>Research</h4>
+                                    <a href="#" ><img src="images/left-short-arrow.svg" alt="" /></a>
                                 </div>
-                                <div className="col-md-4 col-sm-6">
-                                    <div className="about-advocacy-box red-bg">
-                                        <span><svg width="123" height="121" viewBox="0 0 123 121" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M99.9409 113.438H92.3159V102.094C92.3098 97.0813 90.2995 92.2759 86.7259 88.7316C83.1523 85.1873 78.3072 83.1935 73.2534 83.1875H50.3784C45.3245 83.1935 40.4794 85.1873 36.9058 88.7316C33.3322 92.2759 31.3219 97.0813 31.3159 102.094V113.438H23.6909V102.094C23.6989 95.0763 26.5132 88.3485 31.5164 83.3864C36.5195 78.4242 43.3029 75.633 50.3784 75.625H73.2534C80.3288 75.633 87.1122 78.4242 92.1153 83.3864C97.1185 88.3485 99.9328 95.0763 99.9409 102.094V113.438ZM19.8784 22.6875C18.8672 22.6875 17.8975 23.0859 17.1825 23.795C16.4675 24.5041 16.0659 25.4659 16.0659 26.4688V60.5H23.6909V26.4688C23.6909 25.4659 23.2892 24.5041 22.5742 23.795C21.8592 23.0859 20.8895 22.6875 19.8784 22.6875Z" fill="white" />
-                                            <path d="M16.0659 7.5625V15.125H35.1284V41.5938C35.1284 48.6137 37.9401 55.3461 42.9449 60.31C47.9498 65.2738 54.7379 68.0625 61.8159 68.0625C68.8938 68.0625 75.6819 65.2738 80.6868 60.31C85.6916 55.3461 88.5034 48.6137 88.5034 41.5938V15.125H107.566V7.5625H16.0659ZM42.7534 15.125H80.8784V26.4688H42.7534V15.125ZM61.8159 60.5C56.7602 60.5 51.9115 58.5081 48.3366 54.9625C44.7617 51.4169 42.7534 46.608 42.7534 41.5938V34.0312H80.8784V41.5938C80.8784 46.608 78.87 51.4169 75.2951 54.9625C71.7202 58.5081 66.8715 60.5 61.8159 60.5Z" fill="white" />
-                                        </svg></span>
-                                        <h4>Training Education</h4>
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"><svg width="17" height="15" viewBox="0 0 17 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M0.985884 7.99931C0.985884 8.26453 1.09124 8.51888 1.27878 8.70642C1.46631 8.89395 1.72067 8.99931 1.98588 8.99931H13.5719L9.27788 13.2913C9.18491 13.3843 9.11115 13.4947 9.06084 13.6161C9.01052 13.7376 8.98462 13.8678 8.98462 13.9993C8.98462 14.1308 9.01052 14.261 9.06084 14.3825C9.11115 14.504 9.18491 14.6143 9.27788 14.7073C9.37086 14.8003 9.48124 14.874 9.60272 14.9244C9.7242 14.9747 9.8544 15.0006 9.98588 15.0006C10.1174 15.0006 10.2476 14.9747 10.3691 14.9244C10.4905 14.874 10.6009 14.8003 10.6939 14.7073L16.6939 8.70731C16.787 8.61442 16.8609 8.50407 16.9113 8.38258C16.9617 8.26109 16.9877 8.13085 16.9877 7.99931C16.9877 7.86778 16.9617 7.73753 16.9113 7.61604C16.8609 7.49455 16.787 7.3842 16.6939 7.29131L10.6939 1.29131C10.5061 1.10354 10.2514 0.998047 9.98588 0.998047C9.72033 0.998047 9.46566 1.10354 9.27788 1.29131C9.09011 1.47908 8.98462 1.73376 8.98462 1.99931C8.98462 2.26486 9.09011 2.51954 9.27788 2.70731L13.5719 6.99931H1.98588C1.72067 6.99931 1.46631 7.10467 1.27878 7.2922C1.09124 7.47974 0.985884 7.73409 0.985884 7.99931Z" fill="white" />
-                                        </svg></a>
-                                    </div>
+                            </div>
+                            <div class="col-md-4 col-sm-6">
+                                <div class="about-advocacy-box red-bg" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    <span><img src="images/carbon-education.svg" alt="" /></span>
+                                    <h4>Training Education</h4>
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"><img src="images/left-short-arrow.svg" alt="" /></a>
                                 </div>
-                                <div className="col-md-4 col-sm-6">
-                                    <div className="about-advocacy-box blue-bg">
-                                        <span><img src="images/speaker-icon.svg" alt="" /></span>
-                                        <h4>Advocacy</h4>
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"><svg width="17" height="15" viewBox="0 0 17 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M0.985884 7.99931C0.985884 8.26453 1.09124 8.51888 1.27878 8.70642C1.46631 8.89395 1.72067 8.99931 1.98588 8.99931H13.5719L9.27788 13.2913C9.18491 13.3843 9.11115 13.4947 9.06084 13.6161C9.01052 13.7376 8.98462 13.8678 8.98462 13.9993C8.98462 14.1308 9.01052 14.261 9.06084 14.3825C9.11115 14.504 9.18491 14.6143 9.27788 14.7073C9.37086 14.8003 9.48124 14.874 9.60272 14.9244C9.7242 14.9747 9.8544 15.0006 9.98588 15.0006C10.1174 15.0006 10.2476 14.9747 10.3691 14.9244C10.4905 14.874 10.6009 14.8003 10.6939 14.7073L16.6939 8.70731C16.787 8.61442 16.8609 8.50407 16.9113 8.38258C16.9617 8.26109 16.9877 8.13085 16.9877 7.99931C16.9877 7.86778 16.9617 7.73753 16.9113 7.61604C16.8609 7.49455 16.787 7.3842 16.6939 7.29131L10.6939 1.29131C10.5061 1.10354 10.2514 0.998047 9.98588 0.998047C9.72033 0.998047 9.46566 1.10354 9.27788 1.29131C9.09011 1.47908 8.98462 1.73376 8.98462 1.99931C8.98462 2.26486 9.09011 2.51954 9.27788 2.70731L13.5719 6.99931H1.98588C1.72067 6.99931 1.46631 7.10467 1.27878 7.2922C1.09124 7.47974 0.985884 7.73409 0.985884 7.99931Z" fill="white" />
-                                        </svg></a>
-                                    </div>
+                            </div>
+                            <div class="col-md-4 col-sm-6">
+                                <div class="about-advocacy-box blue-bg" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    <span><img src="images/speaker-icon.svg" alt="" /></span>
+                                    <h4>Advocacy</h4>
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"><img src="images/left-short-arrow.svg" alt="" /></a>
                                 </div>
+                            </div>
                             </div>
                         </div>
                     </div>
@@ -201,27 +190,27 @@ export default function About() {
                 <Footer />
             </div>
 
-            <div className="team-modal research-modal">
-                <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div className="modal-dialog modal-dialog-centered">
-                        <div className="modal-content">
-                            <div className="modal-body">
-                                <a data-bs-dismiss="modal" className="close-icon" href="#"><img src="images/crose-icon.svg" alt="" /></a>
-                                <div className="team-modal-inner">
-                                    <div className="image-holder">
-                                        <img src="images/research-icon-big.svg" alt="" className="img-fluid" />
-                                    </div>
-                                    <div className="text-box">
-                                        <h4>Research </h4>
-                                        <p>Pathways to Prevention is a platform for research that seeks to understand the nature and dynamics of developmental trauma and effective treatments for recovery from difficult childhood experiences. These learnings will be disseminated to global influencers in health care, social services, government, and universities. The goal is to research, understand, and effectively treat the impact of developmental trauma before the issues become critical.
-                                        </p>
-                                    </div>
+            <div className="team-modal " >
+            <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog modal-dialog-centered" >
+                    <div className="modal-content"> 
+                        <div className="modal-body" style={{background: '#daf6f9'}}>
+                            <a data-bs-dismiss="modal"  className="close-icon" href="#!"><img src="images/crose-icon.svg" alt="" /></a>
+                            <div className="team-modal-inner">
+                                <div className="image-holder" style={{width: '200px'}}>
+                                    <img src="images/research-icon-big.svg" alt="" className="img-fluid" />
                                 </div>
-                            </div>
-                        </div>
+                                <div className="text-box">
+                                    <h4>Research </h4> 
+                                    <p>Pathways to Prevention is a platform for research that seeks to understand the nature and dynamics of developmental trauma and effective treatments for recovery from difficult childhood experiences. These learnings will be disseminated to global influencers in health care, social services, government, and universities. The goal is to research, understand, and effectively treat the impact of developmental trauma before the issues become critical.  
+                                    </p>
+                                </div>
+                            </div> 
+                        </div> 
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     )
     }
