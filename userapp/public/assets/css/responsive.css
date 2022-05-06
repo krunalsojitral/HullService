@@ -2,8 +2,8 @@
     .container {
         max-width: 1654px;
     }
-}
 
+}
 @media (max-width: 1890px) {
     
     .ringLeft {
@@ -13,7 +13,8 @@
         left: -84px;
         max-width: 360px;
     }
-   
+
+
 
 }
 @media (max-width: 1800px) {
@@ -22,9 +23,14 @@
     }
     .banner-inner .text-box {
         padding-left: 50px;
+        left:60px !important;
     }
     .banner-bg {
-        left: 0px;
+     left: 80px;
+     width: 490px;
+     bottom: 32px;
+    /* right: 20px; */
+
     }
     .banner-inner .text-box h1 {
         font-size: 52px;
@@ -37,41 +43,63 @@
     .banner-inner .image-holder {
         margin: 10px 5px 0 0px;
         max-width: 690px;
+        top:50px !important;
     }
+
+
     .banner-sec {
         padding: 40px 0 0 0;
         margin: 0 0 -190px 0;
     }
     .event-shape {
-        left: 180px;
-        top: 60px;
-        max-width: 180px;
+        left: 290px;
+        top: 84px;
+        max-width:180px;
+        
     }
+
+
+    .upcoming-event-inner{
+        top: 38px !important;
+        padding-left:60px !important;
+       
+    }
+    
     .upcoming-event-inner h3 {
-        font-size: 38px;
+        font-size: 32px;
         margin: 0 0 120px 0;
     }
     .upcoming-event-inner .image-holder {
-        max-width: 560px;
+        max-width: 390px;
         width: 100%;
         margin-left: auto;
         position: relative;
+      
+      
     }
+    .upcoming-event-inner .image-shape {
+        max-width: 300px !important; 
 
-    .upcoming-event-inner .text-box h4 {
-        font-size: 27px;
+    }
+.upcoming-event-inner .text-box h4 {
+        font-size: 20px;
         padding: 0 0 22px 0;
     }
     .upcoming-event-inner .text-box p {
-        font-size: 16px;
+        font-size: 11px;
         margin: 30px 0;
     }
-    .image-shape {
+    
+
+
+    .image-shape{
         left: -80px;
         top: 50%;
         max-width: 450px;
         transform: translate(0, -50%);
     }
+
+
     .upcoming-event-inner .btn-default {
         margin: 80px auto 0;
     }
@@ -81,6 +109,7 @@
     .training-courses-sec {
         padding: 0 0 50px 0;
         margin: -90px 0 0 0;
+        padding-left:50px !important ;
     }
     .title img {
         height: 210px;
@@ -98,16 +127,21 @@
         margin: 0 0 30px 0;
     }
     .newsletter-sec {
-        padding: 50px 0 0 0;
-        margin: 0 0 -245px 0;
+      padding: 70px 0px 0px 0px;
+      margin:0  0px -245px 0px;
+     
+    
     }
+
     .newsletter-inner h4 {
-        font-size: 38px;
-        margin: 0 0 30px 0;
+font-size: 38px;
+margin: 0 0 30px 0;
     }
-    .newsletter-inner {
-        padding: 70px 30px;
-    }
+.newsletter-inner {
+padding: 70px 30px;
+width: 900px !important;
+
+        }
     footer {
         padding: 330px 0 50px 0;
     }
@@ -121,7 +155,7 @@
     }
     .second-banner-shape {
         bottom: -250px;
-        left: 240px;
+        left: 40px !important;;
         max-width: 160px;
     }
     .about-us-sec {
@@ -424,15 +458,15 @@
         font-size: 18px;
     }
     .title-course .card-title.card-title-courses {
-        max-width: 100px;
-        height: 100px;
+        max-width: 140px;
+        height: 140px;
     }
     .researcher-heading h3:after {
         height: 3px;
         max-width: 165px;
     }
     .title-course .card-title.card-title-courses img {
-        max-width: 50px;
+        max-width: 75px;
     }
     .title-course .card-title {
         margin-right: 30px;
@@ -513,6 +547,7 @@
     .banner-inner .text-box h1 {
         font-size: 42px;
         line-height: 120%;
+        
     }
     .banner-inner .text-box p {
         font-size: 14px;
@@ -526,7 +561,11 @@
         max-width: 525px;
     }
     .event-shape {
-        max-width: 125px;
+        max-width: 125px ;
+        /* top:40px !important;
+        right:20px !important;        */
+
+/* right: 100px; */
     }
     .upcoming-event-sec {
         padding: 245px 0 170px 0;
@@ -540,7 +579,7 @@
         padding: 0 0 22px 0;
     }
     .upcoming-event-inner .text-box a {
-        font-size: 16px;
+        font-size: 13px;
     }
     .upcoming-event-inner .btn-default {
         max-width: 325px;
@@ -551,6 +590,8 @@
         font-size: 30px;
         margin: 0 0 55px 0;
     }
+
+
     .courses-detail {
         padding: 30px 25px;
         margin-bottom: 30px;
@@ -738,15 +779,23 @@
         max-width: 630px;
     }
     .banner-bg {
-        top: 60px;
-        max-width: 570px;
-    }
-    .upcoming-event-inner .image-holder {
-        max-width: 480px;
-        width: 100%;
-        margin-left: auto;
-        position: relative;
-    }
+max-width:670px;
+margin-left:90px;
+bottom:100px !important;
+left:40px !important;
+ }
+
+ .upcoming-event-inner .text-box {
+  padding-right:100px !important;
+  margin-top:-5px !important;
+ }
+
+ .upcoming-event-inner .image-holder {
+    max-width: 480px;
+    width: 100%;
+    margin-left: auto;
+    position: relative;
+}
     .image-shape {
         left: -82px;
         max-width: 350px;
@@ -794,6 +843,14 @@
     .navbar-nav .nav-item {
         margin-left: 20px;
     }
+
+    .newsletter-sec{
+
+    /* top:100px!important; */
+    margin-bottom:-145px !important;
+    }
+
+
     .navbar-brand {
         max-width: 155px;
     }
@@ -802,10 +859,12 @@
     }
     .banner-inner .text-box h1 {
         font-size: 44px;
+        padding-left: 20px !important;
     }
     .banner-inner .text-box p {
-        font-size: 14px;
+        font-size: 13px !important;
         margin: 15px 0;
+        padding: 20px !important;
         max-width: 435px;
     }
     .banner-inner .image-holder {
@@ -813,10 +872,11 @@
         max-width: 525px;
     }
     .banner-bg {
-        top: 80px;
-        max-width: 470px;
-        left: -10px;
-    }
+        top:80px !important    ;
+        max-width:670px;
+        left:-15px !important;
+       }
+
     .banner-sec {
         padding: 30px 0 0 0;
         margin: 0 0 -140px 0;
@@ -835,7 +895,21 @@
     }
     .upcoming-event-inner .text-box {
         margin: 0;
+        bottom:50px !important;
+        margin-left:-20px;
+        /* padding-left:-300px !important; */
+        
+
     }
+
+
+    .upcoming-event-inner .text-box p{
+        font-size:10px !important;
+        width: 400px !important;
+
+    }
+
+
     .upcoming-event-inner .text-box h4 {
         font-size: 24px;
         padding: 0 0 20px 0;
@@ -931,8 +1005,8 @@
         max-width: 800px;
     }
     .about-advocacy-box {
-        height: 306px;
-        width: 306px;
+        height: 206px;
+        width: 206px;
     }
     .about-advocacy-box h4 {
         font-size: 20px;
@@ -1078,6 +1152,17 @@
         height: 16px;
     }
 }
+@media (max-width: 820px) {
+.upcoming-event-sec{
+width: 900px;
+height: fit-content;
+
+}
+.event-shape{
+   left:280px !important;
+bottom: 50px !important;
+}
+}
 @media (max-width: 991px) {
     .navbar-toggler {
         padding: 0;
@@ -1131,9 +1216,11 @@
     }
     .banner-inner .text-box h1 {
         font-size: 38px;
+        padding-left: 20px !important;
     }
     .banner-inner .text-box p {
-        font-size: 13px;
+        font-size: 11px !important;
+        padding: 20px !important;
         margin: 10px 0;
         max-width: 435px;
         line-height: 21px;
@@ -1154,15 +1241,14 @@
         margin: 0 0 -70px 0;
     }
     .banner-bg {
-        top: 86px;
-        max-width: 390px;
-        left: -12px;
+   bottom:-40px !important;
+     
     }
-    .event-shape {
+.event-shape {
         left: 270px;
-        top: -4px;
-        max-width: 90px;
-    }
+       top:30px !important;
+ max-width:90px;
+}
     .upcoming-event-inner .text-box h4 {
         font-size: 20px;
         padding: 0 0 15px 0;
@@ -1231,7 +1317,10 @@
         font-size: 14px;
     }
     .newsletter-sec {
-        margin: 0 0 -170px 0;
+    margin: 0 0 -170px 0 ;
+    /* padding-right:300px !important; */
+     margin-left:-10px !important;
+   
     }
     .newsletter-inner h4 {
         font-size: 24px;
@@ -1316,8 +1405,8 @@
         max-width: 580px;
     }
     .about-advocacy-box {
-        height: 232px;
-        width: 232px;
+        height: 132px;
+        width: 132px;
     }
     .about-advocacy-box span {
         max-width: 60px;
@@ -1478,9 +1567,11 @@
     }
     .banner-inner .text-box {
         padding-left: 0;
+        left:-2px !important;
     }
     .banner-inner .text-box h1 {
         font-size: 40px;
+        padding-left: 20px !important;
     }
     .banner-inner .text-box p {
         font-size: 16px;
@@ -1492,6 +1583,7 @@
         top: 45px;
         max-width: 430px;
         left: -12px;
+        
     }
     .banner-inner .image-holder {
         float: none;
@@ -1502,7 +1594,8 @@
         max-width: 100%;
     }
     .event-shape {
-        display: none;
+        display:none ;
+        /* right: 300px; */
     }
     .upcoming-event-sec {
         padding: 270px 0 100px 0;
@@ -1567,6 +1660,7 @@
     .newsletter-inner {
         padding: 40px 30px;
         border-radius: 120px 0px;
+
     }
     .footer-link {
         padding: 0;
@@ -1739,10 +1833,58 @@
     }
 }
 @media (max-width: 575px) {
-    .upcoming-event-inner .image-holder {
+
+.upcoming-event-inner{
+    margin-right:200px!important;
+    
+}
+
+
+.upcoming-event-inner .btn-default {
+margin-left:-600px !important;
+margin-bottom: 30px !important;
+}
+
+.upcoming-event-inner .text-box h4 {
+
+    margin-left:-45px !important;
+    width: 300px !important;
+
+}
+.upcoming-event-inner h3 {
+margin-left:-600px !important;
+}
+.upcoming-event-inner .text-box p {
+margin-left:-50px !important;
+width: 350px!important;   
+}
+
+.upcoming-event-inner .image-holder {
         max-width: 260px;
         margin: 40px auto 0;
+        margin-left:-20px !important ;
+/* padding: 20px !important; */
     }
+
+/* .upcoming-event-inner .btn-default {
+    margin-left:-200px !important ;
+
+} */
+.image-holder {
+margin-bottom: 80px !important;
+ }
+ .banner-bg{
+width:400px !important;
+height:400px !important;
+top:100px !important;
+left:-100px !important;
+
+}
+
+.upcoming-event-inner h3 {
+margin-right:30px !important;
+}
+
     .image-shape {
         left: -39px;
         max-width: 200px;
@@ -1753,6 +1895,7 @@
     .newsletter-inner {
         padding: 30px 20px;
         border-radius: 50px 0px;
+        width: 100% !important;
     }
     .newsletter-inner h4 {
         font-size: 18px;
@@ -2040,6 +2183,7 @@
     .banner-inner .text-box h1 {
         font-size: 30px;
     }
+
     .banner-inner .text-box p {
         font-size: 14px;
         margin: 10px 0;
@@ -2048,7 +2192,26 @@
     .banner-sec {
         margin: 0 0 -150px 0;
     }
-    .upcoming-event-sec {
+
+.banner-bg {
+width: 400px !important;
+height: 400px !important;
+margin-left:75px !important;
+padding: 20px;
+bottom: 100px !important;
+
+}
+
+.banner-inner .image-holder img {
+margin-bottom:-90px !important;
+}
+
+
+.upcoming-event-inner .text-box p {
+    width: 300px !important;
+}
+
+.upcoming-event-sec {
         padding: 180px 0 100px 0;
     }
     .upcoming-event-inner h3 {
