@@ -365,6 +365,8 @@ router.post(
         ],
         function (error, event) {
           if (error) {
+
+            console.log(error);
             return res.json({ status: 0, response: { msg: error } });
           } else {
             return res.json({
@@ -396,16 +398,14 @@ router.post(
         [
           function (done) {
             var user_id = req.user.id;
-            Event.getEventDataByIdWithLogin(
-              user_id,
-              event_id,
-              function (err, result) {
+            Event.getEventDataByIdWithLogin(user_id,event_id,function (err, result) {
                 if (err) {
                   done({
                     status: 0,
                     response: { msg: "Something went wrong." },
                   });
                 } else {
+                
                   var imageLink;
                   if (req.headers.host == env.ADMIN_LIVE_URL) {
                     imageLink = env.ADMIN_LIVE_URL;
@@ -460,8 +460,7 @@ router.post(
                   event["session_count"] = result[0].session_count;
                   event["session_type"] = result[0].session_type;
                   event["session_location"] = result[0].session_location;
-                  event["session_purchase_type"] =
-                    result[0].session_purchase_type;
+                  event["session_purchase_type"] = result[0].session_purchase_type;
                   event["session_cost"] = result[0].session_cost;
                   event["group_session"] = [];
                   event["videoURL"] = [];
@@ -474,9 +473,7 @@ router.post(
           },
           function (event, done1) {
             if (event["event_id"] != "") {
-              Event.getGroupSessionByEventId(
-                event["event_id"],
-                function (err, result) {
+              Event.getGroupSessionByEventId(event["event_id"],function (err, result) {
                   if (result && result.length > 0) {
                     event["group_session"] = result;
                     done1(null, event);
@@ -491,9 +488,7 @@ router.post(
           },
           function (event, done2) {
             if (event["event_id"] != "") {
-              Event.getVideoByEventId(
-                event["event_id"],
-                function (err, result) {
+              Event.getVideoByEventId(event["event_id"],function (err, result) {
                   if (result && result.length > 0) {
                     event["videoURL"] = result;
                     done2(null, event);
@@ -508,9 +503,7 @@ router.post(
           },
           function (event, done3) {
             if (event["event_id"] != "") {
-              Event.getWebURLByEventId(
-                event["event_id"],
-                function (err, result) {
+              Event.getWebURLByEventId(event["event_id"],function (err, result) {
                   if (result && result.length > 0) {
                     event["webPageUrl"] = result;
                     done3(null, event);
@@ -560,6 +553,7 @@ router.post(
         ],
         function (error, event) {
           if (error) {
+            console.log(error);
             return res.json({ status: 0, response: { msg: error } });
           } else {
             return res.json({

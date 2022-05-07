@@ -82,7 +82,7 @@ export default function Events() {
                     <div className="tab-content" id="myTabContent">
                         <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                             <div className="row">
-                                <div className="back-btn-right clearfix" style="text-align:right;">
+                                <div className="back-btn-right clearfix" style="textAlign:right;">
                                     <div className="rate-btn mt-5 "><a href="#" className="btn btn-default white sm-btn"><span>Back</span></a></div>
                                 </div>
                             </div>

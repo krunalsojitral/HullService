@@ -479,7 +479,6 @@ function User() {
           if (err) {
             callback(err, null);
           } else {
-            console.log(result.rows);
             callback(null, result.rows);
           }
         }
@@ -529,38 +528,43 @@ function User() {
         [id],
         function (err, result) {
           con.release();
-          if (result.rows.length === 0) {
+          if (err){
             callback("session does not exist.", null);
-          } else {
-            var array = result.rows.map((data) => {
-              var bytes = CryptoJS.AES.decrypt(data.session_data, "mypassword");
-              var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+          }else{
+            if (result.rows.length === 0) {
+              callback("session does not exist.", null);
+            } else {
+              var array = result.rows.map((data) => {
+                var bytes = CryptoJS.AES.decrypt(data.session_data, "mypassword");
+                var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
 
-              console.log(data.session_start_time);
-              console.log(
-                moment(data.session_start_time, "HH:mm:ss").format(
-                  "YYYY-MM-DDTHH:mm:ss.SSS[Z]"
-                )
-              );
-              console.log(new Date());
-              let retObj = {};
-              retObj["event_resource_id"] = data.event_resource_id;
-              retObj["session_no_of_participate"] =
-                data.session_no_of_participate;
-              retObj["session_timezone"] = data.session_timezone;
-              retObj["group_number"] = data.group_number;
-              //retObj['session_start_time'] = moment(data.session_start_time, 'HH:mm:ss').format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
-              retObj["session_start_time"] = new Date();
-              retObj["session_end_time"] = moment(
-                data.session_end_time,
-                "HH:mm:ss"
-              ).format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
-              retObj["session_data"] = decryptedData;
-              retObj["event_id"] = data.event_id;
-              return retObj;
-            });
-            callback(null, array);
+                console.log(data.session_start_time);
+                console.log(
+                  moment(data.session_start_time, "HH:mm:ss").format(
+                    "YYYY-MM-DDTHH:mm:ss.SSS[Z]"
+                  )
+                );
+                console.log(new Date());
+                let retObj = {};
+                retObj["event_resource_id"] = data.event_resource_id;
+                retObj["session_no_of_participate"] =
+                  data.session_no_of_participate;
+                retObj["session_timezone"] = data.session_timezone;
+                retObj["group_number"] = data.group_number;
+                //retObj['session_start_time'] = moment(data.session_start_time, 'HH:mm:ss').format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
+                retObj["session_start_time"] = new Date();
+                retObj["session_end_time"] = moment(
+                  data.session_end_time,
+                  "HH:mm:ss"
+                ).format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
+                retObj["session_data"] = decryptedData;
+                retObj["event_id"] = data.event_id;
+                return retObj;
+              });
+              callback(null, array);
+            }
           }
+         
         }
       );
     });

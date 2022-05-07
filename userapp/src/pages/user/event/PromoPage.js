@@ -70,8 +70,9 @@ export default function PromoPage() {
     axios
       .post(api_url + "/event/getallevents", { event_id: event_id })
       .then((result) => {
-        console.log(result.data.data.length);
-        setallevents(result.data.data.length);
+        if (result.data.status){
+          setallevents(result.data.data.length);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -79,8 +80,10 @@ export default function PromoPage() {
     axios
       .post(api_url + "/event/getreflective", { event_id: event_id })
       .then((result) => {
-        console.log(result.data.data[0]?.session_no_of_participate);
-        setReflectivecount(result.data.data[0]?.session_no_of_participate);
+        if (result.data.status){
+          console.log(result.data.data[0]?.session_no_of_participate);
+          setReflectivecount(result.data.data[0]?.session_no_of_participate);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -168,13 +171,15 @@ export default function PromoPage() {
     axios
       .post(api_url + "/event/getreflective", { event_id: parseInt(event_id) })
       .then((result) => {
-        console.log(result.data.data);
-        var data = result.data.data;
-        console.log("groupedData");
-        var data1 = groupArrayOfObjects(data, "group_number");
-        const gdata = Object.values(data1);
-        console.log(JSON.stringify(gdata));
-        setReflectiveData(gdata);
+        if (result.data.status){
+          console.log(result.data.status);
+          var data = result.data.data;
+          console.log("groupedData");
+          var data1 = groupArrayOfObjects(data, "group_number");
+          const gdata = Object.values(data1);
+          console.log(JSON.stringify(gdata));
+          setReflectiveData(gdata);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -371,7 +376,7 @@ export default function PromoPage() {
               <div className="row">
                 <div
                   className="back-btn-right clearfix"
-                  style={{ "text-align": "right" }}
+                  style={{ "textAlign": "right" }}
                 >
                   <div className="rate-btn mt-5 ">
                     <a href="#" className="btn btn-default white sm-btn">
@@ -537,19 +542,10 @@ export default function PromoPage() {
               </div>
             </div>
 
-            <div
-              className="tab-pane fade"
-              id="profile"
-              role="tabpanel"
-              aria-labelledby="profile-tab"
-            >
+            <div className="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
               <div className="reflective-card">
                 <h4>{eventDetail.session_title}</h4>
-                <p
-                  dangerouslySetInnerHTML={{
-                    __html: eventDetail.session_about,
-                  }}
-                ></p>
+                <p dangerouslySetInnerHTML={{ __html: eventDetail.session_about}}></p>
                 <div className="card-warning">
                   <i>
                     <img src="images/waring.svg" alt="" />
@@ -567,7 +563,7 @@ export default function PromoPage() {
                     Duration : 4 Months(21 APRIL to 21 July)
                   </h5>
 
-                  {reflectiveData.map((item, index) => (
+                  {reflectiveData.length > 0 && reflectiveData.map((item, index) => (
                     <div
                       className="card"
                       style={{ padding: "20px", marginTop: "20px" }}

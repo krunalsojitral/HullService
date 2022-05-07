@@ -117,22 +117,22 @@ export default function About() {
                     <div className="container-fluid">
                         <div className="about-advocacy">
                             <div className="row">
-                            <div class="col-md-4 col-sm-6">
-                                <div class="about-advocacy-box" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <div className="col-md-4 col-sm-6">
+                                <div className="about-advocacy-box" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                     <span><img src="images/research-icon2.svg" alt="" /></span>
                                     <h4>Research</h4>
                                     <a href="#" ><img src="images/left-short-arrow.svg" alt="" /></a>
                                 </div>
                             </div>
-                            <div class="col-md-4 col-sm-6">
-                                <div class="about-advocacy-box red-bg" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <div className="col-md-4 col-sm-6">
+                                <div className="about-advocacy-box red-bg" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                     <span><img src="images/carbon-education.svg" alt="" /></span>
                                     <h4>Training Education</h4>
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"><img src="images/left-short-arrow.svg" alt="" /></a>
                                 </div>
                             </div>
-                            <div class="col-md-4 col-sm-6">
-                                <div class="about-advocacy-box blue-bg" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <div className="col-md-4 col-sm-6">
+                                <div className="about-advocacy-box blue-bg" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                     <span><img src="images/speaker-icon.svg" alt="" /></span>
                                     <h4>Advocacy</h4>
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"><img src="images/left-short-arrow.svg" alt="" /></a>
