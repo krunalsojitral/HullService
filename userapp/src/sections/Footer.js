@@ -40,7 +40,7 @@ export default function Footer() {
                 <div className="container">
                     <div className="row">
                         <div className="col-12">
-                            <div className="newsletter-inner  wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">
+                            <div className="newsletter-inner  wow animate__fadeIn" data-wow-duration="500ms" data-wow-delay="0ms" data-wow-offset="1">
                                 <h4>Subscribe to get the latest news from us</h4>
                                 <form onSubmit={handleSubmit(onSubmit)}>
                                     <Controller

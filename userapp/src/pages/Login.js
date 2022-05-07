@@ -39,16 +39,16 @@ export default function Login() {
                         <div className="row">
                             <div className="col-md-7">
                                 <div className="text-box">
-                                    <h2 className="wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">Login</h2>
+                                    <h2 className="wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="10ms" data-wow-offset="1">Login</h2>
                                 </div>
                             </div>
                             <div className="col-md-5">
                                 <div className="image-holder">
-                                    <img src="images/second-banner-img.png" alt="" className="img-fluid wow animate__flipInX" data-wow-duration="1500ms" data-wow-delay="1000ms" />
+                                    <img src="images/second-banner-img.png" alt="" className="img-fluid wow animate__flipInX" data-wow-duration="1000ms" data-wow-delay="10ms" data-wow-offset="1"/>
                                 </div>
                             </div>
                         </div>
-                        <div className="second-banner-shape wow animate__zoomIn" data-wow-duration="1500ms" data-wow-delay="1000ms">
+                        <div className="second-banner-shape wow animate__zoomIn" data-wow-duration="1500ms" data-wow-delay="10ms" data-wow-offset="1">
                             <img src="images/second-banner-shape.png" alt="" className="img-fluid" />
                         </div>
                     </div>
@@ -58,8 +58,8 @@ export default function Login() {
 
             <section ref={ServicesRef} className="login-sec">
                 <div className="container">
-                    <div className="researcher-heading">
-                        <h3 className="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="1000ms" style={{ "visibility": "visible", "animation-duration": "500ms", "animation-name": "fadeInUp" }}>Login</h3>
+					<div className="researcher-heading">
+                        <h3 className="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="10ms" style={{"visibility": "visible", "animation-duration": "500ms", "animation-name": "fadeInUp"}}>Login</h3>                        
                     </div>
 					<div className="row">
 						<div className="col-lg-12">
@@ -67,10 +67,10 @@ export default function Login() {
                                 <div className="login-title">Welcome to the Pathways to prevention</div>
                                 <div className="login-title-sub">A centre for childhood trauma</div>
 								
-                                <form onSubmit={handleSubmit(onSubmit)} className="wow animate__fadeIn mt-4" data-wow-duration="1000ms" data-wow-delay="1000ms">
-                                    <div className="row">
-                                        <div className="col-md-12">
-                                            <div className="form-group">
+                                <form onSubmit={handleSubmit(onSubmit)} className="wow animate__fadeIn mt-4" data-wow-duration="800ms" data-wow-delay="10ms">
+									<div className="row">
+										<div className="col-md-12">
+											<div className="form-group">
                                                 <input type="text" {...register("email", { required: true, pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i } })} className="form-control" placeholder="Email *" />
                                                 {errors?.email?.type === "required" && <small className="error">Email is required</small>}
                                                 {errors?.email?.type === "pattern" && (<small className="error">Invalid email address</small>)}
