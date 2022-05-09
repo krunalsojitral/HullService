@@ -139,7 +139,7 @@
                                                                         <td align="center">
                                                                             <a style="display: inline-block;background-color:#006577;color:#FFF;text-decoration:none;width:70%;border-radius:5px;padding:7px 0;font-size:22px;margin:25px 0;"
                                                                                 href="{{data.eventLink}}"
-                                                                                title="Verify email address">Join Metting</a>
+                                                                                title="Verify email address">Attend it as a guest</a>
                                                                         </td>
                                                                     </tr>
 
@@ -148,10 +148,20 @@
                                                                         <td align="center">
                                                                             <a style="display: inline-block;background-color:#358EA6;color:#FFF;text-decoration:none;width:70%;border-radius:5px;padding:7px 0;font-size:22px;margin:5px 0 25px 0;"
                                                                                 href="{{data.registerURL}}"
-                                                                                title="Verify email address">Click Here Register</a>
+                                                                                title="Verify email address">Go to my Tickets</a>
                                                                         </td>
                                                                     </tr>
                                                                     {{/data.registerURL}}
+
+                                                                    {{#data.event_session_url}}
+                                                                    <tr>
+                                                                        <td align="center">
+                                                                            <a style="display: inline-block;background-color:#006577;color:#FFF;text-decoration:none;width:70%;border-radius:5px;padding:7px 0;font-size:22px;margin:25px 0;"
+                                                                                href="{{data.event_session_url}}" title="Verify email address">Check event Session</a>
+                                                                        </td>
+                                                                    </tr>
+                                                                    {{/data.event_session_url}}
+                                                                    
                                                                 </tbody>
                                                             </table>
 

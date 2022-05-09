@@ -9,7 +9,7 @@ import { useHistory } from "react-router-dom";
 
 
 export default function Footer() {
-
+    let history = useHistory();
     const {
         handleSubmit,
         control,
@@ -33,6 +33,10 @@ export default function Footer() {
 
     }
 
+    const handleOpenDirection = () => {
+        history.push('/');
+    }
+
     return (
 
         <div>
@@ -42,7 +46,7 @@ export default function Footer() {
                         <div className="col-12">
                             <div className="newsletter-inner  wow animate__fadeIn" data-wow-duration="500ms" data-wow-delay="0ms" data-wow-offset="1">
                                 <h4>Subscribe to get the latest news from us</h4>
-                                <form onSubmit={handleSubmit(onSubmit)}>
+                                <form onSubmit={handleSubmit(onSubmit)}>                                    
                                     <Controller
                                         name={"email"}
                                         control={control}
@@ -80,7 +84,7 @@ export default function Footer() {
                                     <div className="row">
                                         <div className="col-md-5">
                                             <div className="footer-logo">
-                                                <a href="index.html"><img src="images/footer-logo.png" alt="" /></a>
+                                                <a onClick={(e) => handleOpenDirection()}><img src="images/footer-logo.png" alt="" /></a>
                                             </div>
                                             <div className="text-footer">
                                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magnis dui magna volutpat ut  pellentesque nam posuere at cras.</p>
