@@ -16,6 +16,7 @@ export default function ActivationAccount() {
     console.log(params);
     let token = params.get('activationcode')
     let email = params.get('email')
+    console.log(email);
     var obj = {
       email: email,
       email_verify_token: token
@@ -25,12 +26,9 @@ export default function ActivationAccount() {
     });
   }, []);
 
-
   return (
     <div>
-
       <Header />
-
       <div className="login-section">
         <div className="container">
           <div className="row">
@@ -62,7 +60,6 @@ export default function ActivationAccount() {
           </div>
         </div>
       </div>
-
       <Footer />
     </div>
   )

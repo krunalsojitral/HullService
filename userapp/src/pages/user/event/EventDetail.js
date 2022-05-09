@@ -9,20 +9,26 @@ import api_url from '../../../components/Apiurl';
 import { useModal } from 'react-hooks-use-modal';
 import { useHistory } from "react-router-dom";
 export default function Events() {
+   
 
     let history = useHistory();
+
     const [eventId, setEventId] = React.useState(0)
     const [eventDetail, seteventDetail] = React.useState({})
+   
 
     React.useEffect(() => {
+
         const params = new URLSearchParams(window.location.search) // id=123
         let event_id = params.get('id')
         setEventId(event_id);
+
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
         const config = {
             headers: { Authorization: `${token}` }
         };
+
         axios.post(api_url + '/event/getEventDataById', { event_id: event_id }).then((result) => {
             if (result.data.status) {
                 var eventdata = result.data.response.data;
@@ -48,6 +54,8 @@ export default function Events() {
     return(
         <div>
             <Header/>
+
+
             <section className="second-banner-sec" style={{ background: `url('images/event-banner.png') no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
                 <div className="container">
                     <div className="second-banner-inner">
@@ -82,7 +90,7 @@ export default function Events() {
                     <div className="tab-content" id="myTabContent">
                         <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                             <div className="row">
-                                <div className="back-btn-right clearfix" style="textAlign:right;">
+                                <div className="back-btn-right clearfix" style="text-align:right;">
                                     <div className="rate-btn mt-5 "><a href="#" className="btn btn-default white sm-btn"><span>Back</span></a></div>
                                 </div>
                             </div>
