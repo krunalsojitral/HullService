@@ -6,8 +6,10 @@ const passport = require('passport');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const compression = require('compression');
-
 const port = process.env.PORT || 6161;
+// const schedule = require("node-schedule");
+var Event = require("./");
+
 
 var app = express();
 app.use(compression()); // Enable compression

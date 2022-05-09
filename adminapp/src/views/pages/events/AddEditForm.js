@@ -119,6 +119,17 @@ const AddEditForm = ({ match }) => {
     }
   };
 
+  const handleInput = (e) => {
+    if (!e.target.value) {
+      setValue(e.target.value);
+      setCity(e.target.value);
+      setCityError("City is required.");
+    } else {
+      setValue(e.target.value);
+      setCity(e.target.value);
+      setCityError("");
+    }
+  };
   const changeSpeakerFileHandler = (event) => {
     if (event.target.files && event.target.files[0]) {
       var reader = new FileReader();
@@ -195,23 +206,22 @@ const AddEditForm = ({ match }) => {
     data.location = city;
     data.description = contentEditor;
     const formData = new FormData();
-    formData.append("data", JSON.stringify(data));
 
-    axios
-      .post("/event/checkalreadyzoom", { email: data.speaker_email })
-      .then((result) => {})
-      .catch((err) => {
-        alert(`${data.speaker_email} is not member of hull service organisation would you able to add this email to hull
-        service organisation it will take 10-15 mintes?`);
-        alert(
-          `Note : The ${data.speaker_email} will have confirmation link & the need to approve in order to become host`
-        );
+    var zoomstatus;
+    await axios
+      .post(api_url + "/event/checkalreadyzoom", { email: data.speaker_email })
+      .then(async (result) => {
+        console.log(result.data);
+        console.log(result.data.status);
+        zoomstatus = await result.data.status;
+      })
+      .catch(async (err) => {
+        zoomstatus = "notfound";
       });
 
     if (selectedFile) {
       formData.append("image", selectedFile, selectedFile.name);
     }
-
     if (selectedSpeakerFile) {
       formData.append(
         "speaker_image",
@@ -219,7 +229,6 @@ const AddEditForm = ({ match }) => {
         selectedSpeakerFile.name
       );
     }
-
     if (selectedSessionFile) {
       formData.append(
         "session_image",
@@ -235,12 +244,24 @@ const AddEditForm = ({ match }) => {
         }
       }
     }
-    axios
+
+    data.zoomstatus = zoomstatus;
+
+    if (zoomstatus == "notfound" || zoomstatus == "pending") {
+      alert(`speaker ${data.speaker_email} is not avilable in our zoom organisation account 
+     we have added them and send a verification email to the speaker ,
+      please ask the speaker to verify the email inorder to create event
+
+      NOTE: The verification process may take 10-15 minutes`);
+    }
+    await formData.append("data", JSON.stringify(data));
+
+    await axios
       .post(api_url + "/event/addEventByadmin", formData, {})
       .then((result) => {
         if (result.data.status) {
           Swal.fire("Success!", result.data.response.msg, "success");
-          // history.push("/events");
+          history.push("/events");
         } else {
           Swal.fire("Oops...", result.data.response.msg, "error");
         }
@@ -249,7 +270,6 @@ const AddEditForm = ({ match }) => {
         console.log(err.message);
       });
   };
-
   const nextTab = async (tab) => {
     if (tab == 1) {
       const result = await trigger(["title", "start_date", "end_date"]);
@@ -552,8 +572,6 @@ const AddEditForm = ({ match }) => {
   const handleSelect =
     ({ description }) =>
     () => {
-      // When user selects a place, we can replace the keyword without request data from API
-      // by setting the second parameter to "false"
       console.log(description);
 
       setValue(description, false);
@@ -1019,7 +1037,7 @@ const AddEditForm = ({ match }) => {
                       {event_type_selected === "offline" && (
                         <CRow>
                           <CCol xs="12">
-                            <CFormGroup>
+                            {/* <CFormGroup>
                               <CLabel htmlFor="Location">
                                 Location{" "}
                                 <span className="label-validation">*</span>
@@ -1037,9 +1055,9 @@ const AddEditForm = ({ match }) => {
                                   />
                                 )}
                               ></Controller>
-                            </CFormGroup>
+                            </CFormGroup> */}
 
-                            {/* <CFormGroup>
+                            <CFormGroup>
                               <CLabel htmlFor="title">Location</CLabel>
                               <div ref={ref}>
                                 <input
@@ -1049,10 +1067,16 @@ const AddEditForm = ({ match }) => {
                                   placeholder="Address *"
                                   className="form-control input"
                                 />
-                                {status === "OK" && <ul className="suggestion">{renderSuggestions()}</ul>}
-                                {cityError && <small className="error">{cityError}</small>}
+                                {status === "OK" && (
+                                  <ul className="suggestion">
+                                    {renderSuggestions()}
+                                  </ul>
+                                )}
+                                {cityError && (
+                                  <small className="error">{cityError}</small>
+                                )}
                               </div>
-                            </CFormGroup> */}
+                            </CFormGroup>
                           </CCol>
                         </CRow>
                       )}
@@ -1331,7 +1355,7 @@ const AddEditForm = ({ match }) => {
                         </CRow>
                       )}
 
-                      <CRow>
+                      {/* <CRow>
                         <CCol xs="12">
                           <CFormGroup>
                             <CLabel htmlFor="ccnumber">Sessions Image</CLabel>
@@ -1360,7 +1384,7 @@ const AddEditForm = ({ match }) => {
                             </span>
                           </CFormGroup>
                         </CCol>
-                      </CRow>
+                      </CRow> */}
 
                       <CRow>
                         <CCol xs="12">
@@ -1434,6 +1458,45 @@ const AddEditForm = ({ match }) => {
                         </CRow>
                       )}
 
+                      <CRow>
+                        <CCol xs="12">
+                          <CFormGroup>
+                            <CLabel htmlFor="title">
+                              Session End Date{" "}
+                              <span className="label-validation">*</span>
+                            </CLabel>
+                            <Controller
+                              name={"session_end_date"}
+                              control={control}
+                              rules={{ required: true }}
+                              render={({ field: { onChange, value } }) => (
+                                <ReactDatePicker
+                                  showTimeSelect
+                                  className="form-control"
+                                  selected={value}
+                                  onChange={onChange}
+                                  dateFormat="yyyy/MM/dd h:mm a"
+                                  dateFormatCalendar="yyyy/MM/dd h:mm a"
+                                  minDate={new Date()}
+                                  maxDate={new Date(2030, 11)}
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  isClearable
+                                  placeholderText="session end date"
+                                />
+                              )}
+                            ></Controller>
+                          </CFormGroup>
+                          {errors.start_date &&
+                            errors.start_date.type === "required" && (
+                              <p style={{ color: "red", fontSize: "12px" }}>
+                                End date is required.
+                              </p>
+                            )}
+                        </CCol>
+                      </CRow>
                       <CRow>
                         <CCol xs="12">
                           <button

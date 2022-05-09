@@ -5,14 +5,16 @@ var asyn = require("async");
 var moment = require("moment");
 var CryptoJS = require("crypto-js");
 const rq = require("request-promise");
-
+const {
+  adduseronzoom,
+  createzoomsession,
+} = require("../controller/function/eventfunction");
 function User() {
   connection.init();
-
   this.addEventByadmin = function (record, resources, callback) {
     connection.acquire(function (err, con) {
       const sql =
-        "INSERT INTO event(title,description,location,event_type,zoom_host_link,zoom_join_link,timezone,image,speaker_name,speaker_email,speaker_image,start_date,end_date,purchase_type,cost,about_speaker,status,created_at,session_title,session_about,session_group_count,session_count,session_type,session_location,session_image,session_purchase_type,session_cost) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27) RETURNING *";
+        "INSERT INTO event(title,description,location,event_type,zoom_host_link,zoom_join_link,timezone,image,speaker_name,speaker_email,speaker_image,start_date,end_date,purchase_type,cost,about_speaker,status,created_at,session_title,session_about,session_group_count,session_count,session_type,session_location,session_image,session_purchase_type,session_cost,reflective_expiry_date) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28) RETURNING *";
       const values = [
         record.title,
         record.description,
@@ -42,7 +44,9 @@ function User() {
         record.session_image,
         record.session_purchase_type,
         record.session_cost,
+        record.reflective_expiry_date,
       ];
+      console.log(record.reflective_expiry_date);
       con.query(sql, values, function (err, result) {
         if (err) {
           if (env.DEBUG) {
@@ -105,6 +109,48 @@ function User() {
     });
   };
 
+  this.listzoomuser = function (callback) {
+    connection.acquire(function (err, con) {
+      if (err) {
+        callback(err, null);
+      } else {
+        var sql = "SELECT * FROM public.zoom ORDER BY zoom_id ASC";
+
+        con.query(sql, function (err, result) {
+          if (err) {
+            callback(err, null);
+          } else {
+            callback(null, result.rows);
+          }
+        });
+      }
+    });
+  };
+
+  this.addzoomuser = (data, event_id, callback) => {
+    connection.acquire(function (err, con) {
+      if (err) {
+        callback(err, null);
+      } else {
+        const sql =
+          "INSERT INTO zoom(first_name,last_name,email,event_id) VALUES($1,$2,$3,$4) RETURNING *";
+        const values = [
+          data[0].speaker_name,
+          data[0].speaker_name,
+          data[0].speaker_email,
+          event_id,
+        ];
+        adduseronzoom(data[0].speaker_email, data[0].speaker_name);
+        con.query(sql, values, function (err, result) {
+          if (err) {
+            callback(err, null);
+          } else {
+            callback(null, result);
+          }
+        });
+      }
+    });
+  };
   function updateProductByID(event_id, cols) {
     // Setup static beginning of query
     var query = ["UPDATE event"];
@@ -375,7 +421,6 @@ function User() {
       }
     });
   };
-
   this.getAllAdminEvent = function (status, callback) {
     connection.acquire(function (err, con) {
       var sql = "";
@@ -386,7 +431,6 @@ function User() {
       } else {
         sql = "SELECT * FROM event order by event_id DESC";
       }
-
       con.query(sql, array, function (err, result) {
         con.release();
         if (err) {
@@ -409,9 +453,9 @@ function User() {
         function (err, result) {
           con.release();
           if (err) {
-            callback(err);
+            callback(err, null);
           } else {
-            callback(result.rows);
+            callback(null, result.rows);
           }
         }
       );
@@ -421,19 +465,19 @@ function User() {
   this.groupmember = async (event_id, callback) => {
     connection.acquire(function (err, con) {
       con.query(
-    "SELECT * FROM reflective_session GROUP BY group_number where event_id = $1",
-    [event_id],
-    function (err, result) {
-      con.release();
-      if (err) {
-        callback(err);
-      } else {
-        callback(result.rows);
-      }
-    }
-  );
-});
-  }
+        "SELECT * FROM reflective_session GROUP BY group_number where event_id = $1",
+        [event_id],
+        function (err, result) {
+          con.release();
+          if (err) {
+            callback(err, null);
+          } else {
+            callback(null, result.rows);
+          }
+        }
+      );
+    });
+  };
   this.alleventdata = async (event_id, callback) => {
     connection.acquire(function (err, con) {
       con.query(
@@ -442,9 +486,9 @@ function User() {
         function (err, result) {
           con.release();
           if (err) {
-            callback(err);
+            callback(err, null);
           } else {
-            callback(result?.rows);
+            callback(null, result.rows);
           }
         }
       );
@@ -464,7 +508,7 @@ function User() {
             }
             callback(err, null);
           } else {
-            callback(null, record);
+            callback(null, record.rows);
           }
         }
       );
@@ -481,6 +525,7 @@ function User() {
           if (err) {
             callback(err, null);
           } else {
+            console.log(result.rows);
             callback(null, result.rows);
           }
         }
@@ -514,9 +559,9 @@ function User() {
         function (err, results) {
           con.release();
           if (err) {
-            callback(results?.rows[0]);
+            callback(err, null);
           } else {
-            callback(results?.rows[0]);
+            callback(null, results.rows);
           }
         }
       );
@@ -530,43 +575,38 @@ function User() {
         [id],
         function (err, result) {
           con.release();
-          if (err){
+          if (result.rows.length === 0) {
             callback("session does not exist.", null);
-          }else{
-            if (result.rows.length === 0) {
-              callback("session does not exist.", null);
-            } else {
-              var array = result.rows.map((data) => {
-                var bytes = CryptoJS.AES.decrypt(data.session_data, "mypassword");
-                var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+          } else {
+            var array = result.rows.map((data) => {
+              var bytes = CryptoJS.AES.decrypt(data.session_data, "mypassword");
+              var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
 
-                console.log(data.session_start_time);
-                console.log(
-                  moment(data.session_start_time, "HH:mm:ss").format(
-                    "YYYY-MM-DDTHH:mm:ss.SSS[Z]"
-                  )
-                );
-                console.log(new Date());
-                let retObj = {};
-                retObj["event_resource_id"] = data.event_resource_id;
-                retObj["session_no_of_participate"] =
-                  data.session_no_of_participate;
-                retObj["session_timezone"] = data.session_timezone;
-                retObj["group_number"] = data.group_number;
-                //retObj['session_start_time'] = moment(data.session_start_time, 'HH:mm:ss').format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
-                retObj["session_start_time"] = new Date();
-                retObj["session_end_time"] = moment(
-                  data.session_end_time,
-                  "HH:mm:ss"
-                ).format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
-                retObj["session_data"] = decryptedData;
-                retObj["event_id"] = data.event_id;
-                return retObj;
-              });
-              callback(null, array);
-            }
+              console.log(data.session_start_time);
+              console.log(
+                moment(data.session_start_time, "HH:mm:ss").format(
+                  "YYYY-MM-DDTHH:mm:ss.SSS[Z]"
+                )
+              );
+              console.log(new Date());
+              let retObj = {};
+              retObj["event_resource_id"] = data.event_resource_id;
+              retObj["session_no_of_participate"] =
+                data.session_no_of_participate;
+              retObj["session_timezone"] = data.session_timezone;
+              retObj["group_number"] = data.group_number;
+              //retObj['session_start_time'] = moment(data.session_start_time, 'HH:mm:ss').format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
+              retObj["session_start_time"] = new Date();
+              retObj["session_end_time"] = moment(
+                data.session_end_time,
+                "HH:mm:ss"
+              ).format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
+              retObj["session_data"] = decryptedData;
+              retObj["event_id"] = data.event_id;
+              return retObj;
+            });
+            callback(null, array);
           }
-         
         }
       );
     });
@@ -882,7 +922,7 @@ function User() {
     });
   };
 
-  this.insertReflective = async (arr) => {
+  this.insertReflective = async (arr, presentuser) => {
     connection.acquire(async (err, con) => {
       const storedata = async (
         join_url,
@@ -908,14 +948,32 @@ function User() {
         ];
         await con.query(sessionsql, sessionvalue, function (err, result) {});
       };
-
-      for (var i = 0; i < arr.length; i++) {
-        for (var k = 0; k < arr[i].session_data.length; k++) {
-          var Objectpara = await arr[i].session_data[k].zoom_link;
-          await rq(Objectpara).then(async (res) => {
+      if (presentuser == "true") {
+        for (var i = 0; i < arr.length; i++) {
+          for (var k = 0; k < arr[i].session_data.length; k++) {
+            var Objectpara = await arr[i].session_data[k].zoom_link;
+            await rq(Objectpara).then(async (res) => {
+              await storedata(
+                res?.start_url,
+                res?.join_url,
+                arr[i].session_data[k].value,
+                arr[i].session_start_time,
+                arr[i].session_end_time,
+                arr[i].session_no_of_participate,
+                arr[i].group_number,
+                arr[i].event_id
+              );
+            });
+          }
+        }
+      } else {
+        for (var i = 0; i < arr.length; i++) {
+          for (var k = 0; k < arr[i].session_data.length; k++) {
+            var Objectpara = await arr[i].session_data[k].zoom_link;
+            // await rq(Objectpara).then(async (res) => {
             await storedata(
-              res?.start_url,
-              res?.join_url,
+              "res?.start_url",
+              "res?.join_url",
               arr[i].session_data[k].value,
               arr[i].session_start_time,
               arr[i].session_end_time,
@@ -923,7 +981,8 @@ function User() {
               arr[i].group_number,
               arr[i].event_id
             );
-          });
+            // });
+          }
         }
       }
     });
@@ -1008,6 +1067,44 @@ function User() {
     });
   };
 
+  this.zoomsesssionEvent = async (event_id, email) => {
+    connection.acquire(function (err, con) {
+      const sql = "UPDATE event SET zoom_status =$1 WHERE event_id = $2";
+      const values = [1, event_id];
+      con.query(sql, values, function (err, result) {});
+      const sql1 = "UPDATE zoom SET status = $1 WHERE event_id = $2";
+      const values1 = [1, event_id];
+      con.query(sql1, values1, function (err, result) {});
+      const sql2 = "SELECT * FROM reflective_session where event_id = $1";
+      const values2 = [event_id];
+      console.log(event_id);
+      con.query(sql2, values2, async (err, result) => {
+        console.log(result.rows[0]);
+        if (!err) {
+          const session = createzoomsession(
+            email,
+            result.rows[0].group_number,
+            result.rows[0].session_time_zone,
+            1
+          );
+          await rq(session).then(async (res) => {
+            const sql3 =
+              "UPDATE reflective_session SET join_url = $1 zoom_url = $2 zoom_status = $3 WHERE event_id = $4";
+            const values3 = [res?.join_url, res?.start_url, 1, event_id];
+            con.query(sql3, values3, function (err, result) {
+              if (!err) {
+                console.log(err);
+              } else {
+                console.log("working");
+              }
+            });
+          });
+        } else {
+          console.log(err);
+        }
+      });
+    });
+  };
   this.listUserEmail = function (status, callback) {
     connection.acquire(function (err, con) {
       var sql = "";
@@ -1034,14 +1131,18 @@ function User() {
   this.addEventPurchase = function (record, callback) {
     connection.acquire(function (err, con) {
       const eventsql =
-        "INSERT INTO event_purchase(user_id,event_id,payment_id,event_purchase_date,status) VALUES($1,$2,$3,$4,$5) RETURNING *";
+        "INSERT INTO event_purchase(user_id,event_id,payment_id,event_purchase_date,event_type,user_email,group_type,status) VALUES($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *";
       const eventvalues = [
         record.user_id,
         record.event_id,
         record.payment_id,
         record.event_purchase_date,
+        record.event_type,
+        record.email,
+        record.group_type,
         1,
       ];
+      console.log("eventvalues : ", eventvalues);
       con.query(eventsql, eventvalues, function (err, result) {
         con.release();
         if (err) {

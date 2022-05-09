@@ -23,12 +23,13 @@ var CryptoJS = require("crypto-js");
 const crypto = require("crypto");
 const {
   checkUserPresent,
-  addzoomuser,
+  adduseronzoom,
 } = require("../controller/function/eventfunction");
 
 const {
   addEventByadmin,
   updataEventByadmin,
+  updatesession,
 } = require("../controller/eventController");
 
 const {
@@ -36,6 +37,7 @@ const {
   getInformations,
   addMembers,
 } = require("../config/mailchimp");
+const { updateResearchRequestSignUpCount } = require("../models/user");
 
 function loggerData(req) {
   if (env.DEBUG) {
@@ -43,27 +45,67 @@ function loggerData(req) {
     //  console.log(moment().format('YYYY-MM-DD h:m:s A') + ": " + URL);
   }
 }
+
 router.post("/addEventByadmin", addEventByadmin);
 router.post("/updateEventByadmin", updataEventByadmin);
 router.get("/addmember", sendmail);
 
 router.post("/checkalreadyzoom", async (req, res) => {
-  const options = await checkUserPresent();
+  const options = await checkUserPresent(req.body.email);
   rp(options)
     .then(async (response) => {
-      var userArray = response.users;
-      const already = userArray.find((user) => user.email == req.body.email);
-      if (already) {
-        return res.status(200).send({ status: true, message: "user exist" });
-      } else {
-        await addzoomuser(req.body.email);
-        return res
-          .status(404)
-          .send({ status: true, message: "user not exist" });
-      }
+      res.send(response);
     })
-    .catch(function (err) {});
+    .catch(function (err) {
+      console.log("not-----found");
+      res.status(501).send({ err: err.message });
+    });
 });
+
+router.get("/schedule", async (req, res) => {
+  await Event.listzoomuser(async (err, result) => {
+    if (!err) {
+      await result.map(async (item) => {
+        console.log(item.email);
+        if (item.status == 0 && item.email != null) {
+          const options = await checkUserPresent(item.email);
+          updatesession(item.event_id, item.email);
+          rp(options)
+            .then(async (response) => {
+              if (response.status == "pending") {
+                await adduseronzoom(item.email, item.first_name);
+                res.send({ status: 1, msg: "success" });
+              } else if (response.status == "active") {
+                await updatesession(item.event_id, item.email);
+                res.send({ status: 1, msg: "failure" });
+              }
+            })
+            .catch(async (err) => {
+              await adduseronzoom(item.email, item.first_name);
+              res.send({ status: 0, msg: "update" });
+            });
+        }
+      });
+    }
+  });
+});
+
+router.get("/listzoomuser", async (req, res) => {
+  Event.listzoomuser((err, result) => {
+    if (err) {
+      res.status(501).send({
+        status: 0,
+        data: err.message,
+      });
+    } else {
+      res.status(200).send({
+        status: 1,
+        data: result,
+      });
+    }
+  });
+});
+
 router.get("/getEventList", function (req, res) {
   loggerData(req);
   var status = req.query.status;
@@ -266,6 +308,8 @@ router.post(
                   event["session_location"] = result[0].session_location;
                   event["session_purchase_type"] =
                     result[0].session_purchase_type;
+                  event["reflective_expiry_date"] =
+                    result[0].reflective_expiry_date;
                   event["session_cost"] = result[0].session_cost;
                   event["cohost"] = result;
                   event["group_session"] = [];
@@ -365,8 +409,6 @@ router.post(
         ],
         function (error, event) {
           if (error) {
-
-            console.log(error);
             return res.json({ status: 0, response: { msg: error } });
           } else {
             return res.json({
@@ -398,14 +440,16 @@ router.post(
         [
           function (done) {
             var user_id = req.user.id;
-            Event.getEventDataByIdWithLogin(user_id,event_id,function (err, result) {
+            Event.getEventDataByIdWithLogin(
+              user_id,
+              event_id,
+              function (err, result) {
                 if (err) {
                   done({
                     status: 0,
                     response: { msg: "Something went wrong." },
                   });
                 } else {
-                
                   var imageLink;
                   if (req.headers.host == env.ADMIN_LIVE_URL) {
                     imageLink = env.ADMIN_LIVE_URL;
@@ -460,7 +504,10 @@ router.post(
                   event["session_count"] = result[0].session_count;
                   event["session_type"] = result[0].session_type;
                   event["session_location"] = result[0].session_location;
-                  event["session_purchase_type"] = result[0].session_purchase_type;
+                  event["session_purchase_type"] =
+                    result[0].session_purchase_type;
+                  event["reflective_expiry_date"] =
+                    result[0].reflective_expiry_date;
                   event["session_cost"] = result[0].session_cost;
                   event["group_session"] = [];
                   event["videoURL"] = [];
@@ -473,7 +520,9 @@ router.post(
           },
           function (event, done1) {
             if (event["event_id"] != "") {
-              Event.getGroupSessionByEventId(event["event_id"],function (err, result) {
+              Event.getGroupSessionByEventId(
+                event["event_id"],
+                function (err, result) {
                   if (result && result.length > 0) {
                     event["group_session"] = result;
                     done1(null, event);
@@ -488,7 +537,9 @@ router.post(
           },
           function (event, done2) {
             if (event["event_id"] != "") {
-              Event.getVideoByEventId(event["event_id"],function (err, result) {
+              Event.getVideoByEventId(
+                event["event_id"],
+                function (err, result) {
                   if (result && result.length > 0) {
                     event["videoURL"] = result;
                     done2(null, event);
@@ -503,7 +554,9 @@ router.post(
           },
           function (event, done3) {
             if (event["event_id"] != "") {
-              Event.getWebURLByEventId(event["event_id"],function (err, result) {
+              Event.getWebURLByEventId(
+                event["event_id"],
+                function (err, result) {
                   if (result && result.length > 0) {
                     event["webPageUrl"] = result;
                     done3(null, event);
@@ -553,7 +606,6 @@ router.post(
         ],
         function (error, event) {
           if (error) {
-            console.log(error);
             return res.json({ status: 0, response: { msg: error } });
           } else {
             return res.json({
@@ -590,21 +642,17 @@ router.post("/checkalreadylogin", (req, res) => {
 
 router.post("/getallevents", (req, res) => {
   Event.alleventdata(req.body.event_id, function (err, result) {
-    if (err) {
-      return res.json({ status: 0, response: { msg: err } });
+    if (!err) {
+      res.send({ status: 1, data: result });
     } else {
-      return res.send({ status: 1, data: result });
+      res.send({ status: 0, data: err });
     }
   });
 });
 
 router.post("/getreflective", (req, res) => {
   Event.getmemeberlimit(req.body.event_id, function (err, result) {
-    if (err){
-      return res.json({ status: 0, response: { msg: err } });
-    }else{
-      return res.send({ status: 1, data: result });
-    }
+    res.send({ response: { msg: result } });
   });
 });
 
@@ -933,6 +981,7 @@ router.post("/getUnpaidEventList", function (req, res) {
         retObj["end_time"] = data.end_date
           ? moment(data.end_date).format("h:mm a")
           : "";
+        retObj["reflective_expiry_date"] = data.reflective_expiry_date;
         retObj["status"] = data.status;
         retObj["event_purchase_id"] = data.event_purchase_id;
 
@@ -956,6 +1005,21 @@ router.post("/getUnpaidEventList", function (req, res) {
     }
   });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 router.post(
   "/getMyEventList",
@@ -1048,13 +1112,21 @@ router.post(
     }
 
     var event_id = req.body.event_id;
-    var email = req.user.email;
+    var email = req.body.email;
     var first_name = req.user.first_name;
+    var event_type = req.body.event_type;
+    var group_type = req.body.group_type;
+    console.log("event_type : ", event_type)
+    console.log("email : ", email)
+    console.log("group_type : ", group_type)
     var obj = {
       event_id: req.body.event_id,
       user_id: req.user.id,
       payment_id: req.body.payment_id ? req.body.payment_id : "",
       event_purchase_date: moment().format("YYYY-MM-DD"),
+      event_type:req.body.event_type,
+      email:email,
+      group_type:group_type,
     };
 
     Event.addEventPurchase(obj, function (err, result) {
@@ -1142,11 +1214,17 @@ router.post("/eventRegisterWithoutUser", function (req, res) {
   var email = req.body.email;
   var first_name = req.body.first_name;
   var event_title = req.body.event_title;
+  var event_type = req.body.event_type;
+  var group_type = req.body.group_type;
+  console.log("event_type : ", event_type)
+  console.log("email : ", email)
 
+  
   var obj = {
     first_name: req.body.first_name,
     last_name: req.body.last_name,
     email: email,
+    group_type: group_type,
     email_verification_token: shortid.generate() + Date.now(),
     created_at: moment.utc().format("YYYY-MM-DD"),
     role: 4,
@@ -1162,6 +1240,8 @@ router.post("/eventRegisterWithoutUser", function (req, res) {
         user_id: data[0].id,
         payment_id: req.body.payment_id ? req.body.payment_id : "",
         event_purchase_date: moment().format("YYYY-MM-DD"),
+        event_type:req.body.event_type,
+        email:email,
       };
       Event.addEventPurchase(eventobj, function (err, result) {
         if (err) {
@@ -1255,7 +1335,10 @@ router.post("/eventRegisterWithoutUser", function (req, res) {
           user_id: data[0].id,
           payment_id: req.body.payment_id ? req.body.payment_id : "",
           event_purchase_date: moment().format("YYYY-MM-DD"),
+          event_type:req.body.event_type,
+          email:req.body.email,
         };
+
         Event.addEventPurchase(eventobj, function (err, result) {
           if (err) {
             return res.json({ status: 0, response: { msg: err } });
@@ -1280,6 +1363,7 @@ router.post("/eventRegisterWithoutUser", function (req, res) {
                 registerURL =
                   env.APP_URL + "register?code=" + obj.email_verification_token;
               }
+
               var htmlUser = fs.readFileSync(
                 __dirname + "/templates/event/EventInvitationNewUser.html",
                 "utf8"
