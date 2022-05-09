@@ -24,10 +24,7 @@ const DemoTable = () => {
   }, [])
 
   const fields = [
-    { key: 'name', _style: { width: '20%' } },
-    { key: 'phone', _style: { width: '20%' } },
     { key: 'email', _style: { width: '20%' } },
-    { key: 'description', _style: { width: '20%' } },
     { key: 'created_at', _style: { width: '20%' }, filter: false }
   ] 
   

@@ -47,39 +47,22 @@ export default function MyEvents() {
         <div>
             <Header/>
 
-            <section className="second-banner-sec" style={{ background: `url('images/event-banner.png') no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
-                <div className="container">
-                    <div className="second-banner-inner">
-                        <div className="row">
-                            <div className="col-md-7">
-                                <div className="text-box">
-                                    <h2 className="wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">My Events </h2>
-                                </div>
-                            </div>
-                            <div className="col-md-5">
-                                <div className="image-holder">
-                                    <img src="images/second-banner-img.png" alt="" className="img-fluid wow animate__flipInX" data-wow-duration="1500ms" data-wow-delay="1000ms" />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="second-banner-shape wow animate__zoomIn" data-wow-duration="1500ms" data-wow-delay="1000ms">
-                            <img src="images/second-banner-shape.png" alt="" className="img-fluid" />
-                        </div>
-                    </div>
-                </div >
-            </section >
+            
 
 
-            <div className="event-main">
-                <div className="container">
+            <div className="event-main researcher-sec researchContact dashboard-card">
+                <div className="container-fluid">
                     {/* <div className="researcher-heading">
                         <h3 className="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="1000ms">Our Events</h3>
                         <p className="wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="1000ms">Training and courses are available for...
                         </p>
                     </div> */}
-                    <div className="row" style={{ "marginTop": "60px" }}>
-                        <div className="col-12">
+                    <div className="row">
 
+                        <div className="col-md-2 side-col">
+                            <Sidebar />
+                        </div>
+                        <div className="col-md-10">
                             {eventdata && eventdata.map((data, index) => (
 
                                 <div className="event-card wow animate__fadeIn  " data-wow-duration="1000ms" data-wow-delay="1000ms" >
@@ -108,7 +91,7 @@ export default function MyEvents() {
                                         </div>
                                         {data.event_purchase_id && <Link className="btn btn-default w-100" to={{ pathname: "/event-promo", search: "?id=" + data.event_id }}>
                                             View
-                                        </Link>}                                        
+                                        </Link>}
                                     </div>
                                 </div>
                             ))}
@@ -121,9 +104,8 @@ export default function MyEvents() {
                                     </center>
                                 </div>
                             }
-
-
-                        </div >
+                        </div>
+                       
                     </div >
                 </div >
             </div>
@@ -171,7 +153,7 @@ export default function MyEvents() {
             </section>                         */}
                   
 
-            <Footer/>
+            
         </div>
     )
 }

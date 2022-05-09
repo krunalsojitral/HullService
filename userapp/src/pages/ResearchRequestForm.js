@@ -258,26 +258,26 @@ export default function ResearchRequestForm() {
                         <div className="row">
                             <div className="col-md-7">
                                 <div className="text-box">
-                                    <h2 className="wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">Research</h2>
-                            </div>
+                                    <h2 className="wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="10ms" data-wow-offset="1">Research</h2>
+                                </div>
                             </div>
                             <div className="col-md-5">
                                 <div className="image-holder">
-                                    <img src="images/second-banner-img.png" alt="" className="img-fluid wow animate__flipInX" data-wow-duration="1500ms" data-wow-delay="1000ms" />
+                                    <img src="images/second-banner-img.png" alt="" className="img-fluid wow animate__flipInX" data-wow-duration="1000ms" data-wow-delay="10ms" data-wow-offset="1" />
                                 </div>
                             </div>
                         </div>
-                        <div className="second-banner-shape wow animate__zoomIn" data-wow-duration="1500ms" data-wow-delay="1000ms">
+                        <div className="second-banner-shape wow animate__zoomIn" data-wow-duration="1500ms" data-wow-delay="10ms" data-wow-offset="1">
                             <img src="images/second-banner-shape.png" alt="" className="img-fluid" />
                         </div>
-                    </div>  
+                    </div>
                 </div >
             </section >
             <section className="about-researcher">
                 <div className="container">
                     <div className="row align-items-center">
                         <div className="col-lg-12 order-lg-1 order-2">
-                            <div className="content wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">
+                            <div className="content wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="10ms" data-wow-offset="1">
                             <p >Pathways to Prevention works with researchers who share our dedication to better understanding the nature and impacts of childhood trauma and who seek to prevent and reduce the effects of childhood trauma.</p>
                             <p>Our researchers are experts in their field of study, affiliated with various academic and social institutions across Canada and worldwide. Pathways to Prevention offers a collaborative space where researchers can join to work together on their shared pursuits in the study, prevention, and treatment of childhood trauma.   </p>
                             <p>As new knowledge is acquired through research, Pathways to Prevention translate findings into policy recommendations and advocates for targeted, efficient, and effective precision approaches. </p>

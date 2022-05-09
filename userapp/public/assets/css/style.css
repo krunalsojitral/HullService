@@ -3033,3 +3033,306 @@ section.training-courses-sec h3 {
   -webkit-transform: translate(0, 0) scale(1);
   transform: translate(0, 0) scale(1);
 }
+.autosuggestion {
+    position: relative;
+}
+.autosuggestion .react-autosuggest__suggestions-container--open {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+    background: #fff;
+    height: auto;
+    /* overflow: auto; */
+}
+.autosuggestion input {
+    background: #FFFFFF;
+    border: 1px solid #B8B8B8;
+    box-sizing: border-box;
+    border-radius: 5px;
+    height: 50px;
+    box-shadow: none;
+    width: 100%;
+    padding: 6px 12px;
+    color: #000;
+    font-size: 14px;
+}
+
+
+.user-dropdown {
+    width: 200px;
+    margin-left: 12px;
+}
+
+.newsletter-inner form .subscription {
+    background: #007089;
+    height: 42px;
+    max-width: 158px;
+    width: 100%;
+    font-weight: 700;
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    right: 2px;
+    font-size: 20px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.newsletter-inner form .subscription:hover {
+    color: #fcfcfc;
+    background: #f37346;
+}
+
+.newsletter-inner input {
+    padding-right: 168px;
+}
+
+.login-title-sub {
+    font-size: 20px;
+    font-weight: 400;
+    color: #036E80;
+    text-align: center;
+}
+
+.view-profile-card {
+    margin: 20px 0;
+}
+
+.view-profile-header .user-image {
+    width: 140px;
+    height: 140px;
+    overflow: hidden;
+    border-radius: 100px;
+    background: #fff;
+    margin: 0 auto;
+    display: block;
+}
+
+.view-profile-header .user-image img {
+    width: 100%;
+    height: 100%;
+}
+
+.view-pro-button {
+    margin-top: 20px;
+}
+
+.view-pro-button .view-profile-title-icon {
+    width: 130px;
+    height: 130px;
+    float: left;
+    margin: 0 20px 0 0;
+    border-radius: 100px;
+    overflow: hidden;
+}
+
+.view-pro-button .view-profile-title-text {
+    overflow: hidden;
+    padding: 15px 0;
+}
+
+.view-pro-button .view-profile-title-text h3 {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 22px;
+    color: #000000;
+    margin-bottom: 10px;
+}
+
+.view-pro-button .view-profile-title-text p {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 24px;
+    color: #000000;
+}
+
+.view-profile-title-icon img {
+    height: 100%;
+    width: 100%;
+}
+
+.view-profile-card .view-profile-header .view-profile-button {
+    text-align: right;
+}
+
+.pofile-view {
+    background: #fff;
+}
+
+.view-profile-header {
+    width: 870px;
+    margin: 0 auto;
+    background: #DBF1F4;
+    padding: 13px 35px;
+}
+
+.view-profile-card .view-profile-header .view-profile-button .btn-edit {
+    background: #006577;
+    border-radius: 5px;
+    width: 150px;
+    height: 50px;
+    border: none;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 21px;
+    text-align: center;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    padding-top: 15px;
+}
+
+.view-profile-card .view-profile-body {
+    padding: 30px;
+}
+
+.view-profile-card .view-profile-body .view-profile-details ul li {
+    border-bottom: 2px #dbf1f4 dotted;
+    padding: 15px 0;
+    display: inline-block;
+    width: 49%;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 19px;
+    color: #000000;
+}
+
+.view-profile-card .view-profile-body .view-profile-details ul li i {
+    margin-right: 10px;
+    color: #ababab;
+    width: 14px;
+    height: 14px;
+    text-align: center;
+}
+
+.view-profile-card .view-profile-body .view-profile-details {
+    width: 774px;
+    margin: 0 auto;
+}
+
+.edit-profile {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.edit-profile .remove-image {
+    color: red;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.edit-profile.image-section {
+    margin-top: 35px;
+}
+
+.edit-profile .profile-img {
+    padding: 11px 3px;
+    background: #fff;
+    border: 1px solid #aaa6a6;
+    border-radius: 5px;
+    position: absolute;
+    width: 100%;
+    height: 48px;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.edit-profile .browse-img {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    width: 25px;
+    vertical-align: revert;
+    height: 25px;
+    margin-right: 18px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.edit-profile .edit-avatar-image {
+    opacity: 0;
+    position: relative;
+    z-index: 1;
+    cursor: pointer !important;
+}
+
+.edit-profile .user-image {
+    padding: 25px 0 0;
+}
+
+.view-profile-header .edit-profile small {
+    word-break: break-all;
+}
+
+.view-profile-header .edit-profile img {
+    overflow: hidden;
+    border-radius: 50%;
+    height: 100%;
+    width: 100%;
+}
+
+.password_error_list {
+    padding: 5px;
+    background: #fefefe;
+    font-size: .750em;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px #ccc;
+    border: 1px solid #ddd;
+}
+
+.password_error_list h4 {
+    margin: 0 0 10px 0;
+    padding: 0;
+    font-weight: normal;
+}
+
+.password_error_list::before {
+    content: "\25b6";
+    position: absolute;
+    top: 62px;
+    right: 95%;
+    font-size: 30px;
+    line-height: 14px;
+    color: white;
+    text-shadow: none;
+    display: block;
+}
+
+.invalid {
+    background: url('../../images/invalid.png') no-repeat 0 50%;
+    padding-left: 22px;
+    line-height: 24px;
+    color: red;
+}
+
+.valid {
+    background: url('../../images/valid.png') no-repeat 0 50%;
+    padding-left: 22px;
+    line-height: 24px;
+    color: green !important;
+
+}
+
+.password_error_list {
+    display: none;
+}
+
+.password_error_list ul {
+    padding: 0px;
+}
+
+.password_error_list li {
+    list-style: none;
+    text-align: left;
+    font-size: 13px;
+}
