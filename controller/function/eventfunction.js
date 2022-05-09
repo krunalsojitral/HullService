@@ -11,7 +11,7 @@ const payload = {
 };
 const token = jwt.sign(payload, apiSecret);
 
-const checkUserPresent = () => {
+const checkUserPresent = async (email) => {
   const payload = {
     iss: apiKey,
     exp: new Date().getTime() + 500000000000,
@@ -19,7 +19,8 @@ const checkUserPresent = () => {
   const token = jwt.sign(payload, apiSecret);
   var options = {
     method: "GET",
-    uri: `https://api.zoom.us/v2/users`,
+    // uri: `https://api.zoom.us/v2/users`,
+    uri: `https://api.zoom.us/v2/users/${email}`,
     auth: {
       bearer: token,
     },
@@ -30,10 +31,10 @@ const checkUserPresent = () => {
     json: true, //Parse the JSON string in the response
   };
 
-  return options;
+  return await options;
 };
 
-const addzoomuser = (email) => {
+const adduseronzoom = (email, name) => {
   var options = {
     method: "POST",
     uri: `https://api.zoom.us/v2/users`,
@@ -42,6 +43,8 @@ const addzoomuser = (email) => {
       user_info: {
         email: email,
         type: 1,
+        first_name: name,
+        last_name: name,
       },
     },
     auth: {
@@ -55,17 +58,17 @@ const addzoomuser = (email) => {
   };
   rp(options)
     .then(function (response) {
-      return false;
+      console.log(response);
     })
     .catch(function (err) {
-      return false;
+      console.log(err);
     });
 };
 
-const createzoomsession = (title, time, role) => {
+const createzoomsession = (useremail,title, time, role) => {
   var options = {
     method: "POST",
-    uri: "https://api.zoom.us/v2/users/" + email + "/meetings",
+    uri: "https://api.zoom.us/v2/users/" + useremail + "/meetings",
     body: {
       topic: title,
       type: role,
@@ -73,8 +76,6 @@ const createzoomsession = (title, time, role) => {
       settings: {
         host_video: "true",
         participant_video: "true",
-        // alternative_hosts: cohostemail,
-        // alternative_host_update_polls: true,
       },
     },
     auth: {
@@ -89,10 +90,9 @@ const createzoomsession = (title, time, role) => {
   return options;
 };
 
-///testing
 //zoom webinar creation...
-const createzoom = (title, time, endtime) => {
-  // await getUsers();
+const createzoom = (title, starttime, endtime) => {
+
   const payload = {
     iss: apiKey,
     exp: new Date().getTime() + 500000000000,
@@ -105,7 +105,7 @@ const createzoom = (title, time, endtime) => {
       agenda: title,
       duration: 60,
       password: "123456",
-      start_time: time,
+      start_time: starttime,
       timezone: "America/Los_Angeles",
       recurrence: {
         end_date_time: endtime,
@@ -120,7 +120,7 @@ const createzoom = (title, time, endtime) => {
           enable: true,
           type: 1,
         },
-        audio: "telephony",
+        audio: "both",
         //"authentication_domains": "example.com",
         //"authentication_option": "signIn_D8cJuqWVQ623CI4Q8yQK0Q",
         //"auto_recording": "cloud",
@@ -342,6 +342,6 @@ module.exports = {
   createzoom,
   filterkeyObject,
   checkUserPresent,
-  addzoomuser,
+  adduseronzoom,
   createzoomsession,
 };

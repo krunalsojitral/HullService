@@ -869,7 +869,7 @@ const AddEditForm = ({ match }) => {
   const event = data =>{
     var loopvalue = "x";
     for(let i = 0;i<data.length;i++){
-      if (data[i].event_type === "active") {
+      if (data[i].event_type === "event") {
         loopvalue = "✓"
       }
     }

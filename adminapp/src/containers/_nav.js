@@ -1,13 +1,13 @@
 const _nav = [
   {
-    _tag: 'CSidebarNavItem',
-    name: 'Dashboard',
-    to: '/dashboard',
-    icon: 'cil-speedometer',
+    _tag: "CSidebarNavItem",
+    name: "Dashboard",
+    to: "/dashboard",
+    icon: "cil-speedometer",
     badge: {
-      color: 'info',
-      text: '',
-    }
+      color: "info",
+      text: "",
+    },
   },
   {
     _tag: "CSidebarNavDropdown",
@@ -156,7 +156,7 @@ const _nav = [
   //           _tag: "CSidebarNavItem",
   //           name: "Academic Discipline",
   //           to: "/academic-discipline",
-  //         }, 
+  //         },
   //         // {
   //         //   _tag: "CSidebarNavItem",
   //         //   name: "Interest Area",
@@ -176,12 +176,12 @@ const _nav = [
   //   _tag: "CSidebarNavDropdown",
   //   name: "Forums",
   //   route: "/forum",
-  //   icon: "cil-list",    
-  //   _children: [      
+  //   icon: "cil-list",
+  //   _children: [
   //     {
   //       _tag: "CSidebarNavItem",
   //       name: "Add Topics",
-  //       to: "/forumheading",        
+  //       to: "/forumheading",
   //     },
   //     {
   //       _tag: "CSidebarNavItem",
@@ -191,16 +191,16 @@ const _nav = [
   //     {
   //       _tag: "CSidebarNavItem",
   //       name: "Thread Requests",
-  //       to: "/forum-request",        
+  //       to: "/forum-request",
   //     },
   //   ],
-  // }, 
+  // },
   // {
   //   _tag: "CSidebarNavDropdown",
   //   name: "Researches",
   //   route: "/researches",
   //   icon: "cil-list",
-  //   _children: [      
+  //   _children: [
   //     {
   //       _tag: "CSidebarNavItem",
   //       name: "View Researches",
@@ -209,7 +209,7 @@ const _nav = [
   //     {
   //       _tag: "CSidebarNavItem",
   //       name: "Research Requests",
-  //       to: "/research-requests",        
+  //       to: "/research-requests",
   //     },
   //     {
   //       _tag: "CSidebarNavItem",
@@ -256,7 +256,7 @@ const _nav = [
         _tag: "CSidebarNavItem",
         name: "Participate in Research Content ",
         to: "/add-content-form",
-      },      
+      },
       // {
       //   _tag: "CSidebarNavItem",
       //   name: "Sponsors and Partners",
@@ -276,7 +276,7 @@ const _nav = [
         _tag: "CSidebarNavItem",
         name: "Membership fees",
         to: "/membership-fees",
-      }
+      },
     ],
   },
   // {
@@ -319,12 +319,23 @@ const _nav = [
   //     text: "",
   //   },
   // },
-  
+
   {
     _tag: "CSidebarNavItem",
     name: "Subscriber User",
     route: "/#",
     to: "/subscribe-user",
+    icon: "cil-list",
+    badge: {
+      color: "info",
+      text: "",
+    },
+  },
+  {
+    _tag: "CSidebarNavItem",
+    name: "Zoom User",
+    route: "/#",
+    to: "/zoom-user",
     icon: "cil-list",
     badge: {
       color: "info",
@@ -342,7 +353,6 @@ const _nav = [
       text: "",
     },
   },
-  
-]
+];
 
-export default _nav
+export default _nav;

@@ -50,7 +50,7 @@ const insertCohost = async (formdata, event_id, role) => {
   }
 };
 
-const insertReflective = async (parsed, event_id, role) => {
+const insertReflective = async (parsed, event_id, role, presentuser) => {
   var record = [];
   var parsed = await parsed[0];
   var event_id = await event_id;
@@ -67,14 +67,22 @@ const insertReflective = async (parsed, event_id, role) => {
       var session_d = [];
       for (let m = 0; m < parsed.time[i]?.nestedArray.length; m++) {
         if (parsed.time[i]?.nestedArray[m].value != undefined) {
-          var datas = {
-            value: parsed.time[i]?.nestedArray[m].value,
-            zoom_link: await createzoomsession(
-              `group_${i + 1}`,
-              parsed.time[i]?.nestedArray[m].value,
-              3
-            ),
-          };
+          if (presentuser == "true") {
+            var datas = {
+              value: parsed.time[i]?.nestedArray[m].value,
+              zoom_link: await createzoomsession(
+                parsed.speaker_email,
+                `group_${i + 1}`,
+                parsed.time[i]?.nestedArray[m].value,
+                3
+              ),
+            };
+          } else {
+            var datas = {
+              value: parsed.time[i]?.nestedArray[m].value,
+              zoom_link: "join_url",
+            };
+          }
         }
         session_d.push(datas);
       }
@@ -95,19 +103,16 @@ const insertReflective = async (parsed, event_id, role) => {
       await record.push(data);
     }
   }
-  console.log("================");
-  console.log(record);
   if (role == 1) {
-    Event.insertReflective(await record);
+    Event.insertReflective(await record, presentuser);
   } else {
-    Event.updateReflective(await record);
+    Event.updateReflective(await record, presentuser);
   }
 };
-
 const imageUpload = async (files) => {
   var filename = "";
-  if (typeof files != "undefined") {
-    let file_ext = files?.originalFilename.split(".").pop();
+  if (typeof files != "undefined" && files?.originalFilename) {
+    let file_ext = files?.originalFilename?.split(".").pop();
     filename = Date.now() + "-" + files?.originalFilename.split(" ").join("");
     let tmp_path = files?.filepath;
     if (
@@ -140,11 +145,20 @@ const imageUpload = async (files) => {
   return await filename;
 };
 
+const insertzoom = async (data, event_id) => {
+  Event.addzoomuser(data, event_id, function (err, data) {
+    if (!err) {
+      console.log(err);
+    } else {
+      console.log("working");
+    }
+  });
+};
+
 const addEventByadmin = async (req, res) => {
   var form = new formidable.IncomingForm();
   form.multiples = true;
   var resources = [];
-
   form.on("file", function (name, file) {
     if (name == "resources[]") {
       var type = file.name.split(".").pop(),
@@ -197,7 +211,6 @@ const addEventByadmin = async (req, res) => {
       }
     }
   });
-
   var formdata = [];
   form.parse(req, async (err, fields, files) => {
     if (err) return res.json({ status: 1, response: { msg: err } });
@@ -234,36 +247,12 @@ const addEventByadmin = async (req, res) => {
         session_location: parsed.session_location,
         session_purchase_type: parsed.session_purchase_type,
         session_cost: parsed.session_cost,
+        reflective_expiry_date: parsed.session_end_date,
         created_at: moment().format("YYYY-MM-DD"),
       };
 
-      //console.log(parsed.sessionStartTime);
-      for (let i = 0; i < parsed.sessionStartTime.length; i++) {
-        var session_d = [];
-        for (let m = 0; m < parsed.time[i].nestedArray.length; m++) {
-          let datas = {
-            value: parsed.time[i].nestedArray[m].value,
-          };
-          session_d.push(datas);
-        }
-        var ciphertext = CryptoJS.AES.encrypt(
-          JSON.stringify(session_d),
-          "mypassword"
-        ).toString();
+      console.log(parsed.session_end_date);
 
-        let data = {
-          session_start_time: parsed.sessionStartTime[i].value
-            ? moment(parsed.sessionStartTime[i].value).format("h:mm a")
-            : "",
-          session_end_time: parsed.sessionEndTime[i].value
-            ? moment(parsed.sessionEndTime[i].value).format("h:mm a")
-            : "",
-          session_no_of_participate: parsed.sessionNoOfParticipate[i].value,
-          session_timezone: parsed.sessionTimezone[i].value,
-          session_data: ciphertext,
-        };
-        record.group_session.push(data);
-      }
       parsed.videoURL.map((el) => {
         let data = {
           path: el.value,
@@ -271,7 +260,6 @@ const addEventByadmin = async (req, res) => {
         };
         resources.push(data);
       });
-
       parsed.webPageUrl.map((el) => {
         let data = {
           path: el.value,
@@ -279,27 +267,37 @@ const addEventByadmin = async (req, res) => {
         };
         resources.push(data);
       });
+      var present;
+      console.log(parsed.zoomstatus);
+      console.log(parsed.speaker_email);
+      if (parsed.zoomstatus == "notfound" || parsed.zoomstatus == "pending") {
+        present = "false";
+      } else {
+        present = "true";
+      }
 
-      // console.log(Object.values(cohostemail.co_email));
-      const options = await createzoom(parsed.title, start_date, end_date);
-  
+      const options = await createzoom(
+        parsed.title,
+        start_date,
+        end_date,
+        parsed
+      );
       await requestPromise(options).then(async (res) => {
-        console.log(res);
         record.zoom_host_link = res?.start_url;
         record.zoom_join_link = res?.join_url;
       });
-
       record.image = await imageUpload(files?.image);
       record.session_image = await imageUpload(files?.session_image);
       record.speaker_image = await imageUpload(files?.speaker_image);
     }
     const OtherTable = async (error, data) => {
       if (error) {
-        console.log(error);
         return res.json({ status: 0, response: { msg: error } });
       } else {
+        console.log(present);
         await insertCohost(formdata, data.event_id, 1);
-        await insertReflective(formdata, data.event_id, 1);
+        await insertReflective(formdata, data.event_id, 1, present);
+        present == "false" ? insertzoom(formdata, data.event_id) : "";
         return res.json({
           status: 1,
           response: { msg: "Event added successfully.", data: data },
@@ -424,7 +422,7 @@ const updataEventByadmin = (req, res) => {
       obj.event_type,
     ];
     var group_session = [];
-    if (obj.sessionTitle.length > 0) {
+    if (obj.sessionTitle && obj.sessionTitle?.length > 0) {
       for (let i = 0; i < obj.sessionTitle.length; i++) {
         let data = {
           title: obj.sessionTitle[i].value,
@@ -623,7 +621,6 @@ const updataEventByadmin = (req, res) => {
           return res.json({ status: 0, response: { msg: error } });
         } else {
           insertCohost(formdata, data.event_id, 2);
-
           insertReflective(formdata, data.event_id, 2);
           return res.json({
             status: 1,
@@ -635,7 +632,12 @@ const updataEventByadmin = (req, res) => {
   });
 };
 
+const updatesession = async (event_id, email) => {
+  await Event.zoomsesssionEvent(event_id, email);
+};
+
 module.exports = {
   addEventByadmin,
   updataEventByadmin,
+  updatesession,
 };
