@@ -121,7 +121,7 @@ export default function Header() {
                                                 </li>
                                                 <li class="nav-item">
                                                     <NavLink class="nav-link" activeClassName="active" to="/courses-training">
-                                                        <InlineButton name={"Trainings & Courses"} />
+                                                        <InlineButton name={"Training & Courses"} />
                                                     </NavLink>
                                                 </li>
                                                 <li class="nav-item">
