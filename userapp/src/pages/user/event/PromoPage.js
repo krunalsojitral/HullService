@@ -10,6 +10,7 @@ import { useModal } from "react-hooks-use-modal";
 import { useHistory } from "react-router-dom";
 import Zoom from "./Zoom";
 
+
 export default function PromoPage() {
   let history = useHistory();
   const [joinMeeting, setJoinMeeting] = useState(false);
@@ -20,6 +21,8 @@ export default function PromoPage() {
   const [reflectiveData, setReflectiveData] = useState([]);
   const [Reflectivestate, setReflectivestate] = useState("");
   const [token, setToken] = useState('');
+
+  const [activeTab, setActiveTab] = useState("home");
 
   React.useEffect(() => {
     const params = new URLSearchParams(window.location.search); // id=123
@@ -109,7 +112,6 @@ export default function PromoPage() {
     // }).catch((err) => console.log("error", err));
   };
 
-  ///maximum participate
   const checkButton = () => {
     const ref = reflective != undefined ? reflective : 0;
     const allevent = allevents != undefined ? allevents : 0;
@@ -120,13 +122,16 @@ export default function PromoPage() {
           <div className="rate-btn mt-3">
             <a href="javascript:;" className="btn btn-default w-100">
               {eventDetail.cost && <span>${eventDetail.cost}</span>}
-              <span>maximum number of participants already reached.</span>
+              <span>Register for events only</span>
             </a>
           </div>
           <div className="rate-btn mt-3">
             <a href="javascript:;" className="btn btn-default w-100">
               {eventDetail.cost && <span>${eventDetail.cost}</span>}
-              <span>maximum number of participants already achieved.</span>
+              <span>
+                Register for Event and Reflection <br />
+                Pracice Session
+              </span>
             </a>
           </div>
         </div>
@@ -146,17 +151,19 @@ export default function PromoPage() {
             </a>
           </div>
           <div className="rate-btn mt-3">
-            <a className="btn btn-default w-100">
+            <a
+              href="javascript:;"
+              onClick={(e) => {
+                setActiveTab("profile");
+                //   cartEvent(
+                //   eventDetail.event_id,
+                //   (eventDetail.cost + eventDetail.session_cost,
+                //   "eventwithsession"))
+              }}
+              className="btn btn-default w-100"
+            >
               {eventDetail.cost && <span>${eventDetail.cost}</span>}
-              <span
-                onClick={(e) =>
-                  cartEvent(
-                    eventDetail.event_id,
-                    (eventDetail.cost + eventDetail.session_cost,
-                    "eventwithsession")
-                  )
-                }
-              >
+              <span>
                 Register for Event and Reflection <br />
                 Pracice Session
               </span>
@@ -232,7 +239,7 @@ export default function PromoPage() {
       return (
         <div
           className={
-            index === 0 ? "tab-pane fade show active" : "tab-pane fade"
+            index === 0 ? "tab-pane fade  show active" : "tab-pane fade"
           }
           id={"pills-Mon" + item.group_number + index}
           role="tabpanel"
@@ -256,7 +263,7 @@ export default function PromoPage() {
               }}
             >
               <a
-                href="javascript:;"
+                className="btn btn-default"
                 onClick={(e) =>
                   cartEvent(
                     eventDetail.event_id,
@@ -264,7 +271,6 @@ export default function PromoPage() {
                     "eventwithsession")
                   )
                 }
-                className="btn btn-default w-100"
               >
                 Submit
               </a>
@@ -312,6 +318,7 @@ export default function PromoPage() {
                 </div>
               </div>
             </div>
+
             <div
               className="second-banner-shape wow animate__zoomIn"
               data-wow-duration="1500ms"
@@ -339,7 +346,7 @@ export default function PromoPage() {
             <li role="presentation">
               <a
                 href="#"
-                className="active"
+                className={activeTab == "home" ? "active" : ""}
                 id="home-tab"
                 data-bs-toggle="tab"
                 data-bs-target="#home"
@@ -347,6 +354,7 @@ export default function PromoPage() {
                 role="tab"
                 aria-controls="home"
                 aria-selected="true"
+                onClick={() => setActiveTab("home")}
               >
                 Event
               </a>
@@ -354,6 +362,7 @@ export default function PromoPage() {
             <li role="presentation">
               <a
                 href="#"
+                className={activeTab == "profile" ? "active" : ""}
                 id="profile-tab"
                 data-bs-toggle="tab"
                 data-bs-target="#profile"
@@ -361,14 +370,20 @@ export default function PromoPage() {
                 role="tab"
                 aria-controls="profile"
                 aria-selected="false"
+                onClick={() => setActiveTab("profile")}
               >
                 Reflective Practice Sessions
               </a>
             </li>
           </ul>
+
           <div className="tab-content" id="myTabContent">
             <div
-              className="tab-pane fade show active"
+              className={
+                activeTab == "home"
+                  ? "tab-pane fade show active"
+                  : "tab-pane fade"
+              }
               id="home"
               role="tabpanel"
               aria-labelledby="home-tab"
@@ -385,6 +400,7 @@ export default function PromoPage() {
                   </div>
                 </div>
               </div>
+
               <div className="eventDetail">
                 <div className="row">
                   <div className="col-lg-5 text-lg-end">
@@ -542,7 +558,12 @@ export default function PromoPage() {
               </div>
             </div>
 
-            <div className="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <div
+              className="tab-pane fade"
+              id="profile"
+              role="tabpanel"
+              aria-labelledby="profile-tab"
+            >
               <div className="reflective-card">
                 <h4>{eventDetail.session_title}</h4>
                 <p dangerouslySetInnerHTML={{ __html: eventDetail.session_about}}></p>

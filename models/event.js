@@ -357,19 +357,23 @@ function User() {
     });
   };
 
-  this.NewupdateEventByadmin = async (event_id, record,update_value, callback) => {
-      connection.acquire(function (err, con) {
-        if (err) {
-          callback(err, null);
-        } else {
-          var query = updateProductByID(event_id, record);
-          con.query(query, update_value, function (err, result) {
-            con.release();
-            callback(null, result);
-          })
-        }
-  });
-
+  this.NewupdateEventByadmin = async (
+    event_id,
+    record,
+    update_value,
+    callback
+  ) => {
+    connection.acquire(function (err, con) {
+      if (err) {
+        callback(err, null);
+      } else {
+        var query = updateProductByID(event_id, record);
+        con.query(query, update_value, function (err, result) {
+          con.release();
+          callback(null, result);
+        });
+      }
+    });
   };
 
   this.getAllAdminEvent = function (status, callback) {
@@ -398,9 +402,8 @@ function User() {
   };
 
   this.getmemeberlimit = async (event_id, callback) => {
-    
     connection.acquire(function (err, con) {
-    con.query(
+      con.query(
         "SELECT * FROM reflective_session where event_id = $1",
         [event_id],
         function (err, result) {
@@ -415,8 +418,7 @@ function User() {
     });
   };
 
-
-  this.groupmember = async (event_id,callback) =>{
+  this.groupmember = async (event_id, callback) => {
     connection.acquire(function (err, con) {
       con.query(
     "SELECT * FROM reflective_session GROUP BY group_number where event_id = $1",
@@ -442,7 +444,7 @@ function User() {
           if (err) {
             callback(err);
           } else {
-            callback(result.rows);
+            callback(result?.rows);
           }
         }
       );
@@ -981,8 +983,6 @@ function User() {
       }
     });
   };
-
-
 
   this.listEventPurchace = function (status, callback) {
     connection.acquire(function (err, con) {
