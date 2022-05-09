@@ -250,8 +250,8 @@ export default function About() {
                                     </div>
                                     <div className="text-box">
                                         <h4>Training Education </h4>
-                                        <p>Pathways to Prevention is a platform for research that seeks to understand the nature and dynamics of developmental trauma and effective treatments for recovery from difficult childhood experiences. These learnings will be disseminated to global influencers in health care, social services, government, and universities. The goal is to research, understand, and effectively treat the impact of developmental trauma before the issues become critical.
-                                        </p>
+                                        <p>Pathways to Prevention is a hub for disseminating leading-edge knowledge regarding the treatment of children suffering from developmental trauma.</p>
+                                        <p>Our years of work with the Child Trauma Academy and the Neurosequential Model (NM) have made us strong leaders in trauma-informed care in the community and worldwide. We train and educate service providers and experts from many disciplines (such as education, health care, the legal community, social services, early childhood development) and arm them with the most current information about developmental trauma, its impact on children, and how to respond, thus equipping them with the skills to deliver best possible practice.</p>
                                     </div>
                                 </div>
                             </div>
@@ -272,7 +272,8 @@ export default function About() {
                                     </div>
                                     <div className="text-box">
                                         <h4>Advocacy </h4>
-                                        <p>Pathways to Prevention is a platform for research that seeks to understand the nature and dynamics of developmental trauma and effective treatments for recovery from difficult childhood experiences. These learnings will be disseminated to global influencers in health care, social services, government, and universities. The goal is to research, understand, and effectively treat the impact of developmental trauma before the issues become critical.
+                                        <p>
+                                            Pathways to Prevention: A Centre for Childhood Trauma is committed to advocating transforming policy and practice across systems to provide appropriate preventative support. Our work will enhance and further develop our understanding of how best to serve children impacted by developmental trauma. This knowledge will allow us to transfer our resources to more integrated services, strategically shifting them away from individualized intensive services, such as government care, toward more integrated and relationally rich work in the community. This will realize transformational change throughout communities in Alberta and around the world.
                                         </p>
                                     </div>
                                 </div>
