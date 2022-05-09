@@ -48,7 +48,9 @@ export default function EventsCart() {
       setEmail(JSON.parse(userdata).email);
     }
     setEventCost(eventData.cost);
+    console.log("eventData : ", eventData);
     setEventType(eventData.type);
+    // alert(eventData.type)
     eventID = eventData;
     const tokenString = localStorage.getItem("token");
     var token = JSON.parse(tokenString);
@@ -92,6 +94,8 @@ export default function EventsCart() {
   };
 
   const onSubmit = async (data) => {
+    const eventString = localStorage.getItem("eventPurchaseData");
+    var eventData = JSON.parse(eventString);
     var localdata = await JSON.parse(localStorage.getItem("userdata"));
     var object = {};
     if (!localStorage.getItem("userdata")) {
@@ -113,7 +117,9 @@ export default function EventsCart() {
     object.event_id = eventId;
     object.event_title = eventDetail.title;
     object.payment_id = "";
-    object.event_type = eventType;
+
+    object.event_type = eventData.type;
+    object.group_type = eventData.group_type;
     var con = false;
     if (!localdata) {
       await axios
@@ -308,7 +314,7 @@ export default function EventsCart() {
                         }}
                       >
                         <div
-                          className="card"
+                          class="card"
                           style={{ width: "500px", padding: "20px" }}
                         >
                           <div
@@ -354,7 +360,7 @@ export default function EventsCart() {
                           <br />
 
                           <button
-                            className="button-1"
+                            class="button-1"
                             role="button"
                             style={{ fontWeight: "bold", marginTop: "2%" }}
                             onClick={() => {

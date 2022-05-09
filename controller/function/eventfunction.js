@@ -89,8 +89,7 @@ const createzoomsession = (title, time, role) => {
   return options;
 };
 
-
-///testing 
+///testing
 //zoom webinar creation...
 const createzoom = (title, time, endtime) => {
   // await getUsers();
