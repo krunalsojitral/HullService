@@ -1,8 +1,8 @@
-@media (min-width: 1441px) {
+/* @media (min-width: 1441px) {
   .container {
     max-width: 1654px;
   }
-}
+} */
 @media screen and (min-width: 1920px) {
   .courses-detail {
     padding: 43px 43px;
@@ -170,8 +170,8 @@
     padding: 170px 0 0;
   }
   .about-advocacy-box {
-    height: 200px;
-    width: 200px;
+    height: 250px;
+    width: 250px;
     margin: auto;
   }
   .about-read {
@@ -190,18 +190,17 @@
     font-size: 14px;
   }
   .about-advocacy-box span img {
-    max-width: 50px;
-    display: block;
+    max-width: 60px;   
   }
   .about-advocacy-box h4 {
     font-size: 18px;
     margin: 18px 0 18px 0;
   }
-  .about-advocacy-box.red-bg span {
+  /* .about-advocacy-box.red-bg span {
     height: 100px !important;
     width: 100px !important;
     margin-right: 10px !important;
-  }
+  } */
 
   .about-hull-sec {
     padding: 160px 0 100px;
