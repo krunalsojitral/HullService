@@ -59,11 +59,11 @@ export default function Partner() {
               </div>
               <div className="col-md-6">
                 <div className="image-holder">
-                  <img src="images/second-banner-img.png" alt="" className="img-fluid wow animate__flipInX" data-wow-duration="1000ms" data-wow-delay="10ms" data-wow-offset="1" />
+                  <img src="images/second-banner-img.png" alt="" className="img-fluid wow animate__flipInX" data-wow-duration="800ms" data-wow-delay="10ms" data-wow-offset="1" />
                 </div>
               </div>
             </div>
-            <div className="second-banner-shape wow animate__zoomIn" data-wow-duration="1500ms" data-wow-delay="10ms" data-wow-offset="1">
+            <div className="second-banner-shape wow animate__zoomIn" data-wow-duration="1000ms" data-wow-delay="10ms" data-wow-offset="1">
               <img src="images/second-banner-shape.png" alt="" className="img-fluid" />
             </div>
           </div>

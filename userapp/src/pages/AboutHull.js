@@ -28,7 +28,7 @@ export default function AboutHull() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="second-banner-shape wow animate__zoomIn" data-wow-duration="1000ms" data-wow-delay="10ms">
+                            <div className="second-banner-shape wow animate__zoomIn" data-wow-duration="800ms" data-wow-delay="10ms">
                                 <img src="images/second-banner-shape.png" alt="" className="img-fluid" />
                             </div>
                         </div>

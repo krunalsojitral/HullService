@@ -63,31 +63,31 @@ export default function CoursesTrainings() {
                             </div>
                         </div>
                         <div className="col-lg-4 col-md-6">
-                            <div className="card-course light-yellow wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="10ms" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <div className="card-course light-yellow wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="10ms" data-bs-toggle="modal" data-bs-target="#exampleModal2">
                                 <div className="icon"><img src="images/school-cap-icon.svg" alt="" /></div>
                                 <h2>Trauma Informed Schools</h2>
                             </div>
                         </div >
                         <div className="col-lg-4 col-md-6">
-                            <div className="card-course light-green wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="10ms" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <div className="card-course light-green wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="10ms" data-bs-toggle="modal" data-bs-target="#exampleModal3">
                                 <div className="icon"><img src="images/reflective-icon.svg" alt="" /></div>
                                 <h2>Reflective <br /> Practice</h2>
                             </div>
                         </div >
                         <div className="col-lg-4 col-md-6">
-                            <div className="card-course red wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="10ms" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <div className="card-course red wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="10ms" data-bs-toggle="modal" data-bs-target="#exampleModal4">
                                 <div className="icon"><img src="images/trauma-icon.svg" alt="" /></div>
                                 <h2>Trauma</h2>
                             </div>
                         </div >
                         <div className="col-lg-4 col-md-6">
-                            <div className="card-course blue wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="10ms" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <div className="card-course blue wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="10ms" data-bs-toggle="modal" data-bs-target="#exampleModal5">
                                 <div className="icon"><img src="images/focused-icon.svg" alt="" /></div>
                                 <h2>NM Focused  <br /> Trauma 	 </h2>
                             </div>
                         </div >
                         <div className="col-lg-4 col-md-6">
-                            <div className="card-course orange wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="10ms" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <div className="card-course orange wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="10ms" data-bs-toggle="modal" data-bs-target="#exampleModal6">
                                 <div className="icon"><img src="images/trauma-icon.svg" alt="" /></div>
                                 <h2>Trauma</h2>
                             </div>

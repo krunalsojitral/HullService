@@ -59,7 +59,7 @@ export default function About() {
                                 <div className="col-12">
                                     <div className="about-us-top">
                                         <div className="text-box">
-                                            <p className="wow animate__fadeInUp" data-wow-duration="1000ms" data-wow-delay="1000ms"> Imagine a future where developmental trauma no longer exists. Where children need not be removed from their families, generational patterns of abuse, neglect, violence, and addiction are broken, and families are empowered to meet the developmental needs of their babies from the time they learn they are pregnant. Picture a world where young people thrive within families and communities that support their mental health and well-being.  Parents, doctors, teachers, caregivers, clergy, social workers, and coaches have a shared understanding of brain development and the impacts of trauma. As a result, they are equipped with the knowledge, tools, and support to meet children’s developmental needs effectively.
+                                            <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms"> Imagine a future where developmental trauma no longer exists. Where children need not be removed from their families, generational patterns of abuse, neglect, violence, and addiction are broken, and families are empowered to meet the developmental needs of their babies from the time they learn they are pregnant. Picture a world where young people thrive within families and communities that support their mental health and well-being.  Parents, doctors, teachers, caregivers, clergy, social workers, and coaches have a shared understanding of brain development and the impacts of trauma. As a result, they are equipped with the knowledge, tools, and support to meet children’s developmental needs effectively.
                                                 Pathways to Prevention: A Centre for Childhood Trauma was created to achieve this goal of realizing a future free from developmental trauma. The Centre is an international hub for experts and service providers in the field to engage in:
                                             </p>
                                         </div>
@@ -131,7 +131,7 @@ export default function About() {
                                     </div>
                                 </div>
                                 <div className="col-md-4 col-sm-6">
-                                    <div class="about-advocacy-box red-bg" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    <div class="about-advocacy-box red-bg" data-bs-toggle="modal" data-bs-target="#exampleModal2">
                                         <span><svg width="92" height="103" viewBox="0 0 123 121" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M99.9409 113.438H92.3159V102.094C92.3098 97.0813 90.2995 92.2759 86.7259 88.7316C83.1523 85.1873 78.3072 83.1935 73.2534 83.1875H50.3784C45.3245 83.1935 40.4794 85.1873 36.9058 88.7316C33.3322 92.2759 31.3219 97.0813 31.3159 102.094V113.438H23.6909V102.094C23.6989 95.0763 26.5132 88.3485 31.5164 83.3864C36.5195 78.4242 43.3029 75.633 50.3784 75.625H73.2534C80.3288 75.633 87.1122 78.4242 92.1153 83.3864C97.1185 88.3485 99.9328 95.0763 99.9409 102.094V113.438ZM19.8784 22.6875C18.8672 22.6875 17.8975 23.0859 17.1825 23.795C16.4675 24.5041 16.0659 25.4659 16.0659 26.4688V60.5H23.6909V26.4688C23.6909 25.4659 23.2892 24.5041 22.5742 23.795C21.8592 23.0859 20.8895 22.6875 19.8784 22.6875Z" fill="white" />
                                             <path d="M16.0659 7.5625V15.125H35.1284V41.5938C35.1284 48.6137 37.9401 55.3461 42.9449 60.31C47.9498 65.2738 54.7379 68.0625 61.8159 68.0625C68.8938 68.0625 75.6819 65.2738 80.6868 60.31C85.6916 55.3461 88.5034 48.6137 88.5034 41.5938V15.125H107.566V7.5625H16.0659ZM42.7534 15.125H80.8784V26.4688H42.7534V15.125ZM61.8159 60.5C56.7602 60.5 51.9115 58.5081 48.3366 54.9625C44.7617 51.4169 42.7534 46.608 42.7534 41.5938V34.0312H80.8784V41.5938C80.8784 46.608 78.87 51.4169 75.2951 54.9625C71.7202 58.5081 66.8715 60.5 61.8159 60.5Z" fill="white" />
@@ -143,7 +143,7 @@ export default function About() {
                                     </div>
                                 </div>
                                 <div className="col-md-4 col-sm-6">
-                                    <div class="about-advocacy-box red-bg" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    <div class="about-advocacy-box red-bg" data-bs-toggle="modal" data-bs-target="#exampleModal3">
                                         <span><img  src="images/speaker-icon.svg" alt="" /></span>
                                         <h4>Advocacy</h4>
                                         <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"><svg width="17" height="15" viewBox="0 0 17 15" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -223,6 +223,53 @@ export default function About() {
                                     </div>
                                     <div className="text-box">
                                         <h4>Research </h4>
+                                        <p>Pathways to Prevention is a platform for research that seeks to understand the nature and dynamics of developmental trauma and effective treatments for recovery from difficult childhood experiences. These learnings will be disseminated to global influencers in health care, social services, government, and universities. The goal is to research, understand, and effectively treat the impact of developmental trauma before the issues become critical.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div className="team-modal" >
+                <div className="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div className="modal-dialog modal-dialog-centered" >
+                        <div className="modal-content">
+                            <div className="modal-body" style={{ background: '#daf6f9' }}>
+                                <a data-bs-dismiss="modal" className="close-icon" href="#!"><img src="images/crose-icon.svg" alt="" /></a>
+                                <div className="team-modal-inner">
+                                    <div className="image-holder" style={{ width: '200px' }}>
+                                    <span><svg width="200" height="153" viewBox="0 0 123 121" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M99.9409 113.438H92.3159V102.094C92.3098 97.0813 90.2995 92.2759 86.7259 88.7316C83.1523 85.1873 78.3072 83.1935 73.2534 83.1875H50.3784C45.3245 83.1935 40.4794 85.1873 36.9058 88.7316C33.3322 92.2759 31.3219 97.0813 31.3159 102.094V113.438H23.6909V102.094C23.6989 95.0763 26.5132 88.3485 31.5164 83.3864C36.5195 78.4242 43.3029 75.633 50.3784 75.625H73.2534C80.3288 75.633 87.1122 78.4242 92.1153 83.3864C97.1185 88.3485 99.9328 95.0763 99.9409 102.094V113.438ZM19.8784 22.6875C18.8672 22.6875 17.8975 23.0859 17.1825 23.795C16.4675 24.5041 16.0659 25.4659 16.0659 26.4688V60.5H23.6909V26.4688C23.6909 25.4659 23.2892 24.5041 22.5742 23.795C21.8592 23.0859 20.8895 22.6875 19.8784 22.6875Z" fill="white" />
+                                            <path d="M16.0659 7.5625V15.125H35.1284V41.5938C35.1284 48.6137 37.9401 55.3461 42.9449 60.31C47.9498 65.2738 54.7379 68.0625 61.8159 68.0625C68.8938 68.0625 75.6819 65.2738 80.6868 60.31C85.6916 55.3461 88.5034 48.6137 88.5034 41.5938V15.125H107.566V7.5625H16.0659ZM42.7534 15.125H80.8784V26.4688H42.7534V15.125ZM61.8159 60.5C56.7602 60.5 51.9115 58.5081 48.3366 54.9625C44.7617 51.4169 42.7534 46.608 42.7534 41.5938V34.0312H80.8784V41.5938C80.8784 46.608 78.87 51.4169 75.2951 54.9625C71.7202 58.5081 66.8715 60.5 61.8159 60.5Z" fill="white" />
+                                        </svg></span>
+                                    </div>
+                                    <div className="text-box">
+                                        <h4>Training Education </h4>
+                                        <p>Pathways to Prevention is a platform for research that seeks to understand the nature and dynamics of developmental trauma and effective treatments for recovery from difficult childhood experiences. These learnings will be disseminated to global influencers in health care, social services, government, and universities. The goal is to research, understand, and effectively treat the impact of developmental trauma before the issues become critical.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div className="team-modal" >
+                <div className="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div className="modal-dialog modal-dialog-centered" >
+                        <div className="modal-content">
+                            <div className="modal-body" style={{ background: '#daf6f9' }}>
+                                <a data-bs-dismiss="modal" className="close-icon" href="#!"><img src="images/crose-icon.svg" alt="" /></a>
+                                <div className="team-modal-inner">
+                                    <div className="image-holder" style={{ width: '200px' }}>
+                                        <img src="images/speaker-icon.svg" alt="" className="img-fluid" />
+                                    </div>
+                                    <div className="text-box">
+                                        <h4>Advocacy </h4>
                                         <p>Pathways to Prevention is a platform for research that seeks to understand the nature and dynamics of developmental trauma and effective treatments for recovery from difficult childhood experiences. These learnings will be disseminated to global influencers in health care, social services, government, and universities. The goal is to research, understand, and effectively treat the impact of developmental trauma before the issues become critical.
                                         </p>
                                     </div>

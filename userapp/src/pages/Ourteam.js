@@ -24,11 +24,11 @@ export default function Ourteam() {
                             </div>
                             <div className="col-md-6">
                                 <div className="image-holder">
-                                    <img src="./images/second-banner-img.png" alt="" className="img-fluid wow animate__flipInX" data-wow-duration="1500ms" data-wow-delay="50ms" />
+                                    <img src="./images/second-banner-img.png" alt="" className="img-fluid wow animate__flipInX" data-wow-duration="800ms" data-wow-delay="50ms" />
                                 </div>
                             </div>
                         </div>
-                        <div className="second-banner-shape wow animate__zoomIn" data-wow-duration="1500ms" data-wow-delay="50ms">
+                        <div className="second-banner-shape wow animate__zoomIn" data-wow-duration="800ms" data-wow-delay="50ms">
                             <img src="./images/second-banner-shape.png" alt="" className="img-fluid" />
                         </div>
                     </div>
@@ -45,7 +45,7 @@ export default function Ourteam() {
                             <div className="clinical-team-inner">
                                 <div className="row">
                                     <div className="col-md-4">
-                                        <div className="clinical-team-box wow animate__fadeIn" data-bs-toggle="modal" data-bs-target="#exampleModal" data-wow-duration="800ms" data-wow-delay="10ms">
+                                        <div className="clinical-team-box wow animate__fadeIn" data-bs-toggle="modal" data-bs-target="#exampleModal" data-wow-duration="800ms" data-wow-delay="0ms">
                                             <div className="clinical-team-list">
                                                 <div className="image-holder">
                                                     <img src="./images/clinical-team-img1.png" alt="" className="img-fluid" />
@@ -66,7 +66,7 @@ export default function Ourteam() {
                                         </div>
                                     </div>
                                     <div className="col-md-4">
-                                        <div className="clinical-team-box wow animate__fadeIn" data-bs-toggle="modal" data-bs-target="#exampleModal" data-wow-duration="800ms" data-wow-delay="10ms">
+                                        <div className="clinical-team-box wow animate__fadeIn" data-bs-toggle="modal" data-bs-target="#exampleModal" data-wow-duration="800ms" data-wow-delay="0ms">
                                             <div className="clinical-team-list">
                                                 <div className="image-holder">
                                                     <img src="./images/clinical-team-img2.png" alt="" className="img-fluid" />
@@ -87,7 +87,7 @@ export default function Ourteam() {
                                         </div>
                                     </div>
                                     <div className="col-md-4">
-                                        <div className="clinical-team-box wow animate__fadeIn" data-bs-toggle="modal" data-bs-target="#exampleModal" data-wow-duration="800ms" data-wow-delay="10ms">
+                                        <div className="clinical-team-box wow animate__fadeIn" data-bs-toggle="modal" data-bs-target="#exampleModal" data-wow-duration="800ms" data-wow-delay="0ms">
                                             <div className="clinical-team-list">
                                                 <div className="image-holder">
                                                     <img src="./images/clinical-team-img3.png" alt="" className="img-fluid" />
@@ -118,14 +118,14 @@ export default function Ourteam() {
                     <div className="row">
                         <div className="col-12">
                             <div className="heading-second">
-                                <img src="./images/title-img.png" alt="" className="img-fluid wow animate__fadeIn" data-wow-duration="1500ms" data-wow-delay="50ms" />
-                                <h3 className="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="50ms">Operations Team</h3>
-                                <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="50ms">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consectetur porttitor consequat, diam nunc <br></br> adipiscing urna semper. Malesuada eu fringilla faucibus scelerisque phasellus tortor. Bibendum.</p>
+                                <img src="./images/title-img.png" alt="" className="img-fluid wow animate__fadeIn" data-wow-duration="1500ms" data-wow-delay="0ms" data-wow-offset="1"/>
+                                <h3 className="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="0ms">Operations Team</h3>
+                                <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="0ms">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consectetur porttitor consequat, diam nunc <br></br> adipiscing urna semper. Malesuada eu fringilla faucibus scelerisque phasellus tortor. Bibendum.</p>
                             </div>
                             <div className="clinical-team-inner">
                                 <div className="row">
                                     <div className="col-md-4">
-                                        <div className="clinical-team-box wow animate__fadeInUp" data-bs-toggle="modal" data-bs-target="#exampleModal" data-wow-duration="800ms" data-wow-delay="50ms" data-wow-offset="1">
+                                        <div className="clinical-team-box wow animate__fadeInUp" data-bs-toggle="modal" data-bs-target="#exampleModal" data-wow-duration="800ms" data-wow-delay="0ms" data-wow-offset="1">
                                             <div className="clinical-team-list">
                                                 <div className="image-holder">
                                                     <img src="./images/clinical-team-img1.png" alt="" className="img-fluid" />
@@ -145,7 +145,7 @@ export default function Ourteam() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col-md-4"> <div className="clinical-team-box wow animate__fadeInUp" data-bs-toggle="modal" data-bs-target="#exampleModal" data-wow-duration="800ms" data-wow-delay="50ms" data-wow-offset="1">
+                                    <div className="col-md-4"> <div className="clinical-team-box wow animate__fadeInUp" data-bs-toggle="modal" data-bs-target="#exampleModal" data-wow-duration="800ms" data-wow-delay="0ms" data-wow-offset="1">
                                         <div className="clinical-team-list">
                                             <div className="image-holder">
                                                 <img src="./images/clinical-team-img2.png" alt="" className="img-fluid" />
@@ -166,7 +166,7 @@ export default function Ourteam() {
                                     </div>
                                     </div>
                                     <div className="col-md-4">
-                                        <div className="clinical-team-box wow animate__fadeInUp" data-bs-toggle="modal" data-bs-target="#exampleModal" data-wow-duration="800ms" data-wow-delay="50ms" data-wow-offset="1">
+                                        <div className="clinical-team-box wow animate__fadeInUp" data-bs-toggle="modal" data-bs-target="#exampleModal" data-wow-duration="800ms" data-wow-delay="0ms" data-wow-offset="1">
                                             <div className="clinical-team-list">
                                                 <div className="image-holder">
                                                     <img src="./images/clinical-team-img3.png" alt="" className="img-fluid" />
@@ -187,9 +187,9 @@ export default function Ourteam() {
                                         </div>
                                     </div>
                                     <div className="col-md-4">
-                                        <div className="clinical-team-box wow animate__fadeInUp" data-bs-toggle="modal" data-bs-target="#exampleModal" data-wow-duration="800ms" data-wow-delay="50ms" data-wow-offset="1">
+                                        <div className="clinical-team-box wow animate__fadeInUp" data-bs-toggle="modal" data-bs-target="#exampleModal" data-wow-duration="800ms" data-wow-delay="0ms" data-wow-offset="1">
                                             <div className="clinical-team-list">
-                                                <div className="image-holder wow animate__fadeIn" data-wow-duration="1500ms" data-wow-delay="50ms">
+                                                <div className="image-holder wow animate__fadeIn" data-wow-duration="1500ms" data-wow-delay="0ms" data-wow-offset="1">
                                                     <img src="./images/operation-team-img1.png" alt="" className="img-fluid" />
                                                 </div>
                                                 <div className="text-box">
@@ -209,7 +209,7 @@ export default function Ourteam() {
                                         </div>
                                     </div>
                                     <div className="col-md-4">
-                                        <div className="clinical-team-box wow animate__fadeInUp" data-bs-toggle="modal" data-bs-target="#exampleModal" data-wow-duration="800ms" data-wow-delay="50ms" data-wow-offset="1">
+                                        <div className="clinical-team-box wow animate__fadeInUp" data-bs-toggle="modal" data-bs-target="#exampleModal" data-wow-duration="800ms" data-wow-delay="0ms" data-wow-offset="1">
                                             <div className="clinical-team-list">
                                                 <div className="image-holder">
                                                     <img src="./images/operation-team-img2.png" alt="" className="img-fluid" />
@@ -230,7 +230,7 @@ export default function Ourteam() {
                                         </div>
                                     </div>
                                     <div className="col-md-4">
-                                        <div className="clinical-team-box wow animate__fadeInUp" data-bs-toggle="modal" data-bs-target="#exampleModal" data-wow-duration="800ms" data-wow-delay="50ms" data-wow-offset="1">
+                                        <div className="clinical-team-box wow animate__fadeInUp" data-bs-toggle="modal" data-bs-target="#exampleModal" data-wow-duration="800ms" data-wow-delay="0ms" data-wow-offset="1">
                                             <div className="clinical-team-list">
                                                 <div className="image-holder">
                                                     <img src="./images/operation-team-img2.png" alt="" className="img-fluid" />
@@ -261,15 +261,15 @@ export default function Ourteam() {
                     <div className="row">
                         <div className="col-12">
                             <div className="governors-inner">
-                                <div className="image-holder  wow animate__fadeInLeft" data-wow-duration="800ms" data-wow-delay="50ms">
+                                <div className="image-holder  wow animate__fadeInLeft" data-wow-duration="800ms" data-wow-delay="10ms" data-wow-offset="1">
                                     <svg width="157" height="158" viewBox="0 0 157 158" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M130.833 13.3262H26.1666C18.9053 13.3262 13.0833 19.1483 13.0833 26.4095V98.3678C13.0833 105.629 18.9053 111.451 26.1666 111.451H52.3333V144.16L78.4999 131.076L104.667 144.16V111.451H130.833C138.095 111.451 143.917 105.629 143.917 98.3678V26.4095C143.917 19.1483 138.095 13.3262 130.833 13.3262ZM130.833 98.3678H26.1666V85.2845H130.833V98.3678ZM130.833 65.6595H26.1666V26.4095H130.833V65.6595Z" fill="white" />
                                     </svg></div>
                                 <div className="text-box">
-                                    <h4 className="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="50ms">Board of Governors</h4>
-                                    <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="50ms"> Pathways to Prevention: Centre for Childhood Trauma operates in adherence to Hull’s core values and leadership philosophy and reports through to <a href="#">Hull Services’ Executive Director and Board of Governors</a>.</p>
-                                    <span className="wow animate__fadeInUp" data-wow-duration="1100ms" data-wow-delay="50ms">LEARN MORE ABOUT HULL’S BOARD OF GOVERNORS</span>
-                                    <strong className="wow animate__fadeInUp" data-wow-duration="1400ms" data-wow-delay="50ms">The Board’s focus for the Pathways to Prevention is advocacy, community relations and fundraising. </strong>
+                                    <h4 className="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="10ms">Board of Governors</h4>
+                                    <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms"> Pathways to Prevention: Centre for Childhood Trauma operates in adherence to Hull’s core values and leadership philosophy and reports through to <a href="#">Hull Services’ Executive Director and Board of Governors</a>.</p>
+                                    <span className="wow animate__fadeInUp" data-wow-duration="1100ms" data-wow-delay="10ms">LEARN MORE ABOUT HULL’S BOARD OF GOVERNORS</span>
+                                    <strong className="wow animate__fadeInUp" data-wow-duration="1400ms" data-wow-delay="10ms">The Board’s focus for the Pathways to Prevention is advocacy, community relations and fundraising. </strong>
                                 </div>
                             </div>
                         </div>

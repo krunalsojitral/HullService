@@ -71,8 +71,8 @@ const LandingPage = () => {
                                     <div className="row">
                                         <div className="col-md-6 order-md-first order-last">
                                             <div className="image-holder">
-                                                {!eventdata.event_image && <img src="images/upcoming-img.png" alt="" className="img-fluid wow animate__fadeInLeft" data-wow-duration="800ms" data-wow-delay="500ms" data-wow-offset="10" />}
-                                                {eventdata.event_image && <img src={eventdata.event_image} alt="" className="img-fluid wow animate__fadeInLeft" data-wow-duration="800ms" data-wow-delay="500ms" data-wow-offset="10" />}
+                                                {!eventdata.event_image && <img src="images/upcoming-img.png" alt="" className="img-fluid wow animate__fadeInLeft" data-wow-duration="800ms" data-wow-delay="0ms" data-wow-offset="10" />}
+                                                {eventdata.event_image && <img src={eventdata.event_image} alt="" className="img-fluid wow animate__fadeInLeft" data-wow-duration="800ms" data-wow-delay="0ms" data-wow-offset="10" />}
                                                 <div className="image-shape">
                                                     <img src="images/upcoming-round.png" alt="" className="img-fluid wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="10ms" data-wow-offset="1" />
                                                 </div>
