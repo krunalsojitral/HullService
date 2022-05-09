@@ -91,7 +91,7 @@ export default function Footer() {
                                                 <ul>
                                                     <li><Link to="/about">About Us</Link></li>
                                                     <li><Link to="/research-request-form">Research</Link></li>
-                                                    <li><Link to="/courses-training">Trainings & Courses</Link></li>
+                                                    <li><Link to="/courses-training">Training & Courses</Link></li>
                                                     <li><Link to="/events">Events</Link></li>
                                                     <li><Link to="/partner">Our Partners</Link></li>
                                                     <li><Link to="/contact">Contact Us</Link></li>

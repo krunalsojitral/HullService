@@ -16,7 +16,7 @@ export default function Header() {
     const { pathname } = useLocation();
     const { logoutUser } = useLogout();
     const [userTypeList, setUserTypeList] = React.useState('');
-
+    const [activeClass, setActiveClass] = useState('');
     const location = useLocation();
 
     React.useEffect(() => {
@@ -42,6 +42,14 @@ export default function Header() {
                 setUserTypeList('General Public')
             }
         }
+
+        window.addEventListener('scroll', () => {
+            let activeClass = 'sticky';
+            if (window.scrollY === 0) {
+                activeClass = '';
+            }
+            setActiveClass(activeClass);
+        });
         
         window.scrollTo(0, 0)
 
@@ -76,7 +84,7 @@ export default function Header() {
 
     return(
 
-            <header id="myHeader">
+        <header id="myHeader" className={activeClass}>
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-12">
@@ -90,50 +98,56 @@ export default function Header() {
                                     </button>
                                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                                         <ul className="navbar-nav ms-auto" id="menu">
-                                            <li className="nav-item"><a className="nav-link" href="about">About Us <i className="fa-solid fa-caret-down"></i></a>
-                                                <ul className="menus">
-                                                    <li>
-                                                        <NavLink activeClassName="active" to="/about-hull">
-                                                            <InlineButton name={"About Hull Services"} />
-                                                        </NavLink>
-                                                    </li>
-                                                    <li>
-                                                        <NavLink activeClassName="active" to="/ourteam">
-                                                            <InlineButton name={"Our Team"} />
-                                                        </NavLink>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                            <li className="nav-item">
-                                                <NavLink className="nav-link" activeClassName="active" to="/research-request-form">
-                                                    <InlineButton name={"Research"} />
-                                                </NavLink>
-                                            </li>
-                                            <li className="nav-item">
-                                                <NavLink className="nav-link" activeClassName="active" to="/courses-training">
-                                                    <InlineButton name={"Trainings & Courses"} />
-                                                </NavLink>
-                                            </li>
-                                            <li className="nav-item">
-                                                <NavLink className="nav-link" activeClassName="active" to="/events">
-                                                    <InlineButton name={"Events"} />
-                                                </NavLink>
-                                            </li>
-                                            <li className="nav-item">
-                                                <NavLink className="nav-link" activeClassName="active" to="/partner">
-                                                    <InlineButton name={"Our Partners"} />
-                                                </NavLink>
-                                            </li>
-                                            <li className="nav-item">
-                                                <NavLink className="nav-link" activeClassName="active" to="/contact">
-                                                    <InlineButton name={"Contact Us"} />
-                                                </NavLink>
-                                            </li>
-                                            {(!token) &&  <li className="nav-item">
-                                                <NavLink className="login-btn" activeClassName="active" to="/login">
-                                                    <InlineButton name={"Login"} />
-                                                </NavLink>
-                                            </li>}
+                                        {(location.pathname != "/dashboard" || location.pathname != "/my-events") ?
+                                            <React.Fragment>
+                                                <li class="nav-item"><a class="nav-link" href="about">About Us <i class="fa-solid fa-caret-down"></i></a>
+                                                    <ul class="menus">
+                                                        <li>
+                                                            <NavLink activeClassName="active" to="/about-hull">
+                                                                <InlineButton name={"About Hull Services"} />
+                                                            </NavLink>
+                                                        </li>
+                                                        <li>
+                                                            <NavLink activeClassName="active" to="/ourteam">
+                                                                <InlineButton name={"Our Team"} />
+                                                            </NavLink>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <NavLink class="nav-link" activeClassName="active" to="/research-request-form">
+                                                        <InlineButton name={"Research"} />
+                                                    </NavLink>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <NavLink class="nav-link" activeClassName="active" to="/courses-training">
+                                                        <InlineButton name={"Trainings & Courses"} />
+                                                    </NavLink>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <NavLink class="nav-link" activeClassName="active" to="/events">
+                                                        <InlineButton name={"Events"} />
+                                                    </NavLink>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <NavLink class="nav-link" activeClassName="active" to="/partner">
+                                                        <InlineButton name={"Our Partners"} />
+                                                    </NavLink>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <NavLink class="nav-link" activeClassName="active" to="/contact">
+                                                        <InlineButton name={"Contact Us"} />
+                                                    </NavLink>
+                                                </li>
+                                            </React.Fragment>
+                                            : null}
+                                        {(!token) && <li class="nav-item">
+                                            <NavLink class="login-btn" activeClassName="active" to="/login">
+                                                <InlineButton name={"Login"} />
+                                            </NavLink>
+                                        </li>}
+
+
 
 
                                         {(token) && <div className="user-dropdown">

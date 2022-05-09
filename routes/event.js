@@ -1199,6 +1199,31 @@ router.post(
   }
 );
 
+
+router.get('/getLandingPageEvent', function (req, res) {
+  loggerData(req);
+  var imageLink;
+  if (req.headers.host == env.ADMIN_LIVE_URL) {
+    imageLink = env.ADMIN_LIVE_URL;
+  } else {
+    imageLink = env.ADMIN_LIVE_URL;
+  }
+  Event.getLandingPageEvent(function (err, result) {
+    if (err) {
+      return res.json({ status: 0, 'response': { msg: err } });
+    } else {
+      var obj = {
+        event_id: result[0].event_id,
+        title: result[0].title,
+        description: result[0].description,
+        start_date: moment(result[0].start_date).format('MMMM DD YYYY'),
+        event_image: (result[0].image) ? imageLink + env.EVENT_VIEW_PATH + result[0].image : ''
+      }
+      return res.json({ status: 1, 'response': { data: obj } });
+    }
+  });
+});
+
 router.post("/eventRegisterWithoutUser", function (req, res) {
   var imageLink;
 
