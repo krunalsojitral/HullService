@@ -226,6 +226,10 @@ li.nav-item a.login-btn:after {
   line-height: 132%;
   color: #f15c4e;
 }
+.banner-inner .text-box small {
+    font-size: 23px;    
+    color: #f15c4e;
+}
 .banner-inner .text-box p {
   text-align: justify;
   font-weight: 700;
@@ -553,7 +557,6 @@ footer {
   font-weight: 400;
   font-size: 16px;
   line-height: 178.5% !important;
-  text-transform: capitalize;
   color: #ffffff;
   margin-bottom: 30px;
 }
@@ -1170,8 +1173,7 @@ section.training-courses-sec h3 {
   font-weight: 700;
   font-family: "Poppins", sans-serif;
   font-size: 16px;
-  line-height: 178.5% !important;
-  text-transform: capitalize;
+  line-height: 178.5% !important;  
   color: #000000;
   text-align: left;
 }
@@ -1193,8 +1195,7 @@ section.training-courses-sec h3 {
   font-weight: 700;
   font-family: "Poppins", sans-serif;
   font-size: 16px;
-  line-height: 224.5%;
-  text-transform: capitalize;
+  line-height: 224.5%;  
   color: #000000;
   max-width: 691px;
   width: 100%;
@@ -1249,8 +1250,7 @@ section.training-courses-sec h3 {
   font-family: "Poppins", sans-serif;
   font-size: 16px;
   line-height: 215%;
-  text-align: center;
-  text-transform: capitalize;
+  text-align: center;  
   color: #000000;
 }
 .contact {
@@ -1343,9 +1343,7 @@ section.training-courses-sec h3 {
   left: -26px;
 }
 
-.participate-research .researcher-heading h3 {
-  text-transform: capitalize;
-}
+
 .participate-research .researcher-heading p {
   text-align: justify;
   font-weight: 700;
@@ -1690,8 +1688,7 @@ section.training-courses-sec h3 {
   font-family: "Poppins", sans-serif;
   font-weight: 400;
   font-size: 16px;
-  line-height: 178.5% !important;
-  text-transform: capitalize;
+  line-height: 178.5% !important;  
   color: #060606;
 }
 .popup-courses .cardBody {
@@ -1724,8 +1721,7 @@ section.training-courses-sec h3 {
   flex: 1;
   font-weight: 700;
   font-size: 18px;
-  line-height: 154%;
-  text-transform: capitalize;
+  line-height: 154%;  
   color: #000000;
 }
 .popupFooter .btn-default {
@@ -1743,8 +1739,7 @@ section.training-courses-sec h3 {
   flex: 1;
   font-weight: 700;
   font-size: 32px;
-  line-height: 154%;
-  text-transform: capitalize;
+  line-height: 154%;  
   color: #0a0a0a;
   text-align: left;
 }
@@ -1766,8 +1761,7 @@ section.training-courses-sec h3 {
 .event-card ul li span {
   font-weight: 400;
   font-size: 24px;
-  line-height: 154%;
-  text-transform: capitalize;
+  line-height: 154%;  
   color: #000000;
 }
 .event-card hr {
@@ -1803,8 +1797,7 @@ section.training-courses-sec h3 {
 .event-card .price {
   font-weight: 700;
   font-size: 64px;
-  line-height: 178.5% !important;
-  text-transform: capitalize;
+  line-height: 178.5% !important;  
   color: #262626;
 }
 
@@ -1846,8 +1839,7 @@ section.training-courses-sec h3 {
 .eventTabs li a {
   font-weight: 900;
   font-size: 36px;
-  line-height: 50px;
-  text-transform: capitalize;
+  line-height: 50px;  
   color: #a09a9a;
   display: inline-flex;
   align-items: center;
@@ -1895,8 +1887,7 @@ section.training-courses-sec h3 {
   flex: 1;
   font-weight: 700;
   font-size: 32px;
-  line-height: 154%;
-  text-transform: capitalize;
+  line-height: 154%;  
   color: #0a0a0a;
   text-align: left;
 }
@@ -1934,8 +1925,7 @@ section.training-courses-sec h3 {
   flex: 1;
   font-weight: 700;
   font-size: 16px;
-  line-height: 154%;
-  text-transform: capitalize;
+  line-height: 154%;  
   color: #000000;
 }
 .eventDetail .dateTime li i {
@@ -1998,8 +1988,7 @@ section.training-courses-sec h3 {
   font-family: "Poppins", sans-serif;
   font-weight: 400;
   font-size: 16px;
-  line-height: 178.5% !important;
-  text-transform: capitalize;
+  line-height: 178.5% !important;  
   color: #060606;
 }
 
@@ -2017,8 +2006,7 @@ section.training-courses-sec h3 {
   font-family: "Poppins", sans-serif;
   font-weight: 400;
   font-size: 16px;
-  line-height: 178.5% !important;
-  text-transform: capitalize;
+  line-height: 178.5% !important;  
   color: #060606;
 }
 
@@ -2303,8 +2291,7 @@ section.training-courses-sec h3 {
 }
 .contact-info ul li {
   display: flex;
-  align-items: center;
-  text-transform: capitalize;
+  align-items: center;  
   color: #000000;
   font-weight: 400;
   font-size: 24px;
@@ -2445,8 +2432,7 @@ section.training-courses-sec h3 {
 .about-vision-box .text-box h4 {
   font-weight: 700;
   font-size: 36px;
-  position: relative;
-  text-transform: capitalize;
+  position: relative;  
   color: #ffffff;
   padding: 0 0 25px 0;
 }
@@ -2462,10 +2448,8 @@ section.training-courses-sec h3 {
 }
 .about-vision-box .text-box p {
   font-weight: 700;
-  text-align: justify;
-  text-transform: capitalize;
+  text-align: justify;  
   color: #fffafa;
-
   line-height: 178.5% !important;
   margin: 23px 0 0 0;
   font-size: 14px;
@@ -2667,8 +2651,7 @@ section.training-courses-sec h3 {
 .event-list-line {
   padding-top: 10px;
   margin-top: 20px;
-  border-top: 1px solid rgba(0, 0, 0, 0.5);
-  text-transform: capitalize;
+  border-top: 1px solid rgba(0, 0, 0, 0.5);  
 }
 
 .event-list-line a {

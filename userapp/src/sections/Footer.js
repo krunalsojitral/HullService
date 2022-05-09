@@ -111,7 +111,7 @@ export default function Footer() {
                                     </div>
                                 </div>
                                 <div className="copyright">
-                                    <p>Copyright {(new Date().getFullYear())}- Pathways to Prevention, All right reserved.</p>
+                                    <p>Copyright {(new Date().getFullYear())}  - Pathways to Prevention, All right reserved.</p>
                                 </div>
                             </div>
                         </div>

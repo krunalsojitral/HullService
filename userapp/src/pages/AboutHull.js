@@ -19,7 +19,7 @@ export default function AboutHull() {
                             <div className="row">
                                 <div className="col-md-7">
                                     <div className="text-box">
-                                        <h2 className="wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="10ms" data-wow-offset="1">Hull Services </h2>
+                                        <h2 className="wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="10ms" data-wow-offset="1">About Hull Services </h2>
                                     </div>
                                 </div>
                                 <div className="col-md-5">

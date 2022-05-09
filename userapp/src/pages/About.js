@@ -60,6 +60,9 @@ export default function About() {
                                     <div className="about-us-top">
                                         <div className="text-box">
                                             <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms"> Imagine a future where developmental trauma no longer exists. Where children need not be removed from their families, generational patterns of abuse, neglect, violence, and addiction are broken, and families are empowered to meet the developmental needs of their babies from the time they learn they are pregnant. Picture a world where young people thrive within families and communities that support their mental health and well-being.  Parents, doctors, teachers, caregivers, clergy, social workers, and coaches have a shared understanding of brain development and the impacts of trauma. As a result, they are equipped with the knowledge, tools, and support to meet children’s developmental needs effectively.
+                                            </p>
+                                            <br/>
+                                            <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms">
                                                 Pathways to Prevention: A Centre for Childhood Trauma was created to achieve this goal of realizing a future free from developmental trauma. The Centre is an international hub for experts and service providers in the field to engage in:
                                             </p>
                                         </div>

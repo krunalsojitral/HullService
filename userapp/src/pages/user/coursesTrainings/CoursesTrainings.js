@@ -19,7 +19,7 @@ export default function CoursesTrainings() {
                         <div className="row">
                             <div className="col-md-7">
                                 <div className="text-box">
-                                    <h2 className="wow animate__fadeIn" data-wow-duration="300ms" data-wow-delay="10ms" data-wow-offset="1">Trainings & Courses </h2>
+                                    <h2 className="wow animate__fadeIn" data-wow-duration="300ms" data-wow-delay="10ms" data-wow-offset="1">Training & Courses </h2>
                                 </div>
                             </div>
                             <div className="col-md-5">
@@ -103,7 +103,8 @@ export default function CoursesTrainings() {
                             <div className="researcher-heading caption">
                                 <h3 className="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="10ms">Upcoming Training and Courses
                                 </h3>
-                                <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eu sed eu varius ut. Faucibus suscipit ultrices pretium tincidunt turpis. Vulputate pharetra in lectus sit et.
+                                <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms">
+                                    Training and courses are available for... 
                                 </p>
                             </div>
                             <div className="event-card wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="10ms">
@@ -160,7 +161,8 @@ export default function CoursesTrainings() {
                         <div className="col-12">
                             <div className="researcher-heading">
                                 <h3 className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms">Organizational Training and Speaker Request </h3>
-                                <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms">Are you interested in receiving personalized training for your organization? Or are you looking to book one of our clinicians for a speaking engagement? Please fill out the form below, and a member of our team will be in contact with you:
+                                <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms">
+                                    Are you interested in receiving personalized training for your organization? Or are you looking to book one of our clinicians for a speaking engagement? Please fill out the form below, and a member of our team will be in contact with you:
                                 </p>
                             </div>
                             <div className="contact mt-0">
