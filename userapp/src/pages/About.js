@@ -153,8 +153,8 @@ export default function About() {
                                 </div>
                             </div>
                             </div>
-                        </div>
                     </div>
+                   
                     <div className="container">
                         <div className="about-read">
                             <div className="row">
