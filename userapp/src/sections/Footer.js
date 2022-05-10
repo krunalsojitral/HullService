@@ -65,7 +65,7 @@ export default function Footer() {
                                 </form>
                                 <div className='subscriptionerror'>
                                     {errors.email && errors.email.type === "required" && (
-                                        <small className="error">Email is required.</small>
+                                        <small className="error" style={{color: 'white', position: 'absolute', marginTop: '5px'}}>Email is required.</small>
                                     )}
                                 </div>
                                 
