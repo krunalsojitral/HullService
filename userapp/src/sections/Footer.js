@@ -50,7 +50,7 @@ export default function Footer() {
                                     <Controller
                                         name={"email"}
                                         control={control}
-                                        rules={{ required: true }}
+                                        rules={{ required: true, pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i }  }}
                                         render={({ field: { onChange, value } }) => (
                                             <input
                                                 type="text"
@@ -61,11 +61,14 @@ export default function Footer() {
                                             />
                                         )}
                                     ></Controller>                                    
-                                    <button type="submit" className="btn subscription">Submit</button>
+                                    <button type="submit" className="btn subscription">Submit</button>                                    
+                                </form>
+                                <div className='subscriptionerror'>
                                     {errors.email && errors.email.type === "required" && (
                                         <small className="error">Email is required.</small>
                                     )}
-                                </form>
+                                </div>
+                                
                             </div>
                         </div>
                     </div>

@@ -45,8 +45,10 @@ const LandingPage = () => {
                                         <h1 className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="30ms">Pathways to Prevention
                                         </h1>
                                         <small>A centre for childhood trauma</small>
-                                        <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="60ms">Imagine a future where developmental trauma no longer exists — children need not be removed from their families, generational patterns of abuse, neglect, violence and addiction are broken, and families are empowered to meet the developmental needs of their babies from the time they learn they are pregnant.  Pathways to Prevention: A Centre for Childhood Trauma was created to achieve this goal of realizing a future free from developmental trauma.</p>
-                                        <Link className="btn btn-default wow animate__fadeInUp" to="/about-hull" data-wow-duration="800ms" data-wow-delay="10ms">
+                                        <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="60ms">
+                                            Imagine a future where developmental trauma no longer exists — children need not be removed from their families, generational patterns of abuse, neglect, violence and addiction are broken, and families are empowered to meet the developmental needs of their babies from the time they learn they are pregnant.  Pathways to Prevention: A Centre for Childhood Trauma was created to achieve this goal of realizing a future free from developmental trauma.
+                                        </p>
+                                        <Link className="btn btn-default wow animate__fadeInUp" to="/about" data-wow-duration="800ms" data-wow-delay="10ms">
                                             Learn More
                                         </Link>
                                     </div>

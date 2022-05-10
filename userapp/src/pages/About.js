@@ -59,11 +59,12 @@ export default function About() {
                                 <div className="col-12">
                                     <div className="about-us-top">
                                         <div className="text-box">
-                                            <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms"> Imagine a future where developmental trauma no longer exists. Where children need not be removed from their families, generational patterns of abuse, neglect, violence, and addiction are broken, and families are empowered to meet the developmental needs of their babies from the time they learn they are pregnant. Picture a world where young people thrive within families and communities that support their mental health and well-being.  Parents, doctors, teachers, caregivers, clergy, social workers, and coaches have a shared understanding of brain development and the impacts of trauma. As a result, they are equipped with the knowledge, tools, and support to meet children’s developmental needs effectively.
+                                            <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms"> 
+                                                Imagine a future where developmental trauma no longer exists. Where children need not be removed from their families, generational patterns of abuse, neglect, violence, and addiction are broken, and families are empowered to meet the developmental needs of their babies from the time they learn they are pregnant. Picture a world where young people thrive within families and communities that support their mental health and well-being. Parents, doctors, teachers, caregivers, clergy, social workers, and coaches have a shared understanding of brain development and the impacts of trauma. As a result, they are equipped with the knowledge, tools, and support to meet children’s developmental needs effectively. 
                                             </p>
                                             <br/>
                                             <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms">
-                                                Pathways to Prevention: A Centre for Childhood Trauma was created to achieve this goal of realizing a future free from developmental trauma. The Centre is an international hub for experts and service providers in the field to engage in:
+                                                Pathways to Prevention: A Centre for Childhood Trauma was created to achieve this goal of realizing a future free from developmental trauma. The Centre is an international hub for experts and service providers in the field to engage in:  
                                             </p>
                                         </div>
                                         <div className="text-inner">
@@ -93,8 +94,8 @@ export default function About() {
                                         <div className="about-vision-box about-vision-box-second">
                                             <span><img src="images/mission-icon.svg" alt="" className="img-fluid" /></span>
                                             <div className="text-box">
-                                                <h4>Our Vision</h4>
-                                                <p>A future free from developmental trauma.  </p>
+                                                <h4>Our Mission</h4>
+                                                <p>Create a community for innovative research, exceptional training and education, and unparalleled advocacy to prevent developmental trauma.  </p>
                                             </div>
                                         </div>
                                     </div>
@@ -103,7 +104,11 @@ export default function About() {
                                             <div className="col-lg-6">
                                                 <div className="content">
                                                     <h4>What is Developmental Trauma </h4>
-                                                    <p>Developmental trauma describes the impact of early, frequently repeated trauma or loss, which happens in the context of a child’s important relationships and early attachments. It is most often the result of abandonment, abuse, and neglect during the first five years of a child’s life. These experiences disrupt cognitive, neurological, social, and psychological development and create a range of adverse health and social outcomes.
+                                                    <p>
+                                                        Developmental trauma describes the impact of early, frequently repeated trauma or loss, which happens in the context of a child’s important relationships and early attachments. It is most often the result of abandonment, abuse, and neglect during the first five years of a child’s life. These experiences disrupt cognitive, neurological, social, and psychological development and create a range of adverse health and social outcomes. 
+                                                    </p>
+                                                    <p>
+                                                        The human, social, and economic costs of trauma continue to weigh heavily on families and communities, often passing from one generation to another in the form of intergenerational trauma. For example, Indigenous people in Canada continue to suffer the physical, mental, emotional, and spiritual harm caused by residential schools. Powerful advocacy, supports and prevention are needed to equip Indigenous people in their work to stop the transmission of developmental trauma caused by government policy (Truth and Reconciliation Commission of Canada, 2015).
                                                     </p>
                                                 </div>
                                             </div>
@@ -228,7 +233,8 @@ export default function About() {
                                     </div>
                                     <div className="text-box">
                                         <h4>Research </h4>
-                                        <p>Pathways to Prevention is a platform for research that seeks to understand the nature and dynamics of developmental trauma and effective treatments for recovery from difficult childhood experiences. These learnings will be disseminated to global influencers in health care, social services, government, and universities. The goal is to research, understand, and effectively treat the impact of developmental trauma before the issues become critical.
+                                        <p>
+                                            Pathways to Prevention is a platform for research that seeks to understand the nature and dynamics of developmental trauma and effective treatments for recovery from difficult childhood experiences. These learnings will be disseminated to global influencers in health care, social services, government, and universities. The goal is to research, understand, and effectively treat the impact of developmental trauma before the issues become critical.
                                         </p>
                                     </div>
                                 </div>
@@ -253,8 +259,12 @@ export default function About() {
                                     </div>
                                     <div className="text-box">
                                         <h4>Training Education </h4>
-                                        <p>Pathways to Prevention is a hub for disseminating leading-edge knowledge regarding the treatment of children suffering from developmental trauma.</p>
-                                        <p>Our years of work with the Child Trauma Academy and the Neurosequential Model (NM) have made us strong leaders in trauma-informed care in the community and worldwide. We train and educate service providers and experts from many disciplines (such as education, health care, the legal community, social services, early childhood development) and arm them with the most current information about developmental trauma, its impact on children, and how to respond, thus equipping them with the skills to deliver best possible practice.</p>
+                                        <p>
+                                            Pathways to Prevention is a hub for disseminating leading-edge knowledge regarding the treatment of children suffering from developmental trauma. 
+                                        </p>
+                                        <p>
+                                            Our years of work with the Child Trauma Academy and the Neurosequential Model (NM) have made us strong leaders in trauma-informed care in the community and worldwide. We train and educate service providers and experts from many disciplines (such as education, health care, the legal community, social services, early childhood development) and arm them with the most current information about developmental trauma, its impact on children, and how to respond, thus equipping them with the skills to deliver best possible practice.
+                                        </p>
                                     </div>
                                 </div>
                             </div>

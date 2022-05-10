@@ -40,9 +40,13 @@ export default function AboutHull() {
                             <div className="col-12">
                                 <div className="about-hull-inner">
                                     <div className="about-text">
-                                        <h4 className="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="10ms">About Pathways</h4>
-                                        <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms">Pathways to Prevention: Centre for Childhood Trauma is a division of Hull Services. This connection to Hull Services provides Pathways to Prevention with the synergies necessary to support research, training, education, and learning, directly influencing how services are delivered within Hull’s programs. This will enable Pathways to Prevention to build on Hull’s well-established reputation as a leader in the space of developmental trauma. While Hull Services continues to do transformational work with children and families, Pathways to Prevention will build the capacity of professionals, communities, and systems to work towards its goal of eradicating developmental trauma.
-                                            Pathways to Prevention: Centre for Childhood Trauma operates in adherence to Hull’s core values and leadership philosophy and reports through to Hull Services’ Executive Director and Board of Governors.
+                                        <h4 className="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="10ms">Hull Services and Pathways to Prevention: Centre for Childhood Trauma</h4>
+                                        <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms">
+                                            Pathways to Prevention: Centre for Childhood Trauma is a division of Hull Services. This connection to Hull Services provides Pathways to Prevention with the synergies necessary to support research, training, education, and learning, directly influencing how services are delivered within Hull’s programs. Pathways to Prevention will build on Hull’s well-established reputation as a leader in developmental trauma. While Hull Services continues to do transformational work with children and families, Pathways to Prevention will build the capacity of professionals, communities, and systems to work toward its goal of eradicating developmental trauma.
+                                        </p>
+                                        <br/>
+                                        <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms">
+                                            Pathways to Prevention: Centre for Childhood Trauma operates in adherence to Hull’s core values and leadership philosophy and reports through to Hull Services’ Executive Director and Board of Governors. 
                                         </p>
                                     </div>
                                     <div className="about-hull-logo wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="10ms" >
@@ -52,7 +56,20 @@ export default function AboutHull() {
                                     </div>
                                     <div className="about-text">
                                         <h4 className="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="10ms">About Hull Services</h4>
-                                        <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms">Hull Services has long had a reputation for providing leading-edge child, youth, and family mental health services. They work with children, youth, and families who have experienced significant challenges. Hull offers them an opportunity to seek well-being and happiness, focusing on mental health. Hull’s vision is for resilient young people and families to thrive within communities that support their mental health and well-being. In Calgary, they have been working toward this goal for more than 58 years.  They work with children who have often experienced chaotic, trouble-filled lives. Hull offers them and their families an opportunity to seek health and happiness, focusing on mental health. At Hull, they believe in dignity, wellness, and worth. This, combined with a commitment to building respectful relationships, holding space for authentic dialogue, and working effectively together, guides them in how they undertake planning, decision making, and collective work toward their vision.
+                                        <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms">
+                                            Hull Services has long had a reputation for providing leading-edge child, youth, and family mental health services. They work with children, youth, and families who have experienced significant challenges. Hull offers them an opportunity to seek well-being and happiness, focusing on mental health.  
+                                        </p>
+                                        <br/>
+                                        <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms">
+                                            Hull’s vision is for resilient young people and families to thrive within communities that support their mental health and well-being. In Calgary, they have been working toward this goal for more than 58 years.
+                                        </p>
+                                        <br />
+                                        <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms">
+                                            They work with children who have often experienced chaotic, trouble-filled lives. Hull offers them and their families an opportunity to seek health and happiness, focusing on mental health.
+                                        </p>
+                                        <br />
+                                        <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms">
+                                            At Hull, they believe in dignity, wellness, and worth. This, combined with a commitment to building respectful relationships, holding space for authentic dialogue, and working effectively together, guides them in how they undertake planning, decision making, and collective work toward their vision. 
                                         </p>
                                     </div>
                                     <div className="about-bottom">
@@ -60,7 +77,9 @@ export default function AboutHull() {
                                             <div className="row">
                                                 <div className="col-md-6 order-md-first order-last">
                                                     <div className="text-box">
-                                                        <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms" data-wow-offset="1">Hull Services founder, and continuing inspiration, William Roper Hull, was an entrepreneur, visionary, and philanthropist. His contributions to Calgary, the province of Alberta, and Western Canada left a blueprint of good citizenship for legions of others to emulate. Mr. Hull also recognized that a good life requires a fabric of services, resources, and relationships. Because of William Roper Hull’s generosity, thousands of children and their families are helped each year through Hull Services.</p>
+                                                        <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms" data-wow-offset="1">
+                                                            Hull Services founder, and continuing inspiration, William Roper Hull, was an entrepreneur, visionary, and philanthropist. His contributions to Calgary, the province of Alberta, and Western Canada left a blueprint of good citizenship for legions of others to emulate. Mr. Hull also recognized that a good life requires a fabric of services, resources, and relationships. Because of William Roper Hull’s generosity, thousands of children and their families are helped each year through Hull Services.
+                                                        </p>
                                                     </div>
                                                 </div>
                                                 <div className="col-md-6 order-md-last order-first">

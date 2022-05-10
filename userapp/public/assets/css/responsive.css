@@ -644,6 +644,10 @@
   .newsletter-inner form {
     max-width: 440px;
   }
+  .newsletter-inner .subscriptionerror {
+    max-width: 440px;
+    margin: 0 auto;
+  }
   .footer-text p {
     font-size: 14px;
     line-height: 140%;
@@ -1384,6 +1388,10 @@ max-width:400px !important;
   .newsletter-inner form {
     max-width: 500px;
   }
+  .newsletter-inner .subscriptionerror {
+    max-width: 500px;
+    margin: 0 auto;
+  }
   .newsletter-inner form .form-control {
     font-size: 18px;
     height: 70px;
@@ -1790,6 +1798,10 @@ max-width:400px !important;
   }
   .newsletter-inner form {
     max-width: 400px;
+  }
+  .newsletter-inner .subscriptionerror {
+    max-width: 400px;
+    margin: 0 auto;
   }
   .newsletter-inner {
     padding: 40px 30px;

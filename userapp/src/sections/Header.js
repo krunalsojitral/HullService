@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useHistory, Link, useLocation } from 'react-router-dom';
 import InlineButton from './../components/InlineButton';
@@ -18,6 +18,7 @@ export default function Header() {
     const [userTypeList, setUserTypeList] = React.useState('');
     const [activeClass, setActiveClass] = useState('');
     const location = useLocation();
+  
 
     React.useEffect(() => {
         const userString = localStorage.getItem('userdata');
@@ -50,8 +51,13 @@ export default function Header() {
             }
             setActiveClass(activeClass);
         });
-        
+        // window.scrollTo({
+        //     top: 0,
+        //     left: 0,
+        //     behavior: "auto"
+        // });
         window.scrollTo(0, 0)
+       // window.scroll({ top: 0, left: 0, behavior: 'auto' })
 
         // axios.get(api_url + '/common/getDynamicMenu', {}).then((result) => {
         //     if (result.data.status) {
@@ -68,6 +74,8 @@ export default function Header() {
         // })
 
     }, [])
+  
+
 
     const handleOpenDirection = () => {
         history.push('/');
@@ -130,8 +138,8 @@ export default function Header() {
                                                     </NavLink>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <NavLink class="nav-link" activeClassName="active" to="/partner">
-                                                        <InlineButton name={"Our Partners"} />
+                                                    <NavLink exact class="nav-link" activeClassName="active" to="/partner">
+                                                        <InlineButton name={"Partners"} />
                                                     </NavLink>
                                                 </li>
                                                 <li class="nav-item">

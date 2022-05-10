@@ -500,6 +500,10 @@ li.nav-item a.login-btn:after {
   width: 100%;
   margin: 0 auto;
 }
+.newsletter-inner .subscriptionerror{
+  max-width: 630px;
+  margin: 0 auto;
+}
 .newsletter-inner form .form-control {
   background: #ffffff;
   font-weight: 400;
@@ -548,7 +552,7 @@ footer {
   margin: 0 auto;
 }
 .footer-text {
-  margin: 0 0 100px 0;
+  margin: 0 0 45px 0;
 }
 .footer-text p {
  text-align: center !important;
@@ -844,8 +848,7 @@ footer {
   text-align: justify;
   font-weight: 500;
   font-family: "Poppins", sans-serif;
-  font-size: 16px;
-  text-transform: capitalize;
+  font-size: 16px;  
   color: #000000;
   line-height: 178.5% !important;
   margin: 34px 0 20px 0;
@@ -863,8 +866,7 @@ footer {
 }
 .governors-inner .text-box strong {
   font-weight: 700;
-  font-size: 16px;
-  text-transform: capitalize;
+  font-size: 16px;  
   display: block;
   color: #000000;
 }
@@ -1225,8 +1227,7 @@ section.training-courses-sec h3 {
 }
 .researcher-heading h3 {
   font-weight: 700;
-  font-size: 36px;
-  text-transform: uppercase;
+  font-size: 36px;  
   color: #000000;
   text-align: center;
   position: relative;
@@ -1473,8 +1474,7 @@ section.training-courses-sec h3 {
 .researchContact .researcher-heading h3 {
   font-weight: 700;
   color: #036e80;
-  font-size: 36px;
-  text-transform: lowercase;
+  font-size: 36px;  
   padding: 0;
 }
 .researchContact .researcher-heading h3:after {
