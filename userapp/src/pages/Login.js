@@ -53,7 +53,7 @@ export default function Login() {
                     </div>
 					<div className="row">
 						<div className="col-lg-12">
-							<div className="login-content mt-6">
+							<div className="login-content mt-4">
                                 <div className="login-title">Welcome to the Pathways to Prevention</div>
                                 <div className="login-title-sub">A centre for childhood trauma</div>
 								

@@ -7,6 +7,7 @@ import useFindUser from './hooks/useFindUser';
 import { WebsiteLoader } from "./components";
 import useAutoLogout from "./useAutoLogout";
 import { browserHistory } from 'react-router';
+import ScrollToTop from "./ScrollToTop";
 
 const Register = lazy(() => import("./pages/Register"));
 const PublicUserRegister = lazy(() => import("./pages/PublicUserRegister"));
@@ -74,53 +75,58 @@ function App() {
 
   return (
     <Router>
+      <ScrollToTop>
       <UserContext.Provider value={{ user, setUser }}>
         <Suspense
           fallback={
             <WebsiteLoader isHomePage={true} isLoggedIn={true}></WebsiteLoader>
           }
         >
-        <Switch>                                     
-          <Route path="/research-request-form" component={ResearchRequestForm} />
-          <Route path="/register" component={Register} />
-          <Route path="/public-user-register" component={PublicUserRegister} />
-          <Route path="/activation-account" component={ActivationAccount} />
-          <Route path="/login" component={Login} />          
-          <Route path="/forgotpassword" component={Forgotpassword} />          
-          <Route path="/reset-password" component={ChangePassword} />
-          <Route path="/about" component={About} />
-          <Route path="/events" component={Events} />   
-          <Route path="/my-events" component={MyEvents} />   
-          <Route path="/event-detail" component={EventDetail} />
-          <Route path="/event-promo" component={PromoPage} />
-          <Route path="/event-cart" component={EventsCart} />
-          <Route path="/event-ticket" component={EventTicket} />
-          <Route path="/event-payment" component={EventPayment} />          
-          <Route path="/courses-training" component={CoursesTrainings} />
-          <Route path="/add-forum" component={AddForum} />
-          <PrivateRoute path="/forum" component={Forum} />
-          <PrivateRoute path="/my-forum" component={MyForum} />          
-          <Route path="/forum-sub" component={ForumSub} />
-          <Route path="/forum-detail" component={ForumDetail} />
-          <Route path="/dashboard" component={Dashboard} />
-          <Route exact path="/" component={Landing} />
-          <Route path="/contact" component={Contact} />          
-          <Route path="/faq" component={Faq} />
-          <Route path="/partner" component={Partner} />
-          <Route path="/ourteam" component={Ourteam} />
-          <Route path="/participants-in-my-studies" component={ParticipantsInMyStudies} />
-          <Route path="/participate-in-research" component={ParticipateInResearch} />
-          <Route path="/my-studies" component={MyStudies} />
-          <Route path="/preview-module" component={Preview} />
-          <Route path="/add-research" component={AddResearch} />
-          <Route path="/view-profile" component={ViewProfile} />
-          <Route path="/edit-profile" component={EditProfile} />
-          <Route path="/terms-condition" component={TermsCondition} />
-          <Route path="/about-hull" component={AboutHull} />
+         
+            <Switch>
+              <Route path="/research-request-form" component={ResearchRequestForm} />
+              <Route path="/register" component={Register} />
+              <Route path="/public-user-register" component={PublicUserRegister} />
+              <Route path="/activation-account" component={ActivationAccount} />
+              <Route path="/login" component={Login} />
+              <Route path="/forgotpassword" component={Forgotpassword} />
+              <Route path="/reset-password" component={ChangePassword} />
+              <Route path="/about" component={About} />
+              <Route path="/events" component={Events} />
+              <Route path="/my-events" component={MyEvents} />
+              <Route path="/event-detail" component={EventDetail} />
+              <Route path="/event-promo" component={PromoPage} />
+              <Route path="/event-cart" component={EventsCart} />
+              <Route path="/event-ticket" component={EventTicket} />
+              <Route path="/event-payment" component={EventPayment} />
+              <Route path="/courses-training" component={CoursesTrainings} />
+              <Route path="/add-forum" component={AddForum} />
+              <PrivateRoute path="/forum" component={Forum} />
+              <PrivateRoute path="/my-forum" component={MyForum} />
+              <Route path="/forum-sub" component={ForumSub} />
+              <Route path="/forum-detail" component={ForumDetail} />
+              <Route path="/dashboard" component={Dashboard} />
+              <Route exact path="/" component={Landing} />
+              <Route path="/contact" component={Contact} />
+              <Route path="/faq" component={Faq} />
+              <Route path="/partner" component={Partner} />
+              <Route path="/ourteam" component={Ourteam} />
+              <Route path="/participants-in-my-studies" component={ParticipantsInMyStudies} />
+              <Route path="/participate-in-research" component={ParticipateInResearch} />
+              <Route path="/my-studies" component={MyStudies} />
+              <Route path="/preview-module" component={Preview} />
+              <Route path="/add-research" component={AddResearch} />
+              <Route path="/view-profile" component={ViewProfile} />
+              <Route path="/edit-profile" component={EditProfile} />
+              <Route path="/terms-condition" component={TermsCondition} />
+              <Route path="/about-hull" component={AboutHull} />
+
+            </Switch>
           
-        </Switch>
+        
         </Suspense>
       </UserContext.Provider>
+      </ScrollToTop>
     </Router>
   );
 }

@@ -314,7 +314,7 @@ export default function EventsCart() {
                         }}
                       >
                         <div
-                          class="card"
+                          className="card"
                           style={{ width: "500px", padding: "20px" }}
                         >
                           <div
@@ -360,7 +360,7 @@ export default function EventsCart() {
                           <br />
 
                           <button
-                            class="button-1"
+                            className="button-1"
                             role="button"
                             style={{ fontWeight: "bold", marginTop: "2%" }}
                             onClick={() => {

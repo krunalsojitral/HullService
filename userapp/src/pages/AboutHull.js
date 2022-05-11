@@ -46,7 +46,7 @@ export default function AboutHull() {
                                         </p>
                                         <br/>
                                         <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms">
-                                            Pathways to Prevention: Centre for Childhood Trauma operates in adherence to Hull’s core values and leadership philosophy and reports through to Hull Services’ Executive Director and Board of Governors. 
+                                            Pathways to Prevention: Centre for Childhood Trauma operates in adherence to Hull’s core values and leadership philosophy and reports through to Hull Services Executive Director and Board of Governors. 
                                         </p>
                                     </div>
                                     <div className="about-hull-logo wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="10ms" >

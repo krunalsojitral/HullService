@@ -161,7 +161,7 @@ export default function CoursesTrainings() {
                     <div className="row">
                         <div className="col-12">
                             <div className="researcher-heading">
-                                <h3 className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms">Organizational Training and Speaker Request </h3>
+                                <h3 className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms">Organizational training and speaker request </h3>
                                 <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms">
                                     Are you interested in receiving personalized training for your organization? Or are you looking to book one of our clinicians for a speaking engagement? Please fill out the form below, and a member of our team will be in contact with you:
                                 </p>

@@ -44,19 +44,19 @@ export default function Header() {
             }
         }
 
-        window.addEventListener('scroll', () => {
-            let activeClass = 'sticky';
-            if (window.scrollY === 0) {
-                activeClass = '';
-            }
-            setActiveClass(activeClass);
-        });
+        // window.addEventListener('scroll', () => {
+        //     let activeClass = 'sticky';
+        //     if (window.scrollY === 0) {
+        //         activeClass = '';
+        //     }
+        //     setActiveClass(activeClass);
+        // });
         // window.scrollTo({
         //     top: 0,
         //     left: 0,
         //     behavior: "auto"
         // });
-        window.scrollTo(0, 0)
+       // window.scrollTo({ top: 0, behavior: 'smooth' });
        // window.scroll({ top: 0, left: 0, behavior: 'auto' })
 
         // axios.get(api_url + '/common/getDynamicMenu', {}).then((result) => {
@@ -87,7 +87,7 @@ export default function Header() {
         
         // history.push('/');
        //  window.location.reload(false);
-    }
+    }    
  
 
     return(
@@ -106,10 +106,14 @@ export default function Header() {
                                     </button>
                                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                                         <ul className="navbar-nav ms-auto" id="menu">
-                                        {(location.pathname != "/dashboard" || location.pathname != "/my-events") ?
+                                        
+                                        {((location.pathname != "/dashboard") && (location.pathname != "/my-events")) ?
                                             <React.Fragment>
-                                                <li class="nav-item"><a class="nav-link" href="about">About Us <i class="fa-solid fa-caret-down"></i></a>
-                                                    <ul class="menus">
+                                                <li className="nav-item">
+                                                    <NavLink className="nav-link" activeClassName="active" to="/about">
+                                                        About Us <i className="fa-solid fa-caret-down"></i>
+                                                    </NavLink>                                                    
+                                                    <ul className="menus">
                                                         <li>
                                                             <NavLink activeClassName="active" to="/about-hull">
                                                                 <InlineButton name={"About Hull Services"} />
@@ -122,35 +126,35 @@ export default function Header() {
                                                         </li>
                                                     </ul>
                                                 </li>
-                                                <li class="nav-item">
-                                                    <NavLink class="nav-link" activeClassName="active" to="/research-request-form">
+                                                <li className="nav-item">
+                                                    <NavLink className="nav-link" activeClassName="active" to="/research-request-form">
                                                         <InlineButton name={"Research"} />
                                                     </NavLink>
                                                 </li>
-                                                <li class="nav-item">
-                                                    <NavLink class="nav-link" activeClassName="active" to="/courses-training">
+                                                <li className="nav-item">
+                                                    <NavLink className="nav-link" activeClassName="active" to="/courses-training">
                                                         <InlineButton name={"Training & Courses"} />
                                                     </NavLink>
                                                 </li>
-                                                <li class="nav-item">
-                                                    <NavLink class="nav-link" activeClassName="active" to="/events">
+                                                <li className="nav-item">
+                                                    <NavLink className="nav-link" activeClassName="active" to="/events">
                                                         <InlineButton name={"Events"} />
                                                     </NavLink>
                                                 </li>
-                                                <li class="nav-item">
-                                                    <NavLink exact class="nav-link" activeClassName="active" to="/partner">
+                                                <li className="nav-item">
+                                                    <NavLink className="nav-link" activeClassName="active" to="/partner">
                                                         <InlineButton name={"Partners"} />
                                                     </NavLink>
                                                 </li>
-                                                <li class="nav-item">
-                                                    <NavLink class="nav-link" activeClassName="active" to="/contact">
+                                                <li className="nav-item">
+                                                    <NavLink className="nav-link" activeClassName="active" to="/contact">
                                                         <InlineButton name={"Contact Us"} />
                                                     </NavLink>
                                                 </li>
                                             </React.Fragment>
                                             : null}
-                                        {(!token) && <li class="nav-item">
-                                            <NavLink class="login-btn" activeClassName="active" to="/login">
+                                        {(!token) && <li className="nav-item">
+                                            <NavLink className="login-btn" activeClassName="active" to="/login">
                                                 <InlineButton name={"Login"} />
                                             </NavLink>
                                         </li>}

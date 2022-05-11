@@ -268,7 +268,7 @@ export default function Ourteam() {
                                 <div className="text-box">
                                     <h4 className="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="10ms">Board of Governors</h4>
                                     <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms"> Pathways to Prevention: Centre for Childhood Trauma operates in adherence to Hull’s core values and leadership philosophy and reports through to <a href="#">Hull Services’ Executive Director and Board of Governors</a>.</p>
-                                    <span className="wow animate__fadeInUp" data-wow-duration="1100ms" data-wow-delay="10ms">LEARN MORE ABOUT HULL’S BOARD OF GOVERNORS</span>
+                                    <span className="wow animate__fadeInUp" data-wow-duration="1100ms" data-wow-delay="10ms">Learn more about hull's board of governors</span>
                                     <strong className="wow animate__fadeInUp" data-wow-duration="1400ms" data-wow-delay="10ms">The Board’s focus for the Pathways to Prevention is advocacy, community relations and fundraising. </strong>
                                 </div>
                             </div>
