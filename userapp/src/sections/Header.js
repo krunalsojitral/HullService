@@ -44,13 +44,13 @@ export default function Header() {
             }
         }
 
-        // window.addEventListener('scroll', () => {
-        //     let activeClass = 'sticky';
-        //     if (window.scrollY === 0) {
-        //         activeClass = '';
-        //     }
-        //     setActiveClass(activeClass);
-        // });
+        window.addEventListener('scroll', () => {
+            let activeClass = 'sticky';
+            if (window.scrollY === 0) {
+                activeClass = '';
+            }
+            setActiveClass(activeClass);
+        });
         // window.scrollTo({
         //     top: 0,
         //     left: 0,
