@@ -21,6 +21,7 @@ export default function PromoPage() {
   const [reflectiveData, setReflectiveData] = useState([]);
   const [purchasseData, setPurchaseData] = useState([]);
   const [activeTab, setActiveTab] = useState("home");
+  const [actualDate, setActualDate] = useState(new Date());
 
   React.useEffect(() => {
     const params = new URLSearchParams(window.location.search); // id=123
@@ -106,7 +107,6 @@ export default function PromoPage() {
     localStorage.setItem("eventPurchaseData", JSON.stringify(data));
     history.push("/event-cart");
   };
-
   const checkButton = (isExpired) => {
     // if (true) {
     if (isExpired) {
@@ -131,7 +131,7 @@ export default function PromoPage() {
               className="btn btn-default w-100"
             >
               {eventDetail.cost && <span>${eventDetail.cost}</span>}
-              <span>Register for events only</span>
+              {actualDate <= eventDetail.start_date ?  <span>Register for events only</span> : <span>Event Registrations Closed </span> }
             </a>
           </div>
           <div className="rate-btn mt-3">
@@ -143,10 +143,16 @@ export default function PromoPage() {
               className="btn btn-default w-100"
             >
               {eventDetail.cost && <span>${eventDetail.cost}</span>}
+              {actualDate <= eventDetail.start_date ?
               <span>
-                Register for Event and Reflection <br />
-                Pracice Session
-              </span>
+                Register for Event and Reflective <br />
+                Practice Session
+              </span> 
+              : 
+              <span>
+                Event Registrations Closed
+              </span> 
+              }
             </a>
           </div>
         </div>
