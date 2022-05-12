@@ -124,7 +124,7 @@ export default function ParticipateInResearch() {
                                     <div className="col-md-4">
                                         <div className="studies-Btn">
                                             <ApplyInResearchPage></ApplyInResearchPage>
-                                            {/* <a href="#" className="study-btn">
+                                            {/* <a href="javascript:;" className="study-btn">
                                                 Click Here to Participate in Future Research
 											<span>Be notified of studies you qualify for</span>
                                             </a> */}

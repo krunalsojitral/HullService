@@ -525,7 +525,7 @@ export default function ForumDetail() {
                                                     <span>({data.role})</span>
                                                 </h3>
                                                 <div className="Bars-view dropdown">
-                                                    <a href="#" className="Bars-Btn-New dropdown-toggle" data-toggle="dropdown"><i className="fa fa-ellipsis-h"></i></a>
+                                                    <a href="javascript:;" className="Bars-Btn-New dropdown-toggle" data-toggle="dropdown"><i className="fa fa-ellipsis-h"></i></a>
                                                     <ul className="dropdown-menu">                                                        
                                                         {(loginUserID == data.user_id) && <li onClick={(e) => forumCommentEdit(data.forum_comment_id, index, data.comment)}><span className="forum_action"><i className="fa fa-pencil"></i> Edit</span></li>}
                                                         {(loginUserID == data.user_id) && <li onClick={(e) => forumCommentDelete(data.forum_comment_id, index)}><span className="forum_action"><i className="fa fa-trash-o"></i> Delete</span></li>}

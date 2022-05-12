@@ -120,7 +120,7 @@ export default function Events() {
                                                             <h3>Dr. Andrew Santino</h3>
                                                             <small>Doctor’s Field</small>
                                                         </div>
-                                                        <a href="#" className="btn-apply">Apply</a>
+                                                        <a href="javascript:;" className="btn-apply">Apply</a>
                                                     </div>
                                                 </div> */}
                                                 </div>

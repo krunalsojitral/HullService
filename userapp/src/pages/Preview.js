@@ -235,7 +235,7 @@ export default function Preview() {
                                                         <div className="panel panel-default">
                                                             <div className="panel-heading" role="tab" id="headingOne">
                                                                 <h4 className="panel-title">
-                                                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="javascript:;collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                                                         {detail.video_content_title}
                                                                     </a>
                                                                 </h4>
@@ -341,7 +341,7 @@ export default function Preview() {
                                                         {detail.content_title_one && <div className="panel panel-default">
                                                             <div className="panel-heading" role="tab" id="headingTwo">
                                                                 <h4 className="panel-title">
-                                                                    <a className="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                                    <a className="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="javascript:;collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                                                         {detail.content_title_one}
                                                                     </a>
                                                                 </h4>
@@ -357,7 +357,7 @@ export default function Preview() {
                                                         {detail.content_title_two && <div className="panel panel-default">
                                                             <div className="panel-heading" role="tab" id="headingThree">
                                                                 <h4 className="panel-title">
-                                                                    <a className="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                                    <a className="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="javascript:;collapseThree" aria-expanded="false" aria-controls="collapseThree">
                                                                         {detail.content_title_two}</a>
                                                                 </h4>
                                                             </div>
@@ -371,7 +371,7 @@ export default function Preview() {
                                                         {detail.content_title_third && <div className="panel panel-default">
                                                             <div className="panel-heading" role="tab" id="headingFour">
                                                                 <h4 className="panel-title">
-                                                                    <a className="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                                                    <a className="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="javascript:;collapseFour" aria-expanded="false" aria-controls="collapseFour">
                                                                         {detail.content_title_third}</a>
                                                                 </h4>
                                                             </div>
@@ -385,7 +385,7 @@ export default function Preview() {
                                                         {detail.content_title_four && <div className="panel panel-default">
                                                             <div className="panel-heading" role="tab" id="headingFive">
                                                                 <h4 className="panel-title">
-                                                                    <a className="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                                                    <a className="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="javascript:;collapseFive" aria-expanded="false" aria-controls="collapseFive">
                                                                         {detail.content_title_four}</a>
                                                                 </h4>
                                                             </div>
@@ -399,7 +399,7 @@ export default function Preview() {
                                                         {detail.content_title_five && <div className="panel panel-default">
                                                             <div className="panel-heading" role="tab" id="headingsix">
                                                                 <h4 className="panel-title">
-                                                                    <a className="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                                                                    <a className="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="javascript:;collapseSix" aria-expanded="false" aria-controls="collapseSix">
                                                                         {detail.content_title_five}</a>
                                                                 </h4>
                                                             </div>

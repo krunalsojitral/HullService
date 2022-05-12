@@ -132,8 +132,8 @@ export default function Events() {
                 <div className="container-fluid">
                     {!token && <div className="researcher-heading">
                         <h3 className="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="0ms" data-wow-offset="1">Our Events</h3>
-                        <p className="wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="0ms" data-wow-offset="1">Training and courses are available for...
-                        </p>
+                        {/* <p className="wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="0ms" data-wow-offset="1">Training and courses are available for...
+                        </p> */}
                     </div>}
                     <div className="row" style={!token ? { marginTop: "60px" } : {}}>
                         {token && 

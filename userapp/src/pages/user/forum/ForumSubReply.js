@@ -167,7 +167,7 @@ function ForumSubReply(props) {
                         <div className="comment-dot-btn">
                             <h3><Link className="btn-edit" to={{ pathname: "/view-profile", search: "?id=" + subdata.user_id }}>{subdata.first_name} {subdata.last_name}</Link><span>({subdata.role})</span></h3>
                             <div className="Bars-view dropdown">
-                                <a href="#" className="Bars-Btn-New dropdown-toggle" data-toggle="dropdown"><i className="fa fa-ellipsis-h"></i></a>
+                                <a href="javascript:;" className="Bars-Btn-New dropdown-toggle" data-toggle="dropdown"><i className="fa fa-ellipsis-h"></i></a>
                                 <ul className="dropdown-menu">
                                     {(loginUserID == subdata.user_id) && <li onClick={(e) => forumCommentEdit(subdata.reply_comment_id, index, subdata.comment)}><span className="forum_action"><i className="fa fa-pencil"></i> Edit</span></li>}
                                     {(loginUserID == subdata.user_id) && <li onClick={(e) => forumCommentDelete(subdata.reply_comment_id, index)}><span className="forum_action"><i className="fa fa-trash-o"></i> Delete</span></li>}

@@ -213,7 +213,7 @@ function ForumReply(props) {
                             <div className="comment-dot-btn">
                                 <h3><Link className="btn-edit" to={{ pathname: "/view-profile", search: "?id=" + replydata.user_id }}>{replydata.first_name} {replydata.last_name}</Link><span>({replydata.role})</span></h3>
                                 <div className="Bars-view dropdown">
-                                    <a href="#" className="Bars-Btn-New dropdown-toggle" data-toggle="dropdown"><i className="fa fa-ellipsis-h"></i></a>
+                                    <a href="javascript:;" className="Bars-Btn-New dropdown-toggle" data-toggle="dropdown"><i className="fa fa-ellipsis-h"></i></a>
                                     <ul className="dropdown-menu">
                                         {(loginUserID == replydata.user_id) && <li onClick={(e) => forumCommentEdit(replydata.reply_comment_id, index, replydata.comment)}><span className="forum_action"><i className="fa fa-pencil"></i> Edit</span></li>}
                                         {(loginUserID == replydata.user_id) && <li onClick={(e) => forumCommentDelete(replydata.reply_comment_id, index)}><span className="forum_action"><i className="fa fa-trash-o"></i> Delete</span></li>}

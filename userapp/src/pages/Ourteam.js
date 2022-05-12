@@ -289,7 +289,7 @@ export default function Ourteam() {
                                 <a data-bs-dismiss="modal" className="close-icon" href="javascript:;"><img src="images/crose-icon.svg" alt="" /></a>
                                 <div className="team-modal-inner">
                                     <div className="image-holder" style={{ width: '200px' }}>
-                                        <img src="images/clinical-team-img2.png" alt="" className="img-fluid" />
+                                        <img src="./images/Emily/Emily.png" alt="" className="img-fluid" />
                                     </div>
                                     <div className="text-box">
                                         <h4>Emily Wang, Ph.D., R.Psych</h4>
@@ -322,7 +322,7 @@ export default function Ourteam() {
                                 <a data-bs-dismiss="modal" className="close-icon" href="javascript:;"><img src="images/crose-icon.svg" alt="" /></a>
                                 <div className="team-modal-inner">
                                     <div className="image-holder" style={{ width: '200px' }}>
-                                        <img src="images/clinical-team-img2.png" alt="" className="img-fluid" />
+                                        <img src="./images/Nicole/Nicole.png" alt="" className="img-fluid" />
                                     </div>
                                     <div className="text-box">
                                         <h4>Nicole Berggren, M.C., R. Psych</h4>
@@ -355,7 +355,7 @@ export default function Ourteam() {
                                 <a data-bs-dismiss="modal" className="close-icon" href="javascript:;"><img src="images/crose-icon.svg" alt="" /></a>
                                 <div className="team-modal-inner">
                                     <div className="image-holder" style={{ width: '200px' }}>
-                                        <img src="images/clinical-team-img2.png" alt="" className="img-fluid" />
+                                        <img src="./images/Jamie/Jamie.png" alt="" className="img-fluid" />
                                     </div>
                                     <div className="text-box">
                                         <h4>Jamie Pope, M.Sc., R. Psych</h4>
@@ -390,7 +390,7 @@ export default function Ourteam() {
                                 <a data-bs-dismiss="modal" className="close-icon" href="javascript:;"><img src="images/crose-icon.svg" alt="" /></a>
                                 <div className="team-modal-inner">
                                     <div className="image-holder" style={{ width: '200px' }}>
-                                        <img src="images/clinical-team-img2.png" alt="" className="img-fluid" />
+                                        <img src="./images/Maria/Maria.png" alt="" className="img-fluid" />
                                     </div>
                                     <div className="text-box">
                                         <h4>Maria Malouf, M.C., Registered Provisional Psychologist</h4>
@@ -424,7 +424,7 @@ export default function Ourteam() {
                                 <a data-bs-dismiss="modal" className="close-icon" href="javascript:;"><img src="images/crose-icon.svg" alt="" /></a>
                                 <div className="team-modal-inner">
                                     <div className="image-holder" style={{ width: '200px' }}>
-                                        <img src="images/clinical-team-img2.png" alt="" className="img-fluid" />
+                                        <img src="./images/Phil/Phil.png" alt="" className="img-fluid" />
                                     </div>
                                     <div className="text-box">
                                         <h4>Phil Herman MSW, RSW</h4>
@@ -457,7 +457,7 @@ export default function Ourteam() {
                                 <a data-bs-dismiss="modal" className="close-icon" href="javascript:;"><img src="images/crose-icon.svg" alt="" /></a>
                                 <div className="team-modal-inner">
                                     <div className="image-holder" style={{ width: '200px' }}>
-                                        <img src="images/clinical-team-img2.png" alt="" className="img-fluid" />
+                                        <img src="./images/Tiffany/Tiffany.png" alt="" className="img-fluid" />
                                     </div>
                                     <div className="text-box">
                                         <h4>Tiffany Beks, M.Sc., PhD Candidate, R. Psych</h4>
@@ -490,7 +490,7 @@ export default function Ourteam() {
                                 <a data-bs-dismiss="modal" className="close-icon" href="javascript:;"><img src="images/crose-icon.svg" alt="" /></a>
                                 <div className="team-modal-inner">
                                     <div className="image-holder" style={{ width: '200px' }}>
-                                        <img src="images/clinical-team-img2.png" alt="" className="img-fluid" />
+                                        <img src="./images/Marilyn/Marilyn.png" alt="" className="img-fluid" />
                                     </div>
                                     <div className="text-box">
                                         <h4>Marilyn Boston, RSW</h4>
@@ -523,7 +523,7 @@ export default function Ourteam() {
                                 <a data-bs-dismiss="modal" className="close-icon" href="javascript:;"><img src="images/crose-icon.svg" alt="" /></a>
                                 <div className="team-modal-inner">
                                     <div className="image-holder" style={{ width: '200px' }}>
-                                        <img src="images/clinical-team-img2.png" alt="" className="img-fluid" />
+                                        <img src="./images/Katie/Katie.png" alt="" className="img-fluid" />
                                     </div>
                                     <div className="text-box">
                                         <h4>Katie Davies </h4>
@@ -556,7 +556,7 @@ export default function Ourteam() {
                                 <a data-bs-dismiss="modal" className="close-icon" href="javascript:;"><img src="images/crose-icon.svg" alt="" /></a>
                                 <div className="team-modal-inner">
                                     <div className="image-holder" style={{ width: '200px' }}>
-                                        <img src="images/clinical-team-img2.png" alt="" className="img-fluid" />
+                                        <img src="./images/Natalia/Natalia.png" alt="" className="img-fluid" />
                                     </div>
                                     <div className="text-box">
                                         <h4>Natalia Zaharia</h4>

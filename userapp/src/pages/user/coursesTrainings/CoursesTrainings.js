@@ -110,16 +110,16 @@ export default function CoursesTrainings() {
                             </div>
                             <div className="event-card wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="10ms">
                                 <div className="event-card-left">
-                                    <div className="desc">16th Annual Society of Consulting Psychology Winter Conference</div>
+                                    <div className="desc">Board Brains for Caregiver and Child/Youth</div>
                                     <ul>
-                                        <li><i><img src="images/clarity_date-solid.svg" alt="" /></i><span>12-7-2022</span></li>
-                                        <li><i><img src="images/bxs_time.svg" alt="" /></i><span>9:00pm - 10:30pm</span></li>
-                                        <li><i><img src="images/loc.svg" alt="" /></i><span>United States</span></li>
+                                        <li><i><img src="images/clarity_date-solid.svg" alt="" /></i><span>July 18, 19, 29, 25, 26, 27, 2022</span></li>
+                                        <li><i><img src="images/bxs_time.svg" alt="" /></i><span> 1:30PM – 3:30PM MST</span></li>
+                                        <li><i><img src="images/loc.svg" alt="" /></i><span>In person</span></li>
                                     </ul>
                                 </div>
                                 <div className="event-card-right">
-                                    <div className="price">$99.00</div>
-                                    <a href="#" className="btn btn-default w-100 mt-0">Register</a>
+                                    <div className="price">$120.00</div>
+                                    {/* <a href="javascript:;" className="btn btn-default w-100 mt-0">Register</a> */}
                                 </div>
                             </div>
                             {/* <div className="event-card wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="10ms">
@@ -133,7 +133,7 @@ export default function CoursesTrainings() {
                                 </div>
                                 <div className="event-card-right">
                                     <div className="price">$99.00</div>
-                                    <a href="#" className="btn btn-default w-100 mt-0">Register</a>
+                                    <a href="javascript:;" className="btn btn-default w-100 mt-0">Register</a>
                                 </div>
                             </div>
                             <div className="event-card wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="10ms" >
@@ -147,7 +147,7 @@ export default function CoursesTrainings() {
                                 </div>
                                 <div className="event-card-right">
                                     <div className="price">$99.00</div>
-                                    <a href="#" className="btn btn-default w-100 mt-0">Register</a>
+                                    <a href="javascript:;" className="btn btn-default w-100 mt-0">Register</a>
                                 </div>
                             </div> */}
                         </div>
@@ -253,7 +253,7 @@ export default function CoursesTrainings() {
                                             <li><i><img src="images/bxs_time.svg" alt="" /></i> <span>Duration : 6 hours</span></li>
                                             <li><i><img src="images/loc.svg" alt="" /></i> <span>Online</span></li>
                                         </ul>
-                                        {/* <a href="#" className="btn btn-default">Register</a> */}
+                                        {/* <a href="javascript:;" className="btn btn-default">Register</a> */}
                                     </div>
                                 </div>
 
@@ -292,7 +292,7 @@ export default function CoursesTrainings() {
                                             <li><i><img src="images/bxs_time.svg" alt="" /></i> <span>Duration : 6 sessions, one per month, for one hour</span></li>                                            
                                             <li><i><img src="images/loc.svg" alt="" /></i> <span>Online or in person</span></li>
                                         </ul>
-                                        {/* <a href="#" className="btn btn-default">Register</a> */}
+                                        {/* <a href="javascript:;" className="btn btn-default">Register</a> */}
                                     </div>
                                 </div>
 
@@ -330,7 +330,7 @@ export default function CoursesTrainings() {
                                             <li><i><img src="images/bxs_time.svg" alt="" /></i> <span>Duration : 6 hours</span></li>
                                             <li><i><img src="images/loc.svg" alt="" /></i> <span>Online</span></li>
                                         </ul>
-                                        {/* <a href="#" className="btn btn-default">Register</a> */}
+                                        {/* <a href="javascript:;" className="btn btn-default">Register</a> */}
                                     </div>
                                 </div>
 
@@ -367,7 +367,7 @@ export default function CoursesTrainings() {
                                             <li><i><img src="images/bxs_time.svg" alt="" /></i> <span>Duration : 2 hours</span></li>
                                             <li><i><img src="images/loc.svg" alt="" /></i> <span>Online</span></li>
                                         </ul>
-                                        {/* <a href="#" className="btn btn-default">Register</a> */}
+                                        {/* <a href="javascript:;" className="btn btn-default">Register</a> */}
                                     </div>
                                 </div>
 
@@ -409,11 +409,11 @@ export default function CoursesTrainings() {
                                         </ul>
                                         <ul>
                                             <li><i><img src="images/clarity_date-solid.svg" alt="" /></i> <span>Upcoming Date :  July 18, 19, 29, 25, 26, 27, 2022</span></li>
-                                            <li><i><img src="images/bxs_time.svg" alt="" /></i> <span>Start time : 1:30PM – 3:30PM MST</span></li>
+                                            <li><i><img src="images/bxs_time.svg" alt="" /></i> <span>Time : 1:30PM – 3:30PM MST</span></li>
                                             <li><i><img src="images/bxs_time.svg" alt="" /></i> <span>Duration : 2 hours</span></li>
                                             <li><i><img src="images/loc.svg" alt="" /></i> <span>In person </span></li>
                                         </ul>
-                                        {/* <a href="#" className="btn btn-default">Register</a> */}
+                                        {/* <a href="javascript:;" className="btn btn-default">Register</a> */}
                                     </div>
                                     <div className="cardBody">
                                         <p>Missed sessions due to illness cannot be made up, but we will review the course content at the beginning of each session as a reminder and to catch up anyone who has missed a session. </p>
@@ -457,7 +457,7 @@ export default function CoursesTrainings() {
                                             <li><i><img src="images/bxs_time.svg" alt="" /></i> <span>Duration : 1 hour </span></li>
                                             <li><i><img src="images/loc.svg" alt="" /></i> <span>Online</span></li>
                                         </ul>
-                                        {/* <a href="#" className="btn btn-default">Register</a> */}
+                                        {/* <a href="javascript:;" className="btn btn-default">Register</a> */}
                                     </div>
                                 </div>
 

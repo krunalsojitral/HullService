@@ -69,7 +69,7 @@ export default function Sidebar() {
                 {/* <li>
                     <NavLink activeClassName="active" to="/professional-development" isActive={() => ['/professional-development', '/professional-development-detail', '/course-payment'].includes(pathname)}>
                         <svg className="icon icon-tag">
-                            <use xlinkHref="#icon-book"></use>
+                            <use xlinkhref="javascript:;icon-book"></use>
                         </svg>
                         <InlineButton name={"Professional Development"} />
                     </NavLink>
@@ -87,7 +87,7 @@ export default function Sidebar() {
                     <li className="dropdown sub-menu">
                         <a activeClassName="active" id="sub-click" onClick={(e) => submenu()}  href="javascript:;" >
                         <svg className="icon icon-tag">
-                                <use xlinkHref="#icon-research"></use>
+                                <use xlinkhref="javascript:;icon-research"></use>
                             </svg>
                             <span>Studies/Research</span>
                         </a>

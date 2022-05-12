@@ -191,7 +191,7 @@ export default function PromoPage() {
       item.push(
         <li className="nav-item" role="presentation">
           <a
-            href="#"
+            href="javascript:;"
             className={i == 0 ? "nav-link active" : "nav-link"}
             id={"pills-Mon-tab" + data[i].group_number + i}
             data-bs-toggle="pill"
@@ -464,7 +464,7 @@ export default function PromoPage() {
           >
             <li role="presentation">
               <a
-                href="#"
+                href="javascript:;"
                 className={activeTab == "home" ? "active" : ""}
                 id="home-tab"
                 data-bs-toggle="tab"
@@ -480,7 +480,7 @@ export default function PromoPage() {
             </li>
             <li role="presentation">
               <a
-                href="#"
+                href="javascript:;"
                 className={activeTab == "profile" ? "active" : ""}
                 id="profile-tab"
                 data-bs-toggle="tab"
@@ -512,7 +512,7 @@ export default function PromoPage() {
                   style={{ "text-align": "right" }}
                 >
                   <div className="rate-btn mt-5 ">
-                    <a href="#" className="btn btn-default white sm-btn">
+                    <a href="javascript:;" className="btn btn-default white sm-btn">
                       <span>Back</span>
                     </a>
                   </div>

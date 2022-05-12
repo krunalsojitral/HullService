@@ -85,17 +85,17 @@ export default function Events() {
                 <div className="container">
                     <ul className="nav nav-tabs eventTabs wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" id="myTab" role="tablist">
                         <li role="presentation">
-                            <a href="#" className="active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Event</a>
+                            <a href="javascript:;" className="active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Event</a>
                         </li>
                         <li role="presentation">
-                            <a href="#" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Reflective Practice Sessions</a>
+                            <a href="javascript:;" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Reflective Practice Sessions</a>
                         </li>
                     </ul>
                     <div className="tab-content" id="myTabContent">
                         <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                             <div className="row">
                                 <div className="back-btn-right clearfix" style="text-align:right;">
-                                    <div className="rate-btn mt-5 "><a href="#" className="btn btn-default white sm-btn"><span>Back</span></a></div>
+                                    <div className="rate-btn mt-5 "><a href="javascript:;" className="btn btn-default white sm-btn"><span>Back</span></a></div>
                                 </div>
                             </div>
                             <div className="eventDetail">
@@ -117,8 +117,8 @@ export default function Events() {
                                                     <li><i><img src="images/loc.svg" alt=""/></i><span>United States</span></li>
                                                 </ul>
 
-                                                <div className="rate-btn mt-5"><a href="#" className="btn btn-default w-100">$99.00 <span>Register for events only</span></a></div>
-                                                <div className="rate-btn mt-3"><a href="#" className="btn btn-default white w-100">$99.00 <span>Register for Event and Reflection <br/>Pracice Session</span></a></div>
+                                                <div className="rate-btn mt-5"><a href="javascript:;" className="btn btn-default w-100">$99.00 <span>Register for events only</span></a></div>
+                                                <div className="rate-btn mt-3"><a href="javascript:;" className="btn btn-default white w-100">$99.00 <span>Register for Event and Reflection <br/>Pracice Session</span></a></div>
                                             </div>
                                         </div>
                                     </div>
@@ -162,19 +162,19 @@ export default function Events() {
                                     <h5><img src="images/bxs_time.svg" alt=""/>Duration : 4 Months(21 APRIL to 21 July)</h5>
                                     <ul className="nav nav-pills" id="pills-tab" role="tablist">
                                         <li className="nav-item" role="presentation">
-                                            <a href="#" className="nav-link" id="pills-Mon-tab" data-bs-toggle="pill" data-bs-target="#pills-Mon" role="tab" aria-controls="pills-Mon" aria-selected="true">Mon</a>
+                                            <a href="javascript:;" className="nav-link" id="pills-Mon-tab" data-bs-toggle="pill" data-bs-target="#pills-Mon" role="tab" aria-controls="pills-Mon" aria-selected="true">Mon</a>
                                         </li>
                                         <li className="nav-item" role="presentation">
-                                            <a href="#" className="nav-link" id="pills-Tue-tab" data-bs-toggle="pill" data-bs-target="#pills-Tue" role="tab" aria-controls="pills-Tue" aria-selected="false">Tue</a>
+                                            <a href="javascript:;" className="nav-link" id="pills-Tue-tab" data-bs-toggle="pill" data-bs-target="#pills-Tue" role="tab" aria-controls="pills-Tue" aria-selected="false">Tue</a>
                                         </li>
                                         <li className="nav-item" role="presentation">
-                                            <a href="#" className="nav-link  active" id="pills-Wed-tab" data-bs-toggle="pill" data-bs-target="#pills-Wed" role="tab" aria-controls="pills-Wed" aria-selected="false">Wed</a>
+                                            <a href="javascript:;" className="nav-link  active" id="pills-Wed-tab" data-bs-toggle="pill" data-bs-target="#pills-Wed" role="tab" aria-controls="pills-Wed" aria-selected="false">Wed</a>
                                         </li>
                                         <li className="nav-item" role="presentation">
-                                            <a href="#" className="nav-link" id="pills-Thu-tab" data-bs-toggle="pill" data-bs-target="#pills-Thu" role="tab" aria-controls="pills-Thu" aria-selected="false">Thu</a>
+                                            <a href="javascript:;" className="nav-link" id="pills-Thu-tab" data-bs-toggle="pill" data-bs-target="#pills-Thu" role="tab" aria-controls="pills-Thu" aria-selected="false">Thu</a>
                                         </li>
                                         <li className="nav-item" role="presentation">
-                                            <a href="#" className="nav-link" id="pills-Fri-tab" data-bs-toggle="pill" data-bs-target="#pills-Fri" role="tab" aria-controls="pills-Fri" aria-selected="false">Fri</a>
+                                            <a href="javascript:;" className="nav-link" id="pills-Fri-tab" data-bs-toggle="pill" data-bs-target="#pills-Fri" role="tab" aria-controls="pills-Fri" aria-selected="false">Fri</a>
                                         </li>
                                     </ul>
                                     <div className="tab-content" id="pills-tabContent">
@@ -203,7 +203,7 @@ export default function Events() {
                                                     </li>
                                                 </ul>
                                                 <div className="text-center">
-                                                    <a className="btn btn-default" href="#">Submit</a>
+                                                    <a className="btn btn-default" href="javascript:;">Submit</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -243,9 +243,9 @@ export default function Events() {
                                         </div>
                                         <div className="event-details-links">
                                             <ul>
-                                                <li className="active"><a data-toggle="tab" href="#home">Events</a></li>
-                                                <li><a data-toggle="tab" href="#menu1">Follow up meetings</a></li>
-                                                <li><a data-toggle="tab" href="#menu2">Resources</a></li>
+                                                <li className="active"><a data-toggle="tab" href="javascript:;home">Events</a></li>
+                                                <li><a data-toggle="tab" href="javascript:;menu1">Follow up meetings</a></li>
+                                                <li><a data-toggle="tab" href="javascript:;menu2">Resources</a></li>
                                             </ul>
                                         </div>
                                         <div className="tab-content">

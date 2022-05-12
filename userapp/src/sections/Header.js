@@ -165,7 +165,7 @@ export default function Header() {
 
                                         {(token) && <div className="user-dropdown">
                                             <div className="dropdown">
-                                                <a className="dropdown-toggle loged-user-link" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <a className="dropdown-toggle loged-user-link" href="javascript:;" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                                                     <div className="loged-user-details">
                                                         <div className="loged-user-icon">
                                                              {!userData.avatar && <img src="images/user.png" />}

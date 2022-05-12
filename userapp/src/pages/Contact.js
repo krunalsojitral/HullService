@@ -288,7 +288,7 @@ export default function Contact() {
                             </div>
                             <div className="text-box">
                                 <h4 className="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="10ms">Are you looking to book one of our clinicians for a speaking engagement?
-                                    <a href="#" className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms"> Click here to request a speaker.</a>
+                                    <a href="javascript:;" className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms"> Click here to request a speaker.</a>
                                 </h4>
                             </div>
                         </div>
@@ -303,7 +303,7 @@ export default function Contact() {
                     <div className="modal-dialog modal-dialog-centered">
                         <div className="modal-content">
                             <div className="modal-body">
-                                <a data-bs-dismiss="modal" className="close-icon" href="#"><img src="images/crose-icon.svg" alt="" /></a>
+                                <a data-bs-dismiss="modal" className="close-icon" href="javascript:;"><img src="images/crose-icon.svg" alt="" /></a>
                                 <div className="team-modal-inner">
                                     <div className="image-holder">
                                         <img src="images/clinical-team-img2.png" alt="" className="img-fluid" />
@@ -317,7 +317,7 @@ export default function Contact() {
                                 </div>
                                 <div className="social-media">
                                     <ul>
-                                        <li><a href="#">
+                                        <li><a href="javascript:;">
                                             <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <mask id="mask0_95_1608" style={{ maskType: 'alpha', maskUnits: 'userSpaceOnUse', x: '0', y: '0', width: '19', height: '19' }}>
                                                     <g clipPath="url(#clip0_95_1608)">
@@ -334,7 +334,7 @@ export default function Contact() {
                                                 </defs>
                                             </svg>
                                         </a></li>
-                                        <li><a href="#">
+                                        <li><a href="javascript:;">
                                             <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <mask id="mask0_95_1612" style={{ maskType: 'alpha', maskUnits: 'userSpaceOnUse', x: '0', y: '0', width: '21', height: '21' }}>
                                                     <g clipPath="url(#clip0_95_1612)">
@@ -351,7 +351,7 @@ export default function Contact() {
                                                 </defs>
                                             </svg>
                                         </a></li>
-                                        <li><a href="#">
+                                        <li><a href="javascript:;">
                                             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <mask id="mask0_95_1618" style={{ maskType: 'alpha', maskUnits: 'userSpaceOnUse', x: '0', y: '0', width: '18', height: '18' }}>
                                                     <g clipPath="url(#clip0_95_1618)">
