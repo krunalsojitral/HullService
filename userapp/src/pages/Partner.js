@@ -76,7 +76,7 @@ export default function Partner() {
             <div className="row">
               <div className="col-12">
                 <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms">
-                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+                  Pathways to Prevention: A Centre for Childhood Trauma is the natural progression of the work of Hull Services, a leader in the provision of mental health and support in Alberta. Rooted in decades of high-quality implementation of leading models and strategies in mental health, Hull Services and Pathways to Prevention have been invited into many collaborative opportunities for service provision, research, advocacy and training. As these relationships have naturally deepened and expanded, we have built our capacity and contribution to mental health in step with others in the field. Here are some of Pathways to Prevention’s strongest and most valued partnerships. 
                 </p>
               </div>
             </div>
@@ -118,7 +118,8 @@ export default function Partner() {
             </div>
           </div>
         </div>
-        <div className="our-team-box educational-box">
+        <br /><br /><br />
+        {/* <div className="our-team-box educational-box">
           <div className="container">
             <div className="row">
               <div className="col-12">
@@ -150,7 +151,7 @@ export default function Partner() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
         <div className="our-team-box">
           <div className="container">
             <div className="row">

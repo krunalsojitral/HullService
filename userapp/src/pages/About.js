@@ -146,7 +146,7 @@ export default function About() {
                                             <path d="M16.0659 7.5625V15.125H35.1284V41.5938C35.1284 48.6137 37.9401 55.3461 42.9449 60.31C47.9498 65.2738 54.7379 68.0625 61.8159 68.0625C68.8938 68.0625 75.6819 65.2738 80.6868 60.31C85.6916 55.3461 88.5034 48.6137 88.5034 41.5938V15.125H107.566V7.5625H16.0659ZM42.7534 15.125H80.8784V26.4688H42.7534V15.125ZM61.8159 60.5C56.7602 60.5 51.9115 58.5081 48.3366 54.9625C44.7617 51.4169 42.7534 46.608 42.7534 41.5938V34.0312H80.8784V41.5938C80.8784 46.608 78.87 51.4169 75.2951 54.9625C71.7202 58.5081 66.8715 60.5 61.8159 60.5Z" fill="white" />
                                         </svg></span> */}
                                         <span><img src="images/carbon-education.svg" alt=""/></span>
-                                        <h4>Training Education</h4>
+                                        <h4>Training & Education</h4>
                                         <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"><svg width="17" height="15" viewBox="0 0 17 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path fill-rule="evenodd" clip-rule="evenodd" d="M0.985884 7.99931C0.985884 8.26453 1.09124 8.51888 1.27878 8.70642C1.46631 8.89395 1.72067 8.99931 1.98588 8.99931H13.5719L9.27788 13.2913C9.18491 13.3843 9.11115 13.4947 9.06084 13.6161C9.01052 13.7376 8.98462 13.8678 8.98462 13.9993C8.98462 14.1308 9.01052 14.261 9.06084 14.3825C9.11115 14.504 9.18491 14.6143 9.27788 14.7073C9.37086 14.8003 9.48124 14.874 9.60272 14.9244C9.7242 14.9747 9.8544 15.0006 9.98588 15.0006C10.1174 15.0006 10.2476 14.9747 10.3691 14.9244C10.4905 14.874 10.6009 14.8003 10.6939 14.7073L16.6939 8.70731C16.787 8.61442 16.8609 8.50407 16.9113 8.38258C16.9617 8.26109 16.9877 8.13085 16.9877 7.99931C16.9877 7.86778 16.9617 7.73753 16.9113 7.61604C16.8609 7.49455 16.787 7.3842 16.6939 7.29131L10.6939 1.29131C10.5061 1.10354 10.2514 0.998047 9.98588 0.998047C9.72033 0.998047 9.46566 1.10354 9.27788 1.29131C9.09011 1.47908 8.98462 1.73376 8.98462 1.99931C8.98462 2.26486 9.09011 2.51954 9.27788 2.70731L13.5719 6.99931H1.98588C1.72067 6.99931 1.46631 7.10467 1.27878 7.2922C1.09124 7.47974 0.985884 7.73409 0.985884 7.99931Z" fill="white" />
                                         </svg></a>
@@ -174,7 +174,7 @@ export default function About() {
                                         </svg></span>
                                         <h4>Our Team</h4>
                                         <p>Get to know the team at Pathways to <br></br> Prevention.</p>
-                                        <a href="#">Learn More</a>
+                                        <Link to="/ourteam">Learn More</Link>
                                     </div>
                                 </div>
                                 {/*<div className="col-md-4 col-sm-6">
@@ -192,7 +192,7 @@ export default function About() {
                                         <span><img src="images/info-icon.svg" alt="" /></span>
                                         <h4>About Hull</h4>
                                         <p>Pathways to Prevention is a subdivision of <br></br> Hull Services. </p>
-                                        <a href="#">Learn More</a>
+                                        <Link to="/about-hull">Learn More</Link>
                                     </div>
                                 </div>
                             </div>
@@ -210,7 +210,7 @@ export default function About() {
                                     <div className="text-box">
                                         <h4>Support Pathways to Prevention</h4>
                                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consectetur porttitor consequat, diam nunc adipiscing urna semper. Malesuada eu fringilla faucibus scelerisque phasellus tortor. Bibendum.</p>
-                                        <a className="btn btn-default" href="https://hullservices.ca/about-us/pathways/">Donate Now</a>
+                                        <a target="_blank" className="btn btn-default" href="https://hullservices.ca/about-us/pathways/">Donate Now</a>
                                     </div>
                                 </div>
                             </div>
@@ -226,7 +226,7 @@ export default function About() {
                     <div className="modal-dialog modal-dialog-centered" >
                         <div className="modal-content">
                             <div className="modal-body" style={{ background: '#daf6f9' }}>
-                                <a data-bs-dismiss="modal" className="close-icon" href="#!"><img src="images/crose-icon.svg" alt="" /></a>
+                                <a data-bs-dismiss="modal" className="close-icon" href="javascript:;"><img src="images/crose-icon.svg" alt="" /></a>
                                 <div className="team-modal-inner">
                                     <div className="image-holder" style={{ width: '200px' }}>
                                         <img src="images/research-icon-big.svg" alt="" className="img-fluid" />
@@ -234,7 +234,7 @@ export default function About() {
                                     <div className="text-box">
                                         <h4>Research </h4>
                                         <p>
-                                            Pathways to Prevention is a platform for research that seeks to understand the nature and dynamics of developmental trauma and effective treatments for recovery from difficult childhood experiences. These learnings will be disseminated to global influencers in health care, social services, government, and universities. The goal is to research, understand, and effectively treat the impact of developmental trauma before the issues become critical.
+                                            Pathways to Prevention is a platform for research that seeks to understand the nature and dynamics of developmental trauma and effective treatments for recovery from difficult childhood experiences. These learnings will be disseminated to global influencers in health care, social services, government, and universities. The goal is to research, understand, prevent, and effectively treat the impact of developmental trauma before the issues become critical.
                                         </p>
                                     </div>
                                 </div>
@@ -249,7 +249,7 @@ export default function About() {
                     <div className="modal-dialog modal-dialog-centered" >
                         <div className="modal-content">
                             <div className="modal-body" style={{ background: '#daf6f9' }}>
-                                <a data-bs-dismiss="modal" className="close-icon" href="#!"><img src="images/crose-icon.svg" alt="" /></a>
+                                <a data-bs-dismiss="modal" className="close-icon" href="javascript:;"><img src="images/crose-icon.svg" alt="" /></a>
                                 <div className="team-modal-inner">
                                     <div className="image-holder" style={{ width: '200px' }}>
                                     <span><svg width="200" height="153" viewBox="0 0 123 121" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -258,12 +258,12 @@ export default function About() {
                                         </svg></span>
                                     </div>
                                     <div className="text-box">
-                                        <h4>Training Education </h4>
+                                        <h4>Training & Education </h4>
                                         <p>
-                                            Pathways to Prevention is a hub for disseminating leading-edge knowledge regarding the treatment of children suffering from developmental trauma. 
+                                            Pathways to Prevention is a hub for disseminating leading-edge knowledge regarding the treatment of children suffering from developmental trauma.
                                         </p>
                                         <p>
-                                            Our years of work with the Child Trauma Academy and the Neurosequential Model (NM) have made us strong leaders in trauma-informed care in the community and worldwide. We train and educate service providers and experts from many disciplines (such as education, health care, the legal community, social services, early childhood development) and arm them with the most current information about developmental trauma, its impact on children, and how to respond, thus equipping them with the skills to deliver best possible practice.
+                                            Our work with the Neurosequential Model (NM) has given us a strong presence as leaders in trauma-informed care in the community and worldwide. We gather influencers and experts from many disciplines and arm them with the most current information about developmental trauma, its impact on children, and how to respond, thus equipping service providers with the skills to deliver the best possible practice.
                                         </p>
                                     </div>
                                 </div>
@@ -278,15 +278,15 @@ export default function About() {
                     <div className="modal-dialog modal-dialog-centered" >
                         <div className="modal-content">
                             <div className="modal-body" style={{ background: '#daf6f9' }}>
-                                <a data-bs-dismiss="modal" className="close-icon" href="#!"><img src="images/crose-icon.svg" alt="" /></a>
+                                <a data-bs-dismiss="modal" className="close-icon" href="javascript:;"><img src="images/crose-icon.svg" alt="" /></a>
                                 <div className="team-modal-inner">
                                     <div className="image-holder" style={{ width: '200px' }}>
                                         <img src="images/speaker-icon.svg" alt="" className="img-fluid" />
                                     </div>
                                     <div className="text-box">
-                                        <h4>Advocacy </h4>
+                                        <h4>Advocacy</h4>
                                         <p>
-                                            Pathways to Prevention: A Centre for Childhood Trauma is committed to advocating transforming policy and practice across systems to provide appropriate preventative support. Our work will enhance and further develop our understanding of how best to serve children impacted by developmental trauma. This knowledge will allow us to transfer our resources to more integrated services, strategically shifting them away from individualized intensive services, such as government care, toward more integrated and relationally rich work in the community. This will realize transformational change throughout communities in Alberta and around the world.
+                                            Pathways to Prevention: A Centre for Childhood Trauma is committed to advocating for transforming policy and practice across systems to focus on prevention. Our work will enhance our ability to best serve children impacted by developmental trauma and eventually prevent developmental trauma from occurring altogether. This, in turn, will allow for more integrated resources, strategically shifting resources away from individualized intensive services, such as government care, toward more integrated and relationally rich work in the community. This critical shift will lead to transformational change throughout communities in Alberta and around the world. 
                                         </p>
                                     </div>
                                 </div>

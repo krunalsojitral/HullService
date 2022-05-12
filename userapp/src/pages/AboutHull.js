@@ -50,7 +50,7 @@ export default function AboutHull() {
                                         </p>
                                     </div>
                                     <div className="about-hull-logo wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="10ms" >
-                                        <a href="#">
+                                        <a href="javascript:;">
                                             <img src="images/about-hull-logo.png" alt="" className="img-fluid" />
                                         </a>
                                     </div>
@@ -107,7 +107,7 @@ export default function AboutHull() {
                     <div className="modal-dialog modal-dialog-centered">
                         <div className="modal-content">
                             <div className="modal-body">
-                                <a data-bs-dismiss="modal" className="close-icon" href="#"><img src="images/crose-icon.svg" alt="" /></a>
+                                <a data-bs-dismiss="modal" className="close-icon" href="javascript:;"><img src="images/crose-icon.svg" alt="" /></a>
                                 <div className="team-modal-inner">
                                     <div className="image-holder">
                                         <img src="images/clinical-team-img2.png" alt="" className="img-fluid" />
@@ -121,7 +121,7 @@ export default function AboutHull() {
                                 </div>
                                 <div className="social-media">
                                     <ul>
-                                        <li><a href="#">
+                                        <li><a href="javascript:;">
                                             <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <mask id="mask0_95_1608" style={{ maskType: 'alpha', maskUnits: 'userSpaceOnUse', x: '0', y: '0', width: '19', height: '19' }}>
                                                     <g clipPath="url(#clip0_95_1608)">
@@ -138,7 +138,7 @@ export default function AboutHull() {
                                                 </defs>
                                             </svg>
                                         </a></li>
-                                        <li><a href="#">
+                                        <li><a href="javascript:;">
                                             <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <mask id="mask0_95_1612" style={{ maskType: 'alpha', maskUnits: 'userSpaceOnUse', x: '0', y: '0', width: '21', height: '21' }}>
                                                     <g clipPath="url(#clip0_95_1612)">
@@ -155,7 +155,7 @@ export default function AboutHull() {
                                                 </defs>
                                             </svg>
                                         </a></li>
-                                        <li><a href="#">
+                                        <li><a href="javascript:;">
                                             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <mask id="mask0_95_1618" style={{ maskType: 'alpha', maskUnits: 'userSpaceOnUse', x: '0', y: '0', width: '18', height: '18' }}>
                                                     <g clipPath="url(#clip0_95_1618)">

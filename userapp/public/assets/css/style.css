@@ -256,6 +256,7 @@ li.nav-item a.login-btn:after {
   font-weight: 700;
   font-size: 20px;
   color: #e8ffff;
+  text-transform: uppercase;
   /* padding-left: 20px !important; */
 }
 .btn-default:hover {
@@ -3317,4 +3318,11 @@ ul.react-autosuggest__suggestions-list li span{
     list-style: none;
     text-align: left;
     font-size: 13px;
+}
+
+section.inner-header {
+  background: #F15C4E;
+  padding: 14px 0;
+  text-align: center;
+  color:#fff
 }
