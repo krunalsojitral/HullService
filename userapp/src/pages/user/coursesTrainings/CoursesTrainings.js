@@ -110,7 +110,7 @@ export default function CoursesTrainings() {
                             </div>
                             <div className="event-card wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="10ms">
                                 <div className="event-card-left">
-                                    <div className="desc">Board Brains for Caregiver and Child/Youth</div>
+                                    <div className="desc">Board brains for caregiver and child/youth</div>
                                     <ul>
                                         <li><i><img src="images/clarity_date-solid.svg" alt="" /></i><span>July 18, 19, 29, 25, 26, 27, 2022</span></li>
                                         <li><i><img src="images/bxs_time.svg" alt="" /></i><span> 1:30PM – 3:30PM MST</span></li>
