@@ -206,6 +206,12 @@ export default function CoursesTrainings() {
                                         </div>
                                         <div className="col-md-12">
                                             <div className="form-group">
+                                                <small>Full payment is due two weeks prior to the first session and is non-refundable. There will be no make-up sessions if a session is missed. If the facilitator is unable to attend a regularly scheduled session, a make-up session will be provided. </small>
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="col-md-12">
+                                            <div className="form-group">
                                                 <button className="btn btn-default">SUBMIT</button>
                                             </div>
                                         </div>
