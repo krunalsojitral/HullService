@@ -40,7 +40,7 @@ export default function Ourteam() {
                         <div className="col-12">
                             <div className="heading-second">
                                 <h3 className="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="50ms">Clinical Team</h3>
-                                <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="50ms">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consectetur porttitor consequat, diam nunc <br></br> adipiscing urna semper. Malesuada eu fringilla faucibus scelerisque phasellus tortor. Bibendum.</p>
+                                {/* <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="50ms">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consectetur porttitor consequat, diam nunc <br></br> adipiscing urna semper. Malesuada eu fringilla faucibus scelerisque phasellus tortor. Bibendum.</p> */}
                             </div>
                             <div className="clinical-team-inner">
                                 <div className="row">
@@ -48,7 +48,7 @@ export default function Ourteam() {
                                         <div className="clinical-team-box wow animate__fadeIn" data-bs-toggle="modal" data-bs-target="#exampleModal" data-wow-duration="800ms" data-wow-delay="0ms">
                                             <div className="clinical-team-list">
                                                 <div className="image-holder">
-                                                    <img src="./images/clinical-team-img1.png" alt="" className="img-fluid" />
+                                                    <img src="./images/Emily/Emily.png" alt="" className="img-fluid" />
                                                 </div>
                                                 <div className="text-box">
                                                     <h4>Emily Wang, Ph.D., R.Psych</h4>
@@ -69,7 +69,7 @@ export default function Ourteam() {
                                         <div className="clinical-team-box wow animate__fadeIn" data-bs-toggle="modal" data-bs-target="#exampleModal1" data-wow-duration="800ms" data-wow-delay="0ms">
                                             <div className="clinical-team-list">
                                                 <div className="image-holder">
-                                                    <img src="./images/clinical-team-img2.png" alt="" className="img-fluid" />
+                                                    <img src="./images/Nicole/Nicole.png" alt="" className="img-fluid" />
                                                 </div>
                                                 <div className="text-box">
                                                     <h4>Nicole Berggren, M.C., R.Psych</h4>
@@ -90,13 +90,13 @@ export default function Ourteam() {
                                         <div className="clinical-team-box wow animate__fadeIn" data-bs-toggle="modal" data-bs-target="#exampleModal2" data-wow-duration="800ms" data-wow-delay="0ms">
                                             <div className="clinical-team-list">
                                                 <div className="image-holder">
-                                                    <img src="./images/clinical-team-img3.png" alt="" className="img-fluid" />
+                                                    <img src="./images/Jamie/Jamie.png" alt="" className="img-fluid" />
                                                 </div>
                                                 <div className="text-box">
                                                     <h4>Jamie Pope, M.Sc., R.Psych</h4>
                                                     <p>Clinical Supervisor</p>
                                                     <ul>
-                                                        <li><a href="#">
+                                                        <li><a href="javascript:;">
                                                             <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                 <path fillRule="evenodd" clipRule="evenodd" d="M7.429 7.05298H11.143V8.90298C11.678 7.83898 13.05 6.88298 15.111 6.88298C19.062 6.88298 20 9.00099 20 12.887V20.084H16V13.772C16 11.559 15.465 10.311 14.103 10.311C12.214 10.311 11.429 11.656 11.429 13.771V20.084H7.429V7.05298ZM0.57 19.914H4.57V6.88298H0.57V19.914ZM5.143 2.63398C5.14315 2.96926 5.07666 3.30122 4.94739 3.61057C4.81812 3.91992 4.62865 4.2005 4.39 4.43599C3.9064 4.91661 3.25181 5.18564 2.57 5.18398C1.88939 5.18353 1.23631 4.91518 0.752 4.43699C0.514211 4.2007 0.325386 3.91981 0.196344 3.61042C0.0673015 3.30102 0.000579132 2.96921 0 2.63398C0 1.95698 0.27 1.30898 0.753 0.830985C1.23689 0.352143 1.89024 0.0836852 2.571 0.0839846C3.253 0.0839846 3.907 0.352985 4.39 0.830985C4.872 1.30898 5.143 1.95698 5.143 2.63398Z" fill="#9B9A9A" />
                                                             </svg>
@@ -114,7 +114,7 @@ export default function Ourteam() {
                                         <div className="clinical-team-box wow animate__fadeIn" data-bs-toggle="modal" data-bs-target="#exampleModal3" data-wow-duration="800ms" data-wow-delay="0ms">
                                             <div className="clinical-team-list">
                                                 <div className="image-holder">
-                                                    <img src="./images/clinical-team-img1.png" alt="" className="img-fluid" />
+                                                    <img src="./images/Maria/Maria.png" alt="" className="img-fluid" />
                                                 </div>
                                                 <div className="text-box">
                                                     <h4>Maria Malouf, M.C., Registered Provisional Psychologist</h4>
@@ -135,7 +135,7 @@ export default function Ourteam() {
                                         <div className="clinical-team-box wow animate__fadeIn" data-bs-toggle="modal" data-bs-target="#exampleModal4" data-wow-duration="800ms" data-wow-delay="0ms">
                                             <div className="clinical-team-list">
                                                 <div className="image-holder">
-                                                    <img src="./images/clinical-team-img2.png" alt="" className="img-fluid" />
+                                                    <img src="./images/Phil/Phil.png" alt="" className="img-fluid" />
                                                 </div>
                                                 <div className="text-box">
                                                     <h4>Phil Herman MSW, RSW  </h4>
@@ -156,7 +156,7 @@ export default function Ourteam() {
                                         <div className="clinical-team-box wow animate__fadeIn" data-bs-toggle="modal" data-bs-target="#exampleModal5" data-wow-duration="800ms" data-wow-delay="0ms">
                                             <div className="clinical-team-list">
                                                 <div className="image-holder">
-                                                    <img src="./images/clinical-team-img3.png" alt="" className="img-fluid" />
+                                                    <img src="./images/Tiffany/Tiffany.png" alt="" className="img-fluid" />
                                                 </div>
                                                 <div className="text-box">
                                                     <h4>Tiffany Beks, M.Sc., PhD Candidate, R. Psych </h4>
@@ -194,7 +194,7 @@ export default function Ourteam() {
                                         <div className="clinical-team-box wow animate__fadeInUp" data-bs-toggle="modal" data-bs-target="#exampleModal6" data-wow-duration="800ms" data-wow-delay="0ms" data-wow-offset="1">
                                             <div className="clinical-team-list">
                                                 <div className="image-holder">
-                                                    <img src="./images/clinical-team-img1.png" alt="" className="img-fluid" />
+                                                    <img src="./images/Marilyn/Marilyn.png" alt="" className="img-fluid" />
                                                 </div>
                                                 <div className="text-box">
                                                     <h4>Marilyn Boston, RSW</h4>
@@ -214,7 +214,7 @@ export default function Ourteam() {
                                     <div className="col-md-4"> <div className="clinical-team-box wow animate__fadeInUp" data-bs-toggle="modal" data-bs-target="#exampleModal7" data-wow-duration="800ms" data-wow-delay="0ms" data-wow-offset="1">
                                         <div className="clinical-team-list">
                                             <div className="image-holder">
-                                                <img src="./images/clinical-team-img2.png" alt="" className="img-fluid" />
+                                                <img src="./images/Katie/Katie.png" alt="" className="img-fluid" />
                                             </div>
                                             <div className="text-box">
                                                 <h4>Katie Davies  </h4>
@@ -235,7 +235,7 @@ export default function Ourteam() {
                                         <div className="clinical-team-box wow animate__fadeInUp" data-bs-toggle="modal" data-bs-target="#exampleModal8" data-wow-duration="800ms" data-wow-delay="0ms" data-wow-offset="1">
                                             <div className="clinical-team-list">
                                                 <div className="image-holder">
-                                                    <img src="./images/clinical-team-img3.png" alt="" className="img-fluid" />
+                                                    <img src="./images/Natalia/Natalia.png" alt="" className="img-fluid" />
                                                 </div>
                                                 <div className="text-box">
                                                     <h4>Natalia Zaharia  </h4>
@@ -269,7 +269,7 @@ export default function Ourteam() {
                                     </svg></div>
                                 <div className="text-box">
                                     <h4 className="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="10ms">Board of Governors</h4>
-                                    <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms"> Pathways to Prevention: Centre for Childhood Trauma operates in adherence to Hull’s core values and leadership philosophy and reports through to <a href="#">Hull Services’ Executive Director and Board of Governors</a>. The Board’s focus for the Pathways to Prevention is advocacy, community relations and fundraising.</p>
+                                    <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms"> Pathways to Prevention: Centre for Childhood Trauma operates in adherence to Hull’s core values and leadership philosophy and reports through to <a href="javascript:;">Hull Services’ Executive Director and Board of Governors</a>. The Board’s focus for the Pathways to Prevention is advocacy, community relations and fundraising.</p>
                                     <span className="wow animate__fadeInUp" data-wow-duration="1100ms" data-wow-delay="10ms">LEARN MORE ABOUT HULL’S BOARD OF GOVERNORS </span>
                                     {/* <strong className="wow animate__fadeInUp" data-wow-duration="1400ms" data-wow-delay="10ms">The Board’s focus for the Pathways to Prevention is advocacy, community relations and fundraising. </strong> */}
                                 </div>

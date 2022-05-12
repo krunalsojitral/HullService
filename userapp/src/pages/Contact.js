@@ -99,25 +99,8 @@ export default function Contact() {
                                             </div>
                                             <div className="contact-socail-media">
                                                 <ul>
-                                                    <li className="wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="10ms"><a href="#">
-                                                        <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <mask id="mask0_95_1608" style={{ maskType: 'alpha', maskUnits: 'userSpaceOnUse', x: '0', y: '0', width: '19', height: '19' }}>
-                                                                <g clipPath="url(#clip0_95_1608)">
-                                                                    <path d="M12.8024 3.73484H14.4457V0.872844C14.1622 0.833844 13.1872 0.746094 12.0517 0.746094C9.68245 0.746094 8.05945 2.23634 8.05945 4.97534V7.49609H5.44495V10.6956H8.05945V18.7461H11.2649V10.6963H13.7737L14.1719 7.49684H11.2642V5.29259C11.2649 4.36784 11.5139 3.73484 12.8024 3.73484Z" fill="black"></path>
-                                                                </g>
-                                                            </mask>
-                                                            <g mask="url(#mask0_95_1608)">
-                                                                <rect x="0.804688" y="-1.25391" width="18" height="23" fill="white"></rect>
-                                                            </g>
-                                                            <defs>
-                                                                <clipPath id="clip0_95_1608">
-                                                                    <rect width="18" height="18" fill="white" transform="translate(0.804688 0.746094)"></rect>
-                                                                </clipPath>
-                                                            </defs>
-                                                        </svg>
-                                                    </a></li>
                                                     <li className="wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="10ms">
-                                                        <a href="https://www.facebook.com/pathwaystoprevention">
+                                                        <a href="javascript:;">
                                                             <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                 <mask id="mask0_95_1612" style={{ maskType: 'alpha', maskUnits: 'userSpaceOnUse', x: '0', y: '0', width: '21', height: '21' }}>
                                                                     <g clipPath="url(#clip0_95_1612)">
@@ -134,7 +117,25 @@ export default function Contact() {
                                                                 </defs>
                                                             </svg>
                                                         </a>
-
+                                                    </li>
+                                                    <li className="wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="10ms">
+                                                        <a href="https://www.facebook.com/pathwaystoprevention">
+                                                            <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <mask id="mask0_95_1608" style={{ maskType: 'alpha', maskUnits: 'userSpaceOnUse', x: '0', y: '0', width: '19', height: '19' }}>
+                                                                    <g clipPath="url(#clip0_95_1608)">
+                                                                        <path d="M12.8024 3.73484H14.4457V0.872844C14.1622 0.833844 13.1872 0.746094 12.0517 0.746094C9.68245 0.746094 8.05945 2.23634 8.05945 4.97534V7.49609H5.44495V10.6956H8.05945V18.7461H11.2649V10.6963H13.7737L14.1719 7.49684H11.2642V5.29259C11.2649 4.36784 11.5139 3.73484 12.8024 3.73484Z" fill="black"></path>
+                                                                    </g>
+                                                                </mask>
+                                                                <g mask="url(#mask0_95_1608)">
+                                                                    <rect x="0.804688" y="-1.25391" width="18" height="23" fill="white"></rect>
+                                                                </g>
+                                                                <defs>
+                                                                    <clipPath id="clip0_95_1608">
+                                                                        <rect width="18" height="18" fill="white" transform="translate(0.804688 0.746094)"></rect>
+                                                                    </clipPath>
+                                                                </defs>
+                                                            </svg>
+                                                        </a>
                                                     </li>
                                                     <li className="wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="10ms">
                                                         <a href="https://www.linkedin.com/company/pathways-to-prevention ">

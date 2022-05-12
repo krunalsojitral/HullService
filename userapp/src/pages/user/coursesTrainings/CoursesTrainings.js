@@ -104,9 +104,9 @@ export default function CoursesTrainings() {
                             <div className="researcher-heading caption">
                                 <h3 className="wow animate__fadeInUp" data-wow-duration="500ms" data-wow-delay="10ms">Upcoming Training and Courses
                                 </h3>
-                                <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms">
+                                {/* <p className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms">
                                     Training and courses are available for... 
-                                </p>
+                                </p> */}
                             </div>
                             <div className="event-card wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="10ms">
                                 <div className="event-card-left">
@@ -122,7 +122,7 @@ export default function CoursesTrainings() {
                                     <a href="#" className="btn btn-default w-100 mt-0">Register</a>
                                 </div>
                             </div>
-                            <div className="event-card wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="10ms">
+                            {/* <div className="event-card wow animate__fadeIn" data-wow-duration="800ms" data-wow-delay="10ms">
                                 <div className="event-card-left">
                                     <div className="desc">16th Annual Society of Consulting Psychology Winter Conference</div>
                                     <ul>
@@ -149,7 +149,7 @@ export default function CoursesTrainings() {
                                     <div className="price">$99.00</div>
                                     <a href="#" className="btn btn-default w-100 mt-0">Register</a>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>
@@ -247,10 +247,10 @@ export default function CoursesTrainings() {
                                     </div>
                                     <div className="popupFooter">
                                         <ul>
+                                            <li className="price">$120</li>
                                             <li><i><img src="images/clarity_date-solid.svg" alt="" /></i> <span>Upcoming Date : September 19, 2022</span></li>
                                             <li><i><img src="images/bxs_time.svg" alt="" /></i> <span>Time : 9:00AM – 4:00PM MST</span></li>
                                             <li><i><img src="images/bxs_time.svg" alt="" /></i> <span>Duration : 6 hours</span></li>
-                                            <li className="price">$120</li>
                                             <li><i><img src="images/loc.svg" alt="" /></i> <span>Online</span></li>
                                         </ul>
                                         {/* <a href="#" className="btn btn-default">Register</a> */}
@@ -281,15 +281,15 @@ export default function CoursesTrainings() {
                                     </div>
                                     <div className="cardBody">
                                         <p>In our fast-paced world, dedicating time to slow down and reflect can be a challenge. Reflective practice is the process of thinking about our actions and can enable us to enhance our work in meaningful ways. We are offering a 6-month process with a facilitator trained in the Neurosequential Model in Reflection and Supervision. These monthly one-hour sessions will provide an opportunity for dedicated reflection.</p>
-                                        <p>The group meets once per month for 6 months for one hour. Groups are closed and for the benefit of group cohesion and consistency group members are strongly encouraged to attend each session. This is not therapy; it is a psychoeducational and reflective group to support wellness. </p>
+                                        <p>The group meets once per month for 6 months for one hour. Groups are closed and for the benefit of group cohesion and consistency group members are strongly encouraged to attend each session. This is <b>not therapy;</b> it is a psychoeducational and reflective group to support wellness. </p>
                                         <p>The reflective practice group process will include a confidential pre and post measure of Resilience and Stress to address reflective group practice as a method of supporting professionals.</p>
                                         <p>Please note that as with most reflective processes some discomfort may occur. If individuals become increasingly distressed during the group sessions, our therapists can support individuals to access community support such as an EAP, community resources, or the Distress Centre. A recommendation or discussion of additional support will not be disclosed to their supervisor and will be kept confidential. </p>
                                         <p>To register for group Reflective Practice please fill out our “Organizational Request” form at the bottom of the page and one of the team will contact you. </p>
                                     </div>
                                     <div className="popupFooter">
                                         <ul>
-                                            <li><i><img src="images/bxs_time.svg" alt="" /></i> <span>Duration : 6 sessions, one per month, for one hour</span></li>                                            
                                             <li className="price">Cost: $200</li>
+                                            <li><i><img src="images/bxs_time.svg" alt="" /></i> <span>Duration : 6 sessions, one per month, for one hour</span></li>                                            
                                             <li><i><img src="images/loc.svg" alt="" /></i> <span>Online or in person</span></li>
                                         </ul>
                                         {/* <a href="#" className="btn btn-default">Register</a> */}
@@ -324,10 +324,10 @@ export default function CoursesTrainings() {
                                     </div>
                                     <div className="popupFooter">
                                         <ul>
+                                            <li className="price">Cost: $120</li>
                                             <li><i><img src="images/clarity_date-solid.svg" alt="" /></i> <span>Upcoming Date : October 21, 2022</span></li>
                                             <li><i><img src="images/bxs_time.svg" alt="" /></i> <span>Time : 9:00AM – 4:00PM MST</span></li>
                                             <li><i><img src="images/bxs_time.svg" alt="" /></i> <span>Duration : 6 hours</span></li>
-                                            <li className="price">Cost: $120</li>
                                             <li><i><img src="images/loc.svg" alt="" /></i> <span>Online</span></li>
                                         </ul>
                                         {/* <a href="#" className="btn btn-default">Register</a> */}
@@ -361,10 +361,10 @@ export default function CoursesTrainings() {
                                     </div>
                                     <div className="popupFooter">
                                         <ul>
+                                            <li className="price">$120</li>
                                             <li><i><img src="images/clarity_date-solid.svg" alt="" /></i> <span>Upcoming Date : October 17, 2022</span></li>
                                             <li><i><img src="images/bxs_time.svg" alt="" /></i> <span>Time : 11:00AM – 1:00PM MST</span></li>
                                             <li><i><img src="images/bxs_time.svg" alt="" /></i> <span>Duration : 2 hours</span></li>
-                                            <li className="price">$120</li>
                                             <li><i><img src="images/loc.svg" alt="" /></i> <span>Online</span></li>
                                         </ul>
                                         {/* <a href="#" className="btn btn-default">Register</a> */}
@@ -390,11 +390,12 @@ export default function CoursesTrainings() {
                                         </div>
                                         <div className="media-body">
                                             <div className="researcher-heading">
-                                                <h3 >Board Brains </h3></div>
+                                                <h3 >Board Brains </h3>
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="cardBody">
-                                        <p>Board Brains for Caregiver and Child/Youth</p>
+                                        <p><strong>Board Brains for Caregiver and Child/Youth</strong></p><br/>
                                         <p>Skateboarding has the potential to reduce psychological distress and improve mental health by engaging people in physical activity and healthy risk-taking, building confidence, regulating emotions, and healthy interpersonal connections.   </p>
                                         <p>Board Brains is a 6-session group which combines learning to skateboard with an understanding of how your brain works. Participants’ exposure to understanding how the brain works is centred on the Neurosequential Model (NM), an evidence-based practice developed by Bruce D. Perry, M.D., Ph.D. This model helps caregivers, educators, and professionals better understand children in general, especially children who have suffered from developmental trauma and children who are struggling with behavioural, emotional, developmental, and identified mental health challenges.</p>
                                         <p>This group provides the youth and parent/caregiver an opportunity to engage in recreational activities together to build their relationship and better understand how the brain works. Youth aged 7-12 can attend with their parents/caregivers. Each parent/caregiver can register a maximum of 3 youth. All parents/caregivers are expected to participate in all components of Board Brains (unless physically unable to do so). Both to learn alongside the children and support them under the guidance of the facilitators. </p>
@@ -404,10 +405,12 @@ export default function CoursesTrainings() {
 
                                     <div className="popupFooter">
                                         <ul>
+                                            <li className="price">$120, plus addition rates if equipment rentals are required.</li>
+                                        </ul>
+                                        <ul>
                                             <li><i><img src="images/clarity_date-solid.svg" alt="" /></i> <span>Upcoming Date :  July 18, 19, 29, 25, 26, 27, 2022</span></li>
                                             <li><i><img src="images/bxs_time.svg" alt="" /></i> <span>Start time : 1:30PM – 3:30PM MST</span></li>
                                             <li><i><img src="images/bxs_time.svg" alt="" /></i> <span>Duration : 2 hours</span></li>
-                                            <li className="price">$120, plus addition rates if equipment rentals are required. </li>
                                             <li><i><img src="images/loc.svg" alt="" /></i> <span>In person </span></li>
                                         </ul>
                                         {/* <a href="#" className="btn btn-default">Register</a> */}
@@ -448,10 +451,10 @@ export default function CoursesTrainings() {
                                     </div>
                                     <div className="popupFooter">
                                         <ul>
+                                            <li className="price">$10 </li>
                                             <li><i><img src="images/clarity_date-solid.svg" alt="" /></i> <span>Upcoming Date : September 12, 2022 </span></li>
                                             <li><i><img src="images/bxs_time.svg" alt="" /></i> <span>Time : 12:00PM – 1:00PM MST</span></li>
                                             <li><i><img src="images/bxs_time.svg" alt="" /></i> <span>Duration : 1 hour </span></li>
-                                            <li className="price">$10 </li>
                                             <li><i><img src="images/loc.svg" alt="" /></i> <span>Online</span></li>
                                         </ul>
                                         {/* <a href="#" className="btn btn-default">Register</a> */}

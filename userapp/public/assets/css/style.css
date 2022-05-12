@@ -3326,3 +3326,7 @@ section.inner-header {
   text-align: center;
   color:#fff
 }
+
+.slick-slide a {
+  text-align: -webkit-center;
+}

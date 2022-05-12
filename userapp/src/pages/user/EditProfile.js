@@ -561,26 +561,16 @@ export default function EditProfile() {
         <div>
             <Header />
 
-            <section className="second-banner-sec" style={{ background: `url('images/contact-banner-bg.png') no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
-                <div className="container">
-                    <div className="second-banner-inner">
-                        <div className="row">
-                            <div className="col-md-7">
-                                <div className="text-box">
-                                    <h2 className="wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms">Edit Profile</h2>
-                                </div>
-                            </div>
-                            <div className="col-md-5">
-                                <div className="image-holder">
-                                    <img src="images/second-banner-img.png" alt="" className="img-fluid wow animate__flipInX" data-wow-duration="1500ms" data-wow-delay="1000ms" />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="second-banner-shape wow animate__zoomIn" data-wow-duration="1500ms" data-wow-delay="1000ms">
-                            <img src="images/second-banner-shape.png" alt="" className="img-fluid" />
+            <br/>
+
+            <section class="inner-header ">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2>Edit Profile</h2>
                         </div>
                     </div>
-                </div >
+                </div>
             </section>
 
 
@@ -873,7 +863,7 @@ export default function EditProfile() {
            
 
 
-            <Footer />
+           
         </div>
     )
 }

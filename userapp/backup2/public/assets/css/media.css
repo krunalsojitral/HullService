@@ -1,0 +1,1164 @@
+@media (min-width: 992px) and (max-width: 1900px) {
+    .course-list {
+        grid-template-columns: 1fr;
+        grid-row-gap: 20px;
+    }
+
+    .doctor-detail {
+        padding-left: 0;
+    }
+}
+
+@media (min-width: 1401px) and (max-width: 1650px) {
+    .success-text h2 {
+        font-size: 30px;
+    }
+
+    .success-text p {
+        font-size: 14px;
+    }
+
+    .dashboard-card .side-bar ul li a {
+        padding: 15px;
+    }
+
+    .dashboard-card .side-bar ul li a {
+        font-size: 15px;
+    }
+}
+
+@media (min-width:1200px) and (max-width: 1400px) {
+    .success-text h2 {
+        font-size: 24px;
+    }
+
+    .dashboard-card .side-bar ul li a {
+        padding: 15px 10px;
+        font-size: 13px;
+    }
+
+    .dashboard-card .side-bar {
+        padding: 16px;
+    }
+
+    .Support-card h3 {
+        font-size: 15px;
+    }
+
+    .success-text a {
+        margin-top: 20px;
+    }
+
+    .cart-btn a {
+        padding: 14px 12px;
+        font-size: 14px;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+    .media-icon {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .media-main {
+        justify-content: start;
+        align-items: flex-start;
+    }
+
+    .media-bdy {
+        width: 100%;
+    }
+
+    .media-bdy p {
+        margin-bottom: 20px;
+    }
+
+    .forum-cal,
+    .forum-cat {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        text-align: center;
+    }
+
+    .course-title h2 {
+        font-size: 28px;
+    }
+
+    .course-title ul li {
+        margin-right: 15px;
+    }
+
+    .habit-success {
+        flex-direction: column-reverse;
+    }
+
+    .success-text {
+        text-align: center;
+        padding-bottom: 35px;
+    }
+
+    .article-tags .video-list .video-list-card .video-list-view {
+        align-items: flex-start;
+    }
+
+    .video-list .video-list-card .video-list-view {
+        flex-direction: column;
+    }
+
+    .video-list .video-list-card .video-list-view .video-list-icon {
+        max-width: 100%;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .join-letter {
+        width: auto;
+    }
+
+    .video {
+        width: auto;
+    }
+
+    header .header-card .hull-links .hull-menu ul {
+        text-align: right;
+    }
+
+    header .header-card .hull-links .hull-menu ul li a {
+        font-size: 12px;
+    }
+
+    header .header-card .hull-links .cta-header a {
+        padding: 6px 6px;
+        font-size: 12px;
+    }
+
+    .dashboard-card .side-bar ul li a span {
+        margin-left: 0;
+        display: none;
+    }
+.dashboard-card .side-bar ul li ul li a span{display: block;}
+    .dashboard-card .side-bar ul li a {
+        justify-content: center;
+    }
+
+    .Upcoming-section .border-left {
+        border: none;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .support-group .media-icon {
+        flex-direction: row;
+    }
+
+    .media-icon {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .media-main {
+        justify-content: start;
+        align-items: flex-start;
+    }
+
+    .media-bdy {
+        width: 100%;
+    }
+
+    .media-bdy p {
+        margin-bottom: 20px;
+    }
+
+    .media-doctor {
+        flex-direction: column;
+    }
+
+    .habit-success {
+        flex-direction: column-reverse;
+    }
+
+    .success-text {
+        text-align: center;
+        padding-bottom: 35px;
+    }
+
+    header .header-card .hull-links .hull-menu {
+        position: absolute;
+        left: 0;
+        top: 94px;
+        width: 100%;
+        z-index: 99;
+        background: #fff;
+        display: none;
+    }
+
+    header .header-card .hull-links.main .hull-menu {
+        display: block;
+    }
+
+    header .header-card .hull-links a.mob-btn {
+        display: block;
+        margin-left: 15px;
+        font-size: 35px;
+        color: #000;
+    }
+
+    header .header-card .hull-links .hull-menu li {
+        display: block !important;
+    }
+
+    header .header-card .hull-links .hull-menu ul li a {
+        display: block;
+    }
+
+    section.banner-card {
+        height: auto !important;
+        padding: 50px 0;
+    }
+
+    section.banner-card .banner-text {
+        padding: 0;
+    }
+
+    section.banner-card .banner-text h1 {
+        font-size: 24px;
+        margin: 0;
+        line-height: 52px;
+    }
+
+    .section-title h2 {
+        font-size: 26px;
+        line-height: 39px;
+    }
+
+    .section-title span {
+        font-size: 14px;
+    }
+
+    .join-letter {
+        width: 100%;
+    }
+
+    .join-letter h3 {
+        font-size: 25px;
+    }
+
+    .video {
+        width: 100%;
+    }
+
+    .Upcoming h2 {
+        font-size: 26px;
+        line-height: 39px;
+    }
+
+    .Upcoming .Upcoming-list h3 {
+        font-size: 20px;
+    }
+
+    .Upcoming-section .border-left {
+        border-left: none;
+    }
+
+    section.banner-card .banner-slide {
+        height: auto;
+    }
+
+    .Become-text h3 {
+
+        font-size: 30px;
+    }
+
+    .Recent h2 {
+        font-size: 26px;
+        line-height: 39px;
+    }
+
+    .Recent .Recent-list .Recent-card h3 {
+        font-size: 20px;
+    }
+
+    .Upcoming .Upcoming-list .see-link {
+        font-size: 16px;
+    }
+
+    section.innovation .Health-Text span {
+        font-size: 21px;
+        line-height: 22px;
+    }
+
+    section.innovation .Health-Text h2 {
+        font-size: 26px;
+        margin-bottom: 20px;
+    }
+
+    section.innovation .Health-Text {
+        width: auto;
+        margin-top: 37px;
+    }
+
+    section.static-section .static-text h3 {
+        font-size: 15px;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    section.static-section .static-card span {
+        font-size: 18px;
+    }
+
+    section.static-section .static-card h3 {
+        font-size: 22px;
+    }
+
+    section.static-section .static-card {
+        margin: 15px 0;
+    }
+
+    section.social-section .social-post {
+        width: 100%;
+        height: 210px;
+    }
+
+    section.social-section h2 {
+        font-size: 26px;
+        line-height: 39px;
+    }
+
+    .partner .partner-tilte h3 {
+        font-size: 26px;
+        line-height: 39px;
+        text-align: center;
+    }
+
+    .partner .arrow-btn {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    footer {
+        padding: 50px 0;
+    }
+
+    footer p {
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    footer .social-icon {
+        text-align: center;
+    }
+
+    .callout-section {
+        padding: 50px 0 0px;
+    }
+
+    section.banner-card .banner-text .banner-btn {
+        font-size: 15px;
+    }
+
+    .join-letter .form-group .btn-join {
+        font-size: 14px;
+    }
+
+    .video .learn-btn {
+        height: 48px;
+        line-height: 48px;
+        font-size: 14px;
+    }
+
+    .Upcoming .Upcoming-list .book-btn {
+        font-size: 14px;
+    }
+
+    section.banner-card .banner-slide {
+        height: auto;
+    }
+
+    .page-title {
+        padding: 20px 0;
+    }
+
+    .page-title h1 {
+        font-size: 18px;
+    }
+
+    .page-title p {
+        font-size: 17px;
+        margin-bottom: 0;
+    }
+
+    .page-banner {
+        height: auto;
+    }
+
+    .Become-text h2,
+    .testimonials-card h2 {
+        font-size: 20px;
+        line-height: 32px;
+        margin-bottom: 0;
+        text-align: left;
+    }
+
+    .testimonials-text h3 {
+        font-size: 14px;
+        margin-top: 15px;
+    }
+
+    .testimonials-text a {
+        font-size: 15px;
+    }
+
+    .Become-card h3 {
+        font-size: 14px;
+        margin-top: 15px;
+    }
+
+    .Become-card .btn-renew {
+        display: inline-block;
+        width: auto;
+        font-size: 14px;
+        margin-bottom: 0;
+    }
+
+
+
+    .Become-cta h3,
+    .Email-cta h3 {
+        font-size: 20px;
+        text-align: center;
+        margin: 0;
+    }
+
+    .Become-cta p,
+    .Email-cta p {
+        font-size: 17px;
+        line-height: 22px;
+        margin: 25px 0;
+    }
+
+    .Become-cta .join-btn,
+    .Email-cta .email-btn {
+        font-size: 17px;
+        padding: 10px 15px;
+    }
+
+    .container {
+        width: 750px;
+    }
+
+    .selection-img {
+    margin: 0 auto;
+    display: block;
+    width: 210px;
+    }
+
+    .selection-card {
+        margin-bottom: 20px;
+        min-height: inherit;
+    }
+
+    button.btn-research {
+        margin-bottom: 20px;
+    }
+
+    .login-box.user-selection-box {
+        width: auto;
+        min-height: inherit;
+    }
+
+}
+
+@media(max-width: 767px) {
+    section.banner-card .banner-text span {
+        font-size: 26px;
+        font-weight: 600;
+        line-height: 30px;
+    }
+    section.banner-card .banner-text h1 {
+        font-size: 16px;
+        line-height: 22px;
+        margin: 10px 0 20px;
+    }
+    section.banner-card .banner-slide .banner-text {
+        padding: 180px 40px;
+    }
+    .question-titles tbody tr:last-child td:first-child, .question-titles tbody tr:last-child td:nth-child(2) {
+        display: none;
+    }
+    .support-group .media-icon {
+        flex-direction: row;
+    }
+
+    .media-icon {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .media-main {
+        justify-content: start;
+        align-items: flex-start;
+    }
+
+    .media-bdy {
+        width: 100%;
+    }
+
+    .media-bdy p {
+        margin-bottom: 20px;
+    }
+
+    .media-doctor {
+        flex-direction: column;
+    }
+
+    .course-list {
+        grid-template-columns: 1fr;
+        row-gap: 30px;
+    }
+
+    .doctor-detail {
+        padding-left: 0;
+    }
+
+    .forum-post {
+        grid-template-columns: 1fr;
+        column-gap: 0;
+        row-gap: 15px;
+    }
+
+    .category-table~.pagination {
+        margin: 30px auto 40px;
+    }
+
+    .text-grid {
+        column-gap: 0;
+        grid-template-columns: 1fr;
+        row-gap: 30px;
+    }
+
+    .text-grid:last-of-type .grid-right {
+        order: 2;
+    }
+
+    .text-grid h4 {
+        font-size: 32px;
+    }
+
+    .what-learn ul {
+        grid-template-columns: 1fr;
+    }
+
+    .course-title ul {
+        flex-direction: column;
+    }
+
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .content-grid .course-title {
+        margin-bottom: 8px;
+        padding-left: 30px;
+    }
+
+    .content-grid .course-play .course-title {
+        padding-left: 0;
+    }
+
+    .course-title h2 {
+        font-size: 23px;
+    }
+
+    .course-title ul li {
+        margin-right: 0;
+        margin-bottom: 5px;
+    }
+
+    .habit-success {
+        padding: 0 20px;
+        flex-direction: column-reverse;
+    }
+
+    .success-text {
+        padding-bottom: 30px;
+    }
+
+    .success-text h2 {
+        font-size: 28px;
+    }
+
+    .research-title h2 {
+        font-size: 22px;
+        line-height: 35px;
+
+        padding-top: 25px;
+    }
+
+    .search-input button.btn-video {
+        font-size: 14px;
+    }
+
+    .search-input input.form-control {
+        width: calc(100% - 120px);
+    }
+
+    .dashboard-content {
+        margin: 0 0;
+    }
+
+    .container {
+        width: 100%;
+    }
+
+    .top-header .top-header-icon {
+        text-align: center;
+    }
+
+    .top-header .top-header-icon .Member-login {
+        margin: 10px 0;
+    }
+
+    header .header-card .hull-links .hull-menu {
+        position: absolute;
+        left: 0;
+        top: 150px;
+        background: #fff;
+        width: 100%;
+        z-index: 9;
+    }
+
+    header .header-card .hull-links .hull-menu li {
+        display: block !important;
+    }
+
+    header .header-card .hull-links {
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        padding-right: 10px;
+        margin: 20px 0 0;
+    }
+
+    header .header-card .hull-links .cta-header {
+        display: inline-block;
+        float: right;
+    }
+
+    header .header-card .hull-links a.mob-btn {
+        display: inline-block;
+        margin-left: 5px;
+    }
+
+    header .header-card {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    header .header-card .logo {
+        display: block;
+        width: 100px;
+        text-align: center;
+        display: block;
+        margin: 0;
+    }
+
+    header .header-card .hull-links .cta-header a {
+        margin: 10px 0;
+        padding: 5px 6px;
+        font-size: 12px;
+    }
+
+    header .header-card .hull-links .hull-menu ul li a {
+        display: block;
+    }
+
+    header .header-card .hull-links .hull-menu {
+        display: none;
+    }
+
+    header .header-card .hull-links.main .hull-menu {
+        display: block;
+    }
+
+    section.banner-card {
+        height: auto !important;
+        padding: 50px 0;
+    }
+
+    section.banner-card .banner-text {
+        padding: 0;
+    }
+
+    
+
+    .section-title h2 {
+        font-size: 26px;
+        line-height: 39px;
+    }
+
+    .section-title span {
+        font-size: 14px;
+    }
+
+    .join-letter {
+        width: 100%;
+    }
+
+    .join-letter h3 {
+        font-size: 25px;
+    }
+
+    .video {
+        width: 100%;
+    }
+
+    .Upcoming h2 {
+        font-size: 26px;
+        line-height: 39px;
+    }
+
+    .Upcoming .Upcoming-list h3 {
+        font-size: 20px;
+    }
+
+    .Upcoming-section .border-left {
+        border-left: none;
+    }
+
+    .Recent h2 {
+        font-size: 26px;
+        line-height: 39px;
+    }
+
+    .Recent .Recent-list .Recent-card h3 {
+        font-size: 20px;
+    }
+
+    .Upcoming .Upcoming-list .see-link {
+        font-size: 16px;
+    }
+
+    section.innovation .Health-Text span {
+        font-size: 21px;
+        line-height: 22px;
+    }
+
+    section.innovation .Health-Text h2 {
+        font-size: 26px;
+        margin-bottom: 20px;
+    }
+
+    section.innovation .Health-Text {
+        width: auto;
+        margin-top: 18px;
+    }
+
+    section.static-section .static-text h3 {
+        font-size: 15px;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    section.static-section .static-card span {
+        font-size: 18px;
+    }
+
+    section.static-section .static-card h3 {
+        font-size: 22px;
+    }
+
+    section.static-section .static-card {
+        margin: 15px 0;
+    }
+
+    section.social-section .social-post {
+        width: 100%;
+        height: 210px;
+    }
+
+    section.social-section h2 {
+        font-size: 26px;
+        line-height: 39px;
+    }
+
+    .partner .partner-tilte h3 {
+        font-size: 26px;
+        line-height: 39px;
+        text-align: center;
+    }
+
+    .partner .arrow-btn {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    footer {
+        padding: 50px 0;
+    }
+
+    footer p {
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    footer .social-icon {
+        text-align: center;
+    }
+
+    .callout-section {
+        padding: 50px 0 0px;
+    }
+
+    section.banner-card .banner-text .banner-btn {
+        font-size: 15px;
+    }
+
+    .join-letter .form-group .btn-join {
+        font-size: 14px;
+    }
+
+    .video .learn-btn {
+        height: 48px;
+        line-height: 48px;
+        font-size: 14px;
+    }
+
+    .Upcoming .Upcoming-list .book-btn {
+        font-size: 14px;
+    }
+
+    header .header-card .hull-links .Sign-header {
+        text-align: center;
+        margin: 10px 0 0;
+    }
+
+    .login-section .login-box {
+        width: auto;
+    }
+
+    .login-section .login-box .login-details h2 {
+        font-size: 18px;
+        line-height: 26px;
+    }
+
+    .login-section .login-box .login-details ul li {
+        display: inline-block;
+        margin: 0 6px;
+    }
+
+
+    .page-title {
+        padding: 20px 0;
+    }
+
+    .page-title h1 {
+        font-size: 18px;
+    }
+
+    .page-title p {
+        font-size: 17px;
+        margin-bottom: 0;
+    }
+
+    .page-banner {
+        height: auto;
+    }
+
+    .Become-text h2,
+    .testimonials-card h2 {
+        font-size: 20px;
+        line-height: 32px;
+        margin-bottom: 0;
+        text-align: left;
+    }
+
+    .testimonials-text h3 {
+        font-size: 14px;
+        margin-top: 15px;
+    }
+
+    .testimonials-text a {
+        font-size: 15px;
+    }
+
+    .Become-card h3 {
+        font-size: 14px;
+        margin-top: 15px;
+    }
+
+    .Become-card .btn-renew {
+        display: inline-block;
+        width: auto;
+        font-size: 14px;
+        margin-bottom: 0;
+    }
+
+    .bg-become {
+        margin-bottom: 0;
+    }
+
+    .Become-cta h3,
+    .Email-cta h3 {
+        font-size: 20px;
+        text-align: center;
+        margin: 0;
+    }
+
+    .Become-cta p,
+    .Email-cta p {
+        font-size: 17px;
+        line-height: 22px;
+        margin: 25px 0;
+    }
+
+    .Become-cta .join-btn,
+    .Email-cta .email-btn {
+        font-size: 17px;
+        padding: 10px 15px;
+    }
+
+    .bg-Email {
+        margin-top: 0;
+    }
+
+    .video-list .video-list-card .video-list-view .video-list-icon {
+        width: 100%;
+        float: none;
+        margin-bottom: 15px;
+    }
+
+    .video-list .video-list-card .video-list-view .video-list-text .video-inner-text {
+        text-align: left;
+    }
+
+    .video-text h3,
+    .video-tag h3,
+    .video-list h3 {
+        font-size: 18px;
+    }
+
+    .article-tags .video-list h3 {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .donate-btn {
+        margin-bottom: 20px;
+        flex-direction: column;
+    }
+
+    .donate-btn a {
+        margin: 10px 0;
+    }
+
+    .table-responsive {
+        border: none;
+    }
+
+    .selection-img {
+        margin: 0 auto;
+        display: block;
+        width: auto;
+    }
+
+    .selection-card {
+        margin-bottom: 20px;
+        min-height: inherit;
+    }
+
+    button.btn-research {
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    .login-box.user-selection-box {
+        width: auto;
+        min-height: inherit;
+    }
+
+    .category-title {	
+        align-items: flex-end;	
+    }	
+    .cat-title {	
+        align-items: flex-start;	
+        flex-direction: column;	
+    }	
+    .category-table .research-box {	
+        flex-direction: row;	
+    }	
+    .category-table  .research-date label {	
+        margin-top: 0;	
+    }	
+    .cat-title a.add-comment {	
+        margin-top: 15px;	
+    }	
+
+    .new-forums-card .new-forums-input textarea.form-control {
+        width: 100%;
+        }
+
+        .new-forums-card .new-forums-input .add-comment-btn {
+        width: 100%;
+        position: relative;
+        top: inherit;
+        right: inherit;
+        margin: 10px 0 0;
+        }
+
+        .new-forums-card .new-forums-follow-btn {
+        text-align: center;
+        }
+
+        .new-forums-input textarea.form-control {
+        width: 100%;
+        }
+
+        .new-forums-input .add-comment-btn {
+        position: relative;
+        width: 100%;
+        margin: 10px 0;
+        }
+        .new-forums-reply .forums-reply-card .forums-reply-text h3 span {
+            word-break: break-all;
+        }
+        .new-forums-reply .forums-reply-card .forums-reply-text p{
+            word-break: break-word;
+        }
+}
+
+@media (max-width: 480px) {
+    .support-group .media-icon {
+        flex-direction: column;
+    }
+
+    .support-group .media-icon div:last-of-type {
+        margin-left: 0;
+    }
+
+    .media-main {
+        justify-content: start;
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .forum-chat {
+        grid-template-columns: 1fr;
+    }
+
+    .forum-title p,
+    .forum-title p label {
+        text-align: left;
+    }
+
+    .forum-comments {
+        flex-direction: column;
+    }
+
+    .article-tags .video-list .video-list-card .video-list-view {
+        flex-direction: row;
+    }
+
+    .reply-forum a:last-of-type {
+        margin-left: 0;
+    }
+
+    .video-list .video-list-card .video-list-view {
+        flex-direction: column;
+    }
+
+    .video-list .video-list-card .video-list-view .video-list-icon {
+        max-width: 100%;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .research-box {
+        justify-content: flex-start;
+        align-items: flex-start;
+        margin-bottom: 15px;
+        flex-direction: column;
+    }
+
+    .research-date label {
+        font-size: 12px;
+        margin-top: 15px;
+    }
+
+    .research-main .video-text p {
+        font-size: 16px;
+        margin: 15px 0 0;
+    }
+
+    header .header-card .hull-links .cta-header {
+        display: flex;
+        float: none;
+        flex-direction: column;
+        margin: 0;
+        justify-content: flex-end;
+    }
+
+    header .header-card .hull-links .cta-header a:first-of-type {
+        margin-right: 0;
+    }
+
+    header .header-card .hull-links .cta-header a {
+        margin: 4px 0;
+
+        display: block;
+        width: 100%;
+    }
+
+     .full-width .category-table h2 {	
+        font-size: 22px;	
+    }	
+    .category-title {	
+        flex-direction: column;	
+        align-items: flex-start;	
+        margin-bottom: 20px;	
+    }	
+    .search-forum {	
+        margin-bottom: 30px;	
+        flex-direction: column;	
+        gap: 10px;	
+    }	
+    .search-forum .add-forum {	
+        width: 100%;	
+        max-width: 100%;	
+    }
+}
+
+@media (max-width: 360px) {
+    header .header-card .hull-links .cta-header a {
+        margin: 10px 0;
+        padding: 5px 5px;
+        font-size: 10px;
+    }
+}
+
+@media(max-width:767px){
+    .category-title {flex-direction: column;}
+}
+@media(max-width:480px){
+    .search-forum {
+        margin-bottom: 30px;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .search-forum .add-forum {
+    width: 100%;
+    max-width: 100%;
+}
+}

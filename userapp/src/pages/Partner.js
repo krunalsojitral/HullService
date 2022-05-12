@@ -12,7 +12,7 @@ export default function Partner() {
     infinite: true,
     speed: 500,
     centerMode: true,
-    slidesToShow: 5,
+    slidesToShow: 3,
     centerPadding: "120px",
     autoplay: true,
     responsive: [
@@ -21,6 +21,42 @@ export default function Partner() {
         settings: {
           slidesToShow: 3,
           slidesToScroll: 3,
+          infinite: true,
+          dots: true,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          initialSlide: 2,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
+
+  const research_settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    centerMode: true,
+    slidesToShow: 2,
+    centerPadding: "50px",
+    autoplay: true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
           infinite: true,
           dots: true,
         },
@@ -92,26 +128,24 @@ export default function Partner() {
                 <div className="heading-second">
                   <h3 className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="10ms">Research Partners</h3>
                 </div>
+                <br/>
                 <div className="image-holder">
                   <Slider className=""  {...settings}>
                     <div>
+                      <a target="_blank" href="https://www.traumaconsortium.com/en/">
                       <img src="images/slide1.png" />
+                      </a>
                     </div>
                     <div>
-                      <img src="images/slide2.png" />
+                      <a target="_blank" href="https://www.childrenandyouthmentalhealth.com/">
+                        <img src="images/partner_logo/3.jpg" />
+                      </a>
                     </div>
                     <div>
-                      <img src="images/slide3.png" />
-                    </div>
-                    <div>
-                      <img src="images/slide4.png" />
-                    </div>
-                    <div>
-                      <img src="images/slide5.png" />
-                    </div>
-                    <div>
-                      <img src="images/slide6.png" />
-                    </div>
+                      <a target="_blank" href="https://hbi.ucalgary.ca/mathison/research">
+                        <img src="images/partner_logo/4.jpg" />
+                      </a>
+                    </div>                    
                   </Slider>
                 </div>
               </div>
@@ -160,25 +194,18 @@ export default function Partner() {
                   <h3 className="wow animate__fadeInUp" data-wow-duration="800ms" data-wow-delay="0ms" data-wow-offset="1">Community Partners
                   </h3>
                 </div>
+                <br />
                 <div className="image-holder">
-                  <Slider className=""  {...settings}>
+                  <Slider className=""  {...research_settings}>
                     <div>
-                      <img src="images/slide1.png" />
+                      <a target="_blank" href="https://igotmind.ca/">
+                        <img src="images/partner_logo/1.jpg" />
+                      </a>
                     </div>
                     <div>
-                      <img src="images/slide2.png" />
-                    </div>
-                    <div>
-                      <img src="images/slide3.png" />
-                    </div>
-                    <div>
-                      <img src="images/slide4.png" />
-                    </div>
-                    <div>
-                      <img src="images/slide5.png" />
-                    </div>
-                    <div>
-                      <img src="images/slide6.png" />
+                      <a target="_blank" href="https://www.marymound.com/main/">
+                        <img src="images/partner_logo/2.jpg" />
+                      </a>
                     </div>
                   </Slider>
                 </div>

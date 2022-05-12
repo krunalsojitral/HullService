@@ -21,6 +21,7 @@ export default function PromoPage() {
   const [reflectiveData, setReflectiveData] = useState([]);
   const [purchasseData, setPurchaseData] = useState([]);
   const [activeTab, setActiveTab] = useState("home");
+  const [token, setToken] = useState('');
 
   React.useEffect(() => {
     const params = new URLSearchParams(window.location.search); // id=123
@@ -29,6 +30,7 @@ export default function PromoPage() {
 
     const tokenString = localStorage.getItem("token");
     var token = JSON.parse(tokenString);
+    setToken(token);
     const config = {
       headers: { Authorization: `${token}` },
     };
@@ -386,7 +388,7 @@ export default function PromoPage() {
   return (
     <div>
       <Header />
-      <section
+      {!token && <section
         className="second-banner-sec"
         style={{
           background: `url('images/event-banner.png') no-repeat`,
@@ -434,7 +436,22 @@ export default function PromoPage() {
             </div>
           </div>
         </div>
-      </section>
+      </section>}
+
+      {token &&
+        <div>
+          <br />
+          <section class="inner-header ">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-12">
+                  <h2>Event Detail</h2>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      }
 
       <div className="event-main">
         <div className="container">
@@ -478,7 +495,6 @@ export default function PromoPage() {
               </a>
             </li>
           </ul>
-
           <div className="tab-content" id="myTabContent">
             <div
               className={

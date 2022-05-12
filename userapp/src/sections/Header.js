@@ -107,7 +107,8 @@ export default function Header() {
                                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                                         <ul className="navbar-nav ms-auto" id="menu">
                                         
-                                        {((location.pathname != "/dashboard") && (location.pathname != "/my-events")) ?
+                                        {/* {((location.pathname != "/dashboard") && (location.pathname != "/my-events")) ? */}
+                                        {!token ?
                                             <React.Fragment>
                                                 <li className="nav-item">
                                                     <NavLink className="nav-link" activeClassName="active" to="/about">

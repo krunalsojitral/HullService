@@ -15,9 +15,12 @@ export default function Events() {
 
     const [eventId, setEventId] = React.useState(0)
     const [eventDetail, seteventDetail] = React.useState({})
-   
+    const [token, setToken] = useState('');
 
     React.useEffect(() => {
+
+        
+        
 
         const params = new URLSearchParams(window.location.search) // id=123
         let event_id = params.get('id')
@@ -25,6 +28,7 @@ export default function Events() {
 
         const tokenString = localStorage.getItem('token');
         var token = JSON.parse(tokenString);
+        setToken(token);
         const config = {
             headers: { Authorization: `${token}` }
         };
@@ -56,7 +60,7 @@ export default function Events() {
             <Header/>
 
 
-            <section className="second-banner-sec" style={{ background: `url('images/event-banner.png') no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
+            {!token && <section className="second-banner-sec" style={{ background: `url('images/event-banner.png') no-repeat`, backgroundSize: 'cover', backgroundPosition: 'center center' }}>
                 <div className="container">
                     <div className="second-banner-inner">
                         <div className="row">
@@ -76,7 +80,7 @@ export default function Events() {
                         </div>
                     </div>
                 </div>
-            </section>
+            </section>}
             <div className="event-main">
                 <div className="container">
                     <ul className="nav nav-tabs eventTabs wow animate__fadeIn" data-wow-duration="1000ms" data-wow-delay="1000ms" id="myTab" role="tablist">

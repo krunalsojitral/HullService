@@ -47,6 +47,18 @@ export default function MyEvents() {
         <div>
             <Header/>
 
+
+            <br />
+
+            <section class="inner-header ">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2>My Event</h2>
+                        </div>
+                    </div>
+                </div>
+            </section>
             
 
 

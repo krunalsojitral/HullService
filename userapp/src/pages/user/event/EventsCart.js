@@ -205,7 +205,7 @@ export default function EventsCart() {
     <div>
       <Header />
 
-      <section
+      {!token &&<section
         className="second-banner-sec"
         style={{
           background: `url('images/event-banner.png') no-repeat`,
@@ -252,7 +252,22 @@ export default function EventsCart() {
             </div>
           </div>
         </div>
-      </section>
+      </section>}
+
+      {token &&
+        <div>
+          <br />
+          <section class="inner-header ">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-12">
+                  <h2>Event Cart</h2>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      }
 
       <br />
       <br />
@@ -571,7 +586,7 @@ export default function EventsCart() {
         </div>
       </section>
 
-      <Footer />
+      {!token && <Footer />}
     </div>
   );
 }
