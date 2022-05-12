@@ -74,7 +74,10 @@ const AddEditForm = ({ match }) => {
     //   webPageUrl: [{ name: "default Value" }],
     // }
   });
+
   const [selectedTimezone, setSelectedTimezone] = useState({});
+  const event_start_date = watch('start_date');
+  const session_start_time = watch('time[0].nestedArray[0].value');
   const purchase_type_selected = watch("purchase_type");
   const event_type_selected = watch("event_type");
   const session_type_selected = watch("session_type");
@@ -172,6 +175,14 @@ const AddEditForm = ({ match }) => {
         control._fields.end_time && control._fields.end_time._f.value
           ? control._fields.end_time._f.value
           : "",
+      event_stop_date:
+        control._fields.event_stop_date && control._fields.event_stop_date._f.value
+          ? control._fields.event_stop_date._f.value
+          : "",
+      reflective_stop_date:
+        control._fields.reflective_stop_date && control._fields.reflective_stop_date._f.value
+          ? control._fields.reflective_stop_date._f.value
+          : "",
       speaker_name:
         control._fields.speaker_name && control._fields.speaker_name._f.value
           ? control._fields.speaker_name._f.value
@@ -179,6 +190,7 @@ const AddEditForm = ({ match }) => {
       location: city,
       type: "event",
     };
+    
 
     const formData = new FormData();
     formData.append("data", JSON.stringify(obj));
@@ -800,7 +812,7 @@ const AddEditForm = ({ match }) => {
                                   onChange={onChange}
                                   dateFormat="yyyy/MM/dd h:mm a"
                                   dateFormatCalendar="yyyy/MM/dd h:mm a"
-                                  minDate={new Date()}
+                                  minDate={new Date(event_start_date)}
                                   maxDate={new Date(2030, 11)}
                                   peekNextMonth
                                   showMonthDropdown
@@ -822,7 +834,7 @@ const AddEditForm = ({ match }) => {
                       </CRow>
 
                       <CRow>
-                        <CCol xs="12">
+                        <CCol xs="6">
                           <CFormGroup>
                             <CLabel htmlFor="event_timezone">
                               Select timezone
@@ -849,6 +861,43 @@ const AddEditForm = ({ match }) => {
                               )}
                             ></Controller>
                           </CFormGroup>
+                        </CCol>
+                        <CCol xs="6">
+                          <CFormGroup>
+                            <CLabel htmlFor="title">
+                              Registration Stop Date{" "}
+                              <span className="label-validation">*</span>
+                            </CLabel>
+                            <Controller
+                              name={"event_stop_date"}
+                              control={control}
+                              rules={{ required: true }}
+                              render={({ field: { onChange, value } }) => (
+                                <ReactDatePicker
+                                  showTimeSelect
+                                  className="form-control"
+                                  selected={value}
+                                  onChange={onChange}
+                                  dateFormat="yyyy/MM/dd h:mm a"
+                                  dateFormatCalendar="yyyy/MM/dd h:mm a"
+                                  minDate={new Date()}
+                                  maxDate={new Date(event_start_date)}
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  isClearable
+                                  placeholderText="Registration stop date"
+                                />
+                              )}
+                            ></Controller>
+                          </CFormGroup>
+                          {errors.end_date &&
+                            errors.end_date.type === "required" && (
+                              <p style={{ color: "red", fontSize: "12px" }}>
+                                Registration stop date is required.
+                              </p>
+                            )}
                         </CCol>
                       </CRow>
 
@@ -1300,7 +1349,7 @@ const AddEditForm = ({ match }) => {
                       {sessionInput()}
 
                       <CRow>
-                        <CCol xs="12">
+                        <CCol xs="6">
                           <CFormGroup>
                             <CLabel htmlFor="role">Online & Offline</CLabel>
                             <Controller
@@ -1325,6 +1374,43 @@ const AddEditForm = ({ match }) => {
                               )}
                             ></Controller>
                           </CFormGroup>
+                        </CCol>
+                        <CCol xs="6">
+                          <CFormGroup>
+                            <CLabel htmlFor="title">
+                              Registration Stop Date{" "}
+                              <span className="label-validation">*</span>
+                            </CLabel>
+                            <Controller
+                              name={"reflective_stop_date"}
+                              control={control}
+                              rules={{ required: true }}
+                              render={({ field: { onChange, value } }) => (
+                                <ReactDatePicker
+                                  showTimeSelect
+                                  className="form-control"
+                                  selected={value}
+                                  onChange={onChange}
+                                  dateFormat="yyyy/MM/dd h:mm a"
+                                  dateFormatCalendar="yyyy/MM/dd h:mm a"
+                                  minDate={new Date()}
+                                  maxDate={new Date(session_start_time)}
+                                  peekNextMonth
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  isClearable
+                                  placeholderText="Registration stop date"
+                                />
+                              )}
+                            ></Controller>
+                          </CFormGroup>
+                          {errors.end_date &&
+                            errors.end_date.type === "required" && (
+                              <p style={{ color: "red", fontSize: "12px" }}>
+                                Registration stop date is required.
+                              </p>
+                            )}
                         </CCol>
                       </CRow>
 
